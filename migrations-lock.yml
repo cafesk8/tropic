@@ -1138,3 +1138,15 @@
 20200507141024:
     class: App\Migrations\Version20200507141024
     skip: false
+20200503092014:
+    class: App\Migrations\Version20200503092014
+    skip: false
+20200505114318:
+    class: App\Migrations\Version20200505114318
+    skip: false
+20200507183426:
+    class: App\Migrations\Version20200507183426
+    skip: false
+20200513085311:
+    class: App\Migrations\Version20200513085311
+    skip: false

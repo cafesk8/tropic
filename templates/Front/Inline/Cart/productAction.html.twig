@@ -12,7 +12,7 @@
         </a>
     {% endif %}
 {% else %}
-    {% set outOfStock = productView.stockQuantity <= 0 %}
+    {% set outOfStock = productView.stockQuantity <= 0 or productActionView.sellingDenied %}
     {% set cssClass = '' %}
     {% if outOfStock is same as (true) %}
         {% set cssClass = 'btn--disabled ' %}

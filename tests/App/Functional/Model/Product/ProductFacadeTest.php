@@ -78,15 +78,15 @@ class ProductFacadeTest extends TransactionFunctionalTestCase
                 'stockQuantity' => 0,
                 'outOfStockAction' => Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY,
                 'calculatedHidden' => false,
-                'calculatedSellingDenied' => false,
+                'calculatedSellingDenied' => true,
             ],
             [
-                'hidden' => true,
+                'hidden' => false,
                 'sellingDenied' => false,
                 'stockQuantity' => 0,
                 'outOfStockAction' => Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY,
-                'calculatedHidden' => true,
-                'calculatedSellingDenied' => false,
+                'calculatedHidden' => false,
+                'calculatedSellingDenied' => true,
             ],
             [
                 'hidden' => false,
@@ -98,7 +98,7 @@ class ProductFacadeTest extends TransactionFunctionalTestCase
             ],
             [
                 'hidden' => false,
-                'sellingDenied' => false,
+                'sellingDenied' => true,
                 'stockQuantity' => 0,
                 'outOfStockAction' => Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE,
                 'calculatedHidden' => false,
@@ -110,7 +110,7 @@ class ProductFacadeTest extends TransactionFunctionalTestCase
                 'stockQuantity' => 0,
                 'outOfStockAction' => Product::OUT_OF_STOCK_ACTION_HIDE,
                 'calculatedHidden' => true,
-                'calculatedSellingDenied' => false,
+                'calculatedSellingDenied' => true,
             ],
         ];
     }

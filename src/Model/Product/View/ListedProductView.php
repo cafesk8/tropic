@@ -38,6 +38,16 @@ class ListedProductView extends BaseListedProductView
     private $groupItems;
 
     /**
+     * @var string|null
+     */
+    private $deliveryDays;
+
+    /**
+     * @var bool
+     */
+    private $isAvailableInDays;
+
+    /**
      * @param int $id
      * @param string $name
      * @param string|null $shortDescription
@@ -50,6 +60,8 @@ class ListedProductView extends BaseListedProductView
      * @param int $stockQuantity
      * @param int $variantsCount
      * @param array[] $groupItems
+     * @param string|null $deliveryDays
+     * @param bool $isAvailableInDays
      */
     public function __construct(
         int $id,
@@ -63,7 +75,9 @@ class ListedProductView extends BaseListedProductView
         array $gifts,
         int $stockQuantity,
         int $variantsCount,
-        array $groupItems
+        array $groupItems,
+        ?string $deliveryDays,
+        bool $isAvailableInDays
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
@@ -73,6 +87,8 @@ class ListedProductView extends BaseListedProductView
         $this->groupItems = array_map(function (array $groupItem) {
             return new ListedGroupItem($groupItem['name'], $groupItem['amount'], $groupItem['image']);
         }, $groupItems);
+        $this->deliveryDays = $deliveryDays;
+        $this->isAvailableInDays = $isAvailableInDays;
     }
 
     /**
@@ -125,5 +141,21 @@ class ListedProductView extends BaseListedProductView
     public function getGroupItems(): array
     {
         return $this->groupItems;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDeliveryDays(): ?string
+    {
+        return $this->deliveryDays;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAvailableInDays(): bool
+    {
+        return $this->isAvailableInDays;
     }
 }

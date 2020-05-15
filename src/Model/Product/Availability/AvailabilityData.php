@@ -8,7 +8,7 @@ use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityData as BaseA
 
 class AvailabilityData extends BaseAvailabilityData
 {
-    public const DEFAULT_COLOR = '#c0e314';
+    public const DEFAULT_COLOR = '#3ea938';
 
     /**
      * @var string

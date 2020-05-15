@@ -12,7 +12,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator as Ba
 
 /**
  * @method calculateSellingDeniedForProduct(\App\Model\Product\Product $product)
- * @method calculateIndependent(\App\Model\Product\Product[] $products)
  * @method propagateMainVariantSellingDeniedToVariants(\App\Model\Product\Product[] $products)
  * @method propagateVariantsSellingDeniedToMainVariant(\App\Model\Product\Product[] $products)
  */
@@ -89,5 +88,26 @@ class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalcula
 
             $qb->getQuery()->execute();
         }
+    }
+
+    /**
+     * @param array $products
+     */
+    protected function calculateIndependent(array $products): void
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->update(\App\Model\Product\Product::class, 'p')
+            ->set('p.calculatedSellingDenied', '
+                CASE
+                    WHEN p.realStockQuantity <= 0
+                    THEN TRUE
+                    ELSE p.sellingDenied
+                END
+            ');
+
+        if (count($products) > 0) {
+            $qb->andWhere('p IN (:products)')->setParameter('products', $products);
+        }
+        $qb->getQuery()->execute();
     }
 }

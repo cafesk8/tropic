@@ -29,6 +29,7 @@ use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
 use Shopsys\FrameworkBundle\Form\GroupType;
+use Shopsys\FrameworkBundle\Form\WarningMessageType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -59,6 +60,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'storeStock',
         'accessories',
         'eurCalculatedAutomatically',
+        'deliveryDays',
+        'outOfStockAction',
+        'outOfStockAvailability',
     ];
 
     /**
@@ -475,7 +479,38 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         FormBuilderInterface $displayAvailabilityGroup,
         ?Product $product
     ): void {
+        $displayAvailabilityGroup->remove('sellingDenied');
+        $displayAvailabilityGroup->remove('hidden');
+
+        if ($product !== null && $product->isUsingStock() && $product->getCalculatedSellingDenied()
+            && $product->getStockQuantity() <= 0
+        ) {
+            $displayAvailabilityGroup->remove('productCalculatedSellingDeniedInfo');
+            $displayAvailabilityGroup
+                ->add('productCalculatedSellingDeniedInfo', WarningMessageType::class, [
+                    'position' => ['after' => 'sellingTo'],
+                    'data' => t('Zboží je označeno jako vyprodané z důvodu nulových skladových zásob.'),
+                ]);
+        }
         $displayAvailabilityGroup
+            ->add('hidden', YesNoType::class, [
+                'required' => false,
+                'label' => t('Hide product'),
+                'position' => ['after' => 'sellingTo'],
+                'attr' => [
+                    'icon' => true,
+                    'iconTitle' => t('Skryté zboží se nezobrazuje ve výpisech ani nelze vyhledat. Detail tohoto zboží není dostupný přímým přístupem z URL. Zboží nelze vložit do košíku.'),
+                ],
+            ])
+            ->add('sellingDenied', YesNoType::class, [
+                'required' => false,
+                'label' => t('Vyprodané zboží'),
+                'position' => ['after' => 'hidden'],
+                'attr' => [
+                    'icon' => true,
+                    'iconTitle' => t('Vyprodané zboží se zobrazuje ve výpisech a lze jej vyhledat. Detail tohoto zboží je dostupný přímým přístupem z URL, zboží ale nelze vložit do košíku.'),
+                ],
+            ])
             ->add('mallExport', YesNoType::class, [
                 'required' => false,
                 'label' => t('Export do Mall.cz'),
@@ -483,9 +518,17 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('mallExportedAt', DisplayOnlyType::class, [
                 'label' => t('Exportováno do Mall.cz'),
                 'data' => $product !== null ? $this->dateTimeFormatterExtension->formatDateTime($product->getMallExportedAt()) : '~',
+            ])
+            ->add('deliveryDays', TextType::class, [
+                'required' => false,
+                'label' => t('Dodání'),
             ]);
+        $usingStockItem = $displayAvailabilityGroup->get('usingStock');
+        $usingStockItem->setDisabled(true);
 
         $stockGroup = $displayAvailabilityGroup->get('stockGroup');
+        $stockGroup->remove('outOfStockAction');
+        $stockGroup->remove('outOfStockAvailability');
 
         $stockQuantity = 0;
         if ($product !== null) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Store;
 
+use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Transport\PickupPlace\PickupPlaceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -342,5 +343,13 @@ class Store implements PickupPlaceInterface
     public function isCentralStore(): bool
     {
         return $this->centralStore;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExternalStock(): bool
+    {
+        return (int)$this->externalNumber === PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID;
     }
 }

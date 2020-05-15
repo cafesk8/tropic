@@ -12,6 +12,7 @@ use App\Model\Pricing\Currency\Currency;
 use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Pricing\Vat\VatFacade;
+use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductFacade;
@@ -66,6 +67,11 @@ class PohodaProductMapper
     private $currencyFacade;
 
     /**
+     * @var \App\Model\Product\Availability\AvailabilityFacade
+     */
+    private $availabilityFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
@@ -73,6 +79,7 @@ class PohodaProductMapper
      * @param \App\Model\Store\StoreFacade $storeFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      */
     public function __construct(
         Domain $domain,
@@ -81,7 +88,8 @@ class PohodaProductMapper
         CategoryFacade $categoryFacade,
         StoreFacade $storeFacade,
         ProductFacade $productFacade,
-        CurrencyFacade $currencyFacade
+        CurrencyFacade $currencyFacade,
+        AvailabilityFacade $availabilityFacade
     ) {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
@@ -90,6 +98,7 @@ class PohodaProductMapper
         $this->storeFacade = $storeFacade;
         $this->productFacade = $productFacade;
         $this->currencyFacade = $currencyFacade;
+        $this->availabilityFacade = $availabilityFacade;
     }
 
     /**
@@ -104,8 +113,6 @@ class PohodaProductMapper
         $this->mapDomainDataToProductData($pohodaProduct, $productData);
         $this->mapRelatedProductsToProductData($pohodaProduct, $productData);
         $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
-        /* Please remove this after user story "Zobrazení skladové zásoby u produktu" - this line is temporarily for import */
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
         $productData->groupItems = $this->getMappedProductGroupItems($pohodaProduct->productGroups);
         $productData->eurCalculatedAutomatically = $pohodaProduct->automaticEurCalculation;
     }
@@ -152,8 +159,11 @@ class PohodaProductMapper
         $productData->name[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->nameSk);
         $productData->shortDescriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shortDescription;
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->longDescription;
-        $productData->usingStock = true;
         $productData->registrationDiscountDisabled = $pohodaProduct->registrationDiscountDisabled;
+        $productData->deliveryDays = $pohodaProduct->deliveryDays;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+        $productData->outOfStockAvailability = $this->availabilityFacade->getDefaultOutOfStockAvailability();
+        $productData->usingStock = true;
     }
 
     /**

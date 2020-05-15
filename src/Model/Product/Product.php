@@ -193,6 +193,20 @@ class Product extends BaseProduct
     private $productGroups;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $deliveryDays;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $realStockQuantity;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -256,6 +270,7 @@ class Product extends BaseProduct
         $this->pohodaProductType = $productData->pohodaProductType;
         $this->eurCalculatedAutomatically = $productData->eurCalculatedAutomatically;
         $this->productGroups = new ArrayCollection();
+        $this->deliveryDays = $productData->deliveryDays;
     }
 
     /**
@@ -301,6 +316,34 @@ class Product extends BaseProduct
     public function clearStoreStocks(): void
     {
         $this->storeStocks->clear();
+    }
+
+    /**
+     * @return int
+     */
+    public function getExternalStockQuantity(): int
+    {
+        $externalStockQuantity = 0;
+        foreach ($this->storeStocks as $storeStock) {
+            if ($storeStock->getStockQuantity() !== null && $storeStock->getStore()->isExternalStock()) {
+                $externalStockQuantity += $storeStock->getStockQuantity();
+            }
+        }
+
+        return $externalStockQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealExternalStockQuantity(): int
+    {
+        $externalStockQuantity = $this->getExternalStockQuantity();
+        if ($externalStockQuantity % $this->getAmountMultiplier() !== 0) {
+            return (int)floor($externalStockQuantity / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
+        }
+
+        return $externalStockQuantity;
     }
 
     /**
@@ -482,6 +525,14 @@ class Product extends BaseProduct
     public function setStockQuantity(int $stockQuantity): void
     {
         $this->stockQuantity = $stockQuantity;
+    }
+
+    /**
+     * @param int $realStockQuantity
+     */
+    public function setRealStockQuantity(int $realStockQuantity): void
+    {
+        $this->realStockQuantity = $realStockQuantity;
     }
 
     /**
@@ -686,13 +737,7 @@ class Product extends BaseProduct
      */
     public function getRealStockQuantity(): int
     {
-        if (!$this->isUsingStock()) {
-            return PHP_INT_MAX;
-        } elseif ($this->getStockQuantity() % $this->getAmountMultiplier() !== 0) {
-            return (int)floor($this->getStockQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
-        }
-
-        return $this->getStockQuantity();
+        return (int)$this->realStockQuantity;
     }
 
     /**
@@ -901,5 +946,46 @@ class Product extends BaseProduct
     public function getProductGroups(): array
     {
         return $this->productGroups->toArray();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDeliveryDays(): ?string
+    {
+        return $this->deliveryDays;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductOnlyAtExternalStock(): bool
+    {
+        return $this->getRealExternalStockQuantity() > 0 && $this->getRealExternalStockQuantity() === $this->getRealStockQuantity();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAvailable(): bool
+    {
+        return (!$this->isAvailableInDays() && $this->getRealStockQuantity() > 0)
+            || ($this->isProductOnlyAtExternalStock() && $this->getDeliveryDays() === null);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAvailableInDays(): bool
+    {
+        return $this->isProductOnlyAtExternalStock() && $this->getDeliveryDays() !== null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCurrentlyOutOfStock(): bool
+    {
+        return $this->getRealStockQuantity() < 1;
     }
 }

@@ -92,7 +92,9 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productArray['gifts'],
             $productArray['stock_quantity'],
             $productArray['variants_count'],
-            $productArray['group_items']
+            $productArray['group_items'],
+            $productArray['delivery_days'],
+            $productArray['is_available_in_days']
         );
     }
 
@@ -119,7 +121,9 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $this->productFacade->getProductGiftNames($product, $this->domain->getId(), $this->domain->getLocale()),
             $product->getStockQuantity(),
             $product->getVariantsCount(),
-            $this->productGroupFacade->getAllForElasticByMainProduct($product, $this->domain->getLocale())
+            $this->productGroupFacade->getAllForElasticByMainProduct($product, $this->domain->getLocale()),
+            $product->getDeliveryDays(),
+            $product->isAvailableInDays()
         );
     }
 

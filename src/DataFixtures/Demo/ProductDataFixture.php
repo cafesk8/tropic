@@ -171,7 +171,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 300;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -219,7 +219,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -262,7 +262,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 800;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -302,9 +302,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '9.1.2000');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -350,9 +350,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '11.2.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
@@ -392,7 +392,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 30;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -431,7 +431,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
@@ -477,7 +477,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -522,9 +522,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '24.1.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -572,9 +572,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '22.1.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -619,7 +619,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -649,9 +649,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '4.1.2000');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -691,7 +691,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 220;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -736,7 +736,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 140;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -766,9 +766,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '13.2.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
@@ -808,7 +808,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 300;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -849,7 +849,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 220;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -893,7 +893,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -934,7 +934,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 220;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -978,7 +978,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 80;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1023,9 +1023,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '23.1.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1064,9 +1064,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '10.2.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
@@ -1108,7 +1108,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 111;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1140,7 +1140,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 150;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1181,7 +1181,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 500;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1226,7 +1226,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1267,7 +1267,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 450;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1308,7 +1308,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 650;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1340,7 +1340,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1388,7 +1388,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 440;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -1429,7 +1429,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -1474,7 +1474,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 400;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1504,9 +1504,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '14.2.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
@@ -1538,7 +1538,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1585,7 +1585,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1617,7 +1617,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 800;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1663,7 +1663,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1709,7 +1709,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 500;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
@@ -1741,7 +1741,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 600;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1771,9 +1771,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '12.2.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
@@ -1813,9 +1813,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '7.1.2000');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1856,9 +1856,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '8.2.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -1899,9 +1899,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '7.2.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -1942,7 +1942,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 550;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -1984,7 +1984,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 400;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2026,7 +2026,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 300;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -2056,9 +2056,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '16.2.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2090,7 +2090,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 700;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2122,7 +2122,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2152,9 +2152,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '15.2.2014');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2186,7 +2186,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 140;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2218,7 +2218,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -2261,7 +2261,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2304,7 +2304,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2347,7 +2347,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 80;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2379,7 +2379,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2422,7 +2422,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2465,7 +2465,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2508,7 +2508,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2551,7 +2551,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2583,7 +2583,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2615,7 +2615,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 80;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2647,7 +2647,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2691,7 +2691,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2735,7 +2735,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2767,7 +2767,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2799,7 +2799,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2831,7 +2831,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2861,9 +2861,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '15.1.2000');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2902,7 +2902,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100000000;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2932,7 +2932,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 75;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -2964,7 +2964,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 1000000;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3004,7 +3004,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100000;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3047,7 +3047,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3090,7 +3090,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3133,7 +3133,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3176,7 +3176,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3208,7 +3208,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3240,7 +3240,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -3283,7 +3283,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3326,7 +3326,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3356,9 +3356,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '9.1.2000');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3390,7 +3390,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -3422,7 +3422,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
@@ -3472,7 +3472,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, '25.1.2015');
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -3522,7 +3522,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3568,7 +3568,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 500;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
@@ -3607,7 +3607,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
@@ -3653,7 +3653,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 100;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
@@ -3699,7 +3699,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3745,7 +3745,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3779,7 +3779,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 5050;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3811,7 +3811,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 5335;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3843,7 +3843,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 878;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3875,7 +3875,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 9877;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3907,7 +3907,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 65444;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3937,7 +3937,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 798;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3969,7 +3969,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 54;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -3999,7 +3999,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 78;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4029,7 +4029,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 48;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4061,7 +4061,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 48;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4093,7 +4093,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 48;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4125,7 +4125,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 489;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4157,7 +4157,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 48;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4189,7 +4189,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 4984;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4221,7 +4221,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 878;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4253,7 +4253,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 9877;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4285,7 +4285,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 65444;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4317,7 +4317,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 798;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4347,7 +4347,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 54;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4378,7 +4378,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 78;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4408,7 +4408,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 8878;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4440,7 +4440,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 54;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4470,7 +4470,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 648;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4500,7 +4500,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 8744;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4530,7 +4530,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 648;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4560,7 +4560,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 86;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4592,7 +4592,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 78;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4623,7 +4623,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 878;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4653,7 +4653,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 787;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4683,7 +4683,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 77;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4714,7 +4714,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 7;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4744,7 +4744,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 9;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4774,7 +4774,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 78;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4804,7 +4804,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 54;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4835,7 +4835,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 12;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4867,7 +4867,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 351;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4899,7 +4899,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 654;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4931,7 +4931,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 83;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4962,7 +4962,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 78;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -4993,7 +4993,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 8;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5024,7 +5024,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 9;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5054,7 +5054,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 879;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5084,7 +5084,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 98;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5114,7 +5114,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 654;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5144,7 +5144,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 3524;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5174,7 +5174,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 78;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5204,7 +5204,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 789;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5234,7 +5234,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 564;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5266,7 +5266,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 456;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5298,7 +5298,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 456;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5345,7 +5345,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 457;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5392,7 +5392,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 457;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5439,7 +5439,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 458;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5489,7 +5489,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 459;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5539,7 +5539,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 460;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5586,7 +5586,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 200;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
@@ -5689,6 +5689,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     protected function createProduct(ProductData $productData): Product
     {
         $this->addFakeStoreStocks($productData);
+        $productData->outOfStockAvailability = $this->persistentReferenceFacade->getReference(AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
+
+        /** @var \App\Model\Product\Product $product */
         $product = $this->productFacade->create($productData);
 
         $this->addProductReference($product);

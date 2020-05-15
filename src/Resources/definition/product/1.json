@@ -234,6 +234,9 @@
       "in_stock": {
         "type": "boolean"
       },
+      "is_available_in_days": {
+        "type": "boolean"
+      },
       "parameters": {
         "type": "nested",
         "properties": {
@@ -255,6 +258,9 @@
         "type": "boolean"
       },
       "availability": {
+        "type": "text"
+      },
+      "delivery_days": {
         "type": "text"
       },
       "is_main_variant": {
