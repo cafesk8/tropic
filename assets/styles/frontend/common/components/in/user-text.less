@@ -23,6 +23,7 @@
         line-height: @in-user-text-font-size + 16px;
 
         font-size: @in-user-text-font-size;
+        font-family: @font-alt;
 
         @media @query-xl {
             margin-bottom: @in-user-text-inner-text-gap;
@@ -45,6 +46,7 @@
             margin-bottom: 5px;
 
             font-size: @in-user-text-font-size;
+            font-family: @font-alt;
         }
 
         ul {
@@ -183,7 +185,8 @@
             line-height: 16px;
             text-align: center;
 
-            font-size: 14px;
+            font-size: @in-user-text-font-size;
+            font-family: @font-alt;
             border: 1px solid #f7f7f7;
 
             &:first-child {

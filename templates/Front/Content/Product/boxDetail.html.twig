@@ -270,7 +270,6 @@
                         <h2 class="box-products-slider__title">
                             {{ accessoriesHeadline }}
                         </h2>
-                        <a href="#" class="box-products-slider__subtitle js-not-implemented-yet">{{ 'Přejít na všechny novinky'|trans }}</a>
                         {{ productList.horizontalList(accessories, 'h3', 'accessories-products', true) }}
                     </div>
                 </div>
@@ -321,11 +320,11 @@
     {% endif %}
 
     {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) and not product.isInAnySaleStock() %}
-        <div class="box-detail-add__prices__item box-detail-add__prices__item--registered">
+        <div class="box-detail-add__prices__item box-detail-add__prices__item--info">
             {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}
         </div>
     {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) and not product.isInAnySaleStock() %}
-        <div class="box-detail-add__prices__item box-detail-add__prices__item--not-registered">
+        <div class="box-detail-add__prices__item box-detail-add__prices__item--info">
             {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
         </div>
     {% endif %}
