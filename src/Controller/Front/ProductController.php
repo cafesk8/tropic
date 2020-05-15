@@ -194,9 +194,7 @@ class ProductController extends FrontBaseController
      */
     public function detailAction($id)
     {
-        /** @var \App\Model\Product\Product $product */
         $product = $this->productOnCurrentDomainFacade->getVisibleProductById($id);
-
         $this->gtmFacade->onProductDetailPage($product);
 
         if ($product->isVariant()) {

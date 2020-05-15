@@ -1,0 +1,29 @@
+@box-set-item-gap: 28px;
+@box-set-item-gap-small: 15px;
+
+.box-set {
+    margin-bottom: 23px;
+    
+    @media @query-lg {
+        margin-bottom: 43px;
+    }
+
+    &__wrap {
+        @media @query-vl {
+            padding: @box-set-item-gap-small @box-set-item-gap-small - 2px;
+
+            border-radius: @radius;
+            background-color: @color-light;
+        }
+
+        @media @query-xl {
+            padding: @box-set-item-gap @box-set-item-gap - 2px;
+        }
+    }
+
+    &__title {
+        margin-bottom: 15px;
+
+        text-transform: uppercase;
+    }
+}

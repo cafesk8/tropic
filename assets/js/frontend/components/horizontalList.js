@@ -20,11 +20,19 @@ import Timeout from 'framework/common/utils/Timeout';
                 'accessories-products': [1, 2, 3, 4, 6],
                 'products': [2, 3, 2, 3, 6],
                 'references': [1, 2, 3, 3, 4],
-                'basket-additionals': [1, 2, 3, 2, 3]
+                'basket-additionals': [1, 2, 3, 2, 3],
+                'products-set': [1, 2, 3, 2, 3]
             };
 
-            // at the moment, number of displayed slides equals number of slides to slide, however, there is a chance the configuration will differ in the future
-            const slideTypes = types;
+            const slideTypes = {
+                'last-visited': [1, 2, 3, 3, 5],
+                'top-products': [1, 2, 3, 4, 4],
+                'accessories-products': [1, 2, 3, 4, 6],
+                'products': [2, 3, 2, 3, 6],
+                'references': [1, 2, 3, 3, 4],
+                'basket-additionals': [1, 2, 3, 2, 3],
+                'products-set': [1, 1, 1, 1, 1]
+            };
 
             const selectedType = types[galleryType];
             const selectedSlideTypes = slideTypes[galleryType];
@@ -45,7 +53,7 @@ import Timeout from 'framework/common/utils/Timeout';
                         settings: {
                             slidesToShow: selectedType[0],
                             slidesToScroll: selectedSlideTypes[0],
-                            dots: true
+                            dots: false
                         }
                     },
                     {

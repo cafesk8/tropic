@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\Elasticsearch;
 
 use App\Model\Pricing\Currency\CurrencyFacade;
+use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Pricing\ProductManualInputPriceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -64,6 +65,11 @@ class ProductExportRepository extends BaseProductExportRepository
     private $productManualInputPriceRepository;
 
     /**
+     * @var \App\Model\Product\Group\ProductGroupFacade
+     */
+    private $productGroupFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \App\Model\Product\ProductFacade $productFacade
@@ -76,6 +82,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
      * @param \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation $basePriceCalculation
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -89,7 +96,8 @@ class ProductExportRepository extends BaseProductExportRepository
         PricingSetting $pricingSetting,
         ProductManualInputPriceRepository $productManualInputPriceRepository,
         BasePriceCalculation $basePriceCalculation,
-        CurrencyFacade $currencyFacade
+        CurrencyFacade $currencyFacade,
+        ProductGroupFacade $productGroupFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
@@ -97,6 +105,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $this->productManualInputPriceRepository = $productManualInputPriceRepository;
         $this->currencyFacade = $currencyFacade;
         $this->basePriceCalculation = $basePriceCalculation;
+        $this->productGroupFacade = $productGroupFacade;
     }
 
     /**
@@ -145,6 +154,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['amount_multiplier'] = $product->getAmountMultiplier();
         $result['variants_aliases'] = $this->getVariantsAliases($product, $locale, $domainId);
         $result['variants_count'] = count($result['variants_aliases']);
+        $result['group_items'] = $this->productGroupFacade->getAllForElasticByMainProduct($product, $locale);
         if ($product->isMainVariant()) {
             $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
         }

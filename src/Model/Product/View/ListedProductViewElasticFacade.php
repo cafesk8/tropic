@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade;
@@ -119,5 +120,42 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         );
 
         return $this->createFromProducts($priceBombProducts);
+    }
+
+    /**
+     * @param array $productsArray
+     * @return \App\Model\Product\View\ListedProductView[]
+     */
+    protected function createFromArray(array $productsArray): array
+    {
+        $productIds = [];
+
+        foreach ($productsArray as $productArray) {
+            $productIds[] = $productArray['id'];
+
+            foreach ($productArray['group_items'] as $groupItem) {
+                $productIds[] = $groupItem['id'];
+            }
+        }
+
+        $imageViews = $this->imageViewFacade->getForEntityIds(Product::class, $productIds);
+
+        $listedProductViews = [];
+        foreach ($productsArray as $productArray) {
+            $productId = $productArray['id'];
+
+            foreach ($productArray['group_items'] as &$groupItem) {
+                $groupItem['image'] = $imageViews[$groupItem['id']];
+            }
+
+            $listedProductViews[$productId] = $this->listedProductViewFactory->createFromArray(
+                $productArray,
+                $imageViews[$productId],
+                $this->productActionViewFacade->getForArray($productArray),
+                $this->currentCustomerUser->getPricingGroup()
+            );
+        }
+
+        return $listedProductViews;
     }
 }

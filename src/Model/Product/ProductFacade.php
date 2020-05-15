@@ -8,6 +8,7 @@ use App\Component\Domain\DomainHelper;
 use App\Component\GoogleApi\GoogleClient;
 use App\Component\GoogleApi\Youtube\YoutubeView;
 use App\Component\Setting\Setting;
+use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
 use App\Model\Category\Exception\SaleCategoryNotFoundException;
@@ -70,6 +71,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
  * @method \App\Model\Product\Product[] getProductsWithFlag(\App\Model\Product\Flag\Flag $flag)
  * @method \App\Model\Product\Product[] getProductsWithUnit(\Shopsys\FrameworkBundle\Model\Product\Unit\Unit $unit)
  * @method \App\Model\Product\Product getSellableByUuid(string $uuid, int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
+ * @property \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
  */
 class ProductFacade extends BaseProductFacade
 {
@@ -151,7 +153,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
+     * @param \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository $productAccessoryRepository
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade $pluginCrudExtensionFacade
@@ -263,6 +265,7 @@ class ProductFacade extends BaseProductFacade
         /** @var \App\Model\Product\Product $product */
         $product = parent::create($productData);
         $this->scheduleRecalculationsForMainVariant($product);
+        $this->refreshMainProducts($product);
 
         $this->categoryFacade->refreshSaleCategoryVisibility();
 
@@ -292,6 +295,11 @@ class ProductFacade extends BaseProductFacade
         // @see https://github.com/doctrine/doctrine2/issues/4869
         $productCategoryDomains = $this->productCategoryDomainFactory->createMultiple($product, $productData->categoriesByDomainId);
         $product->setProductCategoryDomains($productCategoryDomains);
+
+        if ($productData->pohodaProductType === Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP) {
+            $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        }
+
         $this->em->flush($product);
         $this->productVariantTropicFacade->refreshVariantStatus($product, $productData->variantId);
 
@@ -300,8 +308,8 @@ class ProductFacade extends BaseProductFacade
         $this->refreshProductManualInputPrices($product, $productData->manualInputPricesByPricingGroupId);
         $this->refreshProductAccessories($product, $productData->accessories);
         $this->refreshProductGroups($product, $productData->groupItems);
-        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
+        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
 
         $this->imageFacade->manageImages($product, $productData->images);
         $this->friendlyUrlFacade->createFriendlyUrls('front_product_detail', $product->getId(), $product->getNames());
@@ -311,6 +319,11 @@ class ProductFacade extends BaseProductFacade
         $this->productPriceRecalculationScheduler->scheduleProductForImmediateRecalculation($product);
 
         $this->updateProductStoreStocks($productData, $product);
+        $this->updateMainProductsStoreStocks($product);
+
+        $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
+        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
+        $this->em->flush($product);
     }
 
     /**
@@ -321,6 +334,11 @@ class ProductFacade extends BaseProductFacade
     public function edit($productId, BaseProductData $productData): Product
     {
         $product = $this->getById($productId);
+
+        if ($productData->pohodaProductType === Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP) {
+            $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        }
+
         $originalMainVariant = $product->isVariant() ? $product->getMainVariant() : null;
 
         if ($product->isMainVariant() && !$this->productVariantTropicFacade->isMainVariant($productData->variantId)) {
@@ -333,6 +351,7 @@ class ProductFacade extends BaseProductFacade
         parent::edit($productId, $productData);
         $this->refreshProductGroups($product, $productData->groupItems);
         $this->updateProductStoreStocks($productData, $product);
+        $this->updateMainProductsStoreStocks($product);
 
         if ($product->isVariant()) {
             $this->productExportScheduler->scheduleRowIdForImmediateExport($product->getId());
@@ -344,6 +363,11 @@ class ProductFacade extends BaseProductFacade
         if ($originalMainVariant !== null) {
             $this->scheduleRecalculationsForMainVariant($originalMainVariant);
         }
+
+        $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
+        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
+        $this->em->flush($product);
+        $this->refreshMainProducts($product);
 
         $this->categoryFacade->refreshSaleCategoryVisibility();
 
@@ -359,7 +383,14 @@ class ProductFacade extends BaseProductFacade
         $product->clearStoreStocks();
         $this->em->flush();
 
-        foreach ($productData->stockQuantityByStoreId as $storeId => $stockQuantity) {
+        if ($product->isPohodaProductTypeGroup()) {
+            $internalStockId = $this->storeFacade->findByExternalNumber((string)PohodaProductExportRepository::POHODA_STOCK_TROPIC_ID)->getId();
+            $stockQuantities = [$internalStockId => $this->getTheLowestStockQuantityFromProductGroups($product)];
+        } else {
+            $stockQuantities = $productData->stockQuantityByStoreId;
+        }
+
+        foreach ($stockQuantities as $storeId => $stockQuantity) {
             $storeStock = $this->productStoreStockFactory->create(
                 $product,
                 $this->storeFacade->getById($storeId),
@@ -389,10 +420,6 @@ class ProductFacade extends BaseProductFacade
         }
 
         $product->setStockQuantity($totalStockQuantity);
-        $this->em->flush($product);
-
-        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
-        $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
         $this->em->flush($product);
     }
 
@@ -909,6 +936,7 @@ class ProductFacade extends BaseProductFacade
             if (isset($groupItemArray['item'], $groupItemArray['item_count'])) {
                 $groupItem = $this->productGroupFactory->create($product, $groupItemArray['item'], $groupItemArray['item_count']);
                 $this->em->persist($groupItem);
+                $product->addProductGroup($groupItem);
                 $toFlush[] = $groupItem;
             }
         }
@@ -994,6 +1022,49 @@ class ProductFacade extends BaseProductFacade
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return int
+     */
+    private function getTheLowestStockQuantityFromProductGroups(Product $product): int
+    {
+        $bigStockQuantityPlaceholder = 9999999;
+        $lowestStockQuantity = $bigStockQuantityPlaceholder;
+        $groupStockQuantities = [];
+
+        foreach ($product->getProductGroups() as $productGroup) {
+            $groupStockQuantities[] = $this->productGroupFacade->getStockQuantity($productGroup);
+        }
+
+        foreach ($groupStockQuantities as $groupStockQuantity) {
+            $lowestStockQuantity = $lowestStockQuantity > $groupStockQuantity ? $groupStockQuantity : $lowestStockQuantity;
+        }
+
+        return $lowestStockQuantity === $bigStockQuantityPlaceholder ? 0 : $lowestStockQuantity;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     */
+    private function updateMainProductsStoreStocks(Product $product): void
+    {
+        $productGroups = $this->productGroupFacade->getAllByItem($product);
+
+        foreach ($productGroups as $productGroup) {
+            $this->updateProductStoreStocks($this->productDataFactory->createFromProduct($productGroup->getMainProduct()), $productGroup->getMainProduct());
+        }
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     */
+    private function refreshMainProducts(Product $product): void
+    {
+        foreach ($this->productGroupFacade->getAllByItem($product) as $productGroup) {
+            $this->edit($productGroup->getMainProduct()->getId(), $this->productDataFactory->createFromProduct($productGroup->getMainProduct()));
         }
     }
 }

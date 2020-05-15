@@ -24,10 +24,22 @@
         bottom: auto;
     }
 
+    &--right-side {
+        left: auto;
+        right: 0;
+    }
+
     &--product-list, &--slider {
         position: static;
         overflow: hidden;
         height: @in-flag-item-height + @in-flag-item-gap;
+    }
+
+    &--product-set {
+        height: @in-flag-item-gap + @in-flag-item-height;
+        overflow: hidden;
+        position: static;
+        justify-content: flex-start;
     }
 
     &__item {
@@ -51,6 +63,12 @@
             font-size: @font-size-small;
             font-weight: 700;
             border-radius: @radius-medium;
+            margin-right: auto;
+        }
+
+        .in-flag--right-side & {
+            margin-left: auto;
+            margin-right: 0;
         }
     }
 }

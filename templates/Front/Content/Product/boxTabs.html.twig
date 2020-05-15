@@ -109,18 +109,20 @@
                                             </span>
                                         </span>
                                     </li>
-                                    <li class="list-params__item">
-                                        <span class="list-params__item__text">
-                                            <span class="list-params__item__text__name">
-                                                {{ 'Výrobce'|trans }}
+                                    {% if product.brand %}
+                                        <li class="list-params__item">
+                                            <span class="list-params__item__text">
+                                                <span class="list-params__item__text__name">
+                                                    {{ 'Výrobce'|trans }}
+                                                </span>
+                                                <span class="list-params__item__text__value">
+                                                    <a href="{{ url('front_brand_detail', { id: product.brand.id }) }}">
+                                                        <span itemprop="brand">{{ product.brand.name }}</span>
+                                                    </a>
+                                                </span>
                                             </span>
-                                            <span class="list-params__item__text__value">
-                                                <a href="{{ url('front_brand_detail', { id: product.brand.id }) }}">
-                                                    <span itemprop="brand">{{ product.brand.name }}</span>
-                                                </a>
-                                            </span>
-                                        </span>
-                                    </li>
+                                        </li>
+                                    {% endif %}
                                     <li class="list-params__item">
                                         <span class="list-params__item__text">
                                             <span class="list-params__item__text__name">

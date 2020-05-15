@@ -6,6 +6,7 @@ namespace App\Model\Product;
 
 use App\Component\Domain\DomainHelper;
 use App\Model\Product\Exception\ProductIsNotMainVariantException;
+use App\Model\Product\Group\ProductGroup;
 use App\Model\Product\Mall\ProductMallExportMapper;
 use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
@@ -185,6 +186,13 @@ class Product extends BaseProduct
     private $eurCalculatedAutomatically;
 
     /**
+     * @var \App\Model\Product\Group\ProductGroup[]|\Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Model\Product\Group\ProductGroup", mappedBy="mainProduct")
+     */
+    private $productGroups;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -247,6 +255,7 @@ class Product extends BaseProduct
         $this->updatedByPohodaAt = $productData->updatedByPohodaAt;
         $this->pohodaProductType = $productData->pohodaProductType;
         $this->eurCalculatedAutomatically = $productData->eurCalculatedAutomatically;
+        $this->productGroups = new ArrayCollection();
     }
 
     /**
@@ -827,6 +836,14 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param \App\Model\Product\Group\ProductGroup $groupItem
+     */
+    public function addProductGroup(ProductGroup $groupItem)
+    {
+        $this->productGroups[] = $groupItem;
+    }
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      */
     protected function createDomains(BaseProductData $productData): void
@@ -876,5 +893,13 @@ class Product extends BaseProduct
     public function isEurCalculatedAutomatically(): bool
     {
         return $this->eurCalculatedAutomatically;
+    }
+
+    /**
+     * @return \App\Model\Product\Group\ProductGroup[]
+     */
+    public function getProductGroups(): array
+    {
+        return $this->productGroups->toArray();
     }
 }

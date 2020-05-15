@@ -15,7 +15,7 @@ class ProductGroup
 {
     /**
      * @var \App\Model\Product\Product
-     * @ORM\ManyToOne(targetEntity="App\Model\Product\Product")
+     * @ORM\ManyToOne(targetEntity="App\Model\Product\Product", inversedBy="productGroups")
      * @ORM\JoinColumn(nullable=false, name="main_product_id", referencedColumnName="id", onDelete="CASCADE")
      * @ORM\Id
      */

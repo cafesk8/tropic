@@ -2,8 +2,8 @@
 @box-detail-info-width-small: 420px;
 @box-detail-info-gap: 80px;
 @box-detail-info-gap-small: 40px;
-@box-detail-content-width: calc(~"100% - (@{box-detail-info-width} + @{box-detail-info-gap})");
-@box-detail-content-width-small: calc(~"100% - (@{box-detail-info-width-small} + @{box-detail-info-gap-small})");
+@box-detail-left-width: calc(~"100% - (@{box-detail-info-width} + @{box-detail-info-gap})");
+@box-detail-left-width-small: calc(~"100% - (@{box-detail-info-width-small} + @{box-detail-info-gap-small})");
 
 @box-detail-image-main-bottom-gap: 20px;
 @box-detail-image-min-height: 250px;
@@ -21,6 +21,14 @@
             flex-direction: row;
             margin-bottom: 70px;
         }
+
+        &--small-gap {
+            margin-bottom: 20px;
+
+            @media @query-lg {
+                margin-bottom: 20px;
+            }
+        }
     }
 
     &__image {
@@ -30,12 +38,12 @@
         margin-bottom: 40px;
 
         @media @query-lg {
-            width: @box-detail-content-width-small;
+            width: @box-detail-left-width-small;
             margin-bottom: 0;
         }
 
         @media @query-xl {
-            width: @box-detail-content-width;
+            width: @box-detail-left-width;
         }
 
         &__main {
@@ -44,6 +52,43 @@
             text-align: center;
 
             font-size: 0;
+        }
+    }
+
+    &__description {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        margin-bottom: 40px;
+
+        @media @query-lg {
+            width: @box-detail-left-width-small;
+            margin-bottom: 0;
+        }
+
+        @media @query-xl {
+            width: @box-detail-left-width;
+        }
+
+        &__title {
+            line-height: 30px;
+            margin-bottom: 0;
+
+            font-size: 21px;
+        }
+
+        &__code {
+            line-height: 30px;
+            margin: 0 0 20px;
+
+            font-size: @font-size-big;
+        }
+
+        &__subtitle {
+            line-height: 30px;
+            margin: 0;
+
+            font-size: @font-size-big;
         }
     }
 

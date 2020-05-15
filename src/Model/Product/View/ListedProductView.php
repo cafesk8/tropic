@@ -33,6 +33,11 @@ class ListedProductView extends BaseListedProductView
     private $variantsCount;
 
     /**
+     * @var \App\Model\Product\View\ListedGroupItem[]
+     */
+    private $groupItems;
+
+    /**
      * @param int $id
      * @param string $name
      * @param string|null $shortDescription
@@ -44,6 +49,7 @@ class ListedProductView extends BaseListedProductView
      * @param string[][] $gifts
      * @param int $stockQuantity
      * @param int $variantsCount
+     * @param array[] $groupItems
      */
     public function __construct(
         int $id,
@@ -56,13 +62,17 @@ class ListedProductView extends BaseListedProductView
         ?ImageView $image,
         array $gifts,
         int $stockQuantity,
-        int $variantsCount
+        int $variantsCount,
+        array $groupItems
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
         $this->stockQuantity = $stockQuantity;
         $this->gifts = $gifts;
         $this->variantsCount = $variantsCount;
+        $this->groupItems = array_map(function (array $groupItem) {
+            return new ListedGroupItem($groupItem['name'], $groupItem['amount'], $groupItem['image']);
+        }, $groupItems);
     }
 
     /**
@@ -107,5 +117,13 @@ class ListedProductView extends BaseListedProductView
     public function getVariantsCount(): int
     {
         return $this->variantsCount;
+    }
+
+    /**
+     * @return \App\Model\Product\View\ListedGroupItem[]
+     */
+    public function getGroupItems(): array
+    {
+        return $this->groupItems;
     }
 }
