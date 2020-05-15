@@ -25,7 +25,7 @@ class HiddenMassAction implements MassEditActionInterface
     private $productVisibilityFacade;
 
     /**
-     * @var \App\Model\Product\ProductHiddenRecalculator
+     * @var \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator
      */
     private $productHiddenRecalculator;
 
@@ -37,7 +37,7 @@ class HiddenMassAction implements MassEditActionInterface
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
-     * @param \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
      */
     public function __construct(
         EntityManagerInterface $entityManager,

@@ -8,9 +8,15 @@ use App\Model\Product\Group\ProductGroup;
 use App\Model\Product\Group\ProductGroupFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator as BaseProductHiddenRecalculator;
+use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator as BaseProductSellingDeniedRecalculator;
 
-class ProductHiddenRecalculator extends BaseProductHiddenRecalculator
+/**
+ * @method calculateSellingDeniedForProduct(\App\Model\Product\Product $product)
+ * @method calculateIndependent(\App\Model\Product\Product[] $products)
+ * @method propagateMainVariantSellingDeniedToVariants(\App\Model\Product\Product[] $products)
+ * @method propagateVariantsSellingDeniedToMainVariant(\App\Model\Product\Product[] $products)
+ */
+class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalculator
 {
     /**
      * @var \App\Model\Product\Group\ProductGroupFacade
@@ -28,28 +34,44 @@ class ProductHiddenRecalculator extends BaseProductHiddenRecalculator
     }
 
     /**
-     * @param \App\Model\Product\Product $product
+     * @inheritDoc
      */
-    public function calculateHiddenForProduct(Product $product)
+    protected function calculate(array $products = [])
     {
-        parent::calculateHiddenForProduct($product);
-
-        foreach ($this->productGroupFacade->getAllByItem($product) as $productGroup) {
-            parent::calculateHiddenForProduct($productGroup->getMainProduct());
-        }
+        parent::calculate($products);
+        $this->propagateSellingDeniedFromGroupItems($products);
     }
 
     /**
-     * @param \App\Model\Product\Product|null $product
+     * @param \App\Model\Product\Product $product
+     * @return \App\Model\Product\Product[]
      */
-    protected function executeQuery(?Product $product = null)
+    protected function getProductsForCalculations(Product $product)
     {
-        if ($product === null || !$product->isPohodaProductTypeGroup()) {
-            parent::executeQuery($product);
-        } else {
+        /** @var \App\Model\Product\Product[] $products */
+        $products = parent::getProductsForCalculations($product);
+        $productGroups = $this->productGroupFacade->getAllByItem($product);
+
+        foreach ($productGroups as $productGroup) {
+            $products[] = $productGroup->getMainProduct();
+        }
+
+        return $products;
+    }
+
+    /**
+     * @param \App\Model\Product\Product[] $products
+     */
+    private function propagateSellingDeniedFromGroupItems(array $products)
+    {
+        foreach ($products as $product) {
             $productIds = array_map(function (ProductGroup $productGroup) {
                 return $productGroup->getItem()->getId();
             }, $product->getProductGroups());
+
+            if (count($productIds) < 1) {
+                continue;
+            }
 
             $results = $this->em->createQueryBuilder()
                 ->select('p.id')
@@ -61,7 +83,7 @@ class ProductHiddenRecalculator extends BaseProductHiddenRecalculator
 
             $qb = $this->em->createQueryBuilder()
                 ->update(Product::class, 'p')
-                ->set('p.calculatedHidden', count($results) > 0 ? 'TRUE' : 'FALSE')
+                ->set('p.sellingDenied', count($results) > 0 ? 'TRUE' : 'FALSE')
                 ->where('p = :product')
                 ->setParameter('product', $product);
 

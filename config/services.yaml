@@ -614,4 +614,4 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory: '@App\Model\Product\Filter\ProductFilterConfigFactory'
 
-    Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator: '@App\Model\Product\ProductHiddenRecalculator'
+    Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator: '@App\Model\Product\ProductSellingDeniedRecalculator'
