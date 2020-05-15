@@ -35,6 +35,8 @@ class DiscountExclusionController extends AdminBaseController
     {
         $form = $this->createForm(DiscountExclusionFormType::class, [
             'registrationDiscountExclusion' => $this->discountExclusionFacade->getRegistrationDiscountExclusionTexts(),
+            'promoDiscountExclusion' => $this->discountExclusionFacade->getPromoDiscountExclusionTexts(),
+            'allDiscountExclusion' => $this->discountExclusionFacade->getAllDiscountExclusionTexts(),
         ]);
         $form->handleRequest($request);
 
@@ -44,6 +46,14 @@ class DiscountExclusionController extends AdminBaseController
 
                 foreach ($formData['registrationDiscountExclusion'] as $domainId => $discountExclusionText) {
                     $this->discountExclusionFacade->setRegistrationDiscountExclusionText($discountExclusionText, $domainId);
+                }
+
+                foreach ($formData['promoDiscountExclusion'] as $domainId => $discountExclusionText) {
+                    $this->discountExclusionFacade->setPromoDiscountExclusionText($discountExclusionText, $domainId);
+                }
+
+                foreach ($formData['allDiscountExclusion'] as $domainId => $discountExclusionText) {
+                    $this->discountExclusionFacade->setAllDiscountExclusionText($discountExclusionText, $domainId);
                 }
 
                 $this->addSuccessFlashTwig(t('Změny byly úspěšně uloženy'));

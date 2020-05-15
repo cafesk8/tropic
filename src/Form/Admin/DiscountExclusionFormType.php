@@ -41,7 +41,19 @@ class DiscountExclusionFormType extends AbstractType
         $builder
             ->add('registrationDiscountExclusion', MultidomainType::class, [
                 'entry_type' => TextareaType::class,
-                'label' => t('Informační text k produktu, u kterého není poskytována sleva za registraci'),
+                'label' => t('Informační text pro vyjmutí ze slev za registraci'),
+                'required' => false,
+                'options_by_domain_id' => $optionsByDomainId,
+            ])
+            ->add('promoDiscountExclusion', MultidomainType::class, [
+                'entry_type' => TextareaType::class,
+                'label' => t('Informační text pro vyjmutí ze slev za slevové kupóny'),
+                'required' => false,
+                'options_by_domain_id' => $optionsByDomainId,
+            ])
+            ->add('allDiscountExclusion', MultidomainType::class, [
+                'entry_type' => TextareaType::class,
+                'label' => t('Informační text pro vyjmutí ze všech slev'),
                 'required' => false,
                 'options_by_domain_id' => $optionsByDomainId,
             ])

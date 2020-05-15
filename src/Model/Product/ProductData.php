@@ -89,6 +89,11 @@ class ProductData extends BaseProductData
     public $registrationDiscountDisabled;
 
     /**
+     * @var bool
+     */
+    public $promoDiscountDisabled;
+
+    /**
      * @var \DateTime|null
      */
     public $updatedByPohodaAt;
@@ -120,6 +125,7 @@ class ProductData extends BaseProductData
         $this->youtubeVideoIds = [];
         $this->giftCertificate = false;
         $this->registrationDiscountDisabled = false;
+        $this->promoDiscountDisabled = false;
         $this->groupItems = [];
         $this->generateToMergadoXmlFeeds = [];
         $this->eurCalculatedAutomatically = true;

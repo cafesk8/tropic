@@ -157,6 +157,13 @@ class Product extends BaseProduct
     private $registrationDiscountDisabled;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $promoDiscountDisabled;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
@@ -236,6 +243,7 @@ class Product extends BaseProduct
             $this->variantId = null;
         }
         $this->registrationDiscountDisabled = $productData->registrationDiscountDisabled;
+        $this->promoDiscountDisabled = $productData->promoDiscountDisabled;
         $this->updatedByPohodaAt = $productData->updatedByPohodaAt;
         $this->pohodaProductType = $productData->pohodaProductType;
         $this->eurCalculatedAutomatically = $productData->eurCalculatedAutomatically;
@@ -776,6 +784,14 @@ class Product extends BaseProduct
     public function isRegistrationDiscountDisabled(): bool
     {
         return $this->registrationDiscountDisabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPromoDiscountDisabled(): bool
+    {
+        return $this->promoDiscountDisabled;
     }
 
     /**
