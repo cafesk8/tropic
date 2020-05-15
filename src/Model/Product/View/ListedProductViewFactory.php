@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
+use App\Model\Product\Flag\Flag;
 use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\ProductFacade;
@@ -12,7 +13,7 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice as BaseProductPrice;
-use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\ReadModelBundle\Image\ImageView;
 use Shopsys\ReadModelBundle\Product\Action\ProductActionView as BaseProductActionView;
@@ -97,7 +98,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @return \App\Model\Product\View\ListedProductView
      */
     public function createFromProduct(
-        Product $product,
+        BaseProduct $product,
         ?ImageView $imageView,
         BaseProductActionView $productActionView
     ): BaseListedProductView {
@@ -191,5 +192,16 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
         $priceWithVat = Money::create((string)$priceArray['price_with_vat']);
 
         return new Price($priceWithoutVat, $priceWithVat);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return int[]
+     */
+    protected function getFlagIdsForProduct(BaseProduct $product): array
+    {
+        return array_map(function (Flag $flag) {
+            return $flag->getId();
+        }, $product->getActiveFlags());
     }
 }

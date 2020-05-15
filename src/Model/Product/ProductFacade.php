@@ -997,8 +997,8 @@ class ProductFacade extends BaseProductFacade
      */
     private function haveSaleFlag(ProductData $productData): bool
     {
-        foreach ($productData->flags as $flag) {
-            if ($flag->isSale()) {
+        foreach ($productData->flags as $productFlag) {
+            if ($productFlag->getFlag()->isSale()) {
                 return true;
             }
         }
@@ -1020,7 +1020,7 @@ class ProductFacade extends BaseProductFacade
      */
     private function hasVariantSaleFlag(Product $variant): bool
     {
-        foreach ($variant->getFlags() as $flag) {
+        foreach ($variant->getActiveFlags() as $flag) {
             if ($flag->isSale()) {
                 return true;
             }

@@ -5894,9 +5894,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      */
     protected function setFlags(ProductData $productData, array $flagReferences): void
     {
-        foreach ($flagReferences as $flagReference) {
-            $productData->flags[] = $this->persistentReferenceFacade->getReference($flagReference);
-        }
+//        foreach ($flagReferences as $flagReference) {
+//            $productData->flags[] = $this->persistentReferenceFacade->getReference($flagReference);
+//        }
     }
 
     /**

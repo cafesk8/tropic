@@ -1,0 +1,58 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Model\Product\Flag;
+
+use Doctrine\ORM\EntityManagerInterface;
+
+class ProductFlagFacade
+{
+    /**
+     * @var \Doctrine\ORM\EntityManagerInterface
+     */
+    private $em;
+
+    /**
+     * @var \App\Model\Product\Flag\ProductFlagFactory
+     */
+    private $productFlagFactory;
+
+    /**
+     * @var \App\Model\Product\Flag\ProductFlagRepository
+     */
+    private $productFlagRepository;
+
+    /**
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \App\Model\Product\Flag\ProductFlagFactory $productFlagFactory
+     * @param \App\Model\Product\Flag\ProductFlagRepository $productFlagRepository
+     */
+    public function __construct(EntityManagerInterface $em, ProductFlagFactory $productFlagFactory, ProductFlagRepository $productFlagRepository)
+    {
+        $this->em = $em;
+        $this->productFlagFactory = $productFlagFactory;
+        $this->productFlagRepository = $productFlagRepository;
+    }
+
+    /**
+     * @param \App\Model\Product\Flag\ProductFlagData $productFlagData
+     * @return \App\Model\Product\Flag\ProductFlag
+     */
+    public function create(ProductFlagData $productFlagData): ProductFlag
+    {
+        $productFlag = $this->productFlagFactory->create($productFlagData);
+        $this->em->persist($productFlag);
+        $this->em->flush();
+
+        return $productFlag;
+    }
+
+    /**
+     * @param \App\Model\Product\Flag\Flag $flag
+     */
+    public function deleteByFlag(Flag $flag): void
+    {
+        $this->productFlagRepository->deleteByFlag($flag);
+    }
+}

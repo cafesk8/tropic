@@ -643,3 +643,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Unit\UnitGridFactory: '@App\Model\Product\Unit\UnitGridFactory'
 
     Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade: '@App\Component\Doctrine\SqlLoggerFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\FlagFilterChoiceRepository: '@App\Model\Product\Filter\FlagFilterChoiceRepository'

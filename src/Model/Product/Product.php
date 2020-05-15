@@ -6,6 +6,7 @@ namespace App\Model\Product;
 
 use App\Component\Domain\DomainHelper;
 use App\Model\Product\Exception\ProductIsNotMainVariantException;
+use App\Model\Product\Flag\ProductFlag;
 use App\Model\Product\Group\ProductGroup;
 use App\Model\Product\Mall\ProductMallExportMapper;
 use App\Model\Product\StoreStock\ProductStoreStock;
@@ -73,11 +74,10 @@ class Product extends BaseProduct
     private $pohodaId;
 
     /**
-     * @var \App\Model\Product\Flag\Flag[]|\Doctrine\Common\Collections\Collection
+     * @var \App\Model\Product\Flag\ProductFlag[]|\Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Model\Product\Flag\Flag")
+     * @ORM\OneToMany(targetEntity="App\Model\Product\Flag\ProductFlag", mappedBy="product", cascade={"remove"})
      * @ORM\JoinTable(name="product_flags")
-     * @ORM\OrderBy({"position" = "ASC"})
      */
     protected $flags;
 
@@ -393,12 +393,48 @@ class Product extends BaseProduct
     }
 
     /**
+     * @return \App\Model\Product\Flag\ProductFlag[]
+     */
+    public function getProductFlags(): array
+    {
+        $productFlags = $this->flags->toArray();
+        usort($productFlags, function (ProductFlag $productFlag1, ProductFlag $productFlag2) {
+            return $productFlag1->getFlag()->getPosition() - $productFlag2->getFlag()->getPosition();
+        });
+
+        return $productFlags;
+    }
+
+    /**
+     * @return \App\Model\Product\Flag\ProductFlag[]
+     */
+    public function getActiveProductFlags(): array
+    {
+        return array_filter($this->getProductFlags(), function (ProductFlag $productFlag) {
+            return $productFlag->isActive();
+        });
+    }
+
+    /**
      * @param int|null $limit
      * @return \App\Model\Product\Flag\Flag[]
      */
     public function getFlags(?int $limit = null)
     {
-        return $this->flags->slice(0, $limit);
+        return array_map(function (ProductFlag $productFlag) {
+            return $productFlag->getFlag();
+        }, array_slice($this->getProductFlags(), 0, $limit));
+    }
+
+    /**
+     * @param int|null $limit
+     * @return \App\Model\Product\Flag\Flag[]
+     */
+    public function getActiveFlags(?int $limit = null)
+    {
+        return array_map(function (ProductFlag $productFlag) {
+            return $productFlag->getFlag();
+        }, array_slice($this->getActiveProductFlags(), 0, $limit));
     }
 
     /**
@@ -408,30 +444,11 @@ class Product extends BaseProduct
     public function getFlagsIndexedByPosition(int $limit): array
     {
         $flagsIndexedByPosition = [];
-        foreach ($this->getFlags($limit) as $flag) {
+        foreach ($this->getActiveFlags($limit) as $flag) {
             $flagsIndexedByPosition[$flag->getPosition()] = $flag;
         }
 
         return $flagsIndexedByPosition;
-    }
-
-    /**
-     * @param int $domainId
-     * @return \App\Model\Category\Category[]
-     */
-    public function getListableProductCategoriesByDomainId(int $domainId): array
-    {
-        $productCategories = [];
-
-        foreach ($this->getProductCategoryDomainsByDomainIdIndexedByCategoryId($domainId) as $categoryDomain) {
-            /** @var \App\Model\Category\Category $category */
-            $category = $categoryDomain->getCategory();
-            if ($category->isVisible($domainId) && $category->isListable()) {
-                $productCategories[$category->getId()] = $category;
-            }
-        }
-
-        return $productCategories;
     }
 
     /**

@@ -14,7 +14,6 @@ use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Currency\Currency;
 use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
-use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductVariantTropicFacade;
@@ -31,7 +30,6 @@ use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\WarningMessageType;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -113,11 +111,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $dateTimeFormatterExtension;
 
     /**
-     * @var \App\Model\Product\Flag\FlagFacade
-     */
-    private $flagFacade;
-
-    /**
      * @var \App\Component\Form\FormBuilderHelper
      */
     private $formBuilderHelper;
@@ -141,7 +134,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \App\Twig\ProductExtension $productExtension
      * @param \App\Component\GoogleApi\GoogleClient $googleClient
      * @param \App\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
-     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
      * @param \App\Component\FlashMessage\FlashMessageSender $flashMessageSender
@@ -154,7 +146,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ProductExtension $productExtension,
         GoogleClient $googleClient,
         DateTimeFormatterExtension $dateTimeFormatterExtension,
-        FlagFacade $flagFacade,
         FormBuilderHelper $formBuilderHelper,
         ProductVariantTropicFacade $productVariantTropicFacade,
         FlashMessageSender $flashMessageSender,
@@ -166,7 +157,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
         $this->productExtension = $productExtension;
         $this->googleClient = $googleClient;
-        $this->flagFacade = $flagFacade;
         $this->formBuilderHelper = $formBuilderHelper;
         $this->productVariantTropicFacade = $productVariantTropicFacade;
         $this->flashMessageSender = $flashMessageSender;
@@ -195,7 +185,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('variantId', TextType::class, [
                 'required' => false,
                 'label' => t('ID modifikace'),
-                'position' => ['before' => 'flags'],
                 'constraints' => [
                     new Callback([$this, 'validateVariantId']),
                 ],
@@ -228,26 +217,14 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 ]);
         }
 
-        $defaultFlagForFreeTransportAndPayment = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
-        $saleFlags = $this->flagFacade->getSaleFlags();
-        $builderBasicInformationGroup->add('flags', ChoiceType::class, [
-            'choices' => $this->flagFacade->getAll(),
-            'choice_label' => 'name',
-            'choice_value' => 'id',
-            'multiple' => true,
-            'expanded' => true,
-            'label' => t('Flags'),
-            'choice_attr' => function ($flag) use ($defaultFlagForFreeTransportAndPayment, $saleFlags) {
-                if ($flag === $defaultFlagForFreeTransportAndPayment || in_array($flag, $saleFlags, true)) {
-                    return [
-                        'disabled' => true,
-                    ];
-                }
-
-                return [];
-            },
-            'required' => false,
+        $productFlagsGroup = $builder->create('productFlags', GroupType::class, [
+            'label' => t('Příznaky'),
+            'position' => ['after' => 'basicInformationGroup'],
         ]);
+        $productFlagsGroup->add('productFlagsByFlagId', ProductFlagType::class);
+        $builder->add($productFlagsGroup);
+
+        $builderBasicInformationGroup->remove('flags');
 
         $builderStoreStockGroup = $builder->create('storeStock', GroupType::class, [
             'disabled' => $product !== null && $product->isPohodaProductTypeGroup(),
