@@ -67,13 +67,20 @@ class Cart extends BaseCart
 
         foreach ($productGiftsInCart as $productGiftInCart) {
             foreach ($productGiftInCart as $productGiftVariantInCart) {
+                $itemsByProductId = $this->getItemsByProductId($productGiftVariantInCart->getProduct()->getId());
+                $quantity = 0;
+                foreach ($itemsByProductId as $item) {
+                    $quantity += $item->getQuantity();
+                }
+                $cartItem = reset($itemsByProductId);
+
                 $cartGift = $cartItemFactory->create(
                     $this,
                     $productGiftVariantInCart->getGift(),
-                    $productGiftVariantInCart->getQuantity(),
+                    $quantity,
                     $productGiftVariantInCart->getPrice(),
                     $productGiftVariantInCart->getProduct(),
-                    $this->getItemByProductId($productGiftVariantInCart->getProduct()->getId())
+                    $cartItem
                 );
 
                 $this->addItem($cartGift);
@@ -86,6 +93,8 @@ class Cart extends BaseCart
     }
 
     /**
+     * When a product is split into sale and regular item, both the items are returned
+     *
      * @param int $productId
      * @return \App\Model\Cart\Item\CartItem[]
      */
