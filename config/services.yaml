@@ -621,3 +621,9 @@ services:
     Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher: '@App\Model\Cart\CartWatcher\CartWatcher'
 
     Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade: '@App\Model\Order\Item\OrderProductFacade'
+
+    App\Model\Cart\CartMigrationFacade:
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+    Shopsys\FrameworkBundle\Model\Cart\CartMigrationFacade: '@App\Model\Cart\CartMigrationFacade'
