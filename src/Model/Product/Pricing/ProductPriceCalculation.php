@@ -174,16 +174,12 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $defaultCurrency
         );
 
-        if ($product->isGiftCertificate()) {
-            $basePrice = $defaultPrice;
-        } else {
-            $basePrice = $this->calculateBasePriceRoundedByCurrency(
-                $inputPrice,
-                $this->pricingSetting->getInputPriceType(),
-                $product->getVatForDomain($domainId),
-                $defaultCurrency
-            );
-        }
+        $basePrice = $this->calculateBasePriceRoundedByCurrency(
+            $inputPrice,
+            $this->pricingSetting->getInputPriceType(),
+            $product->getVatForDomain($domainId),
+            $defaultCurrency
+        );
 
         $standardPrice = null;
 

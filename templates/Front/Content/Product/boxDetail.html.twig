@@ -88,15 +88,6 @@
                         <div class="box-detail__add-basket">
                             <div class="box-detail-add">
                                 <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
-                                    {% if product.isGiftCertificate %}
-                                        <div class="box-detail-add__message">
-                                            <div class="box-detail-add__message__icon">
-                                                {% include 'Front/Svg/info.svg' %}
-                                            </div>
-                                            {{ 'Na tento produkt se nevztahují slevové kupóny' }}
-                                        </div>
-                                    {% endif %}
-
                                     {% if not product.isMainVariant %}
                                         {{ discountExclusion.discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
                                         {{ self.productPrice(product) }}
@@ -175,11 +166,7 @@
                                                     {% endfor %}
                                                 </td>
                                                 <td>
-                                                    {% if variant.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
-                                                        <div class="in-message--info">
-                                                            {{ registrationDiscountExclusionText }}
-                                                        </div>
-                                                    {% endif %}
+                                                    {{ discountExclusion.discountExclusionNotice(variant, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
                                                 </td>
                                                 <td class="table-variants__cell table-variants__cell--action">
                                                     {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'small'})) }}

@@ -145,10 +145,6 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
                 $productPrice = $quantifiedItemsPrice->getUnitPrice();
                 $product = $this->productFacade->getById($productPrice->getProductId());
 
-                if ($product->isGiftCertificate()) {
-                    return false;
-                }
-
                 if ($product->isPromoDiscountDisabled() && !$promoCode->isTypeGiftCertificate()) {
                     return false;
                 }
