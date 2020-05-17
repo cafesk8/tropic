@@ -10,6 +10,8 @@ use Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade as BaseOrderProd
 /**
  * @method runRecalculationsAfterStockQuantityChange(\App\Model\Order\Item\OrderItem[] $orderProducts)
  * @method \App\Model\Order\Item\OrderItem[] getOrderProductsUsingStockFromOrderProducts(\App\Model\Order\Item\OrderItem[] $orderProducts)
+ * @property \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator, \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator, \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade, \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade)
  */
 class OrderProductFacade extends BaseOrderProductFacade
 {
@@ -39,7 +41,6 @@ class OrderProductFacade extends BaseOrderProductFacade
                 if ($product->getRealSaleStocksQuantity() <= 0) {
                     $product->markForRefresh();
                 }
-
             }
             $this->em->flush();
             $this->runRecalculationsAfterStockQuantityChange($orderProducts);

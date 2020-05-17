@@ -205,6 +205,7 @@ class Product extends BaseProduct
      * @ORM\Column(type="integer", nullable=true)
      */
     private $realStockQuantity;
+
     /**
      * @var bool
      *
