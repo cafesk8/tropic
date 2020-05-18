@@ -20,6 +20,10 @@
             <div class="box-detail-add__action__availability">
                 {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product } %}
             </div>
+        {% elseif displayVariantSelectButton is same as (true) %}
+            <div class="in-availability">
+                {{ 'Dostupnost dle varianty'|trans }}
+            </div>
         {% endif %}
     </div>
 
@@ -29,8 +33,15 @@
     {% endif %}
 
     <div class="box-detail-add__buttons">
-        {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__buttons__item btn btn--success btn--large', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
-        <button class="box-detail-add__buttons__item btn btn--large js-not-implemented-yet" {% if disabled %}disabled="disabled"{% endif %} data-hard-disabled="{{ hardDisabled }}">{{ 'Koupit na splátky'|trans }}</button>
+        {% if not product.isMainVariant %}
+            {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__buttons__item btn btn--success btn--large', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
+            <button class="box-detail-add__buttons__item btn btn--large js-not-implemented-yet" {% if disabled %}disabled="disabled"{% endif %} data-hard-disabled="{{ hardDisabled }}">{{ 'Koupit na splátky'|trans }}</button>
+        {% elseif displayVariantSelectButton is same as (true) %}
+            <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="btn btn--success list-article-product__item__button-add in-add-to-cart__button--large">
+                {{- 'Choose variant'|trans -}}
+            </a>
+            {% do form.add.setRendered %}
+        {% endif %}
     </div>
 
     <div class="box-detail-add__payments js-not-implemented-yet">

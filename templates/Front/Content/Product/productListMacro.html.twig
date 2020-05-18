@@ -342,24 +342,9 @@
                                 </div>
                             </div>
                         {% endif %}
-
-                        {% if product.isMainVariant %}
-                            <div class="in-availability">
-                                {{ 'Dostupnost dle varianty'|trans }}
-                            </div>
-
-                            <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="btn btn--success {{ listCssClass }}__item__button-add in-add-to-cart__button--small">
-                                {{- 'Choose variant'|trans -}}
-                            </a>
-                        {% else %}
-                            <div class="in-availability">
-                                {{ availability.productAvailability(product) }}
-                            </div>
-
-                            <div class="{{ listCssClass }}__item__add-button">
-                                {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, showAmountInput: false, type: 'large'})) }}
-                            </div>
-                        {% endif %}
+                        <div class="{{ listCssClass }}__item__add-button">
+                            {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, showAmountInput: false, type: 'large', displayVariantSelectButton: true})) }}
+                        </div>
                     </div>
                 </div>
             </div>

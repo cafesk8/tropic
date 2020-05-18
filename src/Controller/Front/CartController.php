@@ -309,9 +309,10 @@ class CartController extends FrontBaseController
      * @param string $type
      * @param bool $disabled
      * @param bool $showAmountInput
+     * @param bool $displayVariantSelectButton
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addProductFormAction(Product $product, $type = 'normal', $disabled = false, bool $showAmountInput = true)
+    public function addProductFormAction(Product $product, $type = 'normal', $disabled = false, bool $showAmountInput = true, $displayVariantSelectButton = false)
     {
         $form = $this->createForm(AddProductFormType::class, ['productId' => $product->getId()], [
             'action' => $this->generateUrl('front_cart_add_product'),
@@ -330,6 +331,7 @@ class CartController extends FrontBaseController
             'disabled' => $disabled,
             'hardDisabled' => $hardDisabled === true ? '1' : '0',
             'showAmountInput' => $showAmountInput,
+            'displayVariantSelectButton' => $displayVariantSelectButton,
         ]);
     }
 
