@@ -252,10 +252,11 @@ class CartFacade extends BaseCartFacade
                     if ($saleQuantityToAdd > $remainingQuantityToAdd) {
                         $saleQuantityToAdd = $remainingQuantityToAdd;
                     }
-                    $cartItem->changeQuantity($currentSaleQuantityInCart + $saleQuantityToAdd);
-                    $remainingQuantityToAdd -= $saleQuantityToAdd;
-                    $availableSaleStockQuantity -= $saleQuantityToAdd;
-                    $addProductResults[] = new AddProductResult($cartItem, false, $saleQuantityToAdd);
+                    $validSaleQuantityToAdd = $this->getValidCartItemQuantity($cartItem, $saleQuantityToAdd);
+                    $cartItem->changeQuantity($currentSaleQuantityInCart + $validSaleQuantityToAdd);
+                    $remainingQuantityToAdd -= $validSaleQuantityToAdd;
+                    $availableSaleStockQuantity -= $validSaleQuantityToAdd;
+                    $addProductResults[] = new AddProductResult($cartItem, false, $validSaleQuantityToAdd);
                 }
             } elseif ($availableSaleStockQuantity <= 0 && $remainingQuantityToAdd > 0) {
                 $currentNonSaleQuantity = $cartItem->getQuantity();
@@ -265,9 +266,10 @@ class CartFacade extends BaseCartFacade
                     if ($nonSaleQuantityToAdd > $remainingQuantityToAdd) {
                         $nonSaleQuantityToAdd = $remainingQuantityToAdd;
                     }
-                    $cartItem->changeQuantity($currentNonSaleQuantity + $nonSaleQuantityToAdd);
-                    $remainingQuantityToAdd -= $nonSaleQuantityToAdd;
-                    $addProductResults[] = new AddProductResult($cartItem, false, $nonSaleQuantityToAdd);
+                    $validNonSaleQuantityToAdd = $this->getValidCartItemQuantity($cartItem, $nonSaleQuantityToAdd);
+                    $cartItem->changeQuantity($currentNonSaleQuantity + $validNonSaleQuantityToAdd);
+                    $remainingQuantityToAdd -= $validNonSaleQuantityToAdd;
+                    $addProductResults[] = new AddProductResult($cartItem, false, $validNonSaleQuantityToAdd);
                 }
             }
             $cartItem->changeAddedAt(new \DateTime());
@@ -282,19 +284,23 @@ class CartFacade extends BaseCartFacade
             }
             $saleProductPrice = $this->productPriceCalculation->calculatePriceForCurrentUser($product, true);
             $saleCartItem = $this->cartItemFactory->create($cart, $product, $saleCartItemQuantity, $saleProductPrice->getPriceWithVat(), null, null, true);
+            $validSaleCartItemQuantity = $this->getValidCartItemQuantity($saleCartItem, $saleCartItemQuantity);
+            $saleCartItem->changeQuantity($validSaleCartItemQuantity);
             $cart->addItem($saleCartItem);
             $this->em->persist($saleCartItem);
-            $remainingQuantityToAdd -= $saleCartItemQuantity;
-            $addProductResults[] = new AddProductResult($saleCartItem, true, $saleCartItemQuantity);
+            $remainingQuantityToAdd -= $validSaleCartItemQuantity;
+            $addProductResults[] = new AddProductResult($saleCartItem, true, $validSaleCartItemQuantity);
         }
 
         // adding new non-sale item
         if ($remainingQuantityToAdd > 0 && $availableNonSaleStockQuantity > 0) {
             $productPrice = $this->productPriceCalculation->calculatePriceForCurrentUser($product);
             $nonSaleCartItem = $this->cartItemFactory->create($cart, $product, $remainingQuantityToAdd, $productPrice->getPriceWithVat());
+            $validNonSaleCartItemQuantity = $this->getValidCartItemQuantity($nonSaleCartItem, $remainingQuantityToAdd);
+            $nonSaleCartItem->changeQuantity($validNonSaleCartItemQuantity);
             $cart->addItem($nonSaleCartItem);
             $this->em->persist($nonSaleCartItem);
-            $addProductResults[] = new AddProductResult($nonSaleCartItem, true, $remainingQuantityToAdd);
+            $addProductResults[] = new AddProductResult($nonSaleCartItem, true, $validNonSaleCartItemQuantity);
         }
 
         if (empty($addProductResults)) {

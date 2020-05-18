@@ -34,6 +34,7 @@
                 </div>
             </div>
         {% endfor %}
+        {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
     </div>
     <div class="box-popup-add__action">
         <div class="box-popup-add__action__buttons">
