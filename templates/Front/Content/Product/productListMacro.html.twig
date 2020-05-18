@@ -1,5 +1,4 @@
 {% macro list(productViews, listCssClass, productHeadingTagName) %}
-    {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
     <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
         {% for productView in productViews %}
             {% set productSellingPrice = productView.sellingPrice %}
@@ -71,19 +70,9 @@
                                     {% endif %}
 
                                     <div class="in-availability">
-                                        {% if productView.action.sellingDenied %}
-                                            <div class="in-availability__text in-availability__text--out-of-stock">
-                                                {{ 'Product no longer on sale'|trans }}
-                                            </div>
-                                        {% else %}
-                                            <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                                {% if productView.action.isMainVariant %}
-                                                    {{ 'Dostupnost dle varianty'|trans }}
-                                                {% else %}
-                                                    {{ productView.availability }}
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
+                                        <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                            {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
+                                        </div>
                                     </div>
 
                                     {% if productView.getGiftsCount() > 0 %}
@@ -152,15 +141,7 @@
 
                                     <div class="in-availability">
                                         <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                            {% if productView.action.isMainVariant %}
-                                                {{ 'Dostupnost dle varianty'|trans }}
-                                            {% elseif productView.realSaleStocksQuantity > 0 %}
-                                                {{ saleStockQuantity.showInfo(productView.realSaleStocksQuantity, productView.unitName) }}
-                                            {% elseif productView.isAvailableInDays %}
-                                                <span class="in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
-                                            {% else %}
-                                                {{ productView.availability }}
-                                            {% endif %}
+                                            {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
                                         </div>
                                     </div>
 
@@ -194,7 +175,6 @@
 {% endmacro %}
 
 {% macro horizontalList(productViews, productHeadingTagName, type, showButton = false, onlyRefresh = false) %}
-    {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
     <div class="list-products-slider {% if showButton %}list-products-slider--with-button{% endif %} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
         <span class="list-products-slider__arrow list-products-slider__arrow--prev js-horizontal-list-action-prev">
@@ -247,15 +227,7 @@
 
                                         <div class="in-availability">
                                             <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                                {% if productView.action.isMainVariant %}
-                                                    {{ 'Dostupnost dle varianty'|trans }}
-                                                {% elseif productView.realSaleStocksQuantity > 0 %}
-                                                    {{ saleStockQuantity.showInfo(productView.realSaleStocksQuantity, productView.unitName) }}
-                                                {% elseif productView.deliveryDays is not null %}
-                                                    <span class="in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
-                                                {% else %}
-                                                    {{ productView.availability }}
-                                                {% endif %}
+                                                {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
                                             </div>
                                         </div>
                                     </a>
@@ -281,7 +253,6 @@
 
 {% macro lastVisitedList(productViews, productHeadingTagName, type, onlyRefresh = false) %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
-    {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
     <div class="list-last-visited js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
         <span class="list-last-visited__arrow list-last-visited__arrow--prev js-horizontal-list-action-prev">
@@ -318,15 +289,7 @@
 
                                 <div class="list-last-visited__item__info__availability">
                                     <div class="list-last-visited__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                        {% if productView.action.isMainVariant %}
-                                            {{ 'Dostupnost dle varianty'|trans }}
-                                        {% elseif productView.realSaleStocksQuantity > 0 %}
-                                            {{ saleStockQuantity.showInfo(productView.realSaleStocksQuantity, productView.unitName) }}
-                                        {% elseif productView.deliveryDays is not null %}
-                                            <span class="in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
-                                        {% else %}
-                                            {{ productView.availability }}
-                                        {% endif %}
+                                        {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
                                     </div>
                                 </div>
                             </div>
