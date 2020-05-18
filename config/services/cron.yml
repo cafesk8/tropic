@@ -102,6 +102,10 @@ services:
         tags:
             - { name: shopsys.cron, hours: '0', minutes: '0', readableName: 'Přepočet viditelností produktů (všechny produkty)' }
 
+    App\Model\Product\ProductRefreshCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přeuložení označených produktů pro správný přepočet přiřazení výprodejových štítků apod.' }
+
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportChangedCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: "Export změněných produktů do Elasticsearch" }

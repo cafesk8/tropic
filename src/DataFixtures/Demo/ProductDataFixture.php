@@ -297,13 +297,12 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $this->setParametersByTranslations($productData, $parameterTranslations);
 
-        $this->setPriceForAllPricingGroups($productData, '263.6');
+        $this->setPriceForAllPricingGroups($productData, '263.6', '150');
 
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '9.1.2000');
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
-        $productData->stockQuantity = 0;
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
@@ -314,7 +313,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_A4TECH);
 
-        $this->createProduct($productData);
+        $this->createProduct($productData, false);
 
         $productData = $this->productDataFactory->create();
 
@@ -5684,13 +5683,18 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
     /**
      * @param \App\Model\Product\ProductData $productData
+     * @param bool $addFakeStocks
      * @return \App\Model\Product\Product
      */
-    protected function createProduct(ProductData $productData): Product
+    protected function createProduct(ProductData $productData, bool $addFakeStocks = true): Product
     {
-        $this->addFakeStoreStocks($productData);
         $productData->outOfStockAvailability = $this->persistentReferenceFacade->getReference(AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
 
+        if ($addFakeStocks) {
+            $this->addFakeStoreStocks($productData);
+        } else {
+            $this->addExactStoreStocks($productData);
+        }
         /** @var \App\Model\Product\Product $product */
         $product = $this->productFacade->create($productData);
 
@@ -5839,11 +5843,17 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     /**
      * @param \App\Model\Product\ProductData $productData
      * @param string $price
+     * @param string|null $salePrice
      */
-    protected function setPriceForAllPricingGroups(ProductData $productData, string $price): void
+    protected function setPriceForAllPricingGroups(ProductData $productData, string $price, ?string $salePrice = null): void
     {
         foreach ($this->pricingGroupFacade->getAll() as $pricingGroup) {
-            $money = $this->priceConverter->convertPriceWithoutVatToPriceInDomainDefaultCurrency(Money::create($price), $pricingGroup->getDomainId());
+            $domainId = $pricingGroup->getDomainId();
+            if ($salePrice !== null && $pricingGroup->isSalePricePricingGroup()) {
+                $money = $this->priceConverter->convertPriceWithoutVatToPriceInDomainDefaultCurrency(Money::create($salePrice), $domainId);
+            } else {
+                $money = $this->priceConverter->convertPriceWithoutVatToPriceInDomainDefaultCurrency(Money::create($price), $domainId);
+            }
 
             $productData->manualInputPricesByPricingGroupId[$pricingGroup->getId()] = $money;
         }
@@ -5992,5 +6002,31 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         }
 
         $productData->stockQuantityByStoreId = $fakeStoreData;
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function addExactStoreStocks(ProductData $productData): void
+    {
+        /** @var \App\Model\Store\Store $saleStock */
+        $saleStock = $this->getReference(StoreDataFixture::REFERENCE_STORE_SALE_STOCK);
+        /** @var \App\Model\Store\Store $storeSaleStock */
+        $storeSaleStock = $this->getReference(StoreDataFixture::REFERENCE_STORE_SALE_STORE);
+        /** @var \App\Model\Store\Store $externalStock */
+        $externalStock = $this->getReference(StoreDataFixture::REFERENCE_STORE_EXTERNAL_STOCK);
+        /** @var \App\Model\Store\Store $internalStock */
+        $internalStock = $this->getReference(StoreDataFixture::REFERENCE_STORE_INTERNAL_STOCK);
+        /** @var \App\Model\Store\Store $storeStock */
+        $storeStock = $this->getReference(StoreDataFixture::REFERENCE_STORE_STORE_STOCK);
+        $stockQuantityByStoreId = [
+            $saleStock->getId() => 1,
+            $storeSaleStock->getId() => 2,
+            $externalStock->getId() => 3,
+            $internalStock->getId() => 4,
+            $storeStock->getId() => 5,
+        ];
+
+        $productData->stockQuantityByStoreId = $stockQuantityByStoreId;
     }
 }

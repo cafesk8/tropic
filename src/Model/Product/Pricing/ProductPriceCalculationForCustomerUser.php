@@ -15,7 +15,6 @@ use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 
 /**
  * @property \App\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
- * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice calculatePriceForCurrentUser(\App\Model\Product\Product $product)
  */
 class ProductPriceCalculationForCustomerUser extends BaseProductPriceCalculationForCustomerUser
 {
@@ -47,10 +46,16 @@ class ProductPriceCalculationForCustomerUser extends BaseProductPriceCalculation
      * @param int $domainId
      * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      * @param bool $simulateRegistration
+     * @param bool $salePrice
      * @return \App\Model\Product\Pricing\ProductPrice
      */
-    public function calculatePriceForCustomerUserAndDomainId(BaseProduct $product, $domainId, ?BaseCustomerUser $customerUser = null, bool $simulateRegistration = false)
-    {
+    public function calculatePriceForCustomerUserAndDomainId(
+        BaseProduct $product,
+        $domainId,
+        ?BaseCustomerUser $customerUser = null,
+        bool $simulateRegistration = false,
+        bool $salePrice = false
+    ) {
         if ($customerUser === null) {
             if ($simulateRegistration) {
                 $pricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($domainId);
@@ -61,9 +66,33 @@ class ProductPriceCalculationForCustomerUser extends BaseProductPriceCalculation
             $pricingGroup = $customerUser->getPricingGroup();
         }
 
+        if ($salePrice) {
+            $pricingGroup = $this->pricingGroupFacade->getSalePricePricingGroup($domainId);
+        }
+
         /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
         $productPrice = $this->productPriceCalculation->calculatePrice($product, $domainId, $pricingGroup);
 
         return $productPrice;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param bool $salePrice
+     * @return \App\Model\Product\Pricing\ProductPrice|\Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice
+     */
+    public function calculatePriceForCurrentUser(BaseProduct $product, bool $salePrice = false)
+    {
+        $pricingGroup = $this->currentCustomerUser->getPricingGroup();
+        $domainId = $this->domain->getId();
+        if ($salePrice) {
+            $pricingGroup = $this->pricingGroupFacade->getSalePricePricingGroup($domainId);
+        }
+
+        return $this->productPriceCalculation->calculatePrice(
+            $product,
+            $domainId,
+            $pricingGroup
+        );
     }
 }

@@ -218,6 +218,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         }
 
         $defaultFlagForFreeTransportAndPayment = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
+        $saleFlags = $this->flagFacade->getSaleFlags();
         $builderBasicInformationGroup->add('flags', ChoiceType::class, [
             'choices' => $this->flagFacade->getAll(),
             'choice_label' => 'name',
@@ -225,8 +226,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             'multiple' => true,
             'expanded' => true,
             'label' => t('Flags'),
-            'choice_attr' => function ($flag) use ($defaultFlagForFreeTransportAndPayment) {
-                if ($flag === $defaultFlagForFreeTransportAndPayment) {
+            'choice_attr' => function ($flag) use ($defaultFlagForFreeTransportAndPayment, $saleFlags) {
+                if ($flag === $defaultFlagForFreeTransportAndPayment || in_array($flag, $saleFlags, true)) {
                     return [
                         'disabled' => true,
                     ];

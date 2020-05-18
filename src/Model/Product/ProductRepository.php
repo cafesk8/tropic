@@ -559,4 +559,26 @@ class ProductRepository extends BaseProductRepository
 
         return $queryBuilder->getQuery()->execute();
     }
+
+    /**
+     * @param string $mainVariantId
+     * @return \App\Model\Product\Product[]
+     */
+    public function getVariantsByMainVariantId(string $mainVariantId): array
+    {
+        return $this->getProductQueryBuilder()
+            ->join(Product::class, 'productMainVariant', Join::WITH, 'p.mainVariant = productMainVariant')
+            ->andWhere('productMainVariant.variantId = :mainVariantId')
+            ->setParameter('mainVariantId', $mainVariantId)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @return \App\Model\Product\Product[]
+     */
+    public function getProductsForRefresh(): array
+    {
+        return $this->getProductRepository()->findBy(['refresh' => true]);
+    }
 }

@@ -6,19 +6,18 @@ namespace App\Model\Cart;
 
 use App\Model\Cart\Item\CartItem;
 use App\Model\Customer\User\CustomerUser;
+use App\Model\Order\Item\QuantifiedProduct;
 use App\Model\Product\Product;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart as BaseCart;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
 
 /**
  * @ORM\Table(name="carts")
  * @ORM\Entity
  * @property \App\Model\Customer\User\CustomerUser|null $customerUser
  * @property \App\Model\Cart\Item\CartItem[]|\Doctrine\Common\Collections\Collection $items
- * @method __construct(string $cartIdentifier, \App\Model\Customer\User\CustomerUser|null $customerUser)
  * @method addItem(\App\Model\Cart\Item\CartItem $item)
  * @method \App\Model\Cart\Item\CartItem getItemById(int $itemId)
  * @method \App\Model\Cart\Item\CartItem|null findSimilarItemByItem(\App\Model\Cart\Item\CartItem $item)
@@ -32,6 +31,15 @@ class Cart extends BaseCart
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      */
     private $orderGiftProduct;
+
+    /**
+     * @param string $cartIdentifier
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
+     */
+    public function __construct(string $cartIdentifier, ?CustomerUser $customerUser = null)
+    {
+        parent::__construct($cartIdentifier, $customerUser);
+    }
 
     /**
      * @return \Shopsys\FrameworkBundle\Component\Money\Money
@@ -59,13 +67,20 @@ class Cart extends BaseCart
 
         foreach ($productGiftsInCart as $productGiftInCart) {
             foreach ($productGiftInCart as $productGiftVariantInCart) {
+                $itemsByProductId = $this->getItemsByProductId($productGiftVariantInCart->getProduct()->getId());
+                $quantity = 0;
+                foreach ($itemsByProductId as $item) {
+                    $quantity += $item->getQuantity();
+                }
+                $cartItem = reset($itemsByProductId);
+
                 $cartGift = $cartItemFactory->create(
                     $this,
                     $productGiftVariantInCart->getGift(),
-                    $productGiftVariantInCart->getQuantity(),
+                    $quantity,
                     $productGiftVariantInCart->getPrice(),
                     $productGiftVariantInCart->getProduct(),
-                    $this->getItemByProductId($productGiftVariantInCart->getProduct()->getId())
+                    $cartItem
                 );
 
                 $this->addItem($cartGift);
@@ -78,15 +93,31 @@ class Cart extends BaseCart
     }
 
     /**
+     * When a product is split into sale and regular item, both the items are returned
+     *
      * @param int $productId
-     * @return \App\Model\Cart\Item\CartItem
+     * @return \App\Model\Cart\Item\CartItem[]
      */
-    public function getItemByProductId(int $productId): CartItem
+    public function getItemsByProductId(int $productId): array
     {
+        $items = [];
         foreach ($this->items as $item) {
             if ($item->getProduct()->getId() === $productId) {
-                return $item;
+                $items[] = $item;
             }
+        }
+
+        if (!empty($items)) {
+            usort($items, function (CartItem $cartItemA, CartItem $cartItemB) {
+                if ($cartItemA === $cartItemB) {
+                    return 0;
+                }
+                if ($cartItemB->isSaleItem()) {
+                    return 1;
+                }
+            });
+
+            return $items;
         }
         $message = 'CartItem with product id = ' . $productId . ' not found in cart.';
         throw new \Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidCartItemException($message);
@@ -154,13 +185,13 @@ class Cart extends BaseCart
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct[]
+     * @return \App\Model\Order\Item\QuantifiedProduct[]
      */
     public function getQuantifiedProducts()
     {
         $quantifiedProducts = [];
         foreach ($this->getItems() as $item) {
-            $quantifiedProducts[] = new QuantifiedProduct($item->getProduct(), $item->getQuantity());
+            $quantifiedProducts[] = new QuantifiedProduct($item->getProduct(), $item->getQuantity(), $item->isSaleItem());
         }
 
         return $quantifiedProducts;

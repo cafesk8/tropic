@@ -84,6 +84,7 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @method fillOrderRounding(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\Order $order, \App\Model\Order\OrderData $orderData)
  * @property \App\Model\Order\Status\OrderStatusRepository $orderStatusRepository
+ * @property \App\Model\Order\Item\OrderProductFacade $orderProductFacade
  */
 class OrderFacade extends BaseOrderFacade
 {
@@ -158,7 +159,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade $orderProductFacade
+     * @param \App\Model\Order\Item\OrderProductFacade $orderProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade $heurekaFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFactoryInterface $orderFactory
@@ -577,13 +578,14 @@ class OrderFacade extends BaseOrderFacade
 
             $orderItem = $this->orderItemFactory->createProduct(
                 $order,
-                $product->getName($locale),
+                $quantifiedProduct->getName($locale),
                 $quantifiedItemPrice->getUnitPrice(),
                 $product->getVatForDomain($order->getDomainId())->getPercent(),
                 $quantifiedProduct->getQuantity(),
                 $product->getUnit()->getName($locale),
                 $product->getCatnum(),
-                $product
+                $product,
+                $quantifiedProduct->isSaleItem()
             );
 
             foreach ($quantifiedItemDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemDiscounts) {

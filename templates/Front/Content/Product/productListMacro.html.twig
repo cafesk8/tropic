@@ -70,19 +70,9 @@
                                     {% endif %}
 
                                     <div class="in-availability">
-                                        {% if productView.action.sellingDenied %}
-                                            <div class="in-availability__text in-availability__text--out-of-stock">
-                                                {{ 'Product no longer on sale'|trans }}
-                                            </div>
-                                        {% else %}
-                                            <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                                {% if productView.action.isMainVariant %}
-                                                    {{ 'Dostupnost dle varianty'|trans }}
-                                                {% else %}
-                                                    {{ productView.availability }}
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
+                                        <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                            {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
+                                        </div>
                                     </div>
 
                                     {% if productView.getGiftsCount() > 0 %}
@@ -151,13 +141,7 @@
 
                                     <div class="in-availability">
                                         <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                            {% if productView.action.isMainVariant %}
-                                                {{ 'Dostupnost dle varianty'|trans }}
-                                            {% elseif productView.isAvailableInDays %}
-                                                <span class="in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
-                                            {% else %}
-                                                {{ productView.availability }}
-                                            {% endif %}
+                                            {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
                                         </div>
                                     </div>
 
@@ -243,13 +227,7 @@
 
                                         <div class="in-availability">
                                             <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                                {% if productView.action.isMainVariant %}
-                                                    {{ 'Dostupnost dle varianty'|trans }}
-                                                {% elseif productView.deliveryDays is not null %}
-                                                    <span class="in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
-                                                {% else %}
-                                                    {{ productView.availability }}
-                                                {% endif %}
+                                                {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
                                             </div>
                                         </div>
                                     </a>
@@ -311,13 +289,7 @@
 
                                 <div class="list-last-visited__item__info__availability">
                                     <div class="list-last-visited__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                        {% if productView.action.isMainVariant %}
-                                            {{ 'Dostupnost dle varianty'|trans }}
-                                        {% elseif productView.deliveryDays is not null %}
-                                            <span class="in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
-                                        {% else %}
-                                            {{ productView.availability }}
-                                        {% endif %}
+                                        {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
                                     </div>
                                 </div>
                             </div>
@@ -370,24 +342,9 @@
                                 </div>
                             </div>
                         {% endif %}
-
-                        {% if product.isMainVariant %}
-                            <div class="in-availability">
-                                {{ 'Dostupnost dle varianty'|trans }}
-                            </div>
-
-                            <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="btn btn--success {{ listCssClass }}__item__button-add in-add-to-cart__button--small">
-                                {{- 'Choose variant'|trans -}}
-                            </a>
-                        {% else %}
-                            <div class="in-availability">
-                                {{ availability.productAvailability(product) }}
-                            </div>
-
-                            <div class="{{ listCssClass }}__item__add-button">
-                                {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, showAmountInput: false, type: 'large'})) }}
-                            </div>
-                        {% endif %}
+                        <div class="{{ listCssClass }}__item__add-button">
+                            {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, showAmountInput: false, type: 'large', displayVariantSelectButton: true})) }}
+                        </div>
                     </div>
                 </div>
             </div>

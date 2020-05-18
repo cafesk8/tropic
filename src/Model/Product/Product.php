@@ -207,6 +207,13 @@ class Product extends BaseProduct
     private $realStockQuantity;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $refresh;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -271,6 +278,7 @@ class Product extends BaseProduct
         $this->eurCalculatedAutomatically = $productData->eurCalculatedAutomatically;
         $this->productGroups = new ArrayCollection();
         $this->deliveryDays = $productData->deliveryDays;
+        $this->refresh = false;
     }
 
     /**
@@ -742,13 +750,18 @@ class Product extends BaseProduct
 
     /**
      * @param int $quantity
+     * @param bool $saleItem
      */
-    public function subtractStockQuantity($quantity)
+    public function subtractStockQuantity($quantity, bool $saleItem = false)
     {
         parent::subtractStockQuantity($quantity);
         $remainingQuantity = $quantity;
 
         foreach ($this->getStoreStocks() as $productStoreStock) {
+            $isSaleStock = $productStoreStock->getStore()->isSaleStock();
+            if (($isSaleStock && !$saleItem) || (!$isSaleStock && $saleItem)) {
+                continue;
+            }
             $availableQuantity = $productStoreStock->getStockQuantity();
 
             if ($remainingQuantity > $availableQuantity) {
@@ -987,5 +1000,83 @@ class Product extends BaseProduct
     public function isCurrentlyOutOfStock(): bool
     {
         return $this->getRealStockQuantity() < 1;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInAnySaleStock(): bool
+    {
+        if ($this->isMainVariant()) {
+            foreach ($this->getVariants() as $variant) {
+                if ($variant->isInAnySaleStock()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return $this->getRealSaleStocksQuantity() > 0;
+    }
+
+    /**
+     * @return int
+     */
+    private function getSaleStocksQuantity(): int
+    {
+        $stockQuantity = 0;
+        foreach ($this->getStoreStocks() as $productStoreStock) {
+            if ($this->isInSaleStock($productStoreStock)) {
+                $stockQuantity += $productStoreStock->getStockQuantity();
+            }
+        }
+
+        return $stockQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealSaleStocksQuantity(): int
+    {
+        if ($this->getSaleStocksQuantity() % $this->getAmountMultiplier() !== 0) {
+            return (int)floor($this->getSaleStocksQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
+        }
+
+        return $this->getSaleStocksQuantity();
+    }
+
+    /**
+     * @return int
+     */
+    private function getNonSaleStocksQuantity(): int
+    {
+        return $this->stockQuantity - $this->getSaleStocksQuantity();
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealNonSaleStocksQuantity(): int
+    {
+        if ($this->getNonSaleStocksQuantity() % $this->getAmountMultiplier() !== 0) {
+            return (int)floor($this->getNonSaleStocksQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
+        }
+
+        return $this->getNonSaleStocksQuantity();
+    }
+
+    /**
+     * @param \App\Model\Product\StoreStock\ProductStoreStock $productStoreStock
+     * @return bool
+     */
+    private function isInSaleStock(ProductStoreStock $productStoreStock): bool
+    {
+        return $productStoreStock->getStore()->isSaleStock() && $productStoreStock->getStockQuantity() > 0;
+    }
+
+    public function markForRefresh(): void
+    {
+        $this->refresh = true;
     }
 }

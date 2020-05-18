@@ -1,4 +1,4 @@
-{% macro productPreviewItem(product, quantity, price) %}
+{% macro productPreviewItem(product, quantity, price, saleItem = false) %}
     <li class="list-cart-preview__item">
         <div class="list-cart-preview__item__image">
             {{ image(product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
@@ -9,6 +9,9 @@
         <div class="list-cart-preview__item__info">
             <span class="list-cart-preview__item__title">
                 {{ product.name }}
+                {% if saleItem is same as (true) %}
+                    {{ ' - Výprodej'|trans }}
+                {% endif %}
             </span>
         </div>
         <div class="list-cart-preview__item__price">
@@ -30,7 +33,7 @@
             <ul id="js-order-preview-cart" class="list-cart-preview">
                 {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
                     {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
-                    {{ _self.productPreviewItem(quantifiedProduct.product, quantifiedProduct.quantity, quantifiedProductPrice.totalPrice.priceWithVat) }}
+                    {{ _self.productPreviewItem(quantifiedProduct.product, quantifiedProduct.quantity, quantifiedProductPrice.totalPrice.priceWithVat, quantifiedProduct.isSaleItem) }}
                 {% endfor %}
             </ul>
             <ul class="list-cart-preview">

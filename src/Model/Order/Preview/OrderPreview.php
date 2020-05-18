@@ -15,8 +15,10 @@ use Shopsys\FrameworkBundle\Model\Transport\Transport;
 /**
  * @property \App\Model\Transport\Transport|null $transport
  * @property \App\Model\Payment\Payment|null $payment
+ * @property \App\Model\Order\Item\QuantifiedProduct[] $quantifiedProductsByIndex
  * @method \App\Model\Transport\Transport|null getTransport()
  * @method \App\Model\Payment\Payment|null getPayment()
+ * @method \App\Model\Order\Item\QuantifiedProduct[] getQuantifiedProducts()
  */
 class OrderPreview extends BaseOrderPreview
 {

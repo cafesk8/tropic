@@ -161,6 +161,8 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId);
         $result['delivery_days'] = $product->getDeliveryDays();
         $result['is_available_in_days'] = $product->isAvailableInDays();
+        $result['real_sale_stocks_quantity'] = $product->getRealSaleStocksQuantity();
+        $result['is_in_any_sale_stock'] = $product->isInAnySaleStock();
 
         return $result;
     }

@@ -27,10 +27,23 @@ class OrderItemFactory extends BaseOrderItemFactory
         int $quantity,
         ?string $unitName,
         ?string $catnum,
-        ?Product $product = null
+        ?Product $product = null,
+        ?bool $saleItem = false
     ): BaseOrderItem {
-        /** @var \App\Model\Order\Item\OrderItem $orderProduct */
-        $orderProduct = parent::createProduct($order, $name, $price, $vatPercent, $quantity, $unitName, $catnum, $product);
+        $orderProduct = new OrderItem(
+            $order,
+            $name,
+            $price,
+            $vatPercent,
+            $quantity,
+            OrderItem::TYPE_PRODUCT,
+            $unitName,
+            $catnum,
+            0,
+            $saleItem
+        );
+
+        $orderProduct->setProduct($product);
 
         if ($product !== null) {
             $orderProduct->setEan($product->getEan());

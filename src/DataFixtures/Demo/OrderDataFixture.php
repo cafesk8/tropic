@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Order\Item\QuantifiedProduct;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Generator;
@@ -11,7 +12,6 @@ use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository;
-use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
 use Shopsys\FrameworkBundle\Model\Order\OrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;

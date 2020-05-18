@@ -13,18 +13,18 @@ use Tests\App\Test\TransactionFunctionalTestCase;
 
 class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
 {
-    public function testFlagFilterChoicesFromCategoryWithNoFlags(): void
+    public function testFlagFilterChoicesFromCategoryWithOneFlag(): void
     {
         $flagFilterChoices = $this->getChoicesForCategoryReference(CategoryDataFixture::CATEGORY_GARDEN_TOOLS);
 
-        $this->assertCount(0, $flagFilterChoices);
+        $this->assertCount(1, $flagFilterChoices);
     }
 
     public function testFlagFilterChoicesFromCategoryWithFlags(): void
     {
         $flagFilterChoices = $this->getChoicesForCategoryReference(CategoryDataFixture::CATEGORY_ELECTRONICS);
 
-        $this->assertCount(2, $flagFilterChoices);
+        $this->assertCount(3, $flagFilterChoices);
 
         $ids = array_map(
             static function (Flag $flag) {
@@ -33,8 +33,9 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
             $flagFilterChoices
         );
 
-        $this->assertContains(2, $ids);
+        $this->assertContains(1, $ids);
         $this->assertContains(3, $ids);
+        $this->assertContains(4, $ids);
     }
 
     public function testGetFlagFilterChoicesForSearchPhone(): void

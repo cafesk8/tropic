@@ -10,11 +10,12 @@ use App\Model\Blog\BlogVisibilityFacade;
 use App\Model\Blog\Category\BlogCategory;
 use App\Model\Blog\Category\BlogCategoryDataFactory;
 use App\Model\Blog\Category\BlogCategoryFacade;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 
-class BlogArticleDataFixture extends AbstractReferenceFixture
+class BlogArticleDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
     /**
      * @var \App\Model\Blog\Article\BlogArticleFacade
@@ -84,16 +85,32 @@ class BlogArticleDataFixture extends AbstractReferenceFixture
         $this->blogCategoryFacade->edit($mainPageBlogCategory->getId(), $mainPageBlogCategoryData);
 
         $blogArticleData = $this->blogArticleDataFactory->create();
+        $product1 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . 1);
+        $product2 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . 82);
         foreach ($this->domain->getAll() as $domainConfig) {
             $locale = $domainConfig->getLocale();
             $blogArticleData->blogCategoriesByDomainId[$domainConfig->getId()] = [$mainPageBlogCategory];
             $blogArticleData->names[$locale] = t('Ukázkový článek blogu %locale%', ['%locale%' => $locale], 'dataFixtures', $locale);
             $blogArticleData->descriptions[$locale] = t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus felis nisi, tincidunt sollicitudin augue eu, laoreet blandit sem. Donec rutrum augue a elit imperdiet, eu vehicula tortor porta. Vivamus pulvinar sem non auctor dictum. Morbi eleifend semper enim, eu faucibus tortor posuere vitae. Donec tincidunt ipsum ullamcorper nisi accumsan tincidunt. Aenean sed velit massa. Nullam interdum eget est ut convallis. Vestibulum et mauris condimentum, rutrum sem congue, suscipit arcu.\nSed tristique vehicula ipsum, ut vulputate tortor feugiat eu. Vivamus convallis quam vulputate faucibus facilisis. Curabitur tincidunt pulvinar leo, eu dapibus augue lacinia a. Fusce sed tincidunt nunc. Morbi a nisi a odio pharetra laoreet nec eget quam. In in nisl tortor. Ut fringilla vitae lectus eu venenatis. Nullam interdum sed odio a posuere. Fusce pellentesque dui vel tortor blandit, a dictum nunc congue.', [], 'dataFixtures', $locale);
             $blogArticleData->perexes[$locale] = t('%locale% perex lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus felis nisi, tincidunt sollicitudin augue eu.', ['%locale%' => $locale], 'dataFixtures', $locale);
+            $blogArticleData->products = [
+                $product1,
+                $product2,
+            ];
         }
 
         $this->blogArticleFacade->create($blogArticleData);
 
         $this->blogVisibilityFacade->refreshBlogArticlesVisibility();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            ProductDataFixture::class,
+        ];
     }
 }

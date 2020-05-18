@@ -46,6 +46,7 @@ parameters:
             - '*/src/Model/Product/Pricing/ProductPriceCalculation.php'
             - '*/src/Model/Order/Preview/OrderPreviewCalculation.php'
             - '*/src/Component/Transfer/Pohoda/Product/PohodaProductExportRepository.php'
+            - '*/src/Model/Cart/CartFacade.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/App/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
@@ -96,6 +97,7 @@ parameters:
             - '*/src/Model/Gtm/Data/*'
             - '*/src/Model/Transfer/Issue/TransferIssue.php'
             - '*/src/Model/Order/Item/OrderItem.php'
+            - '*/src/Model/Product/Product.php'
 
         PHP_CodeSniffer\Standards\PSR2\Sniffs\Methods\FunctionCallSignatureSniff.Indent: ~
 

@@ -48,6 +48,16 @@ class ListedProductView extends BaseListedProductView
     private $isAvailableInDays;
 
     /**
+     * @var int
+     */
+    private $realSaleStocksQuantity;
+
+    /**
+     * @var string
+     */
+    private $unitName;
+
+    /**
      * @param int $id
      * @param string $name
      * @param string|null $shortDescription
@@ -62,6 +72,8 @@ class ListedProductView extends BaseListedProductView
      * @param array[] $groupItems
      * @param string|null $deliveryDays
      * @param bool $isAvailableInDays
+     * @param int $realSaleStocksQuantity
+     * @param string $unitName
      */
     public function __construct(
         int $id,
@@ -77,7 +89,9 @@ class ListedProductView extends BaseListedProductView
         int $variantsCount,
         array $groupItems,
         ?string $deliveryDays,
-        bool $isAvailableInDays
+        bool $isAvailableInDays,
+        int $realSaleStocksQuantity,
+        string $unitName
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
@@ -89,6 +103,8 @@ class ListedProductView extends BaseListedProductView
         }, $groupItems);
         $this->deliveryDays = $deliveryDays;
         $this->isAvailableInDays = $isAvailableInDays;
+        $this->realSaleStocksQuantity = $realSaleStocksQuantity;
+        $this->unitName = $unitName;
     }
 
     /**
@@ -157,5 +173,21 @@ class ListedProductView extends BaseListedProductView
     public function isAvailableInDays(): bool
     {
         return $this->isAvailableInDays;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealSaleStocksQuantity(): int
+    {
+        return $this->realSaleStocksQuantity;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitName(): string
+    {
+        return $this->unitName;
     }
 }

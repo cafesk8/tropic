@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
+use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
 use App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade;
 use App\Model\Product\PriceBombProduct\PriceBombProductFacade;
@@ -28,6 +29,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 {
+    /**
+     * @var \App\Model\Pricing\Group\PricingGroupFacade
+     */
+    private $pricingGroupFacade;
+
     /**
      * @var \App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade
      */
@@ -56,6 +62,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      * @param \App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade $cachedBestsellingProductFacade
      * @param \App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade $lastVisitedProductsFacade
      * @param \App\Model\Product\PriceBombProduct\PriceBombProductFacade $priceBombProductFacade
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         ProductFacade $productFacade,
@@ -69,12 +76,14 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         ImageViewFacade $imageViewFacade,
         CachedBestsellingProductFacade $cachedBestsellingProductFacade,
         LastVisitedProductsFacade $lastVisitedProductsFacade,
-        PriceBombProductFacade $priceBombProductFacade
+        PriceBombProductFacade $priceBombProductFacade,
+        PricingGroupFacade $pricingGroupFacade
     ) {
         parent::__construct($productFacade, $productAccessoryFacade, $domain, $currentCustomerUser, $topProductFacade, $productOnCurrentDomainFacade, $listedProductViewFactory, $productActionViewFacade, $imageViewFacade);
         $this->cachedBestsellingProductFacade = $cachedBestsellingProductFacade;
         $this->lastVisitedProductsFacade = $lastVisitedProductsFacade;
         $this->priceBombProductFacade = $priceBombProductFacade;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -139,6 +148,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         }
 
         $imageViews = $this->imageViewFacade->getForEntityIds(Product::class, $productIds);
+        $salePricingGroup = $this->pricingGroupFacade->getSalePricePricingGroup($this->domain->getId());
 
         $listedProductViews = [];
         foreach ($productsArray as $productArray) {
@@ -152,7 +162,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
                 $productArray,
                 $imageViews[$productId],
                 $this->productActionViewFacade->getForArray($productArray),
-                $this->currentCustomerUser->getPricingGroup()
+                $productArray['is_in_any_sale_stock'] === true ? $salePricingGroup : $this->currentCustomerUser->getPricingGroup()
             );
         }
 

@@ -1,0 +1,13 @@
+{% extends '@!ShopsysFramework/Admin/Grid/Grid.html.twig' %}
+
+{% block grid_action_cell_type_delete %}
+    {% if row.a.sale is same as (true) %}
+        <span title="{{ 'Tento příznak nemůže být smazán, protože je automaticky přiřazován produktům se zásobami na výprodejových skladech.'|trans }}"
+              class="js-tooltip cursor-help in-icon in-icon--info" data-toggle="tooltip" data-placement="bottom"
+        >
+            <i class="svg svg-info"></i>
+        </span>
+    {% else %}
+        {{ gridView.renderBlock('grid_action_cell', {actionColumn: actionColumn, row: row}) }}
+    {% endif %}
+{% endblock %}

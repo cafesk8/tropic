@@ -60,6 +60,12 @@ class OrderItem extends BaseOrderItem
     private $preparedQuantity;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $saleItem;
+
+    /**
      * @param \App\Model\Order\Order $order
      * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
@@ -69,6 +75,7 @@ class OrderItem extends BaseOrderItem
      * @param string|null $unitName
      * @param string|null $catnum
      * @param int|null $preparedQuantity
+     * @param bool $saleItem
      */
     public function __construct(
         Order $order,
@@ -79,10 +86,12 @@ class OrderItem extends BaseOrderItem
         string $type,
         ?string $unitName,
         ?string $catnum,
-        ?int $preparedQuantity = 0
+        ?int $preparedQuantity = 0,
+        bool $saleItem = false
     ) {
         parent::__construct($order, $name, $price, $vatPercent, $quantity, $type, $unitName, $catnum);
 
+        $this->saleItem = $saleItem;
         $this->preparedQuantity = $preparedQuantity;
     }
 
@@ -205,5 +214,13 @@ class OrderItem extends BaseOrderItem
     public function setPreparedQuantity(int $preparedQuantity): void
     {
         $this->preparedQuantity = $preparedQuantity;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSaleItem(): bool
+    {
+        return $this->saleItem;
     }
 }

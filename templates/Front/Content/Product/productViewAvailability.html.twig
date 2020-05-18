@@ -1,0 +1,10 @@
+{% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
+{% if productView.action.isMainVariant %}
+    {{ 'Dostupnost dle varianty'|trans }}
+{% elseif productView.realSaleStocksQuantity > 0 %}
+    {{ saleStockQuantity.showInfo(productView.realSaleStocksQuantity, productView.unitName) }}
+{% elseif productView.isAvailableInDays %}
+    <span class="in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
+{% else %}
+    {{ productView.availability }}
+{% endif %}

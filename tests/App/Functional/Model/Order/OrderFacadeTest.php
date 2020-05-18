@@ -9,8 +9,9 @@ use App\DataFixtures\Demo\CurrencyDataFixture;
 use App\DataFixtures\Demo\OrderStatusDataFixture;
 use App\Model\Order\Item\OrderItemData;
 use App\Model\Order\OrderData;
+use App\Model\Payment\Payment;
+use App\Model\Transport\Transport;
 use App\Model\Transport\TransportRepository;
-use Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
@@ -23,63 +24,68 @@ use Tests\App\Test\TransactionFunctionalTestCase;
 
 class OrderFacadeTest extends TransactionFunctionalTestCase
 {
+    /**
+     * @var \App\Model\Cart\CartFacade
+     */
+    private $cartFacade;
+
+    /**
+     * @var \App\Model\Order\OrderFacade
+     */
+    private $orderFacade;
+
+    /**
+     * @var \App\Model\Payment\PaymentRepository
+     */
+    private $paymentRepository;
+
+    /**
+     * @var \App\Model\Order\Preview\OrderPreviewFactory
+     */
+    private $orderPreviewFactory;
+
+    /**
+     * @var \App\Model\Product\ProductRepository
+     */
+    private $productRepository;
+
+    /**
+     * @var \App\Model\Transport\TransportRepository
+     */
+    private $transportRepository;
+
+    /**
+     * @var \App\Model\Order\OrderRepository
+     */
+    private $orderRepository;
+
+    protected function setUp(): void
+    {
+        $this->cartFacade = $this->getContainer()->get(CartFacade::class);
+        $this->orderFacade = $this->getContainer()->get(OrderFacade::class);
+        $this->orderPreviewFactory = $this->getContainer()->get(OrderPreviewFactory::class);
+        $this->orderRepository = $this->getContainer()->get(OrderRepository::class);
+        $this->productRepository = $this->getContainer()->get(ProductRepository::class);
+        $this->transportRepository = $this->getContainer()->get(TransportRepository::class);
+        $this->paymentRepository = $this->getContainer()->get(PaymentRepository::class);
+        parent::setUp();
+    }
+
     public function testCreate()
     {
-        /** @var \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade */
-        $cartFacade = $this->getContainer()->get(CartFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade */
-        $orderFacade = $this->getContainer()->get(OrderFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory */
-        $orderPreviewFactory = $this->getContainer()->get(OrderPreviewFactory::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Order\OrderRepository $orderRepository */
-        $orderRepository = $this->getContainer()->get(OrderRepository::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository */
-        $productRepository = $this->getContainer()->get(ProductRepository::class);
-        /** @var \App\Model\Transport\TransportRepository $transportRepository */
-        $transportRepository = $this->getContainer()->get(TransportRepository::class);
-        /** @var \App\Model\Payment\PaymentRepository $paymentRepository */
-        $paymentRepository = $this->getContainer()->get(PaymentRepository::class);
-        /** @var \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade */
-        $persistentReferenceFacade = $this->getContainer()->get(PersistentReferenceFacade::class);
-        $product = $productRepository->getById(1);
+        $product = $this->productRepository->getById(1);
 
-        $cartFacade->addProductToCart($product->getId(), 1);
+        $this->cartFacade->addProduct($product, 1);
 
-        $transport = $transportRepository->getById(1);
-        $payment = $paymentRepository->getById(1);
+        $transport = $this->transportRepository->getById(1);
+        $payment = $this->paymentRepository->getById(1);
 
-        $orderData = new OrderData();
-        $orderData->transport = $transport;
-        $orderData->payment = $payment;
-        $orderData->status = $persistentReferenceFacade->getReference(OrderStatusDataFixture::ORDER_STATUS_NEW);
-        $orderData->firstName = 'firstName';
-        $orderData->lastName = 'lastName';
-        $orderData->email = 'email';
-        $orderData->telephone = 'telephone';
-        $orderData->companyName = 'companyName';
-        $orderData->companyNumber = 'companyNumber';
-        $orderData->companyTaxNumber = 'companyTaxNumber';
-        $orderData->street = 'street';
-        $orderData->city = 'city';
-        $orderData->postcode = '000000';
-        $orderData->country = $persistentReferenceFacade->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
-        $orderData->deliveryAddressSameAsBillingAddress = false;
-        $orderData->deliveryFirstName = 'deliveryFirstName';
-        $orderData->deliveryLastName = 'deliveryLastName';
-        $orderData->deliveryCompanyName = 'deliveryCompanyName';
-        $orderData->deliveryTelephone = 'deliveryTelephone';
-        $orderData->deliveryStreet = 'deliveryStreet';
-        $orderData->deliveryCity = 'deliveryCity';
-        $orderData->deliveryPostcode = '000000';
-        $orderData->deliveryCountry = $persistentReferenceFacade->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
-        $orderData->note = 'note';
-        $orderData->domainId = 1;
-        $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
+        $orderData = $this->getOrderData($transport, $payment);
 
-        $orderPreview = $orderPreviewFactory->createForCurrentUser($transport, $payment);
-        $order = $orderFacade->createOrder($orderData, $orderPreview, null);
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
+        $order = $this->orderFacade->createOrder($orderData, $orderPreview, null);
 
-        $orderFromDb = $orderRepository->getById($order->getId());
+        $orderFromDb = $this->orderRepository->getById($order->getId());
 
         $this->assertSame($orderData->transport->getId(), $orderFromDb->getTransport()->getId());
         $this->assertSame($orderData->payment->getId(), $orderFromDb->getPayment()->getId());
@@ -150,5 +156,73 @@ class OrderFacadeTest extends TransactionFunctionalTestCase
         $orderFromDb = $orderRepository->getById($order->getId());
 
         $this->assertCount(7, $orderFromDb->getItems());
+    }
+
+    public function testCreateWithProductQuantityExceedingSaleStocksSplitsProductIntoTwoItems()
+    {
+        $product = $this->productRepository->getById(4);
+
+        $saleStocksQuantity = $product->getRealSaleStocksQuantity();
+        $this->cartFacade->addProduct($product, $saleStocksQuantity + 1);
+
+        $transport = $this->transportRepository->getById(1);
+        $payment = $this->paymentRepository->getById(1);
+
+        $orderData = $this->getOrderData($transport, $payment);
+
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
+        $order = $this->orderFacade->createOrder($orderData, $orderPreview, null);
+
+        $orderFromDb = $this->orderRepository->getById($order->getId());
+
+        $orderItems = $orderFromDb->getProductItems();
+        $this->assertCount(2, $orderItems);
+        $saleItem = $orderItems[0];
+        $nonSaleItem = $orderItems[1];
+
+        $this->assertTrue($saleItem->isSaleItem());
+        $this->assertSame($saleStocksQuantity, $saleItem->getQuantity());
+        $this->assertEquals(Money::create('150')->getAmount(), $saleItem->getPriceWithVat()->getAmount());
+        $this->assertFalse($nonSaleItem->isSaleItem());
+        $this->assertSame(1, $nonSaleItem->getQuantity());
+        $this->assertEquals(Money::create('264')->getAmount(), $nonSaleItem->getPriceWithVat()->getAmount());
+    }
+
+    /**
+     * @param \App\Model\Transport\Transport $transport
+     * @param \App\Model\Payment\Payment $payment
+     * @return \App\Model\Order\OrderData
+     */
+    private function getOrderData(Transport $transport, Payment $payment): OrderData
+    {
+        $orderData = new OrderData();
+        $orderData->transport = $transport;
+        $orderData->payment = $payment;
+        $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_NEW);
+        $orderData->firstName = 'firstName';
+        $orderData->lastName = 'lastName';
+        $orderData->email = 'email';
+        $orderData->telephone = 'telephone';
+        $orderData->companyName = 'companyName';
+        $orderData->companyNumber = 'companyNumber';
+        $orderData->companyTaxNumber = 'companyTaxNumber';
+        $orderData->street = 'street';
+        $orderData->city = 'city';
+        $orderData->postcode = '000000';
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $orderData->deliveryAddressSameAsBillingAddress = false;
+        $orderData->deliveryFirstName = 'deliveryFirstName';
+        $orderData->deliveryLastName = 'deliveryLastName';
+        $orderData->deliveryCompanyName = 'deliveryCompanyName';
+        $orderData->deliveryTelephone = 'deliveryTelephone';
+        $orderData->deliveryStreet = 'deliveryStreet';
+        $orderData->deliveryCity = 'deliveryCity';
+        $orderData->deliveryPostcode = '000000';
+        $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $orderData->note = 'note';
+        $orderData->domainId = 1;
+        $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
+
+        return $orderData;
     }
 }

@@ -9,31 +9,32 @@
                 }) }}
             </span>
         </div>
-        <div class="box-popup-add__content__product">
-            <div class="box-popup-add__content__product__image">
-                {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: false }) }}
-            </div>
-            <div class="box-popup-add__content__product__pieces display-none">
-                {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
-            </div>
-            <div class="box-popup-add__content__product__name">
-                <span class="box-popup-add__content__product__name__title">
-                    {{ cartItem.product.name }}
-                </span>
-                {% if quantifiedItemPrice is not null %}
-                    <span class="box-popup-add__content__product__name__price">
-                        <span class="box-popup-add__content__product__name__price__main">
-                            {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
-                        </span>
-                        {% if quantifiedItemPrice.unitPrice.hasHigherStandardPrice %}
-                            <span class="box-popup-add__content__product__name__price__old">
-                                {{ quantifiedItemPrice.unitPrice.standardPrice.priceWithVat|price }}
-                            </span>
-                        {% endif %}
+        {% for cartItem in addedItems %}
+            <div class="box-popup-add__content__product">
+                <div class="box-popup-add__content__product__image">
+                    {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: false }) }}
+                </div>
+                <div class="box-popup-add__content__product__name">
+                    <span class="box-popup-add__content__product__name__title">
+                        {% if cartItem.saleItem %}{{ 'Výprodej'|trans }} - {% endif %}{{ cartItem.product.name }}
                     </span>
-                {% endif %}
+                    {% if quantifiedItemPricesIndexedByCartItemId[cartItem.id] is defined %}
+                        {% set quantifiedItemPrice = quantifiedItemPricesIndexedByCartItemId[cartItem.id] %}
+                        <span class="box-popup-add__content__product__name__price">
+                            <span class="box-popup-add__content__product__name__price__main">
+                                {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
+                            </span>
+                            {% if quantifiedItemPrice.unitPrice.hasHigherStandardPrice %}
+                                <span class="box-popup-add__content__product__name__price__old">
+                                    {{ quantifiedItemPrice.unitPrice.standardPrice.priceWithVat|price }}
+                                </span>
+                            {% endif %}
+                        </span>
+                    {% endif %}
+                </div>
             </div>
-        </div>
+        {% endfor %}
+        {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
     </div>
     <div class="box-popup-add__action">
         <div class="box-popup-add__action__buttons">

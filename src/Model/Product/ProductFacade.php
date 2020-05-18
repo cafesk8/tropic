@@ -13,6 +13,7 @@ use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
 use App\Model\Category\Exception\SaleCategoryNotFoundException;
 use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Group\ProductGroupFactory;
 use App\Model\Product\StoreStock\ProductStoreStockFactory;
@@ -141,6 +142,11 @@ class ProductFacade extends BaseProductFacade
     private $categoryFacade;
 
     /**
+     * @var \App\Model\Product\Flag\FlagFacade
+     */
+    private $flagFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
@@ -176,6 +182,7 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
      * @param \App\Model\Product\Group\ProductGroupFactory $productGroupFactory
      * @param \App\Model\Category\CategoryFacade $categoryFacade
+     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -212,7 +219,8 @@ class ProductFacade extends BaseProductFacade
         ProductDataFactory $productDataFactory,
         ProductGroupFacade $productGroupFacade,
         ProductGroupFactory $productGroupFactory,
-        CategoryFacade $categoryFacade
+        CategoryFacade $categoryFacade,
+        FlagFacade $flagFacade
     ) {
         parent::__construct(
             $em,
@@ -252,6 +260,7 @@ class ProductFacade extends BaseProductFacade
         $this->productGroupFacade = $productGroupFacade;
         $this->productGroupFactory = $productGroupFactory;
         $this->categoryFacade = $categoryFacade;
+        $this->flagFacade = $flagFacade;
     }
 
     /**
@@ -260,6 +269,7 @@ class ProductFacade extends BaseProductFacade
      */
     public function create(BaseProductData $productData)
     {
+        $this->processSaleFlagAssignment($productData);
         $this->processAssignmentIntoSaleCategory($productData);
 
         /** @var \App\Model\Product\Product $product */
@@ -268,6 +278,10 @@ class ProductFacade extends BaseProductFacade
         $this->refreshMainProducts($product);
 
         $this->categoryFacade->refreshSaleCategoryVisibility();
+
+        if ($product->isVariant()) {
+            $this->refreshMainVariant($product->getMainVariant());
+        }
 
         return $product;
     }
@@ -346,6 +360,7 @@ class ProductFacade extends BaseProductFacade
         }
 
         $this->productVariantTropicFacade->refreshVariantStatus($product, $productData->variantId);
+        $this->processSaleFlagAssignment($productData);
         $this->processAssignmentIntoSaleCategory($productData);
 
         parent::edit($productId, $productData);
@@ -370,6 +385,10 @@ class ProductFacade extends BaseProductFacade
         $this->refreshMainProducts($product);
 
         $this->categoryFacade->refreshSaleCategoryVisibility();
+
+        if ($product->isVariant()) {
+            $this->refreshMainVariant($product->getMainVariant());
+        }
 
         return $product;
     }
@@ -408,7 +427,7 @@ class ProductFacade extends BaseProductFacade
     /**
      * @param \App\Model\Product\Product $product
      */
-    private function updateTotalProductStockQuantity(Product $product): void
+    public function updateTotalProductStockQuantity(Product $product): void
     {
         $totalStockQuantity = 0;
         foreach ($product->getStocksWithoutZeroQuantityOnStore() as $productStoreStock) {
@@ -907,10 +926,16 @@ class ProductFacade extends BaseProductFacade
     {
         $product = $this->getById($productId);
 
+        $mainVariant = null;
         if ($product->isMainVariant()) {
             $this->disconnectVariantsFromMainVariant($product);
+        } elseif ($product->isVariant()) {
+            $mainVariant = $product->getMainVariant();
         }
         parent::delete($productId);
+        if ($mainVariant !== null) {
+            $this->refreshMainVariant($mainVariant);
+        }
     }
 
     /**
@@ -1073,5 +1098,72 @@ class ProductFacade extends BaseProductFacade
         foreach ($this->productGroupFacade->getAllByItem($product) as $productGroup) {
             $this->edit($productGroup->getMainProduct()->getId(), $this->productDataFactory->createFromProduct($productGroup->getMainProduct()));
         }
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function processSaleFlagAssignment(ProductData $productData): void
+    {
+        $isInAnySaleStock = false;
+        if ($this->productVariantTropicFacade->isMainVariant($productData->variantId)) {
+            $variants = $this->productVariantTropicFacade->getVariantsByMainVariantId($productData->variantId);
+            foreach ($variants as $variant) {
+                if ($variant->isInAnySaleStock()) {
+                    $isInAnySaleStock = true;
+                    break;
+                }
+            }
+        } else {
+            $isInAnySaleStock = $this->getQuantityInSaleStocks($productData) > 0;
+        }
+
+        $flags = $productData->flags;
+        foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
+            if ($isInAnySaleStock && !in_array($saleFlag, $flags, true)) {
+                $flags[] = $saleFlag;
+            } elseif (!$isInAnySaleStock) {
+                $key = array_search($saleFlag, $flags, true);
+                if ($key !== false) {
+                    unset($flags[$key]);
+                }
+            }
+        }
+        $productData->flags = $flags;
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     * @return int
+     */
+    private function getQuantityInSaleStocks(ProductData $productData): int
+    {
+        $storesIndexedById = $this->storeFacade->getAll();
+        $quantityInSaleStocks = 0;
+        foreach ($productData->stockQuantityByStoreId as $storeId => $stockQuantity) {
+            $store = $storesIndexedById[$storeId] ?? null;
+            if ($stockQuantity !== null && $stockQuantity > 0 && $store !== null && $store->isSaleStock()) {
+                $quantityInSaleStocks += $stockQuantity;
+            }
+        }
+
+        return $quantityInSaleStocks;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $mainVariant
+     */
+    private function refreshMainVariant(Product $mainVariant): void
+    {
+        $mainVariantData = $this->productDataFactory->createFromProduct($mainVariant);
+        $this->edit($mainVariant->getId(), $mainVariantData);
+    }
+
+    /**
+     * @return \App\Model\Product\Product[]
+     */
+    public function getProductsForRefresh(): array
+    {
+        return $this->productRepository->getProductsForRefresh();
     }
 }
