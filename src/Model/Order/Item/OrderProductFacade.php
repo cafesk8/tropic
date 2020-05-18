@@ -4,17 +4,50 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Item;
 
+use App\Model\Product\ProductFacade;
+use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade as BaseOrderProductFacade;
+use Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler;
+use Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator;
+use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator;
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 
 /**
  * @method runRecalculationsAfterStockQuantityChange(\App\Model\Order\Item\OrderItem[] $orderProducts)
  * @method \App\Model\Order\Item\OrderItem[] getOrderProductsUsingStockFromOrderProducts(\App\Model\Order\Item\OrderItem[] $orderProducts)
  * @property \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
- * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator, \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator, \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade, \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade)
  */
 class OrderProductFacade extends BaseOrderProductFacade
 {
+    /**
+     * @var \App\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
+     * @param \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
+     * @param \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
+     * @param \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade
+     * @param \App\Model\Product\ProductFacade $productFacade
+     */
+    public function __construct(
+        EntityManagerInterface $em,
+        ProductHiddenRecalculator $productHiddenRecalculator,
+        ProductSellingDeniedRecalculator $productSellingDeniedRecalculator,
+        ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler,
+        ProductVisibilityFacade $productVisibilityFacade,
+        ModuleFacade $moduleFacade,
+        ProductFacade $productFacade
+    ) {
+        parent::__construct($em, $productHiddenRecalculator, $productSellingDeniedRecalculator, $productAvailabilityRecalculationScheduler, $productVisibilityFacade, $moduleFacade);
+        $this->productFacade = $productFacade;
+    }
+
     /**
      * @param \App\Model\Order\Item\OrderItem[] $orderProducts
      */
@@ -41,6 +74,7 @@ class OrderProductFacade extends BaseOrderProductFacade
                 if ($product->getRealSaleStocksQuantity() <= 0) {
                     $product->markForRefresh();
                 }
+                $this->productFacade->updateTotalProductStockQuantity($product);
             }
             $this->em->flush();
             $this->runRecalculationsAfterStockQuantityChange($orderProducts);
@@ -64,6 +98,7 @@ class OrderProductFacade extends BaseOrderProductFacade
                         $productGroup->getItem()->addStockQuantity($orderProductUsingStock->getQuantity() * $productGroup->getItemCount());
                     }
                 }
+                $this->productFacade->updateTotalProductStockQuantity($product);
             }
             $this->em->flush();
             $this->runRecalculationsAfterStockQuantityChange($orderProducts);

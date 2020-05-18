@@ -427,7 +427,7 @@ class ProductFacade extends BaseProductFacade
     /**
      * @param \App\Model\Product\Product $product
      */
-    private function updateTotalProductStockQuantity(Product $product): void
+    public function updateTotalProductStockQuantity(Product $product): void
     {
         $totalStockQuantity = 0;
         foreach ($product->getStocksWithoutZeroQuantityOnStore() as $productStoreStock) {
