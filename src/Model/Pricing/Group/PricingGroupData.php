@@ -28,6 +28,11 @@ class PricingGroupData extends BasePricingGroupData
      */
     public $calculatedFromDefault;
 
+    /**
+     * @var string|null
+     */
+    public $pohodaIdent;
+
     public function __construct()
     {
         $this->discount = 0;

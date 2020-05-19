@@ -252,4 +252,12 @@ class OrderRepository extends BaseOrderRepository
             'ean' => $ean,
         ]);
     }
+
+    /**
+     * @return \App\Model\Order\Order[]
+     */
+    public function findAll(): array
+    {
+        return $this->getOrderRepository()->findAll();
+    }
 }

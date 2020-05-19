@@ -50,6 +50,13 @@ class PricingGroup extends BasePricingGroup
     private $calculatedFromDefault;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $pohodaIdent;
+
+    /**
      * @param \App\Model\Pricing\Group\PricingGroupData $pricingGroupData
      * @param int $domainId
      */
@@ -77,6 +84,7 @@ class PricingGroup extends BasePricingGroup
         $this->minimalPrice = $pricingGroupData->minimalPrice;
         $this->discount = $pricingGroupData->discount;
         $this->calculatedFromDefault = $pricingGroupData->calculatedFromDefault;
+        $this->pohodaIdent = $pricingGroupData->pohodaIdent;
     }
 
     /**
@@ -149,5 +157,13 @@ class PricingGroup extends BasePricingGroup
     public function isSalePricePricingGroup(): bool
     {
         return $this->internalId === self::PRICING_GROUP_SALE_PRICE;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPohodaIdent(): ?string
+    {
+        return $this->pohodaIdent;
     }
 }

@@ -627,3 +627,13 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
     Shopsys\FrameworkBundle\Model\Cart\CartMigrationFacade: '@App\Model\Cart\CartMigrationFacade'
+
+    App\Component\Transfer\Pohoda\Xml\PohodaXmlGenerator: ~
+
+    App\Component\Transfer\Pohoda\MServer\MServerClient:
+        arguments:
+            $pohodaMServerUrl: '%pohoda_mserver_url%'
+            $pohodaMServerPort: '%pohoda_mserver_port%'
+            $pohodaMServerLogin: '%pohoda_mserver_login%'
+            $pohodaMServerPassword: '%pohoda_mserver_password%'
+            $pohodaCompanyIco: '%pohoda_company_ico%'

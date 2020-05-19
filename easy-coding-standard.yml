@@ -72,6 +72,7 @@ parameters:
             - '*/tests/App/Functional/EntityExtension/EntityExtensionTest.php'
             - '*/tests/App/Test/Codeception/_generated/AcceptanceTesterActions.php'
             - '*/src/Model/Country/CountryFacade.php'
+            - '*/src/Component/Transfer/Pohoda/MServer/MServerClient'
 
         Shopsys\CodingStandards\Sniffs\ObjectIsCreatedByFactorySniff:
             - '*/tests/*'

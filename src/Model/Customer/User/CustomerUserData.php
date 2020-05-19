@@ -28,6 +28,11 @@ class CustomerUserData extends BaseCustomerUserData
      */
     public $pricingGroupUpdatedAt;
 
+    /**
+     * @var int|null
+     */
+    public $pohodaId;
+
     public function __construct()
     {
         parent::__construct();

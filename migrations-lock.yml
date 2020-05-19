@@ -1123,6 +1123,7 @@
 20200415214922:
     class: App\Migrations\Version20200415214922
     skip: false
+<<<<<<< HEAD
 20200423100359:
     class: App\Migrations\Version20200423100359
     skip: false
@@ -1161,4 +1162,16 @@
     skip: false
 20200514215447:
     class: App\Migrations\Version20200514215447
+    skip: false
+20200419071810:
+    class: App\Migrations\Version20200419071810
+    skip: false
+20200425174612:
+    class: App\Migrations\Version20200425174612
+    skip: false
+20200425214054:
+    class: App\Migrations\Version20200425214054
+    skip: false
+20200425214055:
+    class: App\Migrations\Version20200425214055
     skip: false

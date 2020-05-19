@@ -25,6 +25,11 @@ function deploy() {
         ["parameters.gtm_config.sk.container_id"]="${GTM_CONTAINER_ID_SK}"
         ["parameters.gtm_config.en.container_id"]="${GTM_CONTAINER_ID_EN}"
         ["parameters.disable_form_fields_from_transfer"]=${DISABLE_FORM_FIELDS_FROM_TRANSFER}
+        ["parameters.pohoda_company_ico"]="${POHODA_COMPANY_ICO}"
+        ["parameters.pohoda_mserver_url"]="${POHODA_MSERVER_URL}"
+        ["parameters.pohoda_mserver_port"]="${POHODA_MSERVER_PORT}"
+        ["parameters.pohoda_mserver_password"]="${POHODA_MSERVER_PASSWORD}"
+        ["parameters.pohoda_mserver_login"]="${POHODA_MSERVER_LOGIN}"
     )
 
     declare -A ENVIRONMENT_VARIABLES=(

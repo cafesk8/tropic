@@ -7,6 +7,7 @@ namespace App\Form\Admin;
 use Shopsys\FrameworkBundle\Form\Admin\Pricing\Group\PricingGroupFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints;
 
@@ -24,6 +25,12 @@ class PricingGroupFormTypeExtension extends AbstractTypeExtension
             ],
             'label' => t('Sleva %'),
             'required' => true,
+        ])
+        ->add('pohodaIdent', TextType::class, [
+            'required' => false,
+            'constraints' => [
+                new Constraints\NotBlank(['message' => 'Please enter identifier for IS Pohoda']),
+            ],
         ]);
     }
 

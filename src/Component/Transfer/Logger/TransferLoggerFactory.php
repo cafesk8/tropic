@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Transfer\Logger;
 
+use App\Model\Transfer\Issue\TransferIssueFacade;
 use Symfony\Bridge\Monolog\Logger;
 
 class TransferLoggerFactory
@@ -19,12 +20,19 @@ class TransferLoggerFactory
     private $defaultLogger;
 
     /**
-     * @param \Symfony\Bridge\Monolog\Logger $defaultLogger
+     * @var \App\Model\Transfer\Issue\TransferIssueFacade
      */
-    public function __construct(Logger $defaultLogger)
+    private $transferIssueFacade;
+
+    /**
+     * @param \Symfony\Bridge\Monolog\Logger $defaultLogger
+     * @param \App\Model\Transfer\Issue\TransferIssueFacade $transferIssueFacade
+     */
+    public function __construct(Logger $defaultLogger, TransferIssueFacade $transferIssueFacade)
     {
         $this->defaultLogger = $defaultLogger;
         $this->transferLoggers = [];
+        $this->transferIssueFacade = $transferIssueFacade;
     }
 
     /**
@@ -36,7 +44,8 @@ class TransferLoggerFactory
     {
         return new TransferLogger(
             $transferIdentifier,
-            $logger
+            $logger,
+            $this->transferIssueFacade
         );
     }
 
