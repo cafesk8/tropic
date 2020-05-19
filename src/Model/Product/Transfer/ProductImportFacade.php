@@ -7,8 +7,11 @@ namespace App\Model\Product\Transfer;
 use App\Component\Transfer\Logger\TransferLogger;
 use App\Component\Transfer\Pohoda\Product\PohodaProduct;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade;
+use App\Model\Product\ProductData;
 use App\Model\Product\ProductDataFactory;
 use App\Model\Product\ProductFacade;
+use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
+use App\Model\Product\Transfer\Exception\ProductDoesntExistInEShopException;
 use Exception;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
@@ -119,18 +122,14 @@ class ProductImportFacade
     {
         $productData = $this->productDataFactory->create();
 
-        try {
-            $this->pohodaProductMapper->mapPohodaProductToProductData($pohodaProduct, $productData);
-        } catch (Exception $exc) {
-            $this->logError($exc, $pohodaProduct);
-
+        if (!$this->mapProduct($pohodaProduct, $productData)) {
             return null;
         }
 
         try {
             $createdProduct = $this->productFacade->create($productData);
         } catch (Exception $exc) {
-            $this->logError($exc, $pohodaProduct);
+            $this->logError('Import položky selhal.', $exc, $pohodaProduct);
 
             return null;
         }
@@ -152,18 +151,14 @@ class ProductImportFacade
     {
         $productData = $this->productDataFactory->createFromProduct($product);
 
-        try {
-            $this->pohodaProductMapper->mapPohodaProductToProductData($pohodaProduct, $productData);
-        } catch (Exception $exc) {
-            $this->logError($exc, $pohodaProduct);
-
+        if (!$this->mapProduct($pohodaProduct, $productData)) {
             return null;
         }
 
         try {
             $editedProduct = $this->productFacade->edit($product->getId(), $productData);
         } catch (Exception $exc) {
-            $this->logError($exc, $pohodaProduct);
+            $this->logError('Import položky selhal.', $exc, $pohodaProduct);
 
             return null;
         }
@@ -176,6 +171,32 @@ class ProductImportFacade
         return $editedProduct->getPohodaId();
     }
 
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     * @param \App\Model\Product\ProductData $productData
+     * @return bool
+     */
+    private function mapProduct(PohodaProduct $pohodaProduct, ProductData $productData): bool
+    {
+        try {
+            $this->pohodaProductMapper->mapPohodaProductToProductData($pohodaProduct, $productData);
+        } catch (CategoryDoesntExistInEShopException $exception) {
+            $this->logError('Kategorie nebyla v e-shopu nalezena', $exception, $pohodaProduct);
+
+            return false;
+        } catch (ProductDoesntExistInEShopException $exception) {
+            $this->logError('Pro tento produkt nebyl nalezen v e-shopu produkt s ním související', $exception, $pohodaProduct);
+
+            return false;
+        } catch (Exception $exception) {
+            $this->logError('Import položky selhal.', $exception, $pohodaProduct);
+
+            return false;
+        }
+
+        return true;
+    }
+
     private function copyErrorsToTransferLogger(): void
     {
         foreach ($this->pohodaProductExportFacade->getLogs() as $log) {
@@ -184,14 +205,16 @@ class ProductImportFacade
     }
 
     /**
+     * @param string $logMessage
      * @param \Exception $exception
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
      */
-    private function logError(Exception $exception, PohodaProduct $pohodaProduct): void
+    private function logError(string $logMessage, Exception $exception, PohodaProduct $pohodaProduct): void
     {
-        $this->logger->addError('Import položky selhal.', [
+        $this->logger->addError($logMessage, [
             'pohodaId' => $pohodaProduct->pohodaId,
             'productName' => $pohodaProduct->name,
+            'catnum' => $pohodaProduct->catnum,
             'exceptionMessage' => $exception->getMessage(),
         ]);
     }
