@@ -1123,7 +1123,6 @@
 20200415214922:
     class: App\Migrations\Version20200415214922
     skip: false
-<<<<<<< HEAD
 20200423100359:
     class: App\Migrations\Version20200423100359
     skip: false
