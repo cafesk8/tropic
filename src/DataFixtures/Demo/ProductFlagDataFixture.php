@@ -119,8 +119,8 @@ class ProductFlagDataFixture extends AbstractReferenceFixture implements Depende
      */
     private function createProductFlag(int $productId, string $flagReference): void
     {
-        $productFlagData = $this->productFlagDataFactory->create($this->getProduct($productId), $this->getFlag($flagReference));
-        $this->productFlagFacade->create($productFlagData);
+        $productFlagData = $this->productFlagDataFactory->create($this->getFlag($flagReference));
+        $this->productFlagFacade->create($productFlagData, $this->getProduct($productId));
     }
 
     /**

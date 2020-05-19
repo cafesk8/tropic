@@ -19,7 +19,8 @@ class FlagFilterChoiceRepository extends BaseFlagFilterChoiceRepository
 {
     /**
      * @param \Doctrine\ORM\QueryBuilder $productsQueryBuilder
-     * @param mixed $locale
+     * @param string $locale
+     * @return \App\Model\Product\Flag\Flag[]
      */
     protected function getVisibleFlagsByProductsQueryBuilder(QueryBuilder $productsQueryBuilder, $locale)
     {
@@ -30,6 +31,8 @@ class FlagFilterChoiceRepository extends BaseFlagFilterChoiceRepository
             ->join('p.flags', 'pf')
             ->andWhere('pf.flag = f')
             ->andWhere('f.visible = true')
+            ->andWhere('(pf.activeFrom IS NULL OR pf.activeFrom < CURRENT_DATE()) AND (pf.activeTo IS NULL OR pf.activeTo > :tomorrow)')
+            ->setParameter('tomorrow', date('Y-m-d', strtotime('tomorrow')))
             ->resetDQLPart('orderBy');
 
         $flagsQueryBuilder = $productsQueryBuilder->getEntityManager()->createQueryBuilder();

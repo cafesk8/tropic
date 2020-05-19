@@ -188,6 +188,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'constraints' => [
                     new Callback([$this, 'validateVariantId']),
                 ],
+                'position' => ['before' => 'brand'],
             ])
             ->add('warranty', IntegerType::class, [
                 'required' => false,
@@ -217,11 +218,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 ]);
         }
 
-        $productFlagsGroup = $builder->create('productFlags', GroupType::class, [
+        $productFlagsGroup = $builder->create('productFlagsGroup', GroupType::class, [
             'label' => t('Příznaky'),
             'position' => ['after' => 'basicInformationGroup'],
         ]);
-        $productFlagsGroup->add('productFlagsByFlagId', ProductFlagType::class);
+        $productFlagsGroup->add('flags', ProductFlagType::class);
         $builder->add($productFlagsGroup);
 
         $builderBasicInformationGroup->remove('flags');

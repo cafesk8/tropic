@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Flag;
 
+use App\Model\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ProductFlagFacade
@@ -37,11 +38,12 @@ class ProductFlagFacade
 
     /**
      * @param \App\Model\Product\Flag\ProductFlagData $productFlagData
+     * @param \App\Model\Product\Product $product
      * @return \App\Model\Product\Flag\ProductFlag
      */
-    public function create(ProductFlagData $productFlagData): ProductFlag
+    public function create(ProductFlagData $productFlagData, Product $product): ProductFlag
     {
-        $productFlag = $this->productFlagFactory->create($productFlagData);
+        $productFlag = $this->productFlagFactory->create($productFlagData, $product);
         $this->em->persist($productFlag);
         $this->em->flush();
 

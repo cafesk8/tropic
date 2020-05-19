@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product;
 
 use App\Model\Product\Availability\AvailabilityFacade;
+use App\Model\Product\Flag\ProductFlagDataFactory;
 use App\Model\Product\Group\ProductGroupFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
@@ -35,6 +36,11 @@ class ProductDataFactory extends BaseProductDataFactory
     private $availabilityFacade;
 
     /**
+     * @var \App\Model\Product\Flag\ProductFlagDataFactory
+     */
+    private $productFlagDataFactory;
+
+    /**
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductInputPriceFacade $productInputPriceFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade $unitFacade
@@ -49,6 +55,7 @@ class ProductDataFactory extends BaseProductDataFactory
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
+     * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory
      */
     public function __construct(
         VatFacade $vatFacade,
@@ -64,7 +71,8 @@ class ProductDataFactory extends BaseProductDataFactory
         ProductParameterValueDataFactoryInterface $productParameterValueDataFactory,
         PricingGroupFacade $pricingGroupFacade,
         ProductGroupFacade $productGroupFacade,
-        AvailabilityFacade $availabilityFacade
+        AvailabilityFacade $availabilityFacade,
+        ProductFlagDataFactory $productFlagDataFactory
     ) {
         parent::__construct(
             $vatFacade,
@@ -82,6 +90,7 @@ class ProductDataFactory extends BaseProductDataFactory
         );
         $this->productGroupFacade = $productGroupFacade;
         $this->availabilityFacade = $availabilityFacade;
+        $this->productFlagDataFactory = $productFlagDataFactory;
     }
 
     /**
@@ -154,10 +163,10 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->groupItems = $this->getProductGroups($product);
         $productData->deliveryDays = $product->getDeliveryDays();
         $productData->warranty = $product->getWarranty();
-        $productData->flags = $product->getProductFlags();
+        $productData->flags = [];
 
         foreach ($product->getProductFlags() as $productFlag) {
-            $productData->productFlagsByFlagId[$productFlag->getFlag()->getId()] = $productFlag;
+            $productData->flags[] = $this->productFlagDataFactory->createFromProductFlag($productFlag);
         }
 
         foreach ($this->domain->getAllIds() as $domainId) {

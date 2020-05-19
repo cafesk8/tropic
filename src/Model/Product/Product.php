@@ -45,7 +45,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @method \App\Model\Product\Product getMainVariant()
  * @property \App\Model\Product\ProductDomain[]|\Doctrine\Common\Collections\Collection $domains
  * @method \App\Model\Product\ProductDomain getProductDomain(int $domainId)
- * @method editFlags(\App\Model\Product\Flag\Flag[] $flags)
  * @property \App\Model\Product\Unit\Unit $unit
  * @method \App\Model\Product\Unit\Unit getUnit()
  */
@@ -289,6 +288,7 @@ class Product extends BaseProduct
         $this->productGroups = new ArrayCollection();
         $this->deliveryDays = $productData->deliveryDays;
         $this->refresh = false;
+        $this->flags = new ArrayCollection();
     }
 
     /**
@@ -308,6 +308,17 @@ class Product extends BaseProduct
         if (!$this->isVariant()) {
             $this->setProductCategoryDomains($productCategoryDomains);
         }
+    }
+
+    /**
+     * Flags are edited through ProductFacade::refreshProductFlags
+     * This method does not accept ProductFlag arguments
+     *
+     * @param \App\Model\Product\Flag\Flag[] $flags
+     */
+    public function editFlags(array $flags)
+    {
+        $this->flags = new ArrayCollection();
     }
 
     /**
@@ -444,6 +455,7 @@ class Product extends BaseProduct
     public function getFlagsIndexedByPosition(int $limit): array
     {
         $flagsIndexedByPosition = [];
+
         foreach ($this->getActiveFlags($limit) as $flag) {
             $flagsIndexedByPosition[$flag->getPosition()] = $flag;
         }
@@ -1113,5 +1125,10 @@ class Product extends BaseProduct
     public function markForRefresh(): void
     {
         $this->refresh = true;
+    }
+
+    public function clearProductFlags(): void
+    {
+        $this->flags->clear();
     }
 }

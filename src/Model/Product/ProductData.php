@@ -15,7 +15,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @property \App\Model\Product\Availability\Availability|null $availability
  * @property \App\Model\Product\Availability\Availability|null $outOfStockAvailability
  * @property \App\Model\Product\Unit\Unit|null $unit
- * @property \App\Model\Product\Flag\Flag[] $flags
  */
 class ProductData extends BaseProductData
 {
@@ -125,12 +124,7 @@ class ProductData extends BaseProductData
     public $warranty;
 
     /**
-     * @var \App\Model\Product\Flag\ProductFlag[]
-     */
-    public $productFlagsByFlagId;
-
-    /**
-     * @var \App\Model\Product\Flag\ProductFlag[]
+     * @var \App\Model\Product\Flag\ProductFlagData[]
      */
     public $flags;
 

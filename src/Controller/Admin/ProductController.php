@@ -156,7 +156,7 @@ class ProductController extends BaseProductController
             'quickSearchForm' => $quickSearchForm->createView(),
             'advancedSearchForm' => $advancedSearchForm->createView(),
             'massEditForm' => $massEditForm->createView(),
-            'isAdvancedSearchFormSubmitted' => $this->advancedSearchProductFacade->isAdvancedSearchFormSubmitted($request),
+            'isAdvancedSearchFormSubmitted' => $isAdvancedSearchFormSubmitted,
             'productCanBeCreated' => $productCanBeCreated,
         ]);
     }

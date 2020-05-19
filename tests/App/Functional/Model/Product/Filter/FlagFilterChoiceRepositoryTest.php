@@ -33,7 +33,7 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
             $flagFilterChoices
         );
 
-        $this->assertContains(1, $ids);
+        $this->assertContains(7, $ids);
         $this->assertContains(3, $ids);
         $this->assertContains(4, $ids);
     }

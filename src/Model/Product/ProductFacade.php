@@ -14,6 +14,9 @@ use App\Model\Category\CategoryFacade;
 use App\Model\Category\Exception\SaleCategoryNotFoundException;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Flag\FlagFacade;
+use App\Model\Product\Flag\ProductFlagData;
+use App\Model\Product\Flag\ProductFlagDataFactory;
+use App\Model\Product\Flag\ProductFlagFacade;
 use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Group\ProductGroupFactory;
 use App\Model\Product\StoreStock\ProductStoreStockFactory;
@@ -147,6 +150,16 @@ class ProductFacade extends BaseProductFacade
     private $flagFacade;
 
     /**
+     * @var \App\Model\Product\Flag\ProductFlagFacade
+     */
+    private $productFlagFacade;
+
+    /**
+     * @var \App\Model\Product\Flag\ProductFlagDataFactory
+     */
+    private $productFlagDataFactory;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
@@ -161,7 +174,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
      * @param \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository $productAccessoryRepository
-     * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade $pluginCrudExtensionFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface $productFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFactoryInterface $productAccessoryFactory
@@ -183,6 +196,8 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\Group\ProductGroupFactory $productGroupFactory
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \App\Model\Product\Flag\ProductFlagFacade $productFlagFacade
+     * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -220,7 +235,9 @@ class ProductFacade extends BaseProductFacade
         ProductGroupFacade $productGroupFacade,
         ProductGroupFactory $productGroupFactory,
         CategoryFacade $categoryFacade,
-        FlagFacade $flagFacade
+        FlagFacade $flagFacade,
+        ProductFlagFacade $productFlagFacade,
+        ProductFlagDataFactory $productFlagDataFactory
     ) {
         parent::__construct(
             $em,
@@ -261,6 +278,8 @@ class ProductFacade extends BaseProductFacade
         $this->productGroupFactory = $productGroupFactory;
         $this->categoryFacade = $categoryFacade;
         $this->flagFacade = $flagFacade;
+        $this->productFlagFacade = $productFlagFacade;
+        $this->productFlagDataFactory = $productFlagDataFactory;
     }
 
     /**
@@ -322,6 +341,7 @@ class ProductFacade extends BaseProductFacade
         $this->refreshProductManualInputPrices($product, $productData->manualInputPricesByPricingGroupId);
         $this->refreshProductAccessories($product, $productData->accessories);
         $this->refreshProductGroups($product, $productData->groupItems);
+        $this->refreshProductFlags($product, $productData->flags);
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
         $this->productHiddenRecalculator->calculateHiddenForProduct($product);
 
@@ -363,6 +383,7 @@ class ProductFacade extends BaseProductFacade
         $this->processSaleFlagAssignment($productData);
         $this->processAssignmentIntoSaleCategory($productData);
 
+        $this->refreshProductFlags($product, $productData->flags);
         parent::edit($productId, $productData);
         $this->refreshProductGroups($product, $productData->groupItems);
         $this->updateProductStoreStocks($productData, $product);
@@ -998,7 +1019,7 @@ class ProductFacade extends BaseProductFacade
     private function haveSaleFlag(ProductData $productData): bool
     {
         foreach ($productData->flags as $productFlag) {
-            if ($productFlag->getFlag()->isSale()) {
+            if ($productFlag->flag->isSale()) {
                 return true;
             }
         }
@@ -1118,18 +1139,24 @@ class ProductFacade extends BaseProductFacade
             $isInAnySaleStock = $this->getQuantityInSaleStocks($productData) > 0;
         }
 
-        $flags = $productData->flags;
-        foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
-            if ($isInAnySaleStock && !in_array($saleFlag, $flags, true)) {
-                $flags[] = $saleFlag;
-            } elseif (!$isInAnySaleStock) {
-                $key = array_search($saleFlag, $flags, true);
-                if ($key !== false) {
-                    unset($flags[$key]);
+        $productFlagsData = $productData->flags;
+        $flags = array_map(function (ProductFlagData $productFlagData) {
+            return $productFlagData->flag;
+        }, $productFlagsData);
+
+        if (!$isInAnySaleStock) {
+            $productFlagsData = array_filter($productFlagsData, function (ProductFlagData $productFlagData) {
+                return !$productFlagData->flag->isSale();
+            });
+        } else {
+            foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
+                if (!in_array($saleFlag, $flags, true)) {
+                    $productFlagsData[] = $this->productFlagDataFactory->create($saleFlag);
                 }
             }
         }
-        $productData->flags = $flags;
+
+        $productData->flags = $productFlagsData;
     }
 
     /**
@@ -1165,5 +1192,25 @@ class ProductFacade extends BaseProductFacade
     public function getProductsForRefresh(): array
     {
         return $this->productRepository->getProductsForRefresh();
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param \App\Model\Product\Flag\ProductFlagData[] $productFlagData
+     */
+    private function refreshProductFlags(BaseProduct $product, array $productFlagData)
+    {
+        $oldProductFlags = $product->getProductFlags();
+
+        foreach ($oldProductFlags as $productFlag) {
+            $this->em->remove($productFlag);
+        }
+
+        $this->em->flush($oldProductFlags);
+        $product->clearProductFlags();
+
+        foreach ($productFlagData as $productFlag) {
+            $this->productFlagFacade->create($productFlag, $product);
+        }
     }
 }

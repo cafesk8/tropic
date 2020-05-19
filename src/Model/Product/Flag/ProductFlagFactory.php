@@ -4,33 +4,17 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Flag;
 
-use Shopsys\FrameworkBundle\Component\EntityExtension\EntityNameResolver;
+use App\Model\Product\Product;
 
 class ProductFlagFactory
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityNameResolver
-     */
-    private $entityNameResolver;
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityNameResolver $entityNameResolver
-     */
-    public function __construct(EntityNameResolver $entityNameResolver)
-    {
-        $this->entityNameResolver = $entityNameResolver;
-    }
-
-    /**
      * @param \App\Model\Product\Flag\ProductFlagData $productFlagData
+     * @param \App\Model\Product\Product $product
      * @return \App\Model\Product\Flag\ProductFlag
      */
-    public function create(ProductFlagData $productFlagData): ProductFlag
+    public function create(ProductFlagData $productFlagData, Product $product): ProductFlag
     {
-        $classData = $this->entityNameResolver->resolve(ProductFlag::class);
-        /** @var \App\Model\Product\Flag\ProductFlag $productFlag */
-        $productFlag = $classData::create($productFlagData);
-
-        return $productFlag;
+        return ProductFlag::create($productFlagData, $product);
     }
 }

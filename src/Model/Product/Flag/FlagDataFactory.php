@@ -41,6 +41,7 @@ class FlagDataFactory extends BaseFlagDataFactory
     {
         parent::fillFromFlag($flagData, $flag);
         $flagData->sale = $flag->isSale();
+        $flagData->pohodaId = $flag->getPohodaId();
     }
 
     /**
@@ -51,5 +52,6 @@ class FlagDataFactory extends BaseFlagDataFactory
         parent::fillNew($flagData);
         $flagData->position = 0;
         $flagData->sale = false;
+        $flagData->pohodaId = null;
     }
 }

@@ -51,7 +51,6 @@ class ProductFlag
      */
     final public function __construct(ProductFlagData $productFlagData)
     {
-        $this->product = $productFlagData->product;
         $this->flag = $productFlagData->flag;
         $this->activeFrom = $productFlagData->activeFrom;
         $this->activeTo = $productFlagData->activeTo;
@@ -59,11 +58,15 @@ class ProductFlag
 
     /**
      * @param \App\Model\Product\Flag\ProductFlagData $productFlagData
+     * @param \App\Model\Product\Product $product
      * @return \App\Model\Product\Flag\ProductFlag
      */
-    public static function create(ProductFlagData $productFlagData): self
+    public static function create(ProductFlagData $productFlagData, Product $product): self
     {
-        return new static($productFlagData);
+        $productFlag = new static($productFlagData);
+        $productFlag->product = $product;
+
+        return $productFlag;
     }
 
     /**
@@ -103,6 +106,6 @@ class ProductFlag
      */
     public function isActive(): bool
     {
-        return ($this->activeFrom === null || $this->activeFrom->getTimestamp() < time()) && ($this->activeTo === null || $this->activeTo->getTimestamp() > time());
+        return ($this->activeFrom === null || $this->activeFrom->getTimestamp() <= time()) && ($this->activeTo === null || $this->activeTo->getTimestamp() > strtotime('tomorrow'));
     }
 }

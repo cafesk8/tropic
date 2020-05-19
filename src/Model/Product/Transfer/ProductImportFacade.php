@@ -11,7 +11,7 @@ use App\Model\Product\ProductData;
 use App\Model\Product\ProductDataFactory;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
-use App\Model\Product\Transfer\Exception\ProductDoesntExistInEShopException;
+use App\Model\Product\Transfer\Exception\ProductNotFoundInEshopException;
 use Exception;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
@@ -185,7 +185,7 @@ class ProductImportFacade
             $this->logError('Kategorie nebyla v e-shopu nalezena', $exception, $pohodaProduct);
 
             return false;
-        } catch (ProductDoesntExistInEShopException $exception) {
+        } catch (ProductNotFoundInEshopException $exception) {
             $this->logError('Pro tento produkt nebyl nalezen v e-shopu produkt s ním související', $exception, $pohodaProduct);
 
             return false;

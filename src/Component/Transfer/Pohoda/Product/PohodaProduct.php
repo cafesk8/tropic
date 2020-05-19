@@ -30,6 +30,18 @@ class PohodaProduct
     public const COL_RELATED_PRODUCT_POSITION = 'relatedProductOrder';
     public const COL_DELIVERY_DAYS = 'deliveryDays';
     public const COL_AUTO_EUR_PRICE = 'automaticEurPrice';
+    public const COL_FLAG_NEW_FROM = 'flagNewFrom';
+    public const COL_FLAG_NEW_TO = 'flagNewTo';
+    public const COL_FLAG_CLEARANCE_FROM = 'flagClearanceFrom';
+    public const COL_FLAG_CLEARANCE_TO = 'flagClearanceTo';
+    public const COL_FLAG_ACTION_FROM = 'flagActionFrom';
+    public const COL_FLAG_ACTION_TO = 'flagActionTo';
+    public const COL_FLAG_RECOMMENDED_FROM = 'flagRecommendedFrom';
+    public const COL_FLAG_RECOMMENDED_TO = 'flagRecommendedTo';
+    public const COL_FLAG_DISCOUNT_FROM = 'flagDiscountFrom';
+    public const COL_FLAG_DISCOUNT_TO = 'flagDiscountTo';
+    public const COL_FLAG_PREPARATION_FROM = 'flagPreparationFrom';
+    public const COL_FLAG_PREPARATION_TO = 'flagPreparationTo';
 
     public const COL_EXTERNAL_STOCK = 'externalStock';
     public const COL_STOCK_TOTAL = 'totalStock';
@@ -140,7 +152,7 @@ class PohodaProduct
      */
     public $pohodaCategoryIds;
 
-    /*
+    /**
      * @var int[]
      */
     public $stocksInformation;
@@ -196,6 +208,66 @@ class PohodaProduct
     public $deliveryDays;
 
     /**
+     * @var \DateTime|null
+     */
+    public $flagNewFrom;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagNewTo;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagClearanceFrom;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagClearanceTo;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagActionFrom;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagActionTo;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagRecommendedFrom;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagRecommendedTo;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagDiscountFrom;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagDiscountTo;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagPreparationFrom;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $flagPreparationTo;
+
+    /**
      * @param array $pohodaProductData
      */
     public function __construct(array $pohodaProductData)
@@ -229,5 +301,17 @@ class PohodaProduct
         $this->warranty = (int)$pohodaProductData[self::COL_POHODA_PRODUCT_WARRANTY];
         $this->brandName = $pohodaProductData[self::COL_POHODA_PRODUCT_BRAND_NAME];
         $this->youtubeVideos = $pohodaProductData[self::COL_PRODUCT_VIDEOS];
+        $this->flagNewFrom = $pohodaProductData[self::COL_FLAG_NEW_FROM];
+        $this->flagNewTo = $pohodaProductData[self::COL_FLAG_NEW_TO];
+        $this->flagClearanceFrom = $pohodaProductData[self::COL_FLAG_CLEARANCE_FROM];
+        $this->flagClearanceTo = $pohodaProductData[self::COL_FLAG_CLEARANCE_TO];
+        $this->flagActionFrom = $pohodaProductData[self::COL_FLAG_ACTION_FROM];
+        $this->flagActionTo = $pohodaProductData[self::COL_FLAG_ACTION_TO];
+        $this->flagRecommendedFrom = $pohodaProductData[self::COL_FLAG_RECOMMENDED_FROM];
+        $this->flagRecommendedTo = $pohodaProductData[self::COL_FLAG_RECOMMENDED_TO];
+        $this->flagDiscountFrom = $pohodaProductData[self::COL_FLAG_DISCOUNT_FROM];
+        $this->flagDiscountTo = $pohodaProductData[self::COL_FLAG_DISCOUNT_TO];
+        $this->flagPreparationFrom = $pohodaProductData[self::COL_FLAG_PREPARATION_FROM];
+        $this->flagPreparationTo = $pohodaProductData[self::COL_FLAG_PREPARATION_TO];
     }
 }

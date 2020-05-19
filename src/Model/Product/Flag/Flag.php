@@ -19,6 +19,13 @@ use Shopsys\FrameworkBundle\Model\Product\Flag\FlagData;
  */
 class Flag extends BaseFlag implements OrderableEntityInterface
 {
+    public const POHODA_ID_NEW = 'Novinka';
+    public const POHODA_ID_CLEARANCE = 'Doprodej';
+    public const POHODA_ID_ACTION = 'Akce';
+    public const POHODA_ID_RECOMMENDED = 'Doporucujeme';
+    public const POHODA_ID_DISCOUNT = 'Sleva';
+    public const POHODA_ID_PREPARATION = 'Priprav';
+
     /**
      * @var int
      *
@@ -35,12 +42,20 @@ class Flag extends BaseFlag implements OrderableEntityInterface
     private $sale;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $pohodaId;
+
+    /**
      * @param \App\Model\Product\Flag\FlagData $flagData
      */
     public function __construct(FlagData $flagData)
     {
         parent::__construct($flagData);
         $this->sale = $flagData->sale;
+        $this->pohodaId = $flagData->pohodaId;
     }
 
     /**
@@ -50,6 +65,7 @@ class Flag extends BaseFlag implements OrderableEntityInterface
     {
         parent::edit($flagData);
         $this->sale = $flagData->sale;
+        $this->pohodaId = $flagData->pohodaId;
     }
 
     /**
@@ -74,5 +90,13 @@ class Flag extends BaseFlag implements OrderableEntityInterface
     public function isSale(): bool
     {
         return $this->sale;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPohodaId(): ?string
+    {
+        return $this->pohodaId;
     }
 }
