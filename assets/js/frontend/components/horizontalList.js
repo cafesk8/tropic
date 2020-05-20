@@ -14,6 +14,16 @@ import Timeout from 'framework/common/utils/Timeout';
             const prevArrow = $currentGallery.filterAllNodes('.js-horizontal-list-action-prev');
             const nextArrow = $currentGallery.filterAllNodes('.js-horizontal-list-action-next');
 
+            const dotsTypes = {
+                'last-visited': [false, false, true, true, true, true],
+                'top-products': [false, false, true, true, true, true],
+                'accessories-products': [false, false, true, true, true, true],
+                'products': [false, false, true, true, true, true],
+                'references': [false, false, true, true, true, true],
+                'basket-additionals': [false, false, true, true, true, true],
+                'products-set': [true, true, true, true, true, true]
+            };
+
             const types = {
                 'last-visited': [1, 2, 3, 3, 5],
                 'top-products': [1, 2, 3, 4, 4],
@@ -34,11 +44,12 @@ import Timeout from 'framework/common/utils/Timeout';
                 'products-set': [1, 1, 1, 1, 1]
             };
 
+            const selectedDots = dotsTypes[galleryType];
             const selectedType = types[galleryType];
             const selectedSlideTypes = slideTypes[galleryType];
 
             $currentGallery.find('.js-horizontal-list-slides').slick({
-                dots: false,
+                dots: selectedDots[0],
                 arrows: true,
                 slidesToShow: 1,
                 slidesToScroll: 1,
@@ -53,7 +64,7 @@ import Timeout from 'framework/common/utils/Timeout';
                         settings: {
                             slidesToShow: selectedType[0],
                             slidesToScroll: selectedSlideTypes[0],
-                            dots: false
+                            dots: selectedDots[1]
                         }
                     },
                     {
@@ -61,7 +72,7 @@ import Timeout from 'framework/common/utils/Timeout';
                         settings: {
                             slidesToShow: selectedType[1],
                             slidesToScroll: selectedSlideTypes[1],
-                            dots: true
+                            dots: selectedDots[2]
                         }
                     },
                     {
@@ -69,7 +80,7 @@ import Timeout from 'framework/common/utils/Timeout';
                         settings: {
                             slidesToShow: selectedType[2],
                             slidesToScroll: selectedSlideTypes[2],
-                            dots: true
+                            dots: selectedDots[3]
                         }
                     },
                     {
@@ -77,7 +88,7 @@ import Timeout from 'framework/common/utils/Timeout';
                         settings: {
                             slidesToShow: selectedType[3],
                             slidesToScroll: selectedSlideTypes[3],
-                            dots: true
+                            dots: selectedDots[4]
                         }
                     },
                     {
@@ -85,7 +96,7 @@ import Timeout from 'framework/common/utils/Timeout';
                         settings: {
                             slidesToShow: selectedType[4],
                             slidesToScroll: selectedSlideTypes[4],
-                            dots: true
+                            dots: selectedDots[5]
                         }
                     }
                 ]

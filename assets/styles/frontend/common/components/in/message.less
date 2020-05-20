@@ -1,5 +1,5 @@
 @in-message-alert: #F7D6D6;
-@in-message-warning: @color-orange;
+@in-message-warning: @color-red;
 @in-message-info: @color-f;
 @in-message-success: @color-green;
 
@@ -9,7 +9,7 @@
 @in-message-success-text: @color-green;
 
 @in-message-bottom-gap: 10px;
-@in-message-bottom-padding: 10px 15px;
+@in-message-bottom-padding: 6px 15px;
 
 .in-message {
     display: flex;
@@ -21,7 +21,7 @@
     background-color: @color-f;
     font-family: @font-alt;
     font-weight: 600;
-    font-size: @font-size + 1px;
+    font-size: @font-size-mobile + 1px;
 
     li {
         color: @in-message-alert-text;
@@ -42,8 +42,8 @@
     }
 
     &--warning {
-        color: @color-0;
-        background: lighten(@in-message-warning, 10%);
+        color: @color-f;
+        background: @in-message-warning;
 
         li {
             color: @in-message-warning-text;

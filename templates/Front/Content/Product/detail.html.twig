@@ -3,7 +3,7 @@
 {% import 'Front/Content/Product/boxDetail.html.twig' as boxDetail %}
 
 {% set domain = getDomain() %}
-{% set accessoriesHeadline = 'Související zboží'|trans %}
+{% set accessoriesHeadline = 'K produktu budete potřebovat'|trans %}
 
 {% block meta_description %}
     {{- product.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}

@@ -76,14 +76,19 @@
                     {% else %}
                         <div class="box-detail__description">
                             {% if typeSet %}
-                                <h2 class="box-detail__description__title" itemprop="name">
-                                    {{ product.getSeoH1(domain.id)|default(product.name) }}
-                                </h2>
+                                <div class="box-detail__description__wrap">
+                                    <h2 class="box-detail__description__title" itemprop="name">
+                                        {{ product.getSeoH1(domain.id)|default(product.name) }}
+                                    </h2>
+                                    <div class="box-detail__description__flags">
+                                        {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail in-flag--in-set', false, sellingPrice, product.variantsCount) }}
+                                    </div>
+                                </div>
+
                                 <p class="box-detail__description__code">
                                     {{ product.catnum }}
                                 </p>
                                 <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
-                                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail in-flag--right-side', false, sellingPrice, product.variantsCount) }}
                             {% endif %}
                         </div>
                     {% endif %}
@@ -93,8 +98,6 @@
                             <h2 class="box-detail__info__title" itemprop="name">
                                 {{ product.getSeoH1(domain.id)|default(product.name) }}
                             </h2>
-
-                            {{ product.getShortDescription(domain.id) }}
                         {% endif %}
 
                         {% for gift in product.gifts(domain.id) %}
@@ -250,7 +253,7 @@
                                                     {{ 'Níže je popis tohoto produktu'|trans }}
                                                 </div>
                                                 <div class="list-set__item__plus">
-                                                    <i class="svg svg-plus"></i>
+                                                    <i class="svg svg-plus-big"></i>
                                                 </div>
                                             </div>
                                         </div>
