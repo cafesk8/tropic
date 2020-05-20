@@ -299,8 +299,6 @@ services:
 
     App\Model\Product\MassEdit\MassEditActionProvider: ~
 
-    App\Model\Product\MassEdit\Action\FlagsMassAction: ~
-
     App\Model\Product\MassEdit\Action\HiddenMassAction: ~
 
     App\Model\Product\MassEdit\Action\CategoryMassAction: ~

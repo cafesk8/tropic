@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Product\MassEdit;
 
 use App\Model\Product\MassEdit\Action\CategoryMassAction;
-use App\Model\Product\MassEdit\Action\FlagsMassAction;
 use App\Model\Product\MassEdit\Action\HiddenMassAction;
 use App\Model\Product\MassEdit\Action\ProductParameterMassAction;
 
@@ -18,19 +17,16 @@ class MassEditActionProvider
 
     /**
      * @param \App\Model\Product\MassEdit\Action\HiddenMassAction $hiddenMassAction
-     * @param \App\Model\Product\MassEdit\Action\FlagsMassAction $flagsMassAction
      * @param \App\Model\Product\MassEdit\Action\CategoryMassAction $categoryMassAction
      * @param \App\Model\Product\MassEdit\Action\ProductParameterMassAction $productParameterMassAction
      * @throws \App\Model\Product\MassEdit\Exception\MassEditActionAlreadyExistsException
      */
     public function __construct(
         HiddenMassAction $hiddenMassAction,
-        FlagsMassAction $flagsMassAction,
         CategoryMassAction $categoryMassAction,
         ProductParameterMassAction $productParameterMassAction
     ) {
         $this->registerAction($hiddenMassAction);
-        $this->registerAction($flagsMassAction);
         $this->registerAction($categoryMassAction);
         $this->registerAction($productParameterMassAction);
     }
