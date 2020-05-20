@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Elasticsearch;
 
-use App\Model\Pricing\Currency\CurrencyFacade;
+use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Group\ProductGroupFacade;
-use App\Model\Product\Pricing\ProductManualInputPriceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository;
-use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
-use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportRepository as BaseProductExportRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -29,7 +25,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
  * @method int[] extractFlags(\App\Model\Product\Product $product)
  * @method array extractParameters(string $locale, \App\Model\Product\Product $product)
  * @method array extractVisibility(int $domainId, \App\Model\Product\Product $product)
- * @method array extractPrices(int $domainId, \App\Model\Product\Product $product)
  * @method int[] extractVariantIds(\App\Model\Product\Product $product)
  */
 class ProductExportRepository extends BaseProductExportRepository
@@ -40,29 +35,14 @@ class ProductExportRepository extends BaseProductExportRepository
     protected $productFacade;
 
     /**
-     * @var \App\Model\Pricing\Currency\CurrencyFacade
+     * @var \App\Model\Pricing\Group\PricingGroupFacade
      */
-    protected $currencyFacade;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation
-     */
-    protected $basePriceCalculation;
+    private $pricingGroupFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
      */
     private $pricingGroupSettingFacade;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting
-     */
-    private $pricingSetting;
-
-    /**
-     * @var \App\Model\Product\Pricing\ProductManualInputPriceRepository
-     */
-    private $productManualInputPriceRepository;
 
     /**
      * @var \App\Model\Product\Group\ProductGroupFacade
@@ -78,11 +58,8 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
-     * @param \App\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation $basePriceCalculation
-     * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -93,19 +70,13 @@ class ProductExportRepository extends BaseProductExportRepository
         ProductVisibilityRepository $productVisibilityRepository,
         FriendlyUrlFacade $friendlyUrlFacade,
         PricingGroupSettingFacade $pricingGroupSettingFacade,
-        PricingSetting $pricingSetting,
-        ProductManualInputPriceRepository $productManualInputPriceRepository,
-        BasePriceCalculation $basePriceCalculation,
-        CurrencyFacade $currencyFacade,
-        ProductGroupFacade $productGroupFacade
+        ProductGroupFacade $productGroupFacade,
+        PricingGroupFacade $pricingGroupFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
-        $this->pricingSetting = $pricingSetting;
-        $this->productManualInputPriceRepository = $productManualInputPriceRepository;
-        $this->currencyFacade = $currencyFacade;
-        $this->basePriceCalculation = $basePriceCalculation;
         $this->productGroupFacade = $productGroupFacade;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -148,7 +119,6 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
         $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale);
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
-        $result['default_price'] = $this->getDefaultPriceArray($product, $domainId);
         $result['gifts'] = $this->productFacade->getProductGiftNames($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
         $result['amount_multiplier'] = $product->getAmountMultiplier();
@@ -168,32 +138,25 @@ class ProductExportRepository extends BaseProductExportRepository
     }
 
     /**
-     * @param \App\Model\Product\Product $product
      * @param int $domainId
+     * @param \App\Model\Product\Product $product
      * @return array
      */
-    private function getDefaultPriceArray(Product $product, int $domainId): array
+    protected function extractPrices(int $domainId, Product $product): array
     {
-        $defaultPriceWithVat = null;
-        $defaultPriceWithoutVat = null;
         $defaultPricingGroupOnDomain = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
-        $productManualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, [$defaultPricingGroupOnDomain], $domainId);
-        $manualInputPriceForDefaultPricingGroup = reset($productManualInputPrices);
-        if ($manualInputPriceForDefaultPricingGroup !== false) {
-            $defaultPrice = $this->basePriceCalculation->calculateBasePriceRoundedByCurrency(
-                Money::create($manualInputPriceForDefaultPricingGroup['inputPrice']),
-                $this->pricingSetting->getInputPriceType(),
-                $product->getVatForDomain($domainId),
-                $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId)
-            );
-            $defaultPriceWithoutVat = (float)$defaultPrice->getPriceWithoutVat()->getAmount();
-            $defaultPriceWithVat = (float)$defaultPrice->getPriceWithVat()->getAmount();
+        $standardPricingGroupOnDomain = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
+        $pricesArray = parent::extractPrices($domainId, $product);
+
+        $defaultPricingGroupId = $defaultPricingGroupOnDomain->getId();
+        $standardPricingGroupId = $standardPricingGroupOnDomain->getId();
+        foreach ($pricesArray as $key => $priceArray) {
+            $priceArray['is_default'] = ($priceArray['pricing_group_id'] === $defaultPricingGroupId);
+            $priceArray['is_standard'] = ($priceArray['pricing_group_id'] === $standardPricingGroupId);
+            $pricesArray[$key] = $priceArray;
         }
 
-        return [
-            'price_with_vat' => $defaultPriceWithVat,
-            'price_without_vat' => $defaultPriceWithoutVat,
-        ];
+        return $pricesArray;
     }
 
     /**

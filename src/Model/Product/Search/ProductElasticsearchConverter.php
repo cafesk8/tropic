@@ -21,7 +21,6 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['prices']['vat'] = $product['prices']['vat'] ?? 0;
         $result['prices']['price_from'] = $product['prices']['price_from'] ?? false;
         $result['main_variant_id'] = $product['main_variant_id'] ?? null;
-        $result['default_price'] = $result['default_price'] ?? [];
         $result['minimum_amount'] = $product['minimum_amount'] ?? 1;
         $result['amount_multiplier'] = $product['amount_multiplier'] ?? 1;
         $result['variants_aliases'] = $result['variants_aliases'] ?? [];
@@ -29,6 +28,8 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['group_items'] = $result['group_items'] ?? [];
         $result['real_sale_stocks_quantity'] = $result['real_sale_stocks_quantity'] ?? 0;
         $result['is_in_any_sale_stock'] = $result['is_in_any_sale_stock'] ?? false;
+        $result['prices']['is_default'] = $product['prices']['is_default'] ?? false;
+        $result['prices']['is_standard'] = $product['prices']['is_standard'] ?? false;
 
         return $result;
     }
