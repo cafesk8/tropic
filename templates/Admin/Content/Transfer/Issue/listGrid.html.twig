@@ -1,11 +1,11 @@
 {% extends '@ShopsysFramework/Admin/Grid/Grid.html.twig' %}
 
 {% block grid_no_data %}
-    {{ 'Nenalezeny žádné problémy.'|trans }}
+    {{ 'Nenalezeny žádné hlášky.'|trans }}
 {% endblock %}
 
 {% block grid_pager_totalcount %}
-    {% set entityName = 'problémů'|trans %}
+    {% set entityName = 'hlášek'|trans %}
     {{ parent() }}
 {% endblock %}
 
