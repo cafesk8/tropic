@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Category\Transfer;
 
-use App\Component\Transfer\Logger\TransferLogger;
+use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Component\Transfer\Pohoda\Category\PohodaCategoryExportFacade;
 
 class CategoryQueueImportFacade
@@ -20,34 +20,41 @@ class CategoryQueueImportFacade
     private $categoryQueueImportRepository;
 
     /**
+     * @var \App\Component\Transfer\Logger\TransferLogger
+     */
+    private $logger;
+
+    /**
+     * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Model\Category\Transfer\CategoryQueueImportRepository $categoryQueueImportRepository
      * @param \App\Component\Transfer\Pohoda\Category\PohodaCategoryExportFacade $pohodaCategoryExportFacade
      */
     public function __construct(
+        TransferLoggerFactory $transferLoggerFactory,
         CategoryQueueImportRepository $categoryQueueImportRepository,
         PohodaCategoryExportFacade $pohodaCategoryExportFacade
     ) {
+        $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(CategoryImportCronModule::TRANSFER_IDENTIFIER);
         $this->categoryQueueImportRepository = $categoryQueueImportRepository;
         $this->pohodaCategoryExportFacade = $pohodaCategoryExportFacade;
     }
 
     /**
-     * @param \App\Component\Transfer\Logger\TransferLogger $transferLogger
      * @param \DateTime $dateTimeBeforeTransferFromPohodaServer
      * @param \DateTime|null $lastModificationDate
      */
     public function importDataToQueue(
-        TransferLogger $transferLogger,
         \DateTime $dateTimeBeforeTransferFromPohodaServer,
         ?\DateTime $lastModificationDate
-    ) {
+    ): void {
         $pohodaCategoryIds = $this->pohodaCategoryExportFacade->getPohodaCategoryIdsByLastUpdateTime($lastModificationDate);
         if (count($pohodaCategoryIds) === 0) {
-            $transferLogger->addInfo('Nejsou žádná data ke zpracování');
+            $this->logger->addInfo('Žádné kategorie k importu do fronty');
         } else {
             $this->insertChangedPohodaCategoryIds($pohodaCategoryIds, $dateTimeBeforeTransferFromPohodaServer);
-            $transferLogger->addInfo('Celkem změněných kategorií', ['pohodaCategoryIdsCount' => count($pohodaCategoryIds)]);
+            $this->logger->addInfo('Celkem změněných kategorií', ['pohodaCategoryIdsCount' => count($pohodaCategoryIds)]);
         }
+        $this->logger->persistTransferIssues();
     }
 
     /**

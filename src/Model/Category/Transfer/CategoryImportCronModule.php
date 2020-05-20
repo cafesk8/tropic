@@ -106,9 +106,9 @@ class CategoryImportCronModule extends AbstractTransferCronModule
         $transfer = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER);
         $dateTimeBeforeTransferFromPohodaServer = $this->pohodaEntityManager->getCurrentDateTimeFromPohodaDatabase();
 
-        $this->categoryQueueImportFacade->importDataToQueue($this->logger, $dateTimeBeforeTransferFromPohodaServer, $transfer->getLastStartAt());
-        $this->categoryImportFacade->processImport($this->logger);
-        $this->categoryRemoveFacade->removeCategories($this->logger);
+        $this->categoryQueueImportFacade->importDataToQueue($dateTimeBeforeTransferFromPohodaServer, $transfer->getLastStartAt());
+        $this->categoryImportFacade->processImport();
+        $this->categoryRemoveFacade->removeCategories();
 
         $this->logger->addInfo('Proběhne přepočet viditelnosti kategorií a produktů');
         $this->categoryVisibilityRepository->refreshCategoriesVisibility();
