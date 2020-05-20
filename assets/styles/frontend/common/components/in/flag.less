@@ -24,9 +24,8 @@
         bottom: auto;
     }
 
-    &--right-side {
-        left: auto;
-        right: 0;
+    &--in-set {
+        position: static;
     }
 
     &--product-list, &--slider {
@@ -66,9 +65,24 @@
             margin-right: auto;
         }
 
-        .in-flag--right-side & {
-            margin-left: auto;
-            margin-right: 0;
+        .in-flag--in-set & {
+            margin-left: 0;
+            margin-right: auto;
+
+            @media @query-sm {
+                margin-left: auto;
+                margin-right: 0;
+            }
+
+            @media @query-lg {
+                margin-left: 0;
+                margin-right: auto;
+            }
+    
+            @media @query-vl {
+                margin-left: auto;
+                margin-right: 0;
+            }
         }
     }
 }

@@ -10,7 +10,7 @@
 @list-set-item-arrow-size: 20px;
 @list-set-item-arrow-inner-size: @list-set-item-arrow-size - @list-set-item-active-border-width - 1px;
 @list-set-item-arrow-background: #71cd61;
-@list-set-item-plus-icon-size: 30px;
+@list-set-item-plus-icon-size: 25px;
 
 .list-set {
     .reset-ul();
@@ -205,9 +205,9 @@
             display: flex;
             position: absolute;
             left: 50%;
-            bottom: 0;
+            bottom: -1px;
             transform: translate(-50%, 50%);
-            z-index: @z-index-above;
+            z-index: @z-index-above + 1;
             height: @list-set-item-plus-icon-size;
 
             font-size: @list-set-item-plus-icon-size;

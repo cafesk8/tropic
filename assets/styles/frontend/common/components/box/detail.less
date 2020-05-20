@@ -11,15 +11,17 @@
 @box-detail-params-title-width: 32%;
 @box-detail-info-padding: 30px;
 
+@box-detail-description-flags-width: 170px;
+
 .box-detail {
     &__product {
         display: flex;
         flex-direction: column;
-        margin-bottom: 40px;
+        margin-bottom: 23px;
 
         @media @query-lg {
             flex-direction: row;
-            margin-bottom: 70px;
+            margin-bottom: 53px;
         }
 
         &--small-gap {
@@ -70,11 +72,62 @@
             width: @box-detail-left-width;
         }
 
+        &__wrap {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            @media @query-sm {
+                flex-direction: row;
+            }
+
+            @media @query-lg {
+                flex-direction: column;
+            }
+
+            @media @query-vl {
+                flex-direction: row;
+            }
+        }
+
         &__title {
+            width: 100%;
             line-height: 30px;
-            margin-bottom: 0;
+            margin-bottom: 5px;
 
             font-size: 21px;
+
+            @media @query-sm {
+                width: calc(~"100% - @{box-detail-description-flags-width}");
+                margin-bottom: 0;
+            }
+
+            @media @query-lg {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+            @media @query-vl {
+                width: calc(~"100% - @{box-detail-description-flags-width}");
+                margin-bottom: 0;
+            }
+        }
+
+        &__flags {
+            width: 100%;
+
+            @media @query-sm {
+                width: @box-detail-description-flags-width;
+            }
+
+            @media @query-lg {
+                width: 100%;
+            }
+
+            @media @query-vl {
+                width: @box-detail-description-flags-width;
+            }
         }
 
         &__code {

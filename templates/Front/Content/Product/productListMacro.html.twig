@@ -21,7 +21,7 @@
                                     <div class="list-products-set__in">
                                         <div class="list-products-set__overlay"></div>
                                         <div class="list-products-set__overlay list-products-set__overlay--right"></div>
-                                        <div class="list-products-set__list js-horizontal-list-slides">
+                                        <div class="list-products-set__list js-horizontal-list-slides js-horizontal-list-slides-sets">
                                             {% for groupItem in productView.groupItems %}
                                                 <a href="{{ productView.action.detailUrl }}" class="list-products-set__item">
                                                     <div class="list-products-set__item__image">
@@ -32,7 +32,7 @@
                                                     </div>
                                                     {% if not loop.last %}
                                                         <div class="list-products-set__item__plus">
-                                                            <i class="svg svg-plus"></i>
+                                                            <i class="svg svg-plus-big"></i>
                                                         </div>
                                                     {% endif %}
                                                 </a>
@@ -111,8 +111,8 @@
                                     {% if freeTransportAndPaymentFlagId is not null %}
                                         {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
                                     {% endif %}
-                                    {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice, productView.variantsCount) }}
                                 </div>
+                                {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice, productView.variantsCount) }}
                             </a>
 
                             {% set productSellingPrice = productView.sellingPrice %}
