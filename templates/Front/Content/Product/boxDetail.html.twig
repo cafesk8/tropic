@@ -1,4 +1,4 @@
-{% macro productBox(product, youtubeDetails, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) %}
+{% macro productBox(product, youtubeDetails, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews) %}
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
@@ -289,6 +289,24 @@
                 {{ render(controller('App\\Controller\\Front\\ProductController:boxTabsAction', { productId: productId })) }}
             </div>
         </div>
+
+        {% if parentSetViews is not empty %}
+            {% import 'Front/Content/Product/productSetViewMacro.html.twig' as productSetMacro %}
+
+            <div class="web__line">
+                <div class="web__container">
+                    <h2 class="box-products-slider__title">
+                        {{ 'Nakupte produkt ve výhodném setu'|trans }}
+                    </h2>
+
+                    <ul class="list-products js-list js-product-list">
+                        {% for parentSetView in parentSetViews %}
+                            {{ productSetMacro.productSetView(parentSetView) }}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endmacro %}
 

@@ -6,13 +6,16 @@ namespace App\Model\Product\View;
 
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
+use App\Model\Product\Group\ProductGroup;
+use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade;
 use App\Model\Product\PriceBombProduct\PriceBombProductFacade;
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade;
-use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade;
@@ -26,6 +29,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  * @property \App\Model\Product\View\ListedProductViewFactory $listedProductViewFactory
  * @property \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
  * @property \App\Model\Product\ProductFacade $productFacade
+ * @method \App\Model\Product\View\ListedProductView[] createFromProducts(array $products)
  */
 class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 {
@@ -50,6 +54,11 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
     protected $priceBombProductFacade;
 
     /**
+     * @var \App\Model\Product\Group\ProductGroupFacade
+     */
+    private $productGroupFacade;
+
+    /**
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -63,6 +72,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      * @param \App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade $lastVisitedProductsFacade
      * @param \App\Model\Product\PriceBombProduct\PriceBombProductFacade $priceBombProductFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
      */
     public function __construct(
         ProductFacade $productFacade,
@@ -77,13 +87,15 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         CachedBestsellingProductFacade $cachedBestsellingProductFacade,
         LastVisitedProductsFacade $lastVisitedProductsFacade,
         PriceBombProductFacade $priceBombProductFacade,
-        PricingGroupFacade $pricingGroupFacade
+        PricingGroupFacade $pricingGroupFacade,
+        ProductGroupFacade $productGroupFacade
     ) {
         parent::__construct($productFacade, $productAccessoryFacade, $domain, $currentCustomerUser, $topProductFacade, $productOnCurrentDomainFacade, $listedProductViewFactory, $productActionViewFacade, $imageViewFacade);
         $this->cachedBestsellingProductFacade = $cachedBestsellingProductFacade;
         $this->lastVisitedProductsFacade = $lastVisitedProductsFacade;
         $this->priceBombProductFacade = $priceBombProductFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->productGroupFacade = $productGroupFacade;
     }
 
     /**
@@ -132,6 +144,17 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
     }
 
     /**
+     * @param \App\Model\Product\Product $product
+     * @return \App\Model\Product\View\ListedProductView[]
+     */
+    public function getParentSetsByProduct(Product $product): array
+    {
+        return $this->createFromProducts(array_map(function (ProductGroup $productGroup) {
+            return $productGroup->getMainProduct();
+        }, $this->productGroupFacade->getAllByItem($product)));
+    }
+
+    /**
      * @param array $productsArray
      * @return \App\Model\Product\View\ListedProductView[]
      */
@@ -147,7 +170,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
             }
         }
 
-        $imageViews = $this->imageViewFacade->getForEntityIds(Product::class, $productIds);
+        $imageViews = $this->imageViewFacade->getForEntityIds(BaseProduct::class, $productIds);
         $salePricingGroup = $this->pricingGroupFacade->getSalePricePricingGroup($this->domain->getId());
 
         $listedProductViews = [];

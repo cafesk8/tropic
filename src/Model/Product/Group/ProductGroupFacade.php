@@ -6,6 +6,8 @@ namespace App\Model\Product\Group;
 
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
+use Shopsys\ReadModelBundle\Image\ImageViewFacade;
 
 class ProductGroupFacade
 {
@@ -15,11 +17,18 @@ class ProductGroupFacade
     private $productGroupRepository;
 
     /**
-     * @param \App\Model\Product\Group\ProductGroupRepository $productGroupRepository
+     * @var \Shopsys\ReadModelBundle\Image\ImageViewFacade
      */
-    public function __construct(ProductGroupRepository $productGroupRepository)
+    private $imageViewFacade;
+
+    /**
+     * @param \App\Model\Product\Group\ProductGroupRepository $productGroupRepository
+     * @param \Shopsys\ReadModelBundle\Image\ImageViewFacade $imageViewFacade
+     */
+    public function __construct(ProductGroupRepository $productGroupRepository, ImageViewFacade $imageViewFacade)
     {
         $this->productGroupRepository = $productGroupRepository;
+        $this->imageViewFacade = $imageViewFacade;
     }
 
     /**
@@ -47,13 +56,19 @@ class ProductGroupFacade
      */
     public function getAllForElasticByMainProduct(Product $mainProduct, string $locale): array
     {
-        return array_map(function (ProductGroup $productGroup) use ($locale) {
+        $productGroups = $this->getAllByMainProduct($mainProduct);
+        $imageViews = $this->imageViewFacade->getForEntityIds(BaseProduct::class, array_map(function (ProductGroup $productGroup) {
+            return $productGroup->getItem()->getId();
+        }, $productGroups));
+
+        return array_map(function (ProductGroup $productGroup) use ($locale, $imageViews) {
             return [
                 'id' => $productGroup->getItem()->getId(),
                 'name' => $productGroup->getItem()->getName($locale),
                 'amount' => $productGroup->getItemCount(),
+                'image' => $imageViews[$productGroup->getItem()->getId()],
             ];
-        }, $this->getAllByMainProduct($mainProduct));
+        }, $productGroups);
     }
 
     /**

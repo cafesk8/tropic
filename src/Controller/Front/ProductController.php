@@ -10,6 +10,7 @@ use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use App\Model\Gtm\GtmFacade;
 use App\Model\Product\ProductFacade;
+use App\Model\Product\View\ListedProductViewElasticFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
@@ -117,6 +118,11 @@ class ProductController extends FrontBaseController
     private $discountExclusionFacade;
 
     /**
+     * @var \App\Model\Product\View\ListedProductViewElasticFacade
+     */
+    private $listedProductViewElasticFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -133,6 +139,7 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
+     * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewElasticFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -150,7 +157,8 @@ class ProductController extends FrontBaseController
         GtmFacade $gtmFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
         BrandFacade $brandFacade,
-        DiscountExclusionFacade $discountExclusionFacade
+        DiscountExclusionFacade $discountExclusionFacade,
+        ListedProductViewElasticFacade $listedProductViewElasticFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -168,6 +176,7 @@ class ProductController extends FrontBaseController
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->brandFacade = $brandFacade;
         $this->discountExclusionFacade = $discountExclusionFacade;
+        $this->listedProductViewElasticFacade = $listedProductViewElasticFacade;
     }
 
     /**
@@ -201,6 +210,7 @@ class ProductController extends FrontBaseController
             'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
+            'parentSetViews' => $this->listedProductViewElasticFacade->getParentSetsByProduct($product),
         ]);
     }
 
