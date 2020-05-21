@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Front;
 
 use App\Component\DiscountExclusion\DiscountExclusionFacade;
-use App\Component\Setting\Setting;
 use App\Form\Front\Product\ProductFilterFormType;
-use App\Model\Article\ArticleFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use App\Model\Gtm\GtmFacade;
@@ -104,16 +102,6 @@ class ProductController extends FrontBaseController
     private $productFacade;
 
     /**
-     * @var \App\Component\Setting\Setting
-     */
-    private $setting;
-
-    /**
-     * @var \App\Model\Article\ArticleFacade
-     */
-    private $articleFacade;
-
-    /**
      * @var \App\Model\Gtm\GtmFacade
      */
     private $gtmFacade;
@@ -141,8 +129,6 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
      * @param \App\Model\Product\ProductFacade $productFacade
-     * @param \App\Component\Setting\Setting $setting
-     * @param \App\Model\Article\ArticleFacade $articleFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
@@ -161,8 +147,6 @@ class ProductController extends FrontBaseController
         BlogArticleFacade $blogArticleFacade,
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
         ProductFacade $productFacade,
-        Setting $setting,
-        ArticleFacade $articleFacade,
         GtmFacade $gtmFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
         BrandFacade $brandFacade,
@@ -180,8 +164,6 @@ class ProductController extends FrontBaseController
         $this->blogArticleFacade = $blogArticleFacade;
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
         $this->productFacade = $productFacade;
-        $this->setting = $setting;
-        $this->articleFacade = $articleFacade;
         $this->gtmFacade = $gtmFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->brandFacade = $brandFacade;
@@ -203,12 +185,10 @@ class ProductController extends FrontBaseController
 
         $accessories = $this->listedProductViewFacade->getAllAccessories($product->getId());
         $domainId = $this->domain->getId();
-        $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $domainId);
 
         return $this->render('Front/Content/Product/detail.html.twig', [
             'product' => $product,
             'accessories' => $accessories,
-            'productMainCategory' => $productMainCategory,
             'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $domainId),
             'domainId' => $domainId,
             'productBlogArticles' => $this->blogArticleFacade->getVisibleByProduct(
@@ -218,11 +198,27 @@ class ProductController extends FrontBaseController
                 self::PRODUCT_BLOG_ARTICLES_LIMIT
             ),
             'youtubeDetails' => $this->productFacade->getYoutubeViews($product),
-            'productSizeArticleId' => $this->setting->getForDomain(Setting::PRODUCT_SIZE_ARTICLE_ID, $domainId),
-            'loyaltyProgramArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $this->domain->getId()),
             'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
+        ]);
+    }
+
+    /**
+     * @param int $productId
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function boxTabsAction(int $productId)
+    {
+        $product = $this->productOnCurrentDomainFacade->getVisibleProductById($productId);
+        $domainId = $this->domain->getId();
+        $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $domainId);
+
+        return $this->render('Front/Content/Product/boxTabs.html.twig', [
+            'product' => $product,
+            'productMainCategory' => $productMainCategory,
+            'youtubeDetails' => $this->productFacade->getYoutubeViews($product),
+            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $domainId),
         ]);
     }
 

@@ -1,11 +1,16 @@
+{% import _self as self %}
+
+{{ self.productTabs(
+    product,
+    productMainCategory,
+    youtubeDetails,
+    productVisibleProductCategoryDomains
+) }}
+
 {% macro productTabs(
     product,
     productMainCategory,
-    visible,
     youtubeDetails,
-    productSizeArticleId,
-    accessories,
-    accessoriesHeadline,
     productVisibleProductCategoryDomains
 ) %}
     {% set domain = getDomain() %}
@@ -17,7 +22,7 @@
     {% if product.getDescription(domain.id)
         or productParameterValues > 0 and not product.isMainVariant
     %}
-    <div class="box-detail__content {% if visible == false %}display-none{% endif %}">
+    <div class="box-detail__content">
         <div class="in-tab in-tab--full-width js-anchor-tabs">
             <div class="in-tab__content">
                 <div class="in-tab__content__left">
@@ -143,7 +148,7 @@
                             {{ _self.parameters(product, productParameterValues, parametersHeadline, productVisibleProductCategoryDomains) }}
 
                             <div class="in-tab__content__item__block">
-                                <div class="box-detail__downloads"> 
+                                <div class="box-detail__downloads">
                                     <h3 class="in-tab__content__item__title">
                                         {{ 'Ke stažení'|trans }}
                                     </h3>

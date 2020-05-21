@@ -1,7 +1,6 @@
-{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) %}
+{% macro productBox(product, youtubeDetails, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) %}
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
-    {% import 'Front/Content/Product/boxTabs.html.twig' as boxTabs %}
     {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
     {% import 'Front/Inline/Common/discountExclusionNoticeMacro.html.twig' as discountExclusion %}
     {% set domain = getDomain() %}
@@ -9,7 +8,7 @@
     {% set showFlagsMaxCount = 3 %}
     {% set typeSet = product.pohodaProductType is same as(5) %}
 
-    <div class="box-detail {% if visible == false %}display-none{% endif %}">
+    <div class="box-detail">
         <div class="web__line">
             <div class="web__container">
                 <div class="box-detail__product{% if typeSet %} box-detail__product--small-gap{% endif %}">
@@ -224,7 +223,7 @@
                             <ul class="list-set list-set--{{ product.productGroups|length }} js-list-set-container">
                                 {% for productGroup in sortProductGroupsByPrice(product.productGroups) %}
                                     {% set productSellingPrice = getProductSellingPrice(productGroup.item) %}
-                                    <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item">
+                                    <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item" data-product-group-item-id="{{ productGroup.item.id }}">
                                         <div class="list-set__item__in">
                                             <div class="list-set__item__image">
                                                 {{ image(productGroup.item, { size: 'listSet' }) }}
@@ -280,17 +279,14 @@
         {% endif %}
 
         <div class="web__line">
-            <div class="web__container">
-                {{ boxTabs.productTabs(
-                    product,
-                    productMainCategory,
-                    visible,
-                    youtubeDetails,
-                    productSizeArticleId,
-                    accessories,
-                    accessoriesHeadline,
-                    productVisibleProductCategoryDomains
-                ) }}
+            <div class="web__container js-box-tabs">
+                {% if not typeSet %}
+                    {% set productId = product.id %}
+                {% else %}
+                    {% set firstProductGroup = sortProductGroupsByPrice(product.productGroups)|first %}
+                    {% set productId = firstProductGroup.item.id %}
+                {% endif %}
+                {{ render(controller('App\\Controller\\Front\\ProductController:boxTabsAction', { productId: productId })) }}
             </div>
         </div>
     </div>

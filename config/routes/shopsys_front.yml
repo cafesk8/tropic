@@ -199,3 +199,10 @@ front_customer_delivery_address_delete:
     methods: [GET]
     requirements:
         deliveryAddressId: \d+
+
+front_product_box_tabs:
+    path: /product/box-tabs/{productId}
+    defaults: { _controller: App\Controller\Front\ProductController:boxTabsAction }
+    methods: [GET]
+    requirements:
+        productId: \d+
