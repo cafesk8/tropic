@@ -125,6 +125,8 @@ class ProductDataFactory extends BaseProductDataFactory
 
         foreach ($this->domain->getAllIds() as $domainId) {
             $productData->generateToMergadoXmlFeeds[$domainId] = true;
+            $productData->descriptionHashes[$domainId] = null;
+            $productData->shortDescriptionHashes[$domainId] = null;
         }
 
         $productData->stockQuantityByStoreId = [];
@@ -169,8 +171,13 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->flags[] = $this->productFlagDataFactory->createFromProductFlag($productFlag);
         }
 
+        $productData->descriptionAutomaticallyTranslated = $product->isDescriptionAutomaticallyTranslated();
+        $productData->shortDescriptionAutomaticallyTranslated = $product->isShortDescriptionAutomaticallyTranslated();
+
         foreach ($this->domain->getAllIds() as $domainId) {
             $productData->generateToMergadoXmlFeeds[$domainId] = $product->isGenerateToMergadoXmlFeed($domainId);
+            $productData->descriptionHashes[$domainId] = $product->getDescriptionHash($domainId);
+            $productData->shortDescriptionHashes[$domainId] = $product->getShortDescriptionHash($domainId);
         }
     }
 

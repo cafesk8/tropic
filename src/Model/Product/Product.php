@@ -223,6 +223,20 @@ class Product extends BaseProduct
     private $warranty;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $descriptionAutomaticallyTranslated;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $shortDescriptionAutomaticallyTranslated;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -290,6 +304,8 @@ class Product extends BaseProduct
         $this->deliveryDays = $productData->deliveryDays;
         $this->refresh = false;
         $this->flags = new ArrayCollection();
+        $this->descriptionAutomaticallyTranslated = $productData->descriptionAutomaticallyTranslated;
+        $this->shortDescriptionAutomaticallyTranslated = $productData->shortDescriptionAutomaticallyTranslated;
     }
 
     /**
@@ -974,6 +990,8 @@ class Product extends BaseProduct
         foreach ($this->domains as $productDomain) {
             $domainId = $productDomain->getDomainId();
             $productDomain->setGenerateToMergadoXmlFeed($productData->generateToMergadoXmlFeeds[$domainId]);
+            $productDomain->setDescriptionHash($productData->descriptionHashes[$domainId]);
+            $productDomain->setShortDescriptionHash($productData->shortDescriptionHashes[$domainId]);
         }
     }
 
@@ -1171,5 +1189,39 @@ class Product extends BaseProduct
             }
         }
         return false;
+    }
+
+    /**
+     * @param int $domainId
+     * @return string|null
+     */
+    public function getDescriptionHash(int $domainId): ?string
+    {
+        return $this->getProductDomain($domainId)->getDescriptionHash();
+    }
+
+    /**
+     * @param int $domainId
+     * @return string|null
+     */
+    public function getShortDescriptionHash(int $domainId): ?string
+    {
+        return $this->getProductDomain($domainId)->getShortDescriptionHash();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDescriptionAutomaticallyTranslated(): bool
+    {
+        return $this->descriptionAutomaticallyTranslated;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShortDescriptionAutomaticallyTranslated(): bool
+    {
+        return $this->shortDescriptionAutomaticallyTranslated;
     }
 }

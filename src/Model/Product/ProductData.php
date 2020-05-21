@@ -128,6 +128,26 @@ class ProductData extends BaseProductData
      */
     public $flags;
 
+    /**
+     * @var string[]|null[]
+     */
+    public $descriptionHashes;
+
+    /**
+     * @var string[]|null[]
+     */
+    public $shortDescriptionHashes;
+
+    /**
+     * @var bool
+     */
+    public $descriptionAutomaticallyTranslated;
+
+    /**
+     * @var bool
+     */
+    public $shortDescriptionAutomaticallyTranslated;
+
     public function __construct()
     {
         parent::__construct();
@@ -144,5 +164,9 @@ class ProductData extends BaseProductData
         $this->groupItems = [];
         $this->generateToMergadoXmlFeeds = [];
         $this->eurCalculatedAutomatically = true;
+        $this->descriptionHashes = [];
+        $this->shortDescriptionHashes = [];
+        $this->descriptionAutomaticallyTranslated = true;
+        $this->shortDescriptionAutomaticallyTranslated = true;
     }
 }

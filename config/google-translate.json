@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "preklad-popisu",
+  "private_key_id": "e2ef34438618e150bda7426024df7f625b564dcf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDATuGGGFjt1ndm\nJmwcAkvRFj03hPDqmp4YbdZY77XtQRGzSptmALus+zfAMNqAT5lG4+wwb5rKembh\nGnfXeGNaYBMhFYWOaX7UptWkJC8GwFm+cxAw4OjDddZKNCgi4Wm8r6vGOOqZsYpY\nPs19VAYw8uvDj7H3y0hj+SOXqA3k8EuAarXLbbgk1amqMeA8FlIRYn6cceKcq3MT\nLw0oKaAFtKm1enqfMSoSZum+6BgeFaANpMuDs2l0+A6n5HYUHtazY3SvzPrTDWav\nxunJgxBeCJg7EXmM57XdIogc7iBCuVdc7Kvu4dmlhhmqpIy/PNQDq2pjY3roZicT\nXRFU5LERAgMBAAECggEAB9S+fMwthOPkoVGDugFC7p0B+aqNd/Q7Z2HDpoP+a86o\nRp2NZfI2MkVZoBctMqfrJTafVdqZmlCxM031Xt4dZ579cG20rlev7T9s+D3r91Gq\nZeXAHUlvWRRJmWR11PPKbz9VFqGXNhKDgHPwQMAE74XY4XIOzHkn9cA9uY2DoVSw\nejVSMfRP/YZDHgmtRLa7PGCYKws3n6J5YYnKorFwaPurRcAMwXUbQS1WseOguz2B\nw34Fo3pdxpdhn5v3UyMNIAy82Y0PT65FEIkbyG4HdVcnJ3B/QTnuJqGrHARuCkHN\nL2X4xokzvM9sg3cFobPxnDL3XFWnd1hWsIwTLyQZAQKBgQD8O1XTZgvapgAMy4Nt\nsH9qwNgwo/VsYWns6J/HvCHK01yWs6pPgJEHiq8wHq7nZYdchHJQAjpwtcMH292V\nodOSw/dd+6LO97RCv++8TW0wCIAuLtixdlxxALNdpJ0HXv7hHsyW1h/JxAUaWZ7v\ngKK2sIrmEXeuDTdiVdUUzKHfUQKBgQDDLl3eXV8vQ2J3EhGtMKDomWM8F2KR64hp\nRIPKnYt0wGCikRH/Ft5q+W2KEroaHoZyD0XlDBuWmHx+fQYjwIJA1Pvp+ZliuhQT\nJQnRzPfi78UKFv+2JxLGYMGXIqDB6mLpbfPwsUHO164ZWMnX+iDV0qbtFtqTqTNS\nVjHMsWLFwQKBgCPL8/lFkUcdqgIm2+c0VlD7P3NfwZP5G0RhG1QIci9L4ecNZo1T\n7MFKQGSu5hm3AgfyUBrkxhB660vxOzhiOBmrMC8paEjBRNb4UHjD8EwR2Mc1JNHC\nv4nWFJ6knxiNtdSTP2vkxawn4qWDtJe/BNiyo3PVZMvR2ltdXRlPlWWRAoGBAJ5u\nK5nM9u95Zhq62whW+bX0lB156fQCWOcBy2yTN1jcs1QiJ5aFLKNuteCm1NNQxdcd\n2KFUk6xJOHy/5VTt9YzElXtVtJDz9EmZ/f+Dvg9CixFmm8hyrQXEEkAoxo7BP+q0\n6pcMext37QT8ElMy4KZP6Fl4/JFxfYwvFRtPPZrBAoGBAL1M9rDKu56Iq4TKaDgr\nG50JxPuAAzOaYxregZOg0KhrsDO89UWso3PmjysP+EHtYUxAE2VTKHVNEoCdwT8o\n0ILuxAP/n75Rl0jKlzIt2J42YCkCigJ/3F4ty+QscDuXBN2yev+bErdueHBbUzF+\nnzt8rm5+FciEf+bhyEMkvbXC\n-----END PRIVATE KEY-----\n",
+  "client_email": "tropic-liberec@preklad-popisu.iam.gserviceaccount.com",
+  "client_id": "116475441916889744741",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/tropic-liberec%40preklad-popisu.iam.gserviceaccount.com"
+}
