@@ -82,7 +82,7 @@ class ProductImageImportFacade
 
     public function importImagesFromPohoda(): void
     {
-        $imagesTargetPath = $this->imagesDirectory . self::PRODUCT_IMAGES_SUBDIR;
+        $imagesTargetPath = $this->getImagesTargetPath();
         $nextImageId = $this->imageFacade->getHighestImageId() + 1;
         $productsIndexedByPohodaId = $this->productFacade->getAllIndexedByPohodaId();
         $productPohodaIds = array_keys($productsIndexedByPohodaId);
@@ -97,6 +97,8 @@ class ProductImageImportFacade
             $this->logger->addInfo('Žádné obrázky k přenesení');
             return;
         }
+
+        $pohodaImageIds = [];
         foreach ($pohodaImages as $pohodaImage) {
             $productPohodaId = $pohodaImage->productPohodaId;
             if (!array_key_exists($productPohodaId, $productsIndexedByPohodaId)) {
@@ -111,7 +113,10 @@ class ProductImageImportFacade
             $this->processImage($pohodaImage, $imagesTargetPath, $nextImageId, $product);
             $nextImageId++;
             $this->imageFacade->restartImagesIdsDbSequence($nextImageId);
+            $pohodaImageIds[] = $pohodaImage->id;
         }
+
+        $this->deleteOrphanImages($pohodaImageIds);
     }
 
     /**
@@ -161,5 +166,29 @@ class ProductImageImportFacade
                 'pohodaImage' => $pohodaImage,
             ]);
         }
+    }
+
+    /**
+     * @param array $pohodaImageIds
+     */
+    public function deleteOrphanImages(array $pohodaImageIds): void
+    {
+        $imageIdsAndExtensionsToDelete = $this->imageFacade->deleteImagesWithNotExistingPohodaId($pohodaImageIds);
+        $imagesTargetPath = $this->getImagesTargetPath();
+        foreach ($imageIdsAndExtensionsToDelete as $imageIdAndExtensionToDelete) {
+            $imagePathToDelete = $imagesTargetPath . $imageIdAndExtensionToDelete['id'] . '.' . $imageIdAndExtensionToDelete['extension'];
+            $this->filesystem->delete($imagePathToDelete);
+            $this->logger->addInfo('Image deleted', [
+                'path' => $imagePathToDelete,
+            ]);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    private function getImagesTargetPath(): string
+    {
+        return $this->imagesDirectory . self::PRODUCT_IMAGES_SUBDIR;
     }
 }

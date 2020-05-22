@@ -89,4 +89,24 @@ class ImageRepository extends BaseImageRepository
             'id' => $imageId,
         ]);
     }
+
+    /**
+     * @param int[] $currentPohodaIds
+     * @return array
+     */
+    public function deleteImagesWithNotExistingPohodaId(array $currentPohodaIds): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping
+            ->addScalarResult('id', 'id')
+            ->addScalarResult('extension', 'extension');
+        $imageIdsToDelete = $this->em->createNativeQuery('SELECT id, extension FROM images WHERE pohoda_id IS NOT NULL AND pohoda_id NOT IN (:pohodaIds)', $resultSetMapping)->execute([
+            'pohodaIds' => $currentPohodaIds,
+        ]);
+        $this->em->createNativeQuery('DELETE FROM images WHERE pohoda_id IS NOT NULL AND pohoda_id NOT IN (:pohodaIds)', new ResultSetMapping())->execute([
+            'pohodaIds' => $currentPohodaIds,
+        ]);
+
+        return $imageIdsToDelete;
+    }
 }

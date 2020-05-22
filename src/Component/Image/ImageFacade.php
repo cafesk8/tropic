@@ -144,4 +144,13 @@ class ImageFacade extends BaseImageFacade
     {
         $this->imageRepository->updateImagePosition($imageId, $position);
     }
+
+    /**
+     * @param int[] $currentPohodaIds
+     * @return array
+     */
+    public function deleteImagesWithNotExistingPohodaId(array $currentPohodaIds): array
+    {
+        return $this->imageRepository->deleteImagesWithNotExistingPohodaId($currentPohodaIds);
+    }
 }
