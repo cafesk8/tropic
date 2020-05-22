@@ -22,6 +22,13 @@ class Image extends BaseImage
     private $migrateFileName;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pohodaId;
+
+    /**
      * @return string|null
      */
     public function getMigrateFileName(): ?string

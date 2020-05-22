@@ -105,6 +105,7 @@ class ImageFacade extends BaseImageFacade
      * @param string $extension
      * @param int|null $position
      * @param string|null $type
+     * @param int|null $pohodaId
      */
     public function saveImageIntoDb(
         int $entityId,
@@ -112,9 +113,10 @@ class ImageFacade extends BaseImageFacade
         int $imageId,
         string $extension,
         ?int $position = null,
-        ?string $type = null
+        ?string $type = null,
+        ?int $pohodaId = null
     ): void {
-        $this->imageRepository->saveImageIntoDb($entityId, $entityName, $imageId, $extension, $position, $type);
+        $this->imageRepository->saveImageIntoDb($entityId, $entityName, $imageId, $extension, $position, $type, $pohodaId);
     }
 
     /**
@@ -123,5 +125,23 @@ class ImageFacade extends BaseImageFacade
     public function restartImagesIdsDbSequence(int $startWithId): void
     {
         $this->imageRepository->restartImagesIdsDbSequence($startWithId);
+    }
+
+    /**
+     * @param int $pohodaId
+     * @return \App\Component\Image\Image|null
+     */
+    public function findByPohodaId(int $pohodaId): ?Image
+    {
+        return $this->imageRepository->findByPohodaId($pohodaId);
+    }
+
+    /**
+     * @param int $imageId
+     * @param int $position
+     */
+    public function updateImagePosition(int $imageId, int $position): void
+    {
+        $this->imageRepository->updateImagePosition($imageId, $position);
     }
 }

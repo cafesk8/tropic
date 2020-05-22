@@ -32,6 +32,7 @@ class ImageRepository extends BaseImageRepository
      * @param string $extension
      * @param int|null $position
      * @param string|null $type
+     * @param int|null $pohodaId
      */
     public function saveImageIntoDb(
         int $entityId,
@@ -39,11 +40,12 @@ class ImageRepository extends BaseImageRepository
         int $imageId,
         string $extension,
         ?int $position = null,
-        ?string $type = null
+        ?string $type = null,
+        ?int $pohodaId = null
     ): void {
         $query = $this->em->createNativeQuery(
-            'INSERT INTO images (id, entity_name, entity_id, type, extension, position, modified_at)
-            VALUES (:id, :entity_name, :entity_id, :type, :extension, :position, :modified_at)',
+            'INSERT INTO images (id, entity_name, entity_id, type, extension, position, modified_at, pohoda_id)
+            VALUES (:id, :entity_name, :entity_id, :type, :extension, :position, :modified_at, :pohoda_id)',
             new ResultSetMapping()
         );
 
@@ -55,6 +57,7 @@ class ImageRepository extends BaseImageRepository
             'extension' => $extension,
             'position' => $position,
             'modified_at' => new \DateTime(),
+            'pohoda_id' => $pohodaId,
         ]);
     }
 
@@ -64,5 +67,26 @@ class ImageRepository extends BaseImageRepository
     public function restartImagesIdsDbSequence(int $startWithId): void
     {
         $this->em->createNativeQuery(sprintf('ALTER SEQUENCE images_id_seq RESTART WITH %d', $startWithId), new ResultSetMapping())->execute();
+    }
+
+    /**
+     * @param int $pohodaId
+     * @return \App\Component\Image\Image|null
+     */
+    public function findByPohodaId(int $pohodaId): ?Image
+    {
+        return $this->getImageRepository()->findOneBy(['pohodaId' => $pohodaId]);
+    }
+
+    /**
+     * @param int $imageId
+     * @param int $position
+     */
+    public function updateImagePosition(int $imageId, int $position): void
+    {
+        $this->em->createNativeQuery('UPDATE images SET position = :position WHERE id = :id', new ResultSetMapping())->execute([
+            'position' => $position,
+            'id' => $imageId,
+        ]);
     }
 }

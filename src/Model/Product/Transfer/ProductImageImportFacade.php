@@ -108,7 +108,7 @@ class ProductImageImportFacade
             }
 
             $product = $productsIndexedByPohodaId[$productPohodaId];
-            $this->saveImage($pohodaImage, $imagesTargetPath, $nextImageId, $product);
+            $this->processImage($pohodaImage, $imagesTargetPath, $nextImageId, $product);
             $nextImageId++;
             $this->imageFacade->restartImagesIdsDbSequence($nextImageId);
         }
@@ -120,13 +120,32 @@ class ProductImageImportFacade
      * @param int $nextImageId
      * @param \App\Model\Product\Product $product
      */
-    public function saveImage(PohodaImage $pohodaImage, string $imagesTargetPath, int $nextImageId, Product $product): void
+    public function processImage(PohodaImage $pohodaImage, string $imagesTargetPath, int $nextImageId, Product $product): void
     {
         try {
+            $imageByPohodaId = $this->imageFacade->findByPohodaId($pohodaImage->id);
+            if ($imageByPohodaId !== null) {
+                if ($imageByPohodaId->getPosition() !== $pohodaImage->position) {
+                    $this->imageFacade->updateImagePosition($imageByPohodaId->getId(), $pohodaImage->position);
+                    $this->logger->addInfo('Aktualizována pozice obrázku', [
+                        'pohodaImage' => $pohodaImage,
+                        'productId' => $product->getId(),
+                    ]);
+                }
+                return;
+            }
             $image = $this->mServerClient->getImage('/documents/Obrázky/' . rawurlencode($pohodaImage->file));
             $imageTargetPath = $imagesTargetPath . $nextImageId . '.' . $pohodaImage->extension;
             $this->filesystem->put($imageTargetPath, $image);
-            $this->imageFacade->saveImageIntoDb($product->getId(), 'product', $nextImageId, $pohodaImage->extension, $pohodaImage->position);
+            $this->imageFacade->saveImageIntoDb(
+                $product->getId(),
+                'product',
+                $nextImageId,
+                $pohodaImage->extension,
+                $pohodaImage->position,
+                null,
+                $pohodaImage->id
+            );
             $this->logger->addInfo('Obrázek uložen', [
                 'pohodaImage' => $pohodaImage,
                 'productId' => $product->getId(),

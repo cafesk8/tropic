@@ -97,6 +97,7 @@ parameters:
             - '*/src/Model/Blog/Category/BlogCategoryDomain.php'
             - '*/src/Model/Blog/Article/BlogArticleDomain.php'
             - '*/src/Model/Blog/Article/BlogArticleBlogCategoryDomain.php'
+            - '*/src/Component/Image/Image'
 
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff.WriteOnlyProperty:
             - '*/src/Model/Gtm/Data/*'
