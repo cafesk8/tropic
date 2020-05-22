@@ -26,7 +26,7 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
     protected $transferFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade
+     * @var \App\Component\Doctrine\SqlLoggerFacade
      */
     private $sqlLoggerFacade;
 

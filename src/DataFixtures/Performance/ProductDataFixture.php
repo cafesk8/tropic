@@ -43,7 +43,7 @@ class ProductDataFixture
     private $productFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade
+     * @var \App\Component\Doctrine\SqlLoggerFacade
      */
     private $sqlLoggerFacade;
 
@@ -106,7 +106,7 @@ class ProductDataFixture
      * @param int $productTotalCount
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductFacade $productFacade
-     * @param \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
+     * @param \App\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
      * @param \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade
      * @param \App\Model\Category\CategoryRepository $categoryRepository
      * @param \Faker\Generator $faker

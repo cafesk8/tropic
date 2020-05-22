@@ -641,3 +641,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Unit\UnitDataFactory: '@App\Model\Product\Unit\UnitDataFactory'
 
     Shopsys\FrameworkBundle\Model\Product\Unit\UnitGridFactory: '@App\Model\Product\Unit\UnitGridFactory'
+
+    Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade: '@App\Component\Doctrine\SqlLoggerFacade'
