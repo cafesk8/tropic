@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\Transfer;
 
 use App\Component\Domain\DomainHelper;
+use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Component\Transfer\Pohoda\Product\PohodaProduct;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Category\CategoryFacade;
@@ -13,16 +14,22 @@ use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\Availability\AvailabilityFacade;
+use App\Model\Product\Brand\Brand;
+use App\Model\Product\Brand\BrandDataFactory;
+use App\Model\Product\Brand\BrandFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
 use App\Model\Product\Transfer\Exception\ProductDoesntExistInEShopException;
+use App\Model\Product\Unit\Unit;
+use App\Model\Product\Unit\UnitFacade;
 use App\Model\Store\StoreFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\TransformString;
-use Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException;
+use Shopsys\FrameworkBundle\Model\Product\Brand\Exception\BrandNotFoundException;
+use Shopsys\FrameworkBundle\Model\Product\Unit\Exception\UnitNotFoundException;
 
 class PohodaProductMapper
 {
@@ -72,6 +79,26 @@ class PohodaProductMapper
     private $availabilityFacade;
 
     /**
+     * @var \App\Model\Product\Unit\UnitFacade
+     */
+    private $unitFacade;
+
+    /**
+     * @var \App\Model\Product\Brand\BrandFacade
+     */
+    private $brandFacade;
+
+    /**
+     * @var \App\Model\Product\Brand\BrandDataFactory
+     */
+    private $brandDataFactory;
+
+    /**
+     * @var \App\Component\Transfer\Logger\TransferLogger
+     */
+    private $logger;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
@@ -80,6 +107,10 @@ class PohodaProductMapper
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
+     * @param \App\Model\Product\Unit\UnitFacade $unitFacade
+     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \App\Model\Product\Brand\BrandDataFactory $brandDataFactory
+     * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      */
     public function __construct(
         Domain $domain,
@@ -89,7 +120,11 @@ class PohodaProductMapper
         StoreFacade $storeFacade,
         ProductFacade $productFacade,
         CurrencyFacade $currencyFacade,
-        AvailabilityFacade $availabilityFacade
+        AvailabilityFacade $availabilityFacade,
+        UnitFacade $unitFacade,
+        BrandFacade $brandFacade,
+        BrandDataFactory $brandDataFactory,
+        TransferLoggerFactory $transferLoggerFactory
     ) {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
@@ -99,6 +134,11 @@ class PohodaProductMapper
         $this->productFacade = $productFacade;
         $this->currencyFacade = $currencyFacade;
         $this->availabilityFacade = $availabilityFacade;
+        $this->unitFacade = $unitFacade;
+        $this->brandFacade = $brandFacade;
+        $this->brandDataFactory = $brandDataFactory;
+
+        $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
     }
 
     /**
@@ -115,6 +155,8 @@ class PohodaProductMapper
         $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
         $productData->groupItems = $this->getMappedProductGroupItems($pohodaProduct->productGroups);
         $productData->eurCalculatedAutomatically = $pohodaProduct->automaticEurCalculation;
+
+        $this->logger->persistTransferIssues();
     }
 
     /**
@@ -127,7 +169,10 @@ class PohodaProductMapper
         foreach ($pohodaProduct->pohodaCategoryIds as $pohodaCategoryId) {
             $category = $this->categoryFacade->findByPohodaId($pohodaCategoryId);
             if ($category === null) {
-                throw new CategoryDoesntExistInEShopException(sprintf('Category pohodaId=%d doesn´t exist in e-shop database', $pohodaCategoryId));
+                throw new CategoryDoesntExistInEShopException(sprintf(
+                    'Category pohodaId=%d doesn´t exist in e-shop database',
+                    $pohodaCategoryId
+                ));
             }
             $categories[] = $category;
         }
@@ -164,6 +209,13 @@ class PohodaProductMapper
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
         $productData->outOfStockAvailability = $this->availabilityFacade->getDefaultOutOfStockAvailability();
         $productData->usingStock = true;
+        $productData->ean = $pohodaProduct->ean;
+        $productData->minimumAmount = $pohodaProduct->minimumAmountAndMultiplier;
+        $productData->amountMultiplier = $pohodaProduct->minimumAmountAndMultiplier;
+        $productData->warranty = $pohodaProduct->warranty;
+        $productData->brand = $this->getMappedBrand($pohodaProduct->brandName);
+        $productData->unit = $this->getMappedUnit($pohodaProduct);
+        $productData->youtubeVideoIds = $this->getMappedYoutubeVideoIds($pohodaProduct->youtubeVideos);
     }
 
     /**
@@ -177,7 +229,10 @@ class PohodaProductMapper
             $relatedProductPohodaId = (int)$relatedProductArray[PohodaProduct::COL_RELATED_PRODUCT_REF_ID];
             $relatedProduct = $this->productFacade->findByPohodaId($relatedProductPohodaId);
             if ($relatedProduct === null) {
-                throw new ProductDoesntExistInEShopException(sprintf('Product pohodaId=%d doesn´t exist in e-shop database', $relatedProductPohodaId));
+                throw new ProductDoesntExistInEShopException(sprintf(
+                    'Product pohodaId=%d doesn´t exist in e-shop database',
+                    $relatedProductPohodaId
+                ));
             }
             $productData->accessories[$relatedProductArray[PohodaProduct::COL_RELATED_PRODUCT_POSITION]] = $relatedProduct;
         }
@@ -225,7 +280,10 @@ class PohodaProductMapper
             $productGroupItem = $this->productFacade->findByPohodaId($productGroupItemPohodaId);
 
             if ($productGroupItem === null) {
-                throw new ProductNotFoundException(sprintf('Group item pohodaId=%d not found!', $productGroupItemPohodaId));
+                throw new ProductDoesntExistInEShopException(sprintf(
+                    'Group item pohodaId=%d not found in e-shop database!',
+                    $productGroupItemPohodaId
+                ));
             }
             $productGroupItems[] = [
                 'item' => $productGroupItem,
@@ -283,15 +341,18 @@ class PohodaProductMapper
             $currencyMultiplier = $currency->getExchangeRate();
         }
 
-        $productData->manualInputPricesByPricingGroupId[
-            $this->pricingGroupFacade->getOrdinaryCustomerPricingGroup($domainId)->getId()
-        ] = $this->getPriceFromString($pohodaProduct->sellingPrice, $currencyMultiplier);
-        $productData->manualInputPricesByPricingGroupId[
-            $this->pricingGroupFacade->getPurchasePricePricingGroup($domainId)->getId()
-        ] = $this->getPriceFromString($pohodaProduct->purchasePrice, $currencyMultiplier);
-        $productData->manualInputPricesByPricingGroupId[
-            $this->pricingGroupFacade->getStandardPricePricingGroup($domainId)->getId()
-        ] = $this->getPriceFromString($pohodaProduct->standardPrice, $currencyMultiplier);
+        $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getOrdinaryCustomerPricingGroup($domainId)->getId()] = $this->getPriceFromString(
+            $pohodaProduct->sellingPrice,
+            $currencyMultiplier
+        );
+        $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getPurchasePricePricingGroup($domainId)->getId()] = $this->getPriceFromString(
+            $pohodaProduct->purchasePrice,
+            $currencyMultiplier
+        );
+        $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getStandardPricePricingGroup($domainId)->getId()] = $this->getPriceFromString(
+            $pohodaProduct->standardPrice,
+            $currencyMultiplier
+        );
 
         $salePricingGroupId = $this->pricingGroupFacade->getSalePricePricingGroup($domainId)->getId();
         $productData->manualInputPricesByPricingGroupId[$salePricingGroupId] = null;
@@ -303,5 +364,73 @@ class PohodaProductMapper
                 break;
             }
         }
+    }
+
+    /**
+     * @param string|null $pohodaBrandName
+     * @return \App\Model\Product\Brand\Brand
+     */
+    private function getMappedBrand(?string $pohodaBrandName): ?Brand
+    {
+        if ($pohodaBrandName === null) {
+            return null;
+        }
+
+        try {
+            $brand = $this->brandFacade->getByName($pohodaBrandName);
+        } catch (BrandNotFoundException $brandNotFoundException) {
+            $brandData = $this->brandDataFactory->create();
+            $brandData->name = $pohodaBrandName;
+            $brand = $this->brandFacade->create($brandData);
+        }
+
+        return $brand;
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     * @return \App\Model\Product\Unit\Unit
+     */
+    private function getMappedUnit(PohodaProduct $pohodaProduct): Unit
+    {
+        try {
+            $unit = $this->unitFacade->getByPohodaName($pohodaProduct->unit);
+        } catch (UnitNotFoundException $exception) {
+            $errorMessage = sprintf(
+                'U produktu catnum=%s nebyla nalezena v e-shopu jednotka %s, použije se výchozí.',
+                $pohodaProduct->catnum,
+                $pohodaProduct->unit
+            );
+            $this->logger->addError($errorMessage, [
+                'pohodaUnitName' => $pohodaProduct->unit,
+                'productId' => $pohodaProduct->pohodaId,
+                'productCatnum' => $pohodaProduct->catnum,
+            ]);
+            /** @var \App\Model\Product\Unit\Unit $unit */
+            $unit = $this->unitFacade->getDefaultUnit();
+        }
+
+        return $unit;
+    }
+
+    /**
+     * @param array $youtubeVideos
+     * @return array
+     */
+    private function getMappedYoutubeVideoIds(array $youtubeVideos): array
+    {
+        $youtubeVideoIds = [];
+        foreach ($youtubeVideos as $youtubeVideo) {
+            // https://gist.github.com/ghalusa/6c7f3a00fd2383e5ef33
+            if (preg_match(
+                '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
+                $youtubeVideo,
+                $youtubeVideoMatch
+            )) {
+                $youtubeVideoIds[] = $youtubeVideoMatch[1];
+            }
+        }
+
+        return $youtubeVideoIds;
     }
 }

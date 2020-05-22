@@ -1,31 +1,15 @@
-{% macro videoRow(video, index) %}
-    <div class="js-youtube-videos-list-row form-line" data-index="{{ index }}">
-        {{ form_errors(video) }}
-        <div class="form-line__item">
-            {{ form_widget(video) }}
-        </div>
-        <div class="form-line__item">
-            <button class="js-youtube-video-delete-btn btn-no-style" type="button">
-                <i class="svg svg-circle-cross in-icon in-icon--delete"></i>
-            </button>
-        </div>
-    </div>
-{% endmacro %}
-
-{% block youtube_videos_widget %}
+{% block youtube_videos_row %}
     {% import _self as self %}
     <div class="js-youtube-videos-list form-line__line">
         {{ form_errors(form) }}
-        <div id="{{ form.vars.id }}" class="js-youtube-videos-list" data-prototype="{{ self.videoRow(form.vars.prototype)|escape }}" data-index="{{ form|length }}">
+        <div id="{{ form.vars.id }}" class="js-youtube-videos-list">
             {% for key, productVideo in form %}
-                {{ self.videoRow(productVideo, key) }}
+                <div class="form-line">
+                    <div class="form-line__item">
+                        {{ form_widget(productVideo) }}
+                    </div>
+                </div>
             {% endfor %}
-        </div>
-        <div class="margin-top-5">
-            <button type="button" class="js-youtube-videos-new-btn btn btn--plus">
-                <i class="btn__icon">+</i>
-                {{ 'Add'|trans }}
-            </button>
         </div>
     </div>
 {% endblock %}

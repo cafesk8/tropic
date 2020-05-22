@@ -66,7 +66,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     private $priceExtension;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade
+     * @var \App\Model\Product\Brand\BrandFacade
      */
     private $brandFacade;
 
@@ -78,7 +78,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
-     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      */
     public function __construct(Domain $domain, PriceExtension $priceExtension, BrandFacade $brandFacade, AdminDomainTabsFacade $adminDomainTabsFacade)

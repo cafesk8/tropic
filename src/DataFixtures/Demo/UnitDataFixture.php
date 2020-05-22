@@ -23,7 +23,7 @@ class UnitDataFixture extends AbstractReferenceFixture
     protected $unitFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Unit\UnitDataFactoryInterface
+     * @var \App\Model\Product\Unit\UnitDataFactory
      */
     protected $unitDataFactory;
 
@@ -39,7 +39,7 @@ class UnitDataFixture extends AbstractReferenceFixture
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade $unitFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Unit\UnitDataFactoryInterface $unitDataFactory
+     * @param \App\Model\Product\Unit\UnitDataFactory $unitDataFactory
      * @param \App\Component\Setting\Setting $setting
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
@@ -60,6 +60,7 @@ class UnitDataFixture extends AbstractReferenceFixture
      */
     public function load(ObjectManager $manager)
     {
+        /** @var \App\Model\Product\Unit\UnitData $unitData */
         $unitData = $this->unitDataFactory->create();
 
         foreach ($this->domain->getAllLocales() as $locale) {
@@ -70,13 +71,14 @@ class UnitDataFixture extends AbstractReferenceFixture
         foreach ($this->domain->getAllLocales() as $locale) {
             $unitData->name[$locale] = t('ks', [], 'dataFixtures', $locale);
         }
+        $unitData->pohodaName = 'kus';
         $this->createUnit($unitData, self::UNIT_PIECES);
 
         $this->setPiecesAsDefaultUnit();
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Unit\UnitData $unitData
+     * @param \App\Model\Product\Unit\UnitData $unitData
      * @param string|null $referenceName
      */
     protected function createUnit(UnitData $unitData, $referenceName = null)
@@ -90,7 +92,7 @@ class UnitDataFixture extends AbstractReferenceFixture
     protected function setPiecesAsDefaultUnit(): void
     {
         $defaultUnit = $this->getReference(self::UNIT_PIECES);
-        /** @var $defaultUnit \Shopsys\FrameworkBundle\Model\Product\Unit\Unit */
+        /** @var $defaultUnit \App\Model\Product\Unit\Unit */
         $this->setting->set(Setting::DEFAULT_UNIT, $defaultUnit->getId());
     }
 }

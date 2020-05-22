@@ -39,7 +39,7 @@ class ProductController extends FrontBaseController
     private const PRE_LIST_BLOG_ARTICLES_LIMIT = 2;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade
+     * @var \App\Model\Product\Brand\BrandFacade
      */
     protected $brandFacade;
 
@@ -145,7 +145,7 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Article\ArticleFacade $articleFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
      */
     public function __construct(

@@ -145,6 +145,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->catnum = '9177759';
         $productData->partno = 'SLE 22F46DM4';
         $productData->ean = '8845781245930';
+        $productData->warranty = 24;
 
         $parameterTranslations = [];
 

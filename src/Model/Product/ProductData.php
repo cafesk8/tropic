@@ -15,6 +15,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @property \App\Model\Product\Product[] $variants
  * @property \App\Model\Product\Availability\Availability|null $availability
  * @property \App\Model\Product\Availability\Availability|null $outOfStockAvailability
+ * @property \App\Model\Product\Unit\Unit|null $unit
  */
 class ProductData extends BaseProductData
 {
@@ -117,6 +118,11 @@ class ProductData extends BaseProductData
      * @var string|null
      */
     public $deliveryDays;
+
+    /**
+     * @var int|null
+     */
+    public $warranty;
 
     public function __construct()
     {

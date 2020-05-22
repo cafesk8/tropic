@@ -191,6 +191,10 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@App\Model\Product\Brand\BrandDataFactory'
 
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade: '@App\Model\Product\Brand\BrandFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandRepository: '@App\Model\Product\Brand\BrandRepository'
+
     App\DataFixtures\Performance\CategoryDataFixture:
         arguments:
             - "%shopsys.performance_data.category.counts_by_level%"
@@ -637,3 +641,11 @@ services:
             $pohodaMServerLogin: '%pohoda_mserver_login%'
             $pohodaMServerPassword: '%pohoda_mserver_password%'
             $pohodaCompanyIco: '%pohoda_company_ico%'
+
+    Shopsys\FrameworkBundle\Model\Product\Unit\UnitDataFactoryInterface: '@App\Model\Product\Unit\UnitDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Unit\UnitRepository: '@App\Model\Product\Unit\UnitRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\Unit\UnitDataFactory: '@App\Model\Product\Unit\UnitDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Unit\UnitGridFactory: '@App\Model\Product\Unit\UnitGridFactory'

@@ -10,12 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 class BrandController extends FrontBaseController
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade
+     * @var \App\Model\Product\Brand\BrandFacade
      */
     private $brandFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      */
     public function __construct(
         BrandFacade $brandFacade
