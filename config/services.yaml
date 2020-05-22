@@ -660,3 +660,9 @@ services:
                     - '@=service("App\\Model\\Order\\GiftCertificate\\Mail\\OrderGiftCertificateMailTemplateVariablesProvider").createActivated()'
 
     Shopsys\FrameworkBundle\Model\Mail\MailTemplateConfiguration: '@App\Model\Mail\MailTemplateConfiguration'
+
+    App\Model\Product\Transfer\ProductImageImportFacade:
+        arguments:
+            - '%shopsys.image_dir%'
+
+    Shopsys\FrameworkBundle\Component\Image\ImageRepository: '@App\Component\Image\ImageRepository'

@@ -1237,4 +1237,12 @@ class ProductFacade extends BaseProductFacade
     {
         return $this->productRepository->getProductDomainsForShortDescriptionTranslation();
     }
+
+    /**
+     * @return \App\Model\Product\Product[]
+     */
+    public function getAllIndexedByPohodaId(): array
+    {
+        return $this->productRepository->getAllIndexedByPohodaId();
+    }
 }

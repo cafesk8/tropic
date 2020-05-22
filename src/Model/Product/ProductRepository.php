@@ -630,4 +630,16 @@ class ProductRepository extends BaseProductRepository
             ->andWhere('pd.domainId = 1')
             ->getQuery()->execute();
     }
+
+    /**
+     * @return \App\Model\Product\Product[]
+     */
+    public function getAllIndexedByPohodaId(): array
+    {
+        return $this->getProductQueryBuilder()
+            ->where('p.pohodaId IS NOT NULL')
+            ->indexBy('p', 'p.pohodaId')
+            ->getQuery()
+            ->execute();
+    }
 }
