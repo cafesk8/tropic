@@ -68,6 +68,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'warranty',
         'minimumAmount',
         'amountMultiplier',
+        'images',
     ];
 
     /**
