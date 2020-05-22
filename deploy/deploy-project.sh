@@ -30,6 +30,18 @@ function deploy() {
         ["parameters.pohoda_mserver_port"]="${POHODA_MSERVER_PORT}"
         ["parameters.pohoda_mserver_password"]="${POHODA_MSERVER_PASSWORD}"
         ["parameters.pohoda_mserver_login"]="${POHODA_MSERVER_LOGIN}"
+
+        # GoPay
+        ["parameters.gopay_config.cs.goid"]="${GOPAY_CONFIG_GOID_CS}"
+        ["parameters.gopay_config.cs.clientId"]="${GOPAY_CONFIG_CLIENT_ID_CS}"
+        ["parameters.gopay_config.cs.clientSecret"]="${GOPAY_CONFIG_CLIENT_SECRET_CS}"
+        ["parameters.gopay_config.sk.goid"]="${GOPAY_CONFIG_GOID_SK}"
+        ["parameters.gopay_config.sk.clientId"]="${GOPAY_CONFIG_CLIENT_ID_SK}"
+        ["parameters.gopay_config.sk.clientSecret"]="${GOPAY_CONFIG_CLIENT_SECRET_SK}"
+        ["parameters.gopay_config.en.goid"]="${GOPAY_CONFIG_GOID_EN}"
+        ["parameters.gopay_config.en.clientId"]="${GOPAY_CONFIG_CLIENT_ID_EN}"
+        ["parameters.gopay_config.en.clientSecret"]="${GOPAY_CONFIG_CLIENT_SECRET_EN}"
+        ["parameters.gopay_config.isProductionMode"]=${GOPAY_CONFIG_IS_PRODUCTION_MODE}
     )
 
     declare -A ENVIRONMENT_VARIABLES=(
