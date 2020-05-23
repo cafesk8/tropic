@@ -128,8 +128,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         ];
         $countData->countByFlagId = [
             1 => 10,
-            7 => 5,
-            3 => 2,
+            2 => 5,
+            8 => 2,
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
@@ -246,8 +246,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $countData->countInStock = 6;
         $countData->countByFlagId = [
             1 => 6,
-            7 => 3,
-            3 => 2,
+            2 => 3,
+            8 => 2,
         ];
         $countData->countByBrandId = [
             14 => 2,
@@ -369,8 +369,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         ];
         $countData->countByFlagId = [
             1 => 8,
-            7 => 4,
-            3 => 2,
+            2 => 4,
+            8 => 2,
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
@@ -435,8 +435,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         ];
         $countData->countByFlagId = [
             1 => 6,
-            7 => 6,
-            3 => 2,
+            2 => 6,
+            8 => 2,
             4 => 1,
         ];
         $countData->countByParameterIdAndValueId = [
@@ -602,8 +602,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         ];
         $countData->countByFlagId = [
             1 => 7,
-            7 => 3,
-            3 => 1,
+            2 => 3,
+            8 => 1,
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [

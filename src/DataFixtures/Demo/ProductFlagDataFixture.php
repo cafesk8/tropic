@@ -60,7 +60,6 @@ class ProductFlagDataFixture extends AbstractReferenceFixture implements Depende
         $this->createProductFlag(9, FlagDataFixture::FLAG_NEW_PRODUCT);
         $this->createProductFlag(9, FlagDataFixture::FLAG_TOP_PRODUCT);
         $this->createProductFlag(10, FlagDataFixture::FLAG_NEW_PRODUCT);
-        $this->createProductFlag(11, FlagDataFixture::FLAG_SALE_PRODUCT);
         $this->createProductFlag(13, FlagDataFixture::FLAG_NEW_PRODUCT);
         $this->createProductFlag(14, FlagDataFixture::FLAG_NEW_PRODUCT);
         $this->createProductFlag(15, FlagDataFixture::FLAG_NEW_PRODUCT);
@@ -72,7 +71,6 @@ class ProductFlagDataFixture extends AbstractReferenceFixture implements Depende
         $this->createProductFlag(22, FlagDataFixture::FLAG_TOP_PRODUCT);
         $this->createProductFlag(23, FlagDataFixture::FLAG_NEW_PRODUCT);
         $this->createProductFlag(25, FlagDataFixture::FLAG_NEW_PRODUCT);
-        $this->createProductFlag(25, FlagDataFixture::FLAG_SALE_PRODUCT);
         $this->createProductFlag(26, FlagDataFixture::FLAG_NEW_PRODUCT);
         $this->createProductFlag(27, FlagDataFixture::FLAG_NEW_PRODUCT);
         $this->createProductFlag(28, FlagDataFixture::FLAG_NEW_PRODUCT);
@@ -89,7 +87,6 @@ class ProductFlagDataFixture extends AbstractReferenceFixture implements Depende
         $this->createProductFlag(42, FlagDataFixture::FLAG_NEW_PRODUCT);
         $this->createProductFlag(43, FlagDataFixture::FLAG_NEW_PRODUCT);
         $this->createProductFlag(44, FlagDataFixture::FLAG_NEW_PRODUCT);
-        $this->createProductFlag(44, FlagDataFixture::FLAG_SALE_PRODUCT);
         $this->createProductFlag(45, FlagDataFixture::FLAG_ACTION_PRODUCT);
         $this->createProductFlag(45, FlagDataFixture::FLAG_TOP_PRODUCT);
         $this->createProductFlag(46, FlagDataFixture::FLAG_NEW_PRODUCT);
@@ -101,14 +98,12 @@ class ProductFlagDataFixture extends AbstractReferenceFixture implements Depende
         $this->createProductFlag(52, FlagDataFixture::FLAG_NEW_PRODUCT);
         $this->createProductFlag(53, FlagDataFixture::FLAG_TOP_PRODUCT);
         $this->createProductFlag(54, FlagDataFixture::FLAG_TOP_PRODUCT);
-        $this->createProductFlag(65, FlagDataFixture::FLAG_SALE_PRODUCT);
         $this->createProductFlag(69, FlagDataFixture::FLAG_TOP_PRODUCT);
         $this->createProductFlag(70, FlagDataFixture::FLAG_ACTION_PRODUCT);
         $this->createProductFlag(72, FlagDataFixture::FLAG_TOP_PRODUCT);
         $this->createProductFlag(74, FlagDataFixture::FLAG_TOP_PRODUCT);
         $this->createProductFlag(75, FlagDataFixture::FLAG_TOP_PRODUCT);
         $this->createProductFlag(82, FlagDataFixture::FLAG_TOP_PRODUCT);
-        $this->createProductFlag(82, FlagDataFixture::FLAG_SALE_PRODUCT);
         $this->createProductFlag(144, FlagDataFixture::FLAG_NEW_PRODUCT);
         $this->createProductFlag(144, FlagDataFixture::FLAG_TOP_PRODUCT);
     }

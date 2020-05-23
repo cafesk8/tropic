@@ -57,4 +57,12 @@ class ProductFlagFacade
     {
         $this->productFlagRepository->deleteByFlag($flag);
     }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     */
+    public function deleteByProduct(Product $product): void
+    {
+        $this->productFlagRepository->deleteByProduct($product);
+    }
 }

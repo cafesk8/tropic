@@ -88,22 +88,13 @@ class FlagDataFixture extends AbstractReferenceFixture
         $this->createFlag($flagData, self::FLAG_ACTION_PRODUCT);
 
         foreach ($this->domain->getAllLocales() as $locale) {
-            $flagData->name[$locale] = t('Výprodej', [], 'dataFixtures', $locale);
-        }
-
-        $flagData->pohodaId = null;
-        $flagData->rgbColor = '#abcdef';
-        $flagData->visible = true;
-        $flagData->sale = true;
-        $this->createFlag($flagData, self::FLAG_SALE_PRODUCT);
-
-        foreach ($this->domain->getAllLocales() as $locale) {
             $flagData->name[$locale] = t('Sleva', [], 'dataFixtures', $locale);
         }
 
         $flagData->rgbColor = '#000000';
         $flagData->visible = true;
         $flagData->pohodaId = Flag::POHODA_ID_DISCOUNT;
+        $flagData->sale = false;
         $this->createFlag($flagData, self::FLAG_DISCOUNT_PRODUCT);
 
         foreach ($this->domain->getAllLocales() as $locale) {

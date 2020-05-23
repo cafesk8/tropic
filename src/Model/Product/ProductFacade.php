@@ -1140,9 +1140,6 @@ class ProductFacade extends BaseProductFacade
         }
 
         $productFlagsData = $productData->flags;
-        $flags = array_map(function (ProductFlagData $productFlagData) {
-            return $productFlagData->flag;
-        }, $productFlagsData);
 
         if (!$isInAnySaleStock) {
             $productFlagsData = array_filter($productFlagsData, function (ProductFlagData $productFlagData) {
@@ -1150,9 +1147,13 @@ class ProductFacade extends BaseProductFacade
             });
         } else {
             foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
-                if (!in_array($saleFlag, $flags, true)) {
-                    $productFlagsData[] = $this->productFlagDataFactory->create($saleFlag);
+                foreach ($productFlagsData as $productFlagData) {
+                    if ($productFlagData->flag->getId() === $saleFlag->getId()) {
+                        continue 2;
+                    }
                 }
+
+                $productFlagsData[] = $this->productFlagDataFactory->create($saleFlag);
             }
         }
 
@@ -1196,21 +1197,20 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \App\Model\Product\Product $product
-     * @param \App\Model\Product\Flag\ProductFlagData[] $productFlagData
+     * @param \App\Model\Product\Flag\ProductFlagData[] $productFlagsData
      */
-    private function refreshProductFlags(BaseProduct $product, array $productFlagData)
+    private function refreshProductFlags(BaseProduct $product, array $productFlagsData)
     {
-        $oldProductFlags = $product->getProductFlags();
-
-        foreach ($oldProductFlags as $productFlag) {
-            $this->em->remove($productFlag);
-        }
-
-        $this->em->flush($oldProductFlags);
+        $this->productFlagFacade->deleteByProduct($product);
         $product->clearProductFlags();
+        $this->em->flush($product);
+        $processedFlags = [];
 
-        foreach ($productFlagData as $productFlag) {
-            $this->productFlagFacade->create($productFlag, $product);
+        foreach ($productFlagsData as $productFlagData) {
+            if (!in_array($productFlagData->flag, $processedFlags, true)) {
+                $this->productFlagFacade->create($productFlagData, $product);
+                $processedFlags[] = $productFlagData->flag;
+            }
         }
     }
 }

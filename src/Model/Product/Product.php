@@ -14,6 +14,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
+use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
 /**
@@ -1130,5 +1131,45 @@ class Product extends BaseProduct
     public function clearProductFlags(): void
     {
         $this->flags->clear();
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[] $productCategoryDomains
+     */
+    public function setProductCategoryDomains(array $productCategoryDomains)
+    {
+        foreach ($this->productCategoryDomains as $productCategoryDomain) {
+            if ($this->isProductCategoryDomainInArray($productCategoryDomain, $productCategoryDomains) === false) {
+                $this->productCategoryDomains->removeElement($productCategoryDomain);
+            }
+        }
+        foreach ($productCategoryDomains as $productCategoryDomain) {
+            if ($this->isProductCategoryDomainInArray($productCategoryDomain, $this->productCategoryDomains->toArray()) === false) {
+                $this->productCategoryDomains->add($productCategoryDomain);
+            }
+        }
+
+        if ($this->isMainVariant()) {
+            foreach ($this->getVariants() as $variant) {
+                $variant->copyProductCategoryDomains($productCategoryDomains);
+            }
+        }
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain $searchProductCategoryDomain
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[] $productCategoryDomains
+     * @return bool
+     */
+    protected function isProductCategoryDomainInArray(ProductCategoryDomain $searchProductCategoryDomain, array $productCategoryDomains): bool
+    {
+        foreach ($productCategoryDomains as $productCategoryDomain) {
+            if ($productCategoryDomain->getCategory() === $searchProductCategoryDomain->getCategory()
+                && $productCategoryDomain->getDomainId() === $searchProductCategoryDomain->getDomainId()
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 }
