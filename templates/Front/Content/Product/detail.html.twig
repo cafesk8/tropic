@@ -19,7 +19,7 @@
 
 {% block main_content %}
     <div itemscope itemtype="http://schema.org/Product">
-        {{ boxDetail.productBox(product, youtubeDetails, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
+        {{ boxDetail.productBox(product, youtubeDetails, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews) }}
     </div>
 
     {% if productBlogArticles|length > 0 %}
