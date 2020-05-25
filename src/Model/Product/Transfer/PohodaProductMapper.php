@@ -205,6 +205,7 @@ class PohodaProductMapper
         $productData->shortDescriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shortDescription;
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->longDescription;
         $productData->registrationDiscountDisabled = $pohodaProduct->registrationDiscountDisabled;
+        $productData->promoDiscountDisabled = $pohodaProduct->promoDiscountDisabled;
         $productData->deliveryDays = $pohodaProduct->deliveryDays;
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
         $productData->outOfStockAvailability = $this->availabilityFacade->getDefaultOutOfStockAvailability();
