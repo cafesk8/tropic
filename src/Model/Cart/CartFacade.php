@@ -258,11 +258,14 @@ class CartFacade extends BaseCartFacade
                     $availableSaleStockQuantity -= $validSaleQuantityToAdd;
                     $addProductResults[] = new AddProductResult($cartItem, false, $validSaleQuantityToAdd);
                 }
-            } elseif ($availableSaleStockQuantity <= 0 && $remainingQuantityToAdd > 0) {
+            } elseif ($remainingQuantityToAdd > 0) {
                 $currentNonSaleQuantity = $cartItem->getQuantity();
                 $availableNonSaleStockQuantity -= $currentNonSaleQuantity;
-                $nonSaleQuantityToAdd = $availableNonSaleStockQuantity;
-                if ($nonSaleQuantityToAdd > 0) {
+                if ($remainingQuantityToAdd <= $availableSaleStockQuantity) {
+                    continue;
+                }
+                $nonSaleQuantityToAdd = $remainingQuantityToAdd - $availableSaleStockQuantity;
+                if ($nonSaleQuantityToAdd > 0 && $nonSaleQuantityToAdd <= $availableNonSaleStockQuantity) {
                     if ($nonSaleQuantityToAdd > $remainingQuantityToAdd) {
                         $nonSaleQuantityToAdd = $remainingQuantityToAdd;
                     }
