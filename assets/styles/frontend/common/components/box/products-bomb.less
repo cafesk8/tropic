@@ -1,0 +1,99 @@
+@box-products-bomb-title-size: 72px;
+@box-products-content-width: 580px;
+
+.box-products-bomb {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 5px;
+    margin-bottom: 70px;
+
+    @media @query-vl {
+        padding: 70px 0;
+    }
+
+    @media @query-vl {
+        flex-direction: row;
+    }
+
+    &__title {
+        order: 1;
+        width: 100%;
+        text-align: right;
+        line-height: @box-products-bomb-title-size / 2;
+        margin-bottom: 90px;
+
+        font-size: @box-products-bomb-title-size / 2;
+        text-transform: uppercase;
+
+        @media @query-lg {
+            margin-bottom: 25px;
+            line-height: @box-products-bomb-title-size;
+
+            font-size: @box-products-bomb-title-size;
+        }
+
+        @media @query-vl {
+            order: 2;
+            width: calc(~"100% - @{box-products-content-width}");
+            margin-bottom: 0;
+        }
+
+        &__colored-text {
+            span {
+                &:nth-child(5n+1) {
+                    color: @color-primary;
+                }
+
+                &:nth-child(5n+2) {
+                    color: @color-turquoise;
+                }
+
+                &:nth-child(5n+3) {
+                    color: @color-green-light;
+                }
+
+                &:nth-child(5n+4) {
+                    color: @color-green-2;
+                }
+
+                &:nth-child(5n+5) {
+                    color: @color-add;
+                }
+            }
+        }
+    }
+
+    &__content {
+        order: 2;
+        position: relative;
+        width: 100%;
+
+        @media @query-vl {
+            order: 1;
+            width: @box-products-content-width;
+        }
+    }
+
+    &__fishes {
+        position: absolute;
+        bottom: 100%;
+        margin-bottom: 30px;
+        width: 164px;
+
+        @media @query-lg {
+            width: 200px;
+        }
+
+        @media @query-vl {
+            left: 100%;
+            bottom: 0;
+            margin-left: 60px;
+            margin-bottom: 0;
+            width: 250px;
+        }
+
+        @media @query-xl {
+            width: 336px;
+        }
+    }
+}

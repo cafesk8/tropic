@@ -50,13 +50,20 @@
 
     {% if priceBombProducts is not empty %}
         <div class="web__line">
-            <div class="web__container web__container--no-padding">
-                <div class="box-products-slider">
-                    <h1 class="box-products-slider__title">
-                        {{ 'Cenová bomba'|trans }}
+            <div class="web__container web__container--border-radius web__container--light">
+                <div class="box-products-bomb">
+                    <div class="box-products-bomb__content">
+                        {{ productList.productsBomb(priceBombProducts, 'h3', 'top-products') }}
+                        <div class="box-products-bomb__fishes">
+                            <img src="{{ asset('public/frontend/images/fishes-big.svg')}}" alt="{{ 'Rybky'|trans }}">
+                        </div>
+                    </div>
+                    <h1 class="box-products-bomb__title">
+                        {{ 'Cenová'|trans }}
+                        <div class="box-products-bomb__title__colored-text">
+                            <span>b</span><span>o</span><span>m</span><span>b</span><span>a</span>
+                        </div>
                     </h1>
-                    <a href="#" class="box-products-slider__subtitle js-not-implemented-yet">{{ 'Přejít na všechny'|trans }}</a>
-                    {{ productList.horizontalList(priceBombProducts, 'h3', 'top-products', false) }}
                 </div>
             </div>
         </div>

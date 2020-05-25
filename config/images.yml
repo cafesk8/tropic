@@ -77,6 +77,11 @@
             height: 128
             crop: false
             occurrence: 'Front-end: Listing of products in sets'
+        -   name: listBomb
+            width: 90
+            height: 90
+            crop: false
+            occurrence: 'Front-end: Listing of products in products bomb'
         -   name: listSlider
             width: 160
             height: 160

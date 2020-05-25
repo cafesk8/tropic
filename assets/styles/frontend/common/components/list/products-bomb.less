@@ -1,0 +1,110 @@
+@list-products-bomb-gap: 40px;
+@list-products-image-size: 90px;
+
+.list-products-bomb {
+    .reset-ul();
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-left: -@list-products-bomb-gap;
+
+    @media @query-md {
+        flex-wrap: nowrap;
+    }
+
+    &__item {
+        width: 100%; 
+        margin-left: @list-products-bomb-gap;
+        margin-bottom: @list-products-bomb-gap / 2;
+        text-align: center;
+
+        transition: @transition;
+        background-color: @color-f;
+        border-radius: @radius;
+        box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+
+        @media @query-md {
+            width: 100% / 2;
+            margin-bottom: 0;
+        }
+
+        &:hover {
+            box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        &__block {
+            display: block;
+            padding: 20px;
+            height: 100%;
+
+            text-decoration: none;
+        }
+
+        &__flags {
+            margin-bottom: 7px;
+        }
+
+        &__title {
+            line-height: 18px;
+
+            text-transform: uppercase;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        &__image {
+            position: relative;
+            height: @list-products-image-size;
+            margin-bottom: 16px;
+
+            img {
+                .center-image();
+            }
+        }
+
+        &__price {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            font-size: 16px;
+            font-weight: 700;
+            color: @color-price;
+
+            &__old {
+                padding-right: 10px;
+
+                font-weight: 300;
+                text-decoration: line-through;
+                color: @color-price-old;
+            }
+
+            &__main {
+                color: @color-price-main;
+            }
+        }
+
+        &__gift {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 0 6px;
+            line-height: 21px;
+
+            font-size: @font-size-small;
+            background-color: rgba(213,48,48,0.15);
+            color: @color-red;
+            border-radius: @radius-very-small;
+
+            &__title {
+                text-transform: uppercase;
+                font-weight: 700;
+            }
+
+            &__count {
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+        }
+    }
+}
