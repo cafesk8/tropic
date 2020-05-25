@@ -119,6 +119,11 @@ class MergadoFeedItem implements FeedItemInterface
     private $deliveries;
 
     /**
+     * @var int|null
+     */
+    private $warranty;
+
+    /**
      * @param int $id
      * @param int|null $itemGroupId
      * @param string|null $catnum
@@ -141,6 +146,7 @@ class MergadoFeedItem implements FeedItemInterface
      * @param array $videosAlternative
      * @param string[] $params
      * @param \App\Model\Feed\Mergado\FeedItem\MergadoFeedDeliveryItem[] $deliveries
+     * @param int|null $warranty
      */
     public function __construct(
         int $id,
@@ -164,7 +170,8 @@ class MergadoFeedItem implements FeedItemInterface
         ?string $video,
         array $videosAlternative,
         array $params,
-        array $deliveries
+        array $deliveries,
+        ?int $warranty
     ) {
         $this->id = $id;
         $this->itemGroupId = $itemGroupId;
@@ -188,6 +195,7 @@ class MergadoFeedItem implements FeedItemInterface
         $this->alternativeVideos = $videosAlternative;
         $this->params = $params;
         $this->deliveries = $deliveries;
+        $this->warranty = $warranty;
     }
 
     /**
@@ -372,5 +380,13 @@ class MergadoFeedItem implements FeedItemInterface
     public function getDeliveries(): array
     {
         return $this->deliveries;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getWarranty(): ?int
+    {
+        return $this->warranty;
     }
 }

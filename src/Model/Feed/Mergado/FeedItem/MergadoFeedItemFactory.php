@@ -149,7 +149,8 @@ class MergadoFeedItemFactory
             $productVideos[self::FIRST_YOUTUBE_VIDEO_ID_INDEX] ?? null,
             array_slice($productVideos, self::FIRST_ALTERNATIVE_YOUTUBE_VIDEO_ID_INDEX),
             $this->productParametersBatchLoader->getProductParametersByName($product, $domainConfig),
-            $this->getMergadoTransports($currency, $domainConfig)
+            $this->getMergadoTransports($currency, $domainConfig),
+            $product->getWarranty()
         );
     }
 
