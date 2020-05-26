@@ -7,7 +7,6 @@ import './filterAllNodes';
 import './filterBox';
 import './filterPosition';
 import './footerLink';
-import './form';
 import './frameworkBundleCustomOverrides';
 import './history';
 import './honeyPot';
