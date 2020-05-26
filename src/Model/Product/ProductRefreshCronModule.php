@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace App\Model\Product;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber;
 use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
 use Symfony\Bridge\Monolog\Logger;
 
 class ProductRefreshCronModule implements SimpleCronModuleInterface
 {
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber
+     */
+    private $productExportSubscriber;
+
     /**
      * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
@@ -34,15 +40,18 @@ class ProductRefreshCronModule implements SimpleCronModuleInterface
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\ProductDataFactory $productDataFactory
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $entityManager
+     * @param \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber $productExportSubscriber
      */
     public function __construct(
         ProductFacade $productFacade,
         ProductDataFactory $productDataFactory,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ProductExportSubscriber $productExportSubscriber
     ) {
         $this->productFacade = $productFacade;
         $this->productDataFactory = $productDataFactory;
         $this->entityManager = $entityManager;
+        $this->productExportSubscriber = $productExportSubscriber;
     }
 
     /**
@@ -65,9 +74,10 @@ class ProductRefreshCronModule implements SimpleCronModuleInterface
             $productData = $this->productDataFactory->createFromProduct($product);
             $productId = $product->getId();
             $this->productFacade->edit($productId, $productData);
-            $product->markForExport();
             $this->entityManager->flush();
-            $this->logger->addInfo('Product refreshed and scheduled for export to Elastic', ['id' => $productId]);
+            $this->logger->addInfo('Product refreshed', ['id' => $productId]);
         }
+
+        $this->productExportSubscriber->exportScheduledRows();
     }
 }

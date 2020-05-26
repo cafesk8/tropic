@@ -19,7 +19,7 @@ class TransferCronModuleDependency
     private $em;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade
+     * @var \App\Component\Doctrine\SqlLoggerFacade
      */
     private $sqlLoggerFacade;
 
@@ -45,7 +45,7 @@ class TransferCronModuleDependency
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
+     * @param \App\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
      * @param \Symfony\Component\Validator\Validator\ValidatorInterface $validator
      * @param \App\Model\Transfer\TransferFacade $transferFacade
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
@@ -76,7 +76,7 @@ class TransferCronModuleDependency
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade
+     * @return \App\Component\Doctrine\SqlLoggerFacade
      */
     public function getSqlLoggerFacade(): SqlLoggerFacade
     {

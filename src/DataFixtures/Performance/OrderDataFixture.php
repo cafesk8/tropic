@@ -58,7 +58,7 @@ class OrderDataFixture
     private $em;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade
+     * @var \App\Component\Doctrine\SqlLoggerFacade
      */
     private $sqlLoggerFacade;
 
@@ -106,7 +106,7 @@ class OrderDataFixture
      * @param int $orderTotalCount
      * @param int $orderItemCountPerOrder
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
+     * @param \App\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
      * @param \Faker\Generator $faker
      * @param \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade
      * @param \App\Model\Order\OrderFacade $orderFacade

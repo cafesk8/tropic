@@ -38,7 +38,7 @@ class UserDataFixture
     private $domain;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade
+     * @var \App\Component\Doctrine\SqlLoggerFacade
      */
     private $sqlLoggerFacade;
 
@@ -86,7 +86,7 @@ class UserDataFixture
      * @param int $userCountPerDomain
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
+     * @param \App\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
      * @param \App\Model\Customer\User\CustomerUserFacade $customerEditFacade
      * @param \App\Model\Customer\User\CustomerUserDataFactory $customerUserDataFactory
      * @param \Faker\Generator $faker

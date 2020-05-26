@@ -7,10 +7,16 @@ namespace App\Model\Product\Transfer;
 use App\Component\Transfer\AbstractTransferCronModule;
 use App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager;
 use App\Component\Transfer\TransferCronModuleDependency;
+use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber;
 
 class ProductImportCronModule extends AbstractTransferCronModule
 {
     public const TRANSFER_IDENTIFIER = 'import_products';
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber
+     */
+    private $productExportSubscriber;
 
     /**
      * @var \App\Model\Product\Transfer\ProductImportFacade
@@ -32,17 +38,20 @@ class ProductImportCronModule extends AbstractTransferCronModule
      * @param \App\Model\Product\Transfer\ProductImportFacade $productImportFacade
      * @param \App\Model\Product\Transfer\ProductInfoQueueImportFacade $productInfoQueueImportFacade
      * @param \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager $pohodaEntityManager
+     * @param \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber $productExportSubscriber
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         ProductImportFacade $productImportFacade,
         ProductInfoQueueImportFacade $productInfoQueueImportFacade,
-        PohodaEntityManager $pohodaEntityManager
+        PohodaEntityManager $pohodaEntityManager,
+        ProductExportSubscriber $productExportSubscriber
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->productImportFacade = $productImportFacade;
         $this->productInfoQueueImportFacade = $productInfoQueueImportFacade;
         $this->pohodaEntityManager = $pohodaEntityManager;
+        $this->productExportSubscriber = $productExportSubscriber;
     }
 
     /**
@@ -62,6 +71,10 @@ class ProductImportCronModule extends AbstractTransferCronModule
         $dateTimeBeforeTransferFromPohodaServer = $this->pohodaEntityManager->getCurrentDateTimeFromPohodaDatabase();
         $this->productInfoQueueImportFacade->importDataToQueue($dateTimeBeforeTransferFromPohodaServer, $transfer->getLastStartAt());
 
-        return $this->productImportFacade->processImport();
+        $isNextIterationNeeded = $this->productImportFacade->processImport();
+
+        $this->productExportSubscriber->exportScheduledRows();
+
+        return $isNextIterationNeeded;
     }
 }
