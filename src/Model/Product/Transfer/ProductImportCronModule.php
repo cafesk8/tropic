@@ -60,8 +60,8 @@ class ProductImportCronModule extends AbstractTransferCronModule
     {
         $transfer = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER);
         $dateTimeBeforeTransferFromPohodaServer = $this->pohodaEntityManager->getCurrentDateTimeFromPohodaDatabase();
-        $this->productInfoQueueImportFacade->importDataToQueue($this->logger, $dateTimeBeforeTransferFromPohodaServer, $transfer->getLastStartAt());
+        $this->productInfoQueueImportFacade->importDataToQueue($dateTimeBeforeTransferFromPohodaServer, $transfer->getLastStartAt());
 
-        return $this->productImportFacade->processImport($this->logger);
+        return $this->productImportFacade->processImport();
     }
 }

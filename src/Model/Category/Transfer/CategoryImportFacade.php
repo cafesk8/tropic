@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Category\Transfer;
 
-use App\Component\Transfer\Logger\TransferLogger;
+use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Component\Transfer\Pohoda\Category\PohodaCategory;
 use App\Component\Transfer\Pohoda\Category\PohodaCategoryExportFacade;
 use App\Model\Category\Category;
@@ -46,6 +46,7 @@ class CategoryImportFacade
     private $pohodaCategoryMapper;
 
     /**
+     * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Component\Transfer\Pohoda\Category\PohodaCategoryExportFacade $pohodaCategoryExportFacade
      * @param \App\Model\Category\Transfer\CategoryQueueImportFacade $categoryQueueImportFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
@@ -53,12 +54,14 @@ class CategoryImportFacade
      * @param \App\Model\Category\Transfer\PohodaCategoryMapper $pohodaCategoryMapper
      */
     public function __construct(
+        TransferLoggerFactory $transferLoggerFactory,
         PohodaCategoryExportFacade $pohodaCategoryExportFacade,
         CategoryQueueImportFacade $categoryQueueImportFacade,
         CategoryFacade $categoryFacade,
         CategoryDataFactory $categoryDataFactory,
         PohodaCategoryMapper $pohodaCategoryMapper
     ) {
+        $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(CategoryImportCronModule::TRANSFER_IDENTIFIER);
         $this->pohodaCategoryExportFacade = $pohodaCategoryExportFacade;
         $this->categoryQueueImportFacade = $categoryQueueImportFacade;
         $this->categoryFacade = $categoryFacade;
@@ -66,18 +69,14 @@ class CategoryImportFacade
         $this->pohodaCategoryMapper = $pohodaCategoryMapper;
     }
 
-    /**
-     * @param \App\Component\Transfer\Logger\TransferLogger $logger
-     */
-    public function processImport(TransferLogger $logger): void
+    public function processImport(): void
     {
-        $this->logger = $logger;
         $changedPohodaCategoryIds = $this->categoryQueueImportFacade->findChangedPohodaCategoryIds(self::MAX_BATCH_LIMIT);
         $pohodaCategories = $this->pohodaCategoryExportFacade->getPohodaCategoriesByPohodaCategoryIds(
             $changedPohodaCategoryIds
         );
         if (count($pohodaCategories) === 0) {
-            $this->logger->addInfo('Nejsou žádná data ke zpracování');
+            $this->logger->addInfo('Žádné kategorie k importu z fronty');
         } else {
             $this->logger->addInfo('Proběhne uložení kategorií', ['pohodaCategoriesCount' => count($pohodaCategories)]);
             $updatedPohodaCategoryIds = $this->updateCategoriesByPohodaCategories($pohodaCategories);
@@ -87,6 +86,7 @@ class CategoryImportFacade
             $this->logger->addInfo('Proběhne přepočet kategorií', ['countCategoriesForOrderRecalculation' => count($categoriesForOrderRecalculation)]);
             $this->categoryFacade->editOrdering($categoriesForOrderRecalculation);
         }
+        $this->logger->persistTransferIssues();
     }
 
     /**

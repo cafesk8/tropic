@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Component\Transfer\Pohoda\Product;
 
+use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
+use App\Model\Product\Transfer\ProductImportCronModule;
 use DateTime;
-use Symfony\Bridge\Monolog\Logger;
 
 class PohodaProductExportFacade
 {
@@ -21,21 +22,21 @@ class PohodaProductExportFacade
     private $pohodaProductDataValidator;
 
     /**
-     * @var \Symfony\Bridge\Monolog\Logger
+     * @var \App\Component\Transfer\Logger\TransferLogger
      */
     private $logger;
 
     /**
-     * @param \Symfony\Bridge\Monolog\Logger $logger
+     * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository $pohodaProductExportRepository
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProductDataValidator $pohodaProductDataValidator
      */
     public function __construct(
-        Logger $logger,
+        TransferLoggerFactory $transferLoggerFactory,
         PohodaProductExportRepository $pohodaProductExportRepository,
         PohodaProductDataValidator $pohodaProductDataValidator
     ) {
-        $this->logger = $logger;
+        $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
         $this->pohodaProductExportRepository = $pohodaProductExportRepository;
         $this->pohodaProductDataValidator = $pohodaProductDataValidator;
     }
@@ -81,7 +82,7 @@ class PohodaProductExportFacade
             try {
                 $this->pohodaProductDataValidator->validate($pohodaProductData);
             } catch (PohodaInvalidDataException $exc) {
-                $this->logger->addError('Položka není validní a nebude přenesena.', [
+                $this->logger->addError('Produkt není validní a nebude přenesen.', [
                     'pohodaId' => $pohodaProductData[PohodaProduct::COL_POHODA_ID],
                     'productName' => $pohodaProductData[PohodaProduct::COL_NAME],
                     'exceptionMessage' => $exc->getMessage(),
@@ -91,6 +92,7 @@ class PohodaProductExportFacade
 
             $pohodaProducts[$pohodaProductData[PohodaProduct::COL_CATNUM]] = new PohodaProduct($pohodaProductData);
         }
+        $this->logger->persistTransferIssues();
 
         return $pohodaProducts;
     }
@@ -148,16 +150,6 @@ class PohodaProductExportFacade
         }
 
         return $reindexedPohodaProductsResult;
-    }
-
-    /**
-     * @return array
-     */
-    public function getLogs(): array
-    {
-        return array_filter($this->logger->getLogs(), function (array $log) {
-            return $log['priority'] === Logger::ERROR;
-        });
     }
 
     /**
