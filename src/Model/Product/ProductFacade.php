@@ -1201,7 +1201,13 @@ class ProductFacade extends BaseProductFacade
      */
     private function refreshProductFlags(BaseProduct $product, array $productFlagsData)
     {
-        $this->productFlagFacade->deleteByProduct($product);
+        $oldProductFlags = $this->productFlagFacade->getByProduct($product);
+
+        foreach ($oldProductFlags as $oldProductFlag) {
+            $this->em->remove($oldProductFlag);
+        }
+
+        $this->em->flush($oldProductFlags);
         $product->clearProductFlags();
         $this->em->flush($product);
         $processedFlags = [];

@@ -465,41 +465,53 @@ class PohodaProductMapper
         $flags = $this->flagFacade->getAllIndexedByPohodaId();
         $productData->flags = [];
 
-        $productData->flags[] = $this->productFlagDataFactory->create(
-            $flags[Flag::POHODA_ID_NEW],
-            $this->getDatetimeOrNull($pohodaProduct->flagNewFrom),
-            $this->getDatetimeOrNull($pohodaProduct->flagNewTo)
-        );
+        if ($pohodaProduct->flagNewFrom !== null || $pohodaProduct->flagNewTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_NEW],
+                $this->getDatetimeOrNull($pohodaProduct->flagNewFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagNewTo)
+            );
+        }
 
-        $productData->flags[] = $this->productFlagDataFactory->create(
-            $flags[Flag::POHODA_ID_CLEARANCE],
-            $this->getDatetimeOrNull($pohodaProduct->flagClearanceFrom),
-            $this->getDatetimeOrNull($pohodaProduct->flagClearanceTo)
-        );
+        if ($pohodaProduct->flagClearanceFrom !== null || $pohodaProduct->flagClearanceTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_CLEARANCE],
+                $this->getDatetimeOrNull($pohodaProduct->flagClearanceFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagClearanceTo)
+            );
+        }
 
-        $productData->flags[] = $this->productFlagDataFactory->create(
-            $flags[Flag::POHODA_ID_ACTION],
-            $this->getDatetimeOrNull($pohodaProduct->flagActionFrom),
-            $this->getDatetimeOrNull($pohodaProduct->flagActionTo)
-        );
+        if ($pohodaProduct->flagActionFrom !== null || $pohodaProduct->flagActionTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_ACTION],
+                $this->getDatetimeOrNull($pohodaProduct->flagActionFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagActionTo)
+            );
+        }
 
-        $productData->flags[] = $this->productFlagDataFactory->create(
-            $flags[Flag::POHODA_ID_RECOMMENDED],
-            $this->getDatetimeOrNull($pohodaProduct->flagRecommendedFrom),
-            $this->getDatetimeOrNull($pohodaProduct->flagRecommendedTo)
-        );
+        if ($pohodaProduct->flagRecommendedFrom !== null || $pohodaProduct->flagRecommendedTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_RECOMMENDED],
+                $this->getDatetimeOrNull($pohodaProduct->flagRecommendedFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagRecommendedTo)
+            );
+        }
 
-        $productData->flags[] = $this->productFlagDataFactory->create(
-            $flags[Flag::POHODA_ID_DISCOUNT],
-            $this->getDatetimeOrNull($pohodaProduct->flagDiscountFrom),
-            $this->getDatetimeOrNull($pohodaProduct->flagDiscountTo)
-        );
+        if ($pohodaProduct->flagDiscountFrom !== null || $pohodaProduct->flagDiscountTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_DISCOUNT],
+                $this->getDatetimeOrNull($pohodaProduct->flagDiscountFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagDiscountTo)
+            );
+        }
 
-        $productData->flags[] = $this->productFlagDataFactory->create(
-            $flags[Flag::POHODA_ID_PREPARATION],
-            $this->getDatetimeOrNull($pohodaProduct->flagPreparationFrom),
-            $this->getDatetimeOrNull($pohodaProduct->flagPreparationTo)
-        );
+        if ($pohodaProduct->flagPreparationFrom !== null || $pohodaProduct->flagPreparationTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_PREPARATION],
+                $this->getDatetimeOrNull($pohodaProduct->flagPreparationFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagPreparationTo)
+            );
+        }
     }
 
     /**

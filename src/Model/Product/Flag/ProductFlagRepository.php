@@ -38,15 +38,11 @@ class ProductFlagRepository
 
     /**
      * @param \App\Model\Product\Product $product
+     * @return \App\Model\Product\Flag\ProductFlag[]
      */
-    public function deleteByProduct(Product $product): void
+    public function getByProduct(Product $product): array
     {
-        $this->getProductFlagRepository()
-            ->createQueryBuilder('pf')
-            ->delete(ProductFlag::class, 'pf')
-            ->where('pf.product = :product')
-            ->setParameter('product', $product)
-            ->getQuery()->execute();
+        return $this->getProductFlagRepository()->findBy(['product' => $product]);
     }
 
     /**

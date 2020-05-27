@@ -60,9 +60,10 @@ class ProductFlagFacade
 
     /**
      * @param \App\Model\Product\Product $product
+     * @return \App\Model\Product\Flag\ProductFlag[]
      */
-    public function deleteByProduct(Product $product): void
+    public function getByProduct(Product $product): array
     {
-        $this->productFlagRepository->deleteByProduct($product);
+        return $this->productFlagRepository->getByProduct($product);
     }
 }
