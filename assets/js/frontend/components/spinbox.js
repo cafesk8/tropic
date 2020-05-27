@@ -64,7 +64,7 @@ export default class Spinbox {
             value = min;
         }
 
-        if (max !== undefined && max < value) {
+        if (max !== undefined && max > 0 && max < value) {
             value = max;
             $currentTarget.closest('.js-spinbox-parent').find('.js-maximum-amount-warning').show();
         }
