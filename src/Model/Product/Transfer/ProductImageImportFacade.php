@@ -12,6 +12,7 @@ use App\Component\Transfer\Pohoda\Product\Image\PohodaImage;
 use App\Component\Transfer\Pohoda\Product\Image\PohodaImageExportFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
+use DateTime;
 use League\Flysystem\FilesystemInterface;
 
 class ProductImageImportFacade
@@ -80,11 +81,14 @@ class ProductImageImportFacade
         $this->pohodaImageExportFacade = $pohodaImageExportFacade;
     }
 
-    public function importImagesFromPohoda(): void
+    /**
+     * @param \DateTime|null $lastFinishAt
+     */
+    public function importImagesFromPohoda(?DateTime $lastFinishAt): void
     {
         $imagesTargetPath = $this->getImagesTargetPath();
         $nextImageId = $this->imageFacade->getHighestImageId() + 1;
-        $productPohodaIds = $this->productFacade->getAllPohodaIds();
+        $productPohodaIds = $this->productFacade->getPohodaIdsForProductsUpdatedSince($lastFinishAt);
 
         $pohodaImages = $this->pohodaImageExportFacade->getPohodaImages($productPohodaIds);
         $pohodaImagesCount = count($pohodaImages);
@@ -98,6 +102,7 @@ class ProductImageImportFacade
         }
 
         $pohodaImageIds = [];
+        $productIds = [];
         foreach ($pohodaImages as $pohodaImage) {
             $productPohodaId = $pohodaImage->productPohodaId;
             $product = $this->productFacade->findByPohodaId($productPohodaId);
@@ -113,9 +118,10 @@ class ProductImageImportFacade
             $nextImageId++;
             $this->imageFacade->restartImagesIdsDbSequence($nextImageId);
             $pohodaImageIds[] = $pohodaImage->id;
+            $productIds[] = $product->getId();
         }
 
-        $this->deleteOrphanImages($pohodaImageIds);
+        $this->deleteOrphanImages($pohodaImageIds, $productIds);
     }
 
     /**
@@ -168,11 +174,12 @@ class ProductImageImportFacade
     }
 
     /**
-     * @param array $pohodaImageIds
+     * @param int[] $pohodaImageIds
+     * @param int[] $productIds
      */
-    public function deleteOrphanImages(array $pohodaImageIds): void
+    public function deleteOrphanImages(array $pohodaImageIds, array $productIds): void
     {
-        $imageIdsAndExtensionsToDelete = $this->imageFacade->deleteImagesWithNotExistingPohodaId($pohodaImageIds);
+        $imageIdsAndExtensionsToDelete = $this->imageFacade->deleteImagesWithNotExistingPohodaId($pohodaImageIds, $productIds);
         $imagesTargetPath = $this->getImagesTargetPath();
         foreach ($imageIdsAndExtensionsToDelete as $imageIdAndExtensionToDelete) {
             $imagePathToDelete = $imagesTargetPath . $imageIdAndExtensionToDelete['id'] . '.' . $imageIdAndExtensionToDelete['extension'];

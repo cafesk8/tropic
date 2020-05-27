@@ -92,19 +92,22 @@ class ImageRepository extends BaseImageRepository
 
     /**
      * @param int[] $currentPohodaIds
+     * @param int[] $productIds
      * @return array
      */
-    public function deleteImagesWithNotExistingPohodaId(array $currentPohodaIds): array
+    public function deleteImagesWithNotExistingPohodaId(array $currentPohodaIds, array $productIds): array
     {
         $resultSetMapping = new ResultSetMapping();
         $resultSetMapping
             ->addScalarResult('id', 'id')
             ->addScalarResult('extension', 'extension');
-        $imageIdsToDelete = $this->em->createNativeQuery('SELECT id, extension FROM images WHERE pohoda_id IS NOT NULL AND pohoda_id NOT IN (:pohodaIds)', $resultSetMapping)->execute([
+        $imageIdsToDelete = $this->em->createNativeQuery('SELECT id, extension FROM images WHERE pohoda_id IS NOT NULL AND pohoda_id NOT IN (:pohodaIds) AND entity_id IN (:entityIds)', $resultSetMapping)->execute([
             'pohodaIds' => $currentPohodaIds,
+            'entityIds' => $productIds,
         ]);
-        $this->em->createNativeQuery('DELETE FROM images WHERE pohoda_id IS NOT NULL AND pohoda_id NOT IN (:pohodaIds)', new ResultSetMapping())->execute([
+        $this->em->createNativeQuery('DELETE FROM images WHERE pohoda_id IS NOT NULL AND pohoda_id NOT IN (:pohodaIds) AND entity_id IN (:entityIds)', new ResultSetMapping())->execute([
             'pohodaIds' => $currentPohodaIds,
+            'entityIds' => $productIds,
         ]);
 
         return $imageIdsToDelete;

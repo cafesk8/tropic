@@ -21,6 +21,7 @@ use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Group\ProductGroupFactory;
 use App\Model\Product\StoreStock\ProductStoreStockFactory;
 use App\Model\Store\StoreFacade;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Google_Service_Exception;
 use Psr\Log\LoggerInterface;
@@ -1239,10 +1240,11 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param \DateTime|null $dateTime
      * @return int[]
      */
-    public function getAllPohodaIds(): array
+    public function getPohodaIdsForProductsUpdatedSince(?DateTime $dateTime): array
     {
-        return $this->productRepository->getAllPohodaIds();
+        return $this->productRepository->getPohodaIdsForProductsUpdatedSince($dateTime);
     }
 }
