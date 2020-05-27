@@ -647,3 +647,7 @@ services:
     Google\Cloud\Translate\V2\TranslateClient:
         arguments:
             $config: '%google_translate_config%'
+
+    App\Model\Product\Translation\ProductTranslationFacade:
+        arguments:
+            $translationEnabled: '%google_translate_enabled%'

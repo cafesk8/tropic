@@ -103,6 +103,9 @@ class PohodaProductDataValidator
                 PohodaProduct::COL_POHODA_PRODUCT_EAN => [
                     new Type(['type' => 'string']),
                 ],
+                PohodaProduct::COL_AUTO_DESCRIPTION_TRANSLATION => [
+                    new NotBlank(),
+                ],
             ],
         ]));
 
