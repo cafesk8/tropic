@@ -1239,10 +1239,10 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @return \App\Model\Product\Product[]
+     * @return int[]
      */
-    public function getAllIndexedByPohodaId(): array
+    public function getAllPohodaIds(): array
     {
-        return $this->productRepository->getAllIndexedByPohodaId();
+        return $this->productRepository->getAllPohodaIds();
     }
 }

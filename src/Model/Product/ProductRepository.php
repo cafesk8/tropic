@@ -632,14 +632,16 @@ class ProductRepository extends BaseProductRepository
     }
 
     /**
-     * @return \App\Model\Product\Product[]
+     * @return int[]
      */
-    public function getAllIndexedByPohodaId(): array
+    public function getAllPohodaIds(): array
     {
-        return $this->getProductQueryBuilder()
+        $result = $this->getProductQueryBuilder()
+            ->select('p.pohodaId')
             ->where('p.pohodaId IS NOT NULL')
-            ->indexBy('p', 'p.pohodaId')
             ->getQuery()
             ->execute();
+
+        return array_column($result, 'pohodaId');
     }
 }

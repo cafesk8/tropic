@@ -84,8 +84,7 @@ class ProductImageImportFacade
     {
         $imagesTargetPath = $this->getImagesTargetPath();
         $nextImageId = $this->imageFacade->getHighestImageId() + 1;
-        $productsIndexedByPohodaId = $this->productFacade->getAllIndexedByPohodaId();
-        $productPohodaIds = array_keys($productsIndexedByPohodaId);
+        $productPohodaIds = $this->productFacade->getAllPohodaIds();
 
         $pohodaImages = $this->pohodaImageExportFacade->getPohodaImages($productPohodaIds);
         $pohodaImagesCount = count($pohodaImages);
@@ -101,7 +100,8 @@ class ProductImageImportFacade
         $pohodaImageIds = [];
         foreach ($pohodaImages as $pohodaImage) {
             $productPohodaId = $pohodaImage->productPohodaId;
-            if (!array_key_exists($productPohodaId, $productsIndexedByPohodaId)) {
+            $product = $this->productFacade->findByPohodaId($productPohodaId);
+            if ($product === null) {
                 $this->logger->addWarning('Product not found by Pohoda ID. Image will not be transferred', [
                     'productPohodaId' => $productPohodaId,
                     'imagePohodaId' => $pohodaImage->id,
@@ -109,7 +109,6 @@ class ProductImageImportFacade
                 continue;
             }
 
-            $product = $productsIndexedByPohodaId[$productPohodaId];
             $this->processImage($pohodaImage, $imagesTargetPath, $nextImageId, $product);
             $nextImageId++;
             $this->imageFacade->restartImagesIdsDbSequence($nextImageId);
