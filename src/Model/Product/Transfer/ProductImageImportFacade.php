@@ -122,6 +122,7 @@ class ProductImageImportFacade
         }
 
         $this->deleteOrphanImages($pohodaImageIds, $productIds);
+        $this->logger->persistTransferIssues();
     }
 
     /**

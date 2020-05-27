@@ -60,6 +60,8 @@ class PohodaImageExportFacade
             }
         }
 
+        $this->transferLogger->persistTransferIssues();
+
         return $pohodaImages;
     }
 }
