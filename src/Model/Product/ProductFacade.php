@@ -1118,6 +1118,7 @@ class ProductFacade extends BaseProductFacade
     private function refreshMainProducts(Product $product): void
     {
         foreach ($this->productGroupFacade->getAllByItem($product) as $productGroup) {
+            $this->em->refresh($productGroup->getMainProduct());
             $this->edit($productGroup->getMainProduct()->getId(), $this->productDataFactory->createFromProduct($productGroup->getMainProduct()));
         }
     }
