@@ -607,6 +607,7 @@ class ProductRepository extends BaseProductRepository
             ->where('(MD5(pd.description) != pd.descriptionHash OR pd.descriptionHash IS NULL)')
             ->andWhere('pd.description IS NOT NULL')
             ->andWhere('pd.description != \'\'')
+            ->andWhere('p.variantType != \'variant\'')
             ->andWhere('p.descriptionAutomaticallyTranslated = TRUE')
             ->andWhere('pd.domainId = 1')
             ->getQuery()->execute();
@@ -624,6 +625,7 @@ class ProductRepository extends BaseProductRepository
             ->where('(MD5(pd.shortDescription) != pd.shortDescriptionHash OR pd.shortDescriptionHash IS NULL)')
             ->andWhere('pd.shortDescription IS NOT NULL')
             ->andWhere('pd.shortDescription != \'\'')
+            ->andWhere('p.variantType != \'variant\'')
             ->andWhere('p.shortDescriptionAutomaticallyTranslated = TRUE')
             ->andWhere('pd.domainId = 1')
             ->getQuery()->execute();
