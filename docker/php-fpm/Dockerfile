@@ -1,4 +1,4 @@
-FROM henzigo/shopsys-framework:v9.0.0-dev as base
+FROM henzigo/shopsys-framework:v9.0 as base
 
 USER root
 
