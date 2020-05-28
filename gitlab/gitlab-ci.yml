@@ -25,8 +25,6 @@ stages:
     script:
         - docker create -ti --name image ${TAG} bash
         - docker cp image:/var/www/html/var/ ./
-        - openvpn --daemon --config $OVPN
-        - sleep 10
         - echo "${KUBE_CONFIG}" > /root/.kube/config
         - chmod +x ./deploy/deploy-project.sh && ./deploy/deploy-project.sh deploy
 
