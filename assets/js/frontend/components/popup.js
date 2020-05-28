@@ -1,11 +1,13 @@
+import 'magnific-popup';
 import Register from 'framework/common/utils/Register';
 
-(function ($) {
+export default class Popup {
 
-    (new Register()).registerCallback(function ($container) {
+    static init ($container) {
         $container.filterAllNodes('.js-popup-image').magnificPopup({
             type: 'image'
         });
-    });
+    }
+}
 
-})(jQuery);
+new Register().registerCallback(Popup.init);

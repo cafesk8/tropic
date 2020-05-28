@@ -8,7 +8,7 @@ export default class ProductDetail {
 
     static init ($container) {
         $container.filterAllNodes('.js-gallery-main-image').click(function (event) {
-            const $slides = $container.filterAllNodes('.js-gallery .slick-slide:not(.slick-cloned) .js-gallery-slide-link');
+            const $slides = $container.filterAllNodes('.js-gallery .js-gallery-slide-link');
             $slides.filter(':first').trigger('click', event);
 
             return false;

@@ -1,4 +1,4 @@
-import 'nestedSortable';
+import 'jquery-ui-nested-sortable';
 import CategoryTreeSorting from 'framework/admin/components/CategoryTreeSorting';
 
 // not working at the moment, it is not possible to monkeypatch the constructor :(
