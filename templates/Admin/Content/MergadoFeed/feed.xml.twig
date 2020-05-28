@@ -75,6 +75,9 @@
                 {% endif -%}
             </DELIVERY>
         {% endfor -%}
+        {% if item.warranty is not null -%}
+            <WARRANTY>{{ item.warranty }}</WARRANTY>
+        {% endif -%}
     </ITEM>
 {% endblock %}
 
