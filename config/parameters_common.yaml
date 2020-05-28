@@ -52,6 +52,7 @@ parameters:
         Shopsys\FrameworkBundle\Model\Product\Availability\Availability: App\Model\Product\Availability\Availability
         Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat: App\Model\Pricing\Vat\Vat
         Shopsys\FrameworkBundle\Model\Product\Unit\Unit: App\Model\Product\Unit\Unit
+        Shopsys\FrameworkBundle\Model\Newsletter\NewsletterSubscriber: App\Model\Newsletter\NewsletterSubscriber
     build-version: '0000000000000000'
     securityBcryptCost: 12
     # All time values are displayed in this timezone (default is PHP timezone)

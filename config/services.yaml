@@ -658,3 +658,12 @@ services:
             - '%shopsys.image_dir%'
 
     Shopsys\FrameworkBundle\Component\Image\ImageRepository: '@App\Component\Image\ImageRepository'
+
+    Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade: '@App\Model\Newsletter\NewsletterFacade'
+
+    Shopsys\FrameworkBundle\Model\Newsletter\NewsletterRepository: '@App\Model\Newsletter\NewsletterRepository'
+
+    App\Model\Newsletter\Transfer\EcomailClient:
+        arguments:
+            $apiKey: '%ecomail_api_key%'
+            $listId: '%ecomail_list_id%'

@@ -130,3 +130,7 @@ services:
     App\Model\Order\Transfer\OrderExportCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }
+
+    App\Model\Newsletter\Transfer\EcomailExportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Export odběratelů emailů do Ecomail' }

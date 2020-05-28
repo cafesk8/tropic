@@ -104,3 +104,6 @@ parameters:
         keyFilePath: '/var/www/html/config/google-translate.json'
 
     google_translate_enabled: false
+
+    ecomail_api_key: 5ec3934b9d96b5ec3934b9d96e
+    ecomail_list_id: 1
