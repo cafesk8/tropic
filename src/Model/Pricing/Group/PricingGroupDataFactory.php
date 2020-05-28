@@ -8,6 +8,9 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData as BasePricingGroupData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactory as BasePricingGroupDataFactory;
 
+/**
+ * @method \App\Model\Pricing\Group\PricingGroupData createInstance()
+ */
 class PricingGroupDataFactory extends BasePricingGroupDataFactory
 {
     /**

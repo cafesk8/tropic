@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatDataFactory as BaseVatDataFacto
 
 /**
  * @method \App\Model\Pricing\Vat\VatData createFromVat(\App\Model\Pricing\Vat\Vat $vat)
+ * @method \App\Model\Pricing\Vat\VatData createInstance()
  */
 class VatDataFactory extends BaseVatDataFactory
 {

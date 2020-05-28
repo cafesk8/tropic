@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Model\Product\Unit\UnitDataFactory as BaseUnitDataFa
 /**
  * @method \App\Model\Product\Unit\UnitData createFromUnit(\App\Model\Product\Unit\Unit $unit)
  * @method fillNew(\App\Model\Product\Unit\UnitData $unitData)
+ * @method \App\Model\Product\Unit\UnitData createInstance()
  */
 class UnitDataFactory extends BaseUnitDataFactory
 {

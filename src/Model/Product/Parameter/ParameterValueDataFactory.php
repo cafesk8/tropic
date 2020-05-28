@@ -8,6 +8,9 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueData as BaseParameterValueData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory as BaseParameterValueDataFactory;
 
+/**
+ * @method \App\Model\Product\Parameter\ParameterValueData createInstance()
+ */
 class ParameterValueDataFactory extends BaseParameterValueDataFactory
 {
     /**
