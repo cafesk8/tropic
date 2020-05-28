@@ -57,8 +57,6 @@ services:
 
     Shopsys\FrameworkBundle\Controller\Admin\PromoCodeController:
         class: App\Controller\Admin\PromoCodeController
-        arguments:
-            $useInlineEditation: false
 
     Faker\Generator:
         factory: [Faker\Factory, create, ]
