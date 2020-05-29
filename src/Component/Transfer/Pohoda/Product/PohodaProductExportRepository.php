@@ -38,6 +38,44 @@ class PohodaProductExportRepository
 
     private const PRODUCT_TYPE_GROUP_ID = 5;
 
+    private const POHODA_PRODUCT_COLUMN_ALIASES = [
+        'ID' => PohodaProduct::COL_POHODA_ID,
+        'IDS' => PohodaProduct::COL_CATNUM,
+        'Nazev' => PohodaProduct::COL_NAME,
+        'Nazev1' => PohodaProduct::COL_NAME_SK,
+        'Popis' => PohodaProduct::COL_SHORT_DESCRIPTION,
+        'Popis2' => PohodaProduct::COL_LONG_DESCRIPTION,
+        'VPrVyjmProdSl' => PohodaProduct::COL_REGISTRATION_DISCOUNT_DISABLED,
+        'VPrVyjmProdAkc' => PohodaProduct::COL_PROMO_DISCOUNT_DISABLED,
+        'ProdejDPH' => PohodaProduct::COL_SELLING_PRICE,
+        'RelDPHp' => PohodaProduct::COL_SELLING_VAT_RATE_ID,
+        'NakupDPH' => PohodaProduct::COL_PURCHASE_PRICE,
+        'VPrBCena' => PohodaProduct::COL_STANDARD_PRICE,
+        'ObjNazev' => PohodaProduct::COL_VARIANT_ID,
+        'SText' => PohodaProduct::COL_VARIANT_ALIAS,
+        'SText1' => PohodaProduct::COL_VARIANT_ALIAS_SK,
+        'RelSkTyp' => PohodaProduct::COL_POHODA_PRODUCT_TYPE,
+        'VPrAutPrepEUR' => PohodaProduct::COL_AUTO_EUR_PRICE,
+        'Dodani' => PohodaProduct::COL_DELIVERY_DAYS,
+        'VPrNovinkaOd' => PohodaProduct::COL_FLAG_NEW_FROM,
+        'VPrNovinkaDo' => PohodaProduct::COL_FLAG_NEW_TO,
+        'VPrDoprodejOd' => PohodaProduct::COL_FLAG_CLEARANCE_FROM,
+        'VPrDoprodejDo' => PohodaProduct::COL_FLAG_CLEARANCE_TO,
+        'VPrAkceOd' => PohodaProduct::COL_FLAG_ACTION_FROM,
+        'VPrAkceDo' => PohodaProduct::COL_FLAG_ACTION_TO,
+        'VPrDoporOd' => PohodaProduct::COL_FLAG_RECOMMENDED_FROM,
+        'VPrDoporDo' => PohodaProduct::COL_FLAG_RECOMMENDED_TO,
+        'VPrSlevaOd' => PohodaProduct::COL_FLAG_DISCOUNT_FROM,
+        'VPrSlevaDo' => PohodaProduct::COL_FLAG_DISCOUNT_TO,
+        'VPrPripravOd' => PohodaProduct::COL_FLAG_PREPARATION_FROM,
+        'VPrPripravDo' => PohodaProduct::COL_FLAG_PREPARATION_TO,
+        'EAN' => PohodaProduct::COL_POHODA_PRODUCT_EAN,
+        'MJ3' => PohodaProduct::COL_POHODA_PRODUCT_UNIT,
+        'MJ3Koef' => PohodaProduct::COL_POHODA_PRODUCT_MINIMUM_AMOUNT_AND_MULTIPLIER,
+        'Zaruka' => PohodaProduct::COL_POHODA_PRODUCT_WARRANTY,
+        'Vyrobce' => PohodaProduct::COL_POHODA_PRODUCT_BRAND_NAME,
+    ];
+
     /**
      * @var \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager
      */
@@ -58,64 +96,23 @@ class PohodaProductExportRepository
     public function findByPohodaProductIds(array $pohodaProductIds): array
     {
         $resultSetMapping = new ResultSetMapping();
-        $resultSetMapping->addScalarResult('ID', PohodaProduct::COL_POHODA_ID)
-            ->addScalarResult('IDS', PohodaProduct::COL_CATNUM)
-            ->addScalarResult('Nazev', PohodaProduct::COL_NAME)
-            ->addScalarResult('Nazev1', PohodaProduct::COL_NAME_SK)
-            ->addScalarResult('Popis', PohodaProduct::COL_SHORT_DESCRIPTION)
-            ->addScalarResult('Popis2', PohodaProduct::COL_LONG_DESCRIPTION)
-            ->addScalarResult('VPrVyjmProdSl', PohodaProduct::COL_REGISTRATION_DISCOUNT_DISABLED)
-            ->addScalarResult('VPrVyjmProdAkc', PohodaProduct::COL_PROMO_DISCOUNT_DISABLED)
-            ->addScalarResult('ProdejDPH', PohodaProduct::COL_SELLING_PRICE)
-            ->addScalarResult('RelDPHp', PohodaProduct::COL_SELLING_VAT_RATE_ID)
-            ->addScalarResult('NakupDPH', PohodaProduct::COL_PURCHASE_PRICE)
-            ->addScalarResult('VPrBCena', PohodaProduct::COL_STANDARD_PRICE)
-            ->addScalarResult('ObjNazev', PohodaProduct::COL_VARIANT_ID)
-            ->addScalarResult('SText', PohodaProduct::COL_VARIANT_ALIAS)
-            ->addScalarResult('SText1', PohodaProduct::COL_VARIANT_ALIAS_SK)
-            ->addScalarResult('RelSkTyp', PohodaProduct::COL_POHODA_PRODUCT_TYPE)
-            ->addScalarResult('VPrAutPrepEUR', PohodaProduct::COL_AUTO_EUR_PRICE)
-            ->addScalarResult('Dodani', PohodaProduct::COL_DELIVERY_DAYS)
-            ->addScalarResult('EAN', PohodaProduct::COL_POHODA_PRODUCT_EAN)
-            ->addScalarResult('MJ3', PohodaProduct::COL_POHODA_PRODUCT_UNIT)
-            ->addScalarResult('MJ3Koef', PohodaProduct::COL_POHODA_PRODUCT_MINIMUM_AMOUNT_AND_MULTIPLIER)
-            ->addScalarResult('Zaruka', PohodaProduct::COL_POHODA_PRODUCT_WARRANTY)
-            ->addScalarResult('Vyrobce', PohodaProduct::COL_POHODA_PRODUCT_BRAND_NAME);
+        $queryColumns = [];
+
+        foreach (self::POHODA_PRODUCT_COLUMN_ALIASES as $column => $alias) {
+            $resultSetMapping->addScalarResult($column, $alias);
+            $queryColumns[] = 'Product.' . $column;
+        }
 
         $query = $this->pohodaEntityManager->createNativeQuery(
-            'SELECT 
-                Product.ID, 
-                Product.IDS, 
-                Product.Nazev, 
-                Product.Nazev1, 
-                Product.Popis, 
-                Product.Popis2, 
-                Product.VPrVyjmProdSl,
-                Product.VPrVyjmProdAkc,
-                Product.ProdejDPH, 
-                Product.RelDPHp, 
-                Product.NakupDPH, 
-                Product.VPrBCena,
-                Product.ObjNazev, 
-                Product.SText,
-                Product.SText1,
-                Product.RelSkTyp,
-                Product.VPrAutPrepEUR,
-                Product.Dodani,
-                Product.EAN,
-                Product.MJ3,
-                Product.MJ3Koef,
-                Product.Zaruka,
-                Product.Vyrobce
+            'SELECT ' . implode(', ', $queryColumns) . '
              FROM Skz Product
              WHERE Product.ID IN (:pohodaProductIds)
                 AND Product.IObchod = 1
              ORDER BY Product.DatSave',
             $resultSetMapping
-        )
-            ->setParameters([
-                'pohodaProductIds' => $pohodaProductIds,
-            ]);
+        )->setParameters([
+            'pohodaProductIds' => $pohodaProductIds,
+        ]);
 
         $pohodaProductResult = $query->getResult();
         $pohodaProductsResult = [];

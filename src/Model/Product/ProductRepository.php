@@ -12,6 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
+use Shopsys\FrameworkBundle\Model\Product\Flag\Flag;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
@@ -60,7 +61,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
  * @method array getProductsWithParameter(\App\Model\Product\Parameter\Parameter $parameter)
  * @method \App\Model\Product\Product[] getProductsWithAvailability(\App\Model\Product\Availability\Availability $availability)
  * @method \App\Model\Product\Product[] getProductsWithBrand(\App\Model\Product\Brand\Brand $brand)
- * @method \App\Model\Product\Product[] getProductsWithFlag(\App\Model\Product\Flag\Flag $flag)
  * @method \App\Model\Product\Product[] getProductsWithUnit(\App\Model\Product\Unit\Unit $unit)
  * @method \App\Model\Product\Product getSellableByUuid(string $uuid, int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
  */
@@ -580,5 +580,19 @@ class ProductRepository extends BaseProductRepository
     public function getProductsForRefresh(): array
     {
         return $this->getProductRepository()->findBy(['refresh' => true]);
+    }
+
+    /**
+     * @param \App\Model\Product\Flag\Flag $flag
+     * @return \App\Model\Product\Product[]
+     */
+    public function getProductsWithFlag(Flag $flag): array
+    {
+        return $this->getProductRepository()->createQueryBuilder('p')
+            ->leftJoin('p.flags', 'pf')
+            ->where('pf.flag = :flag')
+            ->setParameter('flag', $flag)
+            ->getQuery()
+            ->getResult();
     }
 }

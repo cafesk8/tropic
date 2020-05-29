@@ -8,7 +8,6 @@ use DateTime;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
 /**
- * @property \App\Model\Product\Flag\Flag[] $flags
  * @property \App\Model\Category\Category[][] $categoriesByDomainId
  * @property \App\Model\Product\Brand\Brand|null $brand
  * @property \App\Model\Product\Product[] $accessories
@@ -123,6 +122,11 @@ class ProductData extends BaseProductData
      * @var int|null
      */
     public $warranty;
+
+    /**
+     * @var \App\Model\Product\Flag\ProductFlagData[]
+     */
+    public $flags;
 
     public function __construct()
     {

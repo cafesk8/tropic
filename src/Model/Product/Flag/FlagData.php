@@ -17,4 +17,9 @@ class FlagData extends BaseFlagData
      * @var bool
      */
     public $sale;
+
+    /**
+     * @var string|null
+     */
+    public $pohodaId;
 }

@@ -241,7 +241,7 @@ class DataLayerMapper
         $dataLayerProduct->setLabels(array_map(function ($flag) use ($locale) {
             /** @var $flag \App\Model\Product\Flag\Flag */
             return $flag->getName($locale);
-        }, $product->getFlags()));
+        }, $product->getActiveFlags()));
     }
 
     /**

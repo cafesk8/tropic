@@ -6,6 +6,6 @@ namespace App\Model\Product\Transfer\Exception;
 
 use App\Component\Transfer\Exception\TransferException;
 
-class ProductDoesntExistInEShopException extends TransferException
+class ProductNotFoundInEshopException extends TransferException
 {
 }

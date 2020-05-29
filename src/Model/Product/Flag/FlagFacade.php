@@ -31,16 +31,29 @@ class FlagFacade extends BaseFlagFacade
     protected $flagRepository;
 
     /**
+     * @var \App\Model\Product\Flag\ProductFlagFacade
+     */
+    private $productFlagFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Flag\FlagRepository $flagRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFactory $flagFactory
      * @param \App\Component\Setting\Setting $setting
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param \App\Model\Product\Flag\ProductFlagFacade $productFlagFacade
      */
-    public function __construct(EntityManagerInterface $em, FlagRepository $flagRepository, FlagFactory $flagFactory, Setting $setting, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        FlagRepository $flagRepository,
+        FlagFactory $flagFactory,
+        Setting $setting,
+        EventDispatcherInterface $eventDispatcher,
+        ProductFlagFacade $productFlagFacade
+    ) {
         parent::__construct($em, $flagRepository, $flagFactory, $eventDispatcher);
         $this->setting = $setting;
+        $this->productFlagFacade = $productFlagFacade;
     }
 
     /**
@@ -67,6 +80,9 @@ class FlagFacade extends BaseFlagFacade
      */
     public function deleteById($flagId): void
     {
+        $flag = $this->getById($flagId);
+        $this->productFlagFacade->deleteByFlag($flag);
+
         $defaultFlagForFreeTransportAndPayment = $this->getDefaultFlagForFreeTransportAndPayment();
         if ($defaultFlagForFreeTransportAndPayment !== null && $flagId === $defaultFlagForFreeTransportAndPayment->getId()) {
             $this->setDefaultFlagForFreeTransportAndPayment(null);
@@ -91,5 +107,22 @@ class FlagFacade extends BaseFlagFacade
     public function getSaleFlags(): array
     {
         return $this->flagRepository->getSaleFlags();
+    }
+
+    /**
+     * @return \App\Model\Product\Flag\Flag[]
+     */
+    public function getAllIndexedByPohodaId(): array
+    {
+        $flags = $this->flagRepository->getAll();
+        $flagsIndexedByPohodaId = [];
+
+        foreach ($flags as $flag) {
+            if ($flag->getPohodaId() !== null) {
+                $flagsIndexedByPohodaId[$flag->getPohodaId()] = $flag;
+            }
+        }
+
+        return $flagsIndexedByPohodaId;
     }
 }

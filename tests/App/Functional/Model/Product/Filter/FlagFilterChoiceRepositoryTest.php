@@ -6,9 +6,9 @@ namespace Tests\App\Functional\Model\Product\Filter;
 
 use App\DataFixtures\Demo\CategoryDataFixture;
 use App\DataFixtures\Demo\PricingGroupDataFixture;
+use App\Model\Product\Flag\Flag;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Product\Filter\FlagFilterChoiceRepository;
-use Shopsys\FrameworkBundle\Model\Product\Flag\Flag;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
@@ -34,7 +34,7 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         );
 
         $this->assertContains(1, $ids);
-        $this->assertContains(3, $ids);
+        $this->assertContains(8, $ids);
         $this->assertContains(4, $ids);
     }
 

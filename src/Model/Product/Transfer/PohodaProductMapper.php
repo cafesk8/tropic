@@ -17,14 +17,18 @@ use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Brand\Brand;
 use App\Model\Product\Brand\BrandDataFactory;
 use App\Model\Product\Brand\BrandFacade;
+use App\Model\Product\Flag\Flag;
+use App\Model\Product\Flag\FlagFacade;
+use App\Model\Product\Flag\ProductFlagDataFactory;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
-use App\Model\Product\Transfer\Exception\ProductDoesntExistInEShopException;
+use App\Model\Product\Transfer\Exception\ProductNotFoundInEshopException;
 use App\Model\Product\Unit\Unit;
 use App\Model\Product\Unit\UnitFacade;
 use App\Model\Store\StoreFacade;
+use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\TransformString;
@@ -99,6 +103,16 @@ class PohodaProductMapper
     private $logger;
 
     /**
+     * @var \App\Model\Product\Flag\FlagFacade
+     */
+    private $flagFacade;
+
+    /**
+     * @var \App\Model\Product\Flag\ProductFlagDataFactory
+     */
+    private $productFlagDataFactory;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
@@ -111,6 +125,8 @@ class PohodaProductMapper
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Model\Product\Brand\BrandDataFactory $brandDataFactory
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
+     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory
      */
     public function __construct(
         Domain $domain,
@@ -124,7 +140,9 @@ class PohodaProductMapper
         UnitFacade $unitFacade,
         BrandFacade $brandFacade,
         BrandDataFactory $brandDataFactory,
-        TransferLoggerFactory $transferLoggerFactory
+        TransferLoggerFactory $transferLoggerFactory,
+        FlagFacade $flagFacade,
+        ProductFlagDataFactory $productFlagDataFactory
     ) {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
@@ -137,6 +155,8 @@ class PohodaProductMapper
         $this->unitFacade = $unitFacade;
         $this->brandFacade = $brandFacade;
         $this->brandDataFactory = $brandDataFactory;
+        $this->flagFacade = $flagFacade;
+        $this->productFlagDataFactory = $productFlagDataFactory;
 
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
     }
@@ -150,6 +170,7 @@ class PohodaProductMapper
         ProductData $productData
     ): void {
         $this->mapBasicInfoToProductData($pohodaProduct, $productData);
+        $this->mapFlagsToProductData($pohodaProduct, $productData);
         $this->mapDomainDataToProductData($pohodaProduct, $productData);
         $this->mapRelatedProductsToProductData($pohodaProduct, $productData);
         $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
@@ -230,7 +251,7 @@ class PohodaProductMapper
             $relatedProductPohodaId = (int)$relatedProductArray[PohodaProduct::COL_RELATED_PRODUCT_REF_ID];
             $relatedProduct = $this->productFacade->findByPohodaId($relatedProductPohodaId);
             if ($relatedProduct === null) {
-                throw new ProductDoesntExistInEShopException(sprintf(
+                throw new ProductNotFoundInEshopException(sprintf(
                     'Product pohodaId=%d doesn´t exist in e-shop database',
                     $relatedProductPohodaId
                 ));
@@ -281,7 +302,7 @@ class PohodaProductMapper
             $productGroupItem = $this->productFacade->findByPohodaId($productGroupItemPohodaId);
 
             if ($productGroupItem === null) {
-                throw new ProductDoesntExistInEShopException(sprintf(
+                throw new ProductNotFoundInEshopException(sprintf(
                     'Group item pohodaId=%d not found in e-shop database!',
                     $productGroupItemPohodaId
                 ));
@@ -433,5 +454,72 @@ class PohodaProductMapper
         }
 
         return $youtubeVideoIds;
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function mapFlagsToProductData(PohodaProduct $pohodaProduct, ProductData $productData): void
+    {
+        $flags = $this->flagFacade->getAllIndexedByPohodaId();
+        $productData->flags = [];
+
+        if ($pohodaProduct->flagNewFrom !== null || $pohodaProduct->flagNewTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_NEW],
+                $this->getDatetimeOrNull($pohodaProduct->flagNewFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagNewTo)
+            );
+        }
+
+        if ($pohodaProduct->flagClearanceFrom !== null || $pohodaProduct->flagClearanceTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_CLEARANCE],
+                $this->getDatetimeOrNull($pohodaProduct->flagClearanceFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagClearanceTo)
+            );
+        }
+
+        if ($pohodaProduct->flagActionFrom !== null || $pohodaProduct->flagActionTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_ACTION],
+                $this->getDatetimeOrNull($pohodaProduct->flagActionFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagActionTo)
+            );
+        }
+
+        if ($pohodaProduct->flagRecommendedFrom !== null || $pohodaProduct->flagRecommendedTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_RECOMMENDED],
+                $this->getDatetimeOrNull($pohodaProduct->flagRecommendedFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagRecommendedTo)
+            );
+        }
+
+        if ($pohodaProduct->flagDiscountFrom !== null || $pohodaProduct->flagDiscountTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_DISCOUNT],
+                $this->getDatetimeOrNull($pohodaProduct->flagDiscountFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagDiscountTo)
+            );
+        }
+
+        if ($pohodaProduct->flagPreparationFrom !== null || $pohodaProduct->flagPreparationTo !== null) {
+            $productData->flags[] = $this->productFlagDataFactory->create(
+                $flags[Flag::POHODA_ID_PREPARATION],
+                $this->getDatetimeOrNull($pohodaProduct->flagPreparationFrom),
+                $this->getDatetimeOrNull($pohodaProduct->flagPreparationTo)
+            );
+        }
+    }
+
+    /**
+     * @param string $date
+     * @return \DateTime|null
+     */
+    private function getDatetimeOrNull(?string $date): ?DateTime
+    {
+        return $date === null ? null : new DateTime($date);
     }
 }

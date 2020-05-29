@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\Elasticsearch;
 
 use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Flag\Flag;
 use App\Model\Product\Group\ProductGroupFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -13,7 +14,7 @@ use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportRepository as BaseProductExportRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
-use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
 
@@ -22,7 +23,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
  * @method string extractDetailUrl(int $domainId, \App\Model\Product\Product $product)
- * @method int[] extractFlags(\App\Model\Product\Product $product)
  * @method array extractParameters(string $locale, \App\Model\Product\Product $product)
  * @method array extractVisibility(int $domainId, \App\Model\Product\Product $product)
  * @method int[] extractVariantIds(\App\Model\Product\Product $product)
@@ -111,7 +111,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param string $locale
      * @return array
      */
-    protected function extractResult(Product $product, int $domainId, string $locale): array
+    protected function extractResult(BaseProduct $product, int $domainId, string $locale): array
     {
         $variants = $this->productFacade->getVisibleVariantsForProduct($product, $domainId);
         $result = parent::extractResult($product, $domainId, $locale);
@@ -142,7 +142,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Model\Product\Product $product
      * @return array
      */
-    protected function extractPrices(int $domainId, Product $product): array
+    protected function extractPrices(int $domainId, BaseProduct $product): array
     {
         $defaultPricingGroupOnDomain = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
         $standardPricingGroupOnDomain = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
@@ -183,7 +183,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Model\Product\Product $product
      * @return int[]
      */
-    protected function extractCategories(int $domainId, Product $product): array
+    protected function extractCategories(int $domainId, BaseProduct $product): array
     {
         $categoryIds = [];
         $categoriesIndexedByDomainId = $product->getCategoriesIndexedByDomainId();
@@ -202,7 +202,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param int $domainId
      * @return string[]
      */
-    private function getVariantsAliases(Product $product, string $locale, int $domainId): array
+    private function getVariantsAliases(BaseProduct $product, string $locale, int $domainId): array
     {
         $variantsAliases = [];
         foreach ($this->productFacade->getVisibleVariantsForProduct($product, $domainId) as $variant) {
@@ -217,7 +217,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param int $domainId
      * @return string[]
      */
-    private function getVariantsCatnums(Product $product, int $domainId): array
+    private function getVariantsCatnums(BaseProduct $product, int $domainId): array
     {
         $variantsCatnums = [];
         foreach ($this->productFacade->getVisibleVariantsForProduct($product, $domainId) as $variant) {
@@ -232,7 +232,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param int $domainId
      * @return array
      */
-    private function getPricesForFilterIncludingVariants(Product $product, int $domainId): array
+    private function getPricesForFilterIncludingVariants(BaseProduct $product, int $domainId): array
     {
         if ($product->isMainVariant() === false) {
             return $this->getPricesForFilter($product, $domainId);
@@ -252,7 +252,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param int $domainId
      * @return array
      */
-    private function getPricesForFilter(Product $product, int $domainId): array
+    private function getPricesForFilter(BaseProduct $product, int $domainId): array
     {
         $pricesForFilter = [];
         $productSellingPrices = $this->productFacade->getAllProductSellingPricesByDomainId($product, $domainId);
@@ -266,5 +266,16 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $pricesForFilter;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return int[]
+     */
+    protected function extractFlags(BaseProduct $product): array
+    {
+        return array_map(function (Flag $flag) {
+            return $flag->getId();
+        }, $product->getActiveFlags());
     }
 }

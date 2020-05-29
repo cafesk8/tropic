@@ -6,6 +6,7 @@ namespace App\Model\Product;
 
 use App\Component\Domain\DomainHelper;
 use App\Model\Product\Exception\ProductIsNotMainVariantException;
+use App\Model\Product\Flag\ProductFlag;
 use App\Model\Product\Group\ProductGroup;
 use App\Model\Product\Mall\ProductMallExportMapper;
 use App\Model\Product\StoreStock\ProductStoreStock;
@@ -13,6 +14,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
+use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
 /**
@@ -44,7 +46,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @method \App\Model\Product\Product getMainVariant()
  * @property \App\Model\Product\ProductDomain[]|\Doctrine\Common\Collections\Collection $domains
  * @method \App\Model\Product\ProductDomain getProductDomain(int $domainId)
- * @method editFlags(\App\Model\Product\Flag\Flag[] $flags)
  * @property \App\Model\Product\Unit\Unit $unit
  * @method \App\Model\Product\Unit\Unit getUnit()
  */
@@ -73,11 +74,10 @@ class Product extends BaseProduct
     private $pohodaId;
 
     /**
-     * @var \App\Model\Product\Flag\Flag[]|\Doctrine\Common\Collections\Collection
+     * @var \App\Model\Product\Flag\ProductFlag[]|\Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Model\Product\Flag\Flag")
+     * @ORM\OneToMany(targetEntity="App\Model\Product\Flag\ProductFlag", mappedBy="product", cascade={"remove"})
      * @ORM\JoinTable(name="product_flags")
-     * @ORM\OrderBy({"position" = "ASC"})
      */
     protected $flags;
 
@@ -289,6 +289,7 @@ class Product extends BaseProduct
         $this->productGroups = new ArrayCollection();
         $this->deliveryDays = $productData->deliveryDays;
         $this->refresh = false;
+        $this->flags = new ArrayCollection();
     }
 
     /**
@@ -308,6 +309,17 @@ class Product extends BaseProduct
         if (!$this->isVariant()) {
             $this->setProductCategoryDomains($productCategoryDomains);
         }
+    }
+
+    /**
+     * Flags are edited through ProductFacade::refreshProductFlags
+     * This method does not accept ProductFlag arguments
+     *
+     * @param \App\Model\Product\Flag\Flag[] $flags
+     */
+    public function editFlags(array $flags)
+    {
+        $this->flags = new ArrayCollection();
     }
 
     /**
@@ -393,12 +405,48 @@ class Product extends BaseProduct
     }
 
     /**
+     * @return \App\Model\Product\Flag\ProductFlag[]
+     */
+    public function getProductFlags(): array
+    {
+        $productFlags = $this->flags->toArray();
+        usort($productFlags, function (ProductFlag $productFlag1, ProductFlag $productFlag2) {
+            return $productFlag1->getFlag()->getPosition() - $productFlag2->getFlag()->getPosition();
+        });
+
+        return $productFlags;
+    }
+
+    /**
+     * @return \App\Model\Product\Flag\ProductFlag[]
+     */
+    public function getActiveProductFlags(): array
+    {
+        return array_filter($this->getProductFlags(), function (ProductFlag $productFlag) {
+            return $productFlag->isActive();
+        });
+    }
+
+    /**
      * @param int|null $limit
      * @return \App\Model\Product\Flag\Flag[]
      */
     public function getFlags(?int $limit = null)
     {
-        return $this->flags->slice(0, $limit);
+        return array_map(function (ProductFlag $productFlag) {
+            return $productFlag->getFlag();
+        }, array_slice($this->getProductFlags(), 0, $limit));
+    }
+
+    /**
+     * @param int|null $limit
+     * @return \App\Model\Product\Flag\Flag[]
+     */
+    public function getActiveFlags(?int $limit = null)
+    {
+        return array_map(function (ProductFlag $productFlag) {
+            return $productFlag->getFlag();
+        }, array_slice($this->getActiveProductFlags(), 0, $limit));
     }
 
     /**
@@ -408,30 +456,12 @@ class Product extends BaseProduct
     public function getFlagsIndexedByPosition(int $limit): array
     {
         $flagsIndexedByPosition = [];
-        foreach ($this->getFlags($limit) as $flag) {
+
+        foreach ($this->getActiveFlags($limit) as $flag) {
             $flagsIndexedByPosition[$flag->getPosition()] = $flag;
         }
 
         return $flagsIndexedByPosition;
-    }
-
-    /**
-     * @param int $domainId
-     * @return \App\Model\Category\Category[]
-     */
-    public function getListableProductCategoriesByDomainId(int $domainId): array
-    {
-        $productCategories = [];
-
-        foreach ($this->getProductCategoryDomainsByDomainIdIndexedByCategoryId($domainId) as $categoryDomain) {
-            /** @var \App\Model\Category\Category $category */
-            $category = $categoryDomain->getCategory();
-            if ($category->isVisible($domainId) && $category->isListable()) {
-                $productCategories[$category->getId()] = $category;
-            }
-        }
-
-        return $productCategories;
     }
 
     /**
@@ -1096,5 +1126,50 @@ class Product extends BaseProduct
     public function markForRefresh(): void
     {
         $this->refresh = true;
+    }
+
+    public function clearProductFlags(): void
+    {
+        $this->flags->clear();
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[] $productCategoryDomains
+     */
+    public function setProductCategoryDomains(array $productCategoryDomains)
+    {
+        foreach ($this->productCategoryDomains as $productCategoryDomain) {
+            if ($this->isProductCategoryDomainInArray($productCategoryDomain, $productCategoryDomains) === false) {
+                $this->productCategoryDomains->removeElement($productCategoryDomain);
+            }
+        }
+        foreach ($productCategoryDomains as $productCategoryDomain) {
+            if ($this->isProductCategoryDomainInArray($productCategoryDomain, $this->productCategoryDomains->toArray()) === false) {
+                $this->productCategoryDomains->add($productCategoryDomain);
+            }
+        }
+
+        if ($this->isMainVariant()) {
+            foreach ($this->getVariants() as $variant) {
+                $variant->copyProductCategoryDomains($productCategoryDomains);
+            }
+        }
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain $searchProductCategoryDomain
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[] $productCategoryDomains
+     * @return bool
+     */
+    protected function isProductCategoryDomainInArray(ProductCategoryDomain $searchProductCategoryDomain, array $productCategoryDomains): bool
+    {
+        foreach ($productCategoryDomains as $productCategoryDomain) {
+            if ($productCategoryDomain->getCategory() === $searchProductCategoryDomain->getCategory()
+                && $productCategoryDomain->getDomainId() === $searchProductCategoryDomain->getDomainId()
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 }
