@@ -27,6 +27,7 @@ class Payment extends BasePayment
     public const TYPE_GOPAY = 'goPay';
     public const TYPE_PAY_PAL = 'payPal';
     public const TYPE_MALL = 'mall';
+    public const TYPE_COFIDIS = 'cofidis';
 
     /**
      * @var string
@@ -134,6 +135,14 @@ class Payment extends BasePayment
     public function isPayPal(): bool
     {
         return $this->type === self::TYPE_PAY_PAL;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCofidis(): bool
+    {
+        return $this->type === self::TYPE_COFIDIS;
     }
 
     /**

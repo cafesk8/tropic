@@ -168,6 +168,26 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             TransportDataFixture::TRANSPORT_PPL_DE,
             TransportDataFixture::TRANSPORT_PPL_FR,
         ]);
+
+        $paymentData = $this->paymentDataFactory->create();
+        $paymentData->type = Payment::TYPE_COFIDIS;
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $paymentData->name[$locale] = t('Cofidis', [], 'dataFixtures', $locale);
+        }
+        $paymentData->czkRounding = false;
+        $this->setPriceForAllDomainDefaultCurrencies($paymentData, Money::zero());
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $paymentData->description[$locale] = t('Platba provedena u Cofidis', [], 'dataFixtures', $locale);
+        }
+        $paymentData->enabled[Domain::FIRST_DOMAIN_ID] = true;
+        $paymentData->hidden = false;
+        $this->createPayment(Payment::TYPE_PAY_PAL, $paymentData, [
+            TransportDataFixture::TRANSPORT_PERSONAL,
+            TransportDataFixture::TRANSPORT_PPL,
+            TransportDataFixture::TRANSPORT_CZECH_POST,
+            TransportDataFixture::TRANSPORT_PPL_DE,
+            TransportDataFixture::TRANSPORT_PPL_FR,
+        ]);
     }
 
     /**
