@@ -28,18 +28,8 @@
                                     id: categoryWithPreloadedChildren.category.id,
                                     (constant('Shopsys\\FrameworkBundle\\Component\\Router\\Security\\RouteCsrfProtector::CSRF_TOKEN_REQUEST_PARAMETER')): csrf_token(csrfTokenId)
                                 }) %}
-                                <a
-                                        href="{{ categoryDeleteUrl }}"
-                                        onclick="
-                                                Shopsys.window({
-                                                content: '{{ 'Do you really want to delete this category?'|trans|e('js') }}',
-                                                buttonCancel: true,
-                                                buttonContinue: true,
-                                                textContinue: '{{ 'Yes'|trans|e('js') }}',
-                                                urlContinue: '{{ categoryDeleteUrl|e('js') }}'
-                                                });
-                                                return false;"
-                                        class="form-tree__item__control"
+                                <a data-delete-url="{{ categoryDeleteUrl }}"
+                                   class="form-tree__item__control js-category-delete-confirm"
                                 >
                                     <i class="svg svg-trash"></i>
                                 </a>
