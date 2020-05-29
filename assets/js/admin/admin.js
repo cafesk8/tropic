@@ -1,5 +1,6 @@
 import '../jQuery/registerJquery';
 import registerAdmin from 'framework/admin/registerAdmin';
+import '../loadTranslations';
 import './banner';
 import './blogCategoryTree';
 import './category';
