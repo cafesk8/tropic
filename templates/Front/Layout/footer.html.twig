@@ -1,4 +1,4 @@
-{% block footer %}
+<div class="web__footer{% if not isCookiesConsentGiven() %} web__footer--with-cookies js-eu-cookies-consent-footer-gap{% endif %}">
     {% set shopInfoPhoneHours = getShopInfoPhoneHours() %}
     <div class="footer">
         {% block footer__links %}
@@ -72,6 +72,10 @@
                             </div>
                         </div>
 
+                        {% block newsletter_subscription %}
+                            {{ render(controller('App\\Controller\\Front\\NewsletterController:subscriptionAction')) }}
+                        {% endblock %}
+
                         <div class="footer-banner">
                             <div class="footer-banner__left">
                                 <h2 class="footer-banner__title">
@@ -124,4 +128,4 @@
             </footer>
         </div>
     </div>
-{% endblock %}
+</div>

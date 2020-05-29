@@ -9,6 +9,7 @@ use App\Form\Front\Registration\RegistrationFormType;
 use App\Model\Article\ArticleFacade;
 use App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Customer\User\CustomerUserUpdateDataFactory;
+use App\Model\Newsletter\NewsletterFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
@@ -56,6 +57,11 @@ class RegistrationController extends FrontBaseController
     private $customerUserUpdateDataFactory;
 
     /**
+     * @var \App\Model\Newsletter\NewsletterFacade
+     */
+    private $newsletterFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
@@ -63,6 +69,7 @@ class RegistrationController extends FrontBaseController
      * @param \App\Model\Article\ArticleFacade $articleFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      * @param \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
+     * @param \App\Model\Newsletter\NewsletterFacade $newsletterFacade
      */
     public function __construct(
         Domain $domain,
@@ -71,7 +78,8 @@ class RegistrationController extends FrontBaseController
         LegalConditionsFacade $legalConditionsFacade,
         ArticleFacade $articleFacade,
         CustomerMailFacade $customerMailFacade,
-        CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
+        CustomerUserUpdateDataFactory $customerUserUpdateDataFactory,
+        NewsletterFacade $newsletterFacade
     ) {
         $this->domain = $domain;
         $this->customerUserFacade = $customerUserFacade;
@@ -80,6 +88,7 @@ class RegistrationController extends FrontBaseController
         $this->articleFacade = $articleFacade;
         $this->customerMailFacade = $customerMailFacade;
         $this->customerUserUpdateDataFactory = $customerUserUpdateDataFactory;
+        $this->newsletterFacade = $newsletterFacade;
     }
 
     /**
@@ -120,6 +129,8 @@ class RegistrationController extends FrontBaseController
                     t('Unable to send some e-mails, please contact us for registration verification.')
                 );
             }
+
+            $this->newsletterFacade->addSubscribedEmail($customerUser->getEmail(), $this->domain->getId());
 
             $this->authenticator->loginUser($customerUser, $request);
 
