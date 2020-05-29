@@ -43,16 +43,16 @@ class CofidisBannerController extends AdminBaseController
      */
     public function settingAction(Request $request): Response
     {
+        $selectedDomainId = $this->adminDomainTabsFacade->getSelectedDomainId();
         $formData = [
-            'minimumPrice' => $this->setting->getForDomain(Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID, $this->adminDomainTabsFacade->getSelectedDomainId()),
+            'minimumPrice' => $this->setting->getForDomain(Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID, $selectedDomainId),
         ];
-
-        $form = $this->createForm(CofidisBannerSettingFormType::class, $formData, ['domainId' => $this->adminDomainTabsFacade->getSelectedDomainId()]);
+        $form = $this->createForm(CofidisBannerSettingFormType::class, $formData, ['domainId' => $selectedDomainId]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $minimumPrice = $form->get('cofidisBanner')->get('minimumPrice')->getData();
-            $this->setting->setForDomain(Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID, $minimumPrice, $this->adminDomainTabsFacade->getSelectedDomainId());
+            $this->setting->setForDomain(Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID, $minimumPrice, $selectedDomainId);
 
             $this->addSuccessFlash(t('Nastavení bylo uloženo.'));
         }

@@ -87,6 +87,7 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
 
         $otherSettingMenu = $settingMenu->addChild('other', ['label' => t('Ostatní')]);
         $otherSettingMenu->addChild('deliverydate_setting', ['route' => 'admin_deliverydate_setting', 'label' => t('Výpočet termínu dodání')]);
+        $otherSettingMenu->addChild('cofidisbanner_setting', ['route' => 'admin_cofidisbanner_setting', 'label' => t('Cofidis banner')]);
     }
 
     /**

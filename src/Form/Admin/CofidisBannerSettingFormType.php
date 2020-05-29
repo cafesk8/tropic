@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Validator\Constraints\Type;
 
 class CofidisBannerSettingFormType extends AbstractType
 {
@@ -41,13 +40,13 @@ class CofidisBannerSettingFormType extends AbstractType
             ->create('cofidisBanner', GroupType::class, [
                 'label' => t('Nastavení banneru Cofidis'),
             ]);
+
         $deadlineGroup
             ->add('minimumPrice', MoneyType::class, [
                 'required' => true,
                 'label' => t('Zobrazit kalukačku od'),
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Vyplňte prosím minimální částku pro zobrazení kalkulačky na detailu produktu.']),
-                    new Type(['type' => 'numeric', 'message' => 'Vložte prosím číslo.']),
                 ],
                 'attr' => [
                     'icon' => true,
@@ -57,6 +56,7 @@ class CofidisBannerSettingFormType extends AbstractType
             ]);
 
         $builder->add($deadlineGroup);
+
         $builder->add('save', SubmitType::class);
     }
 
@@ -67,6 +67,7 @@ class CofidisBannerSettingFormType extends AbstractType
     {
         $resolver
             ->setRequired('domainId')
+            ->setAllowedTypes('domainId', ['int'])
             ->setDefaults([
             'attr' => ['novalidate' => 'novalidate'],
         ]);

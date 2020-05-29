@@ -71,4 +71,34 @@
             <arg value="${path.root}/phpunit.xml"/>
         </exec>
     </target>
+
+    <target name="environment-change" depends="production-protection" description="Change application environment with installing environment related dependencies.">
+        <input propertyName="change.environment" validArgs="dev,prod,test" defaultValue="dev" message="Select environment you want to change to"/>
+        <phingcall target="maintenance-on" />
+        <exec executable="${path.php.executable}" passthru="true" checkreturn="true">
+            <arg value="${path.bin-console}" />
+            <arg value="shopsys:environment:change" />
+            <arg value="${change.environment}" />
+        </exec>
+        <if>
+            <equals arg1="${change.environment}" arg2="prod"/>
+            <then>
+                <exec executable="${path.composer.executable}" logoutput="true" passthru="true" checkreturn="true">
+                    <arg value="install"/>
+                    <arg value="--no-dev"/>
+                    <arg value="--no-scripts"/>
+                </exec>
+            </then>
+            <else>
+                <phingcall target="composer-check" />
+                <exec executable="${path.composer.executable}" logoutput="true" passthru="true" checkreturn="true">
+                    <arg value="install"/>
+                    <arg value="--no-scripts"/>
+                </exec>
+            </else>
+        </if>
+        <phingcall target="clean-cache" />
+        <phingcall target="maintenance-off" />
+    </target>
+
 </project>

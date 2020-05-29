@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Component\Cofidis\Banner\CofidisBannerFacade;
 use App\Component\DiscountExclusion\DiscountExclusionFacade;
 use App\Component\FlashMessage\ErrorExtractor;
 use App\Form\Front\Cart\AddProductFormType;
@@ -16,6 +17,7 @@ use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Gift\ProductGiftInCartFacade;
 use App\Model\Product\Product;
+use App\Model\Product\ProductCachedAttributesFacade;
 use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -102,6 +104,16 @@ class CartController extends FrontBaseController
     private $pricingGroupFacade;
 
     /**
+     * @var \App\Component\Cofidis\Banner\CofidisBannerFacade
+     */
+    private $cofidisBannerFacade;
+
+    /**
+     * @var \App\Model\Product\ProductCachedAttributesFacade
+     */
+    private $productCachedAttributesFacade;
+
+    /**
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
@@ -115,6 +127,8 @@ class CartController extends FrontBaseController
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \App\Component\Cofidis\Banner\CofidisBannerFacade $cofidisBannerFacade
+     * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      */
     public function __construct(
         CartFacade $cartFacade,
@@ -129,7 +143,9 @@ class CartController extends FrontBaseController
         ProductFacade $productFacade,
         OrderGiftFacade $orderGiftFacade,
         DiscountExclusionFacade $discountExclusionFacade,
-        PricingGroupFacade $pricingGroupFacade
+        PricingGroupFacade $pricingGroupFacade,
+        CofidisBannerFacade $cofidisBannerFacade,
+        ProductCachedAttributesFacade $productCachedAttributesFacade
     ) {
         $this->cartFacade = $cartFacade;
         $this->domain = $domain;
@@ -144,6 +160,8 @@ class CartController extends FrontBaseController
         $this->orderGiftFacade = $orderGiftFacade;
         $this->discountExclusionFacade = $discountExclusionFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->cofidisBannerFacade = $cofidisBannerFacade;
+        $this->productCachedAttributesFacade = $productCachedAttributesFacade;
     }
 
     /**
@@ -316,6 +334,9 @@ class CartController extends FrontBaseController
             $disabled = true;
         }
 
+        /** @var \App\Model\Product\Pricing\ProductPrice $productSellingPrice */
+        $productSellingPrice = $this->productCachedAttributesFacade->getProductSellingPrice($product);
+
         return $this->render('Front/Inline/Cart/addProduct.html.twig', [
             'form' => $form->createView(),
             'product' => $product,
@@ -324,6 +345,7 @@ class CartController extends FrontBaseController
             'hardDisabled' => $hardDisabled === true ? '1' : '0',
             'showAmountInput' => $showAmountInput,
             'displayVariantSelectButton' => $displayVariantSelectButton,
+            'showCofidisBanner' => $this->cofidisBannerFacade->isAllowedToShowCofidisBanner($productSellingPrice),
         ]);
     }
 

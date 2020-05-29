@@ -120,6 +120,7 @@ security:
         - { path: ^/admin/heureka, roles: ROLE_VIEW_SETTINGS }
         - { path: ^/admin/store, roles: ROLE_VIEW_SETTINGS }
         - { path: ^/admin/delivery-date, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/cofidis-banner, roles: ROLE_VIEW_SETTINGS }
 
         # Customers
         - { path: ^/admin/customer, roles: ROLE_VIEW_CUSTOMERS }

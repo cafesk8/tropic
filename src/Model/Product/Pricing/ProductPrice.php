@@ -11,6 +11,8 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice as BaseProductPri
 
 class ProductPrice extends BaseProductPrice
 {
+    private const COFIDIS_MONTHLY_BASE_PAYMENT_PERCENTAGE = 10;
+
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
@@ -98,5 +100,13 @@ class ProductPrice extends BaseProductPrice
     public function getStandardPrice(): ?Price
     {
         return $this->standardPrice;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    public function getMonthlyCofidisBasePayment(): Money
+    {
+        return $this->priceWithVat->divide(self::COFIDIS_MONTHLY_BASE_PAYMENT_PERCENTAGE, 0);
     }
 }
