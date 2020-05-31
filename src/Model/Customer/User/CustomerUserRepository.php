@@ -104,4 +104,15 @@ class CustomerUserRepository extends BaseCustomerUserRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+    /**
+     * @param int $legacyId
+     * @return \App\Model\Customer\User\CustomerUser|null
+     */
+    public function findByLegacyId($legacyId): ?CustomerUser
+    {
+        return $this->getCustomerUserRepository()->findOneBy([
+            'legacyId' => $legacyId,
+        ]);
+    }
 }

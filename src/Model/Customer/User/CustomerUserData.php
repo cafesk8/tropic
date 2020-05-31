@@ -33,6 +33,11 @@ class CustomerUserData extends BaseCustomerUserData
      */
     public $pohodaId;
 
+    /**
+     * @var int
+     */
+    public $legacyId;
+
     public function __construct()
     {
         parent::__construct();
