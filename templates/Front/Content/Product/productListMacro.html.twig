@@ -259,3 +259,66 @@
         {% endfor %}
     </div>
 {% endmacro %}
+
+{% macro productsBomb(productViews, productHeadingTagName, type, onlyRefresh = false) %}
+    <ul class="list-products-bomb">
+        {% for productView in productViews %}
+            {% set productSellingPrice = productView.sellingPrice %}
+            <li class="list-products-bomb__item">
+                <a class="list-products-bomb__item__block" href="{{ productView.action.detailUrl }}">
+                    <div class="list-products-bomb__item__flags">
+                        {% set productFlagIds = productView.flagIds %}
+                        {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
+                        {% if freeTransportAndPaymentFlagId is not null %}
+                            {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+                        {% endif %}
+                        {{ renderFlagsByIds(productFlagIds, 'in-flag--bomb', true, productSellingPrice, productView.variantsCount) }}
+                    </div>
+
+                    <{{ productHeadingTagName|default('h2') }} class="list-products-bomb__item__title">
+                        {{ productView.name|striptags|raw }}
+                    <{{ '/' ~ productHeadingTagName|default('h2') }}>
+
+                    <div class="list-products-bomb__item__image dont-print">
+                        {{ image(productView.image, { size: 'listBomb', alt: productView.name, lazy: true }) }}
+                    </div>
+
+                    {% if productSellingPrice is not null %}
+                        <div class="list-products-bomb__item__price">
+                            {% if productSellingPrice.hasHigherStandardPrice %}
+                                <div class="list-products-bomb__item__price__old">
+                                    {{ productSellingPrice.standardPrice.priceWithVat|price }}
+                                </div>
+                            {% endif %}
+
+                            <div class="{% if productSellingPrice.hasHigherStandardPrice %}list-products-bomb__item__price__main{% endif %}">
+                                {% if productSellingPrice.priceFrom %}
+                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                {% else %}
+                                    {{ productSellingPrice.priceWithVat|price }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if productView.getGiftsCount() > 0 %}
+                        <div class="list-products-bomb__item__gift">
+                            {% set giftCount = productView.getGiftsCount() %}
+                            {% if giftCount is same as (1) %}
+                                <span class="list-products-bomb__item__gift__title">{{ 'Dárek'|trans }}</span>
+                                {{ productView.getFirstGiftLabel() }}
+                            {% else %}
+                                <span class="list-products-bomb__item__gift__title">
+                                    {% transchoice giftCount with {'%count%': giftCount} %}
+                                        [2,4] %count% dárky zdarma |[5,Inf] %count% dárků zdarma
+                                    {% endtranschoice %}
+                                </span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endmacro %}

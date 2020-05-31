@@ -28,7 +28,7 @@
         position: static;
     }
 
-    &--product-list, &--slider {
+    &--product-list, &--slider, &--bomb {
         position: static;
         overflow: hidden;
         height: @in-flag-item-height + @in-flag-item-gap;
@@ -83,6 +83,15 @@
                 margin-left: auto;
                 margin-right: 0;
             }
+        }
+
+        .in-flag--bomb & {
+            padding: 1px 10px;
+            line-height: 18px;
+
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 10px;
         }
     }
 }
