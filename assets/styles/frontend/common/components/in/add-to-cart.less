@@ -3,7 +3,7 @@
 
 .in-add-to-cart {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     padding: @in-add-to-cart-inset-gap @in-add-to-cart-inset-gap @in-add-to-cart-inset-gap + 1;
 
     background-color: @color-add;
@@ -16,16 +16,8 @@
         background-color: darken(@color-add, 5%);
     }
 
-    @media @query-sm {
-        flex-direction: row;
-    }
-
     &__spinbox {
-        margin-bottom: 10px;
-
-        @media @query-sm {
-            margin-bottom: 0;
-        }
+        margin-bottom: 0;
     }
 
     &__button {

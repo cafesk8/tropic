@@ -11,90 +11,107 @@
     <div class="box-detail">
         <div class="web__line">
             <div class="web__container">
-                <div class="box-detail__product{% if typeSet %} box-detail__product--small-gap{% endif %}">
+                <div class="box-detail__product{% if typeSet %} box-detail__product--small-gap{% endif %}{% if product.isMainVariant %} box-detail__product--variant{% endif %}">
                     {# @var \App\Model\Product\Pricing\ProductPrice sellingPrice  #}
                     {% set sellingPrice = getProductSellingPrice(product) %}
 
-                    {% if not typeSet %}
-                        <div class="box-detail__image">
-                            {% set galleryImages = getImages(product) %}
-                            {% set showGallery = galleryImages|length > 0 or youtubeDetails %}
+                    <div class="box-detail__left">
+                        {% if not typeSet %}
+                            <div class="box-detail__image">
+                                {% set galleryImages = getImages(product) %}
+                                {% set showGallery = galleryImages|length > 0 or youtubeDetails %}
 
-                            <div class="box-detail__image__main">
-                                {% if imageExists(product) %}
-                                    <a href="{{ imageUrl(product, 'original') }}"
-                                    class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
-                                        {{ image(product, { itemprop: 'image' }) }}
-                                    </a>
-                                {% else %}
-                                    {{ noimage({ alt: product.name }) }}
+                                <div class="box-detail__image__main">
+                                    {% if imageExists(product) %}
+                                        <a href="{{ imageUrl(product, 'original') }}"
+                                        class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
+                                            {{ image(product, { itemprop: 'image' }) }}
+                                        </a>
+                                    {% else %}
+                                        {{ noimage({ alt: product.name }) }}
+                                    {% endif %}
+                                </div>
+
+                                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, product.variantsCount) }}
+
+                                {% if showGallery %}
+                                    <div class="box-gallery dont-print js-gallery">
+                                        <div class="box-gallery__images">
+                                            {% for galleryImage in galleryImages %}
+                                                <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
+                                                    <a href="{{ imageUrl(galleryImage, 'original') }}"
+                                                    class="box-gallery__item__link js-gallery-slide-link">
+                                                        {{ image(galleryImage, {size: 'thumbnail'}) }}
+                                                    </a>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="box-gallery__links">
+                                            {% if galleryImages|length > showGalleryMaxCount %}
+                                                <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
+                                                    <a href="#" class="box-gallery__item__link">
+                                                        {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                            {% if youtubeDetails %}
+                                                <div class="box-gallery__item box-gallery__item--video">
+                                                    <a
+                                                        href="#video"
+                                                        class="box-gallery__item__link js-anchor-link"
+                                                    >
+                                                        <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
+                                                            alt="{{ youtubeDetails|first.getVideoTitle() }}"
+                                                            title="{{ youtubeDetails|first.getVideoTitle() }}">
+                                                        <div class="box-gallery__item__link__play">
+                                                            <div class="box-gallery__item__link__play__icon"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if product.isMainVariant %}
+                                    <p class="box-detail__left__description">{{ product.getShortDescription(domain.id)|raw }}</p>
+                                    <p class="box-detail__left__subtitle">
+                                        <span class="box-detail__left__subtitle__info">{{ 'Popis'|trans }}</span>
+                                        {{ product.getSeoH1(domain.id)|default(product.name) }}
+                                    </p>
+                                    <div class="in-user-text" itemprop="description">
+                                        {% if product.getDescription(domain.id) %}
+                                            <p>
+                                                {{ product.getDescription(domain.id)|raw }}
+                                            </p>
+                                        {% endif %}
+                                    </div>
                                 {% endif %}
                             </div>
-
-                            {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, product.variantsCount) }}
-
-                            {% if showGallery %}
-                                <div class="box-gallery dont-print js-gallery">
-                                    <div class="box-gallery__images">
-                                        {% for galleryImage in galleryImages %}
-                                            <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
-                                                <a href="{{ imageUrl(galleryImage, 'original') }}"
-                                                class="box-gallery__item__link js-gallery-slide-link">
-                                                    {{ image(galleryImage, {size: 'thumbnail'}) }}
-                                                </a>
-                                            </div>
-                                        {% endfor %}
+                        {% else %}
+                            <div class="box-detail__description">
+                                {% if typeSet %}
+                                    <div class="box-detail__description__wrap">
+                                        <h2 class="box-detail__description__title" itemprop="name">
+                                            {{ product.getSeoH1(domain.id)|default(product.name) }}
+                                        </h2>
+                                        <div class="box-detail__description__flags">
+                                            {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail in-flag--in-set', false, sellingPrice, product.variantsCount) }}
+                                        </div>
                                     </div>
-                                    <div class="box-gallery__links">
-                                        {% if galleryImages|length > showGalleryMaxCount %}
-                                            <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
-                                                <a href="#" class="box-gallery__item__link">
-                                                    {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
-                                                </a>
-                                            </div>
-                                        {% endif %}
-                                        {% if youtubeDetails %}
-                                            <div class="box-gallery__item box-gallery__item--video">
-                                                <a
-                                                    href="#video"
-                                                    class="box-gallery__item__link js-anchor-link"
-                                                >
-                                                    <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
-                                                        alt="{{ youtubeDetails|first.getVideoTitle() }}"
-                                                        title="{{ youtubeDetails|first.getVideoTitle() }}">
-                                                    <div class="box-gallery__item__link__play">
-                                                        <div class="box-gallery__item__link__play__icon"></div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% else %}
-                        <div class="box-detail__description">
-                            {% if typeSet %}
-                                <div class="box-detail__description__wrap">
-                                    <h2 class="box-detail__description__title" itemprop="name">
-                                        {{ product.getSeoH1(domain.id)|default(product.name) }}
-                                    </h2>
-                                    <div class="box-detail__description__flags">
-                                        {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail in-flag--in-set', false, sellingPrice, product.variantsCount) }}
-                                    </div>
-                                </div>
 
-                                <p class="box-detail__description__code">
-                                    {{ product.catnum }}
-                                </p>
-                                <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
-                            {% endif %}
-                        </div>
-                    {% endif %}
+                                    <p class="box-detail__description__code">
+                                        {{ product.catnum }}
+                                    </p>
+                                    <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
 
                     <div class="box-detail__info">
                         {% if not typeSet %}
-                            <h2 class="box-detail__info__title" itemprop="name">
+                            <h2 class="box-detail__info__title{% if product.isMainVariant %} box-detail__info__title--big-gap{% endif %}" itemprop="name">
                                 {{ product.getSeoH1(domain.id)|default(product.name) }}
                             </h2>
                         {% endif %}
@@ -108,96 +125,87 @@
                             {% endif %}
                         {% endfor %}
 
-                        <div class="box-detail__add-basket">
+                        <div class="box-detail__add-basket{% if product.isMainVariant %} box-detail__add-basket--variant{% endif %}">
                             <div class="box-detail-add">
-                                <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
-                                    {% if not product.isMainVariant %}
+                                {% if not product.isMainVariant %}
+                                    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
                                         {{ discountExclusion.discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
                                         {{ self.productPrice(product) }}
                                         <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
                                         <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
-                                    {% endif %}
-                                    <link itemprop="availability"
-                                        href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
-                                </div>
+                                        <link itemprop="availability"
+                                            href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
+                                    </div>
+                                {% endif %}
 
                                 {% if product.isMainVariant and not product.calculatedSellingDenied %}
-                                    <table {% if getProductSellingPrice(product) is not null %}itemprop="offers"
+                                    <ul {% if getProductSellingPrice(product) is not null %}itemprop="offers"
                                         itemscope
                                         itemtype="http://schema.org/AggregateOffer" {% endif %}
-                                        class="table-variants"
-                                    >
-                                        <thead>
-                                        <tr class="table-variants__row">
-                                            <th class="table-variants__cell table-variants__cell--image"></th>
-                                            <th class="table-variants__cell table-variants__cell--name">{{ 'Name'|trans }}</th>
-                                            <th class="table-variants__cell table-variants__cell--price">
-                                                {{ 'Price including VAT'|trans }}
-                                                {% if getProductSellingPrice(product) is not null %}
-                                                    <meta itemprop="priceCurrency"
-                                                        content="{{ currencyCode(domain.id) }}"
-                                                    >
-                                                    <meta itemprop="lowPrice"
-                                                        content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
-                                                    >
-                                                    <link itemprop="availability"
-                                                        href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
-                                                    >
-                                                {% endif %}
-                                            </th>
-                                            <th class="table-variants__cell">{{ 'Dostupnost'|trans }}</th>
-                                            <th class="table-variants__cell">{{ 'Kód produktu'|trans }}</th>
-                                            <th class="table-variants__cell">{{ 'Parametry'|trans }}</th>
-                                            <th class="table-variants__cell table-variants__cell--action"></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
+                                        class="list-variants">
                                         {% for variant in filterOnlyVisibleVariants(product) %}
-                                            <tr class="table-variants__row">
-                                                <td class="table-variants__cell table-variants__cell--image">
-                                                    <div class="table-variants__cell__image">
-                                                        {% if imageExists(variant) %}
-                                                            <a href="{{ imageUrl(variant, 'original') }}" class="js-popup-image">
-                                                                {{ image(variant, { size: 'thumbnail' }) }}
-                                                            </a>
-                                                        {% else %}
-                                                            {{ noimage() }}
-                                                        {% endif %}
+                                            <li class="list-variants__item">
+                                                <div class="list-variants__item__info">
+                                                    <div class="list-variants__item__description">
+                                                        <div class="list-variants__item__description__image">
+                                                            {% if imageExists(variant) %}
+                                                                <a href="{{ imageUrl(variant, 'original') }}" class="js-popup-image">
+                                                                    {{ image(variant, { size: 'thumbnail' }) }}
+                                                                </a>
+                                                            {% else %}
+                                                                {{ noimage() }}
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="list-variants__item__description__name">
+                                                            {% if variant.variantAlias is not null %}
+                                                                {{ variant.variantAlias }}
+                                                            {% else %}
+                                                                {{ variant.name }}
+                                                            {% endif %}
+                                                            <div class="list-variants__item__description__name__code">{{ 'Kód produktu'|trans }}: {{ variant.catnum }}</div>
+                                                        </div>
+                                                        <div class="list-variants__item__description__availability">
+                                                            {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: variant, variants: {} } %}
+                                                        </div>
                                                     </div>
-                                                </td>
-                                                <td class="table-variants__cell table-variants__cell--name">
-                                                    {% if variant.variantAlias is not null %}
-                                                        {{ variant.variantAlias }}
-                                                    {% else %}
-                                                        {{ variant.name }}
-                                                    {% endif %}
-                                                </td>
-                                                <td class="table-variants__cell table-variants__cell--price">
-                                                    {{ self.productPrice(variant) }}
-                                                </td>
-                                                <td class="table-variants__cell">
-                                                    {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: variant, variants: {} } %}
-                                                </td>
-                                                <td class="table-variants__cell">
-                                                    {{ variant.catnum }}
-                                                </td>
-                                                <td>
+
                                                     {% set productParameterValues = getProductParameterValues(variant) %}
-                                                    {% for productParameterValue in productParameterValues %}
-                                                        {{ productParameterValue.parameter.name }}:
-                                                        {{ productParameterValue.value.text }}
-                                                    {% endfor %}
-                                                </td>
-                                                <td>
-                                                    {{ discountExclusion.discountExclusionNotice(variant, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
-                                                </td>
-                                                <td class="table-variants__cell table-variants__cell--action">
-                                                    {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'small'})) }}
-                                                </td>
-                                            </tr>
+                                                    {% if productParameterValues|length > 0%}
+                                                        <div class="list-variants__item__parameters">
+                                                            <div class="list-variants__item__parameters__wrap">
+                                                                {% for productParameterValue in productParameterValues %}
+                                                                    <div class="list-variants__item__parameters__item">
+                                                                        <span class="list-variants__item__parameters__item__name">{{ productParameterValue.parameter.name }}</span>
+                                                                        <span class="list-variants__item__parameters__item__value">{{ productParameterValue.value.text }}</span>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                    <div>
+                                                        {{ discountExclusion.discountExclusionNotice(variant, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
+                                                    </div>
+                                                </div>
+                                                <div class="list-variants__item__prices" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                                    {% if getProductSellingPrice(product) is not null %}
+                                                        <meta itemprop="priceCurrency"
+                                                            content="{{ currencyCode(domain.id) }}"
+                                                        >
+                                                        <meta itemprop="lowPrice"
+                                                            content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
+                                                        >
+                                                        <link itemprop="availability"
+                                                            href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
+                                                        >
+                                                    {% endif %}
+                                                    {{ self.productPrice(variant, 'detailVariant') }}
+                                                </div>
+                                                <div class="list-variants__item__actions">
+                                                    {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'detailVariant'})) }}
+                                                </div>
+                                            </li>
                                         {% endfor %}
-                                        </tbody>
-                                    </table>
+                                    </ul>
                                 {% endif %}
 
                                 {% if not product.isMainVariant %}
@@ -207,6 +215,16 @@
                                 {% endif %}
                             </div>
                         </div>
+
+                        {% if product.isMainVariant %}
+                            <div class="wrap-gradient js-not-implemented-yet">
+                                <div class="wrap-gradient__in">
+                                    <div class="box-detail__tags">
+                                        <div class="box-detail__tags__title">{{ 'Produkt se nachází v kategoriích'|trans }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -278,17 +296,19 @@
             </div>
         {% endif %}
 
-        <div class="web__line">
-            <div class="web__container js-box-tabs">
-                {% if not typeSet %}
-                    {% set productId = product.id %}
-                {% else %}
-                    {% set firstProductGroup = sortProductGroupsByPrice(product.productGroups)|first %}
-                    {% set productId = firstProductGroup.item.id %}
-                {% endif %}
-                {{ render(controller('App\\Controller\\Front\\ProductController:boxTabsAction', { productId: productId })) }}
+        {% if not product.isMainVariant %}
+            <div class="web__line">
+                <div class="web__container js-box-tabs">
+                    {% if not typeSet %}
+                        {% set productId = product.id %}
+                    {% else %}
+                        {% set firstProductGroup = sortProductGroupsByPrice(product.productGroups)|first %}
+                        {% set productId = firstProductGroup.item.id %}
+                    {% endif %}
+                    {{ render(controller('App\\Controller\\Front\\ProductController:boxTabsAction', { productId: productId })) }}
+                </div>
             </div>
-        </div>
+        {% endif %}
 
         {% if parentSetViews is not empty %}
             {% import 'Front/Content/Product/productSetViewMacro.html.twig' as productSetMacro %}
@@ -312,7 +332,7 @@
     </div>
 {% endmacro %}
 
-{% macro productPrice(product) %}
+{% macro productPrice(product, type) %}
     {# @var sellingPrice \App\Model\Product\Pricing\ProductPrice #}
     {% set sellingPrice = getProductSellingPrice(product) %}
     {# @var defaultPrice \App\Model\Product\Pricing\ProductPrice #}
@@ -322,29 +342,51 @@
     {# @var registeredCustomerPrice \App\Model\Product\Pricing\ProductPrice #}
     {% set registeredCustomerPrice = getProductRegisteredCustomerPrice(product) %}
 
-    {% if sellingPrice.hasHigherStandardPrice %}
-        <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
-            {{ standardPrice.priceWithVat|price }}
-        </div>
-    {% endif %}
+    {% if type == "detailVariant" %}
+        {% if sellingPrice.hasHigherStandardPrice %}
+            <div class="list-variants__item__prices__item list-variants__item__prices__item--old">
+                {{ standardPrice.priceWithVat|price }}
+            </div>
+        {% endif %}
 
-    <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-        {{ sellingPrice.priceWithVat|price }}
-    </div>
+        <div class="list-variants__item__prices__item{% if sellingPrice.hasHigherStandardPrice %} list-variants__item__prices__item--main{% endif %}">
+            {{ sellingPrice.priceWithVat|price }}
+        </div>
 
-    {% if sellingPrice.hasHigherStandardPrice %}
-        <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
-            {{ 'ušetříte '|trans }} {{ sellingPrice.standardPriceDifference|price }}
-        </div>
-    {% endif %}
+        {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) and not product.isInAnySaleStock() %}
+            <div class="list-variants__item__prices__item list-variants__item__prices__item--info">
+                {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}
+            </div>
+        {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) and not product.isInAnySaleStock() %}
+            <div class="list-variants__item__prices__item list-variants__item__prices__item--info">
+                {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
+            </div>
+        {% endif %}
+    {% else %}
+        {% if sellingPrice.hasHigherStandardPrice %}
+            <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
+                {{ standardPrice.priceWithVat|price }}
+            </div>
+        {% endif %}
 
-    {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) and not product.isInAnySaleStock() %}
-        <div class="box-detail-add__prices__item box-detail-add__prices__item--info">
-            {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}
+        <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
+            {{ sellingPrice.priceWithVat|price }}
         </div>
-    {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) and not product.isInAnySaleStock() %}
-        <div class="box-detail-add__prices__item box-detail-add__prices__item--info">
-            {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
-        </div>
+
+        {% if sellingPrice.hasHigherStandardPrice %}
+            <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
+                {{ 'ušetříte '|trans }} {{ sellingPrice.standardPriceDifference|price }}
+            </div>
+        {% endif %}
+
+        {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) and not product.isInAnySaleStock() %}
+            <div class="box-detail-add__prices__item box-detail-add__prices__item--info">
+                {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}
+            </div>
+        {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) and not product.isInAnySaleStock() %}
+            <div class="box-detail-add__prices__item box-detail-add__prices__item--info">
+                {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
+            </div>
+        {% endif %}
     {% endif %}
 {% endmacro %}
