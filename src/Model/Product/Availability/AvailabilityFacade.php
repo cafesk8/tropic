@@ -30,7 +30,6 @@ class AvailabilityFacade extends BaseAvailabilityFacade
     {
         $colors = [];
 
-        /** @var \App\Model\Product\Availability\Availability $availability */
         foreach ($this->getAll() as $availability) {
             $colors[$availability->getName()] = $availability->getRgbColor();
         }
@@ -44,9 +43,7 @@ class AvailabilityFacade extends BaseAvailabilityFacade
     public function getDefaultOutOfStockAvailability(): Availability
     {
         $availabilityId = $this->setting->get(Setting::DEFAULT_AVAILABILITY_OUT_OF_STOCK_ID);
-        /** @var \App\Model\Product\Availability\Availability $availability */
-        $availability = $this->getById($availabilityId);
 
-        return $availability;
+        return $this->getById($availabilityId);
     }
 }

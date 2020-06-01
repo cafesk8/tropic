@@ -1,8 +1,8 @@
 {% macro productAvailability(product) %}
 {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
-    {% if product.isInAnySaleStock() %}
+    {% if product.inAnySaleStock and not product.sellingDenied %}
         <span class="in-availability__date">
-            {{ saleStockQuantity.showInfo(product.getRealSaleStocksQuantity(), product.unit.name) }}
+            {{ saleStockQuantity.showInfo(product.realSaleStocksQuantity, product.unit.name) }}
         </span>
     {% elseif product.isAvailableInDays %}
         <span class="in-availability__date in-availability__date--available-in-days">

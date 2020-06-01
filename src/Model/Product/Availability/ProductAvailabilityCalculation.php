@@ -27,7 +27,6 @@ class ProductAvailabilityCalculation extends BaseProductAvailabilityCalculation
      */
     public function calculateAvailability(BaseProduct $product)
     {
-        /** @var \App\Model\Product\Availability\Availability $defaultInStockAvailability */
         $defaultInStockAvailability = $this->availabilityFacade->getDefaultInStockAvailability();
 
         if ($this->em->contains($product) === false) {
