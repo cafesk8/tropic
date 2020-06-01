@@ -14,6 +14,7 @@ use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use DateTime;
 use League\Flysystem\FilesystemInterface;
+use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler;
 
 class ProductImageImportFacade
 {
@@ -55,6 +56,11 @@ class ProductImageImportFacade
     private $pohodaImageExportFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler
+     */
+    private $productExportScheduler;
+
+    /**
      * @param string $imagesDirectory
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Component\Transfer\Pohoda\MServer\MServerClient $mServerClient
@@ -62,6 +68,7 @@ class ProductImageImportFacade
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Component\Transfer\Pohoda\Product\Image\PohodaImageExportFacade $pohodaImageExportFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler $productExportScheduler
      */
     public function __construct(
         string $imagesDirectory,
@@ -70,7 +77,8 @@ class ProductImageImportFacade
         FilesystemInterface $filesystem,
         ImageFacade $imageFacade,
         ProductFacade $productFacade,
-        PohodaImageExportFacade $pohodaImageExportFacade
+        PohodaImageExportFacade $pohodaImageExportFacade,
+        ProductExportScheduler $productExportScheduler
     ) {
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImageImportCronModule::TRANSFER_IDENTIFIER);
         $this->mServerClient = $mServerClient;
@@ -79,6 +87,7 @@ class ProductImageImportFacade
         $this->imageFacade = $imageFacade;
         $this->productFacade = $productFacade;
         $this->pohodaImageExportFacade = $pohodaImageExportFacade;
+        $this->productExportScheduler = $productExportScheduler;
     }
 
     /**
@@ -122,6 +131,9 @@ class ProductImageImportFacade
         }
 
         $this->deleteOrphanImages($pohodaImageIds, $productIds);
+        foreach ($productIds as $productId) {
+            $this->productExportScheduler->scheduleRowIdForImmediateExport($productId);
+        }
         $this->logger->persistTransferIssues();
     }
 

@@ -6,6 +6,7 @@ namespace App\Model\Product\Transfer;
 
 use App\Component\Transfer\AbstractTransferCronModule;
 use App\Component\Transfer\TransferCronModuleDependency;
+use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber;
 
 class ProductImageImportCronModule extends AbstractTransferCronModule
 {
@@ -17,15 +18,23 @@ class ProductImageImportCronModule extends AbstractTransferCronModule
     private $productImageImportFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber
+     */
+    private $productExportSubscriber;
+
+    /**
      * @param \App\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \App\Model\Product\Transfer\ProductImageImportFacade $productImageImportFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber $productExportSubscriber
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
-        ProductImageImportFacade $productImageImportFacade
+        ProductImageImportFacade $productImageImportFacade,
+        ProductExportSubscriber $productExportSubscriber
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->productImageImportFacade = $productImageImportFacade;
+        $this->productExportSubscriber = $productExportSubscriber;
     }
 
     /**
@@ -43,6 +52,7 @@ class ProductImageImportCronModule extends AbstractTransferCronModule
     {
         $lastFinishAt = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER)->getLastFinishAt();
         $this->productImageImportFacade->importImagesFromPohoda($lastFinishAt);
+        $this->productExportSubscriber->exportScheduledRows();
 
         return false;
     }
