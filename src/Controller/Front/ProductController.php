@@ -16,6 +16,8 @@ use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
@@ -123,6 +125,11 @@ class ProductController extends FrontBaseController
     private $listedProductViewElasticFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
+     */
+    private $pricingGroupSettingFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -140,6 +147,7 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewElasticFacade
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -158,7 +166,8 @@ class ProductController extends FrontBaseController
         ListedProductViewFacadeInterface $listedProductViewFacade,
         BrandFacade $brandFacade,
         DiscountExclusionFacade $discountExclusionFacade,
-        ListedProductViewElasticFacade $listedProductViewElasticFacade
+        ListedProductViewElasticFacade $listedProductViewElasticFacade,
+        PricingGroupSettingFacade $pricingGroupSettingFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -177,6 +186,7 @@ class ProductController extends FrontBaseController
         $this->brandFacade = $brandFacade;
         $this->discountExclusionFacade = $discountExclusionFacade;
         $this->listedProductViewElasticFacade = $listedProductViewElasticFacade;
+        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
     }
 
     /**
@@ -210,7 +220,7 @@ class ProductController extends FrontBaseController
             'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
-            'parentSetViews' => $this->listedProductViewElasticFacade->getParentSetsByProduct($product),
+            'parentSetViews' => $this->listedProductViewElasticFacade->getParentSetsByProduct($product, $domainId, $this->getCurrentPricingGroup()),
         ]);
     }
 
@@ -519,5 +529,23 @@ class ProductController extends FrontBaseController
         } else {
             return $this->render('Front/Content/Product/listByBrand.html.twig', $viewParameters);
         }
+    }
+
+    /**
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    private function getCurrentPricingGroup(): PricingGroup
+    {
+        /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
+        $customerUser = $this->getUser();
+
+        if ($customerUser !== null) {
+            $pricingGroup = $customerUser->getPricingGroup();
+        } else {
+            /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
+            $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($this->domain->getId());
+        }
+
+        return $pricingGroup;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\Group;
 
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
+use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\ReadModelBundle\Image\ImageViewFacade;
@@ -47,6 +48,17 @@ class ProductGroupFacade
     public function getAllByItem(Product $item): array
     {
         return $this->productGroupRepository->getAllByItem($item);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $item
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \App\Model\Product\Group\ProductGroup[]
+     */
+    public function getVisibleByItem(Product $item, int $domainId, PricingGroup $pricingGroup): array
+    {
+        return $this->productGroupRepository->getVisibleByItem($item, $domainId, $pricingGroup);
     }
 
     /**
