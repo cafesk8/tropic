@@ -9,8 +9,9 @@ use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher as BaseCartWatcher;
 
 /**
  * @property \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForCustomerUser
- * @method __construct(\App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForCustomerUser, \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain)
+ * @method __construct(\App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForCustomerUser, \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain)
  * @method \App\Model\Cart\Item\CartItem[] getNotListableItems(\App\Model\Cart\Cart $cart, \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser)
+ * @property \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
  */
 class CartWatcher extends BaseCartWatcher
 {

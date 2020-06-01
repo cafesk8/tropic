@@ -42,7 +42,7 @@ class CategoryImportCronModule extends AbstractTransferCronModule
     protected $categoryVisibilityRepository;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository
+     * @var \App\Model\Product\ProductVisibilityRepository
      */
     protected $productVisibilityRepository;
 
@@ -64,7 +64,7 @@ class CategoryImportCronModule extends AbstractTransferCronModule
      * @param \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager $pohodaEntityManager
      * @param \App\Model\Category\Transfer\CategoryRemoveFacade $categoryRemoveFacade
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRepository $categoryVisibilityRepository
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository
+     * @param \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
      * @param \App\Component\Redis\RedisFacade $redisFacade
      */
     public function __construct(
