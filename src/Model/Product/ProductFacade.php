@@ -1219,4 +1219,20 @@ class ProductFacade extends BaseProductFacade
             }
         }
     }
+
+    /**
+     * @return \App\Model\Product\ProductDomain[]
+     */
+    public function getProductDomainsForDescriptionTranslation(): array
+    {
+        return $this->productRepository->getProductDomainsForDescriptionTranslation();
+    }
+
+    /**
+     * @return \App\Model\Product\ProductDomain[]
+     */
+    public function getProductDomainsForShortDescriptionTranslation(): array
+    {
+        return $this->productRepository->getProductDomainsForShortDescriptionTranslation();
+    }
 }

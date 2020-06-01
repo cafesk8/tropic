@@ -279,6 +279,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->extendDisplayAvailabilityGroup($builder->get('displayAvailabilityGroup'), $product);
         $this->addAmountGroup($builder, $product);
         $this->addProductGroupItemsGroup($builder, $product);
+        $this->extendDescriptionGroups($builder, $product);
 
         $this->formBuilderHelper->disableFieldsByConfigurations($builder, $this->getDisabledFields());
     }
@@ -691,14 +692,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * @return string
-     */
-    public function getExtendedType(): string
-    {
-        return ProductFormType::class;
-    }
-
-    /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      */
     private function addDiscountExclusionGroup(FormBuilderInterface $builder): void
@@ -717,5 +710,36 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ]);
 
         $builder->add($discountExclusionGroup);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \App\Model\Product\Product|null $product
+     */
+    private function extendDescriptionGroups(FormBuilderInterface $builder, ?Product $product): void
+    {
+        $descriptionsGroup = $builder->get('descriptionsGroup');
+        $shortDescriptionsGroup = $builder->get('shortDescriptionsGroup');
+
+        if ($product === null || !$product->isVariant()) {
+            $descriptionsGroup->add('descriptionAutomaticallyTranslated', YesNoType::class, [
+                'label' => 'Překládat přes Google Translate',
+                'position' => 'first',
+                'required' => false,
+            ]);
+            $shortDescriptionsGroup->add('shortDescriptionAutomaticallyTranslated', YesNoType::class, [
+                'label' => 'Překládat přes Google Translate',
+                'position' => 'first',
+                'required' => false,
+            ]);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtendedType(): string
+    {
+        return ProductFormType::class;
     }
 }

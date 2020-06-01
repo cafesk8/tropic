@@ -16,7 +16,6 @@ use Shopsys\FrameworkBundle\Model\Product\Flag\Flag;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
-use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
@@ -594,5 +593,41 @@ class ProductRepository extends BaseProductRepository
             ->setParameter('flag', $flag)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @return \App\Model\Product\ProductDomain[]
+     */
+    public function getProductDomainsForDescriptionTranslation(): array
+    {
+        return $this->em->createQueryBuilder()
+            ->select('pd')
+            ->from(Product::class, 'p')
+            ->join(ProductDomain::class, 'pd', Join::WITH, 'pd.product = p')
+            ->where('(MD5(pd.description) != pd.descriptionHash OR pd.descriptionHash IS NULL)')
+            ->andWhere('pd.description IS NOT NULL')
+            ->andWhere('pd.description != \'\'')
+            ->andWhere('p.variantType != \'variant\'')
+            ->andWhere('p.descriptionAutomaticallyTranslated = TRUE')
+            ->andWhere('pd.domainId = 1')
+            ->getQuery()->execute();
+    }
+
+    /**
+     * @return \App\Model\Product\ProductDomain[]
+     */
+    public function getProductDomainsForShortDescriptionTranslation(): array
+    {
+        return $this->em->createQueryBuilder()
+            ->select('pd')
+            ->from(Product::class, 'p')
+            ->join(ProductDomain::class, 'pd', Join::WITH, 'pd.product = p')
+            ->where('(MD5(pd.shortDescription) != pd.shortDescriptionHash OR pd.shortDescriptionHash IS NULL)')
+            ->andWhere('pd.shortDescription IS NOT NULL')
+            ->andWhere('pd.shortDescription != \'\'')
+            ->andWhere('p.variantType != \'variant\'')
+            ->andWhere('p.shortDescriptionAutomaticallyTranslated = TRUE')
+            ->andWhere('pd.domainId = 1')
+            ->getQuery()->execute();
     }
 }

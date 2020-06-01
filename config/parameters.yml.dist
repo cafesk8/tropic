@@ -101,3 +101,8 @@ parameters:
     pohoda_mserver_port: 4444
     pohoda_mserver_login: false
     pohoda_mserver_password: false
+
+    google_translate_config:
+        keyFilePath: '/var/www/html/config/google-translate.json'
+
+    google_translate_enabled: false

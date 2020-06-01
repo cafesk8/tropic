@@ -176,6 +176,8 @@ class PohodaProductMapper
         $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
         $productData->groupItems = $this->getMappedProductGroupItems($pohodaProduct->productGroups);
         $productData->eurCalculatedAutomatically = $pohodaProduct->automaticEurCalculation;
+        $productData->descriptionAutomaticallyTranslated = $pohodaProduct->automaticDescriptionTranslation;
+        $productData->shortDescriptionAutomaticallyTranslated = $pohodaProduct->automaticDescriptionTranslation;
 
         $this->logger->persistTransferIssues();
     }

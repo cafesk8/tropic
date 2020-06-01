@@ -30,6 +30,7 @@ class PohodaProduct
     public const COL_RELATED_PRODUCT_POSITION = 'relatedProductOrder';
     public const COL_DELIVERY_DAYS = 'deliveryDays';
     public const COL_AUTO_EUR_PRICE = 'automaticEurPrice';
+    public const COL_AUTO_DESCRIPTION_TRANSLATION = 'automaticDescriptionTranslation';
     public const COL_FLAG_NEW_FROM = 'flagNewFrom';
     public const COL_FLAG_NEW_TO = 'flagNewTo';
     public const COL_FLAG_CLEARANCE_FROM = 'flagClearanceFrom';
@@ -203,6 +204,11 @@ class PohodaProduct
     public $automaticEurCalculation;
 
     /**
+     * @var bool
+     */
+    public $automaticDescriptionTranslation;
+
+    /**
      * @var string|null
      */
     public $deliveryDays;
@@ -293,6 +299,7 @@ class PohodaProduct
         $this->stocksInformation = $pohodaProductData[self::COL_STOCKS_INFORMATION];
         $this->productGroups = $pohodaProductData[self::COL_PRODUCT_GROUP_ITEMS];
         $this->automaticEurCalculation = (bool)$pohodaProductData[self::COL_AUTO_EUR_PRICE];
+        $this->automaticDescriptionTranslation = (bool)$pohodaProductData[self::COL_AUTO_DESCRIPTION_TRANSLATION];
         $this->relatedProducts = $pohodaProductData[self::COL_RELATED_PRODUCTS];
         $this->deliveryDays = $pohodaProductData[self::COL_DELIVERY_DAYS];
         $this->ean = $pohodaProductData[self::COL_POHODA_PRODUCT_EAN];

@@ -61,6 +61,7 @@
         "friendsofsymfony/ckeditor-bundle": "^2.1",
         "fzaninotto/faker": "^1.7.1",
         "google/apiclient": "^2.0",
+        "google/cloud-translate": "^1.7",
         "gopay/payments-sdk-php": "^1.4",
         "helios-ag/fm-elfinder-bundle": "^9.2",
         "heureka/overeno-zakazniky": "^2.0.6",

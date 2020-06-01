@@ -30,6 +30,7 @@ function deploy() {
         ["parameters.pohoda_mserver_port"]="${POHODA_MSERVER_PORT}"
         ["parameters.pohoda_mserver_password"]="${POHODA_MSERVER_PASSWORD}"
         ["parameters.pohoda_mserver_login"]="${POHODA_MSERVER_LOGIN}"
+        ["parameters.google_translate_enabled"]=${GOOGLE_TRANSLATE_ENABLED}
 
         # GoPay
         ["parameters.gopay_config.cs.goid"]="${GOPAY_CONFIG_GOID_CS}"

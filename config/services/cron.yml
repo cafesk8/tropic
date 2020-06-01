@@ -69,6 +69,10 @@ services:
 
     #########################
 
+    App\Model\Product\Translation\ProductTranslationCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Automatický překlad produktů přes Google Translate' }
+
     Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule: ~
 
     overriddenDailyFeedCronModule:
