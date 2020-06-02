@@ -1,16 +1,16 @@
-{% macro discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) %}
+{% macro discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, classModification = '') %}
     {% if product.isRegistrationDiscountDisabled and product.isPromoDiscountDisabled %}
-        {{ _self.discountExclusionNoticeDetail(allDiscountExclusionText) }}
+        {{ _self.discountExclusionNoticeDetail(allDiscountExclusionText, classModification) }}
     {% elseif product.isRegistrationDiscountDisabled %}
-        {{ _self.discountExclusionNoticeDetail(registrationDiscountExclusionText) }}
+        {{ _self.discountExclusionNoticeDetail(registrationDiscountExclusionText, classModification) }}
     {% elseif product.isPromoDiscountDisabled %}
-        {{ _self.discountExclusionNoticeDetail(promoDiscountExclusionText) }}
+        {{ _self.discountExclusionNoticeDetail(promoDiscountExclusionText, classModification) }}
     {% endif %}
 {% endmacro %}
 
-{% macro discountExclusionNoticeDetail(discountExclusionText) %}
+{% macro discountExclusionNoticeDetail(discountExclusionText, classModification) %}
     {% if discountExclusionText is not empty %}
-        <div class="box-detail-add__message">
+        <div class="box-detail-add__message {{ classModification }}">
             <div class="box-detail-add__message__icon">
                 {% include 'Front/Svg/info.svg' %}
             </div>
