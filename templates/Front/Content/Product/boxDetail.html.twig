@@ -215,10 +215,12 @@
                         </div>
 
                         {% if product.isMainVariant %}
-                            <div class="wrap-gradient js-not-implemented-yet">
+                            <div class="wrap-gradient">
                                 <div class="wrap-gradient__in">
                                     <div class="box-detail__tags">
                                         <div class="box-detail__tags__title">{{ 'Produkt se nachází v kategoriích'|trans }}</div>
+                                        {% import 'Front/Content/Product/boxTabs.html.twig' as boxTabsMacro %}
+                                        {{ boxTabsMacro.productCategoryDomains(productVisibleProductCategoryDomains) }}
                                     </div>
                                 </div>
                             </div>
