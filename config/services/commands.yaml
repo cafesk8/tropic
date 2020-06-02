@@ -22,5 +22,5 @@ services:
 
     App\Command\Migrations\ImportLegacyCustomersFromCSVCommand:
         arguments:
-            $shopsysVarDirPath: '%shopsys.var_dir%'
+            $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'
 
