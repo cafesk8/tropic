@@ -651,3 +651,5 @@ services:
     App\Model\Product\Translation\ProductTranslationFacade:
         arguments:
             $translationEnabled: '%google_translate_enabled%'
+
+    Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade: '@App\Model\Product\Availability\AvailabilityFacade'

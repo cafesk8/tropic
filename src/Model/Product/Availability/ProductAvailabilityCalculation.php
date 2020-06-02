@@ -9,9 +9,10 @@ use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 
 /**
  * @property \App\Model\Product\ProductRepository $productRepository
- * @method __construct(\Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade, \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator, \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade, \Doctrine\ORM\EntityManagerInterface $em, \App\Model\Product\ProductRepository $productRepository)
+ * @method __construct(\App\Model\Product\Availability\AvailabilityFacade $availabilityFacade, \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator, \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade, \Doctrine\ORM\EntityManagerInterface $em, \App\Model\Product\ProductRepository $productRepository)
  * @method \App\Model\Product\Availability\Availability calculateMainVariantAvailability(\App\Model\Product\Product $mainVariant)
  * @method \App\Model\Product\Product[] getAtLeastSomewhereSellableVariantsByMainVariant(\App\Model\Product\Product $mainVariant)
+ * @property \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
  */
 class ProductAvailabilityCalculation extends BaseProductAvailabilityCalculation
 {
@@ -26,7 +27,6 @@ class ProductAvailabilityCalculation extends BaseProductAvailabilityCalculation
      */
     public function calculateAvailability(BaseProduct $product)
     {
-        /** @var \App\Model\Product\Availability\Availability $defaultInStockAvailability */
         $defaultInStockAvailability = $this->availabilityFacade->getDefaultInStockAvailability();
 
         if ($this->em->contains($product) === false) {
