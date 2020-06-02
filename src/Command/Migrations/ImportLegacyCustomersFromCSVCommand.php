@@ -32,10 +32,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  *	FROM `clientele` C
  *	LEFT JOIN `setting_country` SCF ON C.`stat` = SCF.`id`
  *	LEFT JOIN `setting_country` SCD ON C.`dod_stat` = SCD.`id`
- *	LIMIT 3
- * Expected directory structure:
- * var/import/
- *   - /clientele.csv
  */
 class ImportLegacyCustomersFromCSVCommand extends Command
 {
@@ -62,6 +58,9 @@ class ImportLegacyCustomersFromCSVCommand extends Command
     private const USER_COL_INDEX_PRICE_CAT = 21;
 
     private const CSV_SKIP_N_ROWS = 1;
+
+    private const MAX_ZIP_LENGTH = 6;
+    private const MAX_LASTNAME_LENGTH = 30;
 
     /**
      * @var \Symfony\Component\Console\Output\OutputInterface
@@ -124,7 +123,7 @@ class ImportLegacyCustomersFromCSVCommand extends Command
     private $skippedUnvalidCustomers = [];
 
     /**
-     * @param string $shopsysVarDirPath
+     * @param string $shopsysMigrationsDirPath
      * @param \App\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $entityManager
      * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
@@ -136,7 +135,7 @@ class ImportLegacyCustomersFromCSVCommand extends Command
      * @param \App\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
      */
     public function __construct(
-        string $shopsysVarDirPath,
+        string $shopsysMigrationsDirPath,
         SqlLoggerFacade $sqlLoggerFacade,
         EntityManagerInterface $entityManager,
         CustomerUserFacade $customerUserFacade,
@@ -149,7 +148,7 @@ class ImportLegacyCustomersFromCSVCommand extends Command
     ) {
         parent::__construct();
 
-        $this->sourceDirForImportedFiles = $shopsysVarDirPath . '/import';
+        $this->sourceDirForImportedFiles = $shopsysMigrationsDirPath;
         $this->sqlLoggerFacade = $sqlLoggerFacade;
         $this->entityManager = $entityManager;
         $this->customerUserFacade = $customerUserFacade;
@@ -226,9 +225,9 @@ class ImportLegacyCustomersFromCSVCommand extends Command
                 $legacyId = (int)$csvRow[self::USER_COL_INDEX_LEGACY_ID];
                 $domainId = (int)$csvRow[self::USER_COL_INDEX_DOMAIN];
 
-                $customerUser = $this->customerUserFacade->findByLegacyId($legacyId);
-
                 $this->entityManager->beginTransaction();
+
+                $customerUser = $this->customerUserFacade->findByLegacyId($legacyId);
 
                 if ($customerUser !== null) {
                     $customerUserUpdateData = $this->customerUserUpdateDataFactory->createFromCustomerUser($customerUser);
@@ -290,6 +289,12 @@ class ImportLegacyCustomersFromCSVCommand extends Command
         $customerUserData->legacyId = $csvRow[self::USER_COL_INDEX_LEGACY_ID];
         $customerUserData->customer = $customerUserUpdateData->customerUserData->customer;
 
+        $customerUserData->lastName = $this->checkMaxLength(
+            $csvRow[self::USER_COL_INDEX_LASTNAME],
+            self::MAX_LASTNAME_LENGTH,
+            'lastname'
+        );
+
         $this->mapBillingAddress($csvRow, $customerUserUpdateData);
         $this->mapDeliveryAddress($csvRow, $customerUserUpdateData);
 
@@ -313,7 +318,13 @@ class ImportLegacyCustomersFromCSVCommand extends Command
         $billingAddressData->companyTaxNumber = $csvRow[self::USER_COL_INDEX_BILLING_COMPANY_DIC];
         $billingAddressData->city = $csvRow[self::USER_COL_INDEX_BILLING_CITY];
         $billingAddressData->street = $csvRow[self::USER_COL_INDEX_BILLING_STREET];
-        $billingAddressData->postcode = $csvRow[self::USER_COL_INDEX_BILLING_ZIP];
+
+        $billingAddressData->postcode = $this->checkMaxLength(
+            $csvRow[self::USER_COL_INDEX_BILLING_ZIP],
+            self::MAX_ZIP_LENGTH,
+            'billing zip'
+        );
+
         $billingAddressData->country = $this->countryFacade->findByCode($csvRow[self::USER_COL_INDEX_BILLING_COUNTRY]);
         $billingAddressData->companyCustomer = !empty($csvRow[self::USER_COL_INDEX_BILLING_COMPANY]);
     }
@@ -337,15 +348,42 @@ class ImportLegacyCustomersFromCSVCommand extends Command
         $deliveryAddressData->addressFilled = true;
         $deliveryAddressData->companyName = $csvRow[self::USER_COL_INDEX_DELIVERY_COMPANY];
         $deliveryAddressData->firstName = $csvRow[self::USER_COL_INDEX_DELIVERY_FIRSTNAME];
-        $deliveryAddressData->lastName = $csvRow[self::USER_COL_INDEX_DELIVERY_LASTNAME];
         $deliveryAddressData->city = $csvRow[self::USER_COL_INDEX_DELIVERY_CITY];
-        $deliveryAddressData->postcode = $csvRow[self::USER_COL_INDEX_DELIVERY_ZIP];
+
+        $deliveryAddressData->postcode = $this->checkMaxLength(
+            $csvRow[self::USER_COL_INDEX_DELIVERY_ZIP],
+            self::MAX_ZIP_LENGTH,
+            'delivery zip'
+        );
+
+        $deliveryAddressData->lastName = $this->checkMaxLength(
+            $csvRow[self::USER_COL_INDEX_DELIVERY_LASTNAME],
+            self::MAX_LASTNAME_LENGTH,
+            'delivery lastname'
+        );
+
         $deliveryAddressData->street = $csvRow[self::USER_COL_INDEX_DELIVERY_STREET];
         $deliveryAddressData->country = $this->countryFacade->findByCode($csvRow[self::USER_COL_INDEX_DELIVERY_COUNTRY]);
 
         if ($deliveryAddress !== null) {
             $deliveryAddress->edit($deliveryAddressData);
         }
+    }
+
+    /**
+     * @param string $string
+     * @param int $maxLenght
+     * @param string $attributeName
+     * @throws \Exception
+     * @return string
+     */
+    private function checkMaxLength($string, $maxLenght, $attributeName): string
+    {
+        if (strlen($string) > $maxLenght) {
+            throw new \Exception('Attribute ' . $attributeName . ' - "' . $string . '" too long, allowed length:' . $maxLenght);
+        }
+
+        return $string;
     }
 
     /**
