@@ -34,18 +34,7 @@
 
     {{ render(controller('App\\Controller\\Front\\AdvertController:bannerAction')) }}
 
-    {% if topProducts is not empty %}
-        <div class="web__line">
-            <div class="web__container web__container--no-padding">
-                <div id="top-products" class="box-products-slider">
-                    <h1 class="box-products-slider__title">
-                        {{ 'Tento měsíc máme v akci'|trans }}
-                    </h1>
-                    {{ productList.horizontalList(topProducts, 'list-products-slider--big', 'h3', 'top-products', false) }}
-                </div>
-            </div>
-        </div>
-    {% endif %}
+    {{ render(controller('App\\Controller\\Front\\TopProductController:listAction')) }}
 
     {% if priceBombProducts is not empty %}
         <div class="web__line">
