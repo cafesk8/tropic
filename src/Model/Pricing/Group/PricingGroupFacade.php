@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Pricing\Group;
 
+use App\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\Exception\PricingGroupNotFoundException;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade as BasePricingGroupFacade;
 
@@ -118,5 +119,21 @@ class PricingGroupFacade extends BasePricingGroupFacade
         });
 
         return $pricingGroups;
+    }
+
+    /**
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    public function getCurrentPricingGroup(?CustomerUser $customerUser): PricingGroup
+    {
+        if ($customerUser !== null) {
+            $pricingGroup = $customerUser->getPricingGroup();
+        } else {
+            /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
+            $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($this->domain->getId());
+        }
+
+        return $pricingGroup;
     }
 }

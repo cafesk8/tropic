@@ -9,6 +9,7 @@ use App\Form\Front\Product\ProductFilterFormType;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use App\Model\Gtm\GtmFacade;
+use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\View\ListedProductViewElasticFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -16,8 +17,6 @@ use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
@@ -125,9 +124,9 @@ class ProductController extends FrontBaseController
     private $listedProductViewElasticFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
+     * @var \App\Model\Pricing\Group\PricingGroupFacade
      */
-    private $pricingGroupSettingFacade;
+    private $pricingGroupFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
@@ -147,7 +146,7 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewElasticFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -167,7 +166,7 @@ class ProductController extends FrontBaseController
         BrandFacade $brandFacade,
         DiscountExclusionFacade $discountExclusionFacade,
         ListedProductViewElasticFacade $listedProductViewElasticFacade,
-        PricingGroupSettingFacade $pricingGroupSettingFacade
+        PricingGroupFacade $pricingGroupFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -186,7 +185,7 @@ class ProductController extends FrontBaseController
         $this->brandFacade = $brandFacade;
         $this->discountExclusionFacade = $discountExclusionFacade;
         $this->listedProductViewElasticFacade = $listedProductViewElasticFacade;
-        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -204,6 +203,8 @@ class ProductController extends FrontBaseController
 
         $accessories = $this->listedProductViewFacade->getAllAccessories($product->getId());
         $domainId = $this->domain->getId();
+        /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
+        $customerUser = $this->getUser();
 
         return $this->render('Front/Content/Product/detail.html.twig', [
             'product' => $product,
@@ -220,7 +221,7 @@ class ProductController extends FrontBaseController
             'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
-            'parentSetViews' => $this->listedProductViewElasticFacade->getParentSetsByProduct($product, $domainId, $this->getCurrentPricingGroup()),
+            'parentSetViews' => $this->listedProductViewElasticFacade->getParentSetsByProduct($product, $domainId, $this->pricingGroupFacade->getCurrentPricingGroup($customerUser)),
         ]);
     }
 
@@ -529,23 +530,5 @@ class ProductController extends FrontBaseController
         } else {
             return $this->render('Front/Content/Product/listByBrand.html.twig', $viewParameters);
         }
-    }
-
-    /**
-     * @return \App\Model\Pricing\Group\PricingGroup
-     */
-    private function getCurrentPricingGroup(): PricingGroup
-    {
-        /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
-        $customerUser = $this->getUser();
-
-        if ($customerUser !== null) {
-            $pricingGroup = $customerUser->getPricingGroup();
-        } else {
-            /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
-            $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($this->domain->getId());
-        }
-
-        return $pricingGroup;
     }
 }

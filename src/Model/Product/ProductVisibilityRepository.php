@@ -20,6 +20,7 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
 {
     /**
      * Product group is hidden when any of its products are missing prices for ordinary customer or registered customer
+     * If any product in product group doesn't have a name for selected domain then whole product group is hidden
      *
      * @param bool $onlyMarkedProducts
      */
@@ -58,20 +59,31 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
                             p.pohoda_product_type != :groupProductType
                             OR
                             (
-                                SELECT COUNT(pg.item_id)
-                                FROM product_groups AS pg
-                                JOIN product_calculated_prices AS pgicp ON pgicp.product_id = pg.item_id
-                                JOIN pricing_groups AS pcg ON pcg.id = pgicp.pricing_group_id
-                                WHERE pgicp.price_with_vat > 0
-                                    AND pg.main_product_id = pv.product_id
-                                    AND pcg.internal_id IN (\'ordinary_customer\', \'registered_customer\')
-                                    AND pcg.domain_id = pv.domain_id
-                            )
-                            =
-                            (
-                                SELECT COUNT(pg2.item_id) * 2
-                                FROM product_groups AS pg2
-                                WHERE pg2.main_product_id = pv.product_id
+                                (
+                                    SELECT COUNT(pg.item_id)
+                                    FROM product_groups AS pg
+                                    JOIN product_calculated_prices AS pgicp ON pgicp.product_id = pg.item_id
+                                    JOIN pricing_groups AS pcg ON pcg.id = pgicp.pricing_group_id
+                                    WHERE pgicp.price_with_vat > 0
+                                        AND pg.main_product_id = pv.product_id
+                                        AND pcg.internal_id IN (\'ordinary_customer\', \'registered_customer\')
+                                        AND pcg.domain_id = pv.domain_id
+                                )
+                                =
+                                (
+                                    SELECT COUNT(pg2.item_id) * 2
+                                    FROM product_groups AS pg2
+                                    WHERE pg2.main_product_id = pv.product_id
+                                )
+                                AND
+                                NOT EXISTS (
+                                    SELECT 1
+                                    FROM product_groups AS pg
+                                    JOIN product_translations AS pt2 ON pt2.translatable_id = pg.item_id
+                                    WHERE pg.main_product_id = pv.product_id
+                                        AND pt2.locale = :locale
+                                        AND pt2.name IS NULL
+                                )
                             )
                         )
                         AND EXISTS (
