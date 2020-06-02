@@ -18,6 +18,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
  * @method runRecalculationsAfterStockQuantityChange(\App\Model\Order\Item\OrderItem[] $orderProducts)
  * @method \App\Model\Order\Item\OrderItem[] getOrderProductsUsingStockFromOrderProducts(\App\Model\Order\Item\OrderItem[] $orderProducts)
  * @property \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
+ * @property \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
  */
 class OrderProductFacade extends BaseOrderProductFacade
 {
@@ -28,7 +29,7 @@ class OrderProductFacade extends BaseOrderProductFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
+     * @param \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
      * @param \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade

@@ -58,7 +58,7 @@ class ProductGiftInCartFacade
                 /** @var \App\Model\Product\Product $gift */
                 $gift = $productGift->getGift();
 
-                if ($this->productFacade->isProductMarketable($gift)) {
+                if ($this->productFacade->isProductMarketable($gift, $this->domain->getId())) {
                     foreach ($this->getGiftVariants($gift, $cartItem) as $giftVariantIndex => $giftVariant) {
                         $giftsVariantsByProductId[$cartItem->getProduct()->getId()][$giftVariantIndex] = $giftVariant;
                     }
@@ -79,7 +79,7 @@ class ProductGiftInCartFacade
         $giftVariantsByProductId = [];
         if ($productGift->isMainVariant() && count($productGift->getVariants()) > 0) {
             foreach ($productGift->getVariants() as $giftVariant) {
-                if ($this->productFacade->isProductMarketable($giftVariant) === false) {
+                if ($this->productFacade->isProductMarketable($giftVariant, $this->domain->getId()) === false) {
                     continue;
                 }
 

@@ -119,7 +119,7 @@
                         {% endif %}
 
                         {% for gift in product.gifts(domain.id) %}
-                            {% if gift.calculatedHidden is same as (false) and gift.hidden is same as (false)
+                            {% if gift.shownOnDomain(domain.id) is same as (true)
                                 and gift.calculatedSellingDenied is same as (false) and gift.sellingDenied is same as (false) %}
                                 <a class="box-detail__gift" href="{{ url('front_product_detail', { id: gift.id }) }}">
                                     <strong>{{ 'DÁREK'|trans }}</strong> {{ gift.name }}

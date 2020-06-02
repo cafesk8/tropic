@@ -139,7 +139,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      */
     public function load(ObjectManager $manager): void
     {
-        /** @var \App\Model\Product\ProductData $productData */
         $productData = $this->productDataFactory->create();
 
         $productData->catnum = '9177759';
@@ -5539,9 +5538,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         } else {
             $this->addExactStoreStocks($productData);
         }
-        /** @var \App\Model\Product\Product $product */
-        $product = $this->productFacade->create($productData);
 
+        $product = $this->productFacade->create($productData);
         $this->addProductReference($product);
 
         return $product;

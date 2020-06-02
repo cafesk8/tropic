@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product;
 
+use App\Component\Domain\DomainHelper;
 use App\DataFixtures\Demo\AvailabilityDataFixture;
 use App\DataFixtures\Demo\CategoryDataFixture;
 use App\DataFixtures\Demo\PricingGroupDataFixture;
@@ -12,6 +13,7 @@ use App\DataFixtures\Demo\UnitDataFixture;
 use App\Model\Pricing\Vat\Vat;
 use App\Model\Pricing\Vat\VatData;
 use App\Model\Product\Product;
+use App\Model\Product\ProductVisibilityRepository;
 use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -22,7 +24,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
-use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
@@ -102,7 +103,7 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $productData = $this->getDefaultProductData();
-        $productData->hidden = true;
+        $productData->shown = [DomainHelper::CZECH_DOMAIN => false, DomainHelper::SLOVAK_DOMAIN => false, DomainHelper::ENGLISH_DOMAIN => false];
         $product = $productFacade->create($productData);
         $productPriceRecalculator->runImmediateRecalculations();
 
@@ -110,7 +111,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $id = $product->getId();
         $em->clear();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository */
         $productVisibilityRepository = $this->getContainer()->get(ProductVisibilityRepository::class);
         $productVisibilityRepository->refreshProductsVisibility();
 
@@ -513,7 +513,7 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $mainVariant = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '69');
 
         $variant1productData = $productDataFactory->createFromProduct($variant1);
-        $variant1productData->hidden = true;
+        $variant1productData->shown = [DomainHelper::CZECH_DOMAIN => false, DomainHelper::SLOVAK_DOMAIN => false, DomainHelper::ENGLISH_DOMAIN => false];
         $productFacade->edit($variant1->getId(), $variant1productData);
 
         $productVisibilityRepository->refreshProductsVisibility(true);
@@ -545,11 +545,11 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $mainVariant = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '69');
 
         $variant1productData = $productDataFactory->createFromProduct($variant1);
-        $variant1productData->hidden = true;
+        $variant1productData->shown = [DomainHelper::CZECH_DOMAIN => false, DomainHelper::SLOVAK_DOMAIN => false, DomainHelper::ENGLISH_DOMAIN => false];
         $productFacade->edit($variant1->getId(), $variant1productData);
 
         $variant2productData = $productDataFactory->createFromProduct($variant2);
-        $variant2productData->hidden = true;
+        $variant2productData->shown = [DomainHelper::CZECH_DOMAIN => false, DomainHelper::SLOVAK_DOMAIN => false, DomainHelper::ENGLISH_DOMAIN => false];
         $productFacade->edit($variant2->getId(), $variant2productData);
 
         $productVisibilityRepository->refreshProductsVisibility(true);
@@ -581,7 +581,7 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $mainVariant = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '69');
 
         $mainVariantproductData = $productDataFactory->createFromProduct($mainVariant);
-        $mainVariantproductData->hidden = true;
+        $mainVariantproductData->shown = [DomainHelper::CZECH_DOMAIN => false, DomainHelper::SLOVAK_DOMAIN => false, DomainHelper::ENGLISH_DOMAIN => false];
         $productFacade->edit($mainVariant->getId(), $mainVariantproductData);
 
         $productVisibilityRepository->refreshProductsVisibility(true);
