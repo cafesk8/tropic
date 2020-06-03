@@ -211,6 +211,9 @@ class PohodaProductMapper
         $productData->variantId = TransformString::emptyToNull($pohodaProduct->variantId);
         $productData->variantAlias[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAlias);
         $productData->variantAlias[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAliasSk);
+        $productData->shown[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shown;
+        $productData->shown[DomainHelper::SLOVAK_DOMAIN] = $pohodaProduct->shownSk;
+        $productData->shown[DomainHelper::ENGLISH_DOMAIN] = $pohodaProduct->shown;
     }
 
     /**

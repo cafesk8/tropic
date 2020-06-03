@@ -75,6 +75,8 @@ class PohodaProductExportRepository
         'MJ3Koef' => PohodaProduct::COL_POHODA_PRODUCT_MINIMUM_AMOUNT_AND_MULTIPLIER,
         'Zaruka' => PohodaProduct::COL_POHODA_PRODUCT_WARRANTY,
         'Vyrobce' => PohodaProduct::COL_POHODA_PRODUCT_BRAND_NAME,
+        'VPrZobrazCZ' => PohodaProduct::COL_SHOWN,
+        'VPrZobrazSK' => PohodaProduct::COL_SHOWN_SK,
     ];
 
     /**
