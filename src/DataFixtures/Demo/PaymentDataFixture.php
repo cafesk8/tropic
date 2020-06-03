@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\Domain\DomainHelper;
 use App\Model\Payment\Payment;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -179,8 +180,11 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->description[$locale] = t('Platba provedena u Cofidis', [], 'dataFixtures', $locale);
         }
-        $paymentData->enabled[Domain::FIRST_DOMAIN_ID] = true;
+        $paymentData->enabled[DomainHelper::CZECH_DOMAIN] = true;
+        $paymentData->enabled[DomainHelper::SLOVAK_DOMAIN] = false;
+        $paymentData->enabled[DomainHelper::ENGLISH_DOMAIN] = false;
         $paymentData->hidden = false;
+        $paymentData->minimumOrderPrices[Domain::FIRST_DOMAIN_ID] = Money::create(3000);
         $this->createPayment(Payment::TYPE_PAY_PAL, $paymentData, [
             TransportDataFixture::TRANSPORT_PERSONAL,
             TransportDataFixture::TRANSPORT_PPL,

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Model\Payment;
 
 use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
+use Doctrine\ORM\Query\Expr\Join;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository as BasePaymentRepository;
 
 /**

@@ -6,10 +6,14 @@ namespace App\Form\Admin;
 
 use App\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade;
 use App\Model\Payment\Payment;
+use App\Model\Pricing\Currency\CurrencyFacade;
+use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\Payment\PaymentFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -21,11 +25,25 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
     private $goPayPaymentMethodFacade;
 
     /**
-     * @param \App\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade $goPayPaymentMethodFacade
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
      */
-    public function __construct(GoPayPaymentMethodFacade $goPayPaymentMethodFacade)
+    private $domain;
+
+    /**
+     * @var \App\Model\Pricing\Currency\CurrencyFacade
+     */
+    private $currencyFacade;
+
+    /**
+     * @param \App\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade $goPayPaymentMethodFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     */
+    public function __construct(GoPayPaymentMethodFacade $goPayPaymentMethodFacade, Domain $domain, CurrencyFacade $currencyFacade)
     {
         $this->goPayPaymentMethodFacade = $goPayPaymentMethodFacade;
+        $this->domain = $domain;
+        $this->currencyFacade = $currencyFacade;
     }
 
     /**
@@ -93,6 +111,9 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
                 ]);
             }
         }
+
+        $builderPriceGroup = $builder->get('prices');
+        $this->addMinimumOrderPrice($builderPriceGroup);
     }
 
     /**
@@ -111,6 +132,25 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
                 'attr' => [
                     'class' => 'js-payment-activates-gift-certificates',
                 ],
+            ]);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function addMinimumOrderPrice(FormBuilderInterface $builder): void
+    {
+        $minimumOrderPricesByDomainId = [];
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $minimumOrderPricesByDomainId[$domainId] = ['currency' => $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId)->getCode()];
+        }
+
+        $builder
+            ->add('minimumOrderPrices', MultidomainType::class, [
+                'required' => false,
+                'entry_type' => MoneyType::class,
+                'label' => t('Minimální hodnota objednávky'),
+                'options_by_domain_id' => $minimumOrderPricesByDomainId,
             ]);
     }
 

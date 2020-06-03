@@ -22,7 +22,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
  * @method edit(\App\Model\Payment\Payment $payment, \App\Model\Payment\PaymentData $paymentData)
  * @method \App\Model\Payment\Payment getById(int $id)
  * @method setAdditionalDataAndFlush(\App\Model\Payment\Payment $payment, \App\Model\Payment\PaymentData $paymentData)
- * @method \App\Model\Payment\Payment[] getVisibleOnCurrentDomain()
  * @method \App\Model\Payment\Payment[] getVisibleByDomainId(int $domainId)
  * @method \App\Model\Payment\Payment[] getAllIncludingDeleted()
  * @method \App\Model\Payment\Payment[] getAll()
@@ -30,6 +29,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getPricesIndexedByDomainId(\App\Model\Payment\Payment|null $payment)
  * @method updatePaymentPrices(\App\Model\Payment\Payment $payment, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId, \App\Model\Pricing\Vat\Vat[] $vatsIndexedByDomainId)
  * @method \App\Model\Payment\Payment getByUuid(string $uuid)
+ * @method \App\Model\Payment\Payment[] getVisibleOnCurrentDomain()
  */
 class PaymentFacade extends BasePaymentFacade
 {
@@ -117,11 +117,13 @@ class PaymentFacade extends BasePaymentFacade
     /**
      * @param int $domainId
      * @param bool $onlyUsableForGiftCertificates
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $orderPrice
      * @return \App\Model\Payment\Payment[]
      */
-    public function getVisibleByDomainIdAndGiftCertificateUsability(int $domainId, bool $onlyUsableForGiftCertificates): array
+    public function getVisibleByDomainIdAndGiftCertificateUsabilityAndPrice(int $domainId, bool $onlyUsableForGiftCertificates, Money $orderPrice): array
     {
         $payments = $this->getVisibleByDomainId($domainId);
+        $payments = $this->filterPaymentsByOrderPrice($payments, $orderPrice);
 
         if (!$onlyUsableForGiftCertificates) {
             return $payments;
@@ -130,5 +132,24 @@ class PaymentFacade extends BasePaymentFacade
         return array_filter($payments, function (Payment $payment) use ($onlyUsableForGiftCertificates) {
             return $payment->isUsableForGiftCertificates() === $onlyUsableForGiftCertificates;
         });
+    }
+
+    /**
+     * @param \App\Model\Payment\Payment[] $payments
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $orderPrice
+     * @return \App\Model\Payment\Payment[]
+     */
+    private function filterPaymentsByOrderPrice(array $payments, Money $orderPrice): array
+    {
+        $filteredPayments = [];
+        foreach ($payments as $payment) {
+
+            $minimumOrderPrice = $payment->getMinimumOrderPrice($this->domain->getId())->getAmount();
+            if ((float)$minimumOrderPrice === 0.0 || $minimumOrderPrice < $orderPrice->getAmount()) {
+                $filteredPayments[] = $payment;
+            }
+        }
+
+        return $filteredPayments;
     }
 }

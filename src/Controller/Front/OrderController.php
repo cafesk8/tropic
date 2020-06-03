@@ -353,6 +353,7 @@ class OrderController extends FrontBaseController
         $goPayBankSwifts = $this->goPayBankSwiftFacade->getAllByCurrencyId($currency->getId());
 
         $orderFlow = $this->domainAwareOrderFlowFactory->create();
+        $orderFlow->setOrderPrice(Money::create('10000'));
         if ($orderFlow->isBackToCartTransition()) {
             return $this->redirectToRoute('front_cart');
         }
@@ -392,6 +393,8 @@ class OrderController extends FrontBaseController
         }
 
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment, $frontOrderFormData->registration);
+        $orderFlow->setOrderPrice($orderPreview->getProductsPrice()->getPriceWithVat());
+
         $payments = $this->paymentFacade->getVisibleOnCurrentDomain();
         $transports = $this->transportFacade->getVisibleOnCurrentDomain($payments);
         $this->checkTransportAndPaymentChanges($orderData, $orderPreview, $transports, $payments);

@@ -58,6 +58,9 @@ class PaymentDataFactory extends BasePaymentDataFactory
         $paymentData->activatesGiftCertificates = $payment->activatesGiftCertificates();
         $paymentData->waitForPayment = $payment->waitsForPayment();
 
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $paymentData->minimumOrderPrices[$domainId] = $payment->getMinimumOrderPrice($domainId);
+        }
         return $paymentData;
     }
 
@@ -73,5 +76,9 @@ class PaymentDataFactory extends BasePaymentDataFactory
         $paymentData->usableForGiftCertificates = false;
         $paymentData->activatesGiftCertificates = false;
         $paymentData->waitForPayment = false;
+
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $paymentData->minimumOrderPrices[$domainId] = Money::zero();
+        }
     }
 }
