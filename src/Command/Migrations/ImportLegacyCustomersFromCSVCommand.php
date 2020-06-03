@@ -120,7 +120,7 @@ class ImportLegacyCustomersFromCSVCommand extends Command
     /**
      * @var array
      */
-    private $skippedUnvalidCustomers = [];
+    private $skippedInvalidCustomers = [];
 
     /**
      * @param string $shopsysMigrationsDirPath
@@ -258,7 +258,7 @@ class ImportLegacyCustomersFromCSVCommand extends Command
 
                 $this->entityManager->commit();
             } catch (\Exception $exc) {
-                $this->setUnvalidCustomer($csvRow, $exc->getMessage());
+                $this->setInvalidCustomer($csvRow, $exc->getMessage());
                 $countSkipped++;
 
                 $this->entityManager->rollback();
@@ -374,7 +374,6 @@ class ImportLegacyCustomersFromCSVCommand extends Command
      * @param string $string
      * @param int $maxLenght
      * @param string $attributeName
-     * @throws \Exception
      * @return string
      */
     private function checkMaxLength($string, $maxLenght, $attributeName): string
@@ -403,7 +402,7 @@ class ImportLegacyCustomersFromCSVCommand extends Command
 
     private function displaySkippedUsers(): void
     {
-        foreach ($this->skippedUnvalidCustomers as $skippedCustomer) {
+        foreach ($this->skippedInvalidCustomers as $skippedCustomer) {
             $this->output->writeln(
                 PHP_EOL . sprintf(
                     'Skipped user with legacyId: %d, email: %s, reason: %s',
@@ -419,9 +418,9 @@ class ImportLegacyCustomersFromCSVCommand extends Command
      * @param array $csvRow
      * @param string $skipReason
      */
-    private function setUnvalidCustomer(array $csvRow, string $skipReason): void
+    private function setInvalidCustomer(array $csvRow, string $skipReason): void
     {
-        $this->skippedUnvalidCustomers[] = [
+        $this->skippedInvalidCustomers[] = [
             'legacyId' => $csvRow[self::USER_COL_INDEX_LEGACY_ID],
             'email' => $csvRow[self::USER_COL_INDEX_EMAIL],
             'reason for skip' => $skipReason,
