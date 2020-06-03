@@ -20,6 +20,7 @@ class PohodaCustomerMapper
         $pohodaCustomer->dataPackItemId = 'adr' . time() . '-' . $customerUser->getId();
         $pohodaCustomer->eshopId = $customerUser->getId();
         $pohodaCustomer->priceIds = $customerUser->getPricingGroup()->getPohodaIdent();
+        $pohodaCustomer->legacyId = $customerUser->getLegacyId();
 
         $pohodaBillingAddress = new PohodaAddress();
 

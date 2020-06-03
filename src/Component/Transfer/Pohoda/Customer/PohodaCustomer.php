@@ -37,6 +37,11 @@ class PohodaCustomer
     public $shipToAddress;
 
     /**
+     * @var int|null
+     */
+    public $legacyId;
+
+    /**
      * @return array
      */
     public function getAsArray(): array
@@ -48,6 +53,7 @@ class PohodaCustomer
             'priceIds' => $this->priceIds,
             'address' => (array)$this->address,
             'shipToAddress' => (array)$this->shipToAddress,
+            'legacyId' => $this->legacyId,
         ];
     }
 }
