@@ -67,6 +67,7 @@ class FlagDataFixture extends AbstractReferenceFixture
         $flagData->pohodaId = Flag::POHODA_ID_NEW;
         $flagData->rgbColor = '#efd6ff';
         $flagData->visible = true;
+        $flagData->news = true;
         $this->createFlag($flagData, self::FLAG_NEW_PRODUCT);
 
         foreach ($this->domain->getAllLocales() as $locale) {
@@ -76,6 +77,7 @@ class FlagDataFixture extends AbstractReferenceFixture
         $flagData->pohodaId = null;
         $flagData->rgbColor = '#d6fffa';
         $flagData->visible = true;
+        $flagData->news = false;
         $this->createFlag($flagData, self::FLAG_TOP_PRODUCT);
 
         foreach ($this->domain->getAllLocales() as $locale) {

@@ -69,7 +69,7 @@ class RecalculationsCommand extends BaseRecalculationsCommand
         parent::execute($input, $output);
 
         $output->writeln('<fg=green>Sale category visibility.</fg=green>');
-        $this->categoryFacade->refreshSaleCategoryVisibility();
+        $this->categoryFacade->refreshSpecialCategoriesVisibility();
         $this->categoryVisibilityRepository->refreshCategoriesVisibility();
 
         return 0;

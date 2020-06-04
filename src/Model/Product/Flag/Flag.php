@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Shopsys\FrameworkBundle\Component\Grid\Ordering\OrderableEntityInterface;
 use Shopsys\FrameworkBundle\Model\Product\Flag\Flag as BaseFlag;
-use Shopsys\FrameworkBundle\Model\Product\Flag\FlagData;
+use Shopsys\FrameworkBundle\Model\Product\Flag\FlagData as BaseFlagData;
 
 /**
  * @ORM\Table(name="flags")
@@ -42,6 +42,13 @@ class Flag extends BaseFlag implements OrderableEntityInterface
     private $sale;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $news;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(type="string", length=20, nullable=true)
@@ -54,17 +61,25 @@ class Flag extends BaseFlag implements OrderableEntityInterface
     public function __construct(FlagData $flagData)
     {
         parent::__construct($flagData);
-        $this->sale = $flagData->sale;
-        $this->pohodaId = $flagData->pohodaId;
+        $this->fillCommonProperties($flagData);
     }
 
     /**
      * @param \App\Model\Product\Flag\FlagData $flagData
      */
-    public function edit(FlagData $flagData)
+    public function edit(BaseFlagData $flagData)
     {
         parent::edit($flagData);
+        $this->fillCommonProperties($flagData);
+    }
+
+    /**
+     * @param \App\Model\Product\Flag\FlagData $flagData
+     */
+    private function fillCommonProperties(FlagData $flagData): void
+    {
         $this->sale = $flagData->sale;
+        $this->news = $flagData->news;
         $this->pohodaId = $flagData->pohodaId;
     }
 
@@ -90,6 +105,22 @@ class Flag extends BaseFlag implements OrderableEntityInterface
     public function isSale(): bool
     {
         return $this->sale;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNews(): bool
+    {
+        return $this->news;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSpecial(): bool
+    {
+        return $this->news || $this->sale;
     }
 
     /**

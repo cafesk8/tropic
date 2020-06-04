@@ -6,6 +6,8 @@ namespace App\Model\Product\Flag;
 
 class ProductFlagData
 {
+    use ProductFlagActivityTrait;
+
     /**
      * @var \App\Model\Product\Flag\Flag
      */

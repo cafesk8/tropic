@@ -26,7 +26,7 @@ class ProductFilterConfigFactory extends BaseProductFilterConfigFactory
     {
         $productFilterConfig = parent::createForCategory($domainId, $locale, $category);
 
-        if ($category->isSaleType()) {
+        if ($category->isSaleType() || $category->isNewsType()) {
             $productFilterConfig = new ProductFilterConfig(
                 [],
                 $productFilterConfig->getFlagChoices(),

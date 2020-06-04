@@ -2,7 +2,12 @@
     {% if categoriesWithLazyLoadedVisibleChildren|length > 0 %}
         <ul class="{% if not children %}list-menu{% else %}list-menu__submenu{% endif %} {{ modificationClass }}">
             {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
-                {% if not categoryWithLazyLoadedVisibleChildren.category.saleType %}
+                {% if not categoryWithLazyLoadedVisibleChildren.category.saleType and not categoryWithLazyLoadedVisibleChildren.category.newsType %}
+                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length) }}
+                {% endif %}
+            {% endfor %}
+            {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
+                {% if categoryWithLazyLoadedVisibleChildren.category.newsType %}
                     {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length) }}
                 {% endif %}
             {% endfor %}
