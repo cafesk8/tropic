@@ -244,6 +244,10 @@
                         {% endif %}
                     </div>
                 </div>
+
+                <div class="box-detail__videos">
+                    {{ self.productYoutubeVideo(youtubeDetails) }}
+                </div>
             </div>
         </div>
 
@@ -405,5 +409,26 @@
                 {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
             </div>
         {% endif %}
+    {% endif %}
+{% endmacro %}
+
+{% macro productYoutubeVideo(youtubeDetails) %}
+    {% if youtubeDetails %}
+        <div class="in-user-text" itemprop="videos">
+            <h3 class="in-user-text__title">
+                {{ 'Videa'|trans }}
+            </h3>
+            {% for youtubeDetail in youtubeDetails %}
+                <div class="youtubeWrapper margin-bottom-10">
+                    <iframe
+                            width="560"
+                            height="315"
+                            src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
+                            frameborder="0"
+                            allowfullscreen
+                    ></iframe>
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
 {% endmacro %}

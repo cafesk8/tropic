@@ -3311,6 +3311,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_HYUNDAI);
+        $productData->youtubeVideoIds = ['X96dNABbx_I', '5gLabuBgswA', 'BsBMpJbsQvw'];
 
         $this->createProduct($productData);
 

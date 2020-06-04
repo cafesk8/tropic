@@ -22,11 +22,16 @@
                 </span>
             </div>
 
-            {% if displayVariantSelectButton is same as (true) %}
+            {% if not product.isMainVariant and product.calculatedAvailability %}
+                <div class="box-detail-add__action__availability">
+                    {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product } %}
+                </div>
+            {% elseif displayVariantSelectButton is same as (true) %}
                 <div class="in-availability">
                     {{ 'Dostupnost dle varianty'|trans }}
                 </div>
             {% endif %}
+
         </div>
     {% endif %}
 
