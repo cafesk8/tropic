@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
+use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
 use App\Model\Product\Group\ProductGroup;
@@ -145,13 +146,15 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
     /**
      * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \App\Model\Product\View\ListedProductView[]
      */
-    public function getParentSetsByProduct(Product $product): array
+    public function getParentSetsByProduct(Product $product, int $domainId, PricingGroup $pricingGroup): array
     {
         return $this->createFromProducts(array_map(function (ProductGroup $productGroup) {
             return $productGroup->getMainProduct();
-        }, $this->productGroupFacade->getAllByItem($product)));
+        }, $this->productGroupFacade->getVisibleByItem($product, $domainId, $pricingGroup)));
     }
 
     /**

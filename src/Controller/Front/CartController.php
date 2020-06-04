@@ -10,10 +10,10 @@ use App\Form\Front\Cart\AddProductFormType;
 use App\Form\Front\Cart\CartFormType;
 use App\Model\Cart\Cart;
 use App\Model\Cart\CartFacade;
-use App\Model\Customer\User\CustomerUser;
 use App\Model\Gtm\GtmFacade;
 use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Order\Preview\OrderPreviewFactory;
+use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Gift\ProductGiftInCartFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
@@ -22,8 +22,6 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
@@ -47,11 +45,6 @@ class CartController extends FrontBaseController
      * @var \App\Model\Order\Gift\OrderGiftFacade
      */
     protected $orderGiftFacade;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
-     */
-    protected $pricingGroupSettingFacade;
 
     /**
      * @var \App\Model\Cart\CartFacade
@@ -104,6 +97,11 @@ class CartController extends FrontBaseController
     private $discountExclusionFacade;
 
     /**
+     * @var \App\Model\Pricing\Group\PricingGroupFacade
+     */
+    private $pricingGroupFacade;
+
+    /**
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
@@ -115,8 +113,8 @@ class CartController extends FrontBaseController
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         CartFacade $cartFacade,
@@ -130,8 +128,8 @@ class CartController extends FrontBaseController
         ListedProductViewFacadeInterface $listedProductViewFacade,
         ProductFacade $productFacade,
         OrderGiftFacade $orderGiftFacade,
-        PricingGroupSettingFacade $pricingGroupSettingFacade,
-        DiscountExclusionFacade $discountExclusionFacade
+        DiscountExclusionFacade $discountExclusionFacade,
+        PricingGroupFacade $pricingGroupFacade
     ) {
         $this->cartFacade = $cartFacade;
         $this->domain = $domain;
@@ -144,8 +142,8 @@ class CartController extends FrontBaseController
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->productFacade = $productFacade;
         $this->orderGiftFacade = $orderGiftFacade;
-        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
         $this->discountExclusionFacade = $discountExclusionFacade;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -163,13 +161,12 @@ class CartController extends FrontBaseController
 
         $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cartItems);
         $this->cartFacade->addAllGifts($cartGiftsByProductId);
-        /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
         $productsPrice = $orderPreview->getProductsPrice();
-        $this->cartFacade->verifySelectedOrderGift($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser));
+        $this->cartFacade->verifySelectedOrderGift($productsPrice->getPriceWithVat(), $domainId, $this->pricingGroupFacade->getCurrentPricingGroup($customerUser));
         $cartFormData = $this->getCartFormData($cartItems, $cartGiftsByProductId, $cart);
 
-        $offeredGifts = $this->orderGiftFacade->getAllListableGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser));
+        $offeredGifts = $this->orderGiftFacade->getAllListableGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->pricingGroupFacade->getCurrentPricingGroup($customerUser));
 
         $form = $this->createForm(CartFormType::class, $cartFormData, [
             'offeredGifts' => $offeredGifts,
@@ -220,7 +217,7 @@ class CartController extends FrontBaseController
             'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
             'promoCodesIndexedById' => $orderPreview->getPromoCodesIndexedById(),
             'locale' => $this->domain->getLocale(),
-            'nextLevelGifts' => $this->orderGiftFacade->getAllListableNextLevelGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser)),
+            'nextLevelGifts' => $this->orderGiftFacade->getAllListableNextLevelGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->pricingGroupFacade->getCurrentPricingGroup($customerUser)),
             'nextLevelDifference' => $this->orderGiftFacade->getNextLevelDifference($productsPrice->getPriceWithVat(), $domainId),
             'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
@@ -567,22 +564,6 @@ class CartController extends FrontBaseController
             'type' => $type,
             'showAmountInput' => $showAmountInput,
         ]);
-    }
-
-    /**
-     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
-     * @return \App\Model\Pricing\Group\PricingGroup
-     */
-    private function getCurrentPricingGroup(?CustomerUser $customerUser): PricingGroup
-    {
-        if ($customerUser !== null) {
-            $pricingGroup = $customerUser->getPricingGroup();
-        } else {
-            /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
-            $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($this->domain->getId());
-        }
-
-        return $pricingGroup;
     }
 
     /**
