@@ -2,7 +2,7 @@
 @list-variants-image-size: 70px;
 @list-variants-item-gap: 20px;
 @list-variants-item-prices-size: 24px;
-@list-variants-item-parameters-item-name-width: 104px;
+@list-variants-item-parameters-item-name-width: 90px;
 
 .list-variants {
     .reset-ul();
@@ -113,12 +113,14 @@
                 &__name {
                     width: @list-variants-item-parameters-item-name-width;
                     display: block;
-                    padding-right: 12px;
+                    padding-right: 10px;
                 }
 
                 &__value {
                     width: calc(~"100% - @{list-variants-item-parameters-item-name-width}");
                     display: block;
+                    padding-right: 10px;
+
                     font-weight: 700;
                 }
             }

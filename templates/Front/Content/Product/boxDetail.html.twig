@@ -74,17 +74,19 @@
                                 {% endif %}
 
                                 {% if product.isMainVariant %}
-                                    <p class="box-detail__left__description">{{ product.getShortDescription(domain.id)|raw }}</p>
-                                    <p class="box-detail__left__subtitle">
-                                        <span class="box-detail__left__subtitle__info">{{ 'Popis'|trans }}</span>
-                                        {{ product.getSeoH1(domain.id)|default(product.name) }}
-                                    </p>
-                                    <div class="in-user-text" itemprop="description">
-                                        {% if product.getDescription(domain.id) %}
-                                            <p>
-                                                {{ product.getDescription(domain.id)|raw }}
-                                            </p>
-                                        {% endif %}
+                                    <div class="display-none-tablet">
+                                        <p class="box-detail__left__description">{{ product.getShortDescription(domain.id)|raw }}</p>
+                                        <p class="box-detail__left__subtitle">
+                                            <span class="box-detail__left__subtitle__info">{{ 'Popis'|trans }}</span>
+                                            {{ product.getSeoH1(domain.id)|default(product.name) }}
+                                        </p>
+                                        <div class="in-user-text" itemprop="description">
+                                            {% if product.getDescription(domain.id) %}
+                                                <p>
+                                                    {{ product.getDescription(domain.id)|raw }}
+                                                </p>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 {% endif %}
                             </div>
@@ -215,6 +217,21 @@
                         </div>
 
                         {% if product.isMainVariant %}
+                            <div class="display-block-tablet display-none margin-bottom-20">
+                                <p class="box-detail__left__description">{{ product.getShortDescription(domain.id)|raw }}</p>
+                                <p class="box-detail__left__subtitle">
+                                    <span class="box-detail__left__subtitle__info">{{ 'Popis'|trans }}</span>
+                                    {{ product.getSeoH1(domain.id)|default(product.name) }}
+                                </p>
+                                <div class="in-user-text" itemprop="description">
+                                    {% if product.getDescription(domain.id) %}
+                                        <p>
+                                            {{ product.getDescription(domain.id)|raw }}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
                             <div class="wrap-gradient">
                                 <div class="wrap-gradient__in">
                                     <div class="box-detail__tags">
