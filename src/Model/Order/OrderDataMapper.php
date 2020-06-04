@@ -40,8 +40,6 @@ class OrderDataMapper extends BaseOrderDataMapper
         /** @var \App\Model\Order\OrderData $orderData */
         $orderData = parent::getOrderDataFromFrontOrderData($frontOrderData);
 
-        $orderData->deliveryAddressSameAsBillingAddress = false;
-
         if ($orderData->transport !== null && $orderData->transport->isPickupPlace() && $frontOrderData->pickupPlace !== null) {
             $orderData->pickupPlace = $frontOrderData->pickupPlace;
             $this->setOrderDeliveryAddressDataByPickUpPlace($orderData, $frontOrderData, $orderData->pickupPlace);
