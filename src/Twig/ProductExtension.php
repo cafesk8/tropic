@@ -36,7 +36,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     protected $currentCustomerUser;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository
+     * @var \App\Model\Product\ProductVisibilityRepository
      */
     protected $productVisibilityRepository;
 
@@ -92,7 +92,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository
+     * @param \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
      */
     public function __construct(
         CategoryFacade $categoryFacade,
