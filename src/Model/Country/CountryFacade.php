@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Country;
 
 use App\Component\Domain\DomainHelper;
-use Shopsys\FrameworkBundle\Model\Country\Country;
+use Shopsys\FrameworkBundle\Model\Country\Country as BaseCountry;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade as BaseCountryFacade;
 
 /**
@@ -30,7 +30,7 @@ class CountryFacade extends BaseCountryFacade
      * @param string $code
      * @return \App\Model\Country\Country
      */
-    public function getByCode(string $code): Country
+    public function getByCode(string $code): BaseCountry
     {
         return $this->countryRepository->getByCode($code);
     }
@@ -50,7 +50,7 @@ class CountryFacade extends BaseCountryFacade
     {
         $countries = $this->countryRepository->getAllEnabledByDomainIdWithLocale($this->domain->getId(), $this->domain->getLocale());
 
-        return array_map(static function (Country $country) {
+        return array_map(static function (BaseCountry $country) {
             return $country->getCode();
         }, $countries);
     }
@@ -58,11 +58,10 @@ class CountryFacade extends BaseCountryFacade
     /**
      * @return \App\Model\Country\Country
      */
-    public function getHackedCountry(): Country
+    public function getHackedCountry(): BaseCountry
     {
         if (DomainHelper::isEnglishDomain($this->domain) === false) {
-            $countryCode = DomainHelper::getCountryCodeByLocale($this->domain->getLocale());
-            return $this->getByCode($countryCode);
+            return $this->getDefaultCountryByDomainId($this->domain->getId());
         }
 
         $countryId = $_SESSION['_sf2_attributes']['craue_form_flow']['order']['flow_order']['data'][2]['country'] ?? null;
@@ -72,5 +71,16 @@ class CountryFacade extends BaseCountryFacade
         }
 
         return $this->getById($countryId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Country\Country
+     */
+    public function getDefaultCountryByDomainId(int $domainId): Country
+    {
+        $countryCode = DomainHelper::getCountryCodeByLocale($this->domain->getDomainConfigById($domainId)->getLocale());
+
+        return $this->getByCode($countryCode);
     }
 }
