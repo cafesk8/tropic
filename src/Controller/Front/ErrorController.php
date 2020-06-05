@@ -114,7 +114,7 @@ class ErrorController extends FrontBaseController
 
         $code = $exception->getStatusCode();
 
-        return $this->render('Front/Content/Error/error.' . $format . '.twig', [
+        return $this->render($this->getTemplatePath($code, $format), [
             'status_code' => $code,
             'status_text' => isset(Response::$statusTexts[$code]) ? Response::$statusTexts[$code] : '',
             'exception' => $exception,
@@ -199,5 +199,19 @@ class ErrorController extends FrontBaseController
             $content .= sprintf(" TEST environment is active, current domain url is '%s'.", $overwriteDomainUrl);
         }
         return new Response($content, Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * @param int $code
+     * @param string $format
+     * @return string
+     */
+    private function getTemplatePath(int $code, string $format): string
+    {
+        return sprintf(
+            'Front/Content/Error/error%s.%s.twig',
+            $format === 'html' ? $code : '',
+            $format
+        );
     }
 }

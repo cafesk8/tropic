@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Country\CountryDataFactory as BaseCountryDataF
 
 /**
  * @method fillNew(\App\Model\Country\CountryData $countryData)
+ * @method \App\Model\Country\CountryData createInstance()
  */
 class CountryDataFactory extends BaseCountryDataFactory
 {

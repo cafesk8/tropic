@@ -21,9 +21,9 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 /**
  * @property \App\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
  * @property \App\Model\Product\ProductRepository $productRepository
- * @property \App\Model\Pricing\Currency\CurrencyFacade|null $currencyFacade
  * @method setCurrencyFacade(\App\Model\Pricing\Currency\CurrencyFacade $currencyFacade)
  * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice calculateMainVariantPrice(\App\Model\Product\Product $mainVariant, int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
+ * @property \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
  */
 class ProductPriceCalculation extends BaseProductPriceCalculation
 {

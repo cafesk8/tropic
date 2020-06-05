@@ -1,0 +1,20 @@
+{% extends 'Front/Content/Error/errorCommon.html.twig' %}
+
+{% block error_content %}
+    <div class="box-promo-image">
+        <div class="box-promo-image__left">
+            <div class="box-promo-image__title">
+                <span class="box-promo-image__title__text">
+                    {{ 'Je nám líto'|trans }}<br>
+                    {{ 'požadovaná stránka na našem'|trans }}<br>
+                    {{ 'webu neexistuje'|trans }}
+                </span>
+            </div>
+            <div class="box-promo-image__content">
+                <div class="box-promo-image__content__button">
+                    <a href="{{ url('front_homepage') }}" class="btn">{{ 'Pokračujte na úvodní stránku'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

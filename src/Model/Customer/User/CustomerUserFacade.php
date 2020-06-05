@@ -41,8 +41,8 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
  * @method \App\Model\Customer\User\CustomerUser editByCustomerUser(int $customerUserId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
  * @method amendCustomerUserDataFromOrder(\App\Model\Customer\User\CustomerUser $customerUser, \App\Model\Order\Order $order, \App\Model\Customer\DeliveryAddress|null $deliveryAddress)
  * @property \App\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
- * @method addRefreshTokenChain(\App\Model\Customer\User\CustomerUser $customerUser, string $refreshTokenChain, \DateTime $tokenExpiration)
  * @method \App\Model\Customer\User\CustomerUser getByUuid(string $uuid)
+ * @method addRefreshTokenChain(\App\Model\Customer\User\CustomerUser $customerUser, string $refreshTokenChain, string $deviceId, \DateTime $tokenExpiration)
  */
 class CustomerUserFacade extends BaseCustomerUserFacade
 {

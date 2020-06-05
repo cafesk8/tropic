@@ -134,7 +134,7 @@ class StoreFacade
      */
     private function uploadImage(Store $store, StoreData $storeData): void
     {
-        $this->imageFacade->uploadImage($store, $storeData->images->uploadedFiles, null);
+        $this->imageFacade->manageImages($store, $storeData->images, null);
         $this->em->flush();
     }
 

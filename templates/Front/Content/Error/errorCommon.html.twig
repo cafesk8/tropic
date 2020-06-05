@@ -1,0 +1,23 @@
+{% extends 'Front/Layout/layoutWithPanel.html.twig' %}
+
+{% block title %}
+    {{ 'Error occurred'|trans }}: {{ status_text }}
+{% endblock %}
+
+{% block content %}
+    {{ render(controller('App\\Controller\\Front\\BreadcrumbController:indexAction', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
+    <div class="web__line">
+        {% block error_content %}{% endblock %}
+    </div>
+
+    <div class="web__line">
+        <div class="web__container">
+            {% include 'Front/Content/ReasonsToBuy/index.html.twig' %}
+        </div>
+    </div>
+
+    {% block last_visited_products %}
+        {{ render(controller('App\\Controller\\Front\\LastVisitedProductsController:showAction')) }}
+    {% endblock %}
+
+{% endblock %}

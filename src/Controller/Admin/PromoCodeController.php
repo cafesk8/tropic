@@ -13,9 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @property \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
- * @property \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory|null $promoCodeGridFactory
- * @method __construct(\App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade, \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeInlineEdit $promoCodeInlineEdit, \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade, \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface|null $promoCodeDataFactory, \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory|null $promoCodeGridFactory, \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider|null $breadcrumbOverrider, bool $useInlineEditation)
  * @method setPromoCodeGridFactory(\App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory)
+ * @property \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
+ * @method __construct(\App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade, \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade, \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface $promoCodeDataFactory, \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory, \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider)
  */
 class PromoCodeController extends BasePromoCodeController
 {

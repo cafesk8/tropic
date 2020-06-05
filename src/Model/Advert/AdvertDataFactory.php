@@ -6,13 +6,14 @@ namespace App\Model\Advert;
 
 use App\Model\Advert\Product\AdvertProduct;
 use App\Model\Advert\Product\AdvertProductRepository;
+use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Model\Advert\Advert as BaseAdvert;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertData as BaseAdvertData;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertDataFactory as BaseAdvertDataFactory;
 
 /**
- * @property \App\Component\Image\ImageFacade|null $imageFacade
- * @method setImageFacade(\App\Component\Image\ImageFacade $imageFacade)
+ * @property \App\Component\Image\ImageFacade $imageFacade
+ * @method \App\Model\Advert\AdvertData createInstance()
  */
 class AdvertDataFactory extends BaseAdvertDataFactory
 {
@@ -22,10 +23,12 @@ class AdvertDataFactory extends BaseAdvertDataFactory
     private $advertProductRepository;
 
     /**
+     * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \App\Model\Advert\Product\AdvertProductRepository $advertProductRepository
      */
-    public function __construct(AdvertProductRepository $advertProductRepository)
+    public function __construct(ImageFacade $imageFacade, AdvertProductRepository $advertProductRepository)
     {
+        parent::__construct($imageFacade);
         $this->advertProductRepository = $advertProductRepository;
     }
 

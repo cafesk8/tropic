@@ -129,7 +129,7 @@ class BlogArticleFacade
         $blogArticle->createDomains($blogArticleData);
 
         $this->friendlyUrlFacade->createFriendlyUrls('front_blogarticle_detail', $blogArticle->getId(), $blogArticle->getNames());
-        $this->imageFacade->uploadImages($blogArticle, $blogArticleData->images->uploadedFiles, null);
+        $this->imageFacade->manageImages($blogArticle, $blogArticleData->images, null);
         $this->blogVisibilityRecalculationScheduler->scheduleRecalculation();
 
         $this->em->flush();
@@ -152,9 +152,7 @@ class BlogArticleFacade
         $this->friendlyUrlFacade->saveUrlListFormData('front_blogarticle_detail', $blogArticle->getId(), $blogArticleData->urls);
         $this->friendlyUrlFacade->createFriendlyUrls('front_blogarticle_detail', $blogArticle->getId(), $blogArticle->getNames());
 
-        $this->imageFacade->saveImageOrdering($blogArticleData->images->orderedImages);
-        $this->imageFacade->uploadImages($blogArticle, $blogArticleData->images->uploadedFiles, null);
-        $this->imageFacade->deleteImages($blogArticle, $blogArticleData->images->imagesToDelete);
+        $this->imageFacade->manageImages($blogArticle, $blogArticleData->images, null);
 
         $this->blogVisibilityRecalculationScheduler->scheduleRecalculation();
 

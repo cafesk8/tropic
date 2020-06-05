@@ -13,6 +13,9 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCode
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactory as BasePromoCodeDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 
+/**
+ * @method \App\Model\Order\PromoCode\PromoCodeData createInstance()
+ */
 class PromoCodeDataFactory extends BasePromoCodeDataFactory
 {
     /**

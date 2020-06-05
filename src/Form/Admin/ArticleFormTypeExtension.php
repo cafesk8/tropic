@@ -7,7 +7,6 @@ namespace App\Form\Admin;
 use App\Model\Article\Article;
 use Shopsys\FrameworkBundle\Form\Admin\Article\ArticleFormType;
 use Shopsys\FrameworkBundle\Form\DatePickerType;
-use Shopsys\FrameworkBundle\Form\UrlListType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,18 +44,6 @@ class ArticleFormTypeExtension extends AbstractTypeExtension
         ]);
 
         $builder->add($builderArticleDataGroup);
-
-        // see https://github.com/shopsys/shopsys/pull/1787
-        $builderSeoDataGroup = $builder->get('seo');
-        if ($builderSeoDataGroup->has('urls')) {
-            $builderSeoDataGroup
-                ->remove('urls')
-                ->add('urls', UrlListType::class, [
-                    'label' => t('URL addresses'),
-                    'route_name' => 'front_article_detail',
-                    'entity_id' => $options['article']->getId(),
-                ]);
-        }
     }
 
     /**

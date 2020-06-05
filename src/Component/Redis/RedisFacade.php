@@ -17,16 +17,11 @@ class RedisFacade extends BaseRedisFacade
     {
         $redis = $this->findCacheClientByPattern($pattern);
         $prefix = (string)$redis->getOption(Redis::OPT_PREFIX);
-
         $pattern = $prefix . '*';
         if ($id !== null) {
             $pattern .= $id . '*';
         }
-
-        if (!$this->hasAnyKey($redis, $pattern)) {
-            return;
-        }
-        $redis->eval("return redis.call('del', unpack(redis.call('keys', ARGV[1])))", [$pattern]);
+        $this->cleanCacheByScan($redis, $pattern);
     }
 
     /**
