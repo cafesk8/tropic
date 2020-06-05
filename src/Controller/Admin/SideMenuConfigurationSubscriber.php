@@ -37,6 +37,8 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         $orderGiftsMenu = $productsMenu->addChild('admin_ordergift_list', ['route' => 'admin_ordergift_list', 'label' => t('Dárky k objednávce')]);
         $orderGiftsMenu->addChild('new', ['route' => 'admin_ordergift_new', 'label' => t('Nový dárek k objednávce'), 'display' => false]);
         $orderGiftsMenu->addChild('edit', ['route' => 'admin_ordergift_edit', 'label' => t('Editace dárku k objednávce'), 'display' => false]);
+
+        $productsMenu->addChild('admin_watchdog_list', ['route' => 'admin_watchdog_list', 'label' => t('Hlídač dostupnosti')]);
     }
 
     /**

@@ -1,0 +1,9 @@
+{% extends '@ShopsysFramework/Admin/Grid/Grid.html.twig' %}
+
+{% block grid_value_cell_type_DateTime %}
+    {{ value|formatDate }}
+{% endblock %}
+
+{% block grid_value_cell_type_Shopsys_FrameworkBundle_Component_Money_Money %}
+    {{ value|priceWithCurrencyByCurrencyId(row.currencyId) }}
+{% endblock %}

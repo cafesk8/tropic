@@ -1,0 +1,8 @@
+{% extends '@ShopsysFramework/Admin/Layout/layoutWithPanel.html.twig' %}
+
+{% block title %}- {{ 'Hlídač ceny a dostupnosti'|trans }}{% endblock %}
+{% block h1 %}{{ 'Hlídač ceny a dostupnosti'|trans }}{% endblock %}
+
+{% block main_content %}
+    {{ gridView.render }}
+{% endblock %}
