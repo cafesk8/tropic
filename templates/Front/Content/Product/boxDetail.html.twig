@@ -217,21 +217,6 @@
                         </div>
 
                         {% if product.isMainVariant %}
-                            <div class="display-block-tablet display-none margin-bottom-20">
-                                <p class="box-detail__left__description">{{ product.getShortDescription(domain.id)|raw }}</p>
-                                <p class="box-detail__left__subtitle">
-                                    <span class="box-detail__left__subtitle__info">{{ 'Popis'|trans }}</span>
-                                    {{ product.getSeoH1(domain.id)|default(product.name) }}
-                                </p>
-                                <div class="in-user-text" itemprop="description">
-                                    {% if product.getDescription(domain.id) %}
-                                        <p>
-                                            {{ product.getDescription(domain.id)|raw }}
-                                        </p>
-                                    {% endif %}
-                                </div>
-                            </div>
-
                             <div class="wrap-gradient">
                                 <div class="wrap-gradient__in">
                                     <div class="box-detail__tags">
@@ -244,10 +229,12 @@
                         {% endif %}
                     </div>
                 </div>
-
-                <div class="box-detail__videos">
-                    {{ self.productYoutubeVideo(youtubeDetails) }}
-                </div>
+                
+                {% if product.isMainVariant %}
+                    <div class="box-detail__videos">
+                        {{ self.productYoutubeVideo(youtubeDetails) }}
+                    </div>
+                {% endif %}
             </div>
         </div>
 
@@ -317,19 +304,17 @@
             </div>
         {% endif %}
 
-        {% if not product.isMainVariant %}
-            <div class="web__line">
-                <div class="web__container js-box-tabs">
-                    {% if not typeSet %}
-                        {% set productId = product.id %}
-                    {% else %}
-                        {% set firstProductGroup = sortProductGroupsByPrice(product.productGroups)|first %}
-                        {% set productId = firstProductGroup.item.id %}
-                    {% endif %}
-                    {{ render(controller('App\\Controller\\Front\\ProductController:boxTabsAction', { productId: productId })) }}
-                </div>
+        <div class="web__line {% if product.isMainVariant %}display-block-tablet display-none{% endif %}">
+            <div class="web__container js-box-tabs">
+                {% if not typeSet %}
+                    {% set productId = product.id %}
+                {% else %}
+                    {% set firstProductGroup = sortProductGroupsByPrice(product.productGroups)|first %}
+                    {% set productId = firstProductGroup.item.id %}
+                {% endif %}
+                {{ render(controller('App\\Controller\\Front\\ProductController:boxTabsAction', { productId: productId })) }}
             </div>
-        {% endif %}
+        </div>
 
         {% if parentSetViews is not empty %}
             {% import 'Front/Content/Product/productSetViewMacro.html.twig' as productSetMacro %}
