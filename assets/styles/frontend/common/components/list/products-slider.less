@@ -4,8 +4,6 @@
 @list-products-slider-item-inner-padding: 10px;
 @list-products-slider-item-image-height: 160px;
 @list-products-slider-item-image-height-mobile: 110px;
-@list-products-slider-item-image-big-height: 240px;
-@list-products-slider-item-image-big-height-mobile: 210px;
 
 @list-products-slider-arrow-size: 38px;
 @list-products-slider-arrow-gap: 20px;
@@ -233,34 +231,16 @@
             height: @list-products-slider-item-image-height-mobile;
             width: 100%;
 
-            .list-products-slider--big & {
-                height: @list-products-slider-item-image-big-height-mobile;
-                margin-bottom: 20px;
-            }
-
             @media @query-vl {
                 height: @list-products-slider-item-image-height;
-
-                .list-products-slider--big & {
-                    height: @list-products-slider-item-image-big-height;
-                    margin-bottom: 40px;
-                }
             }
 
             img {
                 .center-image();
                 max-height: @list-products-slider-item-image-height-mobile;
 
-                .list-products-slider--big & {
-                    max-height: @list-products-slider-item-image-big-height-mobile;
-                }
-
                 @media @query-vl {
                     max-height: @list-products-slider-item-image-height;
-
-                    .list-products-slider--big & {
-                        max-height: @list-products-slider-item-image-big-height;
-                    }
                 }
             }
         }
@@ -285,14 +265,6 @@
                 color: @color-base;
                 font-weight: 400;
                 font-size: @font-size;
-
-                .list-products-slider--big & {
-                    line-height: 18px;
-                    margin-bottom: 9px;
-
-                    font-size: 16px;
-                    text-transform: uppercase;
-                }
             }
 
             &__price {
@@ -303,10 +275,6 @@
                 color: @color-price;
                 font-size: @font-size-small;
                 font-weight: 700;
-
-                .list-products-slider--big & {
-                    font-size: @font-size-big;
-                }
 
                 &__main {
                     color: @color-price-main;

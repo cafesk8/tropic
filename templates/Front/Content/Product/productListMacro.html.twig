@@ -82,7 +82,7 @@
     </ul>
 {% endmacro %}
 
-{% macro horizontalList(productViews, listCssClass, productHeadingTagName, type, showButton = false, onlyRefresh = false) %}
+{% macro horizontalList(productViews, listCssClass, productHeadingTagName, type, showButton = false, onlyRefresh = false, showAmountInput = false) %}
     <div class="list-products-slider {% if showButton %}list-products-slider--with-button{% endif %} {{ listCssClass|default('') }} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
         <span class="list-products-slider__arrow list-products-slider__arrow--prev js-horizontal-list-action-prev">
@@ -141,7 +141,7 @@
                                     </a>
                                     {% if showButton %}
                                         <div class="list-products-slider__item__hover">
-                                            {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {listedProductView: productView, showAmountInput: false, onlyRefresh: onlyRefresh, type: 'slider'})) }}
+                                            {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {listedProductView: productView, showAmountInput: showAmountInput, onlyRefresh: onlyRefresh, type: 'slider'})) }}
                                         </div>
                                     {% endif %}
                                 </div>
