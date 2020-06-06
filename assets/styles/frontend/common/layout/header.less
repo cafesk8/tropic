@@ -7,7 +7,7 @@
 @header-item-gap: 16px;
 @header-item-gap-small: 10px;
 @header-logo-width: 232px;
-@header-logo-width-small: 169px;
+@header-logo-width-small: 210px;
 @header-search-width: 426px;
 @header-search-width-small: 400px;
 @header-right-actions-width: 354px;
@@ -32,9 +32,11 @@
     &--small {
         justify-content: space-between;
         margin-bottom: 29px;
-        
+        padding: 16px 0;
+
         @media @query-lg {
-            padding-top: 15px;
+            margin: 20px 0 29px;
+            padding: 26px 0;
         }
     }
 }
@@ -72,7 +74,7 @@
         width: @header-logo-width-small;
         margin: 0 auto 15px auto;
 
-        @media @query-vl {
+        @media @query-lg {
             margin: 0;
         }
     }
@@ -184,33 +186,9 @@
     font-size: @font-size-extra-small + 1px;
     font-family: @font-alt;
 
-    @media @query-vl {
+    @media @query-lg {
         flex-direction: row;
         width: auto;
         justify-content: flex-end;
-    }
-
-    &__phone {
-        margin-bottom: 5px;
-
-        font-weight: 700;
-        text-decoration: none;
-
-        @media @query-vl {
-            margin-bottom: 0;
-        }
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-
-    &__text {
-        text-align: center;
-        
-        @media @query-vl {
-            text-align: left;
-            padding-left: 10px;
-        }
     }
 }

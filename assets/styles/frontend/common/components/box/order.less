@@ -5,16 +5,14 @@
 @box-order-info-transport-width: 176px;
 @box-order-info-transport-height: 55px;
 @box-order-gap-small: 30px;
-@box-order-gap: 62px;
+@box-order-gap: 70px;
 @box-order-additional-gap: 50px;
 
 .box-order {
-    margin-top: @box-order-gap-small;
     margin-bottom: @box-order-gap-small;
     padding: 0 10px;
 
     @media @query-vl {
-        margin-top: @box-order-gap;
         margin-bottom: @box-order-gap;
     }
 
@@ -54,6 +52,10 @@
 
             @media @query-vl {
                 margin-bottom: @box-order-gap;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
             }
         }
     }

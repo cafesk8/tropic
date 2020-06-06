@@ -324,6 +324,49 @@
         text-align: left;
     }
 
+    &--small {
+        position: relative;
+        padding: 50px 0;
+        margin-bottom: 43px;
+
+        @media @query-lg {
+            padding: 70px 0;
+            margin-bottom: 106px;
+        }
+
+        &:before {
+            display: none;
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 41px;
+            width: 96px;
+            height: 57px;
+
+            background: url('@{path-design}/footer-right-top-corner.png');
+
+            @media @query-lg {
+                display: block;
+            }
+        }
+
+        &:after {
+            display: none;
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 41px;
+            width: 59px;
+            height: 33px;
+
+            background: url('@{path-design}/footer-left-top-corner.png');
+
+            @media @query-lg {
+                display: block;
+            }
+        }
+    }
+
     &__domains {
         display: inline-flex;
         flex-direction: column;
