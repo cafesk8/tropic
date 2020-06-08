@@ -2,15 +2,9 @@
 {% set productActionView = productView.action %}
 
 {% if productActionView.mainVariant %}
-    {% if type == "slider"%}
-        <a href="{{ productActionView.detailUrl }}" class="in-add-to-cart-variant in-add-to-cart-variant--in-slider btn btn--big btn--success {{ buttonSizeClass }}">
-            {{- 'Choose variant'|trans -}}
-        </a>
-    {% else %}
-        <a href="{{ productActionView.detailUrl }}" class="in-add-to-cart-variant btn btn--big btn--success {{ buttonSizeClass }}">
-            {{- 'Choose variant'|trans -}}
-        </a>
-    {% endif %}
+    <a href="{{ productActionView.detailUrl }}" class="in-add-to-cart-variant btn btn--big btn--success {{ buttonSizeClass }}">
+        {{- 'Choose variant'|trans -}}
+    </a>
 {% else %}
     {% set outOfStock = productView.stockQuantity <= 0 or productActionView.sellingDenied %}
     {% set cssClass = '' %}
@@ -45,11 +39,7 @@
             {% set hardDisabled = 1 %}
         {% endif %}
 
-        {% if type == "slider"%}
-            {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button in-add-to-cart__button--small btn-no-style', disabled: outOfStock, 'data-hard-disabled': hardDisabled }}) }}
-        {% else %}
-            {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn-no-style', disabled: outOfStock, 'data-hard-disabled': hardDisabled }}) }}
-        {% endif %}
+        {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn-no-style', disabled: outOfStock, 'data-hard-disabled': hardDisabled }}) }}
     </div>
     {{ form_end(form) }}
 {% endif %}
