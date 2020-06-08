@@ -7,6 +7,8 @@ namespace App\Model\Newsletter\Transfer;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Newsletter\NewsletterSubscriber;
+use App\Model\Order\OrderFacade;
+use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
 
 class EcomailClient
 {
@@ -26,6 +28,11 @@ class EcomailClient
     private $customerUserFacade;
 
     /**
+     * @var \App\Model\Order\OrderFacade
+     */
+    private $orderFacade;
+
+    /**
      * @var \App\Component\Transfer\Logger\TransferLogger
      */
     private $logger;
@@ -34,13 +41,15 @@ class EcomailClient
      * @param string $apiKey
      * @param int $listId
      * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
+     * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      */
-    public function __construct(string $apiKey, int $listId, CustomerUserFacade $customerUserFacade, TransferLoggerFactory $transferLoggerFactory)
+    public function __construct(string $apiKey, int $listId, CustomerUserFacade $customerUserFacade, OrderFacade $orderFacade, TransferLoggerFactory $transferLoggerFactory)
     {
         $this->apiKey = $apiKey;
         $this->listId = (string)$listId;
         $this->customerUserFacade = $customerUserFacade;
+        $this->orderFacade = $orderFacade;
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(EcomailExportCronModule::TRANSFER_IDENTIFIER);
     }
 
@@ -100,6 +109,18 @@ class EcomailClient
                 $subscriberData['city'] = $address->getCity();
                 $subscriberData['zip'] = $address->getPostcode();
                 $subscriberData['country'] = $address->getCountry()->getCode();
+            }
+        } else {
+            try {
+                $order = $this->orderFacade->getNewestByEmailAndDomain($newsletterSubscriber->getEmail(), $newsletterSubscriber->getDomainId());
+                $subscriberData['name'] = $order->getFirstName();
+                $subscriberData['surname'] = $order->getLastName();
+                $subscriberData['phone'] = $order->getTelephone() ?? $order->getDeliveryTelephone();
+                $subscriberData['street'] = $order->getStreet() ?? $order->getDeliveryStreet();
+                $subscriberData['city'] = $order->getCity() ?? $order->getDeliveryCity();
+                $subscriberData['zip'] = $order->getPostcode() ?? $order->getDeliveryPostcode();
+                $subscriberData['country'] = $order->getCountry()->getCode() ?? $order->getDeliveryCountry()->getCode();
+            } catch (OrderNotFoundException $exception) {
             }
         }
 

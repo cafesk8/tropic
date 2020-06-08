@@ -260,4 +260,19 @@ class OrderRepository extends BaseOrderRepository
     {
         return $this->getOrderRepository()->findAll();
     }
+
+    /**
+     * @param string $email
+     * @param int $domainId
+     * @return \App\Model\Order\Order|null
+     */
+    public function findNewestByEmailAndDomainId(string $email, int $domainId): ?Order
+    {
+        return $this->getOrderRepository()->findOneBy([
+            'email' => $email,
+            'domainId' => $domainId,
+        ], [
+            'createdAt' => 'DESC',
+        ]);
+    }
 }

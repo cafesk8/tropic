@@ -34,6 +34,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser as BaseCustomerUser
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
+use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface;
@@ -783,5 +784,21 @@ class OrderFacade extends BaseOrderFacade
     public function findAll(): array
     {
         return $this->orderRepository->findAll();
+    }
+
+    /**
+     * @param string $email
+     * @param int $domainId
+     * @return \App\Model\Order\Order
+     */
+    public function getNewestByEmailAndDomain(string $email, int $domainId): Order
+    {
+        $order = $this->orderRepository->findNewestByEmailAndDomainId($email, $domainId);
+
+        if ($order === null) {
+            throw new OrderNotFoundException();
+        }
+
+        return $order;
     }
 }
