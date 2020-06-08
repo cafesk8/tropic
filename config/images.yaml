@@ -83,8 +83,8 @@
             crop: false
             occurrence: 'Front-end: Listing of products in products bomb'
         -   name: listSlider
-            width: 160
-            height: 160
+            width: 240
+            height: 240
             crop: false
             occurrence: 'Front-end: Listing of products in sliders'
         -   name: gift

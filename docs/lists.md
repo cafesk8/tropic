@@ -2,7 +2,7 @@
 
 |                    Výpis                   |      Název v kódu      |       Typ       |        Macro        |     Kde je na FE    |         Elastic/DB        |
 |:------------------------------------------:|:----------------------:|:---------------:|:-------------------:|:-------------------:|:-------------------------:|
-| Vybíráme to nejlepší                       | topProducts            |  horizontalList |   productListMacro  |       Homepage      |          databáze         |
+| Tento měsíc máme v akci                       | topProducts            |  horizontalList |   productListMacro  |       Homepage, Předvýpis kategorie      |          databáze         |
 | Cenová bomba                               | priceBombProducts      |  horizontalList |   productListMacro  |       Homepage      |          databáze         |
 | Nejoblíbenější kousky                      | bestSelling            |  horizontalList |   productListMacro  | Předvýpis kategorie |       ElasticSearch       |
 | K produktu budete potřebovat               | accesories             |  horizontalList |   productListMacro  |   Detail produktu   |          databáze         |

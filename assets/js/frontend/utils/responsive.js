@@ -37,5 +37,5 @@ Responsive.XS = 320;
 Responsive.SM = 480;
 Responsive.MD = 600;
 Responsive.LG = 769;
-Responsive.VL = 980;
-Responsive.XL = 1200;
+Responsive.VL = 1024;
+Responsive.XL = 1320;

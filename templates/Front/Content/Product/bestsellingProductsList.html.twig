@@ -3,11 +3,11 @@
     <div class="web__line">
         <div class="web__container">
             <div id="top-products" class="box-products-slider">
-                <div class="box-products-slider__title">
+                <h2 class="box-products-slider__title">
                     {{ 'Nejoblíbenější kousky'|trans }}
-                </div>
+                </h2>
                 <a href="#" class="box-products-slider__subtitle js-not-implemented-yet">{{ 'Přejít na všechny'|trans }}</a>
-                {{ productList.horizontalList(productViews, 'h3', 'top-products', false) }}
+                {{ productList.horizontalList(productViews, '', 'h3', 'top-products', true, false, true) }}
             </div>
         </div>
     </div>

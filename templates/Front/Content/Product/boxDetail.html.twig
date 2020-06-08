@@ -262,7 +262,7 @@
                         </div>
                     </div>
                 </div>
-            </div
+            </div>
         {% endif %}
 
         {% if accessories|length > 0 %}
@@ -272,7 +272,7 @@
                         <h2 class="box-products-slider__title">
                             {{ accessoriesHeadline }}
                         </h2>
-                        {{ productList.horizontalList(accessories, 'h3', 'accessories-products', true) }}
+                        {{ productList.horizontalList(accessories, '', 'h3', 'accessories-products', true) }}
                     </div>
                 </div>
             </div>
@@ -295,15 +295,17 @@
 
             <div class="web__line">
                 <div class="web__container">
-                    <h2 class="box-products-slider__title">
-                        {{ 'Nakupte produkt ve výhodném setu'|trans }}
-                    </h2>
+                    <div class="box-products-slider">
+                        <h2 class="box-products-slider__title">
+                            {{ 'Nakupte produkt ve výhodném setu'|trans }}
+                        </h2>
 
-                    <ul class="list-products js-list js-product-list">
-                        {% for parentSetView in parentSetViews %}
-                            {{ productSetMacro.productSetView(parentSetView) }}
-                        {% endfor %}
-                    </ul>
+                        <ul class="list-products js-list js-product-list">
+                            {% for parentSetView in parentSetViews %}
+                                {{ productSetMacro.productSetView(parentSetView) }}
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
         {% endif %}
