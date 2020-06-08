@@ -118,7 +118,7 @@ class CustomerUserUpdateDataFactory extends BaseCustomerDataFactory
         $customerUserData = $this->customerUserDataFactory->createUserDataFromOrder($order, $newPassword, $domainId);
 
         $deliveryAddressData = $this->deliveryAddressDataFactory->create();
-        $billingAddressData = null;
+        $billingAddressData = $this->billingAddressDataFactory->create();
         /** @var \App\Model\Transport\Transport $transport */
         $transport = $order->getTransport();
 
