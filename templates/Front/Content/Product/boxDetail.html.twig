@@ -203,6 +203,9 @@
                                                 <div class="list-variants__item__actions">
                                                     {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'detailVariant'})) }}
                                                 </div>
+                                                <div>
+                                                    {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', {product: variant}) }}
+                                                </div>
                                             </li>
                                         {% endfor %}
                                     </ul>
@@ -215,7 +218,9 @@
                                 {% endif %}
                             </div>
                         </div>
-
+                        {% if not product.isMainVariant %}
+                            {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', {product: product}) }}
+                        {% endif %}
                         {% if product.isMainVariant %}
                             <div class="wrap-gradient">
                                 <div class="wrap-gradient__in">
@@ -229,7 +234,7 @@
                         {% endif %}
                     </div>
                 </div>
-                
+
                 {% if product.isMainVariant %}
                     <div class="box-detail__videos">
                         {{ self.productYoutubeVideo(youtubeDetails) }}

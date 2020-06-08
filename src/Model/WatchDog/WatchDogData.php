@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\WatchDog;
 
+use DateTime;
+
 class WatchDogData
 {
     /**
@@ -48,6 +50,7 @@ class WatchDogData
 
     public function __construct()
     {
+        $this->createdAt = new DateTime();
         $this->availabilityWatcher = true;
         $this->priceWatcher = true;
         $this->targetedDiscount = null;
