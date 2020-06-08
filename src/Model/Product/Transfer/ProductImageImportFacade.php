@@ -107,15 +107,20 @@ class ProductImageImportFacade
             ]);
         } else {
             $this->logger->addInfo('Žádné obrázky k přenesení');
-            return;
         }
 
-        $pohodaImageIds = [];
-        $productIds = [];
+        $pohodaImageIdsIndexedByProductId = [];
+        $productsIndexedByPohodaId = [];
+        foreach ($productPohodaIds as $productPohodaId) {
+            $product = $this->productFacade->findByPohodaId($productPohodaId);
+            if ($product !== null) {
+                $pohodaImageIdsIndexedByProductId[$product->getId()] = [];
+                $productsIndexedByPohodaId[$productPohodaId] = $product;
+            }
+        }
         foreach ($pohodaImages as $pohodaImage) {
             $productPohodaId = $pohodaImage->productPohodaId;
-            $product = $this->productFacade->findByPohodaId($productPohodaId);
-            if ($product === null) {
+            if (!isset($productsIndexedByPohodaId[$productPohodaId])) {
                 $this->logger->addWarning('Product not found by Pohoda ID. Image will not be transferred', [
                     'productPohodaId' => $productPohodaId,
                     'imagePohodaId' => $pohodaImage->id,
@@ -126,12 +131,11 @@ class ProductImageImportFacade
             $this->processImage($pohodaImage, $imagesTargetPath, $nextImageId, $product);
             $nextImageId++;
             $this->imageFacade->restartImagesIdsDbSequence($nextImageId);
-            $pohodaImageIds[] = $pohodaImage->id;
-            $productIds[] = $product->getId();
+            $pohodaImageIdsIndexedByProductId[$product->getId()][] = $pohodaImage->id;
         }
 
-        $this->deleteOrphanImages($pohodaImageIds, $productIds);
-        foreach ($productIds as $productId) {
+        $this->deleteOrphanImages($pohodaImageIdsIndexedByProductId);
+        foreach (array_keys($pohodaImageIdsIndexedByProductId) as $productId) {
             $this->productExportScheduler->scheduleRowIdForImmediateExport($productId);
         }
         $this->logger->persistTransferIssues();
@@ -187,18 +191,14 @@ class ProductImageImportFacade
     }
 
     /**
-     * @param int[] $pohodaImageIds
-     * @param int[] $productIds
+     * @param int[] $pohodaImageIdsIndexedByProductId
      */
-    public function deleteOrphanImages(array $pohodaImageIds, array $productIds): void
+    private function deleteOrphanImages(array $pohodaImageIdsIndexedByProductId): void
     {
-        $imageIdsAndExtensionsToDelete = $this->imageFacade->deleteImagesWithNotExistingPohodaId($pohodaImageIds, $productIds);
-        $imagesTargetPath = $this->getImagesTargetPath();
-        foreach ($imageIdsAndExtensionsToDelete as $imageIdAndExtensionToDelete) {
-            $imagePathToDelete = $imagesTargetPath . $imageIdAndExtensionToDelete['id'] . '.' . $imageIdAndExtensionToDelete['extension'];
-            $this->filesystem->delete($imagePathToDelete);
-            $this->logger->addInfo('Image deleted', [
-                'path' => $imagePathToDelete,
+        $deletedImageIds = $this->imageFacade->deleteImagesWithNotExistingPohodaId($pohodaImageIdsIndexedByProductId);
+        if (!empty($deletedImageIds)) {
+            $this->logger->addInfo('Odmazány obrázky, které již nejsou v Pohoda IS', [
+                'deletedImageIds' => $deletedImageIds,
             ]);
         }
     }

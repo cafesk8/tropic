@@ -91,25 +91,37 @@ class ImageRepository extends BaseImageRepository
     }
 
     /**
-     * @param int[] $currentPohodaIds
-     * @param int[] $productIds
-     * @return array
+     * @param int[] $currentPohodaImageIdsIndexedByProductId
+     * @return int[]
      */
-    public function deleteImagesWithNotExistingPohodaId(array $currentPohodaIds, array $productIds): array
+    public function deleteImagesWithNotExistingPohodaId(array $currentPohodaImageIdsIndexedByProductId): array
     {
-        $resultSetMapping = new ResultSetMapping();
-        $resultSetMapping
-            ->addScalarResult('id', 'id')
-            ->addScalarResult('extension', 'extension');
-        $imageIdsToDelete = $this->em->createNativeQuery('SELECT id, extension FROM images WHERE pohoda_id IS NOT NULL AND pohoda_id NOT IN (:pohodaIds) AND entity_id IN (:entityIds)', $resultSetMapping)->execute([
-            'pohodaIds' => $currentPohodaIds,
-            'entityIds' => $productIds,
-        ]);
-        $this->em->createNativeQuery('DELETE FROM images WHERE pohoda_id IS NOT NULL AND pohoda_id NOT IN (:pohodaIds) AND entity_id IN (:entityIds)', new ResultSetMapping())->execute([
-            'pohodaIds' => $currentPohodaIds,
-            'entityIds' => $productIds,
-        ]);
+        $queryBuilder = $this->getImageRepository()
+            ->createQueryBuilder('i')
+            ->where('i.pohodaId IS NOT NULL')
+            ->andWhere('i.entityId = :entityId');
 
-        return $imageIdsToDelete;
+        $imagesToDelete = [];
+        foreach ($currentPohodaImageIdsIndexedByProductId as $productId => $currentPohodaIds) {
+            $queryParameters = ['entityId' => $productId];
+            if (empty($currentPohodaIds)) {
+                $imagesToDelete = array_merge($imagesToDelete, $queryBuilder->getQuery()->execute($queryParameters));
+            } else {
+                $queryParameters['pohodaIds'] = $currentPohodaIds;
+                $clonedQueryBuilder = clone $queryBuilder;
+                $imagesToDelete = array_merge($imagesToDelete, $clonedQueryBuilder
+                    ->andWhere('i.pohodaId NOT IN (:pohodaIds)')
+                    ->getQuery()
+                    ->execute($queryParameters));
+            }
+        }
+
+        $deletedImageIds = [];
+        foreach ($imagesToDelete as $imageToDelete) {
+            $deletedImageIds[] = $imageToDelete->getId();
+            $this->em->remove($imageToDelete);
+        }
+
+        return $deletedImageIds;
     }
 }

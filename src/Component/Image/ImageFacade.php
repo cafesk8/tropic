@@ -103,12 +103,11 @@ class ImageFacade extends BaseImageFacade
     }
 
     /**
-     * @param int[] $currentPohodaIds
-     * @param int[] $productIds
-     * @return array
+     * @param int[] $currentPohodaImageIdsIndexedByProductId
+     * @return int[]
      */
-    public function deleteImagesWithNotExistingPohodaId(array $currentPohodaIds, array $productIds): array
+    public function deleteImagesWithNotExistingPohodaId(array $currentPohodaImageIdsIndexedByProductId): array
     {
-        return $this->imageRepository->deleteImagesWithNotExistingPohodaId($currentPohodaIds, $productIds);
+        return $this->imageRepository->deleteImagesWithNotExistingPohodaId($currentPohodaImageIdsIndexedByProductId);
     }
 }
