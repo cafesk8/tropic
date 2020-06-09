@@ -861,7 +861,7 @@ class OrderController extends FrontBaseController
         }
 
         if ($this->orderFacade->isUnpaidOrderPaymentChangeable($order)) {
-            $payments = $this->paymentFacade->getVisibleOnCurrentDomainByTransport($order->getTransport());
+            $payments = $this->paymentFacade->getVisibleOnCurrentDomainByTransport($order->getTransport(), $order->getTotalProductPriceWithVat());
             $goPayBankSwifts = $this->goPayBankSwiftFacade->getAllByCurrencyId($order->getCurrency()->getId());
 
             $form = $this->createForm(PaymentFormType::class, [], [

@@ -103,13 +103,18 @@ class PaymentFacade extends BasePaymentFacade
 
     /**
      * @param \App\Model\Transport\Transport $transport
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $orderPrice
      * @return \App\Model\Payment\Payment[]
      */
-    public function getVisibleOnCurrentDomainByTransport(Transport $transport): array
+    public function getVisibleOnCurrentDomainByTransport(Transport $transport, ?Money $orderPrice = null): array
     {
         $paymentsByTransport = $this->paymentRepository->getAllByTransport($transport);
         /** @var \App\Model\Payment\Payment[] $payments */
         $payments = $this->paymentVisibilityCalculation->filterVisible($paymentsByTransport, $this->domain->getId());
+
+        if ($orderPrice !== null) {
+            $payments = $this->filterPaymentsByOrderPrice($payments, $orderPrice);
+        }
 
         return $payments;
     }
