@@ -363,7 +363,6 @@ class OrderController extends FrontBaseController
         $goPayBankSwifts = $this->goPayBankSwiftFacade->getAllByCurrencyId($currency->getId());
 
         $orderFlow = $this->domainAwareOrderFlowFactory->create();
-        $orderFlow->setOrderPrice(Money::create('10000'));
         if ($orderFlow->isBackToCartTransition()) {
             return $this->redirectToRoute('front_cart');
         }
@@ -726,14 +725,7 @@ class OrderController extends FrontBaseController
             }
         }
 
-        $cofidisPaymentLink = null;
-        if ($order->getPayment()->isCofidis()) {
-            try {
-                $cofidisPaymentLink = $this->cofidisFacade->sendPaymentToCofidis($order);
-            } catch (CofidisException $e) {
-                $this->addErrorFlash(t('Připojení k bráně Cofidis selhalo.'));
-            }
-        }
+        $cofidisPaymentLink = $this->getCofidisPaymentLink($order);
 
         $this->gtmFacade->onOrderSentPage($order);
 
@@ -986,15 +978,32 @@ class OrderController extends FrontBaseController
 
         $this->addInfoFlash(t('Způsob platby byl úspěšně změněn'));
 
+        if ($order->getPayment()->isCofidis()) {
+            $cofidisPaymentLink = $this->getCofidisPaymentLink($order);
+
+            return $this->redirectToRoute('front_order_sent', [
+                'pageContent' => $this->orderFacade->getOrderSentPageContent($order->getId()),
+                'order' => $order,
+                'goPayData' => null,
+                'payPalApprovalLink' => null,
+                'cofidisPaymentLink' => $cofidisPaymentLink,
+                'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
+                    $this->domain->getId(),
+                    $this->domain->getLocale(),
+                    self::HOMEPAGE_ARTICLES_LIMIT
+                ),
+            ]);
+        }
+
         if ($this->getUser() instanceof CustomerUser) {
             return $this->redirectToRoute('front_customer_order_detail_registered', [
                 'orderNumber' => $order->getNumber(),
             ]);
-        } else {
-            return $this->redirectToRoute('front_customer_order_detail_unregistered', [
-                'urlHash' => $order->getUrlHash(),
-            ]);
         }
+
+        return $this->redirectToRoute('front_customer_order_detail_unregistered', [
+            'urlHash' => $order->getUrlHash(),
+        ]);
     }
 
     /**
@@ -1059,5 +1068,23 @@ class OrderController extends FrontBaseController
     {
         return $this->isGranted(Roles::ROLE_LOGGED_CUSTOMER) ||
             $this->customerUserFacade->findCustomerUserByEmailAndDomain($email, $this->domain->getId()) !== null;
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @return string|null
+     */
+    private function getCofidisPaymentLink(Order $order): ?string
+    {
+        $cofidisPaymentLink = null;
+        if ($order->getPayment()->isCofidis()) {
+            try {
+                $cofidisPaymentLink = $this->cofidisFacade->sendPaymentToCofidis($order);
+            } catch (CofidisException $e) {
+                $this->addErrorFlash(t('Připojení k bráně Cofidis selhalo.'));
+            }
+        }
+
+        return $cofidisPaymentLink;
     }
 }
