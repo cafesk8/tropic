@@ -13,7 +13,26 @@ new Register().registerCallback(function ($container) {
                 new Window({
                     content: data.substring(data.indexOf('</h2>')),
                     cssClass: 'window-popup--wide',
-                    textHeading: $($.parseHTML(data)).filterAllNodes('.js-watch-dog-heading').text()
+                    textHeading: $($.parseHTML(data)).filterAllNodes('.js-watch-dog-heading').text(),
+                    eventOnLoad: function () {
+                        const $availabilityWatcher = $('#watch_dog_form_availabilityWatcher');
+                        const $priceWatcher = $('#watch_dog_form_priceWatcher');
+                        const $submitButton = $('.js-watch-dog-submit');
+                        $priceWatcher.change(function () {
+                            if ($(this).is(':checked')) {
+                                $('.js-target-price-input-line').show();
+                            } else {
+                                $('.js-target-price-input-line').hide();
+                            }
+                        });
+                        $('#watch_dog_form_priceWatcher, #watch_dog_form_availabilityWatcher').change(function () {
+                            if ($availabilityWatcher.is(':checked') || $priceWatcher.is(':checked')) {
+                                $submitButton.removeAttr('disabled');
+                            } else {
+                                $submitButton.attr('disabled', 'disabled');
+                            }
+                        });
+                    }
                 });
             }
         });

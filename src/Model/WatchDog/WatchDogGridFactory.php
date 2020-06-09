@@ -59,7 +59,7 @@ class WatchDogGridFactory implements GridFactoryInterface
         $grid->addColumn('productName', 'pt.name', 'Název produktu');
         $grid->addColumn('availabilityWatcher', 'wd.availabilityWatcher', 'Hlídání dostupnosti');
         $grid->addColumn('priceWatcher', 'wd.priceWatcher', 'Hlídání ceny');
-        $grid->addColumn('targetedDiscount', 'wd.targetedDiscount', 'Částka');
+        $grid->addColumn('targetPrice', 'wd.targetPrice', 'Částka');
         $grid->setTheme('Admin/Content/WatchDog/listGrid.html.twig');
         $grid->enablePaging();
 

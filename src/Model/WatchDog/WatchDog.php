@@ -73,7 +73,7 @@ class WatchDog
      *
      * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
      */
-    private $targetedDiscount;
+    private $targetPrice;
 
     /**
      * @var \App\Model\Pricing\Group\PricingGroup
@@ -94,7 +94,7 @@ class WatchDog
         $this->availabilityWatcher = $watchDogData->availabilityWatcher;
         $this->priceWatcher = $watchDogData->priceWatcher;
         $this->originalPrice = $watchDogData->originalPrice;
-        $this->targetedDiscount = $watchDogData->targetedDiscount;
+        $this->targetPrice = $watchDogData->targetPrice;
         $this->pricingGroup = $watchDogData->pricingGroup;
     }
 
@@ -157,9 +157,9 @@ class WatchDog
     /**
      * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
      */
-    public function getTargetedDiscount(): ?Money
+    public function getTargetPrice(): ?Money
     {
-        return $this->targetedDiscount;
+        return $this->targetPrice;
     }
 
     /**

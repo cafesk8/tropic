@@ -41,7 +41,7 @@ class WatchDogData
     /**
      * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
      */
-    public $targetedDiscount;
+    public $targetPrice;
 
     /**
      * @var \App\Model\Pricing\Group\PricingGroup
@@ -53,6 +53,6 @@ class WatchDogData
         $this->createdAt = new DateTime();
         $this->availabilityWatcher = true;
         $this->priceWatcher = true;
-        $this->targetedDiscount = null;
+        $this->targetPrice = null;
     }
 }
