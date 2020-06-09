@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Component\Cofidis\CofidisFacade;
+use App\Component\Cofidis\Exception\CofidisException;
 use App\Form\Front\Customer\Password\NewPasswordFormType;
 use App\Form\Front\Order\DomainAwareOrderFlowFactory;
 use App\Form\Front\Order\OrderFlow;
@@ -222,6 +224,11 @@ class OrderController extends FrontBaseController
     private FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade;
 
     /**
+     * @var \App\Component\Cofidis\CofidisFacade
+     */
+    private $cofidisFacade;
+
+    /**
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -253,6 +260,7 @@ class OrderController extends FrontBaseController
      * @param \App\Model\Order\Item\OrderItemFactory $orderItemFactory
      * @param \App\Model\Order\Item\OrderItemDataFactory $orderItemDataFactory
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
+     * @param \App\Component\Cofidis\CofidisFacade $cofidisFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -285,7 +293,8 @@ class OrderController extends FrontBaseController
         OrderDataFactory $orderDataFactory,
         OrderItemFactory $orderItemFactory,
         OrderItemDataFactory $orderItemDataFactory,
-        FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
+        FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
+        CofidisFacade $cofidisFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -318,6 +327,7 @@ class OrderController extends FrontBaseController
         $this->orderItemFactory = $orderItemFactory;
         $this->orderItemDataFactory = $orderItemDataFactory;
         $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
+        $this->cofidisFacade = $cofidisFacade;
     }
 
     /**
@@ -716,6 +726,15 @@ class OrderController extends FrontBaseController
             }
         }
 
+        $cofidisPaymentLink = null;
+        if ($order->getPayment()->isCofidis()) {
+            try {
+                $cofidisPaymentLink = $this->cofidisFacade->sendPaymentToCofidis($order);
+            } catch (CofidisException $e) {
+                $this->addErrorFlash(t('Připojení k bráně Cofidis selhalo.'));
+            }
+        }
+
         $this->gtmFacade->onOrderSentPage($order);
 
         return $this->render('Front/Content/Order/sent.html.twig', [
@@ -723,6 +742,7 @@ class OrderController extends FrontBaseController
             'order' => $order,
             'goPayData' => $goPayData,
             'payPalApprovalLink' => $payPalApprovalLink,
+            'cofidisPaymentLink' => $cofidisPaymentLink,
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
                 $this->domain->getId(),
                 $this->domain->getLocale(),

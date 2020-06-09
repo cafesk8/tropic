@@ -143,9 +143,8 @@ class PaymentFacade extends BasePaymentFacade
     {
         $filteredPayments = [];
         foreach ($payments as $payment) {
-
-            $minimumOrderPrice = $payment->getMinimumOrderPrice($this->domain->getId())->getAmount();
-            if ((float)$minimumOrderPrice === 0.0 || $minimumOrderPrice < $orderPrice->getAmount()) {
+            $minimumOrderPrice = $payment->getMinimumOrderPrice($this->domain->getId());
+            if ($minimumOrderPrice->isZero() || $minimumOrderPrice->isLessThan($orderPrice)) {
                 $filteredPayments[] = $payment;
             }
         }

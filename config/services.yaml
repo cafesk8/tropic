@@ -685,3 +685,7 @@ services:
     App\Component\Cron\Config\CronConfig: ~
 
     Shopsys\FrameworkBundle\Component\Cron\Config\CronConfig: '@App\Component\Cron\Config\CronConfig'
+
+    App\Component\Cofidis\CofidisClientFactory:
+        arguments:
+            - '%cofidis_config%'

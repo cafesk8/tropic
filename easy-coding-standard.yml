@@ -74,6 +74,7 @@ parameters:
 
         ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
             - '*/src/Model/Order/Order.php'
+            - '*/Controller/Front/OrderController'
             - '*/src/Component/Transfer/Pohoda/Product/PohodaProduct.php'
 
         Shopsys\CodingStandards\Sniffs\ValidVariableNameSniff:

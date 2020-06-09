@@ -179,6 +179,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setPriceForAllDomainDefaultCurrencies($paymentData, Money::zero());
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->description[$locale] = t('Platba provedena u Cofidis', [], 'dataFixtures', $locale);
+            $paymentData->instructions[$locale] = t('<b>Zvolili jste platbu Cofidis, budete přesměrováni na platební bránu. Po dokončení žádosti prosím vyčkejte. V nejbližší možné době Vás budeme kontaktovat ohledně dalšího postupu ve splátkovém prodeji.</b>', [], 'dataFixtures', $locale);
         }
         $paymentData->enabled[DomainHelper::CZECH_DOMAIN] = true;
         $paymentData->enabled[DomainHelper::SLOVAK_DOMAIN] = false;
