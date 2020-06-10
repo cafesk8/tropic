@@ -65,6 +65,15 @@ class PohodaProduct
     public const COL_POHODA_PRODUCT_BRAND_NAME = 'brandName';
     public const COL_POHODA_PRODUCT_VIDEO = 'productVideo';
 
+    public const COL_PARAMETERS = 'parameters';
+
+    public const COL_PARAMETER_ID = 'parameterID';
+    public const COL_PARAMETER_NAME = 'parameterName';
+    public const COL_PARAMETER_TYPE = 'parameterType';
+    public const COL_PARAMETER_VALUE_TYPE_NUMBER = 'parameterValueNumber';
+    public const COL_PARAMETER_VALUE_TYPE_TEXT = 'parameterValueText';
+    public const COL_PARAMETER_VALUE_TYPE_LIST = 'parameterValueList';
+
     /**
      * @var int
      */
@@ -286,6 +295,11 @@ class PohodaProduct
     public $shownSk;
 
     /**
+     * @var \App\Component\Transfer\Pohoda\Product\PohodaParameter[]
+     */
+    public $parameters;
+
+    /**
      * @param array $pohodaProductData
      */
     public function __construct(array $pohodaProductData)
@@ -334,5 +348,6 @@ class PohodaProduct
         $this->flagPreparationTo = $pohodaProductData[self::COL_FLAG_PREPARATION_TO];
         $this->shown = (bool)$pohodaProductData[self::COL_SHOWN];
         $this->shownSk = (bool)$pohodaProductData[self::COL_SHOWN_SK];
+        $this->parameters = $pohodaProductData[self::COL_PARAMETERS];
     }
 }
