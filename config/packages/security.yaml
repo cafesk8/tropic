@@ -73,6 +73,7 @@ security:
         - { path: ^/admin/translation/list/$, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/authorization/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/schedule/import-categories, roles: ROLE_ADMIN }
 
         # Marketing
         - { path: ^/admin/article, roles: ROLE_VIEW_MARKETING }

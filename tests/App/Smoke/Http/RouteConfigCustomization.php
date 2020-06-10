@@ -297,6 +297,10 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet($debugNote)
                     ->setParameter('id', $availability->getId())
                     ->setParameter('newId', $newAvailability->getId());
+            })
+            ->customizeByRouteName('admin_default_schedulecategoriesimport', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Schedule import categories cron module')
+                    ->setExpectedStatusCode(302);
             });
     }
 

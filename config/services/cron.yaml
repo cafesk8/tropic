@@ -69,7 +69,7 @@ services:
     #########################
     App\Model\Category\Transfer\CategoryImportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import změněných kategorií z Pohoda IS' }
+            - { name: shopsys.cron, hours: '23', minutes: '30', readableName: 'Import změněných kategorií z Pohoda IS' }
 
     #########################
 

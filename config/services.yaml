@@ -668,3 +668,6 @@ services:
             $apiKey: '%ecomail_api_key%'
             $listId: '%ecomail_list_id%'
             $listIdSk: '%ecomail_list_id_sk%'
+
+    Shopsys\FrameworkBundle\Controller\Admin\DefaultController:
+        class: App\Controller\Admin\DefaultController
