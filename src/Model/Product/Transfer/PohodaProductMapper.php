@@ -20,6 +20,10 @@ use App\Model\Product\Brand\BrandFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Flag\ProductFlagDataFactory;
+use App\Model\Product\Parameter\Parameter;
+use App\Model\Product\Parameter\ParameterDataFactory;
+use App\Model\Product\Parameter\ParameterFacade;
+use App\Model\Product\Parameter\ParameterValueDataFactory;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductFacade;
@@ -33,6 +37,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Shopsys\FrameworkBundle\Model\Product\Brand\Exception\BrandNotFoundException;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\Unit\Exception\UnitNotFoundException;
 
 class PohodaProductMapper
@@ -113,6 +118,26 @@ class PohodaProductMapper
     private $productFlagDataFactory;
 
     /**
+     * @var \App\Model\Product\Parameter\ParameterFacade
+     */
+    private $parameterFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory
+     */
+    private $productParameterValueDataFactory;
+
+    /**
+     * @var \App\Model\Product\Parameter\ParameterDataFactory
+     */
+    private $parameterDataFactory;
+
+    /**
+     * @var \App\Model\Product\Parameter\ParameterValueDataFactory
+     */
+    private $parameterValueDataFactory;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
@@ -127,6 +152,10 @@ class PohodaProductMapper
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory
+     * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory $productParameterValueDataFactory
+     * @param \App\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
+     * @param \App\Model\Product\Parameter\ParameterDataFactory $parameterDataFactory
      */
     public function __construct(
         Domain $domain,
@@ -142,7 +171,11 @@ class PohodaProductMapper
         BrandDataFactory $brandDataFactory,
         TransferLoggerFactory $transferLoggerFactory,
         FlagFacade $flagFacade,
-        ProductFlagDataFactory $productFlagDataFactory
+        ProductFlagDataFactory $productFlagDataFactory,
+        ParameterFacade $parameterFacade,
+        ProductParameterValueDataFactory $productParameterValueDataFactory,
+        ParameterValueDataFactory $parameterValueDataFactory,
+        ParameterDataFactory $parameterDataFactory
     ) {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
@@ -157,6 +190,10 @@ class PohodaProductMapper
         $this->brandDataFactory = $brandDataFactory;
         $this->flagFacade = $flagFacade;
         $this->productFlagDataFactory = $productFlagDataFactory;
+        $this->parameterFacade = $parameterFacade;
+        $this->productParameterValueDataFactory = $productParameterValueDataFactory;
+        $this->parameterDataFactory = $parameterDataFactory;
+        $this->parameterValueDataFactory = $parameterValueDataFactory;
 
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
     }
@@ -173,6 +210,8 @@ class PohodaProductMapper
         $this->mapFlagsToProductData($pohodaProduct, $productData);
         $this->mapDomainDataToProductData($pohodaProduct, $productData);
         $this->mapRelatedProductsToProductData($pohodaProduct, $productData);
+        $this->mapProductParameters($pohodaProduct, $productData);
+
         $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
         $productData->groupItems = $this->getMappedProductGroupItems($pohodaProduct->productGroups);
         $productData->eurCalculatedAutomatically = $pohodaProduct->automaticEurCalculation;
@@ -526,5 +565,40 @@ class PohodaProductMapper
     private function getDatetimeOrNull(?string $date): ?DateTime
     {
         return $date === null ? null : new DateTime($date);
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function mapProductParameters(PohodaProduct $pohodaProduct, ProductData $productData): void
+    {
+        $productData->parameters = [];
+        foreach ($pohodaProduct->parameters as $pohodaParameter) {
+            $parameter = $this->parameterFacade->findParameterByNames([DomainHelper::CZECH_LOCALE => $pohodaParameter->name]);
+            if ($parameter === null) {
+                $parameterData = $this->parameterDataFactory->create();
+                $parameterData->name[DomainHelper::CZECH_LOCALE] = $pohodaParameter->name;
+                $parameterData->type = Parameter::TYPE_DEFAULT;
+                $parameterData->visibleOnFrontend = true;
+                $parameterData->visible = true;
+
+                $parameter = $this->parameterFacade->create($parameterData);
+            }
+
+            foreach ($pohodaParameter->values as $locale => $parameterValue) {
+                if ($pohodaParameter->isTypeBool()) {
+                    $parameterValue = (int)$parameterValue === 1 ? t('Ano', [], null, $locale) : t('Ne', [], null, $locale);
+                }
+                $productParameterValueData = $this->productParameterValueDataFactory->create();
+                $parameterValueData = $this->parameterValueDataFactory->create();
+                $parameterValueData->text = $parameterValue;
+                $parameterValueData->locale = $locale;
+                $productParameterValueData->parameterValueData = $parameterValueData;
+                $productParameterValueData->parameter = $parameter;
+
+                $productData->parameters[] = $productParameterValueData;
+            }
+        }
     }
 }
