@@ -7,6 +7,9 @@ namespace App\Component\Cofidis;
 class CofidisSignatureFacade
 {
     /**
+     * Getting signature according to documentation
+     * @see /docs/payments/cofidis.md
+     *
      * @param array $paymentData
      * @param string $inboundPassword
      * @return string
