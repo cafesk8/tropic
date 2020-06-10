@@ -45,7 +45,6 @@
     &__text-big {
         font-size: @font-size-small;
         font-weight: 400;
-        white-space: nowrap;
     }
 
     &__stores {
@@ -62,22 +61,28 @@
     &__stores-big {
         font-size: @font-size-small;
         font-weight: 400;
-        white-space: nowrap;
     }
 
     &__status {
         display: flex;
         align-items: center;
         width: 100%;
-        line-height: 17px;
+        line-height: @font-size-big;
 
         font-size: @font-size-big;
-        white-space: nowrap;
+
+        .list-variants & {
+            font-size: @font-size;
+        }
     }
 
     &__date {
         color: @color-green;
         font-weight: 500;
+
+        .list-variants & {
+            font-weight: 700;
+        }
 
         &--not-available {
             color: @color-blue-dark;

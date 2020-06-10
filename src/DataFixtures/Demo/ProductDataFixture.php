@@ -184,6 +184,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_SENCOR);
+        $productData->youtubeVideoIds = ['X96dNABbx_I', '5gLabuBgswA', 'BsBMpJbsQvw'];
 
         $this->createProduct($productData);
 
@@ -308,6 +309,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_A4TECH);
+        $productData->youtubeVideoIds = ['w6N5jYmU_38'];
 
         $this->createProduct($productData, false);
 
@@ -1119,6 +1121,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, null);
+        $productData->youtubeVideoIds = ['Cq3cna_L7YY', 'CJc-jD11ZtQ'];
 
         $this->createProduct($productData);
 
@@ -3308,6 +3311,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_HYUNDAI);
+        $productData->youtubeVideoIds = ['X96dNABbx_I', '5gLabuBgswA', 'BsBMpJbsQvw'];
 
         $this->createProduct($productData);
 

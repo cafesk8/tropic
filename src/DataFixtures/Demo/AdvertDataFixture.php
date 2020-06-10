@@ -16,7 +16,6 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
     public const ADVERT_FIRST_SQUARE = 'advert_first_square';
     public const ADVERT_SECOND_SQUARE = 'advert_second_square';
     public const ADVERT_THIRD_SQUARE = 'advert_third_square';
-    public const ADVERT_FOURTH_RECTANGLE = 'advert_fourth_rectangle';
 
     /**
      * @var \App\Model\Advert\AdvertFacade
@@ -70,15 +69,6 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $advertData->link = 'https://www.shopsys.cz/shopsys-b2c-commerce-cloud';
         $advert = $this->advertFacade->create($advertData);
         $this->addReference(self::ADVERT_THIRD_SQUARE, $advert);
-
-        $advertData->domainId = 1;
-        $advertData->name = t('Hlavní banner titulní stránky', [], 'dataFixtures');
-        $advertData->type = Advert::TYPE_IMAGE;
-        $advertData->hidden = false;
-        $advertData->positionName = 'fourthRectangle';
-        $advertData->link = '/';
-        $advert = $this->advertFacade->create($advertData);
-        $this->addReference(self::ADVERT_FOURTH_RECTANGLE, $advert);
     }
 
     /**

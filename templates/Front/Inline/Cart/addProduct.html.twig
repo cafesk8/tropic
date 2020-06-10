@@ -1,41 +1,68 @@
 {{ form_start(form, {attr: {class: 'js-add-product dont-print', 'data-ajax-url': url('front_cart_add_product_ajax'), 'multipleForm': true}}) }}
-    <div class="box-detail-add__action js-spinbox-parent">
-        <div class="box-detail-add__action__message in-message in-message--warning js-maximum-amount-warning display-none">
-            {{ 'Větší množství není možné nakoupit'|trans }}
-        </div>
-        <div class="box-detail-add__action__spinbox {% if product.realStockQuantity < 1 or product.calculatedSellingDenied or not showAmountInput %} display-none{% endif %}">
-            <span class="form-input-spinbox form-input-spinbox--secondary js-spinbox">
-                {{ form_widget(form.quantity, { attr: {
-                    class: 'form-input-spinbox__input input-no-style js-spinbox-input',
-                    'data-spinbox-min': product.realMinimumAmount,
-                    'data-spinbox-step': product.amountMultiplier,
-                    'data-spinbox-max': product.realStockQuantity
-                } }) }}
-                <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
-                <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
-            </span>
-        </div>
-
-        {% if not product.isMainVariant and product.calculatedAvailability %}
-            <div class="box-detail-add__action__availability">
-                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product } %}
-            </div>
-        {% elseif displayVariantSelectButton is same as (true) %}
-            <div class="in-availability">
-                {{ 'Dostupnost dle varianty'|trans }}
-            </div>
-        {% endif %}
-    </div>
-
     {% set cssClass = '' %}
     {% if disabled is same as (true) %}
         {% set cssClass = 'btn--disabled ' %}
     {% endif %}
 
-    <div class="box-detail-add__buttons">
+    {% if type != 'detailVariant' %}
+        <div class="box-detail-add__action js-spinbox-parent">
+            <div class="box-detail-add__action__message in-message in-message--warning js-maximum-amount-warning display-none">
+                {{ 'Větší množství není možné nakoupit'|trans }}
+            </div>
+            <div class="box-detail-add__action__spinbox {% if product.realStockQuantity < 1 or product.calculatedSellingDenied or not showAmountInput %} display-none{% endif %}">
+                <span class="form-input-spinbox form-input-spinbox--secondary js-spinbox">
+                    {{ form_widget(form.quantity, { attr: {
+                        class: 'form-input-spinbox__input input-no-style js-spinbox-input',
+                        'data-spinbox-min': product.realMinimumAmount,
+                        'data-spinbox-step': product.amountMultiplier,
+                        'data-spinbox-max': product.realStockQuantity
+                    } }) }}
+                    <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
+                    <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
+                </span>
+            </div>
+
+            {% if not product.isMainVariant and product.calculatedAvailability %}
+                <div class="box-detail-add__action__availability">
+                    {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product } %}
+                </div>
+            {% elseif displayVariantSelectButton is same as (true) %}
+                <div class="in-availability">
+                    {{ 'Dostupnost dle varianty'|trans }}
+                </div>
+            {% endif %}
+
+        </div>
+    {% endif %}
+
+    <div class="box-detail-add__buttons{% if type == 'detailVariant' %} box-detail-add__buttons--small-gap{% endif %}">
         {% if not product.isMainVariant %}
-            {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__buttons__item btn btn--success btn--large', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
-            <button class="box-detail-add__buttons__item btn btn--large js-not-implemented-yet" {% if disabled %}disabled="disabled"{% endif %} data-hard-disabled="{{ hardDisabled }}">{{ 'Koupit na splátky'|trans }}</button>
+            {% if type == 'detailVariant' %}
+                <div class="box-detail-add__buttons__item-variant">
+                    <div class="in-add-to-cart in-add-to-cart--mobile-centered">
+                        <div class="in-add-to-cart__spinbox {% if product.realStockQuantity < 1 or product.calculatedSellingDenied or not showAmountInput %} display-none{% endif %}">
+                            <div class="in-message in-message--warning js-maximum-amount-warning display-none">
+                                {{ 'Větší množství není možné nakoupit'|trans }}
+                            </div>
+                            <span class="form-input-spinbox js-spinbox">
+                                {{ form_widget(form.quantity, { attr: {
+                                    class: 'form-input-spinbox__input input-no-style js-spinbox-input',
+                                    'data-spinbox-min': product.realMinimumAmount,
+                                    'data-spinbox-step': product.amountMultiplier,
+                                    'data-spinbox-max': product.realStockQuantity
+                                } }) }}
+                                <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
+                                <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
+                            </span>
+                        </div>
+                        {{ form_widget(form.add, {label: 'Do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn-no-style ', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
+                    </div>
+                </div>
+                <button class="box-detail-add__buttons__item-variant box-detail-add__buttons__item-variant--payments btn btn--big js-not-implemented-yet" {% if disabled %}disabled="disabled"{% endif %} data-hard-disabled="{{ hardDisabled }}">{{ 'Na splátky'|trans }}</button>
+            {% else %}
+                {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__buttons__item btn btn--success btn--large', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
+                <button class="box-detail-add__buttons__item btn btn--large js-not-implemented-yet" {% if disabled %}disabled="disabled"{% endif %} data-hard-disabled="{{ hardDisabled }}">{{ 'Koupit na splátky'|trans }}</button>
+            {% endif %}
         {% elseif displayVariantSelectButton is same as (true) %}
             <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="btn btn--success list-article-product__item__button-add in-add-to-cart__button--large">
                 {{- 'Choose variant'|trans -}}
@@ -44,7 +71,7 @@
         {% endif %}
     </div>
 
-    <div class="box-detail-add__payments js-not-implemented-yet">
+    <div class="box-detail-add__payments{% if type == 'detailVariant' %} box-detail-add__payments--variant{% endif %} js-not-implemented-yet">
         <img class="box-detail-add__payments__image" src="{{ asset('public/frontend/images/cofidis-logo.png')}}" alt="{{ 'Cofidis'|trans }}">
         Na splátky ještě dnes již od 260 Kč měsíčně
     </div>

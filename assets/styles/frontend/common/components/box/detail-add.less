@@ -25,6 +25,10 @@
             margin: -20px -@box-detail-add-message-side-margin (@box-detial-add-item-gap + 10px);
         }
 
+        &--variant {
+            margin: 0 0 20px 0;
+        }
+
         &__icon {
             margin-right: 10px;
             margin-bottom: -7px;
@@ -138,15 +142,57 @@
             margin-left: -@box-detial-add-item-gap;
         }
 
+        &--small-gap {
+            @media @query-md {
+                margin-bottom: 10px;
+            }
+        }
+
         &__item {
             width: 100%;
             padding: 0 10px;
             margin-bottom: @box-detial-add-item-gap;
 
+            font-size: 16px;
+
             @media @query-md {
                 width: calc(~"50% - @{box-detial-add-item-gap}");
                 margin-left: @box-detial-add-item-gap;
                 margin-bottom: 0;
+            }
+        }
+
+        &__item-variant {
+            margin-bottom: 15px;
+            width: 100%;
+
+            font-size: 16px;
+
+            @media @query-sm {
+                width: auto;
+            }
+
+            @media @query-md {
+                margin-bottom: 0;
+            }
+
+            &:first-child {
+                @media @query-sm {
+                    margin-right: 15px;
+                }
+
+                @media @query-md {
+                    margin-left: @box-detial-add-item-gap;
+                }
+
+                @media @query-vl {
+                    margin-left: auto;
+                }
+            }
+
+            &--payments {
+                padding-left: 15px;
+                padding-right: 15px;
             }
         }
     }
@@ -159,8 +205,20 @@
         font-size: @font-size + 1px;
         font-family: @font-alt;
 
+        &--variant {
+            font-size: @font-size-extra-small + 1px;
+
+            @media @query-vl {
+                justify-content: flex-end;
+            }
+        }
+
         &__image {
             margin-right: @box-detial-add-item-gap;
+
+            .box-detail-add__payments--variant & {
+                height: 30px;
+            }
         }
     }
 }
