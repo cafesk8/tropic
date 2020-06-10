@@ -642,6 +642,10 @@ services:
                 arguments:
                     - !php/const App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail::MAIL_TEMPLATE_ACTIVATED_NAME
                     - '@=service("App\\Model\\Order\\GiftCertificate\\Mail\\OrderGiftCertificateMailTemplateVariablesProvider").createActivated()'
+            -   method: addMailTemplateVariables
+                arguments:
+                    - !php/const App\Component\WatchDog\WatchDogMail::MAIL_TEMPLATE_WATCH_DOG
+                    - '@=service("App\\Component\\WatchDog\\WatchDogMailTemplateVariablesProvider").create()'
 
     Shopsys\FrameworkBundle\Model\Mail\MailTemplateConfiguration: '@App\Model\Mail\MailTemplateConfiguration'
 
@@ -663,3 +667,5 @@ services:
 
     Shopsys\FrameworkBundle\Controller\Admin\DefaultController:
         class: App\Controller\Admin\DefaultController
+
+    App\Component\WatchDog\WatchDogMail: ~
