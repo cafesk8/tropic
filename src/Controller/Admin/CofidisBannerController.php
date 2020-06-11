@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Setting\Setting;
 use App\Form\Admin\CofidisBannerSettingFormType;
-use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,20 +20,11 @@ class CofidisBannerController extends AdminBaseController
     private $setting;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
-     */
-    private $adminDomainTabsFacade;
-
-    /**
      * @param \App\Component\Setting\Setting $setting
-     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      */
-    public function __construct(
-        Setting $setting,
-        AdminDomainTabsFacade $adminDomainTabsFacade
-    ) {
+    public function __construct(Setting $setting)
+    {
         $this->setting = $setting;
-        $this->adminDomainTabsFacade = $adminDomainTabsFacade;
     }
 
     /**
@@ -43,16 +34,15 @@ class CofidisBannerController extends AdminBaseController
      */
     public function settingAction(Request $request): Response
     {
-        $selectedDomainId = $this->adminDomainTabsFacade->getSelectedDomainId();
         $formData = [
-            'minimumPrice' => $this->setting->getForDomain(Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID, $selectedDomainId),
+            'minimumPrice' => $this->setting->getForDomain(Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID, DomainHelper::CZECH_DOMAIN),
         ];
-        $form = $this->createForm(CofidisBannerSettingFormType::class, $formData, ['domainId' => $selectedDomainId]);
+        $form = $this->createForm(CofidisBannerSettingFormType::class, $formData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $minimumPrice = $form->get('cofidisBanner')->get('minimumPrice')->getData();
-            $this->setting->setForDomain(Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID, $minimumPrice, $selectedDomainId);
+            $minimumPrice = $form->get('minimumPrice')->getData();
+            $this->setting->setForDomain(Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID, $minimumPrice, DomainHelper::CZECH_DOMAIN);
 
             $this->addSuccessFlash(t('Nastavení bylo uloženo.'));
         }

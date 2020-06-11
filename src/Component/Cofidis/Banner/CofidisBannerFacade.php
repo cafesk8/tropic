@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Cofidis\Banner;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Setting\Setting;
 use App\Model\Payment\Payment;
 use App\Model\Payment\PaymentFacade;
@@ -48,7 +49,9 @@ class CofidisBannerFacade
         $minimumBannerShowProductPrice = $this->setting->getForDomain(Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID, $this->domain->getId());
         $cofidisPayment = $this->paymentFacade->getFirstPaymentByType(Payment::TYPE_COFIDIS);
 
-        return $cofidisPayment !== null
+        return DomainHelper::isCzechDomain($this->domain)
+            && $cofidisPayment !== null
+            && $minimumBannerShowProductPrice !== null
             && $cofidisPayment->isEnabled($this->domain->getId())
             && $productPrice->getPriceWithVat()->isGreaterThanOrEqualTo($minimumBannerShowProductPrice);
     }

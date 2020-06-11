@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Component\Domain\DomainHelper;
 use App\Model\Pricing\Currency\CurrencyFacade;
-use Shopsys\FrameworkBundle\Form\GroupType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -34,17 +34,10 @@ class CofidisBannerSettingFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $domainId = $options['domainId'];
-
-        $deadlineGroup = $builder
-            ->create('cofidisBanner', GroupType::class, [
-                'label' => t('Nastavení banneru Cofidis'),
-            ]);
-
-        $deadlineGroup
+        $builder
             ->add('minimumPrice', MoneyType::class, [
                 'required' => true,
-                'label' => t('Zobrazit kalukačku od'),
+                'label' => t('Zobrazit kalkulačku na CZ doméně od'),
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Vyplňte prosím minimální částku pro zobrazení kalkulačky na detailu produktu.']),
                 ],
@@ -52,10 +45,8 @@ class CofidisBannerSettingFormType extends AbstractType
                     'icon' => true,
                     'iconTitle' => t('Kallkulačka se bude od této cenové hladiny zobrazovat na detailu produktu.'),
                 ],
-                'currency' => $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId)->getCode(),
+                'currency' => $this->currencyFacade->getDomainDefaultCurrencyByDomainId(DomainHelper::CZECH_DOMAIN)->getCode(),
             ]);
-
-        $builder->add($deadlineGroup);
 
         $builder->add('save', SubmitType::class);
     }
@@ -65,10 +56,7 @@ class CofidisBannerSettingFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver
-            ->setRequired('domainId')
-            ->setAllowedTypes('domainId', ['int'])
-            ->setDefaults([
+        $resolver->setDefaults([
             'attr' => ['novalidate' => 'novalidate'],
         ]);
     }

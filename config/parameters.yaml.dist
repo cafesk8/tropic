@@ -112,23 +112,10 @@ parameters:
     env(CDN_DOMAIN): '//'
 
     cofidis_config:
-        cs:
-            merchant_id: 15002
-            login: NESS
-            cofisun_pass: F3C0K54C
-            inbound_pass: password
-            outbound_pass: password
-        sk:
-            merchant_id: 15002
-            login: NESS
-            cofisun_pass: F3C0K54C
-            inbound_pass: password
-            outbound_pass: password
-        en:
-            merchant_id: 15002
-            login: NESS
-            cofisun_pass: F3C0K54C
-            inbound_pass: password
-            outbound_pass: password
+        merchant_id: 15002
+        login: NESS
+        cofisun_pass: F3C0K54C
+        inbound_pass: password
+        outbound_pass: password
         isProductionMode: false
         timeout: 30

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Migrations;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Setting\Setting;
 use Doctrine\DBAL\Schema\Schema;
 use Shopsys\FrameworkBundle\Migrations\MultidomainMigrationTrait;
@@ -18,16 +19,14 @@ class Version20200529112847 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        foreach ($this->getAllDomainIds() as $domainId) {
-            $this->sql(
-                'INSERT INTO setting_values (name, domain_id, value, type) VALUES (:name, :domainId, :minimumPrice, \'money\');',
-                [
-                    'name' => Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID,
-                    'domainId' => $domainId,
-                    'minimumPrice' => 0,
-                ]
-            );
-        }
+        $this->sql(
+            'INSERT INTO setting_values (name, domain_id, value, type) VALUES (:name, :domainId, :minimumPrice, \'money\');',
+            [
+                'name' => Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID,
+                'domainId' => DomainHelper::CZECH_DOMAIN,
+                'minimumPrice' => 3000,
+            ]
+        );
     }
 
     /**

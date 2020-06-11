@@ -4,8 +4,6 @@
 {% block h1 %}{{ 'Nastavení banneru Cofidis'|trans }}{% endblock %}
 
 {% block main_content %}
-    {{ render(controller('ShopsysFrameworkBundle:Admin/Domain:domainTabs')) }}
-
     {{ form_start(form) }}
 
     {% embed '@ShopsysFramework/Admin/Inline/FixedBar/fixedBar.html.twig' %}

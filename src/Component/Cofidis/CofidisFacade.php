@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Component\Cofidis;
 
 use App\Model\Order\Order;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 
 class CofidisFacade
 {
@@ -15,11 +14,6 @@ class CofidisFacade
     private $cofidisClientFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
-
-    /**
      * @var \App\Component\Cofidis\CofidisOrderMapper
      */
     private $cofidisOrderMapper;
@@ -27,15 +21,12 @@ class CofidisFacade
     /**
      * @param \App\Component\Cofidis\CofidisClientFactory $cofidisClientFactory
      * @param \App\Component\Cofidis\CofidisOrderMapper $cofidisOrderMapper
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         CofidisClientFactory $cofidisClientFactory,
-        CofidisOrderMapper $cofidisOrderMapper,
-        Domain $domain
+        CofidisOrderMapper $cofidisOrderMapper
     ) {
         $this->cofidisClientFactory = $cofidisClientFactory;
-        $this->domain = $domain;
         $this->cofidisOrderMapper = $cofidisOrderMapper;
     }
 
@@ -45,7 +36,7 @@ class CofidisFacade
      */
     public function sendPaymentToCofidis(Order $order): ?string
     {
-        $cofidisClient = $this->cofidisClientFactory->createByLocale($this->domain->getLocale());
+        $cofidisClient = $this->cofidisClientFactory->create();
         $cofidisPaymentData = $this->cofidisOrderMapper->createCofidisPaymentData($order, $cofidisClient->getConfig());
 
         return $cofidisClient->sendPaymentToCofidis($cofidisPaymentData);
