@@ -114,6 +114,10 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přeuložení označených produktů pro správný přepočet přiřazení výprodejových štítků apod.' }
 
+    App\Model\Category\CategorySaleProductsCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Označení kategorií s výprodejovými produkty' }
+
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportChangedCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: "Export změněných produktů do Elasticsearch" }

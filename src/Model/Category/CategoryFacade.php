@@ -440,4 +440,9 @@ class CategoryFacade extends BaseCategoryFacade
             $this->edit($category->getId(), $categoryData);
         }
     }
+
+    public function markSaleCategories(): void
+    {
+        $this->categoryRepository->markSaleCategories();
+    }
 }
