@@ -667,3 +667,4 @@ services:
         arguments:
             $apiKey: '%ecomail_api_key%'
             $listId: '%ecomail_list_id%'
+            $listIdSk: '%ecomail_list_id_sk%'

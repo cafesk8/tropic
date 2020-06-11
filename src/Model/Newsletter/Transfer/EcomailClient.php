@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Newsletter\Transfer;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Newsletter\NewsletterSubscriber;
@@ -18,9 +19,9 @@ class EcomailClient
     private $apiKey;
 
     /**
-     * @var string
+     * @var string[]
      */
-    private $listId;
+    private $listIds;
 
     /**
      * @var \App\Model\Customer\User\CustomerUserFacade
@@ -40,14 +41,17 @@ class EcomailClient
     /**
      * @param string $apiKey
      * @param int $listId
+     * @param int $listIdSk
      * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      */
-    public function __construct(string $apiKey, int $listId, CustomerUserFacade $customerUserFacade, OrderFacade $orderFacade, TransferLoggerFactory $transferLoggerFactory)
+    public function __construct(string $apiKey, int $listId, int $listIdSk, CustomerUserFacade $customerUserFacade, OrderFacade $orderFacade, TransferLoggerFactory $transferLoggerFactory)
     {
         $this->apiKey = $apiKey;
-        $this->listId = (string)$listId;
+        $this->listIds[DomainHelper::CZECH_DOMAIN] = (string)$listId;
+        $this->listIds[DomainHelper::SLOVAK_DOMAIN] = (string)$listIdSk;
+        $this->listIds['default'] = (string)$listId;
         $this->customerUserFacade = $customerUserFacade;
         $this->orderFacade = $orderFacade;
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(EcomailExportCronModule::TRANSFER_IDENTIFIER);
@@ -59,9 +63,10 @@ class EcomailClient
      */
     public function addSubscriber(NewsletterSubscriber $newsletterSubscriber): bool
     {
+        $listId = $this->listIds[$newsletterSubscriber->getDomainId()] ?? $this->listIds['default'];
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, 'http://api2.ecomailapp.cz/lists/' . $this->listId . '/subscribe');
+        curl_setopt($ch, CURLOPT_URL, 'http://api2.ecomailapp.cz/lists/' . $listId . '/subscribe');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_POST, true);

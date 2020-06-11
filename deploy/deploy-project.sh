@@ -33,6 +33,7 @@ function deploy() {
         ["parameters.google_translate_enabled"]=${GOOGLE_TRANSLATE_ENABLED}
         ["parameters.ecomail_api_key"]="${ECOMAIL_API_KEY}"
         ["parameters.ecomail_list_id"]="${ECOMAIL_LIST_ID}"
+        ["parameters.ecomail_list_id_sk"]="${ECOMAIL_LIST_ID_SK}"
 
         # GoPay
         ["parameters.gopay_config.cs.goid"]="${GOPAY_CONFIG_GOID_CS}"
