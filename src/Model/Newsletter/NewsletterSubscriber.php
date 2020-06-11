@@ -51,4 +51,9 @@ class NewsletterSubscriber extends BaseNewsletterSubscriber
     {
         $this->exportedToEcomail = true;
     }
+
+    public function setNotExportedToEcomail(): void
+    {
+        $this->exportedToEcomail = false;
+    }
 }

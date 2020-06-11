@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Newsletter;
 
+use DateTimeImmutable;
 use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade as BaseNewsletterFacade;
 
 /**
@@ -30,5 +31,32 @@ class NewsletterFacade extends BaseNewsletterFacade
         $newsletterSubscriber->setExportedToEcomail();
         $this->em->persist($newsletterSubscriber);
         $this->em->flush();
+    }
+
+    /**
+     * @param \App\Model\Newsletter\NewsletterSubscriber $newsletterSubscriber
+     */
+    public function markAsNotExportedToEcomail(NewsletterSubscriber $newsletterSubscriber): void
+    {
+        $newsletterSubscriber->setNotExportedToEcomail();
+        $this->em->persist($newsletterSubscriber);
+        $this->em->flush();
+    }
+
+    /**
+     * @param string $email
+     * @param int $domainId
+     */
+    public function addSubscribedEmail($email, $domainId)
+    {
+        $newsletterSubscriber = $this->newsletterRepository->findNewsletterSubscribeByEmailAndDomainId($email, $domainId);
+
+        if ($newsletterSubscriber === null) {
+            $newsletterSubscriber = $this->newsletterSubscriberFactory->create($email, new DateTimeImmutable(), $domainId);
+            $this->em->persist($newsletterSubscriber);
+            $this->em->flush();
+        } else {
+            $this->markAsNotExportedToEcomail($newsletterSubscriber);
+        }
     }
 }
