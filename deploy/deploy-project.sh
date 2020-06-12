@@ -46,6 +46,14 @@ function deploy() {
         ["parameters.gopay_config.en.clientId"]="${GOPAY_CONFIG_CLIENT_ID_EN}"
         ["parameters.gopay_config.en.clientSecret"]="${GOPAY_CONFIG_CLIENT_SECRET_EN}"
         ["parameters.gopay_config.isProductionMode"]=${GOPAY_CONFIG_IS_PRODUCTION_MODE}
+
+        # Cofidis
+         ["parameters.cofidis_config.merchant_id"]="${COFIDIS_CONFIG_MERCHANT_ID}"
+         ["parameters.cofidis_config.login"]="${COFIDIS_CONFIG_LOGIN}"
+         ["parameters.cofidis_config.cofisun_pass"]="${COFIDIS_CONFIG_COFISUN_PASS}"
+         ["parameters.cofidis_config.inbound_pass"]="${COFIDIS_CONFIG_INBOUND_PASS}"
+         ["parameters.cofidis_config.outbound_pass"]="${COFIDIS_CONFIG_OUTBOUND_PASS}"
+         ["parameters.cofidis_config.isProductionMode"]=${COFIDIS_CONFIG_IS_PRODUCTION_MODE}
     )
 
     declare -A ENVIRONMENT_VARIABLES=(
