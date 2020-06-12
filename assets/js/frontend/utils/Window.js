@@ -41,7 +41,7 @@ export default class Window {
     constructor (inputOptions) {
         this.$activeWindow = null;
 
-        this.options = $.extend(defaults, inputOptions);
+        this.options = { ...defaults, ...inputOptions };
 
         if (this.$activeWindow !== null) {
             this.$activeWindow.trigger('windowFastClose');
