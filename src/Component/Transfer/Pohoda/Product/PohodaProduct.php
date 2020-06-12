@@ -43,6 +43,8 @@ class PohodaProduct
     public const COL_FLAG_DISCOUNT_TO = 'flagDiscountTo';
     public const COL_FLAG_PREPARATION_FROM = 'flagPreparationFrom';
     public const COL_FLAG_PREPARATION_TO = 'flagPreparationTo';
+    public const COL_SHOWN = 'shown';
+    public const COL_SHOWN_SK = 'shownSk';
 
     public const COL_EXTERNAL_STOCK = 'externalStock';
     public const COL_STOCK_TOTAL = 'totalStock';
@@ -274,6 +276,16 @@ class PohodaProduct
     public $flagPreparationTo;
 
     /**
+     * @var bool
+     */
+    public $shown;
+
+    /**
+     * @var bool
+     */
+    public $shownSk;
+
+    /**
      * @param array $pohodaProductData
      */
     public function __construct(array $pohodaProductData)
@@ -320,5 +332,7 @@ class PohodaProduct
         $this->flagDiscountTo = $pohodaProductData[self::COL_FLAG_DISCOUNT_TO];
         $this->flagPreparationFrom = $pohodaProductData[self::COL_FLAG_PREPARATION_FROM];
         $this->flagPreparationTo = $pohodaProductData[self::COL_FLAG_PREPARATION_TO];
+        $this->shown = (bool)$pohodaProductData[self::COL_SHOWN];
+        $this->shownSk = (bool)$pohodaProductData[self::COL_SHOWN_SK];
     }
 }

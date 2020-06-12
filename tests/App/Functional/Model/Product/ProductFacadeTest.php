@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product;
 
+use App\Component\Domain\DomainHelper;
 use App\DataFixtures\Demo\AvailabilityDataFixture;
 use App\DataFixtures\Demo\ProductDataFixture;
 use App\DataFixtures\Demo\UnitDataFixture;
 use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\Product;
+use App\Model\Product\ProductFacade;
 use ReflectionClass;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class ProductFacadeTest extends TransactionFunctionalTestCase
@@ -38,7 +39,7 @@ class ProductFacadeTest extends TransactionFunctionalTestCase
     ) {
         $productDataFactory = $this->getContainer()->get(ProductDataFactoryInterface::class);
         $productData = $productDataFactory->create();
-        $productData->hidden = $hidden;
+        $productData->shown = [DomainHelper::CZECH_DOMAIN => !$hidden, DomainHelper::SLOVAK_DOMAIN => !$hidden, DomainHelper::ENGLISH_DOMAIN => !$hidden];
         $productData->sellingDenied = $sellingDenied;
         $productData->stockQuantity = $stockQuantity;
         $productData->outOfStockAction = $outOfStockAction;
@@ -48,7 +49,7 @@ class ProductFacadeTest extends TransactionFunctionalTestCase
         $productData->unit = $this->getReference(UnitDataFixture::UNIT_PIECES);
         $this->setVats($productData);
 
-        /** @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade */
+        /** @var \App\Model\Product\ProductFacade $productFacade */
         $productFacade = $this->getContainer()->get(ProductFacade::class);
 
         $product = $productFacade->create($productData);
@@ -57,11 +58,13 @@ class ProductFacadeTest extends TransactionFunctionalTestCase
 
         $productFromDb = $productFacade->getById($product->getId());
 
-        $this->assertSame($productFromDb->getCalculatedHidden(), $calculatedHidden);
         $this->assertSame($calculatedSellingDenied, $productFromDb->getCalculatedSellingDenied());
     }
 
-    public function getTestHandleOutOfStockStateDataProvider()
+    /**
+     * @return array|array[]
+     */
+    public function getTestHandleOutOfStockStateDataProvider(): array
     {
         return [
             [

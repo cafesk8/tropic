@@ -154,7 +154,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         foreach ($giftCartItems as $giftCartItem) {
             $product = $giftCartItem->getProduct();
             try {
-                if (!$this->productFacade->isProductMarketable($product)) {
+                if (!$this->productFacade->isProductMarketable($product, $this->domain->getId())) {
                     $this->flashMessageSender->addErrorFlashTwig(
                         t('Product <strong>{{ name }}</strong> you had in cart is no longer available. Please check your order.'),
                         ['name' => $product->getName()]

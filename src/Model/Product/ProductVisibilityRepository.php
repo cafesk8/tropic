@@ -19,8 +19,41 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository as BasePro
 class ProductVisibilityRepository extends BaseProductVisibilityRepository
 {
     /**
+     * Now uses ProductDomain::shown instead of Product::calculatedHidden
+     *
+     * @param bool $onlyMarkedProducts
+     */
+    protected function refreshGlobalProductVisibility($onlyMarkedProducts)
+    {
+        if ($onlyMarkedProducts) {
+            $onlyMarkedProductsWhereClause = ' WHERE p.recalculate_visibility = TRUE';
+        } else {
+            $onlyMarkedProductsWhereClause = '';
+        }
+
+        $query = $this->em->createNativeQuery(
+            'UPDATE products AS p
+            SET calculated_visibility = EXISTS (
+                SELECT 1
+                FROM product_domains pd
+                WHERE pd.product_id = p.id
+                    AND pd.shown = TRUE
+            ) AND EXISTS(
+                SELECT 1
+                FROM product_visibilities AS pv
+                WHERE pv.product_id = p.id
+                    AND pv.visible = TRUE
+            )
+            ' . $onlyMarkedProductsWhereClause,
+            new ResultSetMapping()
+        );
+        $query->execute();
+    }
+
+    /**
      * Product group is hidden when any of its products are missing prices for ordinary customer or registered customer
      * If any product in product group doesn't have a name for selected domain then whole product group is hidden
+     * Now uses ProductDomain::shown instead of Product::calculatedHidden
      *
      * @param bool $onlyMarkedProducts
      */
@@ -37,7 +70,7 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
             'UPDATE product_visibilities AS pv
             SET visible = CASE
                     WHEN (
-                        p.calculated_hidden = FALSE
+                        pd.shown = TRUE
                         AND
                         (p.selling_from IS NULL OR p.selling_from <= :now)
                         AND

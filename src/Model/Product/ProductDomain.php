@@ -40,6 +40,13 @@ class ProductDomain extends BaseProductDomain
     private $shortDescriptionHash;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $shown;
+
+    /**
      * @param \App\Model\Product\Product $product
      * @param int $domainId
      */
@@ -50,6 +57,7 @@ class ProductDomain extends BaseProductDomain
         $this->generateToMergadoXmlFeed = true;
         $this->descriptionHash = null;
         $this->shortDescriptionHash = null;
+        $this->shown = true;
     }
 
     /**
@@ -106,5 +114,21 @@ class ProductDomain extends BaseProductDomain
     public function getProduct(): Product
     {
         return $this->product;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShown(): bool
+    {
+        return $this->shown;
+    }
+
+    /**
+     * @param bool $shown
+     */
+    public function setShown(bool $shown): void
+    {
+        $this->shown = $shown;
     }
 }

@@ -8,7 +8,6 @@ use App\Model\Product\MassEdit\MassEditActionInterface;
 use App\Model\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
@@ -25,11 +24,6 @@ class HiddenMassAction implements MassEditActionInterface
     private $productVisibilityFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator
-     */
-    private $productHiddenRecalculator;
-
-    /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $entityManager;
@@ -37,15 +31,12 @@ class HiddenMassAction implements MassEditActionInterface
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        ProductVisibilityFacade $productVisibilityFacade,
-        ProductHiddenRecalculator $productHiddenRecalculator
+        ProductVisibilityFacade $productVisibilityFacade
     ) {
         $this->productVisibilityFacade = $productVisibilityFacade;
-        $this->productHiddenRecalculator = $productHiddenRecalculator;
         $this->entityManager = $entityManager;
     }
 
@@ -109,7 +100,6 @@ class HiddenMassAction implements MassEditActionInterface
 
         $qb->getQuery()->execute();
 
-        $this->productHiddenRecalculator->calculateHiddenForAll();
         $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
     }
 }

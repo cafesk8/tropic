@@ -127,6 +127,7 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->generateToMergadoXmlFeeds[$domainId] = true;
             $productData->descriptionHashes[$domainId] = null;
             $productData->shortDescriptionHashes[$domainId] = null;
+            $productData->shown[$domainId] = true;
         }
 
         $productData->stockQuantityByStoreId = [];
@@ -178,6 +179,7 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->generateToMergadoXmlFeeds[$domainId] = $product->isGenerateToMergadoXmlFeed($domainId);
             $productData->descriptionHashes[$domainId] = $product->getDescriptionHash($domainId);
             $productData->shortDescriptionHashes[$domainId] = $product->getShortDescriptionHash($domainId);
+            $productData->shown[$domainId] = $product->isShownOnDomain($domainId);
         }
     }
 

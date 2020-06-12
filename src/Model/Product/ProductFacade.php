@@ -78,6 +78,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
  * @method \App\Model\Product\Product getSellableByUuid(string $uuid, int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
  * @property \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
  * @property \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
+ * @property \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
  */
 class ProductFacade extends BaseProductFacade
 {
@@ -173,7 +174,7 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\Pricing\ProductManualInputPriceFacade $productManualInputPriceFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
+     * @param \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
      * @param \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository $productAccessoryRepository
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
@@ -345,7 +346,6 @@ class ProductFacade extends BaseProductFacade
         $this->refreshProductGroups($product, $productData->groupItems);
         $this->refreshProductFlags($product, $productData->flags);
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
-        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
 
         $this->imageFacade->manageImages($product, $productData->images);
         $this->friendlyUrlFacade->createFriendlyUrls('front_product_detail', $product->getId(), $product->getNames());
@@ -358,7 +358,6 @@ class ProductFacade extends BaseProductFacade
         $this->updateMainProductsStoreStocks($product);
 
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
-        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
         $this->em->flush($product);
     }
 
@@ -403,7 +402,6 @@ class ProductFacade extends BaseProductFacade
         }
 
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
-        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
         $this->em->flush($product);
         $this->refreshMainProducts($product);
 
@@ -765,9 +763,12 @@ class ProductFacade extends BaseProductFacade
 
             foreach ($variantsToHide as $variantToHide) {
                 $hiddenVariantsIds[] = $variantToHide->getId();
-                $variantToHide->setProductAsHidden();
+
+                foreach ($this->domain->getAllIds() as $domainId) {
+                    $variantToHide->setProductAsNotShown($domainId);
+                }
+
                 $this->em->flush($variantToHide);
-                $this->productHiddenRecalculator->calculateHiddenForProduct($variantToHide);
             }
         }
 
@@ -788,12 +789,12 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \App\Model\Product\Product|null $product
+     * @param int $domainId
      * @return bool
      */
-    public function isProductMarketable(?Product $product): bool
+    public function isProductMarketable(?Product $product, int $domainId): bool
     {
-        return $product !== null && $product->isHidden() === false && $product->getCalculatedHidden() === false &&
-            $product->isSellingDenied() === false && $product->getCalculatedSellingDenied() === false;
+        return $product !== null && $product->isShownOnDomain($domainId) && !$product->isSellingDenied() && !$product->getCalculatedSellingDenied();
     }
 
     /**
@@ -969,7 +970,11 @@ class ProductFacade extends BaseProductFacade
         foreach ($mainVariant->getVariants() as $variant) {
             $variantData = $this->productDataFactory->createFromProduct($variant);
             $variantData->variantId = null;
-            $variantData->hidden = true;
+
+            foreach ($this->domain->getAllIds() as $domainId) {
+                $variantData->shown[$domainId] = false;
+            }
+
             $this->edit($variant->getId(), $variantData);
         }
     }

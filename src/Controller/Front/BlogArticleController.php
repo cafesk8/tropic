@@ -94,9 +94,10 @@ class BlogArticleController extends FrontBaseController
     private function filterOnlyOfferedProducts(array $products): array
     {
         return array_filter($products, function (Product $product) {
-            if ($product->getCalculatedSellingDenied() === true || $product->isVisible() === false) {
+            if ($product->getCalculatedSellingDenied() || !$product->isShownOnDomain($this->domain->getId())) {
                 return false;
             }
+
             return true;
         });
     }

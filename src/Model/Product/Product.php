@@ -237,6 +237,14 @@ class Product extends BaseProduct
     private $shortDescriptionAutomaticallyTranslated;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     * @deprecated Use ProductDomain::shown property instead
+     */
+    protected $hidden;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -248,6 +256,7 @@ class Product extends BaseProduct
         $this->pohodaId = $productData->pohodaId;
         $this->updatedAt = $productData->updatedAt;
         $this->fillCommonProperties($productData);
+        $this->hidden = false;
     }
 
     /**
@@ -273,6 +282,7 @@ class Product extends BaseProduct
     ) {
         $this->fillCommonProperties($productData);
         parent::edit($productCategoryDomains, $productData);
+        $this->hidden = false;
     }
 
     /**
@@ -641,9 +651,12 @@ class Product extends BaseProduct
         return $this->variantType === self::VARIANT_TYPE_NONE;
     }
 
-    public function setProductAsHidden(): void
+    /**
+     * @param int $domainId
+     */
+    public function setProductAsNotShown(int $domainId): void
     {
-        $this->hidden = true;
+        $this->getProductDomain($domainId)->setShown(false);
         $this->markForVisibilityRecalculation();
     }
 
@@ -992,6 +1005,7 @@ class Product extends BaseProduct
             $productDomain->setGenerateToMergadoXmlFeed($productData->generateToMergadoXmlFeeds[$domainId]);
             $productDomain->setDescriptionHash($productData->descriptionHashes[$domainId]);
             $productDomain->setShortDescriptionHash($productData->shortDescriptionHashes[$domainId]);
+            $productDomain->setShown($productData->shown[$domainId]);
         }
     }
 
@@ -1223,5 +1237,25 @@ class Product extends BaseProduct
     public function isShortDescriptionAutomaticallyTranslated(): bool
     {
         return $this->shortDescriptionAutomaticallyTranslated;
+    }
+
+    /**
+     * Replaces method Product::isHidden
+     *
+     * @param int $domainId
+     * @return bool
+     */
+    public function isShownOnDomain(int $domainId): bool
+    {
+        return $this->getProductDomain($domainId)->isShown();
+    }
+
+    /**
+     * @return bool
+     * @deprecated since TF-124 - use Product::isShownOnDomain instead
+     */
+    public function isHidden()
+    {
+        return parent::isHidden();
     }
 }

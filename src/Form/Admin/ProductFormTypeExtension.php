@@ -27,6 +27,7 @@ use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
+use Shopsys\FrameworkBundle\Form\DomainsType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\WarningMessageType;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -69,6 +70,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'minimumAmount',
         'amountMultiplier',
         'images',
+        'shown',
     ];
 
     /**
@@ -485,9 +487,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 ]);
         }
         $displayAvailabilityGroup
-            ->add('hidden', YesNoType::class, [
+            ->remove('hidden')
+            ->add('shown', DomainsType::class, [
                 'required' => false,
-                'label' => t('Hide product'),
+                'label' => t('Display on'),
                 'position' => ['after' => 'sellingTo'],
                 'attr' => [
                     'icon' => true,
@@ -497,7 +500,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('sellingDenied', YesNoType::class, [
                 'required' => false,
                 'label' => t('Vyprodané zboží'),
-                'position' => ['after' => 'hidden'],
+                'position' => ['after' => 'shown'],
                 'attr' => [
                     'icon' => true,
                     'iconTitle' => t('Vyprodané zboží se zobrazuje ve výpisech a lze jej vyhledat. Detail tohoto zboží je dostupný přímým přístupem z URL, zboží ale nelze vložit do košíku.'),

@@ -148,6 +148,11 @@ class ProductData extends BaseProductData
      */
     public $shortDescriptionAutomaticallyTranslated;
 
+    /**
+     * @var bool[]
+     */
+    public $shown;
+
     public function __construct()
     {
         parent::__construct();
@@ -168,5 +173,6 @@ class ProductData extends BaseProductData
         $this->shortDescriptionHashes = [];
         $this->descriptionAutomaticallyTranslated = true;
         $this->shortDescriptionAutomaticallyTranslated = true;
+        $this->shown = [];
     }
 }
