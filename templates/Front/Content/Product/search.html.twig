@@ -17,9 +17,7 @@
                 <div class="box-search__title">
                     {{ 'Výsledky výrazu:'|trans }}
                 </div>
-                <div class="box-search__input">
-                    {{ render(controller('App\\Controller\\Front\\SearchController:boxAction')) }}
-                </div>
+                <span class="margin-left-10">"{{ searchText }}"</span>
             </div>
         </div>
     </div>
