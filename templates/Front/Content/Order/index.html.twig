@@ -60,31 +60,32 @@
         {% if orderStep in [2,3] %}
             {% block footer__links %}{% endblock %}
         {% endif %}
-    {% endembed %}
-    {% block footer__copyright %}
-        <div class="web__line">
-            <div class="web__container web__container--border-radius web__container--light">
-                <footer class="footer-bottom footer-bottom--small">
-                    <div class="footer-bottom__copyright dont-print">
-                        {{ 'Copyright © ' ~ 'now'|date('Y') ~ ', Tropic Fishing s.r.o. Všechna práva vyhrazena.'|trans }}
-                    </div>
-                    <div class="footer-bottom__rules">
-                        {{ 'Podle zákona o evidenci tržeb je prodávající povinen vystavit kupujícímu účtenku. Zároveň je povinen zaevidovat přijatou tržbu u správce daně online; v případě technického výpadku pak nejpozději do 48 hodin.'|trans }}
-                    </div>
-                    <div class="footer-bottom__shopsys dont-print">
-                        {{ 'E-shop na míru od'|trans }}
-                        {% if isEnglishDomain() is same as (true) %}
-                            <a href="https://www.shopsys.com" title="{{ 'Shopsys Framework'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
-                                <img class="footer-bottom__shopsys__image" src="{{ asset('public/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
-                            </a>
-                        {% else %}
-                            <a href="https://www.shopsys.cz" title="{{ 'Shopsys Framework'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
-                                <img class="footer-bottom__shopsys__image" src="{{ asset('public/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
-                            </a>
-                        {% endif %}
-                    </div>
-                </footer>
+    
+        {% block footer__copyright %}
+            <div class="web__line">
+                <div class="web__container web__container--border-radius web__container--light">
+                    <footer class="footer-bottom footer-bottom--small">
+                        <div class="footer-bottom__copyright dont-print">
+                            {{ 'Copyright © ' ~ 'now'|date('Y') ~ ', Tropic Fishing s.r.o. Všechna práva vyhrazena.'|trans }}
+                        </div>
+                        <div class="footer-bottom__rules">
+                            {{ 'Podle zákona o evidenci tržeb je prodávající povinen vystavit kupujícímu účtenku. Zároveň je povinen zaevidovat přijatou tržbu u správce daně online; v případě technického výpadku pak nejpozději do 48 hodin.'|trans }}
+                        </div>
+                        <div class="footer-bottom__shopsys dont-print">
+                            {{ 'E-shop na míru od'|trans }}
+                            {% if isEnglishDomain() is same as (true) %}
+                                <a href="https://www.shopsys.com" title="{{ 'Shopsys Framework'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
+                                    <img class="footer-bottom__shopsys__image" src="{{ asset('public/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
+                                </a>
+                            {% else %}
+                                <a href="https://www.shopsys.cz" title="{{ 'Shopsys Framework'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
+                                    <img class="footer-bottom__shopsys__image" src="{{ asset('public/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
+                                </a>
+                            {% endif %}
+                        </div>
+                    </footer>
+                </div>
             </div>
-        </div>
-    {% endblock %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

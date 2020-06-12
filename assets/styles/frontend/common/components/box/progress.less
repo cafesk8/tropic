@@ -30,9 +30,41 @@
         padding: @box-progress-item-active-border-size;
         line-height: @font-size-big;
 
+        font-size: @font-size;
         color: @color-base;
-        font-size: @font-size-big;
         background-color: @color-light;
+
+        &:first-child {
+            border-radius: @radius @radius 0 0;
+
+            @media @query-lg {
+                border-radius: @radius;
+            }
+
+            .box-progress__item__in {
+                border-radius: @radius-medium @radius-medium 0 0;
+
+                @media @query-lg {
+                    border-radius: @radius-medium;
+                }
+            }
+        }
+
+        &:last-child {
+            border-radius: 0 0 @radius @radius;
+
+            @media @query-lg {
+                border-radius: @radius;
+            }
+
+            .box-progress__item__in {
+                border-radius: 0 0 @radius-medium @radius-medium;
+
+                @media @query-lg {
+                    border-radius: @radius-medium;
+                }
+            }
+        }
 
         @media @query-lg {
             justify-content: center;
@@ -41,6 +73,7 @@
             margin-left: @box-progress-item-gap;
 
             border-radius: @radius;
+            font-size: @font-size-big;
         }
 
         &--active {
@@ -70,12 +103,13 @@
             align-items: center;
             width: 100%;
             height: 100%;
-            padding: 11px - @box-progress-item-active-border-size;
+            padding: 15px - @box-progress-item-active-border-size 11px - @box-progress-item-active-border-size;
 
             background-color: @color-light;
 
             @media @query-lg {
                 justify-content: center;
+                padding: 11px - @box-progress-item-active-border-size;
 
                 border-radius: @radius - 2px;
             }
