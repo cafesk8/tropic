@@ -18,13 +18,14 @@ class FlagFormTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('sale', CheckboxType::class);
+        $builder->add('news', CheckboxType::class);
     }
 
     /**
-     * @return string
+     * @return string[]
      */
-    public function getExtendedType()
+    public function getExtendedTypes()
     {
-        return FlagFormType::class;
+        return [FlagFormType::class];
     }
 }

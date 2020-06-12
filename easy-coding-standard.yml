@@ -114,6 +114,7 @@ parameters:
             - '*/src/Model/Cart/CartFacade.php'
             - '*/src/Controller/Front/OrderController.php'
             - '*/src/DataFixtures/Demo/ProductDataFixture.php'
+            - '*/src/DataFixtures/Demo/CategoryDataFixture.php'
             - '*/src/Model/Product/Pricing/ProductPriceCalculation.php'
             - '*/src/Model/Cart/CartFacade.php'
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
-use App\Model\Category\Exception\SaleCategoryNotFoundException;
 use App\Model\Category\Transfer\CategoryRemoveFacade;
 use App\Model\Category\Transfer\Exception\MaximumPercentageOfCategoriesToRemoveLimitExceeded;
 use App\Model\Product\ProductRepository;
@@ -21,6 +20,7 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryRepository;
 use Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory;
 use Shopsys\FrameworkBundle\Model\Category\CategoryWithPreloadedChildrenFactory;
+use Shopsys\FrameworkBundle\Model\Category\Exception\CategoryNotFoundException;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 
@@ -367,30 +367,49 @@ class CategoryFacade extends BaseCategoryFacade
         $category = $this->categoryRepository->getByType(Category::SALE_TYPE);
 
         if ($category === null) {
-            throw new SaleCategoryNotFoundException('Category with type "' . Category::SALE_TYPE . '" was not found!');
+            throw new CategoryNotFoundException('Category with type "' . Category::SALE_TYPE . '" was not found!');
         }
 
         return $category;
     }
 
-    public function refreshSaleCategoryVisibility(): void
+    /**
+     * @return \App\Model\Category\Category
+     */
+    public function getNewsCategory(): Category
+    {
+        $category = $this->categoryRepository->getByType(Category::NEWS_TYPE);
+
+        if ($category === null) {
+            throw new CategoryNotFoundException('Category with type "' . Category::NEWS_TYPE . '" was not found!');
+        }
+
+        return $category;
+    }
+
+    public function refreshSpecialCategoriesVisibility(): void
     {
         try {
-            $saleCategory = $this->getSaleCategory();
-        } catch (SaleCategoryNotFoundException $exception) {
+            $specialCategories = [
+                $this->getSaleCategory(),
+                $this->getNewsCategory(),
+            ];
+        } catch (CategoryNotFoundException $categoryNotFoundException) {
             return;
         }
 
-        $categoryData = $this->categoryDataFactory->createFromCategory($saleCategory);
+        foreach ($specialCategories as $specialCategory) {
+            $categoryData = $this->categoryDataFactory->createFromCategory($specialCategory);
 
-        foreach ($this->domain->getAllIds() as $domainId) {
-            if (count($this->productRepository->getListableInCategoryIndependentOfPricingGroup($domainId, $saleCategory)) > 0) {
-                $categoryData->enabled[$domainId] = true;
-            } else {
-                $categoryData->enabled[$domainId] = false;
+            foreach ($this->domain->getAllIds() as $domainId) {
+                if (count($this->productRepository->getListableInCategoryIndependentOfPricingGroup($domainId, $specialCategory)) > 0) {
+                    $categoryData->enabled[$domainId] = true;
+                } else {
+                    $categoryData->enabled[$domainId] = false;
+                }
             }
-        }
 
-        $this->edit($saleCategory->getId(), $categoryData);
+            $this->edit($specialCategory->getId(), $categoryData);
+        }
     }
 }

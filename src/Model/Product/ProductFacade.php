@@ -11,7 +11,6 @@ use App\Component\Setting\Setting;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
-use App\Model\Category\Exception\SaleCategoryNotFoundException;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Flag\ProductFlagData;
@@ -292,14 +291,14 @@ class ProductFacade extends BaseProductFacade
     public function create(BaseProductData $productData)
     {
         $this->processSaleFlagAssignment($productData);
-        $this->processAssignmentIntoSaleCategory($productData);
+        $this->processAssignmentIntoSpecialCategories($productData);
 
         /** @var \App\Model\Product\Product $product */
         $product = parent::create($productData);
         $this->scheduleRecalculationsForMainVariant($product);
         $this->refreshMainProducts($product);
 
-        $this->categoryFacade->refreshSaleCategoryVisibility();
+        $this->categoryFacade->refreshSpecialCategoriesVisibility();
 
         if ($product->isVariant()) {
             $this->refreshMainVariant($product->getMainVariant());
@@ -382,7 +381,7 @@ class ProductFacade extends BaseProductFacade
 
         $this->productVariantTropicFacade->refreshVariantStatus($product, $productData->variantId);
         $this->processSaleFlagAssignment($productData);
-        $this->processAssignmentIntoSaleCategory($productData);
+        $this->processAssignmentIntoSpecialCategories($productData);
 
         $this->refreshProductFlags($product, $productData->flags);
         parent::edit($productId, $productData);
@@ -405,7 +404,7 @@ class ProductFacade extends BaseProductFacade
         $this->em->flush($product);
         $this->refreshMainProducts($product);
 
-        $this->categoryFacade->refreshSaleCategoryVisibility();
+        $this->categoryFacade->refreshSpecialCategoriesVisibility();
 
         if ($product->isVariant()) {
             $this->refreshMainVariant($product->getMainVariant());
@@ -1021,65 +1020,75 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \App\Model\Product\ProductData $productData
-     * @return bool
+     * @return \App\Model\Product\Flag\Flag[]
      */
-    private function haveSaleFlag(ProductData $productData): bool
+    private function getSpecialCategoryFlags(ProductData $productData): array
     {
+        $flags = [];
+
         foreach ($productData->flags as $productFlag) {
-            if ($productFlag->flag->isSale()) {
-                return true;
+            if ($productFlag->isActive() && $productFlag->flag->isSpecial() && !in_array($productFlag->flag, $flags, true)) {
+                $flags[] = $productFlag->flag;
             }
         }
 
         foreach ($productData->variants as $variant) {
-            $hasSaleFlag = $this->hasVariantSaleFlag($variant);
-
-            if ($hasSaleFlag) {
-                return true;
-            }
+            $flags = array_merge($flags, $this->getSpecialCategoryFlagsFromVariant($variant));
         }
 
-        return false;
+        return array_unique($flags, SORT_REGULAR);
     }
 
     /**
      * @param \App\Model\Product\Product $variant
-     * @return bool
+     * @return \App\Model\Product\Flag\Flag[]
      */
-    private function hasVariantSaleFlag(Product $variant): bool
+    private function getSpecialCategoryFlagsFromVariant(Product $variant): array
     {
+        $flags = [];
+
         foreach ($variant->getActiveFlags() as $flag) {
-            if ($flag->isSale()) {
-                return true;
+            if ($flag->isSpecial() && !in_array($flag, $flags, true)) {
+                $flags[] = $flag;
             }
         }
 
-        return false;
+        return $flags;
     }
 
     /**
      * @param \App\Model\Product\ProductData $productData
      */
-    private function processAssignmentIntoSaleCategory(ProductData $productData): void
+    private function processAssignmentIntoSpecialCategories(ProductData $productData): void
     {
-        try {
-            $saleCategory = $this->categoryFacade->getSaleCategory();
-        } catch (SaleCategoryNotFoundException $exception) {
-            return;
+        $saleCategory = $this->categoryFacade->getSaleCategory();
+        $newsCategory = $this->categoryFacade->getNewsCategory();
+        $hasSaleFlag = false;
+        $hasNewsFlag = false;
+
+        foreach ($this->getSpecialCategoryFlags($productData) as $specialCategoryFlag) {
+            $hasSaleFlag = $hasSaleFlag || $specialCategoryFlag->isSale();
+            $hasNewsFlag = $hasNewsFlag || $specialCategoryFlag->isNews();
         }
 
-        if ($this->haveSaleFlag($productData)) {
-            foreach ($this->domain->getAllIds() as $domainId) {
-                if (!in_array($saleCategory, $productData->categoriesByDomainId[$domainId], true)) {
-                    $productData->categoriesByDomainId[$domainId][] = $saleCategory;
-                }
+        foreach ($this->domain->getAllIds() as $domainId) {
+            if ($hasSaleFlag && !in_array($saleCategory, $productData->categoriesByDomainId[$domainId], true)) {
+                $productData->categoriesByDomainId[$domainId][] = $saleCategory;
             }
-        } else {
-            foreach ($productData->categoriesByDomainId as $domainId => $categories) {
-                foreach ($categories as $index => $category) {
-                    if ($category->getId() === $saleCategory->getId()) {
-                        unset($productData->categoriesByDomainId[$domainId][$index]);
-                    }
+
+            if ($hasNewsFlag && !in_array($newsCategory, $productData->categoriesByDomainId[$domainId], true)) {
+                $productData->categoriesByDomainId[$domainId][] = $newsCategory;
+            }
+        }
+
+        foreach ($productData->categoriesByDomainId as $domainId => $categories) {
+            foreach ($categories as $index => $category) {
+                if (!$hasSaleFlag && $category->getId() === $saleCategory->getId()) {
+                    unset($productData->categoriesByDomainId[$domainId][$index]);
+                }
+
+                if (!$hasNewsFlag && $category->getId() === $newsCategory->getId()) {
+                    unset($productData->categoriesByDomainId[$domainId][$index]);
                 }
             }
         }

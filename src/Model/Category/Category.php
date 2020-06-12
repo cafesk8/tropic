@@ -29,6 +29,7 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryData as BaseCategoryData;
 class Category extends BaseCategory
 {
     public const SALE_TYPE = 'sale';
+    public const NEWS_TYPE = 'news';
 
     /**
      * @var bool
@@ -300,5 +301,13 @@ class Category extends BaseCategory
     public function isSaleType(): bool
     {
         return $this->type === self::SALE_TYPE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNewsType(): bool
+    {
+        return $this->type === self::NEWS_TYPE;
     }
 }

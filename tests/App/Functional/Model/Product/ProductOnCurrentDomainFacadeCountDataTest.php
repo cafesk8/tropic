@@ -130,6 +130,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
             1 => 10,
             2 => 5,
             8 => 2,
+            4 => 1,
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
@@ -248,6 +249,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
             1 => 6,
             2 => 3,
             8 => 2,
+            4 => 1,
         ];
         $countData->countByBrandId = [
             14 => 2,
@@ -371,6 +373,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
             1 => 8,
             2 => 4,
             8 => 2,
+            4 => 1,
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [

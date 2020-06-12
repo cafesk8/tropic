@@ -26,6 +26,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
     public const CATEGORY_GARDEN_TOOLS = 'category_garden_tools';
     public const CATEGORY_FOOD = 'category_food';
     public const CATEGORY_SALE = 'category_sale';
+    public const CATEGORY_NEWS = 'category_news';
 
     /**
      * @var \App\Model\Category\CategoryFacade
@@ -180,6 +181,14 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'or stimulate growth.', [], 'dataFixtures', $locale);
         }
         $this->createCategory($categoryData, self::CATEGORY_FOOD);
+
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Novinky', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('Nové produkty v naší nabídce', [], 'dataFixtures', $locale);
+            $categoryData->type = Category::NEWS_TYPE;
+        }
+        $this->createCategory($categoryData, self::CATEGORY_NEWS);
 
         foreach ($this->domain->getAll() as $domainConfig) {
             $locale = $domainConfig->getLocale();
