@@ -7,7 +7,9 @@
 {% block content %}
     {{ render(controller('App\\Controller\\Front\\BreadcrumbController:indexAction', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
     <div class="web__line">
-        {% block error_content %}{% endblock %}
+        <div class="web__container">
+            {% block error_content %}{% endblock %}
+        </div>
     </div>
 
     <div class="web__line">
