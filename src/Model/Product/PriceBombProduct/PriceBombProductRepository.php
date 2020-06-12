@@ -70,8 +70,6 @@ class PriceBombProductRepository
             $queryBuilder->setMaxResults($limit);
         }
 
-        //die(var_dump($queryBuilder->getQuery()->getSQL()));
-
         return $queryBuilder->getQuery()->execute();
     }
 }

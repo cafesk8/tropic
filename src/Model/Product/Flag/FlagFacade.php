@@ -112,6 +112,14 @@ class FlagFacade extends BaseFlagFacade
     /**
      * @return \App\Model\Product\Flag\Flag[]
      */
+    public function getNewsFlags(): array
+    {
+        return $this->flagRepository->getNewsFlags();
+    }
+
+    /**
+     * @return \App\Model\Product\Flag\Flag[]
+     */
     public function getAllIndexedByPohodaId(): array
     {
         $flags = $this->flagRepository->getAll();

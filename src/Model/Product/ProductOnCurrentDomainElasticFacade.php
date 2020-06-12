@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Product\Search\FilterQuery;
+use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainElasticFacade as BaseProductOnCurrentDomainElasticFacade;
-use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery;
+use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
 
 /**
  * @property \App\Model\Product\Search\FilterQueryFactory $filterQueryFactory
@@ -42,7 +44,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         string $orderingModeId,
         int $page,
         int $limit
-    ): FilterQuery {
+    ): BaseFilterQuery {
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
             ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
             ->setPage($page)
@@ -56,5 +58,42 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         $filterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $filterQuery, $this->currentCustomerUser->getPricingGroup());
         /** @var \App\Model\Product\Search\FilterQuery $filterQuery */
         return $filterQuery;
+    }
+
+    /**
+     * @param string $orderingModeId
+     * @param int $page
+     * @param int $limit
+     * @param int[] $flagIds
+     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
+     */
+    public function getPaginatedProductsForFlags(string $orderingModeId, int $page, int $limit, array $flagIds): PaginationResult
+    {
+        $emptyProductFilterData = new ProductFilterData();
+
+        $filterQuery = $this->createListableProductsForFlagFilterQuery($emptyProductFilterData, $orderingModeId, $page, $limit, $flagIds);
+
+        $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
+
+        return new PaginationResult($page, $limit, $productsResult->getTotal(), $productsResult->getHits());
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param string $orderingModeId
+     * @param int $page
+     * @param int $limit
+     * @param int[] $flagIds
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    protected function createListableProductsForFlagFilterQuery(
+        ProductFilterData $productFilterData,
+        string $orderingModeId,
+        int $page,
+        int $limit,
+        array $flagIds
+    ): FilterQuery {
+        return $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit)
+            ->filterByFlags($flagIds);
     }
 }
