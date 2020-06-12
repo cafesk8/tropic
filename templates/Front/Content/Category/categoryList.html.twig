@@ -2,13 +2,13 @@
     {% if type is defined and type == 'prelist' %}
         <ul class="list-prelist-categories  js-tabs-content {{ cssClass|default('') }}" data-tab-id="categories">
             {% for category in categories %}
-                {% if loop.index0 == 2 %}
+                {% if loop.index0 == 2 and currentCategory.rightBannerText is not empty %}
                     <li class="list-prelist-categories__item list-prelist-categories__item--text-info">
                         <h2 class="list-prelist-categories__item__text js-not-implemented-yet">
                             {{ currentCategory.rightBannerText }}
                         </h2>
                     </li>
-                {% elseif loop.index0 == 6 %}
+                {% elseif loop.index0 == 6 and currentCategory.leftBannerText is not empty %}
                     <li class="list-prelist-categories__item list-prelist-categories__item--text-info">
                         <h2 class="list-prelist-categories__item__text js-not-implemented-yet">
                             {{ currentCategory.leftBannerText }}
