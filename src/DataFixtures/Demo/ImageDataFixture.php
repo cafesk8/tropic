@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\Image\ImageFacade;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -57,6 +58,11 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
     protected $em;
 
     /**
+     * @var \App\Component\Image\ImageFacade
+     */
+    private $imageFacade;
+
+    /**
      * @param mixed $dataFixturesImagesDirectory
      * @param mixed $targetImagesDirectory
      * @param mixed $targetDomainImagesDirectory
@@ -64,6 +70,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
      * @param \Symfony\Component\Filesystem\Filesystem $symfonyFilesystem
      * @param \League\Flysystem\MountManager $mountManager
      * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \App\Component\Image\ImageFacade $imageFacade
      */
     public function __construct(
         $dataFixturesImagesDirectory,
@@ -72,7 +79,8 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         FilesystemInterface $filesystem,
         Filesystem $symfonyFilesystem,
         MountManager $mountManager,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        ImageFacade $imageFacade
     ) {
         $this->dataFixturesImagesDirectory = $dataFixturesImagesDirectory;
         $this->targetDomainImagesDirectory = $targetDomainImagesDirectory;
@@ -81,6 +89,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         $this->localFilesystem = $symfonyFilesystem;
         $this->mountManager = $mountManager;
         $this->em = $em;
+        $this->imageFacade = $imageFacade;
     }
 
     /**
@@ -106,7 +115,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         $this->processTransportsImages();
         $this->processProductsImages();
         $this->processSliderItemsImages();
-        $this->restartImagesIdsDbSequence();
+        $this->imageFacade->restartImagesIdsDbSequence(109);
     }
 
     private function processAdvertImages()
@@ -263,21 +272,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
      */
     protected function saveImageIntoDb(int $entityId, string $entityName, int $imageId)
     {
-        $query = $this->em->createNativeQuery(
-            'INSERT INTO images (id, entity_name, entity_id, type, extension, position, modified_at)
-            VALUES (:id, :entity_name, :entity_id, :type, :extension, :position, :modified_at)',
-            new ResultSetMapping()
-        );
-
-        $query->execute([
-            'id' => $imageId,
-            'entity_name' => $entityName,
-            'entity_id' => $entityId,
-            'type' => null,
-            'extension' => self::IMAGE_TYPE,
-            'position' => null,
-            'modified_at' => '2015-04-16 11:36:06',
-        ]);
+        $this->imageFacade->saveImageIntoDb($entityId, $entityName, $imageId, self::IMAGE_TYPE);
     }
 
     /**
@@ -305,11 +300,6 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
     protected function truncateImagesFromDb()
     {
         $this->em->createNativeQuery('TRUNCATE TABLE ' . self::IMAGES_TABLE_NAME, new ResultSetMapping())->execute();
-    }
-
-    protected function restartImagesIdsDbSequence()
-    {
-        $this->em->createNativeQuery('ALTER SEQUENCE images_id_seq RESTART WITH 109', new ResultSetMapping())->execute();
     }
 
     /**

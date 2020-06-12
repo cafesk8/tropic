@@ -6,6 +6,7 @@ namespace App\Model\Product;
 
 use App\Model\Category\Category;
 use App\Model\Pricing\Group\PricingGroup;
+use DateTime;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -629,5 +630,22 @@ class ProductRepository extends BaseProductRepository
             ->andWhere('p.shortDescriptionAutomaticallyTranslated = TRUE')
             ->andWhere('pd.domainId = 1')
             ->getQuery()->execute();
+    }
+
+    /**
+     * @param \DateTime|null $dateTime
+     * @return int[]
+     */
+    public function getPohodaIdsForProductsUpdatedSince(?DateTime $dateTime): array
+    {
+        $result = $this->getProductQueryBuilder()
+            ->select('p.pohodaId')
+            ->where('p.pohodaId IS NOT NULL')
+            ->andWhere('p.updatedByPohodaAt IS NULL OR p.updatedByPohodaAt > :dateTime')
+            ->setParameter(':dateTime', $dateTime === null ? new DateTime('1970-01-01') : $dateTime)
+            ->getQuery()
+            ->execute();
+
+        return array_column($result, 'pohodaId');
     }
 }

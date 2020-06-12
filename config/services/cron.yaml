@@ -54,6 +54,10 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import změněných produktů z Pohoda IS' }
 
+    App\Model\Product\Transfer\ProductImageImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '0', readableName: 'Import obrázků k produktům z Pohoda IS' }
+
     ######################################
 
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportCronModule:

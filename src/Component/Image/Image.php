@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Component\Image;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Image\Image as BaseImage;
 
@@ -15,27 +14,9 @@ use Shopsys\FrameworkBundle\Component\Image\Image as BaseImage;
 class Image extends BaseImage
 {
     /**
-     * @var string|null
+     * @var int|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $migrateFileName;
-
-    /**
-     * @return string|null
-     */
-    public function getMigrateFileName(): ?string
-    {
-        return $this->migrateFileName;
-    }
-
-    /**
-     * @param string|null $migrateFileName
-     */
-    public function setMigrateFileName(?string $migrateFileName): void
-    {
-        $this->migrateFileName = $migrateFileName;
-        // workaround: Entity must be changed so that preUpdate and postUpdate are called
-        $this->modifiedAt = new DateTime();
-    }
+    private $pohodaId;
 }

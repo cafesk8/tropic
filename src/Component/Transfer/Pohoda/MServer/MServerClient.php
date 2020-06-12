@@ -13,6 +13,7 @@ use App\Component\Transfer\Pohoda\Xml\PohodaXmlResponseParser;
 class MServerClient
 {
     public const POHODA_STW_INSTANCE_EXPORT_ADDRESSBOOK = 'Export adresáře do Pohody';
+    public const POHODA_STW_INSTANCE_IMPORT_IMAGE = 'Import obrázku z Pohody';
 
     /**
      * @var \App\Component\Transfer\Pohoda\Xml\PohodaXmlGenerator
@@ -87,13 +88,13 @@ class MServerClient
 
     /**
      * @param string $pohodaStwInstance
-     * @param string $xmlData
-     * @throws \App\Component\Transfer\Pohoda\Exception\PohodaMServerException
+     * @param string $connectionPath
+     * @param string|null $postXmlData
      * @return string
      */
-    private function send(string $pohodaStwInstance, string $xmlData): string
+    private function send(string $pohodaStwInstance, string $connectionPath, ?string $postXmlData = null): string
     {
-        $connectionUrl = $this->pohodaMServerUrl . ':' . $this->pohodaMServerPort . '/xml';
+        $connectionUrl = $this->pohodaMServerUrl . ':' . $this->pohodaMServerPort . $connectionPath;
 
         $pohodaStwAuthorization = base64_encode($this->pohodaMServerLogin . ':' . $this->pohodaMServerPassword);
 
@@ -105,9 +106,13 @@ class MServerClient
         ];
 
         $mServerConnection = curl_init($connectionUrl);
-        curl_setopt($mServerConnection, CURLOPT_POST, 1);
         curl_setopt($mServerConnection, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($mServerConnection, CURLOPT_POSTFIELDS, "$xmlData");
+        if ($postXmlData !== null) {
+            curl_setopt($mServerConnection, CURLOPT_POST, 1);
+            curl_setopt($mServerConnection, CURLOPT_POSTFIELDS, "$postXmlData");
+        } else {
+            curl_setopt($mServerConnection, CURLOPT_HTTPGET, 1);
+        }
         curl_setopt($mServerConnection, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($mServerConnection, CURLOPT_USERPWD, $this->pohodaMServerLogin . ':' . $this->pohodaMServerPassword);
 
@@ -158,6 +163,7 @@ class MServerClient
 
         $mServerResponse = $this->send(
             self::POHODA_STW_INSTANCE_EXPORT_ADDRESSBOOK,
+            '/xml',
             $xmlData
         );
 
@@ -170,5 +176,17 @@ class MServerClient
         }
 
         return $pohodaCustomers;
+    }
+
+    /**
+     * @param string $connectionPath
+     * @return string
+     */
+    public function getImage(string $connectionPath): string
+    {
+        return $this->send(
+            self::POHODA_STW_INSTANCE_IMPORT_IMAGE,
+            $connectionPath
+        );
     }
 }

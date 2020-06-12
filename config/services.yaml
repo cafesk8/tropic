@@ -91,20 +91,10 @@ services:
 
     Shopsys\FrameworkBundle\Component\FileUpload\FileUpload: '@App\Component\FileUpload\FileUpload'
 
-    App\Component\Image\MigrateImageDoctrineListener:
-        arguments:
-            - '%migrate_product_images_dir%'
-        tags:
-            - { name: doctrine.event_listener, event: postPersist }
-            - { name: doctrine.event_listener, event: prePersist }
-
     App\Component\Image\ImageFacade:
         arguments: ['%shopsys.image_url_prefix%']
 
     Shopsys\FrameworkBundle\Component\Image\ImageFacade: '@App\Component\Image\ImageFacade'
-
-    Shopsys\FrameworkBundle\Component\Image\ImageFactoryInterface:
-        alias: App\Component\Image\ImageFactory
 
     App\Component\Transfer\Logger\TransferLoggerFactory:
         arguments:
@@ -660,3 +650,9 @@ services:
                     - '@=service("App\\Model\\Order\\GiftCertificate\\Mail\\OrderGiftCertificateMailTemplateVariablesProvider").createActivated()'
 
     Shopsys\FrameworkBundle\Model\Mail\MailTemplateConfiguration: '@App\Model\Mail\MailTemplateConfiguration'
+
+    App\Model\Product\Transfer\ProductImageImportFacade:
+        arguments:
+            - '%shopsys.image_dir%'
+
+    Shopsys\FrameworkBundle\Component\Image\ImageRepository: '@App\Component\Image\ImageRepository'
