@@ -1,5 +1,5 @@
 {{ form_start(form, { attr: { 'data-on-submit': 'ajaxSubmit', 'data-success': success ? 'true' : 'false' }}) }}
-    <div class="footer-newsletter">
+    <div class="footer-newsletter web__container--border-radius web__container--dark">
         <div class="footer-newsletter__item footer-newsletter__item--left">
             <p class="footer-newsletter__text footer-newsletter__text--big">
                 {{ 'Nenechte si ujít akční nabídky'|trans }}
@@ -24,9 +24,9 @@
                             <span class="css-checkbox__image">
                                 {% if privacyPolicyArticle is not null %}
                                     {% set articleUrl = url('front_article_detail', {'id': privacyPolicyArticle.id}) %}
-                                    {{ "I agree with <a class=\"footer-newsletter__link\" href=\"%url%\" target=\"_blank\">privacy policy</a>."|trans({'%url%': articleUrl})|raw }}
+                                    {{ "Chci odebírat novinky a akční nabídky a souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobních údajů</a>"|trans({'%url%': articleUrl})|raw }}
                                 {% else %}
-                                    {{ 'I agree with privacy policy.'|trans }}
+                                    {{ 'Chci odebírat novinky a akční nabídky a souhlasím se zpracováním osobních údajů'|trans }}
                                 {% endif %}
                             </span>
                         </label>

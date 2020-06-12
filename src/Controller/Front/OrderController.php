@@ -141,7 +141,7 @@ class OrderController extends FrontBaseController
     private $legalConditionsFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade
+     * @var \App\Model\Newsletter\NewsletterFacade
      */
     private $newsletterFacade;
 
@@ -231,7 +231,7 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Order\Watcher\TransportAndPaymentWatcher $transportAndPaymentWatcher
      * @param \Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade $orderMailFacade
      * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
-     * @param \Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade $newsletterFacade
+     * @param \App\Model\Newsletter\NewsletterFacade $newsletterFacade
      * @param \App\Model\GoPay\BankSwift\GoPayBankSwiftFacade $goPayBankSwiftFacade
      * @param \App\Model\GoPay\GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain
      * @param \App\Model\PayPal\PayPalFacade $payPalFacade

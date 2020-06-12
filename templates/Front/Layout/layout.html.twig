@@ -1,6 +1,5 @@
 {% extends 'Front/Layout/base.html.twig' %}
 {% use 'Front/Layout/header.html.twig' %}
-{% use 'Front/Layout/footer.html.twig' %}
 
 {% block headerClass %}{% endblock %}
 {% block headerLayoutClass %}{% endblock %}
@@ -43,9 +42,9 @@
 
             {% block content %}{% endblock %}
 
-            <div class="web__footer{% if not isCookiesConsentGiven() %} web__footer--with-cookies js-eu-cookies-consent-footer-gap{% endif %}">
-                {{ block('footer') }}
-            </div>
+            {% block footer %}
+                {% embed 'Front/Layout/footer.html.twig' %}{% endembed %}
+            {% endblock %}
         </div>
     </div>
     {% if not isCookiesConsentGiven() %}
