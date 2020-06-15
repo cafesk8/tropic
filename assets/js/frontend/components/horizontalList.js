@@ -17,6 +17,7 @@ import Timeout from 'framework/common/utils/Timeout';
             const dotsTypes = {
                 'last-visited': [false, false, true, true, true, true],
                 'top-products': [false, false, true, true, true, true],
+                'best-selling': [false, false, true, true, true, true],
                 'accessories-products': [false, false, true, true, true, true],
                 'products': [false, false, true, true, true, true],
                 'references': [false, false, true, true, true, true],
@@ -27,6 +28,7 @@ import Timeout from 'framework/common/utils/Timeout';
             const types = {
                 'last-visited': [1, 2, 3, 3, 5],
                 'top-products': [1, 2, 2, 3, 4],
+                'best-selling': [1, 2, 3, 4, 6],
                 'accessories-products': [1, 2, 3, 4, 6],
                 'products': [2, 3, 2, 3, 6],
                 'references': [1, 2, 3, 3, 4],
@@ -37,6 +39,7 @@ import Timeout from 'framework/common/utils/Timeout';
             const slideTypes = {
                 'last-visited': [1, 2, 3, 3, 5],
                 'top-products': [1, 2, 2, 3, 4],
+                'best-selling': [1, 2, 3, 4, 6],
                 'accessories-products': [1, 2, 3, 4, 6],
                 'products': [2, 3, 2, 3, 6],
                 'references': [1, 2, 3, 3, 4],

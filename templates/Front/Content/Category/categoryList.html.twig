@@ -1,19 +1,49 @@
 {% if categories|length > 0 %}
-    <ul class="list-categories js-tabs-content {{ cssClass|default('') }}" data-tab-id="categories">
-        {% for category in categories %}
-            <li class="list-categories__item">
-                <a href="{{ url('front_product_list', { id: category.id }) }}"
-                class="list-categories__item__link">
-                    <div class="list-categories__item__image">
-                        {{ image(category, { alt: category.name }) }}
-                    </div>
-                    <div class="list-categories__item__info">
-                        <p class="list-categories__item__text">
-                            <span class="list-categories__item__text__name">{{ category.name }}</span>
-                        </p>
-                    </div>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% if type is defined and type == 'prelist' %}
+        <ul class="list-prelist-categories  js-tabs-content {{ cssClass|default('') }}" data-tab-id="categories">
+            {% for category in categories %}
+                {% if loop.index0 == 2 and currentCategory.rightBannerText is not empty %}
+                    <li class="list-prelist-categories__item list-prelist-categories__item--text-info">
+                        <h2 class="list-prelist-categories__item__text js-not-implemented-yet">
+                            {{ currentCategory.rightBannerText }}
+                        </h2>
+                    </li>
+                {% elseif loop.index0 == 6 and currentCategory.leftBannerText is not empty %}
+                    <li class="list-prelist-categories__item list-prelist-categories__item--text-info">
+                        <h2 class="list-prelist-categories__item__text js-not-implemented-yet">
+                            {{ currentCategory.leftBannerText }}
+                        </h2>
+                    </li>
+                {% endif %}
+                <li class="list-prelist-categories__item">
+                    <a class="list-prelist-categories__item__link" href="{{ url('front_product_list', { id: category.id }) }}">
+                        <div class="list-prelist-categories__item__image">
+                            {{ image(category, { size: 'preList', alt: category.name }) }}
+                        </div>
+                        <div class="list-prelist-categories__item__info">
+                            {{ category.name }}
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <ul class="list-categories js-tabs-content {{ cssClass|default('') }}" data-tab-id="categories">
+            {% for category in categories %}
+                <li class="list-categories__item">
+                    <a href="{{ url('front_product_list', { id: category.id }) }}"
+                    class="list-categories__item__link">
+                        <div class="list-categories__item__image">
+                            {{ image(category, { alt: category.name }) }}
+                        </div>
+                        <div class="list-categories__item__info">
+                            <p class="list-categories__item__text">
+                                <span class="list-categories__item__text__name">{{ category.name }}</span>
+                            </p>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endif %}

@@ -1,0 +1,109 @@
+@list-prelist-categories-image-size: 160px;
+@list-prelist-categories-image-size-small: 100px;
+@list-prelist-categories-item-gap: 20px;
+@list-prelist-categories-item-inner-gap: 20px;
+
+.list-prelist-categories {
+    .reset-ul();
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0 0 -@list-prelist-categories-item-gap -@list-prelist-categories-item-gap;
+
+    &__item {
+        width: 100%;
+        padding: 0 0 @list-prelist-categories-item-gap @list-prelist-categories-item-gap;
+
+        @media @query-md {
+            width: 100% / 2;
+        }
+
+        @media @query-lg {
+            width: 33.33%;
+        }
+        
+        @media @query-xl {
+            width: 100% / 4;
+        }
+
+        &--text-info {
+            width: 100%;
+            padding: 0 0 @list-prelist-categories-item-gap @list-prelist-categories-item-gap;
+            display: flex;
+            text-align: center;
+            align-items: center;
+
+            @media @query-lg {
+                width: 33.33%;
+            }
+
+            @media @query-xl {
+                width: 100% / 2;
+            }
+        }
+
+        &__text {
+            line-height: 35px;
+
+            font-size: 25px;
+            color: @color-primary;
+
+            @media @query-vl {
+                line-height: 40px;
+
+                font-size: 30px;
+            }
+
+            @media @query-xl {
+                line-height: 48px;
+
+                font-size: 36px;
+            }
+        }
+
+        &__link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            padding: @list-prelist-categories-item-inner-gap;
+            
+            text-decoration: none;
+            border-radius: @radius-big;
+            transition: @transition-time box-shadow @transition-type;
+            border: 3px solid @color-light;
+            box-shadow: none;
+
+            &:hover {
+                padding: @list-prelist-categories-item-inner-gap + 2px;
+                border: 1px solid @color-blue;
+                box-shadow: 0 10px 20px 0 rgba(0,0,0,0.1);
+            }
+        }
+
+        &__image {
+            position: relative;
+            width: @list-prelist-categories-image-size-small;
+            height: @list-prelist-categories-image-size-small;
+            margin-bottom: 20px;
+
+            @media @query-md {
+                width: @list-prelist-categories-image-size;
+                height: @list-prelist-categories-image-size;
+            }
+
+            img {
+                .center-image();
+            }
+        }
+
+        &__info {
+            line-height: 34px;
+
+            font-size: @font-size;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: @color-base;
+        }
+    }
+}
