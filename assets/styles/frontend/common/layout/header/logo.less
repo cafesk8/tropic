@@ -15,17 +15,16 @@
         text-align: left;
     }
 
-    img {
-        max-height: 100%;
+    .header--small & {
+        max-width: 150px;
+        margin: auto;
+
+        @media @query-lg {
+            max-width: 100%;
+        }
     }
 
-    &__text {
-        margin-left: 20px;
-
-        text-transform: uppercase;
-        font-size: 9px;
-        color: @color-base;
-        font-weight: 700;
-        letter-spacing: 3px;
+    img {
+        max-height: 100%;
     }
 }

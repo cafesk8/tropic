@@ -1,9 +1,11 @@
 @box-progress-steps-count: 5;
 @box-progress-padding-horizontal: 17px;
 @box-progress-padding-vertical: 15px;
-@box-progress-item-width: 240px;
-@box-progress-item-separator-width: 60px;
-@box-progress-item-height: 40px;
+@box-progress-item-width: 266px;
+@box-progress-item-height: 50px;
+@box-progress-item-gap: 30px;
+@box-progress-item-active-border-size: 3px;
+@box-progress-item-done-background: #ebf6ea;
 
 .box-progress {
     .reset-ul();
@@ -11,16 +13,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 0 -@web-padding-small 30px;
     overflow: hidden;
-    
-    border-radius: @radius;
 
     @media @query-lg {
         flex-direction: row;
         overflow: visible;
-
-        border-radius: 0;
+        margin-left: -@box-progress-item-gap;
     }
 
     &__item {
@@ -29,75 +27,99 @@
         align-items: center;
         justify-content: flex-start;
         width: 100%;
-        padding: 11px;
+        padding: @box-progress-item-active-border-size;
+        line-height: @font-size-big;
 
-        color: @color-base;
         font-size: @font-size;
-        background-color: @color-f;
-        text-transform: uppercase;
+        color: @color-base;
+        background-color: @color-light;
+
+        &:first-child {
+            border-radius: @radius @radius 0 0;
+
+            @media @query-lg {
+                border-radius: @radius;
+            }
+
+            .box-progress__item__in {
+                border-radius: @radius-medium @radius-medium 0 0;
+
+                @media @query-lg {
+                    border-radius: @radius-medium;
+                }
+            }
+        }
+
+        &:last-child {
+            border-radius: 0 0 @radius @radius;
+
+            @media @query-lg {
+                border-radius: @radius;
+            }
+
+            .box-progress__item__in {
+                border-radius: 0 0 @radius-medium @radius-medium;
+
+                @media @query-lg {
+                    border-radius: @radius-medium;
+                }
+            }
+        }
 
         @media @query-lg {
             justify-content: center;
             width: @box-progress-item-width;
             height: @box-progress-item-height;
-            padding: 0;
+            margin-left: @box-progress-item-gap;
 
-            border-radius: 50px;
-            border: 1px solid @color-base;
-            background-color: transparent;
-        }
-
-        &:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 1px;
-
-            background-color: @color-border;
-
-            @media @query-lg {
-                display: none;
-            }
+            border-radius: @radius;
+            font-size: @font-size-big;
         }
 
         &--active {
             font-weight: 700;
+            background: linear-gradient(90deg, #277da8 0%, #58b6a7 33%, #9bc962 66%, #5da94b 100%);
 
             @media @query-lg {
-                background-color: @color-f;
-                border: 0;
-            }
-
-            &:before {
-                height: 3px;
-                background-color: @color-add;
+                border-radius: @radius;
             }
         }
 
         &--done {
-            @media @query-lg {
-                border: 3px solid @color-add;
-                background-color: @color-f;
-            }
+            font-weight: 700;
+            background-color: @box-progress-item-done-background;
+            color: @color-add;
         }
 
-        &--separator {
-            display: none;
+        &__success {
+            margin-right: 10px;
+            height: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        &__in {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: 15px - @box-progress-item-active-border-size 11px - @box-progress-item-active-border-size;
+
+            background-color: @color-light;
 
             @media @query-lg {
-                display: flex;
-                width: @box-progress-item-separator-width;
+                justify-content: center;
+                padding: 11px - @box-progress-item-active-border-size;
 
-                border: 0;
+                border-radius: @radius - 2px;
+            }
 
-                .svg {
-                    transform: rotate(-90deg);
+            .box-progress__item--active & {
+                background-color: @color-f;
+            }
 
-                    font-size: 8px;
-                    color: #8991a3;
-                }
+            .box-progress__item--done & {
+                background-color: @box-progress-item-done-background;
             }
         }
     }

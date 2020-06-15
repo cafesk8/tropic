@@ -2,48 +2,56 @@
 
 .contact-us {
     display: none;
+    align-items: center;
+
+    font-family: @font-alt;
 
     @media @query-vl {
         display: flex;
+    }
+
+    &--everytime-visible {
+        display: flex;
+    }
+
+    &__open-hours {
+        display: none;
+        opacity: 0.7;
+
+        font-size: @font-size-extra-small;
+        color: @color-f;
+
+        @media @query-xl {
+            display: block;
+        }
+
+        .contact-us--everytime-visible & {
+            display: block;
+        }
+    }
+
+    &__phone {
+        display: flex;
         align-items: center;
+        margin-left: 16px;
 
-        font-family: @font-alt;
+        color: @color-f;
+        font-size: @font-size;
+        font-weight: 700;
+        text-decoration: none;
 
-        &__open-hours {
-            display: none;
+        &:hover {
+            text-decoration: none;
+            color: @color-f;
 
-            @media @query-xl-nested {
-                display: block;
-                opacity: 0.7;
-
-                font-size: @font-size-extra-small;
-                color: @color-f;
+            .contact-us__phone__text {
+                text-decoration: underline;
             }
         }
 
-        &__phone {
-            display: flex;
-            align-items: center;
-            margin-left: 16px;
-
-            color: @color-f;
-            font-size: @font-size;
-            font-weight: 700;
-            text-decoration: none;
-
-            &:hover {
-                text-decoration: none;
-                color: @color-f;
-
-                .contact-us__phone__text {
-                    text-decoration: underline;
-                }
-            }
-
-            .svg-icon {
-                margin-right: 6px;
-                height: @contact-us-phone-icon-size;
-            }
+        .svg-icon {
+            margin-right: 6px;
+            height: @contact-us-phone-icon-size;
         }
     }
 }
