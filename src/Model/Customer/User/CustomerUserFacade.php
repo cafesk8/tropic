@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\User;
 
+use App\Model\Country\CountryFacade;
 use App\Model\Customer\TransferIds\UserTransferId;
 use App\Model\Customer\TransferIds\UserTransferIdDataFactory;
 use App\Model\Customer\TransferIds\UserTransferIdFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Model\Country\Exception\CountryNotFoundException;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFacade;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface;
@@ -52,6 +54,11 @@ class CustomerUserFacade extends BaseCustomerUserFacade
     protected $customerUserRepository;
 
     /**
+     * @var \App\Model\Country\CountryFacade
+     */
+    private $countryFacade;
+
+    /**
      * @var \App\Model\Pricing\Group\PricingGroupFacade
      */
     private $pricingGroupFacade;
@@ -82,7 +89,8 @@ class CustomerUserFacade extends BaseCustomerUserFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFacade $deliveryAddressFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface $customerDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressFacade $billingAddressFacade
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRefreshTokenChainFacade $customerUserRefreshTokenChainFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRefreshTokenChainFacade $customerUserRefreshTokenChainFacade,
+     * @param \App\Model\Country\CountryFacade $countryFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -100,7 +108,8 @@ class CustomerUserFacade extends BaseCustomerUserFacade
         DeliveryAddressFacade $deliveryAddressFacade,
         CustomerDataFactoryInterface $customerDataFactory,
         BillingAddressFacade $billingAddressFacade,
-        CustomerUserRefreshTokenChainFacade $customerUserRefreshTokenChainFacade
+        CustomerUserRefreshTokenChainFacade $customerUserRefreshTokenChainFacade,
+        CountryFacade $countryFacade
     ) {
         parent::__construct(
             $em,
@@ -121,6 +130,7 @@ class CustomerUserFacade extends BaseCustomerUserFacade
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->userTransferIdFacade = $userTransferIdFacade;
         $this->userTransferIdDataFactory = $userTransferIdDataFactory;
+        $this->countryFacade = $countryFacade;
     }
 
     /**
@@ -321,8 +331,9 @@ class CustomerUserFacade extends BaseCustomerUserFacade
         /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
         $customerUserData = $customerUserUpdateData->customerUserData;
         $customerUserData->pricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($customerUserUpdateData->customerUserData->domainId);
+        $domainId = $customerUserUpdateData->customerUserData->domainId;
         $customer = $this->createCustomerWithBillingAddress(
-            $customerUserUpdateData->customerUserData->domainId,
+            $domainId,
             $customerUserUpdateData->billingAddressData
         );
         $customerUserUpdateData->customerUserData->customer = $customer;
@@ -331,6 +342,12 @@ class CustomerUserFacade extends BaseCustomerUserFacade
         $deliveryAddressData = $customerUserUpdateData->deliveryAddressData;
         if ($deliveryAddressData->addressFilled === true) {
             $deliveryAddressData->addressFilled = true;
+            if ($deliveryAddressData->country === null) {
+                try {
+                    $deliveryAddressData->country = $this->countryFacade->getDefaultCountryByDomainId($domainId);
+                } catch (CountryNotFoundException $exception) {
+                }
+            }
             $customerUserUpdateData->deliveryAddressData->customer = $customer;
             $deliveryAddress = $this->deliveryAddressFacade->create($customerUserUpdateData->deliveryAddressData);
             $customerData = $this->customerDataFactory->createFromCustomer($customer);

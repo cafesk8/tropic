@@ -372,15 +372,23 @@ class Order extends BaseOrder
      */
     protected function setBillingAddress(BaseOrderData $orderData)
     {
-        $this->deliveryAddressSameAsBillingAddress = $orderData->deliveryAddressSameAsBillingAddress;
         $this->firstName = Utils::ifNull($orderData->firstName, $orderData->deliveryFirstName);
         $this->lastName = Utils::ifNull($orderData->lastName, $orderData->deliveryLastName);
         $this->telephone = Utils::ifNull($orderData->telephone, $orderData->deliveryTelephone);
-        $this->companyName = $orderData->companyName;
-        $this->street = $orderData->street;
-        $this->city = $orderData->city;
-        $this->postcode = $orderData->postcode;
-        $this->country = $orderData->country;
+        $this->deliveryAddressSameAsBillingAddress = $orderData->deliveryAddressSameAsBillingAddress;
+        if ($this->deliveryAddressSameAsBillingAddress) {
+            $this->companyName = $orderData->deliveryCompanyName;
+            $this->street = $orderData->deliveryStreet;
+            $this->city = $orderData->deliveryCity;
+            $this->postcode = $orderData->deliveryPostcode;
+            $this->country = $orderData->deliveryCountry;
+        } else {
+            $this->companyName = $orderData->companyName;
+            $this->street = $orderData->street;
+            $this->city = $orderData->city;
+            $this->postcode = $orderData->postcode;
+            $this->country = $orderData->country;
+        }
     }
 
     /**

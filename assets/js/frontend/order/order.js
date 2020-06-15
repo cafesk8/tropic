@@ -212,6 +212,8 @@ export default class PaymentTransportRelations {
         const $registrationFields = $container.filterAllNodes('.js-order-registration-fields');
         const $passwordInputs = $container.filterAllNodes('#order_personal_info_form_password_first, #order_personal_info_form_password_second');
         const paymentTransportRelations = new PaymentTransportRelations();
+        const $emailField = $('.js-order-personal-info-form-email');
+        const isLoggedCustomer = $emailField.data('is-logged-customer');
 
         $transportInputs.change((event) => paymentTransportRelations.onTransportChange(event, paymentTransportRelations));
         $paymentInputs.change((event) => paymentTransportRelations.onPaymentChange(event, paymentTransportRelations));
@@ -239,6 +241,10 @@ export default class PaymentTransportRelations {
                 $passwordInputs.val('');
             }
         });
+
+        if (isLoggedCustomer) {
+            $registrationCheckbox.prop('checked', false);
+        }
 
         if ($registrationCheckbox.is(':checked')) {
             $registrationFields.show();

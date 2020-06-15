@@ -390,8 +390,7 @@ class OrderController extends FrontBaseController
             if ($orderFlow->nextStep()) {
                 $form = $orderFlow->createForm();
             } elseif ($this->isFlashMessageBagEmpty()) {
-                $deliveryAddress = $orderData->deliveryAddressSameAsBillingAddress === false ? $frontOrderFormData->deliveryAddress : null;
-                $order = $this->orderFacade->createOrderFromFront($orderData, $deliveryAddress);
+                $order = $this->orderFacade->createOrderFromFront($orderData, $frontOrderFormData->deliveryAddress);
                 $this->orderFacade->sendHeurekaOrderInfo($order, $frontOrderFormData->disallowHeurekaVerifiedByCustomers);
 
                 if ($frontOrderFormData->newsletterSubscription) {
