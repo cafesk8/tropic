@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Item;
 
+use App\Model\Order\ItemSourceStock\OrderItemSourceStockDataFactory;
+use App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade;
+use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
@@ -28,6 +31,16 @@ class OrderProductFacade extends BaseOrderProductFacade
     private $productFacade;
 
     /**
+     * @var \App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade
+     */
+    private $orderItemSourceStockFacade;
+
+    /**
+     * @var \App\Model\Order\ItemSourceStock\OrderItemSourceStockDataFactory
+     */
+    private $orderItemSourceStockDataFactory;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
      * @param \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
@@ -35,6 +48,8 @@ class OrderProductFacade extends BaseOrderProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
      * @param \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade
      * @param \App\Model\Product\ProductFacade $productFacade
+     * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade $orderItemSourceStockFacade
+     * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockDataFactory $orderItemSourceStockDataFactory
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -43,10 +58,14 @@ class OrderProductFacade extends BaseOrderProductFacade
         ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler,
         ProductVisibilityFacade $productVisibilityFacade,
         ModuleFacade $moduleFacade,
-        ProductFacade $productFacade
+        ProductFacade $productFacade,
+        OrderItemSourceStockFacade $orderItemSourceStockFacade,
+        OrderItemSourceStockDataFactory $orderItemSourceStockDataFactory
     ) {
         parent::__construct($em, $productHiddenRecalculator, $productSellingDeniedRecalculator, $productAvailabilityRecalculationScheduler, $productVisibilityFacade, $moduleFacade);
         $this->productFacade = $productFacade;
+        $this->orderItemSourceStockFacade = $orderItemSourceStockFacade;
+        $this->orderItemSourceStockDataFactory = $orderItemSourceStockDataFactory;
     }
 
     /**
@@ -55,18 +74,24 @@ class OrderProductFacade extends BaseOrderProductFacade
     public function subtractOrderProductsFromStock(array $orderProducts)
     {
         if ($this->moduleFacade->isEnabled(ModuleList::PRODUCT_STOCK_CALCULATIONS)) {
-            /** @var \App\Model\Order\Item\OrderItem[] $orderProductsUsingStock */
             $orderProductsUsingStock = $this->getOrderProductsUsingStockFromOrderProducts($orderProducts);
             foreach ($orderProductsUsingStock as $orderProductUsingStock) {
                 $product = $orderProductUsingStock->getProduct();
-                $product->subtractStockQuantity(
+                $orderItemSourceStocksData = $this->subtractStockQuantity(
+                    $product,
                     $orderProductUsingStock->getQuantity(),
                     $orderProductUsingStock->isSaleItem()
                 );
 
+                foreach ($orderItemSourceStocksData as $orderItemSourceStockData) {
+                    $orderItemSourceStockData->orderItem = $orderProductUsingStock;
+                    $this->orderItemSourceStockFacade->create($orderItemSourceStockData);
+                }
+
                 if ($product->isPohodaProductTypeGroup()) {
                     foreach ($product->getProductGroups() as $productGroup) {
-                        $productGroup->getItem()->subtractStockQuantity(
+                        $this->subtractStockQuantity(
+                            $productGroup->getItem(),
                             $orderProductUsingStock->getQuantity() * $productGroup->getItemCount(),
                             $orderProductUsingStock->isSaleItem()
                         );
@@ -83,12 +108,45 @@ class OrderProductFacade extends BaseOrderProductFacade
     }
 
     /**
+     * @param \App\Model\Product\Product $product
+     * @param int $quantity
+     * @param bool $isSaleItem
+     * @return \App\Model\Order\ItemSourceStock\OrderItemSourceStockData[]
+     */
+    private function subtractStockQuantity(Product $product, int $quantity, bool $isSaleItem): array
+    {
+        $orderItemSourceStocksData = [];
+        $remainingQuantity = $quantity;
+        $product->subtractStockQuantity($remainingQuantity);
+
+        foreach ($product->getStoreStocks() as $productStoreStock) {
+            $isSaleStock = $productStoreStock->getStore()->isSaleStock();
+            $availableQuantity = $productStoreStock->getStockQuantity();
+
+            if (($isSaleStock && !$isSaleItem) || (!$isSaleStock && $isSaleItem) || $availableQuantity < 1) {
+                continue;
+            }
+
+            if ($remainingQuantity > $availableQuantity) {
+                $productStoreStock->subtractStockQuantity($availableQuantity);
+                $remainingQuantity -= $availableQuantity;
+                $orderItemSourceStocksData[] = $this->orderItemSourceStockDataFactory->create($productStoreStock->getStore(), $availableQuantity);
+            } else {
+                $productStoreStock->subtractStockQuantity($remainingQuantity);
+                $orderItemSourceStocksData[] = $this->orderItemSourceStockDataFactory->create($productStoreStock->getStore(), $remainingQuantity);
+                break;
+            }
+        }
+
+        return $orderItemSourceStocksData;
+    }
+
+    /**
      * @param \App\Model\Order\Item\OrderItem[] $orderProducts
      */
     public function addOrderProductsToStock(array $orderProducts)
     {
         if ($this->moduleFacade->isEnabled(ModuleList::PRODUCT_STOCK_CALCULATIONS)) {
-            /** @var \App\Model\Order\Item\OrderItem[] $orderProductsUsingStock */
             $orderProductsUsingStock = $this->getOrderProductsUsingStockFromOrderProducts($orderProducts);
             foreach ($orderProductsUsingStock as $orderProductUsingStock) {
                 $product = $orderProductUsingStock->getProduct();
