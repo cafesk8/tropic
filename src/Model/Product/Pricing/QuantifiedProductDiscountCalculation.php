@@ -145,7 +145,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
                 $productPrice = $quantifiedItemsPrice->getUnitPrice();
                 $product = $this->productFacade->getById($productPrice->getProductId());
 
-                if ($product->isPromoDiscountDisabled() && !$promoCode->isTypeGiftCertificate()) {
+                if (($product->isPromoDiscountDisabled() || $product->isInAnySaleStock()) && !$promoCode->isTypeGiftCertificate()) {
                     return false;
                 }
 
@@ -231,8 +231,9 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
             function (QuantifiedItemPrice $quantifiedItemsPrice) {
                 /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
                 $productPrice = $quantifiedItemsPrice->getUnitPrice();
+                $product = $this->productFacade->getById($productPrice->getProductId());
 
-                if ($this->productFacade->getById($productPrice->getProductId())->isPromoDiscountDisabled()) {
+                if ($product->isPromoDiscountDisabled() || $product->isInAnySaleStock()) {
                     return false;
                 }
 
@@ -286,7 +287,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
                 $productPrice = $quantifiedItemsPrices[$itemId]->getUnitPrice();
                 $product = $this->productFacade->getById($productPrice->getProductId());
 
-                $subtractAmount = $quantifiedItemDiscount === null || $product->isPromoDiscountDisabled() ? Price::zero() : $quantifiedItemDiscount;
+                $subtractAmount = $quantifiedItemDiscount === null || $product->isPromoDiscountDisabled() || $product->isInAnySaleStock() ? Price::zero() : $quantifiedItemDiscount;
                 $quantifiedItemsPricesMinusAlreadyAppliedDiscounts[$itemId] = new QuantifiedItemPrice(
                     $quantifiedItemsPrices[$itemId]->getUnitPrice(),
                     $totalPrice->subtract($subtractAmount),

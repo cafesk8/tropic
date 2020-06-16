@@ -51,7 +51,6 @@ use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
  * @method \App\Model\Order\Item\OrderItem[] getItems()
  * @method \App\Model\Order\Item\OrderItem[] getItemsWithoutTransportAndPayment()
  * @method \App\Model\Order\Item\OrderItem[] getTransportAndPaymentItems()
- * @method \App\Model\Order\Item\OrderItem getItemById(int $orderItemId)
  * @method \App\Model\Country\Country getCountry()
  * @method \App\Model\Country\Country|null getDeliveryCountry()
  * @method \App\Model\Order\Item\OrderItem[] getProductItems()
@@ -833,5 +832,21 @@ class Order extends BaseOrder
     public function addGiftCertificate(OrderGiftCertificate $giftCertificate): void
     {
         $this->giftCertificates->add($giftCertificate);
+    }
+
+    /**
+     * Temporary fix for: https://github.com/shopsys/shopsys/issues/1898
+     *
+     * @param int $orderItemId
+     * @return \App\Model\Order\Item\OrderItem
+     */
+    public function getItemById($orderItemId)
+    {
+        foreach ($this->getItems() as $orderItem) {
+            if ($orderItem->getId() === $orderItemId) {
+                return $orderItem;
+            }
+        }
+        throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\OrderItemNotFoundException('Order item with ID ' . $orderItemId . ' was not found.');
     }
 }

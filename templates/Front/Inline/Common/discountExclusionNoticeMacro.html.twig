@@ -1,5 +1,5 @@
 {% macro discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, classModification = '') %}
-    {% if product.isRegistrationDiscountDisabled and product.isPromoDiscountDisabled %}
+    {% if (product.isRegistrationDiscountDisabled and product.isPromoDiscountDisabled) or product.isInAnySaleStock %}
         {{ _self.discountExclusionNoticeDetail(allDiscountExclusionText, classModification) }}
     {% elseif product.isRegistrationDiscountDisabled %}
         {{ _self.discountExclusionNoticeDetail(registrationDiscountExclusionText, classModification) }}
