@@ -87,6 +87,11 @@
             height: 90
             crop: false
             occurrence: 'Front-end: Listing of products in products bomb'
+        -   name: listDetailArticle
+            width: 70
+            height: 70
+            crop: false
+            occurrence: 'Front-end: Listing of products in article detail'
         -   name: listSlider
             width: 240
             height: 240
