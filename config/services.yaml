@@ -285,14 +285,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
 
-    App\Model\Product\MassEdit\MassEditActionProvider: ~
-
-    App\Model\Product\MassEdit\Action\HiddenMassAction: ~
-
-    App\Model\Product\MassEdit\Action\CategoryMassAction: ~
-
-    App\Model\Product\MassEdit\Action\ProductParameterMassAction: ~
-
     Shopsys\FrameworkBundle\Model\Category\CategoryFacade: '@App\Model\Category\CategoryFacade'
 
     Shopsys\FrameworkBundle\Controller\Admin\CustomerController:

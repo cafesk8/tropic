@@ -6,8 +6,6 @@ import './blogCategoryTree';
 import './category';
 import './categoryTree.sorting';
 import './infoRow.validation';
-import './massEditProductConfirm';
-import './massEditProducts';
 import './currencySymbol';
 import './payment';
 import './productPickerAddAll';

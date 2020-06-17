@@ -43,37 +43,6 @@
         </div>
     </div>
 
-    <div class="js-mass-edit-form-wrapper">
-        {{ form_start(massEditForm) }}
-        <div class="wrap-border js-product-list-with-filter">
-            <div class="box-mass-action" id="js-mass-edit">
-                <span class="box-mass-action__click" id="js-mass-edit-button">
-                    {{ 'Hromadné úpravy'|trans }}:
-                    <i class="box-mass-action__click__icon svg svg-arrow"></i>
-                </span>
-                <div class="box-mass-action__content">
-                    <strong class="box-mass-action__title">
-                        {{ 'Změna pro'|trans }}:
-                    </strong>
-                    {{ form_widget(massEditForm.selectType, { attr: { class: 'js-mass-edit-select-type' } , isSimple: true }) }}
-
-                    <div class="box-mass-action__filter">
-                        <strong class="box-mass-action__title">
-                            {{ 'Provést úpravu'|trans }}:
-                        </strong>
-
-                        <div class="box-mass-action__filter__line js-mass-edit-form-partial" data-ajax-url="{{ path('admin_product_getmasseditform') }}">
-                            {% include 'Admin/Content/Product/MassEdit/massEditFormPartial.html.twig' with {massEditForm: massEditForm} %}
-                        </div>
-                        {{ form_widget(massEditForm.submit, { label: 'Make modification'|trans, attr: { class: 'btn btn--medium js-mass-edit-submit' } }) }}
-                        {{ form_widget(massEditForm.submitAndExport, { label: 'Uprav hned'|trans, attr: { class: 'btn btn--medium js-mass-edit-submit' } }) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{ gridView.render() }}
-        {{ gridView.renderHiddenInputs('page') }}
-        {{ form_end(massEditForm) }}
-    </div>
+    {{ gridView.render() }}
+    {{ gridView.renderHiddenInputs('page') }}
 {% endblock %}
