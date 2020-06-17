@@ -218,7 +218,6 @@
     <div class="{{ listCssClass }}" data-count-of-product="{{ products|length }}">
         {% for product in products %}
             <div class="{{ listCssClass }}__item">
-                {% set productSellingPrice = getProductSellingPrice(product) %}
                 <a href="{{ url('front_product_detail', {'id': product.id}) }}">
                     <div class="{{ listCssClass }}__item__image dont-print">
                         {{ image(product.productForCreatingImageAccordingToVariant, { size: 'listDetailArticle', alt: product.name, lazy: true }) }}
