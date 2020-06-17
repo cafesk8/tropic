@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Transfer\Pohoda\Product;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
 use App\Model\Product\Transfer\ProductImportCronModule;
@@ -63,6 +64,7 @@ class PohodaProductExportFacade
         $this->addProductGroupsToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
         $this->addRelatedProductsToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
         $this->addProductVideosToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
+        $this->addProductParametersToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
 
         $pohodaProductsResult = $this->reindexPohodaProductsResultByCatnums($pohodaProductsResult);
         $this->addStocksInformationToPohodaProductsResult($pohodaProductsResult);
@@ -229,5 +231,50 @@ class PohodaProductExportFacade
                 $pohodaProductsResult[$productPohodaId][PohodaProduct::COL_PRODUCT_VIDEOS][] = $productVideo[PohodaProduct::COL_POHODA_PRODUCT_VIDEO];
             }
         }
+    }
+
+    /**
+     * @param array $pohodaProductsResult
+     * @param array $pohodaProductIds
+     */
+    private function addProductParametersToPohodaProductsResult(array &$pohodaProductsResult, array $pohodaProductIds): void
+    {
+        $productParameters = $this->pohodaProductExportRepository->getProductParametersByPohodaIds($pohodaProductIds);
+        foreach ($productParameters as $productParameter) {
+            $productPohodaId = (int)$productParameter[PohodaProduct::COL_PRODUCT_REF_ID];
+            $parameterValue = $this->getPohodaParameterValueByType($productParameter);
+            if (isset($pohodaProductsResult[$productPohodaId]) && $parameterValue !== null) {
+                $pohodaParameterValuesArray = explode(';', $parameterValue);
+                $pohodaParameterValues = [
+                    DomainHelper::CZECH_LOCALE => $pohodaParameterValuesArray[0],
+                    DomainHelper::SLOVAK_LOCALE => $pohodaParameterValuesArray[1] ?? $pohodaParameterValuesArray[0],
+                ];
+                $pohodaParameter = new PohodaParameter(
+                    $productParameter[PohodaProduct::COL_PARAMETER_NAME],
+                    $pohodaParameterValues,
+                    (int)$productParameter[PohodaProduct::COL_PARAMETER_TYPE]
+                );
+
+                $pohodaProductsResult[$productPohodaId][PohodaProduct::COL_PARAMETERS][] = $pohodaParameter;
+            }
+        }
+    }
+
+    /**
+     * @param array $pohodaParameter
+     * @return string|null
+     */
+    private function getPohodaParameterValueByType(array $pohodaParameter): ?string
+    {
+        $pohodaParameterType = (int)$pohodaParameter[PohodaProduct::COL_PARAMETER_TYPE];
+        if (in_array($pohodaParameterType, PohodaParameter::POHODA_PARAMETER_COL_TYPE_NUMBER, true)) {
+            return $pohodaParameter[PohodaProduct::COL_PARAMETER_VALUE_TYPE_NUMBER];
+        }
+
+        if ($pohodaParameterType === PohodaParameter::POHODA_PARAMETER_TYPE_LIST_ID) {
+            return $pohodaParameter[PohodaProduct::COL_PARAMETER_VALUE_TYPE_LIST];
+        }
+
+        return $pohodaParameter[PohodaProduct::COL_PARAMETER_VALUE_TYPE_TEXT];
     }
 }

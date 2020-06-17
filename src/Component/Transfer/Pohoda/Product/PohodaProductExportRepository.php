@@ -125,6 +125,7 @@ class PohodaProductExportRepository
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_GROUP_ITEMS] = [];
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_RELATED_PRODUCTS] = [];
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_VIDEOS] = [];
+            $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PARAMETERS] = [];
         }
 
         return $pohodaProductsResult;
@@ -340,5 +341,53 @@ class PohodaProductExportRepository
             ]);
 
         return $query->getResult();
+    }
+
+    /**
+     * @param int[] $pohodaProductIds
+     * @return array
+     */
+    public function getProductParametersByPohodaIds(array $pohodaProductIds): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('ID', PohodaProduct::COL_PARAMETER_ID)
+            ->addScalarResult('IDS', PohodaProduct::COL_PARAMETER_NAME)
+            ->addScalarResult('RefAg', PohodaProduct::COL_PRODUCT_REF_ID)
+            ->addScalarResult('RelTyp', PohodaProduct::COL_PARAMETER_TYPE)
+            ->addScalarResult('ValLong', PohodaProduct::COL_PARAMETER_VALUE_TYPE_NUMBER)
+            ->addScalarResult('ValText', PohodaProduct::COL_PARAMETER_VALUE_TYPE_TEXT)
+            ->addScalarResult('ValList', PohodaProduct::COL_PARAMETER_VALUE_TYPE_LIST);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT Parameters.ID, Parameters.IDS, ProductParameters.RefAg, Parameters.RelTyp, ProductParameters.ValText, ProductParameters.ValLong, ParametersList.IDS AS ValList
+            FROM SkRefParam ProductParameters
+            JOIN SkParam Parameters ON Parameters.ID = ProductParameters.RefParam
+            LEFT JOIN SkRefParamList ProductParametersList ON ProductParametersList.RefAg = ProductParameters.RefAg
+                AND ProductParametersList.RefParam = ProductParameters.RefParam
+                AND ProductParametersList.Sel = 1
+            LEFT JOIN SkParamList ParametersList ON ParametersList.ID = ProductParametersList.RefParamList
+            WHERE ProductParameters.RefAg IN (:pohodaProductIds)
+            ORDER BY ProductParameters.OrderFld, ProductParametersList.OrderFld',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'pohodaProductIds' => $pohodaProductIds,
+            ]);
+
+        $pohodaParameterResults = $query->getResult();
+        $pohodaParameterResult = [];
+
+        foreach ($pohodaParameterResults as $pohodaParameter) {
+            $pohodaParameterId = (int)$pohodaParameter[PohodaProduct::COL_PARAMETER_ID];
+            $pohodaParameterType = (int)$pohodaParameter[PohodaProduct::COL_PARAMETER_TYPE];
+
+            if ($pohodaParameterType === PohodaParameter::POHODA_PARAMETER_TYPE_LIST_ID && isset($pohodaParameterResult[$pohodaParameterId])) {
+                $pohodaParameterResult[$pohodaParameterId][PohodaProduct::COL_PARAMETER_VALUE_TYPE_LIST] .= ', ' . $pohodaParameter[PohodaProduct::COL_PARAMETER_VALUE_TYPE_LIST];
+            } else {
+                $pohodaParameterResult[$pohodaParameterId] = $pohodaParameter;
+            }
+        }
+
+        return $pohodaParameterResult;
     }
 }

@@ -71,6 +71,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'amountMultiplier',
         'images',
         'shown',
+        'parameters',
     ];
 
     /**
