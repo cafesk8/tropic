@@ -7,12 +7,14 @@ namespace App\Component\Transfer\Pohoda\MServer;
 use App\Component\Transfer\Pohoda\Customer\PohodaCustomerValidator;
 use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
 use App\Component\Transfer\Pohoda\Exception\PohodaMServerException;
+use App\Component\Transfer\Pohoda\Order\PohodaOrderValidator;
 use App\Component\Transfer\Pohoda\Xml\PohodaXmlGenerator;
 use App\Component\Transfer\Pohoda\Xml\PohodaXmlResponseParser;
 
 class MServerClient
 {
     public const POHODA_STW_INSTANCE_EXPORT_ADDRESSBOOK = 'Export adresáře do Pohody';
+    public const POHODA_STW_INSTANCE_EXPORT_ORDERS = 'Export objednávek do Pohody';
     public const POHODA_STW_INSTANCE_IMPORT_IMAGE = 'Import obrázku z Pohody';
 
     /**
@@ -56,6 +58,11 @@ class MServerClient
     private $pohodaCustomerValidator;
 
     /**
+     * @var \App\Component\Transfer\Pohoda\Order\PohodaOrderValidator
+     */
+    private $pohodaOrderValidator;
+
+    /**
      * @param string $pohodaMServerUrl
      * @param string $pohodaMServerPort
      * @param string $pohodaMServerLogin
@@ -64,6 +71,7 @@ class MServerClient
      * @param \App\Component\Transfer\Pohoda\Xml\PohodaXmlGenerator $pohodaXmlGenerator
      * @param \App\Component\Transfer\Pohoda\Xml\PohodaXmlResponseParser $pohodaXmlResponseParser
      * @param \App\Component\Transfer\Pohoda\Customer\PohodaCustomerValidator $pohodaCustomerValidator
+     * @param \App\Component\Transfer\Pohoda\Order\PohodaOrderValidator $pohodaOrderValidator
      */
     public function __construct(
         string $pohodaMServerUrl,
@@ -73,7 +81,8 @@ class MServerClient
         string $pohodaCompanyIco,
         PohodaXmlGenerator $pohodaXmlGenerator,
         PohodaXmlResponseParser $pohodaXmlResponseParser,
-        PohodaCustomerValidator $pohodaCustomerValidator
+        PohodaCustomerValidator $pohodaCustomerValidator,
+        PohodaOrderValidator $pohodaOrderValidator
     ) {
         $this->pohodaXmlGenerator = $pohodaXmlGenerator;
 
@@ -84,6 +93,7 @@ class MServerClient
         $this->pohodaCompanyIco = $pohodaCompanyIco;
         $this->pohodaXmlResponseParser = $pohodaXmlResponseParser;
         $this->pohodaCustomerValidator = $pohodaCustomerValidator;
+        $this->pohodaOrderValidator = $pohodaOrderValidator;
     }
 
     /**
@@ -176,6 +186,49 @@ class MServerClient
         }
 
         return $pohodaCustomers;
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Order\PohodaOrder[] $pohodaOrders
+     * @return \App\Component\Transfer\Pohoda\Order\PohodaOrder[]
+     */
+    public function exportOrders(array $pohodaOrders): array
+    {
+        $validPohodaOrders = [];
+        foreach ($pohodaOrders as $pohodaOrder) {
+            // The data should be valid. Validation is here only for safety reasons.
+            try {
+                $this->pohodaOrderValidator->validate($pohodaOrder);
+            } catch (PohodaInvalidDataException $exc) {
+                continue;
+            }
+
+            $validPohodaOrders[] = $pohodaOrder;
+        }
+
+        $xmlData = $this->pohodaXmlGenerator->generateXmlRequest(
+            'Component/Transfer/Pohoda/Order/orders.xml.twig',
+            [
+                'pohodaCompanyIco' => $this->pohodaCompanyIco,
+                'pohodaOrders' => $validPohodaOrders,
+            ]
+        );
+
+        $mServerResponse = $this->send(
+            self::POHODA_STW_INSTANCE_EXPORT_ORDERS,
+            '/xml',
+            $xmlData
+        );
+
+        $orderResponses = $this->pohodaXmlResponseParser->parseOrderResponses($mServerResponse);
+
+        foreach ($pohodaOrders as $pohodaOrder) {
+            if (array_key_exists($pohodaOrder->dataPackItemId, $orderResponses)) {
+                $pohodaOrder->orderResponse = $orderResponses[$pohodaOrder->dataPackItemId];
+            }
+        }
+
+        return $pohodaOrders;
     }
 
     /**
