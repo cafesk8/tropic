@@ -322,6 +322,8 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
+        $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities();
+
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();
 
