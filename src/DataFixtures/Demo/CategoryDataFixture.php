@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\DataFixtures\Demo;
 
 use App\Model\Category\Category;
+use App\Model\Category\CategoryData;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Category\CategoryData;
 use Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 
@@ -91,6 +91,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . '(black-and-white), or in color, and in two or three dimensions', [], 'dataFixtures', $locale);
             $categoryData->leftBannerTexts[$locale] = null;
             $categoryData->rightBannerTexts[$locale] = null;
+            $categoryData->containsSaleProducts[$domainConfig->getId()] = true;
         }
         $categoryData->preListingCategory = false;
         $categoryElectronics = $this->getReference(self::CATEGORY_ELECTRONICS);
@@ -102,6 +103,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             $categoryData->name[$locale] = t('Fotoaparáty', [], 'dataFixtures', $locale);
             $categoryData->descriptions[$domainConfig->getId()] = t('A camera is an optical instrument for recording or capturing images, which may be stored locally, '
                 . 'transmitted to another location, or both.', [], 'dataFixtures', $locale);
+            $categoryData->containsSaleProducts[$domainConfig->getId()] = false;
         }
         $this->createCategory($categoryData, self::CATEGORY_PHOTO);
 

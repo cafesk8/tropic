@@ -2,6 +2,11 @@
     {% if type is defined and type == 'prelist' %}
         <ul class="list-prelist-categories  js-tabs-content {{ cssClass|default('') }}" data-tab-id="categories">
             {% for category in categories %}
+                {% if currentCategory is defined and currentCategory.isSaleType %}
+                    {% set categoryUrl = url('front_sale_product_list', { friendlyUrl: findMainFriendlyUrl('front_product_list', category.id) }) %}
+                {% else %}
+                    {% set categoryUrl = url('front_product_list', { id: category.id }) %}
+                {% endif %}
                 {% if loop.index0 == 2 and currentCategory.rightBannerText is not empty %}
                     <li class="list-prelist-categories__item list-prelist-categories__item--text-info">
                         <h2 class="list-prelist-categories__item__text">
@@ -30,8 +35,13 @@
     {% else %}
         <ul class="list-categories js-tabs-content {{ cssClass|default('') }}" data-tab-id="categories">
             {% for category in categories %}
+                {% if currentCategory is defined and currentCategory.isSaleType %}
+                    {% set categoryUrl = url('front_sale_product_list', { friendlyUrl: findMainFriendlyUrl('front_product_list', category.id) }) %}
+                {% else %}
+                    {% set categoryUrl = url('front_product_list', { id: category.id }) %}
+                {% endif %}
                 <li class="list-categories__item">
-                    <a href="{{ url('front_product_list', { id: category.id }) }}"
+                    <a href="{{ categoryUrl }}"
                     class="list-categories__item__link">
                         <div class="list-categories__item__image">
                             {{ image(category, { alt: category.name }) }}

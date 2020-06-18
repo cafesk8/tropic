@@ -183,9 +183,16 @@ class CategoryRepository extends BaseCategoryRepository
      */
     public function getAllVisibleAndListableChildrenByCategoryAndDomainId(BaseCategory $category, int $domainId): array
     {
-        $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainId)
-            ->andWhere('c.parent = :category')
-            ->setParameter('category', $category);
+        $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainId);
+
+        if ($category->isSaleType()) {
+            $queryBuilder->andWhere('c.level = :level')
+                ->andWhere('cd.containsSaleProduct = true')
+                ->setParameter('level', CategoryFacade::SALE_CATEGORIES_LEVEL);
+        } else {
+            $queryBuilder->andWhere('c.parent = :category')
+                ->setParameter('category', $category);
+        }
 
         return $queryBuilder->getQuery()->execute();
     }
@@ -320,6 +327,20 @@ class CategoryRepository extends BaseCategoryRepository
         return $this->getCategoryRepository()->findOneBy(['type' => $type]);
     }
 
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @return array
+     */
+    public function getAllVisibleAndListableSaleCategoriesByDomain(DomainConfig $domainConfig): array
+    {
+        $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainConfig->getId())
+            ->andWhere('c.level = :level')
+            ->andWhere('cd.containsSaleProduct = true')
+            ->setParameter('level', CategoryFacade::SALE_CATEGORIES_LEVEL);
+
+        return $queryBuilder->getQuery()->execute();
+    }
+
     public function markSaleCategories(): void
     {
         $now = new DateTime();
@@ -333,10 +354,9 @@ class CategoryRepository extends BaseCategoryRepository
                         EXISTS(
                             SELECT pcd.category_id
                             FROM product_category_domains pcd
-                            INNER JOIN products p ON pcd.product_id = p.id
-                            INNER JOIN product_flags pf ON pf.product_id = p.id
+                            INNER JOIN product_flags pf ON pf.product_id = pcd.product_id
                             INNER JOIN flags f ON pf.flag_id = f.id
-                            INNER JOIN product_visibilities pv ON pv.product_id = p.id AND pv.domain_id = pcd.domain_id
+                            INNER JOIN product_visibilities pv ON pv.product_id = pcd.product_id AND pv.domain_id = pcd.domain_id
                             INNER JOIN pricing_groups pg ON pg.id = pv.pricing_group_id AND pg.domain_id = pcd.domain_id
                             WHERE f.sale = true
                                 AND (pf.active_from IS NULL OR pf.active_from <= :now)

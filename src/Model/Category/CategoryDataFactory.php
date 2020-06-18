@@ -71,6 +71,10 @@ class CategoryDataFactory extends BaseCategoryDataFactory
     {
         parent::fillNew($categoryData);
         $categoryData->filterParameters = $this->parameterFacade->getAll();
+
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $categoryData->containsSaleProducts[$domainId] = false;
+        }
     }
 
     /**
@@ -93,5 +97,6 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         $categoryData->pohodaPosition = $category->getPohodaPosition();
         $categoryData->type = $category->getType();
         $categoryData->filterParameters = $category->getFilterParameters();
+        $categoryData->containsSaleProducts = $category->containsSaleProducts();
     }
 }

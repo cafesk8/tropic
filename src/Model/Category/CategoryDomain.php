@@ -39,4 +39,12 @@ class CategoryDomain extends BaseCategoryDomain
     {
         return $this->containsSaleProduct;
     }
+
+    /**
+     * @param bool $containsSaleProduct
+     */
+    public function setContainsSaleProduct($containsSaleProduct): void
+    {
+        $this->containsSaleProduct = $containsSaleProduct;
+    }
 }

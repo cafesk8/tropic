@@ -11,8 +11,9 @@ use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory as B
 /**
  * @property \App\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository
  * @property \App\Model\Product\Filter\PriceRangeRepository $priceRangeRepository
- * @method __construct(\App\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository, \App\Model\Product\Filter\FlagFilterChoiceRepository $flagFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser, \Shopsys\FrameworkBundle\Model\Product\Filter\BrandFilterChoiceRepository $brandFilterChoiceRepository, \App\Model\Product\Filter\PriceRangeRepository $priceRangeRepository)
+ * @method __construct(\App\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository, \App\Model\Product\Filter\FlagFilterChoiceRepository $flagFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser, \App\Model\Product\Filter\BrandFilterChoiceRepository $brandFilterChoiceRepository, \App\Model\Product\Filter\PriceRangeRepository $priceRangeRepository)
  * @property \App\Model\Product\Filter\FlagFilterChoiceRepository $flagFilterChoiceRepository
+ * @property \App\Model\Product\Filter\BrandFilterChoiceRepository $brandFilterChoiceRepository
  */
 class ProductFilterConfigFactory extends BaseProductFilterConfigFactory
 {
@@ -20,19 +21,31 @@ class ProductFilterConfigFactory extends BaseProductFilterConfigFactory
      * @param int $domainId
      * @param string $locale
      * @param \App\Model\Category\Category $category
+     * @param bool $isSaleCategory
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
-    public function createForCategory($domainId, $locale, BaseCategory $category)
+    public function createForCategory($domainId, $locale, BaseCategory $category, $isSaleCategory = false)
     {
-        $productFilterConfig = parent::createForCategory($domainId, $locale, $category);
+        if ($isSaleCategory) {
+            $pricingGroup = $this->currentCustomerUser->getPricingGroup();
 
-        if ($category->isSaleType() || $category->isNewsType()) {
             $productFilterConfig = new ProductFilterConfig(
                 [],
-                $productFilterConfig->getFlagChoices(),
-                $productFilterConfig->getBrandChoices(),
-                $productFilterConfig->getPriceRange()
+                [],
+                $this->brandFilterChoiceRepository->getBrandFilterChoicesInCategory($domainId, $pricingGroup, $category, true),
+                $this->priceRangeRepository->getPriceRangeInCategory($domainId, $pricingGroup, $category, true)
             );
+        } else {
+            $productFilterConfig = parent::createForCategory($domainId, $locale, $category);
+
+            if ($category->isSaleType() || $category->isNewsType()) {
+                $productFilterConfig = new ProductFilterConfig(
+                    [],
+                    [],
+                    $productFilterConfig->getBrandChoices(),
+                    $productFilterConfig->getPriceRange()
+                );
+            }
         }
 
         return $productFilterConfig;

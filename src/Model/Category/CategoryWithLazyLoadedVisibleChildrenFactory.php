@@ -26,16 +26,28 @@ class CategoryWithLazyLoadedVisibleChildrenFactory extends BaseCategoryWithLazyL
 
         $categoriesWithLazyLoadedVisibleAndListableChildren = [];
         foreach ($categories as $category) {
-            $hasChildren = in_array($category, $categoriesWithVisibleAndListableChildren, true);
-            $categoriesWithLazyLoadedVisibleAndListableChildren[] = new CategoryWithLazyLoadedVisibleChildren(
-                function () use ($category, $domainConfig) {
-                    $categories = $this->categoryRepository->getTranslatedVisibleAndListableSubcategoriesByDomain($category, $domainConfig);
+            if ($category->isSaleType()) {
+                $categoriesWithLazyLoadedVisibleAndListableChildren[] = new CategoryWithLazyLoadedVisibleChildren(
+                    function () use ($domainConfig) {
+                        $categories = $this->categoryRepository->getAllVisibleAndListableSaleCategoriesByDomain($domainConfig);
 
-                    return $this->createCategoriesWithLazyLoadedVisibleAndListableChildren($categories, $domainConfig);
-                },
-                $category,
-                $hasChildren
-            );
+                        return $this->createCategoriesWithLazyLoadedVisibleAndListableChildren($categories, $domainConfig);
+                    },
+                    $category,
+                    true
+                );
+            } else {
+                $hasChildren = in_array($category, $categoriesWithVisibleAndListableChildren, true);
+                $categoriesWithLazyLoadedVisibleAndListableChildren[] = new CategoryWithLazyLoadedVisibleChildren(
+                    function () use ($category, $domainConfig) {
+                        $categories = $this->categoryRepository->getTranslatedVisibleAndListableSubcategoriesByDomain($category, $domainConfig);
+
+                        return $this->createCategoriesWithLazyLoadedVisibleAndListableChildren($categories, $domainConfig);
+                    },
+                    $category,
+                    $hasChildren
+                );
+            }
         }
 
         return $categoriesWithLazyLoadedVisibleAndListableChildren;

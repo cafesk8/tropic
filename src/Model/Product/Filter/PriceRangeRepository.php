@@ -56,14 +56,16 @@ class PriceRangeRepository extends BasePriceRangeRepository
      * @param int $domainId
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param \App\Model\Category\Category $category
+     * @param bool $isSaleCategory
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\PriceRange
      */
-    public function getPriceRangeInCategory($domainId, PricingGroup $pricingGroup, Category $category)
+    public function getPriceRangeInCategory($domainId, PricingGroup $pricingGroup, Category $category, bool $isSaleCategory = false)
     {
         $productsQueryBuilder = $this->productRepository->getOfferedInCategoryQueryBuilder(
             $domainId,
             $pricingGroup,
-            $category
+            $category,
+            $isSaleCategory
         );
 
         return $this->getPriceRangeByProductsQueryBuilder($productsQueryBuilder, $pricingGroup);
