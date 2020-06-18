@@ -228,4 +228,18 @@ class ParameterFacade extends BaseParameterFacade
 
         return $parameterValue;
     }
+
+    /**
+     * @param string $locale
+     * @return \App\Model\Product\Parameter\Parameter[]
+     */
+    public function getAllOrderedByName(string $locale): array
+    {
+        $parameters = $this->getAll();
+        usort($parameters, function (Parameter $parameter1, Parameter $parameter2) use ($locale) {
+            return strcasecmp($parameter1->getName($locale), $parameter2->getName($locale));
+        });
+
+        return $parameters;
+    }
 }

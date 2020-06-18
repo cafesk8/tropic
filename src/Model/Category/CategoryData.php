@@ -71,6 +71,11 @@ class CategoryData extends BaseCategoryData
      */
     public $type;
 
+    /**
+     * @var \App\Model\Product\Parameter\Parameter[]
+     */
+    public $filterParameters;
+
     public function __construct()
     {
         parent::__construct();
@@ -80,5 +85,6 @@ class CategoryData extends BaseCategoryData
         $this->rightBannerTexts = [];
         $this->advert = null;
         $this->type = null;
+        $this->filterParameters = [];
     }
 }

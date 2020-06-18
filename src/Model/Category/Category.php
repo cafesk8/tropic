@@ -6,6 +6,7 @@ namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
@@ -93,6 +94,14 @@ class Category extends BaseCategory
     private $type;
 
     /**
+     * @var \App\Model\Product\Parameter\Parameter[]|\Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Model\Product\Parameter\Parameter", fetch="EXTRA_LAZY")
+     * @ORM\JoinTable(name="category_parameters")
+     */
+    private $filterParameters;
+
+    /**
      * @param \App\Model\Category\CategoryData $categoryData
      */
     public function __construct(BaseCategoryData $categoryData)
@@ -127,6 +136,7 @@ class Category extends BaseCategory
         $this->pohodaPosition = $categoryData->pohodaPosition;
         $this->type = $categoryData->type;
         $this->setTranslations($categoryData);
+        $this->filterParameters = new ArrayCollection($categoryData->filterParameters);
     }
 
     /**
@@ -309,5 +319,13 @@ class Category extends BaseCategory
     public function isNewsType(): bool
     {
         return $this->type === self::NEWS_TYPE;
+    }
+
+    /**
+     * @return \App\Model\Product\Parameter\Parameter[]
+     */
+    public function getFilterParameters(): array
+    {
+        return $this->filterParameters->toArray();
     }
 }
