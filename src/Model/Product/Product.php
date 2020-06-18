@@ -818,32 +818,6 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param int $quantity
-     * @param bool $saleItem
-     */
-    public function subtractStockQuantity($quantity, bool $saleItem = false)
-    {
-        parent::subtractStockQuantity($quantity);
-        $remainingQuantity = $quantity;
-
-        foreach ($this->getStoreStocks() as $productStoreStock) {
-            $isSaleStock = $productStoreStock->getStore()->isSaleStock();
-            if (($isSaleStock && !$saleItem) || (!$isSaleStock && $saleItem)) {
-                continue;
-            }
-            $availableQuantity = $productStoreStock->getStockQuantity();
-
-            if ($remainingQuantity > $availableQuantity) {
-                $productStoreStock->subtractStockQuantity($availableQuantity);
-                $remainingQuantity -= $availableQuantity;
-            } else {
-                $productStoreStock->subtractStockQuantity($remainingQuantity);
-                break;
-            }
-        }
-    }
-
-    /**
      * @return string|null
      */
     public function getVariantId(): ?string
