@@ -48,11 +48,12 @@ class ParameterFilterChoiceRepository extends BaseParameterFilterChoiceRepositor
         $productsQueryBuilder
             ->select('MIN(p), pp, pv')
             ->join(ProductParameterValue::class, 'ppv', Join::WITH, 'ppv.product = p')
-            ->join(Parameter::class, 'pp', Join::WITH, 'pp = ppv.parameter')
+            ->join(Parameter::class, 'pp', Join::WITH, 'pp = ppv.parameter AND pp IN (:parameters)')
             ->join(ParameterValue::class, 'pv', Join::WITH, 'pv = ppv.value AND pv.locale = :locale')
             ->groupBy('pp, pv')
             ->resetDQLPart('orderBy')
-            ->setParameter('locale', $locale);
+            ->setParameter('locale', $locale)
+            ->setParameter('parameters', $category->getFilterParameters());
 
         $rows = $productsQueryBuilder->getQuery()->execute(null, GroupedScalarHydrator::HYDRATION_MODE);
 
