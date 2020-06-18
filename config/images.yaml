@@ -82,11 +82,6 @@
             height: 128
             crop: false
             occurrence: 'Front-end: Listing of products in sets'
-        -   name: listBomb
-            width: 90
-            height: 90
-            crop: false
-            occurrence: 'Front-end: Listing of products in products bomb'
         -   name: listDetailArticle
             width: 70
             height: 70
@@ -103,10 +98,10 @@
             crop: false
             occurrence: 'Front-end: gift on product detail'
         -   name: biggerThumbnail
-            width: 101
-            height: 101
+            width: 90
+            height: 90
             crop: false
-            occurrence: 'Front-end: gift on product detail'
+            occurrence: 'Front-end: gift on product detail and list in products bomb'
 
 -   name: sliderItem
     class: Shopsys\FrameworkBundle\Model\Slider\SliderItem

@@ -113,16 +113,16 @@
 {% block form_errors %}
     {% set errors_attr = errors_attr|default({})|merge({'class': (errors_attr.class|default(''))}) %}
     {% apply spaceless %}
-        <span class="js-validation-errors-list js-validation-error-list-{{ form.vars.id }} {{ form.parent ? 'form-error' : 'in-message' }} {{ errors_attr.class }}">
-            <ul class="{{ form.parent ? 'form-error__list' : 'in-message__list' }}">
-                {% if errors|length > 0 %}
+        {% if errors|length > 0 %}    
+            <span class="js-validation-errors-list js-validation-error-list-{{ form.vars.id }} {{ form.parent ? 'form-error' : 'in-message' }} {{ errors_attr.class }}">
+                <ul class="{{ form.parent ? 'form-error__list' : 'in-message__list' }}">
                     {% for error in errors %}
                         <li>{{ error.message }}</li>
                     {% endfor %}
-                {% endif %}
-                {% if not form.vars.required %}<span class="form-input-not-required">{{ 'Nepovinný údaj'|trans }}</span>{% endif %}
-            </ul>
-        </span>
+                    {% if not form.vars.required %}<span class="form-input-not-required">{{ 'Nepovinný údaj'|trans }}</span>{% endif %}
+                </ul>
+            </span>
+        {% endif %}
     {% endapply %}
 {% endblock form_errors %}
 
@@ -277,7 +277,7 @@
 
 {% block order_gift_choice_row %}
     {% apply spaceless %}
-        <h3 class="list-order-gifts-title">{{- form_label(form) -}}</h3>
+        {{- form_label(form, label, { withoutColon: true, label_attr: { class: 'list-order-gifts-title' }} ) -}}
         <ul class="list-order-gifts">
             {% set productChoices = form.vars.choices %}
             {% for index, child in form %}
@@ -288,6 +288,7 @@
                         {% if isEmptyValue %}
                             <div class="list-order-gifts__item__image">
                                 <div class="list-order-gifts__item__image__wrap">
+                                    <img src="{{ asset('public/frontend/images/fish.png') }}" alt="{{ 'Fish'|trans }}">
                                 </div>
                             </div>
                             <p class="list-order-gifts__item__name">
@@ -297,7 +298,7 @@
                             {% set product = productChoices[index].data %}
                             <div class="list-order-gifts__item__image">
                                 <div class="list-order-gifts__item__image__wrap">
-                                    {{ image(product, { alt: product.name, size: 'thumbnail' }) }}
+                                    {{ image(product, { alt: product.name, size: 'biggerThumbnail' }) }}
                                 </div>
                             </div>
                             <p class="list-order-gifts__item__name">

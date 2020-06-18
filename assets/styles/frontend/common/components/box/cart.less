@@ -1,0 +1,20 @@
+@box-cart-info-gap: 30px; 
+
+.box-cart {
+    margin-bottom: 60px;
+
+    @media @query-lg {
+        margin-bottom: 127px;
+    }
+
+    &__message {
+        width: 100%;
+    }
+
+    &__info {
+        padding: @box-cart-info-gap;
+
+        border-radius: @radius;
+        background-color: @color-light;
+    }
+}

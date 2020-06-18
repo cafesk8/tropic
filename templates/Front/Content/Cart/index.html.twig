@@ -9,6 +9,8 @@
     {{ 'Cart'|trans }}
 {% endblock %}
 
+{% block headerLayoutClass %}web__header--bigger-gap{% endblock %}
+
 {% block breadcrumb %}
 {% endblock %}
 
@@ -28,158 +30,157 @@
 
     <div class="web__line">
         <div class="web__container web__container--border-radius-top">
-            <div class="box-order">
-                <div class="box-order__message">
-                    {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
-                </div>
+            <div class="box-cart">
                 {% if cart is not null %}
                     {{ form_start(form, { attr: { class: 'js-no-validate js-cart-form' }}) }}
-                        <div class="box-order__wrap">
-                            <div class="box-order__info">
-                                {{ form_errors(form) }}
-                                <div class="table-cart js-cart">
-                                    {% for index, cartItem in cartItems %}
-                                        {% set cartItemPrice = cartItemPrices[index] %}
-                                        {% set cartItemUrl = url('front_product_detail', {id: cartItem.product.id}) %}
-                                        <div class="table-cart__row js-cart-item">
-                                            <div class="table-cart__row__left">
-                                                <div class="table-cart__cell__number">
-                                                    <span class="table-cart__cell__number__text">
-                                                        {{ loop.index }}
-                                                    </span>
-                                                </div>
-                                                <div class="table-cart__cell__image">
-                                                    <a href="{{ cartItemUrl }}" title="{{ cartItem.product.name }}">
-                                                        {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'biggerThumbnail', lazy: true }) }}
-                                                    </a>
-                                                </div>
-                                                <div class="table-cart__cell__name js-cart-item-name">
-                                                    <a class="table-cart__cell__name__title" href="{{ cartItemUrl }}" title="{{ cartItem.name }}">
-                                                        {{ cartItem.name }}
-                                                    </a>
-                                                    {% if cartItem.product.id in cartGiftsByProductId|keys %}
-                                                        {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
-                                                        {% for giftVariant in cartItemGift %}
-                                                            <div class="table-cart__item__info__gift_row">
-                                                                <div class="table-cart__item__info__gift">
-                                                                    <span class="table-cart__item__info__gift__title">{{ 'Dárek'|trans }}</span>
-                                                                    {{ giftVariant.gift.name }}
-                                                                </div>
+                        <div class="box-cart__message">
+                            {{ form_errors(form) }}
+                            {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
+                        </div>
+                        <div class="box-cart__info">
+                            <div class="table-cart js-cart">
+                                {% for index, cartItem in cartItems %}
+                                    {% set cartItemPrice = cartItemPrices[index] %}
+                                    {% set cartItemUrl = url('front_product_detail', {id: cartItem.product.id}) %}
+                                    <div class="table-cart__row js-cart-item">
+                                        <div class="table-cart__content">
+                                            <div class="table-cart__cell table-cart__cell--image">
+                                                <a href="{{ cartItemUrl }}" title="{{ cartItem.product.name }}">
+                                                    {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'biggerThumbnail', lazy: true }) }}
+                                                </a>
+                                            </div>
+                                            <div class="table-cart__cell table-cart__cell--name js-cart-item-name">
+                                                <a class="table-cart__cell__name" href="{{ cartItemUrl }}" title="{{ cartItem.name }}">
+                                                    {{ cartItem.name }}
+                                                </a>
+                                                {% if cartItem.product.id in cartGiftsByProductId|keys %}
+                                                    {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
+                                                    {% for giftVariant in cartItemGift %}
+                                                        <div class="table-cart__cell__gift">
+                                                            <div class="table-cart__cell__gift__block">
+                                                                <span class="table-cart__cell__gift__block__title">{{ 'Dárek'|trans }}</span>
+                                                                {{ giftVariant.gift.name }}
                                                             </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                            <div class="table-cart__cell table-cart__cell--availability js-not-implemented-yet">
+                                                Skladem, ihned k odeslání
+                                            </div>
+                                            <div class="table-cart__cell table-cart__cell--price-unit">
+                                                {{ cartItemPrice.unitPrice.priceWithVat|price }}
+                                            </div>
+                                            <div class="table-cart__cell table-cart__cell--spinbox js-spinbox-parent">
+                                                <span class="form-input-spinbox form-input-spinbox--secondary js-spinbox">
+                                                    {% if cartItem.saleItem %}
+                                                        {% set maxQuantity = cartItem.product.realSaleStocksQuantity %}
+                                                    {% else %}
+                                                        {% set maxQuantity = cartItem.product.realNonSaleStocksQuantity %}
+                                                    {% endif %}
+                                                    {{ form_widget(form.quantities[cartItem.id], { attr: {
+                                                        class: 'form-input-spinbox__input input-no-style js-spinbox-input',
+                                                        'data-spinbox-min': cartItem.product.realMinimumAmount,
+                                                        'data-spinbox-step': cartItem.product.amountMultiplier,
+                                                        'data-spinbox-max': maxQuantity
+                                                    }}) }}
+                                                    <div class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></div>
+                                                    <div class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></div>
+                                                </span>
+                                                <a
+                                                    href="{{ url('front_cart_delete', {cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id)}) }}"
+                                                    class="table-cart__cell__remove js-cart-item-remove-button"
+                                                >
+                                                    {{ 'Odstranit'|trans }}
+                                                </a>
+                                            </div>
+                                            <div class="table-cart__cell table-cart__cell--price js-cart-item-total-price">
+                                                <div class="table-cart__cell__price-primary">
+                                                    {{ cartItemPrice.totalPrice.priceWithVat|price }}
+                                                </div>
+                                                {%  if quantifiedItemsDiscountsByIndex[index] is defined %}
+                                                    {% set quantifiedItemDiscount = quantifiedItemsDiscountsByIndex[index] %}
+                                                    <div class="table-cart__cell__discount">
+                                                        -{{ quantifiedItemDiscount.priceWithVat|price }}
+                                                    </div>
+                                                {% endif %}
+                                                {% if promoCodesIndexedById is not empty %}
+                                                    <div class="table-cart__cell__discount">
+                                                        {% for promoCodeId, promoCode in promoCodesIndexedById %}
+                                                            {% if cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index] is defined and cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index] is not null %}
+                                                                &nbsp;{{ promoCode.code }}&nbsp;
+                                                                -{{ cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index].priceWithVat|price }}
+                                                                <br>
+                                                            {% endif %}
                                                         {% endfor %}
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                            <div class="table-cart__row__right">
-                                                <div class="table-cart__cell__spinbox js-spinbox-parent">
-                                                    <div class="in-message in-message--warning js-maximum-amount-warning display-none">
-                                                        {{ 'Větší množství není možné nakoupit'|trans }}
                                                     </div>
-                                                    <span class="form-input-spinbox js-spinbox">
-                                                        {% if cartItem.saleItem %}
-                                                            {% set maxQuantity = cartItem.product.realSaleStocksQuantity %}
-                                                        {% else %}
-                                                            {% set maxQuantity = cartItem.product.realNonSaleStocksQuantity %}
-                                                        {% endif %}
-                                                        {{ form_widget(form.quantities[cartItem.id], { attr: {
-                                                            class: 'form-input-spinbox__input input-no-style js-spinbox-input',
-                                                            'data-spinbox-min': cartItem.product.realMinimumAmount,
-                                                            'data-spinbox-step': cartItem.product.amountMultiplier,
-                                                            'data-spinbox-max': maxQuantity
-                                                        }}) }}
-                                                        <div class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></div>
-                                                        <div class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></div>
-                                                    </span>
-                                                    <a
-                                                        href="{{ url('front_cart_delete', {cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id)}) }}"
-                                                        class="table-cart__cell__spinbox__link js-cart-item-remove-button"
-                                                    >
-                                                        {{ 'Odstranit'|trans }}
-                                                    </a>
-                                                </div>
-                                                <div class="table-cart__cell__price js-cart-item-total-price">
-                                                    <div class="table-cart__cell__price__primary">
-                                                        {{ cartItemPrice.unitPrice.priceWithVat|price }}
+                                                {% endif %}
+                                                {{ discountExclusion.discountExclusionNotice(cartItem.product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
+                                            </div>
+                                        </div>
+                                        <div class="table-cart__messages">
+                                            <div class="in-message in-message--warning js-maximum-amount-warning display-none">
+                                                {{ 'Větší množství není možné nakoupit'|trans }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                                {% if form.orderGiftProduct.vars.choices|length > 0 %}
+                                    <div class="table-cart__order-gifts">
+                                        {{ form_row(form.orderGiftProduct) }}
+                                    </div>
+                                {% else %}
+                                    {% do form.orderGiftProduct.setRendered %}
+                                {% endif %}
+
+                                {% if nextLevelGifts is not empty and nextLevelDifference is not null %}
+                                    <div class="table-cart__next-gifts">
+                                        <p class="table-cart__next-gifts__title">
+                                            {{ 'Nakupte ještě za %nextLevelDifference% a vybírejte z těchto dárků:'|trans({'%nextLevelDifference%': nextLevelDifference|price}) }}
+                                        </p>
+                                        <ul class="list-next-gifts">
+                                            {% for nextLevelGift in nextLevelGifts %}
+                                                <li class="list-next-gifts__item">
+                                                    <div class="list-next-gifts__item__image">
+                                                        {{ image(nextLevelGift, { alt: nextLevelGift.name, size: 'thumbnail' }) }}
                                                     </div>
-                                                    {%  if quantifiedItemsDiscountsByIndex[index] is defined %}
-                                                        {% set quantifiedItemDiscount = quantifiedItemsDiscountsByIndex[index] %}
-                                                        <div class="table-cart__cell__discount">
-                                                            -{{ quantifiedItemDiscount.priceWithVat|price }}
-                                                        </div>
-                                                    {% endif %}
-                                                    {% if promoCodesIndexedById is not empty %}
-                                                        <div class="table-cart__cell__discount">
-                                                            {% for promoCodeId, promoCode in promoCodesIndexedById %}
-                                                                {% if cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index] is defined and cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index] is not null %}
-                                                                    &nbsp;{{ promoCode.code }}&nbsp;
-                                                                    -{{ cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index].priceWithVat|price }}
-                                                                    <br>
-                                                                {% endif %}
-                                                            {% endfor %}
-                                                        </div>
-                                                    {% endif %}
-                                                    {{ discountExclusion.discountExclusionNotice(cartItem.product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-
-                                    {% if form.orderGiftProduct.vars.choices|length > 0 %}
-                                        <div class="table-cart__order-gifts">
-                                            {{ form_row(form.orderGiftProduct) }}
-                                        </div>
-                                    {% else %}
-                                        {% do form.orderGiftProduct.setRendered %}
-                                    {% endif %}
-
-                                    {% if nextLevelGifts is not empty and nextLevelDifference is not null %}
-                                        <div class="table-cart__next-gifts">
-                                            <p class="table-cart__next-gifts__title">
-                                                {{ 'Nakupte ještě za %nextLevelDifference% a vybírejte z těchto dárků:'|trans({'%nextLevelDifference%': nextLevelDifference|price}) }}
-                                            </p>
-                                            <ul class="list-next-gifts">
-                                                {% for nextLevelGift in nextLevelGifts %}
-                                                    <li class="list-next-gifts__item">
-                                                        <div class="list-next-gifts__item__image">
-                                                            {{ image(nextLevelGift, { alt: nextLevelGift.name, size: 'thumbnail' }) }}
-                                                        </div>
-                                                        <p class="list-next-gifts__item__name">
-                                                            {{ nextLevelGift.name }}
-                                                        </p>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    {% endif %}
-                                </div>
-
-                                {% if isFreeTransportAndPaymentActive %}
-                                    {% if isPaymentAndTransportFree %}
-                                        <div class="in-free-transport in-free-transport--dark">
-                                            <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
-                                            <div class="in-free-transport__pipe">
-                                                <div class="in-free-transport__pipe__line" style="width: 100%;"></div>
-                                            </div>
-                                        </div>
-                                    {% else %}
-                                        <div class="in-free-transport in-free-transport--dark">
-                                            <div class="in-free-transport__title">
-                                                {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }} {{ 'máte'|trans }}
-                                                <br> <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
-                                            </div>
-                                            <div class="in-free-transport__pipe">
-                                                <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
-                                            </div>
-                                        </div>
-                                    {% endif %}
+                                                    <p class="list-next-gifts__item__name">
+                                                        {{ nextLevelGift.name }}
+                                                    </p>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                                 {% endif %}
                             </div>
-                            <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
-                                {{ render(controller('App\\Controller\\Front\\OrderController:previewAction', {
-                                    orderStep: "1",
-                                    formSubmit: form.submit
-                                })) }}
-                            </div>
+
+                            {% if isFreeTransportAndPaymentActive %}
+                                {% if isPaymentAndTransportFree %}
+                                    <div class="in-free-transport in-free-transport--dark">
+                                        <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
+                                        <div class="in-free-transport__pipe">
+                                            <div class="in-free-transport__pipe__line" style="width: 100%;"></div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="in-free-transport in-free-transport--dark">
+                                        <div class="in-free-transport__title">
+                                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }} {{ 'máte'|trans }}
+                                            <br> <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                                        </div>
+                                        <div class="in-free-transport__pipe">
+                                            <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div id="js-order-preview" class="box-cart__cart" data-url="{{ url('front_order_preview') }}">
+                            {{ render(controller('App\\Controller\\Front\\OrderController:previewAction', {
+                                orderStep: "1",
+                                formSubmit: form.submit
+                            })) }}
                         </div>
                     {{ form_end(form) }}
                 {% else %}
