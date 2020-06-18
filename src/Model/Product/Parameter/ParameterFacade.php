@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Parameter;
 
-use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter as BaseParameter;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade as BaseParameterFacade;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -22,6 +19,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @method \App\Model\Product\Parameter\Parameter|null findParameterByNames(string[] $namesByLocale)
  * @method \App\Model\Product\Parameter\ParameterValue getParameterValueByValueTextAndLocale(string $valueText, string $locale)
  * @method dispatchParameterEvent(\App\Model\Product\Parameter\Parameter $parameter, string $eventType)
+ * @method \App\Model\Product\Parameter\Parameter edit(int $parameterId, \App\Model\Product\Parameter\ParameterData $parameterData)
  */
 class ParameterFacade extends BaseParameterFacade
 {
@@ -40,11 +38,6 @@ class ParameterFacade extends BaseParameterFacade
     ];
 
     /**
-     * @var \App\Model\Product\ProductFacade
-     */
-    private $productFacade;
-
-    /**
      * @var \App\Model\Product\Parameter\ParameterRepository
      */
     protected $parameterRepository;
@@ -58,7 +51,6 @@ class ParameterFacade extends BaseParameterFacade
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFactoryInterface $parameterFactory
-     * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\Parameter\ParameterDataFactory $parameterDataFactory
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
@@ -66,27 +58,12 @@ class ParameterFacade extends BaseParameterFacade
         EntityManagerInterface $em,
         ParameterRepository $parameterRepository,
         ParameterFactoryInterface $parameterFactory,
-        ProductFacade $productFacade,
         ParameterDataFactoryInterface $parameterDataFactory,
         EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct($em, $parameterRepository, $parameterFactory, $eventDispatcher);
 
-        $this->productFacade = $productFacade;
         $this->parameterDataFactory = $parameterDataFactory;
-    }
-
-    /**
-     * @param int $parameterId
-     * @param \App\Model\Product\Parameter\ParameterData $parameterData
-     * @return \App\Model\Product\Parameter\Parameter
-     */
-    public function edit($parameterId, ParameterData $parameterData)
-    {
-        /** @var \App\Model\Product\Parameter\Parameter $parameter */
-        $parameter = parent::edit($parameterId, $parameterData);
-
-        return $parameter;
     }
 
     /**
@@ -98,40 +75,6 @@ class ParameterFacade extends BaseParameterFacade
 
         $this->em->remove($parameter);
         $this->em->flush();
-    }
-
-    /**
-     * @param int $productId
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
-     */
-    public function findColorProductParameterValueByProductId(int $productId): ?ProductParameterValue
-    {
-        $parameter = $this->findColorParameter();
-
-        if ($parameter === null) {
-            return null;
-        }
-
-        $product = $this->productFacade->getById($productId);
-
-        return $this->parameterRepository->findProductParameterValueByParameterAndProduct($parameter, $product);
-    }
-
-    /**
-     * @param int $productId
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
-     */
-    public function findSizeProductParameterValueByProductId(int $productId): ?ProductParameterValue
-    {
-        $parameter = $this->findSizeParameter();
-
-        if ($parameter === null) {
-            return null;
-        }
-
-        $product = $this->productFacade->getById($productId);
-
-        return $this->parameterRepository->findProductParameterValueByParameterAndProduct($parameter, $product);
     }
 
     /**

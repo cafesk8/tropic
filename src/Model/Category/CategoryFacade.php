@@ -7,6 +7,7 @@ namespace App\Model\Category;
 use App\Model\Advert\Advert;
 use App\Model\Category\Transfer\CategoryRemoveFacade;
 use App\Model\Category\Transfer\Exception\MaximumPercentageOfCategoriesToRemoveLimitExceeded;
+use App\Model\Product\Parameter\Parameter;
 use App\Model\Product\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
@@ -410,6 +411,18 @@ class CategoryFacade extends BaseCategoryFacade
             }
 
             $this->edit($specialCategory->getId(), $categoryData);
+        }
+    }
+
+    /**
+     * @param \App\Model\Product\Parameter\Parameter $parameter
+     */
+    public function addParameterToAllCategories(Parameter $parameter): void
+    {
+        foreach ($this->getAll() as $category) {
+            $categoryData = $this->categoryDataFactory->createFromCategory($category);
+            $categoryData->filterParameters[] = $parameter;
+            $this->edit($category->getId(), $categoryData);
         }
     }
 }
