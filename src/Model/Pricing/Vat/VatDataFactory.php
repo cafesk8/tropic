@@ -30,5 +30,6 @@ class VatDataFactory extends BaseVatDataFactory
     {
         parent::fillFromVat($vatData, $vat);
         $vatData->pohodaId = $vat->getPohodaId();
+        $vatData->pohodaName = $vat->getPohodaName();
     }
 }

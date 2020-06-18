@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Order\ItemSourceStock;
 
+use App\Model\Order\Item\OrderItem;
 use Doctrine\ORM\EntityManagerInterface;
 
 class OrderItemSourceStockFacade
@@ -14,11 +15,18 @@ class OrderItemSourceStockFacade
     private $em;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @var \App\Model\Order\ItemSourceStock\OrderItemSourceStockRepository
      */
-    public function __construct(EntityManagerInterface $em)
+    private $orderItemSourceStockRepository;
+
+    /**
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockRepository $orderItemSourceStockRepository
+     */
+    public function __construct(EntityManagerInterface $em, OrderItemSourceStockRepository $orderItemSourceStockRepository)
     {
         $this->em = $em;
+        $this->orderItemSourceStockRepository = $orderItemSourceStockRepository;
     }
 
     /**
@@ -32,5 +40,14 @@ class OrderItemSourceStockFacade
         $this->em->flush();
 
         return $orderItemSourceStock;
+    }
+
+    /**
+     * @param \App\Model\Order\Item\OrderItem $orderItem
+     * @return \App\Model\Order\ItemSourceStock\OrderItemSourceStock[]
+     */
+    public function getAllByOrderItem(OrderItem $orderItem): array
+    {
+        return $this->orderItemSourceStockRepository->getAllByOrderItem($orderItem);
     }
 }

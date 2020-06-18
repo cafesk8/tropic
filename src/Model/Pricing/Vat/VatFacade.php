@@ -30,4 +30,19 @@ class VatFacade extends BaseVatFacade
     {
         return $this->vatRepository->findByPohodaId($pohodaId);
     }
+
+    /**
+     * @param int $domainId
+     * @return string[]
+     */
+    public function getAllPohodaNamesIndexedByVatPercent(int $domainId): array
+    {
+        $allVatsForDomain = $this->getAllForDomain($domainId);
+        $vatsIndexedByVatPercent = [];
+        foreach ($allVatsForDomain as $vat) {
+            $vatsIndexedByVatPercent[(int)$vat->getPercent()] = $vat->getPohodaName();
+        }
+
+        return $vatsIndexedByVatPercent;
+    }
 }

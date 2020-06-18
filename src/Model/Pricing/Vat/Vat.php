@@ -25,6 +25,13 @@ class Vat extends BaseVat
     private $pohodaId;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true, length=20)
+     */
+    private $pohodaName;
+
+    /**
      * @param \App\Model\Pricing\Vat\VatData $vatData
      * @param int $domainId
      */
@@ -32,6 +39,7 @@ class Vat extends BaseVat
     {
         parent::__construct($vatData, $domainId);
         $this->pohodaId = $vatData->pohodaId;
+        $this->pohodaName = $vatData->pohodaName;
     }
 
     /**
@@ -41,6 +49,7 @@ class Vat extends BaseVat
     {
         parent::edit($vatData);
         $this->pohodaId = $vatData->pohodaId;
+        $this->pohodaName = $vatData->pohodaName;
     }
 
     /**
@@ -49,5 +58,13 @@ class Vat extends BaseVat
     public function getPohodaId(): ?int
     {
         return $this->pohodaId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPohodaName(): ?string
+    {
+        return $this->pohodaName;
     }
 }
