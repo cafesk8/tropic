@@ -801,4 +801,13 @@ class OrderFacade extends BaseOrderFacade
 
         return $order;
     }
+
+    /**
+     * @param int $limit
+     * @return \App\Model\Order\Order[]
+     */
+    public function getAllForTransfer(int $limit): array
+    {
+        return $this->orderRepository->getForTransfer($limit);
+    }
 }

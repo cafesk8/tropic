@@ -17,6 +17,8 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 
 class OrderExportFacade
 {
+    private const ORDERS_EXPORT_MAX_BATCH_LIMIT = 1000;
+
     /**
      * @var \App\Model\Customer\Transfer\CustomerExportFacade
      */
@@ -90,7 +92,7 @@ class OrderExportFacade
 
     public function processExport(): void
     {
-        $orders = $this->orderFacade->findAll();
+        $orders = $this->orderFacade->getAllForTransfer(self::ORDERS_EXPORT_MAX_BATCH_LIMIT);
 
         $customersUsers = [];
         foreach ($orders as $order) {

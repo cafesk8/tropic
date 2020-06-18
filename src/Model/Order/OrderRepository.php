@@ -275,4 +275,21 @@ class OrderRepository extends BaseOrderRepository
             'createdAt' => 'DESC',
         ]);
     }
+
+    /**
+     * @param int $limit
+     * @return \App\Model\Order\Order[]
+     */
+    public function getForTransfer(int $limit): array
+    {
+        $queryBuilder = $this->createOrderQueryBuilder()
+            ->where('o.exportStatus = :exportStatus')
+            ->orderBy('o.createdAt', 'ASC')
+            ->setMaxResults($limit)
+            ->setParameters([
+                'exportStatus' => Order::EXPORT_NOT_YET,
+            ]);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }
