@@ -39,4 +39,12 @@ class FlagRepository extends BaseFlagRepository
     {
         return $this->getFlagRepository()->findBy(['sale' => true]);
     }
+
+    /**
+     * @return \App\Model\Product\Flag\Flag[]
+     */
+    public function getNewsFlags(): array
+    {
+        return $this->getFlagRepository()->findBy(['news' => true]);
+    }
 }
