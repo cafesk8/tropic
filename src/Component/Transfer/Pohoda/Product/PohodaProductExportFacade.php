@@ -240,7 +240,7 @@ class PohodaProductExportFacade
     private function addProductParametersToPohodaProductsResult(array &$pohodaProductsResult, array $pohodaProductIds): void
     {
         $productParameters = $this->pohodaProductExportRepository->getProductParametersByPohodaIds($pohodaProductIds);
-        foreach ($productParameters as $productParameter) {
+        foreach ($productParameters as $productParameterPohodaId => $productParameter) {
             $productPohodaId = (int)$productParameter[PohodaProduct::COL_PRODUCT_REF_ID];
             $parameterValue = $this->getPohodaParameterValueByType($productParameter);
             if (isset($pohodaProductsResult[$productPohodaId]) && $parameterValue !== null) {

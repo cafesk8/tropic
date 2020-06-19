@@ -67,6 +67,7 @@ class PohodaProduct
 
     public const COL_PARAMETERS = 'parameters';
 
+    public const COL_PRODUCT_PARAMETER_ID = 'productParameterID';
     public const COL_PARAMETER_ID = 'parameterID';
     public const COL_PARAMETER_NAME = 'parameterName';
     public const COL_PARAMETER_TYPE = 'parameterType';
