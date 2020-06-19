@@ -64,7 +64,9 @@
         border-radius: @radius-big;
 
         &:last-child {
-            margin-bottom: 0;
+            @media @query-vl {
+                margin-bottom: 0;
+            }
         }
 
         &--gradient {
@@ -94,10 +96,15 @@
     &__title {
         display: block;
         line-height: 42px;
+        margin-bottom: 25px;
 
         color: @color-base;
         font-weight: 700;
         font-size: 45px;
+
+        @media @query-vl {
+            margin-bottom: 0;
+        }
     }
 
     &__categories {

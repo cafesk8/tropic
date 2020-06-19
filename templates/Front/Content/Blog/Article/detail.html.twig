@@ -30,9 +30,10 @@
                         {% if imageExists(blogArticle) %}
                             <div class="in-article__main-img">
                                 {{ image(blogArticle, { itemprop: 'image' }) }}
-                            </div>
-                            <div class="in-article__img-caption">
-                                {{ blogArticle.mainPhotoTitle }}
+                                
+                                <div class="in-article__img-caption">
+                                    {{ blogArticle.mainPhotoTitle }}
+                                </div>
                             </div>
                         {% endif %}
 
