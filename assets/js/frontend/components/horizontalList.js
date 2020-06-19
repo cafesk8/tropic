@@ -18,10 +18,8 @@ import Timeout from 'framework/common/utils/Timeout';
                 'last-visited': [false, false, true, true, true, true],
                 'top-products': [false, false, true, true, true, true],
                 'best-selling': [false, false, true, true, true, true],
+                'new-products': [false, false, true, true, true, true],
                 'accessories-products': [false, false, true, true, true, true],
-                'products': [false, false, true, true, true, true],
-                'references': [false, false, true, true, true, true],
-                'basket-additionals': [false, false, true, true, true, true],
                 'products-set': [true, true, true, true, true, true]
             };
 
@@ -29,10 +27,8 @@ import Timeout from 'framework/common/utils/Timeout';
                 'last-visited': [1, 2, 3, 3, 5],
                 'top-products': [1, 2, 2, 3, 4],
                 'best-selling': [1, 2, 3, 4, 6],
-                'accessories-products': [1, 2, 3, 4, 6],
-                'products': [2, 3, 2, 3, 6],
-                'references': [1, 2, 3, 3, 4],
-                'basket-additionals': [1, 2, 3, 2, 3],
+                'new-products': [1, 2, 2, 3, 4],
+                'accessories-products': [1, 2, 3, 4, 4],
                 'products-set': [1, 2, 3, 2, 3]
             };
 
@@ -40,10 +36,8 @@ import Timeout from 'framework/common/utils/Timeout';
                 'last-visited': [1, 2, 3, 3, 5],
                 'top-products': [1, 2, 2, 3, 4],
                 'best-selling': [1, 2, 3, 4, 6],
-                'accessories-products': [1, 2, 3, 4, 6],
-                'products': [2, 3, 2, 3, 6],
-                'references': [1, 2, 3, 3, 4],
-                'basket-additionals': [1, 2, 3, 2, 3],
+                'new-products': [1, 2, 2, 3, 4],
+                'accessories-products': [1, 2, 3, 4, 4],
                 'products-set': [1, 1, 1, 1, 1]
             };
 

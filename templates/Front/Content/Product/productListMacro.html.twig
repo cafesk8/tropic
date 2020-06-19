@@ -260,7 +260,7 @@
     </div>
 {% endmacro %}
 
-{% macro productsBomb(productViews, productHeadingTagName, type, onlyRefresh = false) %}
+{% macro productsBomb(productViews, productHeadingTagName) %}
     <ul class="list-products-bomb">
         {% for productView in productViews %}
             {% set productSellingPrice = productView.sellingPrice %}

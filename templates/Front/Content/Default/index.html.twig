@@ -41,7 +41,7 @@
             <div class="web__container web__container--border-radius web__container--light">
                 <div class="box-products-bomb">
                     <div class="box-products-bomb__content">
-                        {{ productList.productsBomb(priceBombProducts, 'h3', 'top-products') }}
+                        {{ productList.productsBomb(priceBombProducts, 'h3') }}
                         <div class="box-products-bomb__fishes">
                             <img src="{{ asset('public/frontend/images/fishes-big.svg')}}" alt="{{ 'Rybky'|trans }}">
                         </div>
@@ -60,12 +60,12 @@
     {% if newProducts is not empty %}
         <div class="web__line">
             <div class="web__container web__container--no-padding">
-                <div id="top-products" class="box-products-slider">
+                <div class="box-products-slider">
                     <h2 class="box-products-slider__title">
                         {{ 'Novinky'|trans }}
                     </h2>
                     <a href="{{ url('front_product_list', { id: newsCategory.id }) }}">{{ 'Přejít na všechny novinky'|trans }}</a>
-                    {{ productList.horizontalList(newProducts, '', 'h3', 'accessories-products', false, false, true) }}
+                    {{ productList.horizontalList(newProducts, '', 'h3', 'new-products', true, false, true) }}
                 </div>
             </div>
         </div>
