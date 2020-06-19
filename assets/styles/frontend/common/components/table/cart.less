@@ -1,7 +1,5 @@
 @table-cart-item-gap: 10px;
 @table-cart-image-size: 90px;
-@table-cart-spinbox-width: 120px;
-@table-cart-price-width: 164px;
 @table-cart-gift-white-space: 15px;
 
 .table-cart {
@@ -10,19 +8,25 @@
 
     &__row {
         margin-bottom: 5px;
-        padding: 14px 30px;
+        padding: 14px 20px;
 
         background-color: @color-f;
         border-radius: 4px;
+
+        @media @query-lg {
+            padding: 14px 30px;
+        }
     }
 
     &__content {
+        position: relative;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        
-        @media @query-md {
-            flex-direction: row;
+        flex-wrap: wrap;
+
+        @media @query-vl {
+            flex-wrap: nowrap;
         }
     }
 
@@ -34,9 +38,15 @@
 
     &__cell {
         &--image {
+            order: 1;
             position: relative;
             height: @table-cart-image-size;
             width: @table-cart-image-size;
+            margin-bottom: 5px;
+
+            @media @query-vl {
+                margin-bottom: 0;
+            }
 
             img {
                 .center-image();
@@ -44,46 +54,85 @@
         }
 
         &--name {
-            @media @query-lg {
+            order: 2;
+            padding-left: 20px;
+            width: calc(~"100% - @{table-cart-image-size}");
+            margin-bottom: 5px;
+
+            @media @query-vl {
+                margin-bottom: 0;
                 width: 336px;
-                padding-left: 20px;
             }
         }
 
         &--availability {
-            @media @query-lg {
+            order: 3;
+            width: 100% / 2;
+            margin-bottom: 5px;
+
+            @media @query-md {
+                width: 100% / 4;
+                margin-bottom: 0;
+            }
+
+            @media @query-vl {
                 padding-left: @table-cart-item-gap;
                 width: 230px;
             }
         }
 
         &--price-unit {
+            order: 5;
+            width: 100% / 2;
             font-weight: 700;
+            text-align: left;
 
-            @media @query-lg {
+            font-size: @font-size;
+
+            @media @query-md {
+                order: 4;
+                width: 100% / 4;
+                text-align: right;
+            }
+
+            @media @query-vl {
+                text-align: left;
                 width: 136px;
                 padding-left: @table-cart-item-gap;
             }
         }
 
         &--spinbox {
-            text-align: center;
-            width: @table-cart-spinbox-width;
+            order: 4;
+            width: 100% / 2;
+            text-align: right;
+            margin-bottom: 5px;
+
+            @media @query-md {
+                order: 5;
+                width: 100% / 4;
+                margin-bottom: 0;
+            }
             
-            @media @query-lg {
+            @media @query-vl {
+                text-align: center;
                 width: 105px;
                 padding-left: @table-cart-item-gap;
             }
         }
 
         &--price {
+            order: 6;
+            width: 100% / 2;
             display: flex;
             flex-direction: column;
-
-            width: @table-cart-price-width;
             text-align: right;
 
-            @media @query-lg {
+            @media @query-md {
+                width: 100% / 4;
+            }
+
+            @media @query-vl {
                 width: 162px;
                 padding-left: @table-cart-item-gap;
             }
@@ -91,10 +140,15 @@
 
         &__name {
             display: block;
+            padding-right: 15px;
     
             color: @color-base;
             font-size: @font-size;
             text-decoration: none;
+
+            @media @query-vl {
+                padding-right: 0;
+            }
         }
 
         &__gift {
@@ -126,12 +180,29 @@
 
         &__discount {
             color: @color-red;
+            font-size: @font-size-small;
         }
 
         &__remove {
-            line-height: 13px;
+            display: none;
 
-            font-size: 11px;
+            @media @query-vl {
+                display: inline;
+                line-height: 13px;
+
+                font-size: 11px;
+            }
+        }
+
+        &__remove-mobile {
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: @color-turquoise;
+
+            @media @query-vl {
+                display: none;
+            }
         }
     }
 

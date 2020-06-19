@@ -65,6 +65,12 @@
                                                     {% endfor %}
                                                 {% endif %}
                                             </div>
+                                            <a
+                                                href="{{ url('front_cart_delete', {cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id)}) }}"
+                                                class="table-cart__cell__remove-mobile js-cart-item-remove-button"
+                                            >
+                                                <i class="svg svg-remove"></i>
+                                            </a>
                                             <div class="table-cart__cell table-cart__cell--availability js-not-implemented-yet">
                                                 Skladem, ihned k odeslání
                                             </div>

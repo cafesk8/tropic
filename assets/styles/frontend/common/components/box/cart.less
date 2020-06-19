@@ -12,9 +12,13 @@
     }
 
     &__info {
-        padding: @box-cart-info-gap;
+        padding: 20px;
 
         border-radius: @radius;
         background-color: @color-light;
+
+        @media @query-lg {
+            padding: @box-cart-info-gap;
+        }
     }
 }
