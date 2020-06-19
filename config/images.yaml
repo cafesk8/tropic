@@ -102,6 +102,11 @@
             height: 90
             crop: false
             occurrence: 'Front-end: gift on product detail and list in products bomb'
+        -   name: mediumThumbnail
+            width: 70
+            height: 70
+            crop: false
+            occurrence: 'Front-end: next gift in cart'
 
 -   name: sliderItem
     class: Shopsys\FrameworkBundle\Model\Slider\SliderItem

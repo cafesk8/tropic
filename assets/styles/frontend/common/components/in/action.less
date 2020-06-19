@@ -8,26 +8,8 @@
     width: 100%;
     display: flex;
     align-items: center;
-
-    &--column {
-        flex-direction: column;
-    }
-
-    &--centered-on-mobile {
-        margin: 0 auto 20px auto;
-
-        @media @query-md {
-            margin: 0;
-        }
-
-        .svg {
-            margin-top: -15px;
-        }
-    }
-
-    &--to-top {
-        align-self: flex-start;
-    }
+    justify-content: space-between;
+    flex-direction: row;
 
     &__btn {
         padding: 0 @btn-padding-horizontal/2;

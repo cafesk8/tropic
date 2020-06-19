@@ -139,26 +139,6 @@
                                 {% else %}
                                     {% do form.orderGiftProduct.setRendered %}
                                 {% endif %}
-
-                                {% if nextLevelGifts is not empty and nextLevelDifference is not null %}
-                                    <div class="table-cart__next-gifts">
-                                        <p class="table-cart__next-gifts__title">
-                                            {{ 'Nakupte ještě za %nextLevelDifference% a vybírejte z těchto dárků:'|trans({'%nextLevelDifference%': nextLevelDifference|price}) }}
-                                        </p>
-                                        <ul class="list-next-gifts">
-                                            {% for nextLevelGift in nextLevelGifts %}
-                                                <li class="list-next-gifts__item">
-                                                    <div class="list-next-gifts__item__image">
-                                                        {{ image(nextLevelGift, { alt: nextLevelGift.name, size: 'thumbnail' }) }}
-                                                    </div>
-                                                    <p class="list-next-gifts__item__name">
-                                                        {{ nextLevelGift.name }}
-                                                    </p>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                {% endif %}
                             </div>
 
                             {% if isFreeTransportAndPaymentActive %}
@@ -182,6 +162,27 @@
                                 {% endif %}
                             {% endif %}
                         </div>
+                        
+                        {% if nextLevelGifts is not empty and nextLevelDifference is not null %}
+                            <div class="table-cart__next-gifts">
+                                <p class="table-cart__next-gifts__title">
+                                    {{ 'Nakupte ještě za %nextLevelDifference% a vybírejte z těchto dárků:'|trans({'%nextLevelDifference%': nextLevelDifference|price}) }}
+                                </p>
+                                <ul class="list-next-gifts">
+                                    {% for nextLevelGift in nextLevelGifts %}
+                                        <li class="list-next-gifts__item">
+                                            <div class="list-next-gifts__item__image">
+                                                {{ image(nextLevelGift, { alt: nextLevelGift.name, size: 'mediumThumbnail' }) }}
+                                            </div>
+                                            <p class="list-next-gifts__item__name">
+                                                {{ nextLevelGift.name }}
+                                            </p>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
                         <div id="js-order-preview" class="box-cart__cart" data-url="{{ url('front_order_preview') }}">
                             {{ render(controller('App\\Controller\\Front\\OrderController:previewAction', {
                                 orderStep: "1",
