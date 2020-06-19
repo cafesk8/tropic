@@ -100,10 +100,14 @@ class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalcula
             ->set('p.calculatedSellingDenied', '
                 CASE
                     WHEN p.realStockQuantity <= 0
+                        AND p.variantType IN (:variantTypes)
                     THEN TRUE
                     ELSE p.sellingDenied
                 END
-            ');
+            ')
+            ->setParameters([
+               'variantTypes' => [Product::VARIANT_TYPE_VARIANT, Product::VARIANT_TYPE_NONE],
+            ]);
 
         if (count($products) > 0) {
             $qb->andWhere('p IN (:products)')->setParameter('products', $products);
