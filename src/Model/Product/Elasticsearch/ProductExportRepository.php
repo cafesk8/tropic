@@ -7,6 +7,7 @@ namespace App\Model\Product\Elasticsearch;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Group\ProductGroupFacade;
+use App\Model\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
@@ -134,6 +135,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['is_available_in_days'] = $product->isAvailableInDays();
         $result['real_sale_stocks_quantity'] = $product->isSellingDenied() ? 0 : $product->getRealSaleStocksQuantity();
         $result['is_in_any_sale_stock'] = $product->isInAnySaleStock();
+        $result['pohoda_product_type'] = $product->getPohodaProductType() ?? Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
 
         return $result;
     }

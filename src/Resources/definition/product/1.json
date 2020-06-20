@@ -343,6 +343,9 @@
       },
       "is_in_any_sale_stock": {
         "type": "boolean"
+      },
+      "pohoda_product_type": {
+        "type": "integer"
       }
     }
   }
