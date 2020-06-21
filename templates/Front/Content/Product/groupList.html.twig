@@ -1,0 +1,16 @@
+{% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
+{% import 'Front/Inline/Paginator/paginator.html.twig' as paginator %}
+
+{% if paginationResultGroups.results|length > 0 %}
+    <div class="box-list__panel"></div>
+{% endif %}
+<div class="box-list__content">
+    <div class="box-list__products js-list-with-paginator">
+        {{ productList.list(paginationResultGroups.results) }}
+        <div class="box-list__actions">
+            <div class="box-list__actions__button">
+                {{ paginator.loadMoreButton(paginationResultGroups, url('front_product_search_groups', {'q': searchText}), 'pageGroups') }}
+            </div>
+        </div>
+    </div>
+</div>

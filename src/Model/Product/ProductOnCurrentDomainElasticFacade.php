@@ -115,7 +115,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         $emptyProductFilterData = new ProductFilterData();
         $page = 1;
 
-        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($emptyProductFilterData, ProductListOrderingConfig::ORDER_BY_RELEVANCE, $page, $limit, $searchText, );
+        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($emptyProductFilterData, ProductListOrderingConfig::ORDER_BY_RELEVANCE, $page, $limit, $searchText, $pohodaProductType);
 
         $productIds = $this->productElasticsearchRepository->getSortedProductIdsByFilterQuery($filterQuery);
 
@@ -131,7 +131,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @param int $limit
      * @param string|null $searchText
      * @param int $pohodaProductType
-     * @return \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery
+     * @return \App\Model\Product\Search\FilterQuery
      */
     protected function createListableProductsForSearchTextFilterQuery(
         ProductFilterData $productFilterData,
@@ -140,11 +140,34 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         int $limit,
         ?string $searchText,
         int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
-    ): BaseFilterQuery
-    {
+    ): BaseFilterQuery {
         $searchText = $searchText ?? '';
 
         return $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit, $pohodaProductType)
             ->search($searchText);
+    }
+
+    /**
+     * @param string $searchText
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param string $orderingModeId
+     * @param int $page
+     * @param int $limit
+     * @param int $pohodaProductType
+     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
+     */
+    public function getPaginatedProductsForSearch(
+        string $searchText,
+        ProductFilterData $productFilterData,
+        string $orderingModeId,
+        int $page,
+        int $limit,
+        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
+    ): PaginationResult {
+        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($productFilterData, $orderingModeId, $page, $limit, $searchText, $pohodaProductType);
+
+        $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
+
+        return new PaginationResult($page, $limit, $productsResult->getTotal(), $productsResult->getHits());
     }
 }

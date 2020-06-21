@@ -1,57 +1,44 @@
+{% import _self as self %}
 <div class="search__autocomplete">
     <div class="search-hint" id="js-search-autocomplete-list">
-        <div class="search-hint__left">
-            <div class="search-hint__title">
-                {{ 'Kategorie'|trans }} ({{ categoriesPaginationResult.totalCount }})
+        {% if groupsPaginationResult.totalCount > 0 %}
+            <div class="search-hint__left">
+                <div class="search-hint__title">
+                    {{ 'Sety'|trans }} ({{ groupsPaginationResult.totalCount }})
+                </div>
+                <ul class="search-hint__product">
+                    {% for set in groupsPaginationResult.results %}
+                        {{ _self.productOrGroupLine(set) }}
+                    {% endfor %}
+                </ul>
             </div>
-            <ul class="search-hint__category">
-                {% for category in categoriesPaginationResult.results %}
-                    <li class="search-hint__category__item">
-                        <a href="{{ url('front_product_list', { id: category.id }) }}" class="search-hint__category__link">
-                            <span class="search-hint__category__image">
-                                <i class="svg svg-folder"></i>
-                            </span>
-                            <span class="search-hint__category__name js-search-autocomplete-item-label">{{ category.name }}</span>
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="search-hint__category__empty">
-                        {{ 'Vyhledávání neodpovídá žádná kategorie'|trans }}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% endif %}
+        {% if categoriesPaginationResult.totalCount > 0 %}
+            <div class="search-hint__left">
+                <div class="search-hint__title">
+                    {{ 'Kategorie'|trans }} ({{ categoriesPaginationResult.totalCount }})
+                </div>
+                <ul class="search-hint__category">
+                    {% for category in categoriesPaginationResult.results %}
+                        <li class="search-hint__category__item">
+                            <a href="{{ url('front_product_list', { id: category.id }) }}" class="search-hint__category__link">
+                                <span class="search-hint__category__image">
+                                    <i class="svg svg-folder"></i>
+                                </span>
+                                <span class="search-hint__category__name js-search-autocomplete-item-label">{{ category.name }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
         <div class="search-hint__right">
             <div class="search-hint__title">
                 {{ 'Produkty'|trans }} ({{ productsPaginationResult.totalCount }})
             </div>
             <ul class="search-hint__product">
                 {% for product in productsPaginationResult.results %}
-                    <li class="search-hint__product__item">
-                        <a href="{{ url('front_product_detail', { id: product.id }) }}" class="search-hint__product__item__link">
-                            <span class="search-hint__product__item__image">
-                                <img src="{{ imageUrl(product, 'thumbnail') }}" title="{{ product.name }}" width="30" />
-                            </span>
-                            <span class="search-hint__product__item__name js-search-autocomplete-item-label">
-                                {{ product.name }}
-                                {% if not product.calculatedSellingDenied %}
-                                    <span class="search-hint__product__item__price">
-                                        {% set sellingPrice = getProductSellingPrice(product) %}
-                                        {% if sellingPrice.priceFrom %}
-                                            {{ 'from %price%'|trans({'%price%': sellingPrice.priceWithVat|price}) }}
-                                        {% else %}
-                                            {{ sellingPrice.priceWithVat|price }}
-                                        {% endif %}
-                                        {% if sellingPrice.hasHigherStandardPrice %}
-                                            <span class="search-hint__product__item__price search-hint__product__item__price--old">
-                                                {{ sellingPrice.standardPrice.priceWithVat|price }}
-                                            </span>
-                                        {% endif %}
-                                    </span>
-                                {% endif %}
-                            </span>
-                        </a>
-                    </li>
+                    {{ _self.productOrGroupLine(product) }}
                 {% else %}
                     <li>
                         {{ 'Vyhledávání neodpovídá žádný produkt'|trans }}
@@ -62,10 +49,38 @@
     </div>
 
     <div class="search-hint__bottom">
-        {% if categoriesPaginationResult.totalCount > 0 or productsPaginationResult.totalCount > 0 %}
+        {% if categoriesPaginationResult.totalCount > 0 or productsPaginationResult.totalCount > 0 or groupsPaginationResult.totalCount %}
             <a href="{{ searchUrl }}" class="btn btn--success search-hint__bottom__button">
                 {{ 'Zobrazit všechny výsledky'|trans }}
             </a>
         {% endif %}
     </div>
 </div>
+
+{% macro productOrGroupLine(productOrGroup) %}
+    <li class="search-hint__product__item">
+        <a href="{{ url('front_product_detail', { id: productOrGroup.id }) }}" class="search-hint__product__item__link">
+            <span class="search-hint__product__item__image">
+                <img src="{{ imageUrl(productOrGroup, 'thumbnail') }}" title="{{ productOrGroup.name }}" width="30"/>
+            </span>
+            <span class="search-hint__product__item__name js-search-autocomplete-item-label">
+                {{ productOrGroup.name }}
+                {% if not productOrGroup.calculatedSellingDenied %}
+                    <span class="search-hint__product__item__price">
+                        {% set sellingPrice = getProductSellingPrice(productOrGroup) %}
+                        {% if sellingPrice.priceFrom %}
+                            {{ 'from %price%'|trans({'%price%': sellingPrice.priceWithVat|price}) }}
+                        {% else %}
+                            {{ sellingPrice.priceWithVat|price }}
+                        {% endif %}
+                        {% if sellingPrice.hasHigherStandardPrice %}
+                            <span class="search-hint__product__item__price search-hint__product__item__price--old">
+                                {{ sellingPrice.standardPrice.priceWithVat|price }}
+                            </span>
+                        {% endif %}
+                    </span>
+                {% endif %}
+            </span>
+        </a>
+    </li>
+{% endmacro %}

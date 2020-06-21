@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
-                    {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted, searchText: searchText} %}
+                    {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResultProducts, filterFormSubmitted: filterFormSubmitted, searchText: searchText, paging: false} %}
                 </div>
             </div>
         </div>

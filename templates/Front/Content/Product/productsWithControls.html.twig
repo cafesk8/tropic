@@ -15,7 +15,7 @@
                 {% endif %}
             </div>
         {% endif %}
-        
+
         {% if hiddenFilterFormButton is not defined %}
             <div class="box-list__filter-opener">
                 <span class="box-list__filter-opener__button btn js-product-filter-opener">{{ 'Filtrovat produkty'|trans }}</span>
@@ -31,7 +31,10 @@
 
             <div class="box-list__actions__pagination">
                 {% set entityName = 'products'|trans %}
-                {{ paginator.paginatorNavigation(paginationResult, entityName, 'page', false) }}
+                {% if paging is not defined %}
+                    {% set paging = true %}
+                {% endif %}
+                {{ paginator.paginatorNavigation(paginationResult, entityName, 'page', false, paging) }}
             </div>
          </div>
     </div>

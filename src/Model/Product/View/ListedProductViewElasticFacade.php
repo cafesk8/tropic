@@ -20,6 +20,7 @@ use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
@@ -233,5 +234,27 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         }
 
         return $listedProductViews;
+    }
+
+    /**
+     * @param string $searchText
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
+     * @param string $orderingModeId
+     * @param int $page
+     * @param int $limit
+     * @param int $pohodaProductType
+     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
+     */
+    public function getFilteredPaginatedForSearch(
+        string $searchText,
+        ProductFilterData $filterData,
+        string $orderingModeId,
+        int $page,
+        int $limit,
+        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
+    ): PaginationResult {
+        $paginationResult = $this->productOnCurrentDomainFacade->getPaginatedProductsForSearch($searchText, $filterData, $orderingModeId, $page, $limit, $pohodaProductType);
+
+        return $this->createPaginationResultWithArray($paginationResult);
     }
 }

@@ -1,13 +1,14 @@
 {% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
 {% import 'Front/Inline/Paginator/paginator.html.twig' as paginator %}
 {% import 'Front/Content/Product/filterFormMacro.html.twig' as productFilterForm %}
+{% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
 
 {% block title %}
     {{ 'Search results for "%searchText%"'|trans({ '%searchText%': searchText }) }}
 {% endblock %}
 
 {% block meta_robots %}
-    {{ paginator.metaRobots(paginationResult) }}
+    {{ paginator.metaRobots(paginationResultProducts) }}
 {% endblock %}
 
 {% block main_content %}
@@ -24,7 +25,8 @@
 
     {% if
         foundCategories|length > 0
-        or paginationResult.results|length > 0
+        or paginationResultProducts.results|length > 0
+        or paginationResultGroups.results|length > 0
     %}
         <div class="web__line">
             <div class="web__container">
@@ -36,9 +38,14 @@
                                     {{ 'Kategorie'|trans }} ({{ foundCategories|length }})
                                 </a>
                             {% endif %}
-                            {% if paginationResult.results|length > 0 %}
+                            {% if paginationResultProducts.results|length > 0 %}
                                 <a href="#" class="in-tab__head__item js-tabs-button" data-tab-id="products">
-                                    {{ 'Produkty'|trans }} ({{ paginationResult.totalCount }})
+                                    {{ 'Produkty'|trans }} ({{ paginationResultProducts.totalCount }})
+                                </a>
+                            {% endif %}
+                            {% if paginationResultGroups.results|length > 0 %}
+                                <a href="#" class="in-tab__head__item js-tabs-button" data-tab-id="sets">
+                                    {{ 'Sety'|trans }} ({{ paginationResultGroups.totalCount }})
                                 </a>
                             {% endif %}
                         </div>
@@ -64,7 +71,7 @@
         <div class="web__container">
             <div class="box-list box-list--search">
                 <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
-                    {% if paginationResult.results|length > 0 or filterFormSubmitted %}
+                    {% if paginationResultProducts.results|length > 0 or filterFormSubmitted %}
                         <div class="box-list__panel js-product-list-panel">
                             <div class="box-filter js-product-filter">
                                 {{ productFilterForm.filterForm(
@@ -83,9 +90,12 @@
 
                     <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
                         <div class="box-list__products">
-                            {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted, searchText: searchText} %}
+                            {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResultProducts, filterFormSubmitted: filterFormSubmitted, searchText: searchText, paging: false} %}
                         </div>
                     </div>
+                </div>
+                <div class="box-list__wrap js-tabs-content" data-tab-id="sets">
+                    {{ render(controller('App\\Controller\\Front\\ProductController:renderGroupsBySearchTextAction', {paginationResultGroups: paginationResultGroups, searchText: searchText})) }}
                 </div>
             </div>
         </div>
