@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SearchController extends FrontBaseController
 {
     public const AUTOCOMPLETE_CATEGORY_LIMIT = 3;
-    public const AUTOCOMPLETE_PRODUCT_LIMIT = 5;
+    public const AUTOCOMPLETE_PRODUCT_LIMIT = 4;
 
     /**
      * @var \App\Model\Category\CategoryFacade
