@@ -140,7 +140,7 @@
                                     </div>
                                 {% endif %}
 
-                                {% if product.isMainVariant and not product.calculatedSellingDenied %}
+                                {% if product.isMainVariant %}
                                     <ul {% if getProductSellingPrice(product) is not null %}itemprop="offers"
                                         itemscope
                                         itemtype="http://schema.org/AggregateOffer" {% endif %}
