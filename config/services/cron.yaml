@@ -52,7 +52,7 @@ services:
 
     App\Model\Product\Transfer\ProductImportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import změněných produktů z Pohoda IS' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import změněných produktů a zařazení produktů do kategorií z Pohoda IS' }
 
     App\Model\Product\Transfer\ProductImageImportCronModule:
         tags:
