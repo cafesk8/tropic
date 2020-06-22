@@ -11,9 +11,17 @@
         </div>
         {% for cartItem in addedItems %}
             <div class="box-popup-add__content__product">
-                <div class="box-popup-add__content__product__image">
-                    {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: false }) }}
-                </div>
+                {% if cartItem.product.isPohodaProductTypeGroup %}
+                    {% for productGroup in cartItem.product.productGroups %}
+                        <div class="box-popup-add__content__product__image">
+                            {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                        </div>+
+                    {% endfor %}
+                {% else %}
+                    <div class="box-popup-add__content__product__image">
+                        {{ image(cartItem.product.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                    </div>
+                {% endif %}
                 <div class="box-popup-add__content__product__name">
                     <span class="box-popup-add__content__product__name__title">
                         {% if cartItem.saleItem %}{{ 'Výprodej'|trans }} - {% endif %}{{ cartItem.product.name }}

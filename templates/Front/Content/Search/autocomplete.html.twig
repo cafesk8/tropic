@@ -1,4 +1,5 @@
 {% import _self as self %}
+
 <div class="search__autocomplete">
     <div class="search-hint" id="js-search-autocomplete-list">
         {% if groupsPaginationResult.totalCount > 0 %}
@@ -60,9 +61,17 @@
 {% macro productOrGroupLine(productOrGroup) %}
     <li class="search-hint__product__item">
         <a href="{{ url('front_product_detail', { id: productOrGroup.id }) }}" class="search-hint__product__item__link">
-            <span class="search-hint__product__item__image">
-                <img src="{{ imageUrl(productOrGroup, 'thumbnail') }}" title="{{ productOrGroup.name }}" width="30"/>
-            </span>
+            {% if productOrGroup.isPohodaProductTypeGroup %}
+                {% for productGroup in productOrGroup.productGroups %}
+                    <span class="search-hint__product__item__image">
+                        {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                    </span>+
+                {% endfor %}
+            {% else %}
+                <span class="search-hint__product__item__image">
+                    <img src="{{ imageUrl(productOrGroup, 'thumbnail') }}" title="{{ productOrGroup.name }}" width="30"/>
+                </span>
+            {% endif %}
             <span class="search-hint__product__item__name js-search-autocomplete-item-label">
                 {{ productOrGroup.name }}
                 {% if not productOrGroup.calculatedSellingDenied %}
