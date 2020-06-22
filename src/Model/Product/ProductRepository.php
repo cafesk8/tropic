@@ -31,7 +31,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
  * @method \Doctrine\ORM\QueryBuilder getListableForBrandQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, \App\Model\Product\Brand\Brand $brand)
  * @method \Doctrine\ORM\QueryBuilder getSellableInCategoryQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, \App\Model\Category\Category $category)
  * @method \Doctrine\ORM\QueryBuilder getOfferedInCategoryQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, \App\Model\Category\Category $category)
- * @method \Doctrine\ORM\QueryBuilder getListableBySearchTextQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, string $locale, string|null $searchText)
  * @method filterByCategory(\Doctrine\ORM\QueryBuilder $queryBuilder, \App\Model\Category\Category $category, int $domainId)
  * @method filterByBrand(\Doctrine\ORM\QueryBuilder $queryBuilder, \App\Model\Product\Brand\Brand $brand)
  * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginationResultForListableInCategory(\App\Model\Category\Category $category, int $domainId, string $locale, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int $page, int $limit)
@@ -647,5 +646,20 @@ class ProductRepository extends BaseProductRepository
             ->execute();
 
         return array_column($result, 'pohodaId');
+    }
+
+    /**
+     * Override removes product groups from filters
+     *
+     * @inheritDoc
+     */
+    public function getListableBySearchTextQueryBuilder($domainId, BasePricingGroup $pricingGroup, $locale, $searchText)
+    {
+        $queryBuilder = parent::getListableBySearchTextQueryBuilder($domainId, $pricingGroup, $locale, $searchText);
+        $queryBuilder
+            ->andWhere('(p.pohodaProductType != :pohodaGroupType OR p.pohodaProductType IS NULL)')
+            ->setParameter('pohodaGroupType', Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP);
+
+        return $queryBuilder;
     }
 }

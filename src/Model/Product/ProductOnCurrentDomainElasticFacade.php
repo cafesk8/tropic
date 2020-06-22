@@ -6,6 +6,8 @@ namespace App\Model\Product;
 
 use App\Model\Product\Search\FilterQuery;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainElasticFacade as BaseProductOnCurrentDomainElasticFacade;
@@ -169,5 +171,28 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
 
         return new PaginationResult($page, $limit, $productsResult->getTotal(), $productsResult->getHits());
+    }
+
+    /**
+     * Override removes product groups from filter counts
+     *
+     * @inheritDoc
+     */
+    public function getProductFilterCountDataForSearch(?string $searchText, ProductFilterConfig $productFilterConfig, ProductFilterData $productFilterData): ProductFilterCountData
+    {
+        $searchText = $searchText ?? '';
+
+        $baseFilterQuery = $this->filterQueryFactory->create($this->getIndexName())
+            ->filterOnlySellable()
+            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
+            ->filterByPohodaProductType(Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT)
+            ->search($searchText);
+        $baseFilterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $baseFilterQuery, $this->currentCustomerUser->getPricingGroup());
+        $baseFilterQuery = $this->productFilterDataToQueryTransformer->addStockToQuery($productFilterData, $baseFilterQuery);
+
+        return $this->productFilterCountDataElasticsearchRepository->getProductFilterCountDataInSearch(
+            $productFilterData,
+            $baseFilterQuery
+        );
     }
 }
