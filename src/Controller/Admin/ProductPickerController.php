@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Model\Product\MassEdit\MassEditFacade;
-use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Controller\Admin\ProductPickerController as BaseProductPickerController;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormType;
@@ -19,6 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProductPickerController extends BaseProductPickerController
 {
+    private const MASS_EDIT_MAX_LIMIT = 1000;
+
     /**
      * @Route("/product-picker/pick-multiple/{jsInstanceId}/")
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -64,10 +64,10 @@ class ProductPickerController extends BaseProductPickerController
         }
 
         $countOfFoundProducts = $queryBuilder->select('COUNT(p)')->getQuery()->getSingleScalarResult();
-        if ($countOfFoundProducts > MassEditFacade::MASS_EDIT_MAX_LIMIT) {
+        if ($countOfFoundProducts > self::MASS_EDIT_MAX_LIMIT) {
             $content = json_encode([
                 'errorMessage' => t('Maximální počet produktů pro hromadnou operaci je %max%. Počet nalezených produktů je %found%. Vyhledejte menší počet produktů a hromadnou operaci opakujte.', [
-                    '%max%' => MassEditFacade::MASS_EDIT_MAX_LIMIT,
+                    '%max%' => self::MASS_EDIT_MAX_LIMIT,
                     '%found%' => $countOfFoundProducts,
                 ]),
             ]);
