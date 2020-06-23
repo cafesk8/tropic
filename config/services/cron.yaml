@@ -133,7 +133,7 @@ services:
 
     App\Model\Order\Transfer\OrderExportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Export objednávek a uživatelů do IS Pohoda' }
 
     App\Model\Newsletter\Transfer\EcomailExportCronModule:
         tags:
