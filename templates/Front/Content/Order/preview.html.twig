@@ -29,7 +29,7 @@
             </div>
         {% endif %}
 
-        <div class="box-preview__item">
+        <div class="box-preview__item{% if orderStep == "1" %} box-preview__item--total{% endif %}">
             {% if orderStep > 1 %}
                 <h2 class="in-title in-title--small in-title--dark">
                     {{ 'Vaše objednávka'|trans }}
@@ -58,6 +58,16 @@
 
             <table id="js-order-preview-fees" class="table-cart-preview">
                 <tbody>
+                    {% if orderStep == "1" %}
+                        <tr class="table-cart-preview__row">
+                            <td class="table-cart-preview__cell">
+                                {{ 'Za zboží bez slevy'|trans }}
+                            </td>
+                            <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                                {{ orderPreview.totalPrice.priceWithVat|price }}
+                            </td>
+                        </tr>
+                    {% endif %}
                     {% if orderPreview.activeOrderDiscountLevel is not null %}
                         <tr class="table-cart-preview__row">
                             <td class="table-cart-preview__cell">
@@ -114,37 +124,18 @@
                             </td>
                         </tr>
                     {% endif %}
-                    {% if orderStep == "1" %}
-                        <tr class="table-cart-preview__row">
-                            <td class="table-cart-preview__cell">
-                                {{ 'Za zboží'|trans }}
-                            </td>
-                            <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                                {{ orderPreview.totalPrice.priceWithVat|price }}
-                            </td>
-                        </tr>
-                    {% endif %}
                 </tbody>
             </table>
 
-            <div id="js-order-preview-total-price" class="table-cart-preview">
-                <table class="table-cart-preview__total">
-                    <tr class="table-cart-preview__total__row">
-                        <td class="table-cart-preview__total__cell">
-                            {{ 'Celkem'|trans }}
-                        </td>
-                        <td class="table-cart-preview__total__price-primary">
-                            {{ orderPreview.totalPrice.priceWithVat|price }}
-                        </td>
-                    </tr>
-                    <tr class="table-cart-preview__total__row">
-                        <td class="table-cart-preview__total__cell">
-                        </td>
-                        <td class="table-cart-preview__total__price-secondary">
-                            {{ orderPreview.totalPrice.priceWithoutVat|price }}&nbsp;{{ 'bez DPH'|trans }}
-                        </td>
-                    </tr>
-                </table>
+            <div id="js-order-preview-total-price" class="table-cart-preview table-cart-preview--without-gap">
+                <div class="table-cart-preview__total">
+                    {% if orderPreview.activeOrderDiscountLevel is not null %}
+                        <span class="table-cart-preview__total__discount js-not-implemented-yet">Ušetříte 3 175 Kč</span>
+                    {% endif %} 
+                    <span class="table-cart-preview__total__price-primary {% if orderPreview.activeOrderDiscountLevel is not null %}table-cart-preview__total__price-primary--colored{% endif %}">
+                        {{ orderPreview.totalPrice.priceWithVat|price }}
+                    </span>
+                </div>
             </div>
         </div>
     </div>
@@ -154,7 +145,8 @@
             <div class="in-action__back">
                 {% if orderStep == 1 %}
                     <a href="{{ url('front_homepage') }}" class="in-action__link">
-                        {{ 'Zpět do e-shopu'|trans }}
+                        <i class="in-action__link__icon svg svg-triangle"></i>
+                        <span class="in-action__link__text">{{ 'Zpět do e-shopu'|trans }}</span>
                     </a>
                 {% elseif orderStep == 2 %}
                     <a href="{{ url('front_cart') }}" class="in-action__link">
@@ -168,6 +160,12 @@
                     </button>
                 {% endif %}
             </div>
+
+            {% if orderStep == 1 %}
+                <div class="in-action__free-transport js-not-implemented-yet">
+                    Výborně, od nás máte <span class="in-action__free-transport__colored-text">dopravu zdarma!</span>
+                </div>
+            {% endif %}
 
             {% if orderStep > 2 %}
                 <div class="box-preview__conditions">
@@ -197,7 +195,7 @@
 
             {% if orderPreview.quantifiedProducts > 0 and renderSubmitButton %}
                 {% if orderStep == 1 %}
-                    {% set continueButtonText = 'Pokračovat v objednávce'|trans %}
+                    {% set continueButtonText = 'Vybrat způsob dopravy'|trans %}
                 {% elseif orderStep == 2 %}
                     {% set continueButtonText = 'Vyplnit dodací údaje'|trans %}
                 {% else %}

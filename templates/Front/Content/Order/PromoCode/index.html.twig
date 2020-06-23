@@ -3,8 +3,7 @@
         {{ 'Máte slevový kupón?'|trans }}
     </div>
     <div class="box-preview__coupone__code">
-        <input placeholder="{{ 'Zadejte kód'|trans }}" type="text" id="js-promo-code-input" class="input" data-apply-code-url="{{ url('front_promo_code_apply') }}">
-        <button class="box-preview__coupone__code__button btn btn--success" id="js-promo-code-submit-button" type="button">{{ 'Použít'|trans }}</button>
+        <input class="box-preview__coupone__code__input input" placeholder="{{ 'Zadejte kód'|trans }}" type="text" id="js-promo-code-input" data-apply-code-url="{{ url('front_promo_code_apply') }}">
+        <button class="box-preview__coupone__code__button btn" id="js-promo-code-submit-button" type="button">{{ 'Zadat'|trans }}</button>
     </div>
 </div>
-
