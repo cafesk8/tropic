@@ -1,0 +1,48 @@
+@in-discount-message-gap: 20px;
+@in-discount-message-side-margin: 40px;
+
+.in-discount-message {
+    display: flex;
+    align-items: center;
+    margin: -20px 0 @in-discount-message-gap;
+    width: 100%;
+    padding: 10px 40px;
+    line-height: 18px; 
+
+    border-radius: @radius;
+    background-color: @color-f;
+    font-family: @font-alt;
+    font-weight: 600;
+    font-size: @font-size + 1px;
+
+    @media @query-vl {
+        width: calc(~"100% + (@{in-discount-message-side-margin} * 2)");
+        margin: -20px -@in-discount-message-side-margin (@in-discount-message-gap + 10px);
+    }
+
+    &--variant {
+        margin: 0 0 20px 0;
+    }
+
+    &--cart {
+        width: auto;
+        margin: 10px 0 0 0;
+        padding: 9px 10px;
+
+        background-color: @color-box;
+        font-size: @font-size-extra-small + 1px;
+
+        @media @query-md {
+            margin: 10px 0 0 10px;
+        }
+
+        @media @query-vl {
+            margin: 0 0 0 10px;
+        }
+    }
+
+    &__icon {
+        margin-right: 10px;
+        margin-bottom: -7px;
+    }
+}

@@ -121,13 +121,13 @@
                                                         {% endfor %}
                                                     </div>
                                                 {% endif %}
-                                                {{ discountExclusion.discountExclusionNotice(cartItem.product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
                                             </div>
                                         </div>
                                         <div class="table-cart__messages">
-                                            <div class="in-message in-message--warning js-maximum-amount-warning display-none">
+                                            <div class="table-cart__messages__item in-message in-message--without-gap in-message--warning js-maximum-amount-warning display-none">
                                                 {{ 'Větší množství není možné nakoupit'|trans }}
                                             </div>
+                                            {{ discountExclusion.discountExclusionNotice(cartItem.product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, 'in-discount-message--cart') }}
                                         </div>
                                     </div>
                                 {% endfor %}

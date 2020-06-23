@@ -32,8 +32,17 @@
 
     &__messages {
         display: flex;
+        flex-wrap: wrap;
         justify-content: flex-end;
         width: 100%;
+
+        &__item {
+            margin-top: 10px;
+
+            @media @query-vl {
+                margin-top: 0;
+            }
+        }
     }
 
     &__cell {
@@ -190,7 +199,8 @@
                 display: inline;
                 line-height: 13px;
 
-                font-size: 11px;
+                font-size: 11px + 1px;
+                font-family: @font-alt;
             }
         }
 

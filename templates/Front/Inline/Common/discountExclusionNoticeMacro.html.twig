@@ -1,4 +1,4 @@
-{% macro discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, classModification = '') %}
+{% macro discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, classModification = '', type = '') %}
     {% if (product.isRegistrationDiscountDisabled and product.isPromoDiscountDisabled) or product.isInAnySaleStock %}
         {{ _self.discountExclusionNoticeDetail(allDiscountExclusionText, classModification) }}
     {% elseif product.isRegistrationDiscountDisabled %}
@@ -10,8 +10,8 @@
 
 {% macro discountExclusionNoticeDetail(discountExclusionText, classModification) %}
     {% if discountExclusionText is not empty %}
-        <div class="box-detail-add__message {{ classModification }}">
-            <div class="box-detail-add__message__icon">
+        <div class="in-discount-message {{ classModification }}">
+            <div class="in-discount-message__icon">
                 {% include 'Front/Svg/info.svg' %}
             </div>
             {{ discountExclusionText }}
