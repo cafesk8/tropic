@@ -9,6 +9,8 @@ use App\Component\Mall\MallFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer;
 use App\Model\Category\CategoryData;
+use App\Model\Product\Parameter\Parameter;
+use App\Model\Product\Parameter\ParameterFacade;
 use App\Twig\DateTimeFormatterExtension;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
@@ -18,6 +20,8 @@ use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
 use Shopsys\FrameworkBundle\Form\SortableValuesType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
+use Shopsys\FrameworkBundle\Form\WarningMessageType;
+use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -68,7 +72,18 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
     private $dateTimeFormatterExtension;
 
     /**
+     * @var \App\Model\Product\Parameter\ParameterFacade
+     */
+    private $parameterFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Localization\Localization
+     */
+    private $localization;
+
+    /**
      * CategoryFormTypeExtension constructor.
+     *
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabFacade
      * @param \Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer
@@ -76,6 +91,8 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
      * @param \App\Component\Mall\MallFacade $mallFacade
      * @param \App\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
+     * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      */
     public function __construct(
         BlogArticleFacade $blogArticleFacade,
@@ -84,7 +101,9 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer,
         MallFacade $mallFacade,
         DateTimeFormatterExtension $dateTimeFormatterExtension,
-        FormBuilderHelper $formBuilderHelper
+        FormBuilderHelper $formBuilderHelper,
+        ParameterFacade $parameterFacade,
+        Localization $localization
     ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabFacade;
@@ -93,6 +112,8 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         $this->mallFacade = $mallFacade;
         $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
         $this->formBuilderHelper = $formBuilderHelper;
+        $this->parameterFacade = $parameterFacade;
+        $this->localization = $localization;
     }
 
     /**
@@ -156,6 +177,7 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
             );
 
         $builder->add($this->createMallGroup($builder));
+        $builder->add($this->createParametersGroup($builder));
         $this->formBuilderHelper->disableFieldsByConfigurations($builder, self::DISABLED_FIELDS);
     }
 
@@ -198,5 +220,35 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         ]);
 
         return $builderMallGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function createParametersGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $parametersGroup = $builder->create('parameters', GroupType::class, [
+            'label' => t('Parametrické filtry'),
+        ]);
+
+        $parametersGroup
+            ->add('invisibleParameters', WarningMessageType::class, [
+                'data' => t('Některé parametry jsou globálně skryté, proto jejich nastavení nelze zde ovlivnit. Globální nastavení se nachází v Nastavení -> Seznamy a číselníky -> Parametry.'),
+            ])
+            ->add('filterParameters', ChoiceType::class, [
+                'choice_attr' => function (Parameter $parameter) {
+                    return ['disabled' => !$parameter->isVisible()];
+                },
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'choices' => $this->parameterFacade->getAllOrderedByName($this->localization->getAdminLocale()),
+                'expanded' => true,
+                'label' => t('Zobrazit filtry'),
+                'multiple' => true,
+                'required' => false,
+            ]);
+
+        return $parametersGroup;
     }
 }
