@@ -259,7 +259,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         }
 
         $this->addVideoGroup($builder);
-        $this->addDiscountExclusionGroup($builder);
+        $this->addDiscountExclusionGroup($builder, $product);
 
         if ($product === null || ($product !== null && $product->isMainVariant() === false)) {
             $builder->add($this->getPricesGroup($builder, $product));
@@ -698,13 +698,21 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \App\Model\Product\Product|null $product
      */
-    private function addDiscountExclusionGroup(FormBuilderInterface $builder): void
+    private function addDiscountExclusionGroup(FormBuilderInterface $builder, ?Product $product): void
     {
         $discountExclusionGroup = $builder->create('discountExclusionGroup', GroupType::class, [
             'label' => t('Vyjmutí ze slev'),
             'position' => ['before' => 'pricesGroup'],
         ]);
+
+        if ($product instanceof Product && $product->isInAnySaleStock()) {
+            $discountExclusionGroup->add('saleExclusionWarning', WarningMessageType::class, [
+                'data' => t('Produkt je vyřazen ze slev, protože je na výprodejovém skladu. ' .
+                    'Zobrazené hodnoty checkboxů začnou platit, až bude produkt z výprodejových skladů vyprodán.'),
+            ]);
+        }
 
         $discountExclusionGroup->add('registrationDiscountDisabled', YesNoType::class, [
             'label' => t('Vyjmout ze slev za registraci'),
