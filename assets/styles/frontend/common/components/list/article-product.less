@@ -1,5 +1,5 @@
 @list-article-product-item-padding: 20px;
-@list-article-product-item-image-size: 75px;
+@list-article-product-item-image-size: 70px;
 @list-article-product-item-title-rows: 2;
 
 .list-article-product {
@@ -10,11 +10,21 @@
     margin: 0;
 
     &__item {
-        margin-bottom: 25px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+        padding-bottom: 18px;
 
-        &__in {
-            display: flex;
+        border-bottom: 1px solid @color-border;
+
+        @media @query-md {
             flex-direction: row;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+
+            border-bottom: 0;
         }
 
         &__image {
@@ -23,7 +33,11 @@
             align-self: center;
             height: @list-article-product-item-image-size;
             width: @list-article-product-item-image-size;
-            padding-right: 10px;
+            margin: auto;
+
+            @media @query-md {
+                margin: 0;
+            }
 
             img {
                 max-height: 100%;
@@ -35,58 +49,76 @@
         }
 
         &__info {
-            width: calc(~"100% - @{list-article-product-item-image-size}");
+            width: 100%;
+
+            @media @query-md {
+                width: calc(~"100% - @{list-article-product-item-image-size}");
+                padding-left: 15px;
+            }
+
+            &__content {
+                display: flex;
+                margin-bottom: 10px;
+
+                @media @query-md {
+                    margin-bottom: 18px;
+                }
+
+                &__left {
+                    width: 100% / 2;
+                    display: flex;
+                    align-items: center;
+                }
+
+                &__right {
+                    width: 100% / 2;
+                    padding-left: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    justify-content: center;
+                }
+            }
 
             &__title {
-                display: flex;
+                display: block;
                 margin-bottom: 0;
-                width: 100%;
+                line-height: 18px;
 
-                font-size: @font-size;
+                font-size: @font-size-extra-small;
                 font-weight: 400;
                 color: @color-base;
+                text-decoration: none;
 
                 &:hover {
                     text-decoration: underline;
+                    color: @color-base;
                 }
-            }
-
-            &__availability {
-                margin-bottom: 10px;
-
-                font-size: @font-size-extra-small;
             }
 
             &__price {
-                &__item {
-                    display: none;
+                line-height: 18px;
 
-                    &__main {
-                        display: block;
-                        padding: 5px 0;
+                &__main {
+                    display: block;
+                    text-align: right;
 
-                        color: @color-price;
-                        font-weight: 700;
-                    }
-
-                    &__old {
-                        display: inline;
-                        padding-left: 5px;
-                        font-weight: normal;
-                        font-size: 11px;
-                        color: @color-price-old;
-                        text-decoration: line-through;
-                    }
-
-                    &__discount {
-                        display: inline;
-                        padding-left: 5px;
-
-                        color: @color-price-discount;
-                        font-size: 11px;
-                        font-weight: 400;
-                    }
+                    color: @color-price;
+                    font-weight: 700;
                 }
+
+                &__old {
+                    display: inline;
+
+                    font-weight: normal;
+                    font-size: @font-size-extra-small;
+                    color: @color-price-old;
+                    text-decoration: line-through;
+                }
+            }
+        
+            &__add-button {
+                width: 100%;
             }
         }
     }

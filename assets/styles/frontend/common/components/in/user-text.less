@@ -169,7 +169,7 @@
     }
 
     table {
-        width: 100%;
+        width: 100% !important;
         border: none;
 
         thead {
@@ -181,13 +181,12 @@
         }
 
         tr td {
-            padding: 5px;
+            padding: 10px;
             line-height: 16px;
             text-align: center;
 
             font-size: @in-user-text-font-size;
-            font-family: @font-alt;
-            border: 1px solid #f7f7f7;
+            border: 1px solid @color-border;
 
             &:first-child {
                 text-align: left;

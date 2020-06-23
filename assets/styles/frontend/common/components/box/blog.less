@@ -1,10 +1,10 @@
 @box-blog-panel-width: 385px;
-@box-blog-panel-width-medium: 300px;
 @box-blog-panel-gap: 50px;
 @box-blog-padding: 30px;
 @box-blog-title-bottom-gap: 20px;
 @box-blog-list-inset-gap: 14px;
 @box-blog-subcategory-gap: 10px;
+@box-blog-section-border-width: 3px;
 
 .box-blog {
     display: flex;
@@ -13,6 +13,7 @@
     &__content {
         display: flex;
         flex-direction: column;
+        margin-bottom: 70px;
 
         @media @query-vl {
             flex-direction: row;
@@ -27,12 +28,8 @@
         margin-bottom: 70px;
 
         @media @query-vl {
-            width: calc(~"@{calc-base} - @{box-blog-panel-width-medium} - @{box-blog-panel-gap}");
-            order: 1;
-        }
-
-        @media @query-xl {
             width: calc(~"@{calc-base} - @{box-blog-panel-width} - @{box-blog-panel-gap}");
+            order: 1;
         }
 
         &__button {
@@ -53,12 +50,8 @@
 
         @media @query-vl {
             order: 2;
-            width: @box-blog-panel-width-medium + @box-blog-panel-gap;
-            padding-left: @box-blog-panel-gap;
-        }
-
-        @media @query-xl {
             width: @box-blog-panel-width + @box-blog-panel-gap;
+            padding-left: @box-blog-panel-gap;
         }
     }
 
@@ -67,13 +60,35 @@
         padding: @box-blog-padding;
         padding-bottom: 0;
 
-        border: 3px solid @color-base;
+        border: @box-blog-section-border-width solid @color-base;
         border-radius: @radius-big;
+
+        &:last-child {
+            @media @query-vl {
+                margin-bottom: 0;
+            }
+        }
+
+        &--gradient {
+            padding: @box-blog-section-border-width;
+
+            border: 0;
+            border-radius: @radius;
+            background: linear-gradient(135deg, rgba(19,108,163,1) 0%, rgba(75,175,193,1) 35%, rgba(120,216,108,1) 63%, rgba(105,190,82,1) 100%);
+        }
+
+        &__in {
+            padding: 17px 20px;
+
+            background-color: @color-f;
+            border-radius: @radius - 2px;
+        }
 
         &__title {
             margin-bottom: 25px;
+            line-height: 18px;
 
-            font-weight: 700;
+            text-transform: uppercase;
             font-size: 16px;
         }
     }
@@ -81,6 +96,7 @@
     &__title {
         display: block;
         line-height: 42px;
+        margin-bottom: 25px;
 
         color: @color-base;
         font-weight: 700;
@@ -102,8 +118,6 @@
             margin-bottom: @box-blog-title-bottom-gap;
 
             color: @color-turquoise;
-            font-size: @font-size-big;
-            font-weight: 700;
             text-transform: uppercase;
         }
 

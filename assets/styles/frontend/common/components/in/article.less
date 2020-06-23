@@ -1,4 +1,5 @@
 @in-article-container-max-width: 810px;
+@in-article-date-color: #7f95a0;
 
 .in-article {
     &__container {
@@ -11,12 +12,11 @@
     }
 
     &__date {
-        margin-bottom: 10px;
         text-align: left;
 
-        color: @color-base;
-        font-weight: 700;
-        font-size: 16px;
+        color: @in-article-date-color;
+        font-weight: 500;
+        font-size: @font-size-small;
     }
 
     &__text-perex {
@@ -30,7 +30,7 @@
     }
 
     &__main-img {
-        margin-bottom: 20px;
+        margin-bottom: 37px;
         text-align: center;
 
         img {
@@ -39,11 +39,11 @@
     }
 
     &__img-caption {
-        margin-top: -20px;
-        margin-bottom: 20px;
+        opacity: 0.5;
+        text-align: left;
 
         color: @color-base;
-        font-size: 13px;
-        font-family: @font;
+        font-size: 12px + 1px;
+        font-family: @font-alt;
     }
 }
