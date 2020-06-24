@@ -8,7 +8,7 @@
             {% if productView.groupItems is not empty %}
                 {{ productSetMacro.productSetView(productView) }}
             {% else %}
-                <li class="list-products__item js-list-products-item">
+                <li class="list-products__item js-list-products-item js-item-container">
                     <div class="list-products__item__in">
                         <div class="list-products__item__block">
                             <a href="{{ productView.action.detailUrl }}" class="list-products__item__image-wrap">
@@ -70,7 +70,15 @@
                                     {% endif %}
                                 </a>
 
+                                {% set outOfStock = productView.stockQuantity <= 0 or productView.action.sellingDenied %}
+                                {% if outOfStock is same as (false) %}
+                                    <div class="in-message in-message--warning js-maximum-amount-warning display-none">
+                                        {{ 'Větší množství není možné nakoupit'|trans }}
+                                    </div>
+                                {% endif %}
+                                
                                 <div class="list-products__item__hover">
+                                    
                                     {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { listedProductView: productView } )) }}
                                 </div>
                             </div>
@@ -94,7 +102,7 @@
                 {% for productView in productViews %}
                     {% set productSellingPrice = productView.sellingPrice %}
 
-                    <div class="list-products-slider__item">
+                    <div class="list-products-slider__item js-item-container">
                         <div class="list-products-slider__item__in">
                             <div class="list-products-slider__item__block">
                                 <a class="list-products-slider__item__image-wrap" href="{{ productView.action.detailUrl }}">
@@ -140,6 +148,12 @@
                                         </div>
                                     </a>
                                     {% if showButton %}
+                                        {% set outOfStock = productView.stockQuantity <= 0 or productView.action.sellingDenied %}
+                                        {% if outOfStock is same as (false) %}
+                                            <div class="in-message in-message--warning js-maximum-amount-warning display-none">
+                                                {{ 'Větší množství není možné nakoupit'|trans }}
+                                            </div>
+                                        {% endif %}
                                         <div class="list-products-slider__item__hover">
                                             {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {listedProductView: productView, showAmountInput: showAmountInput, onlyRefresh: onlyRefresh, type: 'slider'})) }}
                                         </div>
