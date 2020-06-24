@@ -139,6 +139,13 @@ class Store implements PickupPlaceInterface
     private $centralStore;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    protected $pohodaName;
+
+    /**
      * @param \App\Model\Store\StoreData $storeData
      */
     public function __construct(StoreData $storeData)
@@ -159,6 +166,7 @@ class Store implements PickupPlaceInterface
         $this->externalNumber = $storeData->externalNumber;
         $this->showOnStoreList = $storeData->showOnStoreList;
         $this->centralStore = $storeData->centralStore;
+        $this->pohodaName = $storeData->pohodaName;
     }
 
     /**
@@ -191,6 +199,7 @@ class Store implements PickupPlaceInterface
         $this->externalNumber = $storeData->externalNumber;
         $this->showOnStoreList = $storeData->showOnStoreList;
         $this->centralStore = $storeData->centralStore;
+        $this->pohodaName = $storeData->pohodaName;
     }
 
     /**
@@ -360,5 +369,13 @@ class Store implements PickupPlaceInterface
     {
         return (int)$this->externalNumber === PohodaProductExportRepository::POHODA_STOCK_SALE_ID
             || (int)$this->externalNumber === PohodaProductExportRepository::POHODA_STOCK_STORE_SALE_ID;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPohodaName(): ?string
+    {
+        return $this->pohodaName;
     }
 }

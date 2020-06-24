@@ -54,6 +54,10 @@ class PohodaOrderItemsConstraintValidator extends ConstraintValidator
                     'unit' => [
                         new Type(['type' => 'string']),
                     ],
+                    'pohodaStockName' => [
+                        new Type(['type' => 'string']),
+                        new Length(['max' => 32]),
+                    ],
                 ],
             ]));
 

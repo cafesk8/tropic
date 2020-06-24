@@ -139,6 +139,7 @@ class PohodaOrderMapper
         $pohodaOrderItem->vatPercent = $orderItem->getVatPercent();
         if ($stock !== null) {
             $pohodaOrderItem->pohodaStockId = $stock->getExternalNumber();
+            $pohodaOrderItem->pohodaStockName = $stock->getPohodaName();
         }
 
         $pohodaOrder->orderItems[] = $pohodaOrderItem;

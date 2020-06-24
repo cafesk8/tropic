@@ -64,5 +64,6 @@ class StoreDataFactory
         $storeData->externalNumber = $store->getExternalNumber();
         $storeData->showOnStoreList = $store->isShowOnStoreList();
         $storeData->centralStore = $store->isCentralStore();
+        $storeData->pohodaName = $store->getPohodaName();
     }
 }

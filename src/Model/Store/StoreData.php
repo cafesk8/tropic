@@ -93,6 +93,11 @@ class StoreData
      */
     public $centralStore;
 
+    /**
+     * @var string|null
+     */
+    public $pohodaName;
+
     public function __construct()
     {
         $this->images = new ImageUploadData();

@@ -147,6 +147,14 @@
                                 </typ:store>
                             {% endif -%}
                         </ord:stockItem>
+                        {% if pohodaOrderItem.pohodaStockName is not null -%}
+                            <ord:parameters>
+                                <typ:parameter>
+                                    <typ:name>VPrSklad</typ:name>
+                                    <typ:textValue>{{ pohodaOrderItem.pohodaStockName }}</typ:textValue>
+                                </typ:parameter>
+                            </ord:parameters>
+                        {% endif -%}
                     </ord:orderItem>
                 {% endfor -%}
             </ord:orderDetail>

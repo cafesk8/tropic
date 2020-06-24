@@ -49,6 +49,11 @@ class PohodaOrderItem
     public ?string $pohodaStockId;
 
     /**
+     * @var string|null
+     */
+    public ?string $pohodaStockName;
+
+    /**
      * @return array
      */
     public function getAsArray(): array
@@ -62,6 +67,7 @@ class PohodaOrderItem
             'vatPercent' => $this->vatPercent,
             'unitPriceWithVat' => $this->unitPriceWithVat,
             'pohodaStockId' => $this->pohodaStockId,
+            'pohodaStockName' => $this->pohodaStockName,
         ];
     }
 }
