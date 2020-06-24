@@ -1,4 +1,4 @@
-{% macro discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, classModification = '', type = '') %}
+{% macro discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, classModification = '') %}
     {% if (product.isRegistrationDiscountDisabled and product.isPromoDiscountDisabled) or product.isInAnySaleStock %}
         {{ _self.discountExclusionNoticeDetail(allDiscountExclusionText, classModification) }}
     {% elseif product.isRegistrationDiscountDisabled %}
