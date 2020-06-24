@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Category;
 
+use App\Component\Redis\RedisFacade;
 use App\Model\Advert\Advert;
 use App\Model\Category\Transfer\CategoryRemoveFacade;
 use App\Model\Category\Transfer\Exception\MaximumPercentageOfCategoriesToRemoveLimitExceeded;
@@ -82,6 +83,11 @@ class CategoryFacade extends BaseCategoryFacade
     private $domainRouterFactory;
 
     /**
+     * @var \App\Component\Redis\RedisFacade
+     */
+    private $redisFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Category\CategoryRepository $categoryRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -96,6 +102,7 @@ class CategoryFacade extends BaseCategoryFacade
      * @param \App\Model\Category\CategoryDataFactory $categoryDataFactory
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory
+     * @param \App\Component\Redis\RedisFacade $redisFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -111,13 +118,15 @@ class CategoryFacade extends BaseCategoryFacade
         ProductVisibilityFacade $productVisibilityFacade,
         CategoryDataFactory $categoryDataFactory,
         ProductRepository $productRepository,
-        DomainRouterFactory $domainRouterFactory
+        DomainRouterFactory $domainRouterFactory,
+        RedisFacade $redisFacade
     ) {
         parent::__construct($em, $categoryRepository, $domain, $categoryVisibilityRecalculationScheduler, $friendlyUrlFacade, $imageFacade, $pluginCrudExtensionFacade, $categoryWithPreloadedChildrenFactory, $categoryWithLazyLoadedVisibleChildrenFactory, $categoryFactory);
         $this->productVisibilityFacade = $productVisibilityFacade;
         $this->categoryDataFactory = $categoryDataFactory;
         $this->productRepository = $productRepository;
         $this->domainRouterFactory = $domainRouterFactory;
+        $this->redisFacade = $redisFacade;
     }
 
     /**
@@ -455,7 +464,13 @@ class CategoryFacade extends BaseCategoryFacade
 
     public function markSaleCategories(): void
     {
+        $saleCategoriesHash = $this->categoryRepository->getSaleCategoriesHash();
+
         $this->categoryRepository->markSaleCategories();
+
+        if ($saleCategoriesHash !== $this->categoryRepository->getSaleCategoriesHash()) {
+            $this->redisFacade->clearCacheByPattern('twig:', 'categories');
+        }
     }
 
     /**

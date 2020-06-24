@@ -341,6 +341,28 @@ class CategoryRepository extends BaseCategoryRepository
         return $queryBuilder->getQuery()->execute();
     }
 
+    /**
+     * @return string
+     */
+    public function getSaleCategoriesHash(): string
+    {
+        $hashBase = '';
+        $saleCategories = $this->getAllQueryBuilder()
+            ->select('c.id, cd.domainId')
+            ->join(CategoryDomain::class, 'cd', Join::WITH, 'cd.category = c.id')
+            ->andWhere('c.level = :level')
+            ->andWhere('cd.containsSaleProduct = true')
+            ->setParameter('level', CategoryFacade::SALE_CATEGORIES_LEVEL)
+            ->orderBy('c.id, cd.domainId')
+            ->getQuery()->execute();
+
+        foreach ($saleCategories as $saleCategory) {
+            $hashBase .= $saleCategory['id'] . $saleCategory['domainId'];
+        }
+
+        return md5($hashBase);
+    }
+
     public function markSaleCategories(): void
     {
         $now = new DateTime();
