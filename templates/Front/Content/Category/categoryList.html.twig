@@ -4,13 +4,13 @@
             {% for category in categories %}
                 {% if loop.index0 == 2 and currentCategory.rightBannerText is not empty %}
                     <li class="list-prelist-categories__item list-prelist-categories__item--text-info">
-                        <h2 class="list-prelist-categories__item__text js-not-implemented-yet">
+                        <h2 class="list-prelist-categories__item__text">
                             {{ currentCategory.rightBannerText }}
                         </h2>
                     </li>
                 {% elseif loop.index0 == 6 and currentCategory.leftBannerText is not empty %}
                     <li class="list-prelist-categories__item list-prelist-categories__item--text-info">
-                        <h2 class="list-prelist-categories__item__text js-not-implemented-yet">
+                        <h2 class="list-prelist-categories__item__text">
                             {{ currentCategory.leftBannerText }}
                         </h2>
                     </li>
