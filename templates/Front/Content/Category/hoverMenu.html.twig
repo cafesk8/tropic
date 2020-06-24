@@ -40,7 +40,7 @@
                     {% endif %}
                 </a>
             </div>
-            {% if hasChildren %}
+            {% if hasChildren and (category.saleType is same as (false) or showImage is same as (true)) %}
                 <div class="list-menu__item__options">
                     {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, '', false, showImage, true, category.saleType) }}
                 </div>
