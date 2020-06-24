@@ -12,11 +12,15 @@
     }
 
     &__info {
-        padding: 20px;
+        padding: 5px 5px 20px;
         margin-bottom: @box-cart-info-gap;
 
         border-radius: @radius;
         background-color: @color-light;
+
+        @media @query-md {
+            padding: 20px;
+        }
 
         @media @query-lg {
             padding: @box-cart-info-gap;
