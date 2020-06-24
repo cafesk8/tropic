@@ -136,6 +136,9 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['real_sale_stocks_quantity'] = $product->isSellingDenied() ? 0 : $product->getRealSaleStocksQuantity();
         $result['is_in_any_sale_stock'] = $product->isInAnySaleStock();
         $result['pohoda_product_type'] = $product->getPohodaProductType() ?? Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
+        $result['ordering_priority'] = $product->getBiggestVariantOrderingPriority();
+        $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
+        $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
 
         return $result;
     }

@@ -377,6 +377,34 @@ class Product extends BaseProduct
     /**
      * @return int
      */
+    public function getInternalStockQuantity(): int
+    {
+        $internalStockQuantity = 0;
+        foreach ($this->storeStocks as $storeStock) {
+            if ($storeStock->getStockQuantity() !== null && !$storeStock->getStore()->isExternalStock()) {
+                $internalStockQuantity += $storeStock->getStockQuantity();
+            }
+        }
+
+        return $internalStockQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealInternalStockQuantity(): int
+    {
+        $internalStockQuantity = $this->getInternalStockQuantity();
+        if ($internalStockQuantity % $this->getAmountMultiplier() !== 0) {
+            return (int)floor($internalStockQuantity / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
+        }
+
+        return $internalStockQuantity;
+    }
+
+    /**
+     * @return int
+     */
     public function getExternalStockQuantity(): int
     {
         $externalStockQuantity = 0;
@@ -1231,5 +1259,62 @@ class Product extends BaseProduct
     public function isHidden()
     {
         return parent::isHidden();
+    }
+
+    /**
+     * @return int
+     */
+    public function getBiggestVariantOrderingPriority(): int
+    {
+        if (!$this->isMainVariant()) {
+            return $this->isSellingDenied() ? 0 : $this->getOrderingPriority();
+        }
+
+        $biggestPriority = 0;
+
+        foreach ($this->variants as $variant) {
+            $currentPriority = $variant->isSellingDenied() ? 0 : $variant->getOrderingPriority();
+            $biggestPriority = $currentPriority > $biggestPriority ? $currentPriority : $biggestPriority;
+        }
+
+        return $biggestPriority;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBiggestVariantRealInternalStockQuantity(): int
+    {
+        if (!$this->isMainVariant()) {
+            return $this->isSellingDenied() ? 0 : $this->getRealInternalStockQuantity();
+        }
+
+        $biggestQuantity = 0;
+
+        foreach ($this->variants as $variant) {
+            $currentQuantity = $variant->isSellingDenied() ? 0 : $variant->getRealInternalStockQuantity();
+            $biggestQuantity = $currentQuantity > $biggestQuantity ? $currentQuantity : $biggestQuantity;
+        }
+
+        return $biggestQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBiggestVariantRealExternalStockQuantity(): int
+    {
+        if (!$this->isMainVariant()) {
+            return $this->isSellingDenied() ? 0 : $this->getRealExternalStockQuantity();
+        }
+
+        $biggestQuantity = 0;
+
+        foreach ($this->variants as $variant) {
+            $currentQuantity = $variant->isSellingDenied() ? 0 : $variant->getRealExternalStockQuantity();
+            $biggestQuantity = $currentQuantity > $biggestQuantity ? $currentQuantity : $biggestQuantity;
+        }
+
+        return $biggestQuantity;
     }
 }

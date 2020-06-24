@@ -354,6 +354,12 @@
       },
       "pohoda_product_type": {
         "type": "integer"
+      },
+      "internal_stocks_quantity": {
+        "type": "integer"
+      },
+      "external_stocks_quantity": {
+        "type": "integer"
       }
     }
   }

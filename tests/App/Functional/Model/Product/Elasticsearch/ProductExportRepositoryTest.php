@@ -87,6 +87,8 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'real_sale_stocks_quantity',
             'is_in_any_sale_stock',
             'pohoda_product_type',
+            'internal_stocks_quantity',
+            'external_stocks_quantity',
         ];
     }
 }

@@ -32,6 +32,8 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['prices']['is_default'] = $product['prices']['is_default'] ?? false;
         $result['prices']['is_standard'] = $product['prices']['is_standard'] ?? false;
         $result['pohoda_product_type'] = $result['pohoda_product_type'] ?? Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
+        $result['internal_stocks_quantity'] = $result['internal_stocks_quantity'] ?? 0;
+        $result['external_stocks_quantity'] = $result['external_stocks_quantity'] ?? 0;
 
         return $result;
     }
