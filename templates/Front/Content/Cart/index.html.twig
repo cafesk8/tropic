@@ -22,6 +22,7 @@
 
 {% block main_content %}
     {% import 'Front/Inline/Common/discountExclusionNoticeMacro.html.twig' as discountExclusion %}
+    {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as productAvailability %}
     <div class="web__line">
         <div class="web__container web__container--transparent">
             {% include 'Front/Inline/OrderProgress/index.html.twig' with {step: '1'} only %}
@@ -71,8 +72,8 @@
                                             >
                                                 <i class="svg svg-remove"></i>
                                             </a>
-                                            <div class="table-cart__cell table-cart__cell--availability js-not-implemented-yet">
-                                                Skladem, ihned k odeslání
+                                            <div class="table-cart__cell table-cart__cell--availability">
+                                                {{ productAvailability.productAvailability(cartItem.product) }}
                                             </div>
                                             <div class="table-cart__cell table-cart__cell--price-unit">
                                                 {{ cartItemPrice.unitPrice.priceWithVat|price }}
@@ -140,27 +141,6 @@
                                     {% do form.orderGiftProduct.setRendered %}
                                 {% endif %}
                             </div>
-
-                            {% if isFreeTransportAndPaymentActive %}
-                                {% if isPaymentAndTransportFree %}
-                                    <div class="in-free-transport in-free-transport--dark">
-                                        <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
-                                        <div class="in-free-transport__pipe">
-                                            <div class="in-free-transport__pipe__line" style="width: 100%;"></div>
-                                        </div>
-                                    </div>
-                                {% else %}
-                                    <div class="in-free-transport in-free-transport--dark">
-                                        <div class="in-free-transport__title">
-                                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }} {{ 'máte'|trans }}
-                                            <br> <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
-                                        </div>
-                                        <div class="in-free-transport__pipe">
-                                            <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endif %}
                         </div>
                         
                         {% if nextLevelGifts is not empty and nextLevelDifference is not null %}

@@ -164,9 +164,16 @@
             </div>
 
             {% if orderStep == 1 %}
-                <div class="in-action__free-transport js-not-implemented-yet">
-                    Výborně, od nás máte <span class="in-action__free-transport__colored-text">dopravu zdarma!</span>
-                </div>
+                {% if isFreeTransportAndPaymentActive %}
+                    <div class="in-action__free-transport">
+                        {% if isPaymentAndTransportFree %}
+                            {{ 'Výborně, od nás máte'|trans }}&nbsp;<span class="in-action__free-transport__colored-text">{{ 'dopravu zdarma!'|trans }}</span>
+                        {% else %}
+                            {{ 'Nakupte ještě za'|trans }}&nbsp;<span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a máte'|trans }}
+                            <br> <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
             {% endif %}
 
             {% if orderStep > 2 %}

@@ -29,6 +29,7 @@ use App\Model\Order\OrderDataMapper;
 use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\PayPal\PayPalFacade;
 use App\Model\Security\CustomerLoginHandler;
+use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Exception;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
@@ -216,6 +217,11 @@ class OrderController extends FrontBaseController
     private $orderItemDataFactory;
 
     /**
+     * @var \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade
+     */
+    private FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade;
+
+    /**
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -246,6 +252,7 @@ class OrderController extends FrontBaseController
      * @param \App\Model\Order\OrderDataFactory $orderDataFactory
      * @param \App\Model\Order\Item\OrderItemFactory $orderItemFactory
      * @param \App\Model\Order\Item\OrderItemDataFactory $orderItemDataFactory
+     * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -277,7 +284,8 @@ class OrderController extends FrontBaseController
         GoPayTransactionFacade $goPayTransactionFacade,
         OrderDataFactory $orderDataFactory,
         OrderItemFactory $orderItemFactory,
-        OrderItemDataFactory $orderItemDataFactory
+        OrderItemDataFactory $orderItemDataFactory,
+        FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -309,6 +317,7 @@ class OrderController extends FrontBaseController
         $this->orderDataFactory = $orderDataFactory;
         $this->orderItemFactory = $orderItemFactory;
         $this->orderItemDataFactory = $orderItemDataFactory;
+        $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
     }
 
     /**
@@ -600,15 +609,20 @@ class OrderController extends FrontBaseController
 
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment, $simulateRegistration);
         $renderSubmitButton = $request->isXmlHttpRequest() === false || $orderStep === '1';
+        $domainId = $this->domain->getId();
+        $productsPrice = $orderPreview->getProductsPrice();
 
         return $this->render('Front/Content/Order/preview.html.twig', [
             'orderPreview' => $orderPreview,
             'orderStep' => $orderStep,
             'formSubmit' => $request->get('formSubmit'),
             'renderSubmitButton' => $renderSubmitButton,
-            'termsAndConditionsArticle' => $this->legalConditionsFacade->findTermsAndConditions($this->domain->getId()),
-            'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($this->domain->getId()),
+            'termsAndConditionsArticle' => $this->legalConditionsFacade->findTermsAndConditions($domainId),
+            'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($domainId),
             'orderGiftProductPrice' => Money::zero(),
+            'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
+            'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
+            'remainingPriceWithVat' => $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId),
         ]);
     }
 
