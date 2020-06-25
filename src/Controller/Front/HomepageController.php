@@ -90,7 +90,7 @@ class HomepageController extends FrontBaseController
             'sliderItems' => $sliderItems,
             'priceBombProducts' => $priceBombProducts,
             'newProducts' => $this->listedProductViewFacade->getProductsWithNewsFlags(self::NEW_PRODUCTS_LIMIT),
-            'newsCategory' => $this->categoryFacade->getNewsCategory(),
+            'newsCategory' => $this->categoryFacade->findNewsCategory(),
             'title' => $this->seoSettingFacade->getTitleMainPage($this->domain->getId()),
             'metaDescription' => $this->seoSettingFacade->getDescriptionMainPage($this->domain->getId()),
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(

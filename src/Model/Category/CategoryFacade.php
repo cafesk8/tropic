@@ -365,7 +365,7 @@ class CategoryFacade extends BaseCategoryFacade
      */
     public function getSaleCategory(): Category
     {
-        $category = $this->categoryRepository->getByType(Category::SALE_TYPE);
+        $category = $this->categoryRepository->findByType(Category::SALE_TYPE);
 
         if ($category === null) {
             throw new CategoryNotFoundException('Category with type "' . Category::SALE_TYPE . '" was not found!');
@@ -375,11 +375,19 @@ class CategoryFacade extends BaseCategoryFacade
     }
 
     /**
+     * @return \App\Model\Category\Category|null
+     */
+    public function findNewsCategory(): ?Category
+    {
+        return $this->categoryRepository->findByType(Category::NEWS_TYPE);
+    }
+
+    /**
      * @return \App\Model\Category\Category
      */
     public function getNewsCategory(): Category
     {
-        $category = $this->categoryRepository->getByType(Category::NEWS_TYPE);
+        $category = $this->findNewsCategory();
 
         if ($category === null) {
             throw new CategoryNotFoundException('Category with type "' . Category::NEWS_TYPE . '" was not found!');

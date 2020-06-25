@@ -313,7 +313,7 @@ class CategoryRepository extends BaseCategoryRepository
      * @param string $type
      * @return \App\Model\Category\Category|null
      */
-    public function getByType(string $type): ?Category
+    public function findByType(string $type): ?Category
     {
         return $this->getCategoryRepository()->findOneBy(['type' => $type]);
     }

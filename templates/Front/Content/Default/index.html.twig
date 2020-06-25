@@ -64,7 +64,9 @@
                     <h2 class="box-products-slider__title">
                         {{ 'Novinky'|trans }}
                     </h2>
-                    <a href="{{ url('front_product_list', { id: newsCategory.id }) }}">{{ 'Přejít na všechny novinky'|trans }}</a>
+                    {% if newsCategory is not null %}
+                        <a href="{{ url('front_product_list', { id: newsCategory.id }) }}">{{ 'Přejít na všechny novinky'|trans }}</a>
+                    {% endif %}
                     {{ productList.horizontalList(newProducts, '', 'h3', 'new-products', true, false, true) }}
                 </div>
             </div>

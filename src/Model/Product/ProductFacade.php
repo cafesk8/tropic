@@ -30,6 +30,7 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
+use Shopsys\FrameworkBundle\Model\Category\Exception\CategoryNotFoundException;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFactoryInterface;
@@ -291,7 +292,10 @@ class ProductFacade extends BaseProductFacade
     public function create(BaseProductData $productData)
     {
         $this->processSaleFlagAssignment($productData);
-        $this->processAssignmentIntoSpecialCategories($productData);
+        try {
+            $this->processAssignmentIntoSpecialCategories($productData);
+        } catch (CategoryNotFoundException $exception) {
+        }
 
         /** @var \App\Model\Product\Product $product */
         $product = parent::create($productData);
@@ -381,7 +385,10 @@ class ProductFacade extends BaseProductFacade
 
         $this->productVariantTropicFacade->refreshVariantStatus($product, $productData->variantId);
         $this->processSaleFlagAssignment($productData);
-        $this->processAssignmentIntoSpecialCategories($productData);
+        try {
+            $this->processAssignmentIntoSpecialCategories($productData);
+        } catch (CategoryNotFoundException $exception) {
+        }
 
         $this->refreshProductFlags($product, $productData->flags);
         parent::edit($productId, $productData);
