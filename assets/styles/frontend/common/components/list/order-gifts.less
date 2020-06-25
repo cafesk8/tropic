@@ -115,11 +115,16 @@
     width: 100%;
     line-height: 42px;
     margin-bottom: 20px;
+    text-align: center;
 
     font-weight: 700;
     font-size: 36px;
     color: @color-primary;
     cursor: text;
+
+    @media @query-md {
+        text-align: left;
+    }
 
     @media @query-lg {
         width: @list-order-gifts-title-width;

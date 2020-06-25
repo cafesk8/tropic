@@ -37,7 +37,7 @@
         text-align: right;
 
         &__price-primary {
-            display: inline-block;
+            display: block;
             line-height: 29px;
             vertical-align: bottom;
 
@@ -45,14 +45,19 @@
             font-size: 36px;
             font-weight: 700;
 
+            @media @query-sm {
+                display: inline-block;
+            }
+
             &--colored {
                 color: @color-price-discount;
             }
         }
 
         &__discount {
+            display: inline-block;
             padding: 1px 7px;
-            margin-right: 20px;
+            margin-bottom: 10px;
 
             background-color: @color-price-discount;
             text-transform: uppercase;
@@ -60,6 +65,11 @@
             font-size: 11px + 1px;
             color: @color-f;
             border-radius: @radius-very-small;
+
+            @media @query-sm {
+                margin-right: 20px;
+                margin-bottom: 0;
+            }
         }
     }
 }

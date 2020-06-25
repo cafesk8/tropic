@@ -93,10 +93,10 @@
         &--price-unit {
             order: 5;
             width: 100% / 2;
-            font-weight: 700;
             text-align: left;
 
             font-size: @font-size;
+            font-weight: 400;
 
             @media @query-md {
                 order: 4;
@@ -196,7 +196,12 @@
             display: none;
 
             @media @query-vl {
+                position: absolute;
                 display: inline;
+                left: 50%;
+                top: 100%;
+                transform: translateX(-50%);
+                margin-top: 5px;
                 line-height: 13px;
 
                 font-size: 11px + 1px;
