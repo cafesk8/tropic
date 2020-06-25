@@ -408,17 +408,24 @@ class CategoryFacade extends BaseCategoryFacade
         }
 
         foreach ($specialCategories as $specialCategory) {
+            $editCategory = false;
             $categoryData = $this->categoryDataFactory->createFromCategory($specialCategory);
 
             foreach ($this->domain->getAllIds() as $domainId) {
+                $previousStateOfEnabled = $categoryData->enabled[$domainId];
                 if (count($this->productRepository->getListableInCategoryIndependentOfPricingGroup($domainId, $specialCategory)) > 0) {
                     $categoryData->enabled[$domainId] = true;
                 } else {
                     $categoryData->enabled[$domainId] = false;
                 }
+                if ($categoryData->enabled[$domainId] !== $previousStateOfEnabled) {
+                    $editCategory = true;
+                }
             }
 
-            $this->edit($specialCategory->getId(), $categoryData);
+            if ($editCategory === true) {
+                $this->edit($specialCategory->getId(), $categoryData);
+            }
         }
     }
 
