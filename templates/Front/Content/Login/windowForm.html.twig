@@ -6,10 +6,10 @@
         </div>
         <div class="display-none in-message in-message--alert js-login-validation-errors"></div>
         <div class="box-login__item">
-            {{ form_widget(form.email, { attr: { placeholder: 'E-mail'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
+            {{ form_row(form.email, { 'label': 'E-mail'|trans, attr: { placeholder: 'E-mail'|trans }}) }}
         </div>
         <div class="box-login__item box-login__item--move-top">
-            {{ form_widget(form.password, { attr: { placeholder: 'Heslo'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
+            {{ form_row(form.password, { 'label': 'Heslo'|trans, attr: { placeholder: 'Heslo'|trans }}) }}
         </div>
 
         {% do form.rememberMe.setRendered %}

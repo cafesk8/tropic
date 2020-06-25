@@ -1,48 +1,49 @@
 {{ form_start(form, { attr: { 'data-on-submit': 'ajaxSubmit', 'data-success': success ? 'true' : 'false' }}) }}
-    <div class="footer-newsletter web__container--border-radius web__container--dark">
-        <div class="footer-newsletter__item footer-newsletter__item--left">
-            <p class="footer-newsletter__text footer-newsletter__text--big">
-                {{ 'Nenechte si ujít akční nabídky'|trans }}
-            </p>
-        </div>
-        <div class="footer-newsletter__item">
-            <div class="footer-newsletter__form">
-                <div class="footer-newsletter__form__wrap">
-                    <div class="footer-newsletter__form__in">
-                        {{ form_widget(form.email, { attr: {placeholder: 'Váš e-mail'|trans, class: 'footer-newsletter__input'} }) }}
-                        {{ form_widget(form.send, { label: 'Přihlásit'|trans, attr: { class: "footer-newsletter__form__btn" }}) }}
+    <div class="footer-newsletter">
+        <p class="footer-newsletter__text">
+            {{ 'A pokud to máte do Liberce daleko,'|trans }}
+        </p>
+        <p class="footer-newsletter__text footer-newsletter__text--big">
+            {{ 'začněte odebírat novinky'|trans }}
+        </p>
+        <div class="footer-newsletter__form">
+            <div class="footer-newsletter__form__input">
+                <div class="form-line">
+                    <div class="form-line__input">
+                        {{ form_widget(form.email, { attr: {placeholder: 'Váš e-mail'|trans,} }) }}
+                        <label class="input-label required">E-mail</label>
                     </div>
-                    <div class="display-none">
+                    <div class="form-line__error">
                         {{ form_errors(form.email) }}
                     </div>
                 </div>
-                {{ form_errors(form, { errors_attr: { class : 'in-message--alert display-none' } }) }}
-                <div class="form-choice form-choice--white-text">
-                    <span class="form-choice__line">
-                        <label class="footer-newsletter__form__label" for="{{ form.privacyPolicyAgreement.vars.id }}">
-                            {{ form_widget(form.privacyPolicyAgreement, {attr: { class: 'css-checkbox' }}) }}
-                            <span class="css-checkbox__image">
-                                {% if privacyPolicyArticle is not null %}
-                                    {% set articleUrl = url('front_article_detail', {'id': privacyPolicyArticle.id}) %}
-                                    {{ "Chci odebírat novinky a akční nabídky a souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobních údajů</a>"|trans({'%url%': articleUrl})|raw }}
-                                {% else %}
-                                    {{ 'Chci odebírat novinky a akční nabídky a souhlasím se zpracováním osobních údajů'|trans }}
-                                {% endif %}
-                            </span>
-                        </label>
-                        <div class="display-none">
-                            <span class="js-validation-errors-list js-validation-error-list-{{ form.privacyPolicyAgreement.vars.id }} form-error form-error--choice display-none">
-                                <ul class="form-error__list"></ul>
-                            </span>
-                        </div>
-                    </span>
-                </div>
             </div>
-        </div>
-        <div class="footer-newsletter__item">
-            <p class="footer-newsletter__text">
-                {{ 'Jednou za týden – novinky, akční nabídky i zákulisní informace'|trans }}
-            </p>
+            {{ form_errors(form, { errors_attr: { class : 'in-message--alert display-none' } }) }}
+            <div class="footer-newsletter__form__bottom">
+                <div class="footer-newsletter__form__bottom__checkbox">
+                    <div class="form-choice form-choice--without-gap form-choice--white-text">
+                        <span class="form-choice__line">
+                            <label for="{{ form.privacyPolicyAgreement.vars.id }}">
+                                {{ form_widget(form.privacyPolicyAgreement, {attr: { class: 'css-checkbox' }}) }}
+                                <span class="css-checkbox__image css-checkbox__image--vertical">
+                                    {% if privacyPolicyArticle is not null %}
+                                        {% set articleUrl = url('front_article_detail', {'id': privacyPolicyArticle.id}) %}
+                                        {{ "Chci odebírat novinky a souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobním údajů</a>"|trans({'%url%': articleUrl})|raw }}
+                                    {% else %}
+                                        {{ 'Chci odebírat novinky a souhlasím se zpracováním osobním údajů'|trans }}
+                                    {% endif %}
+                                </span>
+                            </label>
+                            <div class="display-none">
+                                <span class="js-validation-errors-list js-validation-error-list-{{ form.privacyPolicyAgreement.vars.id }} form-error form-error--choice display-none">
+                                    <ul class="form-error__list"></ul>
+                                </span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                {{ form_widget(form.send, { label: 'Odebírat'|trans, attr: { class: "btn--success btn--large" }}) }}
+            </div>
         </div>
     </div>
 {{ form_end(form) }}
