@@ -1,52 +1,63 @@
-@box-info-row-bg: @color-gray;
-@box-info-row-font-size: 13px;
-@box-info-row-bottom-gap: 20px;
+@box-info-row-bg: #e5e9ec;
+@box-info-row-title-bg: #cdd5da;
+@box-info-row-font-size: @font-size-extra-small + 1px;
+@box-info-row-bottom-gap: 25px;
 @box-info-row-min-height: 34px;
-@box-info-row-padding: 40px;
-@box-info-row-close-button-size: 14px;
+@box-info-row-padding: 20px;
+@box-info-row-padding-horizontal: 12px;
 
 .box-info-row {
     position: relative;
-    display: block;
+    display: flex;
+    flex-direction: column;
     margin-bottom: @box-info-row-bottom-gap;
     min-height: @box-info-row-min-height;
-    line-height: 20px;
-    padding: 10px @box-info-row-padding;
-    text-align: center;
+    line-height: 16px;
+    padding: @box-info-row-padding-horizontal @box-info-row-padding;
+    text-align: left;
 
     background-color: @box-info-row-bg;
     border-radius: @radius;
-    color: @color-f;
+    color: @color-base;
     font-size: @box-info-row-font-size;
-    font-weight: 600;
+    font-weight: 500;
+    font-family: @font-alt;
 
-    @media @query-vl {
-        line-height: @box-info-row-min-height;
-        padding: 0 @box-info-row-padding;
+    @media @query-md {
+        flex-direction: row;
     }
 
-    strong {
+    h3 {
+        display: flex;
+        align-items: center;
+        width: calc(~"100% + @{box-info-row-padding} * 2");
+        padding: @box-info-row-padding-horizontal @box-info-row-padding;
+        margin-top: -@box-info-row-padding-horizontal;
+        margin-left: -@box-info-row-padding;
+        margin-right: @box-info-row-padding;
+        line-height: 16px;
+
+        background-color: @box-info-row-title-bg;
+        font-weight: 700;
+        font-family: @font-alt;
+        font-size: @box-info-row-font-size;
+        border-radius: @radius @radius 0 0;
+
+        @media @query-md {
+            width: auto;
+            flex: none;
+            margin-bottom: -@box-info-row-padding-horizontal;
+
+            border-radius: @radius 0 0 @radius;
+        }
+    }
+
+    a {
         color: @color-base;
-        font-size: 14px;
         font-weight: 700;
     }
 
-    &__close {
-        position: absolute;
-        right: @box-info-row-close-button-size;
-        top: 50%;
-        transform: translateY(-50%);
-        height: @box-info-row-close-button-size;
-        line-height: 0;
-
-        cursor: pointer;
-        color: @color-f;
-        font-size: @box-info-row-close-button-size;
-
-        &:hover {
-            .svg {
-                color: @color-base;
-            }
-        }
+    p {
+        margin-bottom: 0;
     }
 }

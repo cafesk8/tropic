@@ -74,16 +74,21 @@
                 }
 
                 &__text {
-                    display: flex;
-
                     font-size: 11px + 1px;
                     font-family: @font-alt;
                     text-transform: uppercase;
 
                     &__title {
-                        margin-right: @margin-gap;
+                        padding: 2px 5px;
+                        margin-right: 10px;
 
                         font-weight: 700;
+
+                        &--colored {
+                            background-color: @color-turquoise;
+                            border-radius: @radius-small;
+                            color: @color-f;
+                        }
                     }
                 }
             }
