@@ -43,7 +43,7 @@
                                 {% for index, cartItem in cartItems %}
                                     {% set cartItemPrice = cartItemPrices[index] %}
                                     {% set cartItemUrl = url('front_product_detail', {id: cartItem.product.id}) %}
-                                    <div class="table-cart__row js-cart-item">
+                                    <div class="table-cart__row js-maximum-amount-container">
                                         <div class="table-cart__content">
                                             <div class="table-cart__cell table-cart__cell--image">
                                                 <a href="{{ cartItemUrl }}" title="{{ cartItem.product.name }}">
