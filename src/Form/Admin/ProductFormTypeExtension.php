@@ -487,6 +487,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                     'data' => t('Zboží je označeno jako vyprodané z důvodu nulových skladových zásob.'),
                 ]);
         }
+
+        if ($product !== null && $product->isMainVariant()) {
+            $displayAvailabilityGroup->remove('productCalculatedHiddenInfo');
+        }
+
         $displayAvailabilityGroup
             ->remove('hidden')
             ->add('shown', DomainsType::class, [
