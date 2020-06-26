@@ -1,96 +1,97 @@
 @box-preview-bg: @color-f;
 @box-preview-width: @box-order-cart-width;
 @box-preview-gap: 90px;
-@box-preview-padding: 30px 30px 0 30px;
-@box-preview-padding-small: 15px 20px 0 20px;
-
-@box-preview-coupone-code-button-width: 92px;
 
 .box-preview {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
+    &__content {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
 
-    background-color: @box-preview-bg;
-
-    &__row {
-        padding: @box-preview-padding-small;
-
-        background-color: @color-f;
-        border-radius: @radius;
-
-        @media @query-md {
-            border: 3px solid @color-border;
-        }
-
-        @media @query-vl {
-            padding: @box-preview-padding;
-        }
-
-        &--dark {
-            padding-bottom: 20px;
-
-            background-color: @color-box;
-        }
-
-        &--no-bottom {
-            border-bottom: 0;
-        }
-
-        &--thin-top-border {
-            padding-top: 14px;
-
-            border-top: 1px solid @color-border;
-        }
-
-        &--without-radius {
-            border-radius: 0;
-        }
-
-        &--without-radius-bottom {
-            border-radius: @radius @radius 0 0;
-        }
-
-        &--without-radius-top {
-            border-radius: 0 0 @radius @radius;
+        @media @query-lg {
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 40px;
         }
     }
 
-    &__back {
-        margin-bottom: 2px;
+    &__item {
+        margin-bottom: 20px;
+
+        @media @query-lg {
+            margin-bottom: 0;
+        }
+
+        &--total {
+            @media @query-lg {
+                width: 400px;
+                padding-left: 20px;
+            }
+        }
+    }
+
+    &__action {
+        background-attachment: @color-f;
     }
 
     &__coupone {
-        &__title {
-            color: @color-base;
+        display: flex;
+        flex-direction: column;
 
-            &__label {
-                font-size: 16px!important;
-                font-weight: 700;
-            }
+        @media @query-md {
+            flex-direction: row;
+            align-items: center;
         }
 
-        &__text {
-            display: block;
-            width: 100%;
-            margin-top: 10px;
+        &__title {
+            line-height: 18px;
+            margin-right: 20px;
+            margin-bottom: 10px;
+
+            font-size: 16px;
+            font-weight: 700;
+            color: @color-base;
+            text-transform: uppercase;
+
+            @media @query-md {
+                margin-bottom: 0;
+            }
         }
 
         &__code {
             display: flex;
             flex-direction: row;
+            padding: 5px;
+
+            border: 1px solid @color-border-dark;
+            border-radius: @radius-medium;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 
             &__input {
-                width: calc(~"100% - @{box-preview-coupone-code-button-width}");
-                
-                border-right: 0;
-                border-radius: @radius-small 0 0 @radius-small;
-            }
+                height: 31px;
 
-            &__button {
-                width: @box-preview-coupone-code-button-width;
+                border: 0;
+                box-shadow: none;
 
-                border-radius: 0 @radius-small @radius-small 0;
+                &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                    opacity: 1;
+                }
+
+                &::-moz-placeholder { /* Firefox 19+ */
+                    opacity: 1;
+                }
+
+                &:-ms-input-placeholder { /* IE 10+ */
+                    opacity: 1;
+                }
+
+                &:-moz-placeholder { /* Firefox 18- */
+                    opacity: 1;
+                }
+
+                &:focus {
+                    border: 0;
+                }
             }
         }
     }
@@ -103,25 +104,5 @@
         color: @color-base;
         font-size: @font-size-small + 1px;
         font-family: @font-alt;
-    }
-
-    &__button {
-        margin-bottom: 24px;
-        padding: 5px 10px;
-
-        text-decoration: uppercase;
-        text-transform: uppercase;
-        font-size: 20px;
-
-        &__icon {
-            display: none;
-
-            @media @query-sm {
-                display: inline-block;
-                position: relative;
-                top: 2px;
-                right: 5px;
-            }
-        }
     }
 }

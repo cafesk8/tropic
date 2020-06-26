@@ -1,0 +1,29 @@
+@box-cart-info-gap: 30px; 
+
+.box-cart {
+    margin-bottom: 60px;
+
+    @media @query-lg {
+        margin-bottom: 127px;
+    }
+
+    &__message {
+        width: 100%;
+    }
+
+    &__info {
+        padding: 5px 5px 20px;
+        margin-bottom: @box-cart-info-gap;
+
+        border-radius: @radius;
+        background-color: @color-light;
+
+        @media @query-md {
+            padding: 20px;
+        }
+
+        @media @query-lg {
+            padding: @box-cart-info-gap;
+        }
+    }
+}

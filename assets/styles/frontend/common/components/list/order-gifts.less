@@ -1,6 +1,10 @@
-@list-order-gifts-title-width: 150px;
-@list-order-gifts-image-size: 70px;
-@list-order-gifts-item-gap: 15px;
+@list-order-gifts-title-width: 173px;
+@list-order-gifts-image-size: 120px;
+@list-order-gifts-image-size-small: 110px;
+@list-order-gifts-label-size: @list-order-gifts-image-size;
+@list-order-gifts-label-size-small: @list-order-gifts-image-size-small;
+@list-order-gifts-item-gap: 40px;
+@list-order-gifts-item-gap-bottom: 15px;
 
 .list-order-gifts {
     .reset-ul();
@@ -8,20 +12,34 @@
     flex-direction: row;
     flex-wrap: wrap;
     flex: 1;
-    margin-left: -@list-order-gifts-item-gap;
+    margin-bottom: -@list-order-gifts-item-gap-bottom;
 
     &__item {
-        width: calc(~"100% / 2 - @{list-order-gifts-item-gap}");
-        margin-left: @list-order-gifts-item-gap;
-        margin-bottom: @list-order-gifts-item-gap;
+        display: flex;
+        justify-content: center;
+        width: calc(~"100% / 2");
+        margin-bottom: @list-order-gifts-item-gap-bottom;
         text-align: center;
 
         @media @query-sm {
-            width: calc(~"100% / 3 - @{list-order-gifts-item-gap}");
+            width: calc(~"100% / 3");
+        }
+
+        @media @query-md {
+            width: calc(~"100% / 4");
         }
 
         @media @query-lg {
-            width: calc(~"100% / 4 - @{list-order-gifts-item-gap}");
+            justify-content: flex-end;
+            width: calc(~"100% / 3");
+        }
+
+        @media @query-vl {
+            width: calc(~"100% / 5");
+        }
+
+        @media @query-xl {
+            width: calc(~"100% / 6");
         }
 
         &__label {
@@ -30,6 +48,11 @@
             align-items: center;
             text-align: center;
             cursor: pointer;
+            width: @list-order-gifts-label-size-small;
+
+            @media @query-lg {
+                width: @list-order-gifts-label-size;
+            }
         }
 
         &__input {
@@ -37,24 +60,32 @@
         }
 
         &__image {
-            height: @list-order-gifts-image-size;
-            width: @list-order-gifts-image-size;
+            height: @list-order-gifts-image-size-small;
+            width: @list-order-gifts-image-size-small;
             margin-bottom: 10px;
-            padding: 5px;
+            padding: 1px;
 
             font-size: 0;
-            border: 1px solid transparent;
-            border-radius: @radius-small;
+            border-radius: @radius;
+            background: @color-turquoise;
+
+            @media @query-lg {
+                height: @list-order-gifts-image-size;
+                width: @list-order-gifts-image-size;
+            }
             
             .list-order-gifts__item__input:checked ~ & {
-                box-shadow: @box-shadow-outer;
-                border: 1px solid @color-add;
+                padding: 3px;
+
+                background: linear-gradient(135deg, rgba(19,108,163,1) 0%, rgba(75,175,193,1) 35%, rgba(120,216,108,1) 63%, rgba(105,190,82,1) 100%);
             }
 
             &__wrap {
                 position: relative;
-                width: 100%;
                 height: 100%;
+
+                background: @color-f;
+                border-radius: @radius - 2px;
             }
 
             img {
@@ -65,23 +96,43 @@
         &__name {
             margin: 0;
             word-break: break-word;
+            
+            font-size: @font-size;
 
             .list-order-gifts__item__input:checked ~ & {
                 font-weight: 700;
             }
 
             .input-label {
+                position: static;
                 padding-right: 0;
                 cursor: pointer;
+
+                font-family: @font-base;
+                font-size: @font-size;
             }
         }
     }
 }
 
 .list-order-gifts-title {
-    width: @list-order-gifts-title-width;
-    text-transform: uppercase;
+    position: static;
+    width: 100%;
+    line-height: 42px;
     margin-bottom: 20px;
+    text-align: center;
 
     font-weight: 700;
+    font-size: 36px;
+    color: @color-primary;
+    cursor: text;
+
+    @media @query-md {
+        text-align: left;
+    }
+
+    @media @query-lg {
+        width: @list-order-gifts-title-width;
+        margin-bottom: 0;
+    }
 }

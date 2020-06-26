@@ -13,7 +13,7 @@ export default class CartRecalculator {
         $container.filterAllNodes('.js-cart-item .js-spinbox-plus, .js-cart-item .js-spinbox-minus').click(
             function (event) {
                 const $currentTarget = $(event.currentTarget);
-                const $warning = $currentTarget.closest('.js-spinbox-parent').find('.js-maximum-amount-warning');
+                const $warning = $currentTarget.closest('.js-cart-item').find('.js-maximum-amount-warning');
 
                 if ($currentTarget.data('disabled') === 'disabled' && $warning.is(':visible')) {
                     return false;

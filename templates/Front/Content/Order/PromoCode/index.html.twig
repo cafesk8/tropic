@@ -1,19 +1,9 @@
-<div class="box-preview__row box-preview__row--dark box-preview__row--without-radius-bottom">
-    <div class="box-preview__coupone">
-        <div class="box-preview__coupone__title">
-            <label>
-                <input type="checkbox" class="css-checkbox js-promo-code-toggle-checkbox">
-                <span class="css-checkbox__image box-preview__coupone__title__label">
-                    {{ 'Máte slevový kupón?'|trans }}
-                </span>
-            </label>
-        </div>
-        <div class="display-none js-promo-code-toggle-content">
-            <label for="orderCoupone" class="box-preview__coupone__text input-label">{{ 'Zadejte kód'|trans }}</label>
-            <div class="box-preview__coupone__code">
-                <input type="text" id="js-promo-code-input" class="box-preview__coupone__code__input input" data-apply-code-url="{{ url('front_promo_code_apply') }}">
-                <button class="box-preview__coupone__code__button btn btn--success" id="js-promo-code-submit-button" type="button">{{ 'Použít'|trans }}</button>
-            </div>
-        </div>
+<div class="box-preview__coupone">
+    <div class="box-preview__coupone__title">
+        {{ 'Máte slevový kupón?'|trans }}
+    </div>
+    <div class="box-preview__coupone__code">
+        <input class="box-preview__coupone__code__input input" placeholder="{{ 'Zadejte kód'|trans }}" type="text" id="js-promo-code-input" data-apply-code-url="{{ url('front_promo_code_apply') }}">
+        <button class="box-preview__coupone__code__button btn" id="js-promo-code-submit-button" type="button">{{ 'Zadat'|trans }}</button>
     </div>
 </div>

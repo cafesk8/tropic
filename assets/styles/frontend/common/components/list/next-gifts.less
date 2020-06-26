@@ -1,5 +1,5 @@
 @list-next-gifts-item-gap: 15px;
-@list-next-gifts-image-size: 50px;
+@list-next-gifts-image-size: 80px;
 
 .list-next-gifts {
     .reset-ul();
@@ -20,24 +20,30 @@
         }
 
         @media @query-vl {
-            width: calc(~"100% / 4 - @{list-next-gifts-item-gap}");
+            width: calc(~"100% / 5 - @{list-next-gifts-item-gap}");
         }
 
         &__image {
+            position: relative;
             height: @list-next-gifts-image-size;
             width: @list-next-gifts-image-size;
 
             font-size: 0;
 
             img {
-                max-height: 100%;
+                .center-image();
             }
         }
 
         &__name {
+            display: flex;
+            align-items: center;
             flex: 1;
             margin: 0;
             padding-left: 10px;
+            line-height: 18px;
+
+            font-size: @font-size-extra-small;
         }
     }
 }

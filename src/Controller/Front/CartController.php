@@ -199,7 +199,6 @@ class CartController extends FrontBaseController
         ]);
         $form->handleRequest($request);
 
-        $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
         $quantifiedItemsPrices = $orderPreview->getQuantifiedItemsPrices();
         $this->gtmFacade->onCartPage($orderPreview);
 
@@ -209,12 +208,8 @@ class CartController extends FrontBaseController
             'cartItemPrices' => $quantifiedItemsPrices,
             'cartGiftsByProductId' => $cartGiftsByProductId,
             'form' => $form->createView(),
-            'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
-            'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
-            'remainingPriceWithVat' => $remainingPriceWithVat,
             'cartItemDiscountsIndexedByPromoCodeId' => $orderPreview->getQuantifiedItemsDiscountsIndexedByPromoCodeId(),
             'productsPrice' => $productsPrice,
-            'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
             'promoCodesIndexedById' => $orderPreview->getPromoCodesIndexedById(),
             'locale' => $this->domain->getLocale(),
             'nextLevelGifts' => $this->orderGiftFacade->getAllListableNextLevelGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->pricingGroupFacade->getCurrentPricingGroup($customerUser)),

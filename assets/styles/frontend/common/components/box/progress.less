@@ -14,11 +14,13 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    margin-bottom: 20px;
 
     @media @query-lg {
         flex-direction: row;
         overflow: visible;
         margin-left: -@box-progress-item-gap;
+        margin-bottom: @box-progress-item-gap;
     }
 
     &__item {

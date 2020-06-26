@@ -16,6 +16,7 @@
     align-items: center;
     padding: @in-message-bottom-padding;
     margin-bottom: @in-message-bottom-gap;
+    line-height: 24px;
 
     border-radius: @radius;
     background-color: @color-f;
@@ -75,5 +76,9 @@
         li {
             color: @in-message-alert-text;
         }
+    }
+
+    &--without-gap {
+        margin-bottom: 0;
     }
 }

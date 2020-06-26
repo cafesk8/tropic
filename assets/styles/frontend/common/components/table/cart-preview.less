@@ -1,10 +1,14 @@
 .table-cart-preview {
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+
+    &--without-gap {
+        margin-bottom: 0;
+    }
 
     &__cell {
-        color: @color-gray;
-        font-size: 14px;
+        font-size: @font-size + 1px;
+        font-family: @font-alt;
 
         &--price {
             padding-left: 5px;
@@ -30,31 +34,42 @@
 
     &__total {
         width: 100%;
-        margin-bottom: 29px;
-
-        &__cell {
-            line-height: 30px;
-            
-            color: @color-base;
-            font-size: 18px;
-        }
+        text-align: right;
 
         &__price-primary {
-            line-height: 30px;
-            margin-bottom: 5px;
-            text-align: right;
+            display: block;
+            line-height: 29px;
+            vertical-align: bottom;
 
             color: @color-base;
-            font-size: 24px;
+            font-size: 36px;
             font-weight: 700;
+
+            @media @query-sm {
+                display: inline-block;
+            }
+
+            &--colored {
+                color: @color-price-discount;
+            }
         }
 
-        &__price-secondary {
-            text-align: right;
+        &__discount {
+            display: inline-block;
+            padding: 1px 7px;
+            margin-bottom: 10px;
 
-            color: @color-gray;
-            font-size: 14px;
-            line-height: 16px;
+            background-color: @color-price-discount;
+            text-transform: uppercase;
+            font-family: @font-alt;
+            font-size: 11px + 1px;
+            color: @color-f;
+            border-radius: @radius-very-small;
+
+            @media @query-sm {
+                margin-right: 20px;
+                margin-bottom: 0;
+            }
         }
     }
 }

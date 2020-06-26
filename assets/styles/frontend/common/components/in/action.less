@@ -4,29 +4,24 @@
 @in-action-bottom-gap: 20px;
 
 .in-action {
+    position: relative;
     margin-bottom: @in-action-bottom-gap;
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
 
-    &--column {
-        flex-direction: column;
+    @media @query-lg {
+        justify-content: space-between;
+        flex-direction: row;
     }
 
-    &--centered-on-mobile {
-        margin: 0 auto 20px auto;
+    &__back {
+        margin-bottom: 15px;
 
-        @media @query-md {
-            margin: 0;
+        @media @query-lg {
+            margin-bottom: 0;
         }
-
-        .svg {
-            margin-top: -15px;
-        }
-    }
-
-    &--to-top {
-        align-self: flex-start;
     }
 
     &__btn {
@@ -38,12 +33,60 @@
         }
     }
 
+    &__free-transport {
+        padding: 5px 12px;
+        margin-bottom: 15px;
+        line-height: 21px;
+
+        font-size: @font-size-small;
+        background-color: lighten(@color-green, 50%);
+        border-radius: @radius;
+        text-align: center;
+
+        @media @query-lg {
+            margin-bottom: 0;
+            width: 260px;
+            text-align: left;
+        }
+
+        @media @query-vl {
+            position: absolute;
+            width: auto;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            top: 50%;
+        }
+
+        &__colored-text {
+            font-weight: 700;
+            color: @color-green;
+        }
+    }
+
     &__link {
         font-size: @font-size-small;
-        text-transform: uppercase;
         border: none;
         background-color: transparent;
         outline: none;
         cursor: pointer;
+        text-decoration: none;
+
+        &__icon {
+            transform: rotate(90deg);
+            opacity: 0.6;
+            padding-right: 3px;
+
+            color: @color-primary;
+            font-size: 10px;
+        }
+
+        &__text {
+            color: @color-base;
+            text-decoration: underline;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 }

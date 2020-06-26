@@ -307,7 +307,7 @@
                     <{{ '/' ~ productHeadingTagName|default('h2') }}>
 
                     <div class="list-products-bomb__item__image dont-print">
-                        {{ image(productView.image, { size: 'listBomb', alt: productView.name, lazy: true }) }}
+                        {{ image(productView.image, { size: 'biggerThumbnail', alt: productView.name, lazy: true }) }}
                     </div>
 
                     {% if productSellingPrice is not null %}
