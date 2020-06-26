@@ -108,6 +108,20 @@
             width: @box-gallery-item-size - @box-gallery-item-border-size*2;
             height: @box-gallery-item-size - @box-gallery-item-border-size*2;
 
+            &--mobile {
+                @media @query-lg {
+                    display: none;
+                }
+            }
+
+            &--desktop {
+                display: none;
+
+                @media @query-lg {
+                    display: block;
+                }
+            }
+
             .box-gallery__item--video & {
                 width: @box-gallery-item-video-size;
                 height: @box-gallery-item-video-size;
