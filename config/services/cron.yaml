@@ -122,6 +122,10 @@ services:
         tags:
             - { name: shopsys.cron, hours: '0', minutes: '0', readableName: 'Smazání starých košíků' }
 
+    App\Model\WatchDog\WatchDogCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Hlídač ceny a dostupnosti' }
+
     # This module should run as last because it creates multiple kernels and fake requests.
     Shopsys\FrameworkBundle\Component\Error\ErrorPageCronModule:
         tags:

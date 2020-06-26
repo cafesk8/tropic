@@ -1,0 +1,14 @@
+<h2 class="js-watch-dog-heading">{{ product.name }}</h2>
+{{ 'Vložte svůj e-mail a my Vás informujeme o snížení ceny nebo o naskladnění zboží:'|trans }}
+{{ form_start(form) }}
+    {{ form_row(form.email) }}
+    {% if product.calculatedSellingDenied %}
+        {{ form_row(form.availabilityWatcher) }}
+    {% endif %}
+    {{ form_row(form.priceWatcher) }}
+    <div class="js-target-price-input-line">
+        {{ form_row(form.targetPrice) }} {{ currencySymbolByDomainId(getDomain().id) }}
+    </div>
+    {{ form_row(form.submit, {attr: {class: 'js-watch-dog-submit'}}) }}
+{{ form_end(form) }}
+{{ init_js_validation(form, false) }}

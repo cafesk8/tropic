@@ -206,3 +206,13 @@ front_product_box_tabs:
     methods: [GET]
     requirements:
         productId: \d+
+
+front_watch_dog_window_form:
+    path: /watch-dog/window/{productId}
+    defaults: { _controller: App\Controller\Front\WatchDogController:windowFormAction }
+    methods: [GET]
+
+front_watch_dog_subscribe:
+    path: /watch-dog/subscribe/
+    defaults: { _controller: App\Controller\Front\WatchDogController:subscribeAction }
+    methods: [POST]

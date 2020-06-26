@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\WatchDog\WatchDogMail;
 use App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Mail\MailTemplate;
@@ -46,7 +47,7 @@ class MailTemplateDataFixture extends AbstractReferenceFixture
     }
 
     /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
@@ -157,6 +158,15 @@ class MailTemplateDataFixture extends AbstractReferenceFixture
             Děkujeme za váš nákup.', [], 'dataFixtures', $locale);
 
             $this->createMailTemplate($manager, OrderGiftCertificateMail::MAIL_TEMPLATE_ACTIVATED_NAME, $mailTemplateData, $domainId);
+
+            $mailTemplateData->subject = t('Hlídač ceny a dostupnosti', [], 'dataFixtures', $locale);
+            $mailTemplateData->body = t('Dobrý den,<br /><br />
+            produkt <a href="' . WatchDogMail::VARIABLE_PRODUCT_URL . '">' . WatchDogMail::VARIABLE_PRODUCT_NAME . '</a>, 
+            který jste se rozhodli sledovat, je nyní k dispozici za vámi požadovanou cenu.<br /><br />
+            S pozdravem<br />
+            tým Tropic Fishing', [], 'dataFixtures', $locale);
+
+            $this->createMailTemplate($manager, WatchDogMail::MAIL_TEMPLATE_WATCH_DOG, $mailTemplateData, $domainId);
         }
     }
 

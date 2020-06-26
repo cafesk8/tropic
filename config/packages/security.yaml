@@ -130,6 +130,7 @@ security:
         # Products and categories
         - { path: ^/admin/product, roles: ROLE_VIEW_PRODUCTS }
         - { path: ^/admin/category, roles: ROLE_VIEW_PRODUCTS }
+        - { path: ^/admin/watch-dog, roles: ROLE_VIEW_PRODUCTS }
 
         # Administrators
         - { path: ^/admin/administrator, roles: ROLE_VIEW_ADMINISTRATORS }

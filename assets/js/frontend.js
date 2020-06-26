@@ -9,6 +9,7 @@ import showFormErrorsWindowOnFrontend from './frontend/utils/customizeBundle';
 
 import './frontend/utils/loginWindowOpener';
 import './frontend/utils/availabilityOnStoreWindowOpener';
+import './frontend/utils/watchDogWindowOpener';
 
 import './loadTranslations';
 
