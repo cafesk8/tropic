@@ -8,7 +8,7 @@
             {% if productView.groupItems is not empty %}
                 {{ productSetMacro.productSetView(productView) }}
             {% else %}
-                <li class="list-products__item js-list-products-item js-item-container">
+                <li class="list-products__item js-list-products-item js-maximum-amount-container">
                     <div class="list-products__item__in">
                         <div class="list-products__item__block">
                             <a href="{{ productView.action.detailUrl }}" class="list-products__item__image-wrap">
@@ -102,7 +102,7 @@
                 {% for productView in productViews %}
                     {% set productSellingPrice = productView.sellingPrice %}
 
-                    <div class="list-products-slider__item js-item-container">
+                    <div class="list-products-slider__item js-maximum-amount-container">
                         <div class="list-products-slider__item__in">
                             <div class="list-products-slider__item__block">
                                 <a class="list-products-slider__item__image-wrap" href="{{ productView.action.detailUrl }}">

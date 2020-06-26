@@ -41,7 +41,7 @@ export default class Spinbox {
         const $currentParent = $currentTarget.closest('.js-spinbox-parent');
         const $minus = $currentParent.find('.js-spinbox-minus');
         const $plus = $currentParent.find('.js-spinbox-plus');
-        const $warning = $currentTarget.closest('.js-item-container').find('.js-maximum-amount-warning');
+        const $warning = $currentTarget.closest('.js-maximum-amount-container').find('.js-maximum-amount-warning');
 
         let value = $currentTarget.val();
         let min = $currentTarget.data('spinbox-min');
@@ -66,11 +66,11 @@ export default class Spinbox {
 
         if (max !== undefined && max > 0 && max < value) {
             value = max;
-            $currentTarget.closest('.js-item-container').find('.js-maximum-amount-warning').show();
+            $currentTarget.closest('.js-maximum-amount-container').find('.js-maximum-amount-warning').show();
         }
 
         if (max !== undefined && value < max) {
-            $currentTarget.closest('.js-item-container').find('.js-maximum-amount-warning').hide();
+            $currentTarget.closest('.js-maximum-amount-container').find('.js-maximum-amount-warning').hide();
         }
 
         if (value.toString() === max.toString()) {
@@ -93,7 +93,7 @@ export default class Spinbox {
         const $currentTarget = $(event.currentTarget);
         const $currentParent = $currentTarget.closest('.js-spinbox-parent');
         const $plus = $currentParent.find('.js-spinbox-plus');
-        const $warning = $currentTarget.closest('.js-item-container').find('.js-maximum-amount-warning');
+        const $warning = $currentTarget.closest('.js-maximum-amount-container').find('.js-maximum-amount-warning');
 
         if ($plus.data('disabled') === 'disabled') {
             $warning.show();
