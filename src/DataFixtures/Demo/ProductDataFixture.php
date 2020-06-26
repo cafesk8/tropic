@@ -11,7 +11,7 @@ use App\Model\Product\ProductFacade;
 use App\Model\Product\ProductVariantTropicFacade;
 use DateTime;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -144,7 +144,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     }
 
     /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager): void
     {
@@ -3334,6 +3334,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_HYUNDAI);
+        $productData->youtubeVideoIds = ['Chw6lWqbHEQ', 'yawpz_XfFuA'];
 
         $this->createProduct($productData);
 
@@ -5672,7 +5673,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $variantCatnumsByMainVariantCatnum = $this->getVariantCatnumsByMainVariantCatnum();
 
         foreach ($variantCatnumsByMainVariantCatnum as $mainVariantCatnum => $variantsCatnums) {
-            /** @var \App\Model\Product\Product $mainVariant */
             $mainVariant = $this->productsByCatnum[$mainVariantCatnum];
             $mainVariantData = $this->productDataFactory->createFromProduct($mainVariant);
             $mainVariantData->variantId = $mainVariantCatnum;
@@ -5885,9 +5885,23 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     private function addFakeStoreStocks(ProductData $productData)
     {
         $fakeStoreData = [];
+        $onlyExternal = rand(0, 3);
+        $noSale = rand(0, 1);
+        $lowSale = rand(0, 8);
 
-        for ($i = 1; $i <= 4; $i++) {
-            $fakeStoreData[$i] = rand(0, 125);
+        for ($i = 1; $i <= 5; $i++) {
+            if ($this->productNo === 3) {
+                $fakeStoreData[$i] = rand(0, 125);
+            } elseif ($onlyExternal === 0 && $i !== 4) {
+                $fakeStoreData[$i] = 0;
+                $productData->deliveryDays = '5-7';
+            } elseif ($noSale === 1 && $i < 3) {
+                $fakeStoreData[$i] = 0;
+            } elseif ($lowSale !== 0 && $i < 3) {
+                $fakeStoreData[$i] = $lowSale;
+            } else {
+                $fakeStoreData[$i] = rand(0, 125);
+            }
         }
 
         $productData->stockQuantityByStoreId = $fakeStoreData;

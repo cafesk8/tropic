@@ -361,7 +361,7 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         /** @var \App\Model\Category\Category $category */
-        $category = $this->getReference(CategoryDataFixture::CATEGORY_TOYS);
+        $category = $this->getReference(CategoryDataFixture::CATEGORY_GARDEN_TOOLS);
 
         $productData = $this->getDefaultProductData();
         $productData->categoriesByDomainId = [Domain::FIRST_DOMAIN_ID => [$category]];

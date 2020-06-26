@@ -18,7 +18,7 @@ use Tests\FrameworkBundle\Test\IsMoneyEqual;
 final class OrderFacadeEditTest extends TransactionFunctionalTestCase
 {
     private const ORDER_ID = 10;
-    private const PRODUCT_ITEM_ID = 45;
+    private const PRODUCT_ITEM_ID = 60;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Order\Order
