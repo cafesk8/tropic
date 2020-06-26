@@ -6,11 +6,11 @@ stages:
     - service
 
 .only-default: &only-default
-    only:
-        - branches
-        - master
-    except:
-        - schedules
+    rules:
+        -   if: '$CI_COMMIT_BRANCH'
+        -   if: '$CI_PIPELINE_SOURCE == "schedule"'
+            when: never
+
 
 .deploy: &deploy
     image:
@@ -20,8 +20,9 @@ stages:
         - build
     tags:
         - docker
-    except:
-        - schedules
+    rules:
+        -   if: '$CI_PIPELINE_SOURCE == "schedule"'
+            when: never
     script:
         - docker create -ti --name image ${TAG} bash
         - docker cp image:/var/www/html/var/ ./
@@ -102,23 +103,23 @@ review:stop:
         - docker-compose exec -T php-fpm php phing -D production.confirm.action=y elasticsearch-index-delete
         - docker-compose down --rmi all -v
         - /home/ci/clean.sh ${COMPOSE_PROJECT_NAME}
-    when: manual
-    only:
-        - branches
+    rules:
+        -   if: '$CI_COMMIT_BRANCH'
+            when: manual
+            allow_failure: true
     environment:
         name: review/${CI_COMMIT_REF_SLUG}
         action: stop
 
 deploy:production:
     <<: *deploy
-    when: manual
-    allow_failure: false
     resource_group: deploy_production
     variables:
         KUBE_CONFIG: ${KUBE_CONFIG_PROD}
-    only:
-        - master
-        - /^master-.*$/
+    rules:
+        -   if: '$CI_COMMIT_BRANCH == "master" || $CI_COMMIT_BRANCH =~ /^master-.*$/'
+            when: manual
+            allow_failure: false
     environment:
         name: production
         url: https://${DOMAIN_HOSTNAME_1}
@@ -128,9 +129,8 @@ deploy:devel:
     resource_group: deploy_devel
     variables:
         KUBE_CONFIG: ${KUBE_CONFIG_DEVEL}
-    only:
-        - devel
-        - /^devel-.*$/
+    rules:
+        -   if: '$CI_COMMIT_BRANCH == "devel" || $CI_COMMIT_BRANCH =~ /^devel-.*$/'
     environment:
         name: devel
         url: https://${DOMAIN_HOSTNAME_1}
@@ -138,12 +138,13 @@ deploy:devel:
 repository:clean:
     stage: service
     image: dwdraju/alpine-curl-jq
-    when: always
     tags:
         - docker
-    only:
-        refs:
-            - schedules
+    rules:
+        -   if: '$CI_PIPELINE_SOURCE == "schedule"'
+            when: always
+        -   if: '$CI_PIPELINE_SOURCE != "schedule"'
+            when: never
     before_script:
         - chmod +x ./gitlab/scripts/repository-clean.sh
     script:
@@ -155,11 +156,10 @@ security:check:
         - docker
     needs:
         - build
-    only:
-        refs:
-            - master
-    except:
-        - schedules
+    rules:
+        -   if: '$CI_COMMIT_BRANCH == "master"'
+        -   if: '$CI_PIPELINE_SOURCE == "schedule"'
+            when: never
     script:
         - docker run -i ${TAG} composer security-check
 
