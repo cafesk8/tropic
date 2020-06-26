@@ -48,11 +48,16 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         string $orderingModeId,
         int $page,
         int $limit,
-        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
+        ?int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
     ): BaseFilterQuery {
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
-            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
-            ->filterByPohodaProductType($pohodaProductType)
+            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup());
+
+        if ($pohodaProductType !== null) {
+            $filterQuery = $filterQuery->filterByPohodaProductType($pohodaProductType);
+        }
+
+        $filterQuery = $filterQuery
             ->setPage($page)
             ->setLimit($limit)
             ->applyOrdering($orderingModeId, $this->currentCustomerUser->getPricingGroup());
@@ -194,5 +199,16 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
             $productFilterData,
             $baseFilterQuery
         );
+    }
+
+    /**
+     * Override makes product groups appear in results
+     *
+     * @inheritDoc
+     */
+    protected function createListableProductsInCategoryFilterQuery(ProductFilterData $productFilterData, string $orderingModeId, int $page, int $limit, int $categoryId): BaseFilterQuery
+    {
+        return $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit, null)
+            ->filterByCategory([$categoryId]);
     }
 }
