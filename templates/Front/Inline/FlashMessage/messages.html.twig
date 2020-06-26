@@ -1,7 +1,7 @@
 {% if messages %}
-    <div class="in-message in-message--{{ type }}">
-        {% for message in messages %}
+    {% for message in messages %}
+        <div class="in-message in-message--{{ type }}">
             <div>{{ message|raw }}</div>
-        {% endfor %}
-    </div>
+        </div>
+    {% endfor %}
 {% endif %}
