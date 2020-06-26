@@ -10,11 +10,21 @@
         margin-right: 0;
     }
 
+    &--without-gap {
+        margin-bottom: 0;
+    }
+
     &__line {
         display: block;
 
         .form-choice--white-text & {
             color: @color-f;
+        }
+
+        a {
+            .form-choice--white-text & {
+                color: @color-f;
+            }
         }
     }
 

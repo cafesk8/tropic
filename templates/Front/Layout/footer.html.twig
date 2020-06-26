@@ -71,22 +71,43 @@
                                 </div>
                             </div>
                         </div>
-
-                        {% block newsletter_subscription %}
-                            {{ render(controller('App\\Controller\\Front\\NewsletterController:subscriptionAction')) }}
-                        {% endblock %}
-
-                        <div class="footer-banner">
-                            <div class="footer-banner__left">
-                                <h2 class="footer-banner__title">
-                                    {{ 'Čeká na vás 500 m²,<br> kde si určitě vyberete.'|trans|raw }}
-                                </h2>
-                                <a class="footer-banner__button btn-gradient btn-gradient--green" href="{{ url('front_store_index') }}">
-                                    <span class="btn-gradient__in">{{ 'Naše prodejna'|trans }}</span>
-                                </a>
+                    </div>
+                    <div class="footer-middle">
+                        <div class="footer-middle__wrap">
+                            <div class="footer-middle__left">
+                                <div class="footer-middle__left__wrap">
+                                    <h2 class="footer-middle__title">
+                                        {{ 'Čeká na vás 500 m²,<br> kde si určitě vyberete.'|trans|raw }}
+                                    </h2>
+                                    <a class="footer-middle__button btn-gradient btn-gradient--green" href="{{ url('front_store_index') }}">
+                                        <span class="btn-gradient__in">{{ 'Naše prodejna'|trans }}</span>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="footer-banner__right">
-                                <p class="footer-banner__text">{{ 'Na naší prodejně v Liberci najdete aktuálního mistra světa v chytání ryb na lodi. Na starosti má celou prodejnu včetně kolegů. Tak kvalitní rady nikde jinde nedostanete.'|trans }}</p>
+                            <div class="footer-middle__right">
+                                {% block newsletter_subscription %}
+                                    {{ render(controller('App\\Controller\\Front\\NewsletterController:subscriptionAction')) }}
+                                {% endblock %}
+                            </div>
+                        </div>
+                        <div class="footer-middle__awards">
+                            <div class="footer-middle__awards__left">
+                                <div class="footer-middle__awards__item">
+                                    <img src="{{ asset('public/frontend/images/heureka1.png') }}" alt="{{ 'Heureka award'|trans }}">
+                                </div>
+                                <div class="footer-middle__awards__item">
+                                    <img src="{{ asset('public/frontend/images/heureka2.png') }}" alt="{{ 'Heureka award'|trans }}">
+                                </div>
+                                <div class="footer-middle__awards__item">
+                                    <img src="{{ asset('public/frontend/images/heureka3.png') }}" alt="{{ 'Heureka award'|trans }}">
+                                </div>
+                            </div>
+                            <div class="footer-middle__awards__right">
+                                <div class="footer-middle__awards__heureka">
+                                    <a href="https://obchody.heureka.cz/tropicliberec-cz/recenze/" target="_blank" title="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o.">
+                                        <img src="https://im9.cz/cb/19416-11.png" height="130" width="340" alt="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o." style="border: 0;">
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

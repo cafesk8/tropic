@@ -1,10 +1,10 @@
-@input-height: 42px;
+@input-height: 50px;
 @input-textarea-height: @input-height * 3;
-@input-padding-vertical: 5px;
+@input-padding-vertical: 15px;
 @input-padding-horizontal: 10px;
-@input-font-size: @font-size;
-@input-font-size-label: @font-size-small;
-@input-font-color: @color-base;
+@input-font-size: @font-size-big;
+@input-font-size-label: 12px;
+@input-font-color: #1D4063;
 @input-border-size: 1px;
 
 @select-arrow-width: 40px;
@@ -23,27 +23,19 @@
     max-width: 100%;
     width: 100%;
     height: @input-height;
-    line-height: @input-height/2;
-    padding: @input-padding-vertical @input-padding-horizontal;
+    line-height: 30px;
+    padding: @input-padding-vertical @input-padding-horizontal 0 @input-padding-horizontal;
 
     border: @input-border-size solid @input-border-color;
     border-radius: @radius-medium;
-    box-shadow: @box-shadow-outer;
     color: @input-font-color;
     font-size: @input-font-size;
+    font-family: @font-alt;
     background-color: @input-background;
+    transition: border-color 0.2s;
 
-    &--big {
-        height: 60px;
-        padding-top: 20px;
-    }
-
-    .form-line__input--full & {
-        width: calc(~"100% - 5px");
-    }
-
-    & + .input--big {
-        border-top: 0;
+    &::placeholder {
+        color: transparent;
     }
 
     &--textarea {
@@ -54,7 +46,7 @@
 
     &:focus {
         outline: 0;
-        border: 1px solid @color-primary;
+        border: 1px solid @color-border-dark;
     }
 
     .form-input-error & ,
@@ -75,15 +67,15 @@
 }
 
 .input-label {
-    width: @input-label-width;
-    padding-right: 10px;
+    position: absolute;
+    top: 5px;
+    left: @input-padding-horizontal;
+    display: block;
+    z-index: @z-index-above;
 
     font-size: @input-font-size-label;
-    z-index: 1;
-
-    &--full-width {
-        width: auto;
-    }
+    font-family: @font-alt;
+    color: @color-primary;
 }
 
 .input-no-style {
@@ -130,7 +122,7 @@ select {
     height: @input-height;
     
     border-radius: @radius-small;
-    border: 1px solid @color-border-dark;
+    border: 1px solid @color-border;
     font-size: 13px;
     color: @input-font-color;
     background-color: @input-background;
