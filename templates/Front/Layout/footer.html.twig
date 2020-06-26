@@ -75,12 +75,14 @@
                     <div class="footer-middle">
                         <div class="footer-middle__wrap">
                             <div class="footer-middle__left">
-                                <h2 class="footer-middle__title">
-                                    {{ 'Čeká na vás 500 m²,<br> kde si určitě vyberete.'|trans|raw }}
-                                </h2>
-                                <a class="footer-middle__button btn-gradient btn-gradient--green" href="{{ url('front_store_index') }}">
-                                    <span class="btn-gradient__in">{{ 'Naše prodejna'|trans }}</span>
-                                </a>
+                                <div class="footer-middle__left__wrap">
+                                    <h2 class="footer-middle__title">
+                                        {{ 'Čeká na vás 500 m²,<br> kde si určitě vyberete.'|trans|raw }}
+                                    </h2>
+                                    <a class="footer-middle__button btn-gradient btn-gradient--green" href="{{ url('front_store_index') }}">
+                                        <span class="btn-gradient__in">{{ 'Naše prodejna'|trans }}</span>
+                                    </a>
+                                </div>
                             </div>
                             <div class="footer-middle__right">
                                 {% block newsletter_subscription %}

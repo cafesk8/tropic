@@ -7,8 +7,8 @@
 @footer-tab-height: 52px;
 @footer-middle-height: 400px;
 @footer-middle-height-mobile: 300px;
-@footer-middle-outer-height: 160px;
-@footer-middle-right-width: 45%;
+@footer-middle-outer-height: 200px;
+@footer-middle-right-width: 47%;
 @footer-middle-awards-left-width: 60%;
 
 .footer-top {
@@ -18,9 +18,6 @@
 
     @media @query-lg {
         padding: 51px 0 0 0;
-    }
-
-    @media @query-vl {
         margin-bottom: -@footer-middle-outer-height + 40px;
     }
 
@@ -234,7 +231,7 @@
 .footer-middle {
     display: flex;
 
-    @media @query-vl {
+    @media @query-lg {
         display: block;
         position: relative;
         bottom: -@footer-middle-outer-height;
@@ -248,26 +245,36 @@
         margin: 30px 0;
 
         border-radius: @radius-big;
-        background: @color-base url('@{path-design}/footer-bg.png') center bottom no-repeat;
-        background-size: cover;
+        background-color: @color-base;
         box-shadow: 0 10px 20px 0 rgba(0,0,0,0.3);
 
-        @media @query-vl {
+        @media @query-lg {
             flex-direction: row;
             height: @footer-middle-height;
             margin: 0 0 28px 0;
         }
 
         &:before {
-            @media @query-vl {
+            @media @query-lg {
                 content: '';
                 position: absolute;
+                width: 466px;
+                height: 313px;
+                bottom: -74px;
+                right: 29%;
+                z-index: @z-index-above;
+
+                background: url('@{path-design}/capkiller-hubka.png') center bottom no-repeat;
+                background-size: contain;
+            }
+
+            @media @query-vl {
                 width: 539px;
                 height: 404px;
                 bottom: -83px;
                 right: 29%;
 
-                background: url('@{path-design}/capkiller-hubka.png') center bottom no-repeat;
+                background-size: auto;
             }
         }
     }
@@ -278,15 +285,23 @@
         padding: 33px 20px 115px;
         overflow: hidden;
 
+        background: @color-base url('@{path-design}/footer-bg.png') -20px -10px no-repeat;
+        border-radius: @radius-big @radius-big 0 0;
+
+        @media @query-md {
+            background-size: 110%;
+        }
+
         @media @query-lg {
-            padding: 50px 47px;
+            overflow: visible;
+            width: calc(~"100% - @{footer-middle-right-width}");
+
+            border-radius: @radius-big 0 0 @radius-big;
+            background-size: auto;
         }
 
         @media @query-vl {
-            position: relative;
-            overflow: visible;
-            z-index: @z-index-above;
-            width: calc(~"100% - @{footer-middle-right-width}");
+            padding: 50px 47px;
         }
 
         &:before {
@@ -300,9 +315,14 @@
             background: url('@{path-design}/capkiller-hubka.png') center bottom no-repeat;
             background-size: contain;
 
-            @media @query-vl {
+            @media @query-lg {
                 display: none;
             }
+        }
+
+        &__wrap {
+            position: relative;
+            z-index: @z-index-above + 1;
         }
     }
 
@@ -313,11 +333,14 @@
         background-color: @color-base;
         border-radius: 0 0 @radius-big @radius-big;
 
-        @media @query-vl {
-            padding: 66px 60px;
+        @media @query-lg {
             width: @footer-middle-right-width;
 
             border-radius: 0 @radius-big @radius-big 0;
+        }
+
+        @media @query-vl {
+            padding: 66px 60px;
         }
     }
 
@@ -394,9 +417,6 @@
         flex-direction: column;
         align-items: center;
         text-align: left;
-    }
-
-    @media @query-vl {
         margin-top: @footer-middle-outer-height;
     }
 
@@ -531,9 +551,11 @@
 @footer-newsletter-item-inner-gap: 20px;
 
 .footer-newsletter {
+    position: relative;
     display: flex;
     flex-direction: column;
     margin-bottom: 0;
+    z-index: @z-index-above + 1;
 
     @media @query-vl {
         margin-bottom: 34px;
@@ -586,7 +608,7 @@
             flex-direction: column;
             align-items: flex-start;
 
-            @media @query-lg {
+            @media @query-vl {
                 flex-direction: row;
                 align-items: center;
             }
@@ -594,7 +616,7 @@
             &__checkbox {
                 margin-bottom: 16px;
 
-                @media @query-lg {
+                @media @query-vl {
                     margin-bottom: 0;
                 }
             }
