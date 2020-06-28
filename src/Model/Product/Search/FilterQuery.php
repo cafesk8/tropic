@@ -202,4 +202,21 @@ class FilterQuery extends BaseFilterQuery
 
         return $clone;
     }
+
+    /**
+     * @param int $pohodaProductType
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    public function filterByPohodaProductType(int $pohodaProductType): self
+    {
+        $clone = clone $this;
+
+        $clone->filters[] = [
+            'term' => [
+                'pohoda_product_type' => $pohodaProductType,
+            ],
+        ];
+
+        return $clone;
+    }
 }

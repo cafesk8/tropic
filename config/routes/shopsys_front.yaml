@@ -216,3 +216,8 @@ front_watch_dog_subscribe:
     path: /watch-dog/subscribe/
     defaults: { _controller: App\Controller\Front\WatchDogController:subscribeAction }
     methods: [POST]
+
+front_product_search_groups:
+    path: /product/search-groups/
+    defaults: { _controller: App\Controller\Front\ProductController:searchGroupsAction }
+    condition: "request.isXmlHttpRequest()"

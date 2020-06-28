@@ -43,9 +43,17 @@
                             {% for cartItem in cartItems %}
                                 {% set quantifiedItemPrice = orderPreview.quantifiedItemsPrices[loop.index0] %}
                                 <li class="cart-detail__item">
-                                    <div class="cart-detail__item__image">
-                                            {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
-                                    </div>
+                                    {% if cartItem.product.isPohodaProductTypeGroup %}
+                                        {% for productGroup in cartItem.product.productGroups %}
+                                            <div class="cart-detail__item__image">
+                                                {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}
+                                            </div>+
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="cart-detail__item__image">
+                                            {{ image(cartItem.product.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}
+                                        </div>
+                                    {% endif %}
                                     <div class="cart-detail__item__content">
                                         <a class="cart-detail__item__content__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="Product name">{{ cartItem.product.name }}</a>
                                         <span class="cart-detail__item__content__price"> {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}

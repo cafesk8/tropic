@@ -47,7 +47,13 @@
                                         <div class="table-cart__content">
                                             <div class="table-cart__cell table-cart__cell--image">
                                                 <a href="{{ cartItemUrl }}" title="{{ cartItem.product.name }}">
-                                                    {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'biggerThumbnail', lazy: true }) }}
+                                                    {% if cartItem.product.isPohodaProductTypeGroup %}
+                                                        {% for productGroup in cartItem.product.productGroups %}
+                                                            {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}+
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'biggerThumbnail', lazy: true }) }}
+                                                    {% endif %}
                                                 </a>
                                             </div>
                                             <div class="table-cart__cell table-cart__cell--name js-cart-item-name">
@@ -144,7 +150,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        
+
                         {% if nextLevelGifts is not empty and nextLevelDifference is not null %}
                             <div class="table-cart__next-gifts">
                                 <p class="table-cart__next-gifts__title">

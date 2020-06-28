@@ -6,7 +6,10 @@ namespace App\Model\Product;
 
 use App\Model\Product\Search\FilterQuery;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
+use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainElasticFacade as BaseProductOnCurrentDomainElasticFacade;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
 
@@ -37,16 +40,24 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @param string $orderingModeId
      * @param int $page
      * @param int $limit
+     * @param int $pohodaProductType
      * @return \App\Model\Product\Search\FilterQuery
      */
     protected function createFilterQueryWithProductFilterData(
         ProductFilterData $productFilterData,
         string $orderingModeId,
         int $page,
-        int $limit
+        int $limit,
+        ?int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
     ): BaseFilterQuery {
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
-            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
+            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup());
+
+        if ($pohodaProductType !== null) {
+            $filterQuery = $filterQuery->filterByPohodaProductType($pohodaProductType);
+        }
+
+        $filterQuery = $filterQuery
             ->setPage($page)
             ->setLimit($limit)
             ->applyOrdering($orderingModeId, $this->currentCustomerUser->getPricingGroup());
@@ -95,5 +106,109 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     ): FilterQuery {
         return $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit)
             ->filterByFlags($flagIds);
+    }
+
+    /**
+     * @param string|null $searchText
+     * @param int $limit
+     * @param int $pohodaProductType
+     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
+     */
+    public function getSearchAutocompleteProducts(
+        ?string $searchText,
+        int $limit,
+        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
+    ): PaginationResult {
+        $emptyProductFilterData = new ProductFilterData();
+        $page = 1;
+
+        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($emptyProductFilterData, ProductListOrderingConfig::ORDER_BY_RELEVANCE, $page, $limit, $searchText, $pohodaProductType);
+
+        $productIds = $this->productElasticsearchRepository->getSortedProductIdsByFilterQuery($filterQuery);
+
+        $listableProductsByIds = $this->productRepository->getListableByIds($this->domain->getId(), $this->currentCustomerUser->getPricingGroup(), $productIds->getIds());
+
+        return new PaginationResult($page, $limit, $productIds->getTotal(), $listableProductsByIds);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param string $orderingModeId
+     * @param int $page
+     * @param int $limit
+     * @param string|null $searchText
+     * @param int $pohodaProductType
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    protected function createListableProductsForSearchTextFilterQuery(
+        ProductFilterData $productFilterData,
+        string $orderingModeId,
+        int $page,
+        int $limit,
+        ?string $searchText,
+        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
+    ): BaseFilterQuery {
+        $searchText = $searchText ?? '';
+
+        return $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit, $pohodaProductType)
+            ->search($searchText);
+    }
+
+    /**
+     * @param string $searchText
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param string $orderingModeId
+     * @param int $page
+     * @param int $limit
+     * @param int $pohodaProductType
+     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
+     */
+    public function getPaginatedProductsForSearch(
+        string $searchText,
+        ProductFilterData $productFilterData,
+        string $orderingModeId,
+        int $page,
+        int $limit,
+        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
+    ): PaginationResult {
+        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($productFilterData, $orderingModeId, $page, $limit, $searchText, $pohodaProductType);
+
+        $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
+
+        return new PaginationResult($page, $limit, $productsResult->getTotal(), $productsResult->getHits());
+    }
+
+    /**
+     * Override removes product groups from filter counts
+     *
+     * @inheritDoc
+     */
+    public function getProductFilterCountDataForSearch(?string $searchText, ProductFilterConfig $productFilterConfig, ProductFilterData $productFilterData): ProductFilterCountData
+    {
+        $searchText = $searchText ?? '';
+
+        $baseFilterQuery = $this->filterQueryFactory->create($this->getIndexName())
+            ->filterOnlySellable()
+            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
+            ->filterByPohodaProductType(Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT)
+            ->search($searchText);
+        $baseFilterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $baseFilterQuery, $this->currentCustomerUser->getPricingGroup());
+        $baseFilterQuery = $this->productFilterDataToQueryTransformer->addStockToQuery($productFilterData, $baseFilterQuery);
+
+        return $this->productFilterCountDataElasticsearchRepository->getProductFilterCountDataInSearch(
+            $productFilterData,
+            $baseFilterQuery
+        );
+    }
+
+    /**
+     * Override makes product groups appear in results
+     *
+     * @inheritDoc
+     */
+    protected function createListableProductsInCategoryFilterQuery(ProductFilterData $productFilterData, string $orderingModeId, int $page, int $limit, int $categoryId): BaseFilterQuery
+    {
+        return $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit, null)
+            ->filterByCategory([$categoryId]);
     }
 }

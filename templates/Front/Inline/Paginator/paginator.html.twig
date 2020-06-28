@@ -1,4 +1,4 @@
-{% macro paginatorNavigation(paginationResult, entityName, pageQueryParameter = 'page', paginationInfo = true) %}
+{% macro paginatorNavigation(paginationResult, entityName, pageQueryParameter = 'page', paginationInfo = true, paging = true) %}
     <div class="in-paging">
         {% set route = getRoute() %}
         {% set routeParams = getAllRequestParams() %}
@@ -12,71 +12,73 @@
             </strong>
         {% endif %}
 
-        <div class="in-paging__control">
-            {% if pageCount > 1 %}
-                {% if paginationResult.page > 1 %}
-                    {% set page = paginationResult.page - 1 %}
-                    {% if page == 1 %}
-                        {% set page = null %}
-                    {% endif %}
-                    {% set routeParams = routeParams|merge({(pageQueryParameter): page}) %}
-                    <a class="in-paging__control__item in-paging__control__item--arrow" href="{{ path(route, routeParams) }}" rel ="prev">&lt;</a>
+        {% if paging %}
+            <div class="in-paging__control">
+                {% if pageCount > 1 %}
+                    {% if paginationResult.page > 1 %}
+                        {% set page = paginationResult.page - 1 %}
+                        {% if page == 1 %}
+                            {% set page = null %}
+                        {% endif %}
+                        {% set routeParams = routeParams|merge({(pageQueryParameter): page}) %}
+                        <a class="in-paging__control__item in-paging__control__item--arrow" href="{{ path(route, routeParams) }}" rel ="prev">&lt;</a>
 
-                    {% set routeParams = routeParams|merge({(pageQueryParameter): null}) %}
-                    {% if paginationResult.page == 2 %}
-                        <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}" rel="prev">1</a>
+                        {% set routeParams = routeParams|merge({(pageQueryParameter): null}) %}
+                        {% if paginationResult.page == 2 %}
+                            <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}" rel="prev">1</a>
+                        {% else %}
+                            <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}">1</a>
+                        {% endif %}
                     {% else %}
-                        <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}">1</a>
+                        <span class="in-paging__control__item in-paging__control__item--arrow in-paging__control__item--arrow--inactive">&lt;</span>
                     {% endif %}
-                {% else %}
-                    <span class="in-paging__control__item in-paging__control__item--arrow in-paging__control__item--arrow--inactive">&lt;</span>
-                {% endif %}
 
-                {% set pagerExpand = 2 %}
+                    {% set pagerExpand = 2 %}
 
-                {% if paginationResult.page > pagerExpand + 2 %}
-                    <span class="in-paging__control__item in-paging__control__item--separate">...</span>
-                {% endif %}
+                    {% if paginationResult.page > pagerExpand + 2 %}
+                        <span class="in-paging__control__item in-paging__control__item--separate">...</span>
+                    {% endif %}
 
-                {% for page in (paginationResult.page - pagerExpand)..(paginationResult.page) if page > 1 and page < paginationResult.page %}
-                    {% set routeParams = routeParams|merge({(pageQueryParameter): page}) %}
-                    {% if page == (paginationResult.page - 1) %}
-                        <a class='in-paging__control__item in-paging__control__item--num' href="{{ path(route, routeParams) }}" rel="prev">{{ page }}</a>
+                    {% for page in (paginationResult.page - pagerExpand)..(paginationResult.page) if page > 1 and page < paginationResult.page %}
+                        {% set routeParams = routeParams|merge({(pageQueryParameter): page}) %}
+                        {% if page == (paginationResult.page - 1) %}
+                            <a class='in-paging__control__item in-paging__control__item--num' href="{{ path(route, routeParams) }}" rel="prev">{{ page }}</a>
+                        {% else %}
+                            <a class='in-paging__control__item in-paging__control__item--num' href="{{ path(route, routeParams) }}">{{ page }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    <span class="in-paging__control__item in-paging__control__item--num in-paging__control__item in-paging__control__item--num--active">{{ paginationResult.page }}</span>
+
+                    {% for page in (paginationResult.page + 1)..(paginationResult.page + pagerExpand) if page > paginationResult.page and page < pageCount %}
+                        {% set routeParams = routeParams|merge({(pageQueryParameter): page}) %}
+                        {% if page == (paginationResult.page + 1) %}
+                            <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}" rel="next">{{ page }}</a>
+                        {% else %}
+                            <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}">{{ page }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if paginationResult.page <= pageCount - pagerExpand - 2 %}
+                        <span class="in-paging__control__item in-paging__control__item--separate">...</span>
+                    {% endif %}
+
+                    {% if paginationResult.page < pageCount %}
+                        {% set routeParams = routeParams|merge({(pageQueryParameter): pageCount}) %}
+                        {% if paginationResult.page == (pageCount - 1) %}
+                            <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}" rel="next">{{ pageCount }}</a>
+                        {% else %}
+                            <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}">{{ pageCount }}</a>
+                        {% endif %}
+
+                        {% set routeParams = routeParams|merge({(pageQueryParameter): paginationResult.page + 1}) %}
+                        <a class="in-paging__control__item in-paging__control__item--arrow in-paging__control__item in-paging__control__item--arrow" href="{{ path(route, routeParams) }}" rel="next">&gt;</a>
                     {% else %}
-                        <a class='in-paging__control__item in-paging__control__item--num' href="{{ path(route, routeParams) }}">{{ page }}</a>
+                        <span class="in-paging__control__item in-paging__control__item--arrow in-paging__control__item--arrow--inactive">&gt;</span>
                     {% endif %}
-                {% endfor %}
-
-                <span class="in-paging__control__item in-paging__control__item--num in-paging__control__item in-paging__control__item--num--active">{{ paginationResult.page }}</span>
-
-                {% for page in (paginationResult.page + 1)..(paginationResult.page + pagerExpand) if page > paginationResult.page and page < pageCount %}
-                    {% set routeParams = routeParams|merge({(pageQueryParameter): page}) %}
-                    {% if page == (paginationResult.page + 1) %}
-                        <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}" rel="next">{{ page }}</a>
-                    {% else %}
-                        <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}">{{ page }}</a>
-                    {% endif %}
-                {% endfor %}
-
-                {% if paginationResult.page <= pageCount - pagerExpand - 2 %}
-                    <span class="in-paging__control__item in-paging__control__item--separate">...</span>
                 {% endif %}
-
-                {% if paginationResult.page < pageCount %}
-                    {% set routeParams = routeParams|merge({(pageQueryParameter): pageCount}) %}
-                    {% if paginationResult.page == (pageCount - 1) %}
-                        <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}" rel="next">{{ pageCount }}</a>
-                    {% else %}
-                        <a class="in-paging__control__item in-paging__control__item--num" href="{{ path(route, routeParams) }}">{{ pageCount }}</a>
-                    {% endif %}
-
-                    {% set routeParams = routeParams|merge({(pageQueryParameter): paginationResult.page + 1}) %}
-                    <a class="in-paging__control__item in-paging__control__item--arrow in-paging__control__item in-paging__control__item--arrow" href="{{ path(route, routeParams) }}" rel="next">&gt;</a>
-                {% else %}
-                    <span class="in-paging__control__item in-paging__control__item--arrow in-paging__control__item--arrow--inactive">&gt;</span>
-                {% endif %}
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </div>
 {% endmacro %}
 

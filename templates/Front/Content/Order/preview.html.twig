@@ -1,8 +1,16 @@
 {% macro productPreviewItem(product, quantity, price, saleItem = false) %}
     <li class="list-cart-preview__item">
-        <div class="list-cart-preview__item__image">
-            {{ image(product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
-        </div>
+        {% if product.isPohodaProductTypeGroup %}
+            {% for productGroup in product.productGroups %}
+                <div class="list-cart-preview__item__image">
+                    {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}+
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="list-cart-preview__item__image">
+                {{ image(product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
+            </div>
+        {% endif %}
         <div class="list-cart-preview__item__pieces">
             {{ quantity|formatNumber }} {{ product.unit.name }}
         </div>

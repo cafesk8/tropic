@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 class SearchController extends FrontBaseController
 {
     public const AUTOCOMPLETE_CATEGORY_LIMIT = 3;
-    public const AUTOCOMPLETE_PRODUCT_LIMIT = 5;
+    public const AUTOCOMPLETE_PRODUCT_LIMIT = 4;
+    public const AUTOCOMPLETE_GROUP_LIMIT = 1;
 
     /**
      * @var \App\Model\Category\CategoryFacade
@@ -50,10 +52,14 @@ class SearchController extends FrontBaseController
         $productsPaginationResult = $this->productOnCurrentDomainFacade
             ->getSearchAutocompleteProducts($searchText, self::AUTOCOMPLETE_PRODUCT_LIMIT);
 
+        $groupsPaginationResult = $this->productOnCurrentDomainFacade
+            ->getSearchAutocompleteProducts($searchText, self::AUTOCOMPLETE_GROUP_LIMIT, Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP);
+
         return $this->render('Front/Content/Search/autocomplete.html.twig', [
             'searchUrl' => $searchUrl,
             'categoriesPaginationResult' => $categoriesPaginationResult,
             'productsPaginationResult' => $productsPaginationResult,
+            'groupsPaginationResult' => $groupsPaginationResult,
         ]);
     }
 
