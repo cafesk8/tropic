@@ -40,7 +40,7 @@ class SaleCategoryBreadcrumbGenerator implements BreadcrumbGeneratorInterface
     {
         $currentCategory = $this->categoryFacade->getSaleCategoryByFriendlyUrl($routeParameters['friendlyUrl']);
 
-        $saleRootCategory = $this->categoryRepository->getByType(Category::SALE_TYPE);
+        $saleRootCategory = $this->categoryRepository->findByType(Category::SALE_TYPE);
 
         $breadcrumbItems = [];
 
