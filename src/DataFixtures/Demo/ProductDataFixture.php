@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\FileUpload\FileUpload;
 use App\Model\Product\Flag\ProductFlagDataFactory;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
@@ -15,6 +16,7 @@ use Doctrine\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
@@ -27,6 +29,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 class ProductDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
     public const PRODUCT_PREFIX = 'product_';
+    protected const TMP_PRODUCT_DUMMY_FILENAME = 'product-data-fixture-dummy.txt';
     public const MAIN_VARIANT_1_CATNUM = '9176544M';
     public const MAIN_VARIANT_2_CATNUM = '32PFL4400';
     public const MAIN_VARIANT_3_CATNUM = '7700769XCX';
@@ -108,6 +111,16 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     private $productFlagDataFactory;
 
     /**
+     * @var \App\Component\FileUpload\FileUpload
+     */
+    private FileUpload $fileUpload;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface
+     */
+    private UploadedFileDataFactoryInterface $uploadedFileDataFactory;
+
+    /**
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
@@ -118,6 +131,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      * @param \App\Model\Product\Parameter\ParameterDataFactory $parameterDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceConverter $priceConverter
      * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory
+     * @param \App\Component\FileUpload\FileUpload $fileUpload
+     * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface $uploadedFileDataFactory
      */
     public function __construct(
         ProductFacade $productFacade,
@@ -129,7 +144,9 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         ParameterFacade $parameterFacade,
         ParameterDataFactoryInterface $parameterDataFactory,
         PriceConverter $priceConverter,
-        ProductFlagDataFactory $productFlagDataFactory
+        ProductFlagDataFactory $productFlagDataFactory,
+        FileUpload $fileUpload,
+        UploadedFileDataFactoryInterface $uploadedFileDataFactory
     ) {
         $this->productFacade = $productFacade;
         $this->domain = $domain;
@@ -141,6 +158,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->parameterDataFactory = $parameterDataFactory;
         $this->priceConverter = $priceConverter;
         $this->productFlagDataFactory = $productFlagDataFactory;
+        $this->fileUpload = $fileUpload;
+        $this->uploadedFileDataFactory = $uploadedFileDataFactory;
     }
 
     /**
@@ -237,6 +256,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_PHILIPS);
+        $this->createDummyFileForProductData($productData);
 
         $this->createProduct($productData);
 
@@ -540,6 +560,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_CANON);
+        $this->createDummyFileForProductData($productData);
 
         $this->createProduct($productData);
 
@@ -5941,6 +5962,34 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     {
         foreach ($flagReferences as $flagReference) {
             $productData->flags[] = $this->productFlagDataFactory->create($this->getReference($flagReference));
+        }
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $prouctData
+     */
+    protected function createDummyFileForProductData(ProductData $prouctData): void
+    {
+        $this->createTemporaryDirectoryIfDoesNotExist();
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            // \xEF\xBB\xBF is BOM that defines that content is in UTF-8 encoding more info https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
+            $dummyText = "\xEF\xBB\xBF" . t('Testovací soubor', [], 'dataFixtures', $domain->getLocale());
+
+            file_put_contents($this->fileUpload->getTemporaryDirectory() . '/' . self::TMP_PRODUCT_DUMMY_FILENAME, $dummyText);
+
+            $uploadedFileData = $this->uploadedFileDataFactory->create();
+            $uploadedFileData->uploadedFiles = [self::TMP_PRODUCT_DUMMY_FILENAME];
+            $uploadedFileData->uploadedFilenames = [self::TMP_PRODUCT_DUMMY_FILENAME];
+
+            $prouctData->files = $uploadedFileData;
+        }
+    }
+
+    protected function createTemporaryDirectoryIfDoesNotExist(): void
+    {
+        if (!is_dir($this->fileUpload->getTemporaryDirectory())) {
+            mkdir($this->fileUpload->getTemporaryDirectory());
         }
     }
 }

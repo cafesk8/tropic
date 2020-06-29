@@ -8,3 +8,8 @@
     types:
         -   name: default
             multiple: false
+-   name: product
+    class: App\Model\Product\Product
+    types:
+        -   name: default
+            multiple: true

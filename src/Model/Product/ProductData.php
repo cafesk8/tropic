@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product;
 
 use DateTime;
+use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileData;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
 /**
@@ -152,6 +153,11 @@ class ProductData extends BaseProductData
      * @var bool[]
      */
     public $shown;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileData
+     */
+    public UploadedFileData $files;
 
     public function __construct()
     {

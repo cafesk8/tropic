@@ -30,6 +30,7 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
+use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileFacade;
 use Shopsys\FrameworkBundle\Model\Category\Exception\CategoryNotFoundException;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository;
@@ -163,6 +164,11 @@ class ProductFacade extends BaseProductFacade
     private $productFlagDataFactory;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileFacade
+     */
+    private UploadedFileFacade $uploadedFileFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
@@ -201,6 +207,7 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Product\Flag\ProductFlagFacade $productFlagFacade
      * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory
+     * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileFacade $uploadedFileFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -240,7 +247,8 @@ class ProductFacade extends BaseProductFacade
         CategoryFacade $categoryFacade,
         FlagFacade $flagFacade,
         ProductFlagFacade $productFlagFacade,
-        ProductFlagDataFactory $productFlagDataFactory
+        ProductFlagDataFactory $productFlagDataFactory,
+        UploadedFileFacade $uploadedFileFacade
     ) {
         parent::__construct(
             $em,
@@ -283,6 +291,7 @@ class ProductFacade extends BaseProductFacade
         $this->flagFacade = $flagFacade;
         $this->productFlagFacade = $productFlagFacade;
         $this->productFlagDataFactory = $productFlagDataFactory;
+        $this->uploadedFileFacade = $uploadedFileFacade;
     }
 
     /**
@@ -299,6 +308,7 @@ class ProductFacade extends BaseProductFacade
 
         /** @var \App\Model\Product\Product $product */
         $product = parent::create($productData);
+        $this->uploadedFileFacade->manageFiles($product, $productData->files);
         $this->scheduleRecalculationsForMainVariant($product);
         $this->refreshMainProducts($product);
 
@@ -395,6 +405,7 @@ class ProductFacade extends BaseProductFacade
         $this->refreshProductGroups($product, $productData->groupItems);
         $this->updateProductStoreStocks($productData, $product);
         $this->updateMainProductsStoreStocks($product);
+        $this->uploadedFileFacade->manageFiles($product, $productData->files);
 
         if ($product->isVariant()) {
             $this->productExportScheduler->scheduleRowIdForImmediateExport($product->getId());

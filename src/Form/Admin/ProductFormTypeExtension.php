@@ -28,6 +28,7 @@ use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
 use Shopsys\FrameworkBundle\Form\DomainsType;
+use Shopsys\FrameworkBundle\Form\FileUploadType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\WarningMessageType;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -258,6 +259,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             $builder->add($this->getArticlesGroup($builder, $product));
         }
 
+        $this->addFileGroup($builder, $options);
         $this->addVideoGroup($builder);
         $this->addDiscountExclusionGroup($builder, $product);
 
@@ -751,6 +753,69 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
             ]);
         }
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     */
+    private function addFileGroup(FormBuilderInterface $builder, array $options): void
+    {
+        $filesGroup = $builder->create('fileGroup', GroupType::class, [
+            'label' => t('Soubory'),
+            'position' => ['after' => 'imageGroup'],
+            'required' => false,
+        ]);
+
+        $filesGroup
+            ->add('files', FileUploadType::class, [
+                'required' => false,
+                'file_entity_class' => Product::class,
+                'file_constraints' => [
+                    new Constraints\File([
+                        'mimeTypes' => $this->getAllowedFileMimeTypes(),
+                        'mimeTypesMessage' => 'Soubor může být pouze ve formátu PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP',
+                        'maxSize' => '30M',
+                        'maxSizeMessage' => 'Velikost souboru je příliš velká: ({{ size }} {{ suffix }}). '
+                            . 'Maximální velikost souboru je {{ limit }} {{ suffix }}.',
+                    ]),
+                ],
+                'info_text' => t('Můžete nahrát soubor v těchto formátech: PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP'),
+                'entity' => $options['product'],
+                'label' => t('Files'),
+            ]);
+
+        $builder->add($filesGroup);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAllowedFileMimeTypes(): array
+    {
+        return [
+            'application/msword',
+            'application/pdf',
+            'application/rtf',
+            'application/vnd.ms-excel',
+            'application/vnd.ms-powerpoint',
+            'application/vnd.oasis.opendocument.chart',
+            'application/vnd.oasis.opendocument.formula',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/xml',
+            'application/zip',
+            'image/bmp',
+            'image/gif',
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'text/csv',
+            'text/html',
+            'text/plain',
+            'text/xml',
+        ];
     }
 
     /**
