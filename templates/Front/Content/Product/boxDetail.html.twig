@@ -56,17 +56,42 @@
                                             {% endif %}
                                             {% if youtubeDetails %}
                                                 <div class="box-gallery__item box-gallery__item--video">
-                                                    <a
-                                                        href="#video"
-                                                        class="box-gallery__item__link js-anchor-link"
-                                                    >
-                                                        <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
-                                                            alt="{{ youtubeDetails|first.getVideoTitle() }}"
-                                                            title="{{ youtubeDetails|first.getVideoTitle() }}">
-                                                        <div class="box-gallery__item__link__play">
-                                                            <div class="box-gallery__item__link__play__icon"></div>
-                                                        </div>
-                                                    </a>
+                                                    {% if product.isMainVariant %}
+                                                        <a
+                                                            href="#video-variant-desktop"
+                                                            class="box-gallery__item__link box-gallery__item__link--desktop js-anchor-link"
+                                                        >
+                                                            <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
+                                                                alt="{{ youtubeDetails|first.getVideoTitle() }}"
+                                                                title="{{ youtubeDetails|first.getVideoTitle() }}">
+                                                            <div class="box-gallery__item__link__play">
+                                                                <div class="box-gallery__item__link__play__icon"></div>
+                                                            </div>
+                                                        </a>
+                                                        <a
+                                                            href="#video"
+                                                            class="box-gallery__item__link box-gallery__item__link--mobile js-anchor-link"
+                                                        >
+                                                            <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
+                                                                alt="{{ youtubeDetails|first.getVideoTitle() }}"
+                                                                title="{{ youtubeDetails|first.getVideoTitle() }}">
+                                                            <div class="box-gallery__item__link__play">
+                                                                <div class="box-gallery__item__link__play__icon"></div>
+                                                            </div>
+                                                        </a>
+                                                    {% else %} 
+                                                        <a
+                                                            href="#video"
+                                                            class="box-gallery__item__link js-anchor-link"
+                                                        >
+                                                            <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
+                                                                alt="{{ youtubeDetails|first.getVideoTitle() }}"
+                                                                title="{{ youtubeDetails|first.getVideoTitle() }}">
+                                                            <div class="box-gallery__item__link__play">
+                                                                <div class="box-gallery__item__link__play__icon"></div>
+                                                            </div>
+                                                        </a>
+                                                    {% endif %}
                                                 </div>
                                             {% endif %}
                                         </div>
@@ -236,7 +261,7 @@
                 </div>
 
                 {% if product.isMainVariant %}
-                    <div class="box-detail__videos">
+                    <div class="box-detail__videos" id="video-variant-desktop">
                         {{ self.productYoutubeVideo(youtubeDetails) }}
                     </div>
                 {% endif %}
