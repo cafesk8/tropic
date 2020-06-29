@@ -109,7 +109,7 @@ class TransferLogger
         $transferIssueMessage = $message;
         $contextString = null;
         if (!empty($context)) {
-            $contextString = json_encode($context);
+            $contextString = json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
         $this->transferIssuesData[] = new TransferIssueData($this->transferIdentifier, $transferIssueMessage, $this->transferIssuesGroupId, $contextString);
     }
