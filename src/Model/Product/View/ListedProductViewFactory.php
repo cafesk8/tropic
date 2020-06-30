@@ -115,9 +115,9 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $product->getStockQuantity(),
             $product->getVariantsCount(),
             $this->productGroupFacade->getAllForElasticByMainProduct($product, $this->domain->getLocale()),
-            $product->getDeliveryDays(),
-            $product->isAvailableInDays(),
-            $product->getRealSaleStocksQuantity(),
+            $product->isMainVariant() ? '' : $product->getDeliveryDays(),
+            $product->isMainVariant() ? false : $product->isAvailableInDays(),
+            $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity(),
             $product->getUnit()->getName($this->domain->getLocale())
         );
     }

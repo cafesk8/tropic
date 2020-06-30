@@ -311,7 +311,7 @@ class CartController extends FrontBaseController
             'minimum_amount' => $product->getRealMinimumAmount(),
         ]);
 
-        $hardDisabled = $product->getRealStockQuantity() < 1 || $product->getCalculatedSellingDenied();
+        $hardDisabled = $product->isMainVariant() || $product->getRealStockQuantity() < 1 || $product->getCalculatedSellingDenied();
         if ($hardDisabled === true) {
             $disabled = true;
         }

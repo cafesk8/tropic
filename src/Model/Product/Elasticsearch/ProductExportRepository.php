@@ -105,9 +105,9 @@ class ProductExportRepository extends BaseProductExportRepository
             $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
         }
         $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId);
-        $result['delivery_days'] = $product->getDeliveryDays();
-        $result['is_available_in_days'] = $product->isAvailableInDays();
-        $result['real_sale_stocks_quantity'] = $product->isSellingDenied() ? 0 : $product->getRealSaleStocksQuantity();
+        $result['delivery_days'] = $product->isMainVariant() ? '' : $product->getDeliveryDays();
+        $result['is_available_in_days'] = $product->isMainVariant() ? false : $product->isAvailableInDays();
+        $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
         $result['is_in_any_sale_stock'] = $product->isInAnySaleStock();
         $result['pohoda_product_type'] = $product->getPohodaProductType() ?? Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
         $result['ordering_priority'] = $product->getBiggestVariantOrderingPriority();

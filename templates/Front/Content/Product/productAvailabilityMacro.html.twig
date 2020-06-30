@@ -1,6 +1,10 @@
 {% macro productAvailability(product) %}
-{% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
-    {% if product.inAnySaleStock and not product.sellingDenied %}
+    {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
+    {% if product.isMainVariant %}
+        <span class="in-availability__date">
+            {{ 'Dostupnost dle varianty'|trans }}
+        </span>
+    {% elseif product.inAnySaleStock and not product.sellingDenied %}
         <span class="in-availability__date">
             {{ saleStockQuantity.showInfo(product.realSaleStocksQuantity, product.unit.name) }}
         </span>

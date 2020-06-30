@@ -145,8 +145,10 @@ class ProductDataFactory extends BaseProductDataFactory
     {
         parent::fillFromProduct($productData, $product);
 
-        foreach ($product->getStoreStocks() as $storeStock) {
-            $productData->stockQuantityByStoreId[$storeStock->getStore()->getId()] = $storeStock->getStockQuantity();
+        if (!$product->isMainVariant()) {
+            foreach ($product->getStoreStocks() as $storeStock) {
+                $productData->stockQuantityByStoreId[$storeStock->getStore()->getId()] = $storeStock->getStockQuantity();
+            }
         }
 
         $productData->pohodaId = $product->getPohodaId();

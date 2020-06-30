@@ -361,6 +361,10 @@ class Product extends BaseProduct
      */
     public function getStoreStocks(): array
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getStoreStocks from main variant!');
+        }
+
         $storeStocks = $this->storeStocks->toArray();
         usort($storeStocks, function (ProductStoreStock $storeStockA, ProductStoreStock $storeStockB) {
             return $storeStockA->getStore()->getPosition() - $storeStockB->getStore()->getPosition();
@@ -407,6 +411,10 @@ class Product extends BaseProduct
      */
     public function getExternalStockQuantity(): int
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getExternalStockQuantity from main variant!');
+        }
+
         $externalStockQuantity = 0;
         foreach ($this->storeStocks as $storeStock) {
             if ($storeStock->getStockQuantity() !== null && $storeStock->getStore()->isExternalStock()) {
@@ -422,6 +430,10 @@ class Product extends BaseProduct
      */
     public function getRealExternalStockQuantity(): int
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getRealExternalStockQuantity from main variant!');
+        }
+
         $externalStockQuantity = $this->getExternalStockQuantity();
         if ($externalStockQuantity % $this->getAmountMultiplier() !== 0) {
             return (int)floor($externalStockQuantity / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
@@ -523,6 +535,10 @@ class Product extends BaseProduct
      */
     public function getStocksWithoutZeroQuantityOnStore(): array
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getStocksWithoutZeroQuantityOnStore from main variant!');
+        }
+
         return array_filter(
             $this->getStoreStocks(),
             function (ProductStoreStock $productStoreStock) {
@@ -536,6 +552,10 @@ class Product extends BaseProduct
      */
     public function getStocksWithoutZeroQuantityOnPickupPlaceStore(): array
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getStocksWithoutZeroQuantityOnPickupPlaceStore from main variant!');
+        }
+
         $productStoreStocks = array_filter(
             $this->getStoreStocks(),
             function (ProductStoreStock $productStoreStock) {
@@ -574,6 +594,10 @@ class Product extends BaseProduct
      */
     public function getStocksWithoutZeroQuantityOnCentralStore(): array
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getStocksWithoutZeroQuantityOnCentralStore from main variant!');
+        }
+
         return array_filter(
             $this->getStoreStocks(),
             function (ProductStoreStock $productStoreStock) {
@@ -842,6 +866,10 @@ class Product extends BaseProduct
      */
     public function getRealStockQuantity(): int
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getRealStockQuantity from main variant!');
+        }
+
         return (int)$this->realStockQuantity;
     }
 
@@ -1056,6 +1084,10 @@ class Product extends BaseProduct
      */
     public function isProductOnlyAtExternalStock(): bool
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant!');
+        }
+
         return $this->getRealExternalStockQuantity() > 0 && $this->getRealExternalStockQuantity() === $this->getRealStockQuantity();
     }
 
@@ -1064,6 +1096,10 @@ class Product extends BaseProduct
      */
     public function isAvailable(): bool
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call isAvailable from main variant!');
+        }
+
         return (!$this->isAvailableInDays() && $this->getRealStockQuantity() > 0)
             || ($this->isProductOnlyAtExternalStock() && $this->getDeliveryDays() === null);
     }
@@ -1073,6 +1109,10 @@ class Product extends BaseProduct
      */
     public function isAvailableInDays(): bool
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call isAvailableInDays from main variant!');
+        }
+
         return $this->isProductOnlyAtExternalStock() && $this->getDeliveryDays() !== null;
     }
 
@@ -1081,6 +1121,10 @@ class Product extends BaseProduct
      */
     public function isCurrentlyOutOfStock(): bool
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call isCurrentlyOutOfStock from main variant!');
+        }
+
         return $this->getRealStockQuantity() < 1;
     }
 
@@ -1106,6 +1150,10 @@ class Product extends BaseProduct
      */
     private function getSaleStocksQuantity(): int
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getSaleStocksQuantity from main variant!');
+        }
+
         $stockQuantity = 0;
         foreach ($this->getStoreStocks() as $productStoreStock) {
             if ($this->isInSaleStock($productStoreStock)) {
@@ -1121,6 +1169,10 @@ class Product extends BaseProduct
      */
     public function getRealSaleStocksQuantity(): int
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getRealSaleStocksQuantity from main variant!');
+        }
+
         if ($this->getSaleStocksQuantity() % $this->getAmountMultiplier() !== 0) {
             return (int)floor($this->getSaleStocksQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
         }
@@ -1133,6 +1185,10 @@ class Product extends BaseProduct
      */
     private function getNonSaleStocksQuantity(): int
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getNonSaleStocksQuantity from main variant!');
+        }
+
         return $this->stockQuantity - $this->getSaleStocksQuantity();
     }
 
@@ -1141,6 +1197,10 @@ class Product extends BaseProduct
      */
     public function getRealNonSaleStocksQuantity(): int
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getRealNonSaleStocksQuantity from main variant!');
+        }
+
         if ($this->getNonSaleStocksQuantity() % $this->getAmountMultiplier() !== 0) {
             return (int)floor($this->getNonSaleStocksQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
         }
@@ -1154,6 +1214,10 @@ class Product extends BaseProduct
      */
     private function isInSaleStock(ProductStoreStock $productStoreStock): bool
     {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call isInSaleStock from main variant!');
+        }
+
         return $productStoreStock->getStore()->isSaleStock() && $productStoreStock->getStockQuantity() > 0;
     }
 
