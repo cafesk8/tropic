@@ -1,4 +1,4 @@
-@box-chooser-item-padding: 10px;
+@box-chooser-item-padding: 20px;
 
 @box-chooser-check-width: 20px;
 @box-chooser-image-width: 40px;
@@ -7,42 +7,40 @@
 @box-chooser-title-width: ~"calc(100% - @{box-chooser-check-width} - @{box-chooser-image-width} - @{box-chooser-price-width} - 2 * @{box-chooser-item-padding})";
 
 @box-chooser-bottom-gap: 10px;
-@box-chooser-padding: 30px;
-@box-chooser-padding-mobile: 15px;
 
 @box-choose-item-check-width: 30px;
 
-@box-chooser-description-color: #918e8e;
+@box-chooser-description-color: #1D4063;
 
 .box-chooser {
     margin-bottom: @box-chooser-bottom-gap;
-    padding: @box-chooser-padding-mobile;
-    border: 3px solid @color-border;
-    border-radius: @radius;
-
-    @media @query-lg {
-        padding: 10px @box-chooser-padding @box-chooser-padding;
-    }
 
     &__title {
-        margin-bottom: 3px;
+        line-height: 30px;
+        margin-bottom: 16px;
+
+        font-size: 21px;
     }
 
     &__item {
         display: flex;
         align-items: center;
-        flex-wrap: wrap;
         width: 100%;
-        padding: 5px @box-chooser-item-padding;
-
+        padding: @box-chooser-item-padding;
+        margin-bottom: 5px;
+        
+        background-color: @color-f;
+        border-radius: 4px;
         cursor: pointer;
 
-        @media @query-lg {
-            flex-wrap: nowrap;
+        &--inactive {
+            cursor: no-drop;
         }
 
         &__check {
             display: block;
+
+            font-size: 0;
         }
 
         &__image {
@@ -62,47 +60,29 @@
         }
 
         &__title {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            padding: 0 10px;
-            line-height: 38px;
+            padding-right: 10px;
+            line-height: 18px;
 
             font-size: 15px;
+            font-weight: 400;
 
-            &__name {
-                width: calc(~"100% - @{box-chooser-image-width}");
-                padding-right: 10px;
-                line-height: normal;
-
-                font-weight: 400;
-
-                @media @query-sm {
-                    min-width: 200px;
-                    max-width: 0;
-                }
-
-                .box-chooser__item--active & {
-                    font-weight: 800;
-                }
+            .box-chooser__item--active & {
+                font-weight: 800;
             }
 
             .box-chooser__item--inactive & {
                 color: @color-inactive;
             }
+        }
 
-            &__description {
-                display: block;
-                width: calc(~"100% - @{box-chooser-image-width}");
-                padding-left: 10px;
-                line-height: 13px;
+        &__description {
+            line-height: 18px;
+            padding-right: 10px;
+            opacity: 0.5;
 
-                color: @box-chooser-description-color;
-
-                @media @query-md {
-                    width: 100%;
-                }
-            }
+            color: @box-chooser-description-color;
+            font-size: @font-size-extra-small;
+            font-family: @font-alt;
         }
 
         &__pickup-button {
@@ -110,19 +90,15 @@
         }
 
         &__price {
+            width: @box-chooser-price-width;
+            padding-left: 10px;
+            margin-left: 0;
             text-align: right;
-            margin-left: auto;
 
             color: @color-price;
             font-family: @font-alt;
             font-size: @font-size + 1px;
             font-weight: 800;
-
-            @media @query-lg {
-                width: @box-chooser-price-width;
-                padding-left: 10px;
-                margin-left: 0;
-            }
 
             .box-chooser__item--active & {
                 color: @color-price-main;
@@ -142,20 +118,19 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        margin-top: 15px;
-        padding: 10px 15px;
+        justify-content: center;
+        margin-top: 10px;
 
-        background-color: @color-light;
         cursor: pointer;
         border-radius: @radius;
         transition: @transition;
 
-        &:hover {
-            background-color: darken(@color-light, 5%);
-        }
-
         &__text {
             margin: 0 10px 0 0;
+
+            text-decoration: underline;
+            font-size: @font-size-extra-small + 1px;
+            font-family: @font-alt;
 
             &__show {
                 display: block;
@@ -169,6 +144,7 @@
         .svg {
             transition: @transition;
             font-size: 8px;
+            color: @color-turquoise;
         }
 
         &.active {

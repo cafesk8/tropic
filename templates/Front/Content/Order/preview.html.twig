@@ -3,27 +3,31 @@
         {% if product.isPohodaProductTypeGroup %}
             {% for productGroup in product.productGroups %}
                 <div class="list-cart-preview__item__image">
-                    {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}+
+                    {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'mediumThumbnail'}) }}
                 </div>
             {% endfor %}
         {% else %}
             <div class="list-cart-preview__item__image">
-                {{ image(product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
+                {{ image(product.productForCreatingImageAccordingToVariant, { size: 'mediumThumbnail' }) }}
             </div>
         {% endif %}
-        <div class="list-cart-preview__item__pieces">
-            {{ quantity|formatNumber }} {{ product.unit.name }}
-        </div>
+
+        <span class="list-cart-preview__item__title">
+            {{ product.name }}
+            {% if saleItem is same as (true) %}
+                {{ ' - Výprodej'|trans }}
+            {% endif %}
+        </span>
+
         <div class="list-cart-preview__item__info">
-            <span class="list-cart-preview__item__title">
-                {{ product.name }}
-                {% if saleItem is same as (true) %}
-                    {{ ' - Výprodej'|trans }}
-                {% endif %}
-            </span>
-        </div>
-        <div class="list-cart-preview__item__price">
-            {{ price|priceText }}
+            <div class="list-cart-preview__item__price">
+                {{ price|priceText }}
+
+                <span class="list-cart-preview__item__price__old js-not-implemented-yet">{{ price|priceText }}</span>
+            </div>
+            <div class="list-cart-preview__item__availability js-not-implemented-yet">
+                Skladem 5ks
+            </div>
         </div>
     </li>
 {% endmacro %}
@@ -39,29 +43,33 @@
 
         <div class="box-preview__item{% if orderStep == "1" %} box-preview__item--total{% endif %}">
             {% if orderStep > 1 %}
-                <h2 class="in-title in-title--small in-title--dark">
-                    {{ 'Vaše objednávka'|trans }}
-                </h2>
-                <ul id="js-order-preview-cart" class="list-cart-preview">
-                    {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
-                        {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
-                        {{ _self.productPreviewItem(quantifiedProduct.product, quantifiedProduct.quantity, quantifiedProductPrice.totalPrice.priceWithVat, quantifiedProduct.isSaleItem) }}
-                    {% endfor %}
-                </ul>
-                <ul class="list-cart-preview">
-                    {% set orderGiftProduct = orderPreview.orderGiftProduct %}
-                    {% if orderGiftProduct is not null or orderPreview.gifts is not empty %}
-                        <li class="list-cart-preview__title">{{ 'Dárek k vaší objednávce:'|trans }}</li>
-                    {% endif %}
-                    {% if orderGiftProduct is not null %}
-                        {{ _self.productPreviewItem(orderGiftProduct, 1, orderGiftProductPrice) }}
-                    {% endif %}
-                    {% if orderPreview.gifts is not empty %}
-                        {% for gift in orderPreview.gifts %}
-                            {{ _self.productPreviewItem(gift.product, gift.quantity, gift.totalPrice) }}
-                        {% endfor %}
-                    {% endif %}
-                </ul>
+                <div class="box-preview__item__wrap">
+                    <div class="box-preview__item__in">
+                        <h2 class="in-title in-title--small in-title--dark">
+                            {{ 'Vaše objednávka'|trans }}
+                        </h2>
+                        <ul id="js-order-preview-cart" class="list-cart-preview">
+                            {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
+                                {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
+                                {{ _self.productPreviewItem(quantifiedProduct.product, quantifiedProduct.quantity, quantifiedProductPrice.totalPrice.priceWithVat, quantifiedProduct.isSaleItem) }}
+                            {% endfor %}
+                        </ul>
+                        <ul class="list-cart-preview">
+                            {% set orderGiftProduct = orderPreview.orderGiftProduct %}
+                            {% if orderGiftProduct is not null or orderPreview.gifts is not empty %}
+                                <li class="list-cart-preview__title">{{ 'Dárek k vaší objednávce:'|trans }}</li>
+                            {% endif %}
+                            {% if orderGiftProduct is not null %}
+                                {{ _self.productPreviewItem(orderGiftProduct, 1, orderGiftProductPrice) }}
+                            {% endif %}
+                            {% if orderPreview.gifts is not empty %}
+                                {% for gift in orderPreview.gifts %}
+                                    {{ _self.productPreviewItem(gift.product, gift.quantity, gift.totalPrice) }}
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
             {% endif %}
 
             <table id="js-order-preview-fees" class="table-cart-preview">
@@ -160,13 +168,13 @@
                     </a>
                 {% elseif orderStep == 2 %}
                     <a href="{{ url('front_cart') }}" class="in-action__link">
-                        {{ 'Zpět do košíku'|trans }}
+                        <i class="in-action__link__icon svg svg-triangle"></i>
+                        <span class="in-action__link__text">{{ 'Zpět do košíku'|trans }}</span>
                     </a>
                 {% elseif orderStep == 3 %}
                     <button type="submit" name="flow_order_transition" value="back" class="in-action__link js-no-validate-button">
-                        <span>
-                            {{ 'Zpět'|trans }}
-                        </span>
+                        <i class="in-action__link__icon svg svg-triangle"></i>
+                        <span class="in-action__link__text">{{ 'Zpět'|trans }}</span>
                     </button>
                 {% endif %}
             </div>
@@ -214,7 +222,7 @@
                 {% if orderStep == 1 %}
                     {% set continueButtonText = 'Vybrat způsob dopravy'|trans %}
                 {% elseif orderStep == 2 %}
-                    {% set continueButtonText = 'Vyplnit dodací údaje'|trans %}
+                    {% set continueButtonText = 'Zadat dodací údaje'|trans %}
                 {% else %}
                     {% set continueButtonText = 'Odeslat objednávku'|trans %}
                 {% endif %}

@@ -1,16 +1,15 @@
-@box-order-cart-width: 460px;
+@box-order-cart-width: 470px;
 @box-order-cart-width-small: 390px; 
-@box-order-cart-gap: 60px;
+@box-order-cart-gap: 70px;
 @box-order-cart-gap-small: 20px;
 @box-order-info-transport-width: 176px;
 @box-order-info-transport-height: 55px;
-@box-order-gap-small: 30px;
-@box-order-gap: 70px;
+@box-order-gap-small: 20px;
+@box-order-gap: 40px;
 @box-order-additional-gap: 50px;
 
 .box-order {
     margin-bottom: @box-order-gap-small;
-    padding: 0 10px;
 
     @media @query-vl {
         margin-bottom: @box-order-gap;
@@ -34,13 +33,23 @@
 
     &__info {
         width: 100%;
+        padding: 20px;
+        margin-bottom: 40px;
+
+        background-color: @color-light;
+        border-radius: @radius;
+
+        @media @query-lg {
+            padding: 40px 30px 30px;
+        }
         
         @media @query-vl {
-            width: calc(~"100% - @{box-order-cart-width-small}")
+            width: calc(~"100% - @{box-order-cart-width-small}");
+            margin-bottom: 0;
         }
 
         @media @query-xl {
-            width: calc(~"100% - @{box-order-cart-width}")
+            width: calc(~"100% - @{box-order-cart-width}");
         }
 
         &__content {
