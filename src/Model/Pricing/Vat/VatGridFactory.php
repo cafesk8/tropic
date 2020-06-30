@@ -19,6 +19,7 @@ class VatGridFactory extends BaseVatGridFactory
     {
         $grid = parent::create();
         $grid->addColumn('pohodaId', 'v.pohodaId', t('ID z Pohody'));
+        $grid->addColumn('pohodaName', 'v.pohodaName', t('Název z Pohody (pro XML)'));
 
         return $grid;
     }

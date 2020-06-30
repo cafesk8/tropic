@@ -7,6 +7,7 @@ namespace App\Form\Admin;
 use Shopsys\FrameworkBundle\Form\Admin\Vat\VatFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class VatFormTypeExtension extends AbstractTypeExtension
@@ -18,6 +19,7 @@ class VatFormTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('pohodaId', IntegerType::class);
+        $builder->add('pohodaName', TextType::class);
     }
 
     /**

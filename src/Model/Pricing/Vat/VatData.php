@@ -12,4 +12,9 @@ class VatData extends BaseVatData
      * @var int|null
      */
     public $pohodaId;
+
+    /**
+     * @var string|null
+     */
+    public $pohodaName;
 }

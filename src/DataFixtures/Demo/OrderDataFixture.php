@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures\Demo;
 
 use App\Model\Order\Item\QuantifiedProduct;
+use App\Model\Order\Order;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Generator;
@@ -788,6 +789,9 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
             $product = $this->getReference($productReferenceName);
             $quantifiedProducts[] = new QuantifiedProduct($product, $quantity);
         }
+        $orderData->exportStatus = Order::EXPORT_SUCCESS;
+        $orderData->exportedAt = $orderData->createdAt;
+
         $orderPreview = $this->orderPreviewFactory->create(
             $orderData->currency,
             $orderData->domainId,

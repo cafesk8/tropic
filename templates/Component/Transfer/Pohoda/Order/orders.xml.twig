@@ -1,0 +1,180 @@
+{% block main_content %}
+<?xml version="1.0" encoding="Windows-1250" ?>
+<dat:dataPack id="a55"
+    ico="{{ pohodaCompanyIco }}"
+    application="Objednávka přijatá Shopsys"
+    version="2.0"
+    note="Import objednávky Shopsys"
+    xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd"
+    xmlns:ord="http://www.stormware.cz/schema/version_2/order.xsd"
+    xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd"
+    xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd">
+{% for pohodaOrder in pohodaOrders -%}
+    <dat:dataPackItem id="{{ pohodaOrder.dataPackItemId }}" version="2.0">
+        <ord:order version="2.0">
+            <ord:orderHeader>
+                <ord:orderType>receivedOrder</ord:orderType>
+                <ord:numberOrder>{{ pohodaOrder.number }}</ord:numberOrder>
+                <ord:date>{{ pohodaOrder.date|date('Y-m-d') }}</ord:date>
+                <ord:dateFrom>{{ pohodaOrder.date|date('Y-m-d') }}</ord:dateFrom>
+                <ord:dateTo>{{ pohodaOrder.date|date('Y-m-d') }}</ord:dateTo>
+
+                <ord:extId>
+                    <typ:ids>{{ pohodaOrder.eshopId }}</typ:ids>
+                    <typ:exSystemName>ShopsysB2C</typ:exSystemName>
+                    <typ:exSystemText>ShopsysB2C</typ:exSystemText>
+                </ord:extId>
+                <ord:text></ord:text>
+
+                <ord:partnerIdentity>
+                    {% if pohodaOrder.customerEshopId is not null -%}
+                        <typ:extId>
+                            <typ:ids>{{ pohodaOrder.customerEshopId }}</typ:ids>
+                            <typ:exSystemName>ShopsysB2C</typ:exSystemName>
+                            <typ:exSystemText>ShopsysB2C</typ:exSystemText>
+                        </typ:extId>
+                    {% endif -%}
+                    <typ:address>
+                        <typ:company>{{ pohodaOrder.address.company }}</typ:company>
+                        <typ:division></typ:division>
+                        <typ:name>
+                            <![CDATA[{{ pohodaOrder.address.name }}]]>
+                        </typ:name>
+                        <typ:city>
+                            <![CDATA[{{ pohodaOrder.address.city }}]]>
+                        </typ:city>
+                        <typ:street>
+                            <![CDATA[{{ pohodaOrder.address.street }}]]>
+                        </typ:street>
+                        <typ:zip>{{ pohodaOrder.address.zip }}</typ:zip>
+                        <typ:ico>{{ pohodaOrder.address.ico }}</typ:ico>
+                        <typ:dic>{{ pohodaOrder.address.dic }}</typ:dic>
+                        <typ:country>
+                            <typ:ids>
+                                <![CDATA[{{ pohodaOrder.address.country }}]]>
+                            </typ:ids>
+                        </typ:country>
+                        <typ:phone>
+                            <![CDATA[{{ pohodaOrder.address.phone }}]]>
+                        </typ:phone>
+                        <typ:email>
+                            <![CDATA[{{ pohodaOrder.address.email }}]]>
+                        </typ:email>
+                    </typ:address>
+
+                    <typ:shipToAddress>
+                        <typ:company>{{ pohodaOrder.shipToAddress.company }}</typ:company>
+                        <typ:division></typ:division>
+                        <typ:name>
+                            <![CDATA[{{ pohodaOrder.shipToAddress.name }}]]>
+                        </typ:name>
+                        <typ:city>
+                            <![CDATA[{{ pohodaOrder.shipToAddress.city }}]]>
+                        </typ:city>
+                        <typ:street>
+                            <![CDATA[{{ pohodaOrder.shipToAddress.street }}]]>
+                        </typ:street>
+                        <typ:zip>{{ pohodaOrder.shipToAddress.zip }}</typ:zip>
+                        <typ:country>
+                            <typ:ids>
+                                <![CDATA[{{ pohodaOrder.shipToAddress.country }}]]>
+                            </typ:ids>
+                        </typ:country>
+                        <typ:phone>
+                            <![CDATA[{{ pohodaOrder.shipToAddress.phone }}]]>
+                        </typ:phone>
+                        <typ:email>
+                            <![CDATA[{{ pohodaOrder.shipToAddress.email }}]]>
+                        </typ:email>
+                    </typ:shipToAddress>
+                </ord:partnerIdentity>
+                <ord:paymentType>
+                    <typ:ids>{{ pohodaOrder.pohodaPaymentName }}</typ:ids>
+                </ord:paymentType>
+                <ord:priceLevel>
+                    <typ:ids>{{ pohodaOrder.pricingGroup }}</typ:ids>
+                </ord:priceLevel>
+                <ord:centre>
+                    <typ:ids></typ:ids>
+                </ord:centre>
+                <ord:note></ord:note>
+                <ord:intNote></ord:intNote>
+                <ord:parameters>
+                    {% if pohodaOrder.pohodaTransportId is not null -%}
+                        <typ:parameter>
+                            <typ:name>RefVPrDopravaTyp</typ:name>
+                            <typ:listValueRef>
+                                <typ:ids>{{ pohodaOrder.pohodaTransportId }}</typ:ids>
+                            </typ:listValueRef>
+                            <typ:list>
+                                <typ:ids>DopravaTyp</typ:ids>
+                            </typ:list>
+                        </typ:parameter>
+                    {% endif %}
+                </ord:parameters>
+            </ord:orderHeader>
+
+            <ord:orderDetail>
+                {% for pohodaOrderItem in pohodaOrder.orderItems -%}
+                    <ord:orderItem>
+                        <ord:text>{{ pohodaOrderItem.name }}</ord:text>
+                        <ord:quantity>{{ pohodaOrderItem.quantity }}</ord:quantity>
+                        <ord:delivered>{{ pohodaOrder.status }}</ord:delivered>
+                        <ord:unit>{{ pohodaOrderItem.unit }}</ord:unit>
+                        <ord:payVAT>true</ord:payVAT>
+                        <ord:rateVAT>{{ pohodaOrderItem.vatRate }}</ord:rateVAT>
+                        <ord:percentVAT>{{ pohodaOrderItem.vatPercent }}</ord:percentVAT>
+                        {% if pohodaOrder.currency.isEur() -%}
+                            <ord:foreignCurrency>
+                                <typ:unitPrice>{{ pohodaOrderItem.unitPriceWithVat.amount|round(4) }}</typ:unitPrice>
+                            </ord:foreignCurrency>
+                        {% else -%}
+                            <ord:homeCurrency>
+                                <typ:unitPrice>{{ pohodaOrderItem.unitPriceWithVat.amount|round(4) }}</typ:unitPrice>
+                            </ord:homeCurrency>
+                        {% endif -%}
+                        <ord:stockItem>
+                            {% if pohodaOrderItem.catnum is not null -%}
+                                <typ:stockItem>
+                                    <typ:ids>
+                                        <![CDATA[{{ pohodaOrderItem.catnum }}]]>
+                                    </typ:ids>
+                                </typ:stockItem>
+                            {% endif -%}
+                            {% if pohodaOrderItem.pohodaStockId is not null -%}
+                                <typ:store>
+                                    <typ:id>{{ pohodaOrderItem.pohodaStockId }}</typ:id>
+                                </typ:store>
+                            {% endif -%}
+                        </ord:stockItem>
+                        {% if pohodaOrderItem.pohodaStockName is not null -%}
+                            <ord:parameters>
+                                <typ:parameter>
+                                    <typ:name>VPrSklad</typ:name>
+                                    <typ:textValue>{{ pohodaOrderItem.pohodaStockName }}</typ:textValue>
+                                </typ:parameter>
+                            </ord:parameters>
+                        {% endif -%}
+                    </ord:orderItem>
+                {% endfor -%}
+            </ord:orderDetail>
+
+            <ord:orderSummary>
+                <ord:roundingDocument>up2one</ord:roundingDocument>
+                <ord:roundingVAT>noneEveryRate</ord:roundingVAT>
+                {% if pohodaOrder.currency.isEur() -%}
+                    <ord:foreignCurrency>
+                        <typ:currency>
+                            <typ:ids>{{ pohodaOrder.currency.code }}</typ:ids>
+                        </typ:currency>
+                        <typ:amount>1</typ:amount>
+                        <typ:priceSum>{{ pohodaOrder.totalPriceWithVat.amount }}</typ:priceSum>
+                    </ord:foreignCurrency>
+                {% endif -%}
+            </ord:orderSummary>
+        </ord:order>
+    </dat:dataPackItem>
+{% endfor -%}
+
+</dat:dataPack>
+{% endblock %}

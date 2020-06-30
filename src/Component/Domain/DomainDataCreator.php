@@ -40,6 +40,7 @@ class DomainDataCreator extends BaseDomainDataCreator
         $vatData = $this->vatDataFactory->create();
         $vatData->name = 'Nulová sazba';
         $vatData->percent = '0';
+        $vatData->pohodaName = 'none';
 
         return $this->vatFacade->create($vatData, $domainId);
     }

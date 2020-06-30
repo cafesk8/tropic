@@ -51,6 +51,12 @@ class VatDataFixture extends AbstractReferenceFixture
         self::VAT_LOW => 1,
         self::VAT_HIGH => 2,
     ];
+    public const VAT_POHODA_NAMES_BY_VAT_REF = [
+        self::VAT_ZERO => 'none',
+        self::VAT_SECOND_LOW => 'third',
+        self::VAT_LOW => 'low',
+        self::VAT_HIGH => 'high',
+    ];
 
     /**
      * @var \App\Model\Pricing\Vat\VatFacade
@@ -128,6 +134,14 @@ class VatDataFixture extends AbstractReferenceFixture
                     $vatData->name = self::VAT_NAMES_BY_VAT_REF[$vatRef];
                     $vatData->percent = $vatRate;
                     $vatData->pohodaId = $domainId === DomainHelper::CZECH_DOMAIN ? self::VAT_POHODA_IDS_BY_VAT_REF[$vatRef] : null;
+                    if ($domainId === DomainHelper::CZECH_DOMAIN) {
+                        $vatData->pohodaName = self::VAT_POHODA_NAMES_BY_VAT_REF[$vatRef];
+                    } elseif ($domainId === DomainHelper::SLOVAK_DOMAIN) {
+                        $vatData->pohodaName = 'historyHigh';
+                    } else {
+                        $vatData->pohodaName = null;
+                    }
+
                     $this->createVat($vatData, $domainId, $vatRef);
                 }
             }
