@@ -136,19 +136,19 @@ class ProductAvailabilityCalculationTest extends FunctionalTestCase
         $productVariantTropicFacade->refreshVariantStatus($mainVariant, $productData->variantId);
 
         $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
-        $productData->variantId = '123/1';
+        $productData->variantId = '123*1';
         $variant1 = Product::create($productData);
 
         $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
-        $productData->variantId = '123/2';
+        $productData->variantId = '123*2';
         $variant2 = Product::create($productData);
 
         $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
-        $productData->variantId = '123/3';
+        $productData->variantId = '123*3';
         $variant3 = Product::create($productData);
 
         $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_PREPARING);
-        $productData->variantId = '123/4';
+        $productData->variantId = '123*4';
         $variant4 = Product::create($productData);
 
         $variants = [$variant1, $variant2, $variant3, $variant4];
@@ -199,7 +199,7 @@ class ProductAvailabilityCalculationTest extends FunctionalTestCase
 
         $productData = $productDataFactory->create();
         $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
-        $productData->variantId = '123/1';
+        $productData->variantId = '123*1';
         $variant = Product::create($productData);
 
         $availabilityFacadeMock = $this->getMockBuilder(AvailabilityFacade::class)

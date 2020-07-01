@@ -69,9 +69,9 @@ final class ProductVariantCreationTest extends TransactionFunctionalTestCase
         $this->setVats($productData);
         $productData->variantId = '123';
         $mainProduct = $this->productFacade->create($productData);
-        $productData->variantId = '123/2';
+        $productData->variantId = '123*2';
         $secondProduct = $this->productFacade->create($productData);
-        $productData->variantId = '123/3';
+        $productData->variantId = '123*3';
         $thirdProduct = $this->productFacade->create($productData);
         $this->assertTrue($mainProduct->isMainVariant());
         $this->assertContainsAllVariants([$secondProduct, $thirdProduct], $mainProduct);
@@ -117,9 +117,9 @@ final class ProductVariantCreationTest extends TransactionFunctionalTestCase
         $this->setVats($productData);
         $productData->variantId = '123';
         $mainProduct = $this->productFacade->create($productData);
-        $productData->variantId = '123/2';
+        $productData->variantId = '123*2';
         $secondProduct = $this->productFacade->create($productData);
-        $productData->variantId = '123/3';
+        $productData->variantId = '123*3';
         $thirdProduct = $this->productFacade->create($productData);
         $this->assertTrue($mainProduct->isMainVariant());
         $this->assertContainsAllVariants([$secondProduct, $thirdProduct], $mainProduct);
