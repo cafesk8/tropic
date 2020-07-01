@@ -70,6 +70,10 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
             ->add('cashOnDelivery', YesNoType::class, [
                 'required' => false,
                 'label' => t('Dobírka'),
+            ])
+            ->add('waitForPayment', YesNoType::class, [
+                'required' => false,
+                'label' => t('Čekat na platbu'),
             ]);
         $this->addGiftCertificateFields($builderBasicInformationGroup);
 

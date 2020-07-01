@@ -79,6 +79,13 @@ class Payment extends BasePayment
     private $activatesGiftCertificates;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private bool $waitForPayment;
+
+    /**
      * @param \App\Model\Payment\PaymentData $paymentData
      */
     public function __construct(BasePaymentData $paymentData)
@@ -110,6 +117,7 @@ class Payment extends BasePayment
         $this->cashOnDelivery = $paymentData->cashOnDelivery;
         $this->usableForGiftCertificates = $paymentData->usableForGiftCertificates;
         $this->activatesGiftCertificates = $this->type !== self::TYPE_GOPAY ? false : $paymentData->activatesGiftCertificates;
+        $this->waitForPayment = $paymentData->waitForPayment;
     }
 
     /**
@@ -214,5 +222,13 @@ class Payment extends BasePayment
     public function activatesGiftCertificates(): bool
     {
         return $this->activatesGiftCertificates;
+    }
+
+    /**
+     * @return bool
+     */
+    public function waitsForPayment(): bool
+    {
+        return $this->waitForPayment;
     }
 }

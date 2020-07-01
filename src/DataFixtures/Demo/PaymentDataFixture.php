@@ -74,6 +74,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
     {
         $paymentData = $this->paymentDataFactory->create();
         $paymentData->type = Payment::TYPE_BASIC;
+        $paymentData->waitForPayment = true;
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->name[$locale] = t('Kreditní kartou', [], 'dataFixtures', $locale);
             $paymentData->description[$locale] = t('Rychle, levně a spolehlivě!', [], 'dataFixtures', $locale);
