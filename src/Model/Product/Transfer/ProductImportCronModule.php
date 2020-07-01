@@ -89,12 +89,13 @@ class ProductImportCronModule extends AbstractTransferCronModule
         $dateTimeBeforeTransferFromPohodaServer = $this->pohodaEntityManager->getCurrentDateTimeFromPohodaDatabase();
         $this->productInfoQueueImportFacade->importDataToQueue($dateTimeBeforeTransferFromPohodaServer, $transfer->getLastStartAt());
 
-        $isNextIterationNeeded = $this->productImportFacade->processImport();
+        $changedPohodaProductIds = $this->productImportFacade->processImport();
+        if (count($changedPohodaProductIds) > 0) {
+            $this->productPriceRecalculator->runImmediateRecalculations();
+            $this->productVisibilityRepository->refreshProductsVisibility(true);
+            $this->productExportSubscriber->exportScheduledRows();
+        }
 
-        $this->productPriceRecalculator->runImmediateRecalculations();
-        $this->productVisibilityRepository->refreshProductsVisibility();
-        $this->productExportSubscriber->exportScheduledRows();
-
-        return $isNextIterationNeeded;
+        return !$this->productInfoQueueImportFacade->isQueueEmpty() && count($changedPohodaProductIds) === ProductImportFacade::PRODUCT_EXPORT_MAX_BATCH_LIMIT;
     }
 }
