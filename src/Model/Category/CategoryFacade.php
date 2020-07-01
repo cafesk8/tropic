@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Category;
 
+use App\Component\Redis\RedisFacade;
 use App\Model\Advert\Advert;
 use App\Model\Category\Transfer\CategoryRemoveFacade;
 use App\Model\Category\Transfer\Exception\MaximumPercentageOfCategoriesToRemoveLimitExceeded;
@@ -14,6 +15,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
+use Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade as BaseCategoryFacade;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFactoryInterface;
@@ -24,6 +26,7 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryWithPreloadedChildrenFactory;
 use Shopsys\FrameworkBundle\Model\Category\Exception\CategoryNotFoundException;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @property \App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory
@@ -52,6 +55,8 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
  */
 class CategoryFacade extends BaseCategoryFacade
 {
+    public const SALE_CATEGORIES_LEVEL = 2;
+
     /**
      * @var \App\Model\Category\CategoryRepository
      */
@@ -73,6 +78,16 @@ class CategoryFacade extends BaseCategoryFacade
     private $productRepository;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory
+     */
+    private $domainRouterFactory;
+
+    /**
+     * @var \App\Component\Redis\RedisFacade
+     */
+    private $redisFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Category\CategoryRepository $categoryRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -86,6 +101,8 @@ class CategoryFacade extends BaseCategoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
      * @param \App\Model\Category\CategoryDataFactory $categoryDataFactory
      * @param \App\Model\Product\ProductRepository $productRepository
+     * @param \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory
+     * @param \App\Component\Redis\RedisFacade $redisFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -100,12 +117,16 @@ class CategoryFacade extends BaseCategoryFacade
         CategoryFactoryInterface $categoryFactory,
         ProductVisibilityFacade $productVisibilityFacade,
         CategoryDataFactory $categoryDataFactory,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        DomainRouterFactory $domainRouterFactory,
+        RedisFacade $redisFacade
     ) {
         parent::__construct($em, $categoryRepository, $domain, $categoryVisibilityRecalculationScheduler, $friendlyUrlFacade, $imageFacade, $pluginCrudExtensionFacade, $categoryWithPreloadedChildrenFactory, $categoryWithLazyLoadedVisibleChildrenFactory, $categoryFactory);
         $this->productVisibilityFacade = $productVisibilityFacade;
         $this->categoryDataFactory = $categoryDataFactory;
         $this->productRepository = $productRepository;
+        $this->domainRouterFactory = $domainRouterFactory;
+        $this->redisFacade = $redisFacade;
     }
 
     /**
@@ -439,5 +460,44 @@ class CategoryFacade extends BaseCategoryFacade
             $categoryData->filterParameters[] = $parameter;
             $this->edit($category->getId(), $categoryData);
         }
+    }
+
+    public function markSaleCategories(): void
+    {
+        $saleCategoriesHash = $this->categoryRepository->getSaleCategoriesHash();
+
+        $this->categoryRepository->markSaleCategories();
+
+        if ($saleCategoriesHash !== $this->categoryRepository->getSaleCategoriesHash()) {
+            $this->redisFacade->clearCacheByPattern('twig:', 'categories');
+        }
+    }
+
+    /**
+     * @param string $friendlyUrl
+     * @return \App\Model\Category\Category
+     */
+    public function getSaleCategoryByFriendlyUrl(string $friendlyUrl): Category
+    {
+        $domainId = $this->domain->getId();
+        $friendlyUrl = '/' . $friendlyUrl . '/';
+        $domainRouter = $this->domainRouterFactory->getFriendlyUrlRouter($this->domain->getCurrentDomainConfig());
+
+        try {
+            $matchedRouteData = $domainRouter->match($friendlyUrl);
+        } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
+            $message = sprintf('No route found for "GET %s"', $friendlyUrl);
+            throw new NotFoundHttpException($message);
+        }
+
+        $category = $this->categoryRepository->findById($matchedRouteData['id']);
+
+        if ($category === null || !$category->isVisible($domainId) || !$category->containsSaleProduct($domainId) ||
+            $category->getLevel() != SELF::SALE_CATEGORIES_LEVEL) {
+            $message = 'Category ID ' . $matchedRouteData['id'] . ' is not visible on domain ID ' . $domainId;
+            throw new CategoryNotFoundException($message);
+        }
+
+        return $category;
     }
 }

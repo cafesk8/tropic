@@ -582,6 +582,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory: '@App\Model\Product\Filter\ProductFilterConfigFactory'
 
+    Shopsys\FrameworkBundle\Model\Product\Filter\BrandFilterChoiceRepository: '@App\Model\Product\Filter\BrandFilterChoiceRepository'
+
     Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator: '@App\Model\Product\ProductSellingDeniedRecalculator'
 
     App\Model\Cart\CartWatcher\CartWatcher: ~

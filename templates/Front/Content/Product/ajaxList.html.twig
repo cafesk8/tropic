@@ -3,7 +3,11 @@
 <div class="box-list__wrap">
     <div class="box-list__panel js-product-list-panel">
         <div class="box-filter js-product-filter">
-            {% set categoryUrl = url('front_product_list', { id: category.id }) %}
+            {% if saleCategoryFriendlyUrl %}
+                {% set categoryUrl = url('front_sale_product_list', { friendlyUrl: saleCategoryFriendlyUrl }) %}
+            {% else %}
+                {% set categoryUrl = url('front_product_list', { id: category.id }) %}
+            {% endif %}
             {{ productFilterForm.filterForm(
                 filterForm,
                 categoryUrl,
@@ -19,7 +23,7 @@
     <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
         {% if visibleChildren is not empty %}
             <div class="box-list__categories">
-                {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren} %}
+                {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren, 'currentCategory': category} %}
             </div>
         {% endif %}
         {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction')) }}

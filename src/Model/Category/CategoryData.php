@@ -76,6 +76,11 @@ class CategoryData extends BaseCategoryData
      */
     public $filterParameters;
 
+    /**
+     * @var bool[]
+     */
+    public $containsSaleProducts;
+
     public function __construct()
     {
         parent::__construct();
@@ -86,5 +91,6 @@ class CategoryData extends BaseCategoryData
         $this->advert = null;
         $this->type = null;
         $this->filterParameters = [];
+        $this->containsSaleProducts = [];
     }
 }

@@ -1,32 +1,38 @@
-{% macro rightContent(categoriesWithLazyLoadedVisibleChildren, modificationClass = '', dropdownMenu, showImage, children) %}
+{% macro rightContent(categoriesWithLazyLoadedVisibleChildren, modificationClass = '', dropdownMenu, showImage, children, isSaleCategoryChild) %}
     {% if categoriesWithLazyLoadedVisibleChildren|length > 0 %}
         <ul class="{% if not children %}list-menu{% else %}list-menu__submenu{% endif %} {{ modificationClass }}">
             {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
                 {% if not categoryWithLazyLoadedVisibleChildren.category.saleType and not categoryWithLazyLoadedVisibleChildren.category.newsType %}
-                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length) }}
+                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length, isSaleCategoryChild) }}
                 {% endif %}
             {% endfor %}
             {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
                 {% if categoryWithLazyLoadedVisibleChildren.category.newsType %}
-                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length) }}
+                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length, isSaleCategoryChild) }}
                 {% endif %}
             {% endfor %}
             {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
                 {% if categoryWithLazyLoadedVisibleChildren.category.saleType %}
-                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length) }}
+                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length, isSaleCategoryChild) }}
                 {% endif %}
             {% endfor %}
         </ul>
     {% endif %}
 {% endmacro %}
 
-{% macro mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loopIndex, loopLength) %}
+{% macro mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loopIndex, loopLength, isSaleCategoryChild) %}
     {% set category = categoryWithLazyLoadedVisibleChildren.category %}
-    {% set hasChildren = category.hasChildren %}
+    {% set hasChildren = category.hasChildren or category.saleType %}
+    {% if isSaleCategoryChild %}
+        {% set categoryUrl = url('front_sale_product_list', { friendlyUrl: findMainFriendlyUrl('front_product_list', category.id) }) %}
+    {% else %}
+        {% set categoryUrl = url('front_product_list', { id: category.id }) %}
+    {% endif %}
+
     {% if category.level == 1 %}
         <li class="list-menu__item list-menu__item--main {% if hasChildren and dropdownMenu %}js-hover-intent{% endif %}">
             <div class="list-menu__item__select">
-                <a href="{{ url('front_product_list', { id: category.id }) }}"
+                <a href="{{ categoryUrl }}"
                    class="list-menu__item__link{% if hasChildren %} list-menu__item__link--with-dropdown{% endif %} list-menu__item__link--level-{{ category.level }}">
                     {{ category.name }}
                     {% if hasChildren %}
@@ -34,9 +40,9 @@
                     {% endif %}
                 </a>
             </div>
-            {% if hasChildren %}
+            {% if hasChildren and (category.saleType is same as (false) or showImage is same as (true)) %}
                 <div class="list-menu__item__options">
-                    {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, '', false, showImage, true) }}
+                    {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, '', false, showImage, true, category.saleType) }}
                 </div>
             {% endif %}
         </li>
@@ -44,23 +50,23 @@
         {% if category.level < 3 or loopIndex < 5 %}
             <li class="list-menu__submenu__item">
                 {% if showImage %}
-                    <a class="list-menu__submenu__item__image" href="{{ url('front_product_list', { id: category.id }) }}">
+                    <a class="list-menu__submenu__item__image" href="{{ categoryUrl }}">
                         {{ image(category, { alt: category.name, size: 'dropdown' }) }}
                     </a>
                 {% endif %}
                 <div class="list-menu__submenu__item__content">
-                    <a href="{{ url('front_product_list', { id: category.id }) }}"
+                    <a href="{{ categoryUrl }}"
                        class="list-menu__submenu__item__title list-menu__submenu__item__title--level-{{ category.level }}">
                         {{ category.name }}
                     </a>
-                    {% if hasChildren and category.level == 2 %}
-                        {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, 'list-menu__submenu--children', false, false, true) }}
+                    {% if hasChildren and category.level == 2 and not isSaleCategoryChild%}
+                        {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, 'list-menu__submenu--children', false, false, true, category.saleType) }}
                     {% endif %}
                 </div>
             </li>
         {% elseif category.level == 3 and loopIndex == 5 %}
             <li class="list-menu__submenu__item">
-                <a class="list-menu__submenu__item__more" href="{{ url('front_product_list', { id: category.parent.id }) }}">
+                <a class="list-menu__submenu__item__more" href="{{ categoryUrl }}">
                     {{ 'a další kategorie'|transchoice(loopLength - 4, {'count': loopLength}) }}
                 </a>
             </li>
@@ -68,4 +74,4 @@
     {% endif %}
 {% endmacro %}
 
-{{ _self.rightContent(categoriesWithLazyLoadedVisibleChildren, '', dropdownMenu, showImage, children) }}
+{{ _self.rightContent(categoriesWithLazyLoadedVisibleChildren, '', dropdownMenu, showImage, children, false) }}

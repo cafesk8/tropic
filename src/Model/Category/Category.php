@@ -24,8 +24,8 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryData as BaseCategoryData;
  * @method setParent(\App\Model\Category\Category|null $parent)
  * @method \App\Model\Category\Category|null getParent()
  * @method \App\Model\Category\Category[] getChildren()
- * @method setDomains(\App\Model\Category\CategoryData $categoryData)
- * @method createDomains(\App\Model\Category\CategoryData $categoryData)
+ * @property \App\Model\Category\CategoryDomain[]|\Doctrine\Common\Collections\Collection $domains
+ * @method \App\Model\Category\CategoryDomain getCategoryDomain(int $domainId)
  */
 class Category extends BaseCategory
 {
@@ -137,6 +137,7 @@ class Category extends BaseCategory
         $this->type = $categoryData->type;
         $this->setTranslations($categoryData);
         $this->filterParameters = new ArrayCollection($categoryData->filterParameters);
+        $this->setDomains($categoryData);
     }
 
     /**
@@ -234,6 +235,34 @@ class Category extends BaseCategory
     }
 
     /**
+     * @param \App\Model\Category\CategoryData $categoryData
+     */
+    protected function createDomains(BaseCategoryData $categoryData): void
+    {
+        $domainIds = array_keys($categoryData->seoTitles);
+
+        foreach ($domainIds as $domainId) {
+            $categoryDomain = new CategoryDomain($this, $domainId);
+            $this->domains->add($categoryDomain);
+        }
+
+        $this->setDomains($categoryData);
+    }
+
+    /**
+     * @param \App\Model\Category\CategoryData $categoryData
+     */
+    protected function setDomains(BaseCategoryData $categoryData): void
+    {
+        parent::setDomains($categoryData);
+
+        foreach ($this->domains as $categoryDomain) {
+            $domainId = $categoryDomain->getDomainId();
+            $categoryDomain->setContainsSaleProduct($categoryData->containsSaleProducts[$domainId]);
+        }
+    }
+
+    /**
      * @return bool
      */
     public function isListable(): bool
@@ -327,5 +356,28 @@ class Category extends BaseCategory
     public function getFilterParameters(): array
     {
         return $this->filterParameters->toArray();
+    }
+
+    /**
+     * @param int $domainId
+     * @return bool
+     */
+    public function containsSaleProduct(int $domainId): bool
+    {
+        return $this->getCategoryDomain($domainId)->containsSaleProduct();
+    }
+
+    /**
+     * @return bool[]
+     */
+    public function containsSaleProducts(): array
+    {
+        $containsSaleProductByDomain = [];
+
+        foreach ($this->domains as $domain) {
+            $containsSaleProductByDomain[$domain->getDomainId()] = $this->containsSaleProduct($domain->getDomainId());
+        }
+
+        return $containsSaleProductByDomain;
     }
 }

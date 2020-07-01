@@ -10,6 +10,7 @@ use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use App\Model\Gtm\GtmFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\View\ListedProductViewElasticFacade;
@@ -133,6 +134,11 @@ class ProductController extends FrontBaseController
     private $pricingGroupFacade;
 
     /**
+     * @var \App\Model\Product\Flag\FlagFacade
+     */
+    private $flagFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -151,6 +157,7 @@ class ProductController extends FrontBaseController
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewElasticFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -170,7 +177,8 @@ class ProductController extends FrontBaseController
         BrandFacade $brandFacade,
         DiscountExclusionFacade $discountExclusionFacade,
         ListedProductViewElasticFacade $listedProductViewElasticFacade,
-        PricingGroupFacade $pricingGroupFacade
+        PricingGroupFacade $pricingGroupFacade,
+        FlagFacade $flagFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -190,6 +198,7 @@ class ProductController extends FrontBaseController
         $this->discountExclusionFacade = $discountExclusionFacade;
         $this->listedProductViewElasticFacade = $listedProductViewElasticFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->flagFacade = $flagFacade;
     }
 
     /**
@@ -312,6 +321,84 @@ class ProductController extends FrontBaseController
             'filterForm' => $filterForm->createView(),
             'filterFormSubmitted' => $filterForm->isSubmitted(),
             'visibleChildren' => $visibleChildren,
+            'saleCategoryFriendlyUrl' => null,
+            'priceRange' => $productFilterConfig->getPriceRange(),
+            'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
+                $category,
+                $this->domain->getId(),
+                self::LIST_BLOG_ARTICLES_LIMIT
+            ),
+        ];
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('Front/Content/Product/ajaxList.html.twig', $viewParameters);
+        } else {
+            return $this->render('Front/Content/Product/list.html.twig', $viewParameters);
+        }
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param string $friendlyUrl
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listBySaleCategoryAction(Request $request, string $friendlyUrl): Response
+    {
+        $params = $request->query->get('product_filter_form');
+        foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
+            $params['flags'][] = $saleFlag->getId();
+        }
+        $request->query->set('product_filter_form', $params);
+
+        /** @var \App\Model\Category\Category $category */
+        $category = $this->categoryFacade->getSaleCategoryByFriendlyUrl($friendlyUrl);
+
+        $requestPage = $request->get(self::PAGE_QUERY_PARAMETER);
+        if (!$this->isRequestPageValid($requestPage)) {
+            return $this->redirectToRoute('front_sale_product_list', $this->getRequestParametersWithoutPage());
+        }
+        $page = $requestPage === null ? 1 : (int)$requestPage;
+
+        $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest($request);
+
+        $productFilterData = new ProductFilterData();
+
+        foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
+            $productFilterData->flags[] = $saleFlag;
+        }
+
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, true);
+        $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
+            'product_filter_config' => $productFilterConfig,
+        ]);
+
+        $filterForm->handleRequest($request);
+
+        $paginationResult = $this->listedProductViewFacade->getFilteredPaginatedInCategory(
+            $category->getId(),
+            $productFilterData,
+            $orderingModeId,
+            $page,
+            self::PRODUCTS_PER_PAGE
+        );
+
+        $productFilterCountData = null;
+        if ($this->moduleFacade->isEnabled(ModuleList::PRODUCT_FILTER_COUNTS)) {
+            $productFilterCountData = $this->productOnCurrentDomainFacade->getProductFilterCountDataInCategory(
+                $category->getId(),
+                $productFilterConfig,
+                $productFilterData
+            );
+        }
+
+        $viewParameters = [
+            'paginationResult' => $paginationResult,
+            'productFilterCountData' => $productFilterCountData,
+            'category' => $category,
+            'filterForm' => $filterForm->createView(),
+            'filterFormSubmitted' => $filterForm->isSubmitted(),
+            'visibleChildren' => null,
+            'saleCategoryFriendlyUrl' => $friendlyUrl,
             'priceRange' => $productFilterConfig->getPriceRange(),
             'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
                 $category,
@@ -421,14 +508,16 @@ class ProductController extends FrontBaseController
 
     /**
      * @param \App\Model\Category\Category $category
+     * @param bool $isSaleCategory
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
-    private function createProductFilterConfigForCategory(Category $category)
+    private function createProductFilterConfigForCategory(Category $category, bool $isSaleCategory = false)
     {
         return $this->productFilterConfigFactory->createForCategory(
             $this->domain->getId(),
             $this->domain->getLocale(),
-            $category
+            $category,
+            $isSaleCategory
         );
     }
 

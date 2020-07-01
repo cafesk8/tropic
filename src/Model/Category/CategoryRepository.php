@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
+use DateTime;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
@@ -181,9 +183,16 @@ class CategoryRepository extends BaseCategoryRepository
      */
     public function getAllVisibleAndListableChildrenByCategoryAndDomainId(BaseCategory $category, int $domainId): array
     {
-        $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainId)
-            ->andWhere('c.parent = :category')
-            ->setParameter('category', $category);
+        $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainId);
+
+        if ($category->isSaleType()) {
+            $queryBuilder->andWhere('c.level = :level')
+                ->andWhere('cd.containsSaleProduct = true')
+                ->setParameter('level', CategoryFacade::SALE_CATEGORIES_LEVEL);
+        } else {
+            $queryBuilder->andWhere('c.parent = :category')
+                ->setParameter('category', $category);
+        }
 
         return $queryBuilder->getQuery()->execute();
     }
@@ -316,5 +325,79 @@ class CategoryRepository extends BaseCategoryRepository
     public function findByType(string $type): ?Category
     {
         return $this->getCategoryRepository()->findOneBy(['type' => $type]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @return array
+     */
+    public function getAllVisibleAndListableSaleCategoriesByDomain(DomainConfig $domainConfig): array
+    {
+        $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainConfig->getId())
+            ->andWhere('c.level = :level')
+            ->andWhere('cd.containsSaleProduct = true')
+            ->setParameter('level', CategoryFacade::SALE_CATEGORIES_LEVEL);
+
+        return $queryBuilder->getQuery()->execute();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSaleCategoriesHash(): string
+    {
+        $hashBase = '';
+        $saleCategories = $this->getAllQueryBuilder()
+            ->select('c.id, cd.domainId')
+            ->join(CategoryDomain::class, 'cd', Join::WITH, 'cd.category = c.id')
+            ->andWhere('c.level = :level')
+            ->andWhere('cd.containsSaleProduct = true')
+            ->setParameter('level', CategoryFacade::SALE_CATEGORIES_LEVEL)
+            ->orderBy('c.id, cd.domainId')
+            ->getQuery()->execute();
+
+        foreach ($saleCategories as $saleCategory) {
+            $hashBase .= $saleCategory['id'] . $saleCategory['domainId'];
+        }
+
+        return md5($hashBase);
+    }
+
+    public function markSaleCategories(): void
+    {
+        $now = new DateTime();
+
+        $query = $this->em->createNativeQuery(
+            'UPDATE
+                category_domains AS cd
+                SET
+                contains_sale_product = CASE
+                    WHEN (
+                        EXISTS(
+                            SELECT pcd.category_id
+                            FROM product_category_domains pcd
+                            INNER JOIN product_flags pf ON pf.product_id = pcd.product_id
+                            INNER JOIN flags f ON pf.flag_id = f.id
+                            INNER JOIN product_visibilities pv ON pv.product_id = pcd.product_id AND pv.domain_id = pcd.domain_id
+                            INNER JOIN pricing_groups pg ON pg.id = pv.pricing_group_id AND pg.domain_id = pcd.domain_id
+                            WHERE f.sale = true
+                                AND (pf.active_from IS NULL OR pf.active_from <= :now)
+                                AND (pf.active_to IS NULL OR pf.active_to >= :now)
+                                AND pv.visible = true
+                                AND pg.internal_id = \'ordinary_customer\'
+                                AND pcd.domain_id = cd.domain_id
+                                AND pcd.category_id = cd.category_id
+                            GROUP BY pcd.category_id
+                        )
+                    )
+                    THEN TRUE
+                    ELSE FALSE
+                END',
+            new ResultSetMapping()
+        );
+
+        $query->execute([
+            'now' => $now,
+        ]);
     }
 }

@@ -6,13 +6,19 @@ namespace App\Model\Product;
 
 use App\Model\Category\Category;
 use App\Model\Pricing\Group\PricingGroup;
+use App\Model\Product\Flag\FlagFacade;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
+use Shopsys\FrameworkBundle\Component\Doctrine\QueryBuilderExtender;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
+use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Flag\Flag;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
@@ -20,6 +26,7 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
+use Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository;
 
 /**
  * @method \App\Model\Product\Product|null findById(int $id)
@@ -27,11 +34,8 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
  * @method \Doctrine\ORM\QueryBuilder getAllSellableQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
  * @method \Doctrine\ORM\QueryBuilder getAllOfferedQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
  * @method \Doctrine\ORM\QueryBuilder getAllVisibleQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
- * @method \Doctrine\ORM\QueryBuilder getListableInCategoryQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, \App\Model\Category\Category $category)
  * @method \Doctrine\ORM\QueryBuilder getListableForBrandQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, \App\Model\Product\Brand\Brand $brand)
  * @method \Doctrine\ORM\QueryBuilder getSellableInCategoryQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, \App\Model\Category\Category $category)
- * @method \Doctrine\ORM\QueryBuilder getOfferedInCategoryQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, \App\Model\Category\Category $category)
- * @method filterByCategory(\Doctrine\ORM\QueryBuilder $queryBuilder, \App\Model\Category\Category $category, int $domainId)
  * @method filterByBrand(\Doctrine\ORM\QueryBuilder $queryBuilder, \App\Model\Product\Brand\Brand $brand)
  * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginationResultForListableInCategory(\App\Model\Category\Category $category, int $domainId, string $locale, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int $page, int $limit)
  * @method \Doctrine\ORM\QueryBuilder getAllListableTranslatedAndOrderedQueryBuilder(int $domainId, string $locale, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
@@ -65,6 +69,38 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
  */
 class ProductRepository extends BaseProductRepository
 {
+    /**
+     * @var \App\Model\Product\Flag\FlagFacade
+     */
+    private $flagFacade;
+
+    /**
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterRepository $productFilterRepository
+     * @param \Shopsys\FrameworkBundle\Component\Doctrine\QueryBuilderExtender $queryBuilderExtender
+     * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
+     * @param \Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository $productElasticsearchRepository
+     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
+     */
+    public function __construct(
+        EntityManagerInterface $em,
+        ProductFilterRepository $productFilterRepository,
+        QueryBuilderExtender $queryBuilderExtender,
+        Localization $localization,
+        ProductElasticsearchRepository $productElasticsearchRepository,
+        FlagFacade $flagFacade
+    ) {
+        parent::__construct(
+            $em,
+            $productFilterRepository,
+            $queryBuilderExtender,
+            $localization,
+            $productElasticsearchRepository
+        );
+
+        $this->flagFacade = $flagFacade;
+    }
+
     /**
      * @param int $domainId
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
@@ -661,5 +697,61 @@ class ProductRepository extends BaseProductRepository
             ->setParameter('pohodaGroupType', Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP);
 
         return $queryBuilder;
+    }
+
+    /**
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \App\Model\Category\Category $category
+     * @param bool $isSaleCategory
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getListableInCategoryQueryBuilder(
+        $domainId,
+        BasePricingGroup $pricingGroup,
+        BaseCategory $category,
+        bool $isSaleCategory = false
+    ) {
+        $queryBuilder = $this->getAllListableQueryBuilder($domainId, $pricingGroup);
+        $this->filterByCategory($queryBuilder, $category, $domainId, $isSaleCategory);
+        return $queryBuilder;
+    }
+
+    /**
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \App\Model\Category\Category $category
+     * @param bool $isSaleCategory
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getOfferedInCategoryQueryBuilder(
+        $domainId,
+        BasePricingGroup $pricingGroup,
+        BaseCategory $category,
+        bool $isSaleCategory = false
+    ) {
+        $queryBuilder = $this->getAllOfferedQueryBuilder($domainId, $pricingGroup);
+        $this->filterByCategory($queryBuilder, $category, $domainId, $isSaleCategory);
+
+        return $queryBuilder;
+    }
+
+    /**
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
+     * @param \App\Model\Category\Category $category
+     * @param int $domainId
+     * @param bool $isSaleCategory
+     */
+    protected function filterByCategory(QueryBuilder $queryBuilder, BaseCategory $category, $domainId, bool $isSaleCategory = false)
+    {
+        $queryBuilder->join('p.productCategoryDomains', 'pcd', Join::WITH, 'pcd.category = :category AND pcd.domainId = :domainId');
+        $queryBuilder->setParameter('category', $category);
+        $queryBuilder->setParameter('domainId', $domainId);
+
+        if ($isSaleCategory) {
+            $queryBuilder->leftJoin('p.flags', 'f');
+            $queryBuilder->andWhere('f.flag IN (:flags)');
+            $queryBuilder->setParameter('flags', $this->flagFacade->getSaleFlags());
+        }
     }
 }
