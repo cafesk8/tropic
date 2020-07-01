@@ -73,7 +73,9 @@ class FilterQuery extends BaseFilterQuery
         if ($orderingModeId === ProductListOrderingConfig::ORDER_BY_PRIORITY) {
             $clone->sorting = [
                 'ordering_priority' => 'desc',
-                'name.keyword' => 'asc',
+                'internal_stocks_quantity' => 'desc',
+                'external_stocks_quantity' => 'desc',
+                'id' => 'desc',
             ];
 
             return $clone;
@@ -99,9 +101,20 @@ class FilterQuery extends BaseFilterQuery
             return $clone;
         }
 
-        if ($orderingModeId === ProductListOrderingConfig::ORDER_BY_NEWEST) {
+        if ($orderingModeId === ProductListOrderingConfig::ORDER_BY_PRICE_DESC) {
             $clone->sorting = [
-                'selling_from' => 'desc',
+                'prices.price_with_vat' => [
+                    'order' => 'desc',
+                    'nested' => [
+                        'path' => 'prices',
+                        'filter' => [
+                            'term' => [
+                                'prices.pricing_group_id' => $pricingGroup->getId(),
+                            ],
+                        ],
+                    ],
+                ],
+                'ordering_priority' => 'asc',
                 'name.keyword' => 'asc',
             ];
 
