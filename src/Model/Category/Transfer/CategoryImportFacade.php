@@ -126,6 +126,10 @@ class CategoryImportFacade
             ]);
         }
         $createdCategory = $this->categoryFacade->create($categoryData);
+        $this->logger->addInfo('Kategorie vytvořena', [
+            'pohodaId' => $createdCategory->getPohodaId(),
+            'categoryId' => $createdCategory->getId(),
+        ]);
 
         return $createdCategory->getPohodaId();
     }
