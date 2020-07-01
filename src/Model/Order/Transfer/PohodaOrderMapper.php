@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Transfer;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Pohoda\Customer\PohodaAddress;
 use App\Component\Transfer\Pohoda\Order\PohodaCurrency;
 use App\Component\Transfer\Pohoda\Order\PohodaOrder;
@@ -46,6 +47,7 @@ class PohodaOrderMapper
         $pohodaOrder = new PohodaOrder();
 
         $this->mapBasicInformation($order, $pohodaOrder);
+        $this->mapInternalNote($order, $pohodaOrder);
         $this->mapAddresses($order, $pohodaOrder);
         $this->mapOrderItems($order, $pohodaOrder, $pohodaVatNames);
         $this->mapCurrency($order, $pohodaOrder);
@@ -69,6 +71,23 @@ class PohodaOrderMapper
         $pohodaOrder->totalPriceWithVat = $order->getTotalPriceWithVat();
         $pohodaOrder->pohodaTransportId = $order->getTransport()->getExternalId();
         $pohodaOrder->pohodaPaymentName = $order->getPayment()->getExternalId();
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param \App\Component\Transfer\Pohoda\Order\PohodaOrder $pohodaOrder
+     */
+    private function mapInternalNote(Order $order, PohodaOrder $pohodaOrder): void
+    {
+        $internalNoteParts = [];
+        if ($order->getDomainId() === DomainHelper::SLOVAK_DOMAIN) {
+            $internalNoteParts[] = 'Slovensko';
+        }
+        if ($order->getPayment()->waitsForPayment()) {
+            $internalNoteParts[] = 'Čekat na platbu';
+        }
+
+        $pohodaOrder->internalNote = implode(' + ', $internalNoteParts);
     }
 
     /**
