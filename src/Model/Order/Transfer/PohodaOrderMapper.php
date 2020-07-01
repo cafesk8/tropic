@@ -44,6 +44,22 @@ class PohodaOrderMapper
     public function mapOrderToPohodaOrder(Order $order, array $pohodaVatNames): PohodaOrder
     {
         $pohodaOrder = new PohodaOrder();
+
+        $this->mapBasicInformation($order, $pohodaOrder);
+        $this->mapAddresses($order, $pohodaOrder);
+        $this->mapOrderItems($order, $pohodaOrder, $pohodaVatNames);
+        $this->mapCurrency($order, $pohodaOrder);
+        $this->mapPricingGroup($order, $pohodaOrder);
+
+        return $pohodaOrder;
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param \App\Component\Transfer\Pohoda\Order\PohodaOrder $pohodaOrder
+     */
+    private function mapBasicInformation(Order $order, PohodaOrder $pohodaOrder): void
+    {
         $pohodaOrder->dataPackItemId = $order->getNumber() . '-' . $order->getId();
         $pohodaOrder->eshopId = $order->getId();
         $pohodaOrder->number = $order->getNumber();
@@ -53,13 +69,6 @@ class PohodaOrderMapper
         $pohodaOrder->totalPriceWithVat = $order->getTotalPriceWithVat();
         $pohodaOrder->pohodaTransportId = $order->getTransport()->getExternalId();
         $pohodaOrder->pohodaPaymentName = $order->getPayment()->getExternalId();
-
-        $this->mapAddresses($order, $pohodaOrder);
-        $this->mapOrderItems($order, $pohodaOrder, $pohodaVatNames);
-        $this->mapCurrency($order, $pohodaOrder);
-        $this->mapPricingGroup($order, $pohodaOrder);
-
-        return $pohodaOrder;
     }
 
     /**
@@ -137,10 +146,8 @@ class PohodaOrderMapper
         $pohodaOrderItem->unitPriceWithVat = $orderItem->getPriceWithVat();
         $pohodaOrderItem->vatRate = $pohodaVatNames[$order->getDomainId()][(int)$orderItem->getVatPercent()] ?? null;
         $pohodaOrderItem->vatPercent = $orderItem->getVatPercent();
-        if ($stock !== null) {
-            $pohodaOrderItem->pohodaStockId = $stock->getExternalNumber();
-            $pohodaOrderItem->pohodaStockName = $stock->getPohodaName();
-        }
+        $pohodaOrderItem->pohodaStockId = $stock === null ? null : $stock->getExternalNumber();
+        $pohodaOrderItem->pohodaStockName = $stock === null ? null : $stock->getPohodaName();
 
         $pohodaOrder->orderItems[] = $pohodaOrderItem;
     }

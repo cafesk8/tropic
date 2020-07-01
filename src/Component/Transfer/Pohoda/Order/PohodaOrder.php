@@ -87,6 +87,16 @@ class PohodaOrder
     public ?string $pohodaTransportId;
 
     /**
+     * @var string|null
+     */
+    public ?string $internalNote;
+
+    public function __construct()
+    {
+        $this->orderResponse = null;
+    }
+
+    /**
      * @return array
      */
     public function getAsArray(): array
@@ -107,6 +117,7 @@ class PohodaOrder
             'currency' => $this->currency,
             'totalPriceWithVat' => $this->totalPriceWithVat,
             'pohodaTransportId' => $this->pohodaTransportId,
+            'internalNote' => $this->internalNote,
         ];
     }
 }
