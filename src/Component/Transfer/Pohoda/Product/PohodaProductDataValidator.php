@@ -146,11 +146,5 @@ class PohodaProductDataValidator
                 $context->addViolation('Zadané ID modifikace je již v systému přiřazeno jinému produktu');
             }
         }
-
-        if ($this->productVariantTropicFacade->isVariant($variantId)
-            && $this->productVariantTropicFacade->findMainVariantByVariantId($variantId) === null
-        ) {
-            $context->addViolation('Není možné vyvořit variantu, pro kterou neexistuje odpovídající hlavní varianta');
-        }
     }
 }
