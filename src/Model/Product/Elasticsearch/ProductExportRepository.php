@@ -82,32 +82,6 @@ class ProductExportRepository extends BaseProductExportRepository
     }
 
     /**
-     * @param int $domainId
-     * @param string $locale
-     * @param int $startFrom
-     * @param int $batchSize
-     * @return array
-     */
-    public function getProductsData(int $domainId, string $locale, int $startFrom, int $batchSize): array
-    {
-        $queryBuilder = $this->createQueryBuilder($domainId)
-            ->setFirstResult($startFrom)
-            ->setMaxResults($batchSize);
-
-        $query = $queryBuilder->getQuery();
-
-        $products = $query->getResult();
-
-        $result = [];
-        /** @var \App\Model\Product\Product $product */
-        foreach ($products as $product) {
-            $result[$product->getId()] = $this->extractResult($product, $domainId, $locale);
-        }
-
-        return $result;
-    }
-
-    /**
      * @param \App\Model\Product\Product $product
      * @param int $domainId
      * @param string $locale
