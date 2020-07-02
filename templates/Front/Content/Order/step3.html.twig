@@ -17,7 +17,7 @@
                 </div>
                 <div class="box-order__wrap">
                     <div class="box-order__info box-order__info--delivery-details">
-                        <div class="box-order__info__content box-order__info__content--full-width"> 
+                        <div class="box-order__info__content box-order__info__content--full-width">
                             <div class="box-order__info__content__left">
                                 <h2 class="in-title in-title--small in-title--dark">
                                     {{ 'Dodací údaje'|trans }}
@@ -57,7 +57,7 @@
 
                             <div class="box-order__info__content__right">
                                 <h3 class="box-order__info__title"><strong>3% sleva</strong> za registraci platí <strong>již na tento nákup!</strong></h3>
-                            
+
                                 <div class="js-order-registration-fields display-none">
                                     {{ form_widget(form.registration, {
                                         attr: { class: 'css-checkbox js-checkbox-toggle js-order-registration-checkbox', 'data-checkbox-toggle-container-id': 'js-password-fields' }})
@@ -84,6 +84,8 @@
                                 <span>{{ "Ulice"|trans }}</span>&nbsp;{{ pickupPlaceData.street }} <br/>
                                 <span>{{ "Město"|trans }}</span>&nbsp;{{ pickupPlaceData.city }} <br/>
                                 <span>{{ "PSČ"|trans }}</span>&nbsp;{{ pickupPlaceData.postcode }} <br/>
+                                {% do form.firstName.setRendered %}
+                                {% do form.lastName.setRendered %}
                                 {% do form.deliveryCompanyName.setRendered %}
                                 {% do form.deliveryStreet.setRendered %}
                                 {% do form.deliveryCity.setRendered %}
