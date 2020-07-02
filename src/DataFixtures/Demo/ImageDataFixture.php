@@ -182,7 +182,6 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
             73 => CategoryDataFixture::CATEGORY_PHONES,
             74 => CategoryDataFixture::CATEGORY_COFFEE,
             75 => CategoryDataFixture::CATEGORY_BOOKS,
-            76 => CategoryDataFixture::CATEGORY_TOYS,
             77 => CategoryDataFixture::CATEGORY_GARDEN_TOOLS,
             78 => CategoryDataFixture::CATEGORY_FOOD,
         ];

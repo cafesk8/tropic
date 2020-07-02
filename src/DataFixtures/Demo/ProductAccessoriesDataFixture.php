@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures\Demo;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
@@ -31,7 +31,7 @@ class ProductAccessoriesDataFixture extends AbstractReferenceFixture implements 
     }
 
     /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
@@ -42,6 +42,18 @@ class ProductAccessoriesDataFixture extends AbstractReferenceFixture implements 
         $productData->accessories = [
             $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '24'),
             $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '13'),
+        ];
+        $this->productFacade->edit($product->getId(), $productData);
+
+        $product = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '82');
+        /* @var $product \App\Model\Product\Product */
+
+        $productData = $this->productDataFactory->createFromProduct($product);
+        $productData->accessories = [
+            $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '77'),
+            $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '38'),
+            $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '41'),
+            $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '51'),
         ];
         $this->productFacade->edit($product->getId(), $productData);
     }

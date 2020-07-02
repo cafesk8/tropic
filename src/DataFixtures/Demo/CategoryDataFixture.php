@@ -6,7 +6,7 @@ namespace App\DataFixtures\Demo;
 
 use App\Model\Category\Category;
 use App\Model\Category\CategoryData;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface;
@@ -22,7 +22,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
     public const CATEGORY_PHONES = 'category_phones';
     public const CATEGORY_COFFEE = 'category_coffee';
     public const CATEGORY_BOOKS = 'category_books';
-    public const CATEGORY_TOYS = 'category_toys';
     public const CATEGORY_GARDEN_TOOLS = 'category_garden_tools';
     public const CATEGORY_FOOD = 'category_food';
     public const CATEGORY_SALE = 'category_sale';
@@ -59,7 +58,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
     }
 
     /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
@@ -156,15 +155,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
         }
         $categoryData->parent = $rootCategory;
         $this->createCategory($categoryData, self::CATEGORY_BOOKS);
-
-        foreach ($this->domain->getAll() as $domainConfig) {
-            $locale = $domainConfig->getLocale();
-            $categoryData->name[$locale] = t('Hračky a další', [], 'dataFixtures', $locale);
-            $categoryData->descriptions[$domainConfig->getId()] = t('A toy is an item that can be used for play. Toys are generally played with by children and pets. '
-                . 'Playing with toys is an enjoyable means of training young children for life in society. Different materials are '
-                . 'used to make toys enjoyable to all ages.', [], 'dataFixtures', $locale);
-        }
-        $this->createCategory($categoryData, self::CATEGORY_TOYS);
 
         foreach ($this->domain->getAll() as $domainConfig) {
             $locale = $domainConfig->getLocale();
