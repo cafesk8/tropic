@@ -1,4 +1,5 @@
 {% macro productPreviewItem(product, quantity, price, saleItem = false) %}
+    {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
     <li class="list-cart-preview__item">
         {% if product.isPohodaProductTypeGroup %}
             {% for productGroup in product.productGroups %}
@@ -22,18 +23,16 @@
         <div class="list-cart-preview__item__info">
             <div class="list-cart-preview__item__price">
                 {{ price|priceText }}
-
-                <span class="list-cart-preview__item__price__old js-not-implemented-yet">{{ price|priceText }}</span>
             </div>
-            <div class="list-cart-preview__item__availability js-not-implemented-yet">
-                Skladem 5ks
+            <div class="list-cart-preview__item__availability">
+                {{ availability.productAvailability(product) }}
             </div>
         </div>
     </li>
 {% endmacro %}
 
 
-<div class="box-preview">   
+<div class="box-preview">
     <div class="box-preview__content">
         {% if orderStep == "1" %}
             <div class="box-preview__item">
@@ -149,7 +148,7 @@
                 <div class="table-cart-preview__total">
                     {% if orderPreview.activeOrderDiscountLevel is not null or promocodeActive %}
                         <span class="table-cart-preview__total__discount js-not-implemented-yet">Ušetříte 3 175 Kč</span>
-                    {% endif %} 
+                    {% endif %}
                     <span class="table-cart-preview__total__price-primary {% if orderPreview.activeOrderDiscountLevel is not null or promocodeActive %}table-cart-preview__total__price-primary--colored{% endif %}">
                         {{ orderPreview.totalPrice.priceWithVat|price }}
                     </span>
