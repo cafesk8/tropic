@@ -384,12 +384,13 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param int $orderId
+     * @param int|null $pohodaId
      */
-    public function markOrderAsExported(int $orderId): void
+    public function markOrderAsExported(int $orderId, ?int $pohodaId): void
     {
         /** @var \App\Model\Order\Order $order */
         $order = $this->getById($orderId);
-        $order->markAsExported();
+        $order->markAsExported($pohodaId);
 
         $this->em->flush($order);
     }

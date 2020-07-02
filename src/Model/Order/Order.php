@@ -496,10 +496,14 @@ class Order extends BaseOrder
         $this->exportStatus = $exportStatus;
     }
 
-    public function markAsExported(): void
+    /**
+     * @param int|null $pohodaId
+     */
+    public function markAsExported(?int $pohodaId): void
     {
         $this->setExportStatus(self::EXPORT_SUCCESS);
         $this->exportedAt = new DateTime();
+        $this->pohodaId = $pohodaId;
     }
 
     public function markAsFailedExported(): void

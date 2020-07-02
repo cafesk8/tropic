@@ -191,7 +191,7 @@ class OrderExportFacade
 
             $order = $this->orderFacade->getById($pohodaOrder->eshopId);
             if ($pohodaOrder->orderResponse->responsePackItemState === PohodaResponse::POHODA_XML_RESPONSE_ITEM_STATE_OK) {
-                $this->orderFacade->markOrderAsExported($order->getId());
+                $this->orderFacade->markOrderAsExported($order->getId(), $pohodaOrder->orderResponse->producedDetailId);
             }
 
             $this->logger->addInfo('Objednávka byla exportována', [
