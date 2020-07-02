@@ -1243,3 +1243,6 @@
 20200708084005:
     class: App\Migrations\Version20200708084005
     skip: false
+20200702121120:
+    class: App\Migrations\Version20200702121120
+    skip: false

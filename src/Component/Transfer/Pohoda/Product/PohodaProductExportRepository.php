@@ -77,6 +77,7 @@ class PohodaProductExportRepository
         'Vyrobce' => PohodaProduct::COL_POHODA_PRODUCT_BRAND_NAME,
         'VPrZobrazCZ' => PohodaProduct::COL_SHOWN,
         'VPrZobrazSK' => PohodaProduct::COL_SHOWN_SK,
+        'Objem' => PohodaProduct::COL_VOLUME,
     ];
 
     /**

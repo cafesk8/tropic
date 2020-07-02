@@ -187,6 +187,8 @@ class ProductDataFactory extends BaseProductDataFactory
 
         $productData->descriptionAutomaticallyTranslated = $product->isDescriptionAutomaticallyTranslated();
         $productData->shortDescriptionAutomaticallyTranslated = $product->isShortDescriptionAutomaticallyTranslated();
+        $productData->bulky = $product->isBulky();
+        $productData->oversized = $product->isOversized();
 
         foreach ($this->domain->getAllIds() as $domainId) {
             $productData->generateToMergadoXmlFeeds[$domainId] = $product->isGenerateToMergadoXmlFeed($domainId);

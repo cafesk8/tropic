@@ -159,6 +159,16 @@ class ProductData extends BaseProductData
      */
     public UploadedFileData $files;
 
+    /**
+     * @var bool
+     */
+    public bool $bulky;
+
+    /**
+     * @var bool
+     */
+    public bool $oversized;
+
     public function __construct()
     {
         parent::__construct();
@@ -180,5 +190,7 @@ class ProductData extends BaseProductData
         $this->descriptionAutomaticallyTranslated = true;
         $this->shortDescriptionAutomaticallyTranslated = true;
         $this->shown = [];
+        $this->bulky = false;
+        $this->oversized = false;
     }
 }
