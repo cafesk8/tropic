@@ -5,7 +5,6 @@
 
 .in-action {
     position: relative;
-    margin-bottom: @in-action-bottom-gap;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -25,11 +24,12 @@
     }
 
     &__btn {
-        padding: 0 @btn-padding-horizontal/2;
-        margin-bottom: 30px;
-
         @media @query-md {
-            padding: 0 @btn-padding-horizontal;
+            padding: 0 30px;
+        }
+
+        &__icon {
+            margin-right: 10px;
         }
     }
 

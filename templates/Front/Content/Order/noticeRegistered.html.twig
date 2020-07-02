@@ -1,14 +1,8 @@
-<div class="box-order__registration__message">
-    {{ 'Váš e-mail je na e-shopu registrován.'|trans }}
-</div>
-<div class="box-order__registration__block">
-    <a
-        href="{{ url('front_login') }}"
-        class="js-login-in-order-window-opener"
-        data-url="{{ url('front_login_window_form') }}"
-        data-email="{{ email }}"
-    >
-        {{ 'Přihlaste se'|trans }}
-    </a>
-    {{ 'a údaje vám předvyplníme.'|trans }}
-</div>
+<a 
+    href="{{ url('front_login') }}" 
+    class="box-order__registration__message box-order__registration__message--clickable js-login-in-order-window-opener" 
+    data-url="{{ url('front_login_window_form') }}"
+    data-email="{{ email }}"
+>
+    {{ 'Tento e-mail je registrován. Můžete se přihlásit'|trans }}
+</a>

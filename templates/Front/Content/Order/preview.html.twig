@@ -158,6 +158,32 @@
         </div>
     </div>
 
+    {% if orderStep > 2 %}
+        <div class="box-preview__conditions">
+            {{ 'Kliknutím na tlačítko Odeslat objednávku'|trans }}<br>
+            {{ 'souhlasím s '|trans }}
+            {% if termsAndConditionsArticle is not null %}
+                <a href="{{ url('front_article_detail', { id: termsAndConditionsArticle.id }) }}" target="_blank" class="box-preview__conditions__link">
+                    <span>
+                        {{ 'obchodními podmínkami'|trans }}
+                    </span>
+                </a>
+            {% else %}
+                {{ 'obchodními podmínkami'|trans }}
+            {% endif %}
+            {{ ' e-shopu a souhlasím se zpracováním'|trans}}
+            {% if privacyPolicyArticle is not null %}
+                <a href="{{ url('front_article_detail', { id: privacyPolicyArticle.id }) }}" target="_blank" class="box-preview__conditions__link">
+                    <span>
+                        {{ 'osobních údajů'|trans }}
+                    </span>
+                </a>
+            {% else %}
+                {{ 'osobních údajů'|trans }}
+            {% endif %}
+        </div>
+    {% endif %}
+
     <div class="box-preview__action">
         <div class="in-action">
             <div class="in-action__back">
@@ -192,32 +218,6 @@
                 {% endif %}
             {% endif %}
 
-            {% if orderStep > 2 %}
-                <div class="box-preview__conditions">
-                    {{ 'Kliknutím na tlačítko Odeslat objednávku'|trans }}<br>
-                    {{ 'souhlasím s '|trans }}
-                    {% if termsAndConditionsArticle is not null %}
-                        <a href="{{ url('front_article_detail', { id: termsAndConditionsArticle.id }) }}" target="_blank" class="box-preview__conditions__link">
-                            <span>
-                                {{ 'obchodními podmínkami'|trans }}
-                            </span>
-                        </a>
-                    {% else %}
-                        {{ 'obchodními podmínkami'|trans }}
-                    {% endif %}
-                    {{ ' e-shopu a souhlasím se zpracováním'|trans}}
-                    {% if privacyPolicyArticle is not null %}
-                        <a href="{{ url('front_article_detail', { id: privacyPolicyArticle.id }) }}" target="_blank" class="box-preview__conditions__link">
-                            <span>
-                                {{ 'osobních údajů'|trans }}
-                            </span>
-                        </a>
-                    {% else %}
-                        {{ 'osobních údajů'|trans }}
-                    {% endif %}
-                </div>
-            {% endif %}
-
             {% if orderPreview.quantifiedProducts > 0 and renderSubmitButton %}
                 {% if orderStep == 1 %}
                     {% set continueButtonText = 'Vybrat způsob dopravy'|trans %}
@@ -226,7 +226,8 @@
                 {% else %}
                     {% set continueButtonText = 'Odeslat objednávku'|trans %}
                 {% endif %}
-                <button type="submit" id="{{ formSubmit.vars.id }}" name="{{ formSubmit.vars.full_name }}" class="btn btn--success btn--large">
+                <button type="submit" id="{{ formSubmit.vars.id }}" name="{{ formSubmit.vars.full_name }}" class="in-action__btn btn btn--success btn--large">
+                    {% if orderStep == 3 %}<i class="in-action__btn__icon svg svg-checked"></i>{% endif %}
                     {{ continueButtonText }}
                 </button>
                 {% do formSubmit.setRendered %}

@@ -5,7 +5,7 @@ import tooltip from 'framework/common/bootstrap/tooltip';
 import 'framework/common/components';
 
 import CustomizeBundle from 'framework/common/validation/customizeBundle';
-import showFormErrorsWindowOnFrontend from './frontend/utils/customizeBundle';
+import { showFormErrorsWindow, findOrCreateErrorList } from './frontend/utils/customizeBundle';
 
 import './frontend/utils/loginWindowOpener';
 import './frontend/utils/availabilityOnStoreWindowOpener';
@@ -43,7 +43,8 @@ import Register from 'framework/common/utils/Register';
 const $ = window.jQuery || global.jQuery || jQuery;
 tooltip($);
 
-CustomizeBundle.showFormErrorsWindow = showFormErrorsWindowOnFrontend;
+CustomizeBundle.showFormErrorsWindow = showFormErrorsWindow;
+CustomizeBundle.findOrCreateErrorList = findOrCreateErrorList;
 
 $(document).ready(function () {
     const register = new Register();

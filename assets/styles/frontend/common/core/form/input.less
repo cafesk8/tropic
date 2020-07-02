@@ -7,8 +7,8 @@
 @input-font-color: #1D4063;
 @input-border-size: 1px;
 
-@select-arrow-width: 40px;
-@select-inner-padding: 15px;
+@select-arrow-width: 50px;
+@select-inner-padding: 10px;
 
 @input-border-color: @color-border-dark;
 @input-error-border-color: @color-red;
@@ -33,6 +33,7 @@
     font-family: @font-alt;
     background-color: @input-background;
     transition: border-color 0.2s;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 
     &::placeholder {
         color: transparent;
@@ -45,8 +46,10 @@
     }
 
     &:focus {
+        padding: @input-padding-vertical @input-padding-horizontal - 1px 0 @input-padding-horizontal - 1px;
+
         outline: 0;
-        border: 1px solid @color-border-dark;
+        border: 2px solid @color-add;
     }
 
     .form-input-error & ,

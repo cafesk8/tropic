@@ -1,6 +1,6 @@
 @in-message-alert: #F7D6D6;
 @in-message-warning: @color-red;
-@in-message-info: @color-f;
+@in-message-info: @color-light;
 @in-message-success: @color-green;
 
 @in-message-alert-text: @color-red;
@@ -36,7 +36,7 @@
     &--error,
     &--danger {
         color: @in-message-alert-text;
-        background: lighten(@in-message-alert, 5%);
+        background-color: lighten(@in-message-alert, 5%);
 
         li {
             color: @in-message-alert-text;
@@ -45,7 +45,7 @@
 
     &--warning {
         color: @color-f;
-        background: @in-message-warning;
+        background-color: @in-message-warning;
 
         li {
             color: @in-message-warning-text;
@@ -54,7 +54,7 @@
 
     &--info {
         color: @in-message-info-text;
-        background: lighten(@in-message-info, 10%);
+        background-color: @in-message-info;
 
         li {
             color: @in-message-info-text;
@@ -63,7 +63,7 @@
 
     &--success {
         color: @in-message-success-text;
-        background: lighten(@in-message-success, 50%);
+        background-color: lighten(@in-message-success, 50%);
 
         li {
             color: @in-message-success-text;
@@ -72,7 +72,7 @@
 
     &--alert {
         color: @in-message-alert-text;
-        background: lighten(@in-message-alert, 5%);
+        background-color: lighten(@in-message-alert, 5%);
 
         li {
             color: @in-message-alert-text;
