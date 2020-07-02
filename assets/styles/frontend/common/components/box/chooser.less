@@ -2,10 +2,9 @@
 
 @box-chooser-check-width: 20px;
 @box-chooser-image-width: 40px;
-@box-chooser-image-height: 30px;
+@box-chooser-image-height: 20px;
 @box-chooser-price-width: 90px;
-@box-chooser-title-width: ~"calc(100% - @{box-chooser-check-width} - @{box-chooser-image-width} - @{box-chooser-price-width} - 2 * @{box-chooser-item-padding})";
-
+@box-chooser-text-line-height: 18px;
 @box-chooser-bottom-gap: 10px;
 
 @box-choose-item-check-width: 30px;
@@ -46,9 +45,8 @@
         &__image {
             height: @box-chooser-image-height;
             width: @box-chooser-image-width;
+            margin-right: 10px;
             position: relative;
-            margin-left: 5px;
-            line-height: 40px;
 
             img {
                 .center-image();
@@ -56,12 +54,13 @@
         }
 
         &__content {
+            display: flex;
             width: calc(~"@{calc-base} - @{box-choose-item-check-width}");
         }
 
         &__title {
             padding-right: 10px;
-            line-height: 18px;
+            line-height: @box-chooser-text-line-height;
 
             font-size: 15px;
             font-weight: 400;
@@ -76,7 +75,7 @@
         }
 
         &__description {
-            line-height: 18px;
+            line-height: @box-chooser-text-line-height;
             padding-right: 10px;
             opacity: 0.5;
 

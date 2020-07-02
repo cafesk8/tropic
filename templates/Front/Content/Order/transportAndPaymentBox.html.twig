@@ -28,10 +28,12 @@
                         <span class="css-radio__image"></span>
                     </span>
                     <span class="box-chooser__item__content">
-                        <span class="box-chooser__item__title">
+                        <span class="box-chooser__item__image">
                             {% if imageExists(choice.data) %}
                                 {{ image(choice.data, { lazy: false }) }}
                             {% endif %}
+                        </span>
+                        <span class="box-chooser__item__title">
                             {{ choice.data.name }}
                         </span>
 
@@ -110,10 +112,12 @@
                         <span class="css-radio__image"></span>
                     </span>
                     <span class="box-chooser__item__content">
-                        <span class="box-chooser__item__title">
+                        <span class="box-chooser__item__image">
                             {% if imageExists(choice.data) %}
                                 {{ image(choice.data, { lazy: false }) }}
                             {% endif %}
+                        </span>
+                        <span class="box-chooser__item__title">
                             {{ choice.data.name }}
                         </span>
                         {% if choice.data.description %}

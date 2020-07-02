@@ -13,6 +13,10 @@
             </div>
         {% endif %}
 
+        <div class="list-cart-preview__item__pieces">
+            {{ quantity|formatNumber }} {{ product.unit.name }}
+        </div>
+
         <span class="list-cart-preview__item__title">
             {{ product.name }}
             {% if saleItem is same as (true) %}

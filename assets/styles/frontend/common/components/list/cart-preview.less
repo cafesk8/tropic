@@ -2,7 +2,7 @@
 @list-cart-preview-title-size: 120px;
 @list-cart-preview-item-bottom-gap: 25px;
 @list-cart-preview-item-title-lines: 2;
-@list-cart-preview-item-gap: 15px;
+@list-cart-preview-item-gap: 10px;
 
 .list-cart-preview {
     .reset-ul();
@@ -52,6 +52,13 @@
             }
         }
 
+        &__pieces {
+            line-height: 18px;
+            padding-right: @list-cart-preview-item-gap;
+
+            font-size: @font-size-extra-small;
+        }
+
         &__title {
             width: @list-cart-preview-title-size;
             line-height: 18px;
@@ -64,6 +71,7 @@
         }
 
         &__info {
+            flex: 1;
             margin-left: auto;
             text-align: right;
         }
@@ -86,10 +94,6 @@
                 font-size: @font-size-extra-small;
                 color: @color-gray;
             }
-        }
-
-        &__availability {
-            color: @color-green;
         }
     }
 }
