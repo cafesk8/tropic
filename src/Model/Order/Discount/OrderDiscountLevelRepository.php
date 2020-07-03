@@ -114,6 +114,7 @@ class OrderDiscountLevelRepository
             ->select('odl')
             ->from(OrderDiscountLevel::class, 'odl')
             ->where('odl.domainId = :domainId AND odl.priceLevelWithVat <= :totalProductsPrice')
+            ->andWhere('odl.enabled = TRUE')
             ->orderBy('odl.priceLevelWithVat', 'DESC')
             ->setMaxResults(1)
             ->setParameters([
