@@ -10,19 +10,10 @@ use App\Component\Transfer\Pohoda\Order\Status\PohodaOrderStatusExportFacade;
 
 class OrderStatusQueueImportFacade
 {
-    /**
-     * @var \App\Component\Transfer\Logger\TransferLogger
-     */
     private TransferLogger $logger;
 
-    /**
-     * @var \App\Model\Order\Transfer\Status\OrderStatusQueueImportRepository
-     */
     private OrderStatusQueueImportRepository $orderStatusQueueImportRepository;
 
-    /**
-     * @var \App\Component\Transfer\Pohoda\Order\Status\PohodaOrderStatusExportFacade
-     */
     private PohodaOrderStatusExportFacade $pohodaOrderStatusExportFacade;
 
     /**
@@ -58,5 +49,30 @@ class OrderStatusQueueImportFacade
         }
 
         $this->logger->persistTransferIssues();
+    }
+
+    /**
+     * @param int $limit
+     * @return array
+     */
+    public function getChangedPohodaOrderIds(int $limit): array
+    {
+        return $this->orderStatusQueueImportRepository->getChangedPohodaOrderIds($limit);
+    }
+
+    /**
+     * @param array $updatedPohodaOrderIds
+     */
+    public function removeOrdersFromQueue(array $updatedPohodaOrderIds): void
+    {
+        $this->orderStatusQueueImportRepository->removeOrdersFromQueue($updatedPohodaOrderIds);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isQueueEmpty(): bool
+    {
+        return $this->orderStatusQueueImportRepository->isQueueEmpty();
     }
 }

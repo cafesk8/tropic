@@ -53,6 +53,6 @@ class OrderStatusImportCronModule extends AbstractTransferCronModule
         $dateTimeBeforeTransferFromPohodaServer = $this->pohodaEntityManager->getCurrentDateTimeFromPohodaDatabase();
         $this->orderStatusQueueImportFacade->importDataToQueue($dateTimeBeforeTransferFromPohodaServer, $transfer->getLastStartAt());
 
-        return false;
+        return $this->orderStatusImportFacade->processImport();
     }
 }

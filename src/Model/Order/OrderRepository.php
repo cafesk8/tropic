@@ -292,4 +292,13 @@ class OrderRepository extends BaseOrderRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+    /**
+     * @param int $pohodaId
+     * @return \App\Model\Order\Order|null
+     */
+    public function findByPohodaId(int $pohodaId): ?Order
+    {
+        return $this->getOrderRepository()->findOneBy(['pohodaId' => $pohodaId]);
+    }
 }

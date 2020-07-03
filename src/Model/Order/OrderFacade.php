@@ -811,4 +811,13 @@ class OrderFacade extends BaseOrderFacade
     {
         return $this->orderRepository->getForTransfer($limit);
     }
+
+    /**
+     * @param int $pohodaId
+     * @return \App\Model\Order\Order|null
+     */
+    public function findByPohodaId(int $pohodaId): ?Order
+    {
+        return $this->orderRepository->findByPohodaId($pohodaId);
+    }
 }
