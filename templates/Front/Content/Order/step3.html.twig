@@ -20,7 +20,7 @@
                         <div class="box-order__info__content box-order__info__content--full-width">
                             <div class="box-order__info__content__left">
                                 <h2 class="in-title in-title--small in-title--dark">
-                                    {{ 'Dodací údaje'|trans }}
+                                    {{ 'Informace o zákazníkovi'|trans }}
                                 </h2>
                                 {% set isSelectedPickupPlaceTransport = transport is not empty and (transport.isPickupPlace or transport.isChooseStore) %}
                                 {{ form_row(form.email, { label: 'E-mail'|trans, attr: {
@@ -49,7 +49,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{ form_row(form.telephone, { label: 'Telephone'|trans }) }}
+                                {{ form_row(form.telephone, { label: 'Telephone'|trans, attr: { placeholder: 'např. 603 123 456'|trans }}) }}
                                 {% if isEnglishDomain() is same as (true) or isSlovakDomain() is same as (true) %}
                                     <span class="form-line__info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
                                 {% endif %}
@@ -107,7 +107,7 @@
                                         </div>
                                         <div class="box-order__info__row">
                                             <div class="box-order__info__row__item">
-                                                {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans }) }}
+                                                {{ form_row(form.deliveryCompanyName, { label: 'Do firmy'|trans, attr: { placeholder: 'nepovinné'|trans } }) }}
                                             </div>
                                         </div>
                                         <div class="box-order__info__row">
@@ -175,7 +175,7 @@
                                 {{ form_row(form.postcode, { label: 'Postcode'|trans }) }}
                                 {{ form_row(form.country, { label: 'Country'|trans }) }}
                             </div>
-
+                            
                             {% do form.note.setRendered %}
                         </div>
                     </div>

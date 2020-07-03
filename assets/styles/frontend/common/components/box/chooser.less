@@ -5,8 +5,10 @@
 
 @box-chooser-check-width: 20px;
 @box-chooser-image-width: 40px;
+@box-chooser-image-width-small: 30px;
 @box-chooser-image-height: 20px;
 @box-chooser-price-width: 90px;
+@box-chooser-price-width-mobile: 80px;
 @box-chooser-text-line-height: 18px;
 @box-chooser-bottom-gap: 10px;
 
@@ -21,7 +23,13 @@
         line-height: 30px;
         margin-bottom: 16px;
 
-        font-size: 21px;
+        font-size: 18px;
+        text-align: center;
+
+        @media @query-lg {
+            font-size: 21px;
+            text-align: left;
+        }
     }
 
     &__item {
@@ -51,12 +59,13 @@
 
         &__image {
             height: @box-chooser-image-height;
-            width: @box-chooser-image-width;
+            width: @box-chooser-image-width-small;
             margin-right: @box-chooser-item-gap-small;
             position: relative;
 
             @media @query-lg {
                 margin-right: @box-chooser-item-gap;
+                width: @box-chooser-image-width;
             }
 
             img {
@@ -75,11 +84,13 @@
             padding-right: @box-chooser-item-gap-small;
             line-height: @box-chooser-text-line-height;
 
-            font-size: 15px;
+            font-size: @font-size-mobile;
             font-weight: 400;
 
             @media @query-lg {
                 padding-right: @box-chooser-item-gap;
+
+                font-size: @font-size;
             }
 
             .box-chooser__item--active & {
@@ -97,11 +108,13 @@
             opacity: 0.5;
 
             color: @box-chooser-description-color;
-            font-size: @font-size-extra-small;
+            font-size: @font-size-mobile - 1px;
             font-family: @font-alt;
 
             @media @query-lg {
                 display: inline;
+
+                font-size: @font-size-extra-small;
             }
         }
 
@@ -110,14 +123,20 @@
         }
 
         &__price {
-            width: @box-chooser-price-width;
+            width: @box-chooser-price-width-mobile;
             margin-left: 0;
             text-align: right;
 
             color: @color-price;
             font-family: @font-alt;
-            font-size: @font-size + 1px;
+            font-size: @font-size-mobile;
             font-weight: 800;
+
+            @media @query-lg {
+                width: @box-chooser-price-width;
+
+                font-size: @font-size + 1px;
+            }
 
             .box-chooser__item--active & {
                 color: @color-price-main;
