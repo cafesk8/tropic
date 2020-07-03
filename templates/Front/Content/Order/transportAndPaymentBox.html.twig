@@ -35,14 +35,14 @@
                         </span>
                         <span class="box-chooser__item__title">
                             {{ choice.data.name }}
+                        
+                            {% if choice.data.description %}
+                                <span class="box-chooser__item__description">
+                                    {{ choice.data.description }}
+                                </span>
+                            {% endif %}
                         </span>
-
-                        {% if choice.data.description %}
-                            <span class="box-chooser__item__description">
-                                {{ choice.data.description }}
-                            </span>
-                        {% endif %}
-
+                        
                         {% if choice.data.isPickupPlace() or choice.data.isChooseStore() %}
                             {% set checked = child.vars.checked == true %}
                             {% set pickupPlaceName = '' %}
@@ -119,12 +119,12 @@
                         </span>
                         <span class="box-chooser__item__title">
                             {{ choice.data.name }}
+                            {% if choice.data.description %}
+                                <span class="box-chooser__item__description">
+                                    {{ choice.data.description }}
+                                </span>
+                            {% endif %}
                         </span>
-                        {% if choice.data.description %}
-                            <span class="box-chooser__item__description">
-                                {{ choice.data.description }}
-                            </span>
-                        {% endif %}
                     </span>
                     <span class="box-chooser__item__price">
                         {{ paymentPrice.priceWithVat|priceText }}

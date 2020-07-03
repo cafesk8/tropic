@@ -93,7 +93,7 @@
                                 {{ 'Sleva na celý nákup %percent% %'|trans({'%percent%': orderPreview.activeOrderDiscountLevel.discountPercent}) }}
                             </td>
                             <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
-                                - {{ orderPreview.totalDiscount.priceWithVat|price }}
+                                -&nbsp;{{ orderPreview.totalDiscount.priceWithVat|price }}
                             </td>
                         </tr>
                     {% endif %}
@@ -107,7 +107,7 @@
                                     <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': promoCode.code }) }}
                                 </td>
                                 <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
-                                    - {{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
+                                    -&nbsp;{{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
                                 </td>
                             </tr>
                         {% endif %}
