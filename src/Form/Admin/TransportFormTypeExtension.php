@@ -9,6 +9,7 @@ use App\Component\Balikobot\Shipper\ShipperServiceFacade;
 use App\Component\MergadoTransportType\MergadoTransportTypeFacade;
 use App\Model\Country\CountryFacade;
 use App\Model\Transport\Transport;
+use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter;
 use Shopsys\FrameworkBundle\Form\Admin\Transport\TransportFormType;
 use Shopsys\FrameworkBundle\Form\GroupType;
@@ -103,6 +104,14 @@ class TransportFormTypeExtension extends AbstractTypeExtension
                 'label' => t('Tvar odkazu pro sledování zásilky'),
                 'icon_title' => t('Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s'),
                 'required' => false,
+            ])
+            ->add('bulkyAllowed', YesNoType::class, [
+                'required' => false,
+                'label' => t('Povolit objemné produkty'),
+            ])
+            ->add('oversizedAllowed', YesNoType::class, [
+                'required' => false,
+                'label' => t('Povolit nadrozměrné produkty'),
             ]);
 
         $builder->add($this->getTransportTypeGroup($builder));

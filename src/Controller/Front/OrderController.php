@@ -391,7 +391,6 @@ class OrderController extends FrontBaseController
             }
         }
 
-        /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment, $frontOrderFormData->registration);
         $payments = $this->paymentFacade->getVisibleOnCurrentDomain();
         $transports = $this->transportFacade->getVisibleOnCurrentDomain($payments);
@@ -464,6 +463,8 @@ class OrderController extends FrontBaseController
             'pickupPlace' => $orderData->pickupPlace,
             'store' => $orderData->store,
             'paymentTransportRelations' => $this->getPaymentTransportRelations($payments),
+            'bulkyTransportRequired' => $this->cartFacade->isBulkyTransportRequired(),
+            'oversizedTransportRequired' => $this->cartFacade->isOversizedTransportRequired(),
         ]);
     }
 
@@ -580,6 +581,8 @@ class OrderController extends FrontBaseController
             'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
             'pickupPlace' => $orderData->pickupPlace,
             'store' => $orderData->store,
+            'bulkyTransportRequired' => $this->cartFacade->isBulkyTransportRequired(),
+            'oversizedTransportRequired' => $this->cartFacade->isOversizedTransportRequired(),
         ]);
     }
 

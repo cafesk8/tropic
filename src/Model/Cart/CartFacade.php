@@ -538,4 +538,44 @@ class CartFacade extends BaseCartFacade
     {
         @trigger_error('Deprecated, you should use CartFacade::addProduct instead.', E_USER_DEPRECATED);
     }
+
+    /**
+     * @return bool
+     */
+    public function isBulkyTransportRequired(): bool
+    {
+        $cart = $this->findCartOfCurrentCustomerUser();
+
+        if ($cart === null) {
+            return false;
+        }
+
+        foreach ($cart->getItems() as $item) {
+            if ($item->getProduct()->isBulky()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOversizedTransportRequired(): bool
+    {
+        $cart = $this->findCartOfCurrentCustomerUser();
+
+        if ($cart === null) {
+            return false;
+        }
+
+        foreach ($cart->getItems() as $item) {
+            if ($item->getProduct()->isOversized()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
