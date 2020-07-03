@@ -283,6 +283,11 @@
                                         <div class="list-set__item__in">
                                             <div class="list-set__item__image">
                                                 {{ image(productGroup.item, { size: 'listSet' }) }}
+                                                {% if productGroup.itemCount > 1 %}
+                                                    <div class="list-tags">
+                                                        <div class="list-tags__tag">{{ productGroup.itemCount ~ '×' }}</div>
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                             <div class="list-set__item__content">
                                                 <div class="list-set__item__name">
