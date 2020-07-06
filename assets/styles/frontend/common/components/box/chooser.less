@@ -1,56 +1,72 @@
-@box-chooser-item-padding: 10px;
+@box-chooser-item-padding: 20px;
+@box-chooser-item-padding-small: 15px 10px;
+@box-chooser-item-gap: 10px;
+@box-chooser-item-gap-small: 5px;
 
 @box-chooser-check-width: 20px;
 @box-chooser-image-width: 40px;
-@box-chooser-image-height: 30px;
+@box-chooser-image-width-small: 30px;
+@box-chooser-image-height: 20px;
 @box-chooser-price-width: 90px;
-@box-chooser-title-width: ~"calc(100% - @{box-chooser-check-width} - @{box-chooser-image-width} - @{box-chooser-price-width} - 2 * @{box-chooser-item-padding})";
-
+@box-chooser-price-width-mobile: 80px;
+@box-chooser-text-line-height: 18px;
 @box-chooser-bottom-gap: 10px;
-@box-chooser-padding: 30px;
-@box-chooser-padding-mobile: 15px;
 
 @box-choose-item-check-width: 30px;
 
-@box-chooser-description-color: #918e8e;
+@box-chooser-description-color: #1D4063;
 
 .box-chooser {
     margin-bottom: @box-chooser-bottom-gap;
-    padding: @box-chooser-padding-mobile;
-    border: 3px solid @color-border;
-    border-radius: @radius;
-
-    @media @query-lg {
-        padding: 10px @box-chooser-padding @box-chooser-padding;
-    }
 
     &__title {
-        margin-bottom: 3px;
+        line-height: 30px;
+        margin-bottom: 16px;
+
+        font-size: 18px;
+        text-align: center;
+
+        @media @query-lg {
+            font-size: 21px;
+            text-align: left;
+        }
     }
 
     &__item {
         display: flex;
         align-items: center;
-        flex-wrap: wrap;
         width: 100%;
-        padding: 5px @box-chooser-item-padding;
-
+        padding: @box-chooser-item-padding-small;
+        margin-bottom: 5px;
+        
+        background-color: @color-f;
+        border-radius: 4px;
         cursor: pointer;
 
         @media @query-lg {
-            flex-wrap: nowrap;
+            padding: @box-chooser-item-padding;
+        }
+
+        &--inactive {
+            cursor: no-drop;
         }
 
         &__check {
             display: block;
+
+            font-size: 0;
         }
 
         &__image {
             height: @box-chooser-image-height;
-            width: @box-chooser-image-width;
+            width: @box-chooser-image-width-small;
+            margin-right: @box-chooser-item-gap-small;
             position: relative;
-            margin-left: 5px;
-            line-height: 40px;
+
+            @media @query-lg {
+                margin-right: @box-chooser-item-gap;
+                width: @box-chooser-image-width;
+            }
 
             img {
                 .center-image();
@@ -58,50 +74,47 @@
         }
 
         &__content {
+            display: flex;
+            align-items: center;
             width: calc(~"@{calc-base} - @{box-choose-item-check-width}");
         }
 
         &__title {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            padding: 0 10px;
-            line-height: 38px;
+            flex: 1;
+            padding-right: @box-chooser-item-gap-small;
+            line-height: @box-chooser-text-line-height;
 
-            font-size: 15px;
+            font-size: @font-size-mobile;
+            font-weight: 400;
 
-            &__name {
-                width: calc(~"100% - @{box-chooser-image-width}");
-                padding-right: 10px;
-                line-height: normal;
+            @media @query-lg {
+                padding-right: @box-chooser-item-gap;
 
-                font-weight: 400;
+                font-size: @font-size;
+            }
 
-                @media @query-sm {
-                    min-width: 200px;
-                    max-width: 0;
-                }
-
-                .box-chooser__item--active & {
-                    font-weight: 800;
-                }
+            .box-chooser__item--active & {
+                font-weight: 800;
             }
 
             .box-chooser__item--inactive & {
                 color: @color-inactive;
             }
+        }
 
-            &__description {
-                display: block;
-                width: calc(~"100% - @{box-chooser-image-width}");
-                padding-left: 10px;
-                line-height: 13px;
+        &__description {
+            display: block;
+            line-height: @box-chooser-text-line-height;
+            opacity: 0.5;
 
-                color: @box-chooser-description-color;
+            color: @box-chooser-description-color;
+            font-size: @font-size-mobile - 1px;
+            font-family: @font-alt;
 
-                @media @query-md {
-                    width: 100%;
-                }
+            @media @query-lg {
+                display: inline;
+
+                font-size: @font-size-extra-small;
             }
         }
 
@@ -110,18 +123,19 @@
         }
 
         &__price {
+            width: @box-chooser-price-width-mobile;
+            margin-left: 0;
             text-align: right;
-            margin-left: auto;
 
             color: @color-price;
             font-family: @font-alt;
-            font-size: @font-size + 1px;
+            font-size: @font-size-mobile;
             font-weight: 800;
 
             @media @query-lg {
                 width: @box-chooser-price-width;
-                padding-left: 10px;
-                margin-left: 0;
+
+                font-size: @font-size + 1px;
             }
 
             .box-chooser__item--active & {
@@ -142,20 +156,19 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        margin-top: 15px;
-        padding: 10px 15px;
+        justify-content: center;
+        margin-top: 10px;
 
-        background-color: @color-light;
         cursor: pointer;
         border-radius: @radius;
         transition: @transition;
 
-        &:hover {
-            background-color: darken(@color-light, 5%);
-        }
-
         &__text {
             margin: 0 10px 0 0;
+
+            text-decoration: underline;
+            font-size: @font-size-extra-small + 1px;
+            font-family: @font-alt;
 
             &__show {
                 display: block;
@@ -169,6 +182,7 @@
         .svg {
             transition: @transition;
             font-size: 8px;
+            color: @color-turquoise;
         }
 
         &.active {

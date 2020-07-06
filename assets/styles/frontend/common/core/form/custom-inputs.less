@@ -1,7 +1,8 @@
 @custom-inputs-margin-left: 30px;
 @custom-inputs-filter-margin-left: 25px;
-@custom-inputs-font-size: @font-size-small;
+@custom-inputs-font-size: @font-size;
 @custom-inputs-icon-size: 20px;
+@custom-inputs-label-color: #33537e;
 @custom-inputs-link-color: @color-base;
 @custom-inputs-link-color-hover: @color-orange;
 
@@ -27,8 +28,7 @@ input[type=checkbox].css-radio, input[type=radio].css-radio {
         line-height: @custom-inputs-icon-size;
         min-height: @custom-inputs-icon-size;
 
-        font-size: @font-size-mobile;
-        font-family: @font-alt;
+        color: @custom-inputs-label-color;
         cursor: pointer;
 
         @media @query-lg {

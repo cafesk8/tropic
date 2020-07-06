@@ -16,41 +16,23 @@
                     {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
                 </div>
                 <div class="box-order__wrap">
-                    <div class="box-order__info">
-                        <div class="box-order__info__item">
-                            <h2 class="in-title in-title--small in-title--dark">
-                                {{ 'Dodací údaje'|trans }}
-                            </h2>
-                            <div class="box-order__info__content">
+                    <div class="box-order__info box-order__info--delivery-details">
+                        <div class="box-order__info__content box-order__info__content--full-width">
+                            <div class="box-order__info__content__left">
+                                <h2 class="in-title in-title--small in-title--dark">
+                                    {{ 'Informace o zákazníkovi'|trans }}
+                                </h2>
                                 {% set isSelectedPickupPlaceTransport = transport is not empty and (transport.isPickupPlace or transport.isChooseStore) %}
-
-                                {{ form_row(form.firstName, { label: 'First name'|trans }) }}
-                                {{ form_row(form.lastName, { label: 'Last name'|trans }) }}
-                                {{ form_row(form.telephone, { label: 'Telephone'|trans }) }}
-                                {% if isEnglishDomain() is same as (true) or isSlovakDomain() is same as (true) %}
-                                    <span class="form-line__info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
-                                {% endif %}
-
                                 {{ form_row(form.email, { label: 'E-mail'|trans, attr: {
                                     'data-is-logged-customer': is_granted('ROLE_LOGGED_CUSTOMER'),
                                     'data-url': url('front_login_notice')
                                 } }) }}
-
                                 <div class="box-order__registration">
                                     <div class="js-order-personal-info-form-email"></div>
 
                                     <div class="box-order__registration__block box-order__registration__block--without-border-top js-order-registration-fields display-none">
-                                        {{ form_widget(form.registration, {
-                                            attr: { class: 'css-checkbox js-checkbox-toggle js-order-registration-checkbox', 'data-checkbox-toggle-container-id': 'js-password-fields' }})
-                                        }}
-
-                                        <label for="{{ form.registration.vars.id }}" class="css-checkbox__image">
-                                            {{ 'Chci se zaregistrovat'|trans }}
-                                        </label>
-
                                         <input type="checkbox" class="display-none js-order-transport-input" data-id="{{ transport.id }}" checked>
                                         <input type="checkbox" class="display-none js-order-payment-input" data-id="{{ payment.id }}" checked>
-
                                         <div class="margin-top-10" id="js-password-fields">
                                             {{ form_row(form.password.first, {
                                                 label: 'Password'|trans,
@@ -67,7 +49,27 @@
                                         </div>
                                     </div>
                                 </div>
+                                {{ form_row(form.telephone, { label: 'Telephone'|trans, attr: { placeholder: 'např. 603 123 456'|trans }}) }}
+                                {% if isEnglishDomain() is same as (true) or isSlovakDomain() is same as (true) %}
+                                    <span class="form-line__info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
+                                {% endif %}
                             </div>
+
+                            <div class="box-order__info__content__right">
+                                <h3 class="box-order__info__title"><strong>3% sleva</strong> za registraci platí <strong>již na tento nákup!</strong></h3>
+
+                                <div class="js-order-registration-fields display-none">
+                                    {{ form_widget(form.registration, {
+                                        attr: { class: 'css-checkbox js-checkbox-toggle js-order-registration-checkbox', 'data-checkbox-toggle-container-id': 'js-password-fields' }})
+                                    }}
+                                    <label for="{{ form.registration.vars.id }}" class="css-checkbox__image">
+                                        {{ 'Chci se zaregistrovat'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-order__info__content box-order__info__content--without-gap">
                             <h2 class="in-title in-title--small in-title--dark">
                                 {{ 'Doručit na adresu'|trans }}
                             </h2>
@@ -78,40 +80,65 @@
                                     {% set pickupPlaceData = store %}
                                 {% endif %}
 
-                                <div class="box-order__info__content">
-                                    <span>{{ "Název pobočky"|trans }}</span>&nbsp;{{ pickupPlaceData.name }} <br/>
-                                    <span>{{ "Ulice"|trans }}</span>&nbsp;{{ pickupPlaceData.street }} <br/>
-                                    <span>{{ "Město"|trans }}</span>&nbsp;{{ pickupPlaceData.city }} <br/>
-                                    <span>{{ "PSČ"|trans }}</span>&nbsp;{{ pickupPlaceData.postcode }} <br/>
-                                    {% do form.deliveryCompanyName.setRendered %}
-                                    {% do form.deliveryStreet.setRendered %}
-                                    {% do form.deliveryCity.setRendered %}
-                                    {% do form.deliveryPostcode.setRendered %}
-                                    {% do form.deliveryCountry.setRendered %}
-                                </div>
+                                <span>{{ "Název pobočky"|trans }}</span>&nbsp;{{ pickupPlaceData.name }} <br/>
+                                <span>{{ "Ulice"|trans }}</span>&nbsp;{{ pickupPlaceData.street }} <br/>
+                                <span>{{ "Město"|trans }}</span>&nbsp;{{ pickupPlaceData.city }} <br/>
+                                <span>{{ "PSČ"|trans }}</span>&nbsp;{{ pickupPlaceData.postcode }} <br/>
+                                {% do form.firstName.setRendered %}
+                                {% do form.lastName.setRendered %}
+                                {% do form.deliveryCompanyName.setRendered %}
+                                {% do form.deliveryStreet.setRendered %}
+                                {% do form.deliveryCity.setRendered %}
+                                {% do form.deliveryPostcode.setRendered %}
+                                {% do form.deliveryCountry.setRendered %}
                             {% else %}
                                 <div id="js-delivery-address" class="margin-top-20">
                                     {% if app.user is not null %}
                                         {{ form_row(form.deliveryAddress) }}
                                     {% endif %}
                                     <div class="js-order-delivery-address-fields{% if app.user is not null and form.deliveryAddress.vars.value is not same as('') %} display-none{% endif %}">
-                                        {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans }) }}
-                                        {% if isEnglishDomain() is same as (true) %}
-                                            <span class="info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
-                                        {% endif %}
-                                        {{ form_row(form.deliveryStreet, { label: 'Street'|trans }) }}
-                                        {{ form_row(form.deliveryCity, { label: 'City'|trans }) }}
-                                        {{ form_row(form.deliveryPostcode, { label: 'Postcode'|trans }) }}
-
-                                        {% if isEnglishDomain() is same as (true) %}
-                                            {{ form_row(form.deliveryCountry, { label: 'Country'|trans }) }}
-                                            <a href="{{ url('front_order_index') }}">{{ 'Změnit'|trans }}</a>
-                                        {% else %}
-                                            {% do form.deliveryCountry.setRendered %}
-                                        {% endif %}
+                                        <div class="box-order__info__row">
+                                            <div class="box-order__info__row__item box-order__info__row__item--50">
+                                                {{ form_row(form.firstName, { label: 'First name'|trans }) }}
+                                            </div>
+                                            <div class="box-order__info__row__item box-order__info__row__item--50">
+                                                {{ form_row(form.lastName, { label: 'Last name'|trans }) }}
+                                            </div>
+                                        </div>
+                                        <div class="box-order__info__row">
+                                            <div class="box-order__info__row__item">
+                                                {{ form_row(form.deliveryCompanyName, { label: 'Do firmy'|trans, attr: { placeholder: 'nepovinné'|trans } }) }}
+                                            </div>
+                                        </div>
+                                        <div class="box-order__info__row">
+                                            <div class="box-order__info__row__item">
+                                                {{ form_row(form.deliveryStreet, { label: 'Street'|trans }) }}
+                                            </div>
+                                        </div>
+                                        <div class="box-order__info__row">
+                                            <div class="box-order__info__row__item box-order__info__row__item--70">
+                                                {{ form_row(form.deliveryCity, { label: 'City'|trans }) }}
+                                            </div>
+                                            <div class="box-order__info__row__item box-order__info__row__item--30">
+                                                {{ form_row(form.deliveryPostcode, { label: 'Postcode'|trans }) }}
+                                            </div>
+                                        </div>
+                                        <div class="box-order__info__row">
+                                            <div class="box-order__info__row__item">
+                                                {% if isEnglishDomain() is same as (true) %}
+                                                    {{ form_row(form.deliveryCountry, { label: 'Country'|trans }) }}
+                                                    <a href="{{ url('front_order_index') }}">{{ 'Změnit'|trans }}</a>
+                                                {% else %}
+                                                    {% do form.deliveryCountry.setRendered %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             {% endif %}
+                        </div>
+
+                        <div class="box-order__info__content box-order__info__content--without-gap">
                             <div class="margin-top-10">
                                 {{ form_widget(form.companyCustomer, {
                                     attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-company-fields' }})
@@ -124,47 +151,32 @@
                                 <h2 class="in-title in-title--small in-title--dark">
                                     {{ 'Company data'|trans }} <span class="heading-addition">{{ '(If I buy on the company behalf)'|trans }}</span>
                                 </h2>
-                                <div class="box-order__info__content">
-                                    {{ form_row(form.companyName, { label: 'Company name'|trans }) }}
-                                    {{ form_row(form.companyNumber, { label: 'Company number'|trans }) }}
-                                    {{ form_row(form.companyTaxNumber, { label: 'Tax number'|trans }) }}
-                                </div>
+                                {{ form_row(form.companyName, { label: 'Company name'|trans }) }}
+                                {{ form_row(form.companyNumber, { label: 'Company number'|trans }) }}
+                                {{ form_row(form.companyTaxNumber, { label: 'Tax number'|trans }) }}
                             </div>
+                        </div>
 
+                        <div class="box-order__info__content box-order__info__content--without-gap">
                             <div class="margin-top-10">
                                 {{ form_widget(form.billingAddressFilled, {
                                     attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-billing-address-fields' }})
                                 }}
                                 <label for="{{ form.billingAddressFilled.vars.id }}" class="css-checkbox__image">
-                                    {{ 'Chci zadat jiné fakturační údaje'|trans }}
+                                    {{ 'Chci zadat fakturační údaje'|trans }}
                                 </label>
                             </div>
                             <div id="js-billing-address-fields" class="margin-top-20">
                                 <h2 class="in-title in-title--small in-title--dark">
                                     {{ 'Billing data'|trans }} <span class="heading-addition">{{ '(Tato adresa bude na daňovém dokladu. Pokud nebude vyplněna, použije se doručovací adresa.)'|trans }}</span>
                                 </h2>
-                                <div class="box-order__info__content">
-                                    {{ form_row(form.street, { label: 'Street'|trans }) }}
-                                    {{ form_row(form.city, { label: 'City'|trans }) }}
-                                    {{ form_row(form.postcode, { label: 'Postcode'|trans }) }}
-                                    {{ form_row(form.country, { label: 'Country'|trans }) }}
-                                </div>
+                                {{ form_row(form.street, { label: 'Street'|trans }) }}
+                                {{ form_row(form.city, { label: 'City'|trans }) }}
+                                {{ form_row(form.postcode, { label: 'Postcode'|trans }) }}
+                                {{ form_row(form.country, { label: 'Country'|trans }) }}
                             </div>
-
-                            <div class="margin-top-10">
-                                <input type="checkbox" id="order_note" name="order_note" class="css-checkbox js-checkbox-toggle" data-checkbox-toggle-container-id="js-order-note" value="">
-                                <label for="order_note" class="css-checkbox__image">
-                                    {{ 'Přidám poznámku k objednávce'|trans }}
-                                </label>
-                            </div>
-                            <div id="js-order-note" class="margin-top-20">
-                                <h2 class="in-title in-title--small in-title--dark">
-                                    {{ 'Note'|trans }}
-                                </h2>
-                                <div class="box-order__info__content">
-                                    {{ form_row(form.note, { label: 'Contact us'|trans }) }}
-                                </div>
-                            </div>
+                            
+                            {% do form.note.setRendered %}
                         </div>
                     </div>
 

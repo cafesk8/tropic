@@ -1,4 +1,4 @@
-@selectric-font-size:           @font-size-small;
+@selectric-font-size:           @input-font-size;
 @selectric-main-color:          @color-border-dark;            // Color used in border
 @selectric-secondary-color:     @color-base;                       // Color used in button
 @selectric-arrow-color:         @color-gray;                       // Color used in button arrow
@@ -9,6 +9,7 @@
 @selectric-border-width:        @input-border-size;                            // Outer border width
 @selectric-inner-height:        @select-arrow-width;                  // Inner height
 @selectric-border-color-hover:  @input-border-color;
+@selectric-top-space:           15px;
 
 .selectric-wrapper {
     position: relative;
@@ -24,12 +25,12 @@
     position: relative;
 
     border: @selectric-border-width solid @selectric-main-color;
-    border-radius: @radius-small;
+    border-radius: @radius-medium;
     background: @selectric-bg-color;
     box-shadow: @input-box-shadow;
 
     .selectric-open & {
-        border-radius: @radius-small @radius-small 0 0;
+        border-radius: @radius-medium @radius-medium 0 0;
     }
 
     .label {
@@ -38,11 +39,14 @@
         overflow: hidden;
         text-overflow: ellipsis;
         margin: 0 @selectric-inner-height 0 @selectric-spacing;
-        font-size: @selectric-font-size;
-        line-height: @selectric-inner-height - 2*@selectric-border-width;
-        color: @selectric-text-color;
+        padding-top: @selectric-top-space;
+        line-height: @selectric-inner-height - 2*@selectric-border-width - @selectric-top-space;
         height: @selectric-inner-height - 2*@selectric-border-width;
         user-select: none;
+
+        color: @selectric-text-color;
+        font-size: @selectric-font-size;
+        font-family: @font-alt;
     }
 
     .button {

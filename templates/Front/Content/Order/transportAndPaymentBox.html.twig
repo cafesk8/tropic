@@ -1,11 +1,10 @@
 <div class="box-order__info__item">
-    <h2 id="js-label-{{ form.transport.vars.id }}" class="in-title in-title--small in-title--dark">
-        {{ 'Vyberte způsob dopravy'|trans }}
-    </h2>
-
     <div class="box-chooser js-form-group">
-
         {{ form_errors(form.transport, { errors_attr: {class: 'form-error--inline'} }) }}
+        <h2 id="js-label-{{ form.transport.vars.id }}" class="box-chooser__title">
+            {{ 'Vyberte způsob dopravy'|trans }}
+        </h2>
+
         {{ form_widget(form.pickupPlace, { attr: {
             'class': 'js-pickup-place-input',
             'data-search-url': url('front_pickup_place_search')
@@ -29,45 +28,45 @@
                         <span class="css-radio__image"></span>
                     </span>
                     <span class="box-chooser__item__content">
-                        <span class="box-chooser__item__title">
-                            <span class="box-chooser__item__title__name">
-                                {{ choice.data.name }}
-                            </span>
+                        <span class="box-chooser__item__image">
                             {% if imageExists(choice.data) %}
-                                <span class="box-chooser__item__image">
-                                    {{ image(choice.data, { lazy: false }) }}
+                                {{ image(choice.data, { lazy: false }) }}
+                            {% endif %}
+                        </span>
+                        <span class="box-chooser__item__title">
+                            {{ choice.data.name }}
+                        
+                            {% if choice.data.description %}
+                                <span class="box-chooser__item__description">
+                                    {{ choice.data.description }}
                                 </span>
                             {% endif %}
                         </span>
-                        {% if choice.data.description %}
-                            <span class="box-chooser__item__title__description">
-                                ({{ choice.data.description }})
+                        
+                        {% if choice.data.isPickupPlace() or choice.data.isChooseStore() %}
+                            {% set checked = child.vars.checked == true %}
+                            {% set pickupPlaceName = '' %}
+                            {% if pickupPlace != null and checked %}
+                                {% set pickupPlaceName = pickupPlace.getName %}
+                            {% elseif store != null and checked %}
+                                {% set pickupPlaceName = store.getName %}
+                            {% endif %}
+                            <span class="js-pickup-place-detail js-pickup-place-tooltip js-pickup-place-detail-{{ choice.data.id }}"
+                                title="{{ pickupPlaceName }}">
+                                <span class="js-pickup-place-detail-name">
+                                    {{ pickupPlaceName }}
+                                </span>
+                                <button
+                                    type="button"
+                                    data-id="{{ choice.data.id }}"
+                                    class="box-chooser__item__pickup-button js-pickup-place-change-button link-style btn-no-style{% if pickupPlaceName is same as ('') or checked == false %} display-none{% endif %}"
+                                    data-form-field-class="{% if choice.data.isPickupPlace() %}js-pickup-place-input{% elseif choice.data.isChooseStore() %}js-store-input{% endif %}"
+                                >
+                                    {{ 'Vybrat'|trans }}
+                                </button>
                             </span>
                         {% endif %}
                     </span>
-                    {% if choice.data.isPickupPlace() or choice.data.isChooseStore() %}
-                        {% set checked = child.vars.checked == true %}
-                        {% set pickupPlaceName = '' %}
-                        {% if pickupPlace != null and checked %}
-                            {% set pickupPlaceName = pickupPlace.getName %}
-                        {% elseif store != null and checked %}
-                            {% set pickupPlaceName = store.getName %}
-                        {% endif %}
-                        <div class="js-pickup-place-detail js-pickup-place-tooltip js-pickup-place-detail-{{ choice.data.id }}"
-                             title="{{ pickupPlaceName }}">
-                            <span class="js-pickup-place-detail-name">
-                                {{ pickupPlaceName }}
-                            </span>
-                            <button
-                                type="button"
-                                data-id="{{ choice.data.id }}"
-                                class="box-chooser__item__pickup-button js-pickup-place-change-button link-style btn-no-style{% if pickupPlaceName is same as ('') or checked == false %} display-none{% endif %}"
-                                data-form-field-class="{% if choice.data.isPickupPlace() %}js-pickup-place-input{% elseif choice.data.isChooseStore() %}js-store-input{% endif %}"
-                            >
-                                {{ 'Vybrat'|trans }}
-                            </button>
-                        </div>
-                    {% endif %}
                     <span class="box-chooser__item__price">
                         {{ transportPrice.priceWithVat|priceText }}
                     </span>
@@ -80,9 +79,9 @@
                 <div class="box-chooser__more js-toggle-additional-transports">
                     <p class="box-chooser__more__text">
                         <span class="box-chooser__more__text__show">{{ 'Zobrazit další způsoby dopravy'|trans }}</span>
-                        <span class="box-chooser__more__text__hide">{{ 'Skrýt další způsoby dopravy'|trans }}</span>    
+                        <span class="box-chooser__more__text__hide">{{ 'Skrýt další způsoby dopravy'|trans }}</span>
                     </p>
-                    <i class="svg svg-arrow"></i>
+                    <i class="svg svg-triangle"></i>
                 </div>
             {% endif %}
         </div>
@@ -90,12 +89,12 @@
 </div>
 
 <div class="box-order__info__item">
-    <h2 id="js-label-{{ form.payment.vars.id }}" class="in-title in-title--small in-title--dark">
-        {{ 'Vyberte způsob platby'|trans }}
-    </h2>
-
     <div class="box-chooser box-chooser--smaller js-form-group">
         {{ form_errors(form.payment, { errors_attr: {class: 'form-error--inline'} }) }}
+        <h2 id="js-label-{{ form.payment.vars.id }}" class="box-chooser__title">
+            {{ 'Vyberte způsob platby'|trans }}
+        </h2>
+
         <div id="{{ form.payment.vars.id }}" class="js-payments-wrapper">
             {% set bankTransferRendered = false %}
             {% set goPayBankSwiftForm = form.goPayBankSwift %}
@@ -113,21 +112,19 @@
                         <span class="css-radio__image"></span>
                     </span>
                     <span class="box-chooser__item__content">
-                        <span class="box-chooser__item__title">
-                            <span class="box-chooser__item__title__name">
-                                {{ choice.data.name }}
-                            </span>
+                        <span class="box-chooser__item__image">
                             {% if imageExists(choice.data) %}
-                                <span class="box-chooser__item__image">
-                                    {{ image(choice.data, { lazy: false }) }}
+                                {{ image(choice.data, { lazy: false }) }}
+                            {% endif %}
+                        </span>
+                        <span class="box-chooser__item__title">
+                            {{ choice.data.name }}
+                            {% if choice.data.description %}
+                                <span class="box-chooser__item__description">
+                                    {{ choice.data.description }}
                                 </span>
                             {% endif %}
                         </span>
-                        {% if choice.data.description %}
-                            <span class="box-chooser__item__title__description">
-                                ({{ choice.data.description }})
-                            </span>
-                        {% endif %}
                     </span>
                     <span class="box-chooser__item__price">
                         {{ paymentPrice.priceWithVat|priceText }}
@@ -147,9 +144,6 @@
                                     <span class="box-chooser__item__title__name">
                                         {{ goPayBankSwift.name }}
                                     </span>
-                                    <span class="box-chooser__item__image">
-                                        <img src="{{ goPayBankSwift.imageLargeUrl }}">
-                                    </span>
                                 </span>
                                 <span class="box-chooser__item__price">
                                     {{ paymentPrice.priceWithVat|priceText }}
@@ -168,7 +162,7 @@
                         <span class="box-chooser__more__text__show">{{ 'Zobrazit další způsoby platby'|trans }}</span>
                         <span class="box-chooser__more__text__hide">{{ 'Skrýt další způsoby platby'|trans }}</span>
                     </p>
-                    <i class="svg svg-arrow"></i>
+                    <i class="svg svg-triangle"></i>
                 </div>
             {% endif %}
             {% if not bankTransferRendered %}

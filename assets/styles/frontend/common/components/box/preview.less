@@ -16,6 +16,7 @@
     }
 
     &__item {
+        width: 100%;
         margin-bottom: 20px;
 
         @media @query-lg {
@@ -24,9 +25,25 @@
 
         &--total {
             @media @query-lg {
-                width: 400px;
+                width: 450px;
                 padding-left: 20px;
             }
+        }
+
+        &__wrap {
+            padding: 3px;
+            margin-bottom: 22px;
+
+            border: 0;
+            border-radius: @radius;
+            background: linear-gradient(135deg, rgba(19,108,163,1) 0%, rgba(75,175,193,1) 35%, rgba(120,216,108,1) 63%, rgba(105,190,82,1) 100%);
+        }
+        
+        &__in {
+            padding: 17px 20px;
+
+            background-color: @color-f;
+            border-radius: @radius - 2px;
         }
     }
 
@@ -69,6 +86,7 @@
 
             &__input {
                 height: 31px;
+                padding-top: 0;
 
                 border: 0;
                 box-shadow: none;
@@ -90,6 +108,8 @@
                 }
 
                 &:focus {
+                    padding-top: 0;
+                    
                     border: 0;
                 }
             }
