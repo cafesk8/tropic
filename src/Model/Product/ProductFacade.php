@@ -429,6 +429,10 @@ class ProductFacade extends BaseProductFacade
         $product->clearStoreStocks();
         $this->em->flush();
 
+        if ($product->isMainVariant()) {
+            return;
+        }
+
         if ($product->isPohodaProductTypeGroup()) {
             $internalStockId = $this->storeFacade->findByExternalNumber((string)PohodaProductExportRepository::POHODA_STOCK_TROPIC_ID)->getId();
             $stockQuantities = [$internalStockId => $this->getTheLowestStockQuantityFromProductGroups($product)];

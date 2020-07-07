@@ -35,19 +35,20 @@
     {% endif %}
 
     {% if type == 'detailArticle' %}
-        {{ form_widget(form.quantity, { attr: {
-            class: 'form-input-spinbox__input input-no-style js-spinbox-input display-none',
-            'data-spinbox-min': product.realMinimumAmount,
-            'data-spinbox-step': product.amountMultiplier,
-            'data-spinbox-max': product.realStockQuantity
-        } }) }}
         {% if not product.isMainVariant %}
+            {{ form_widget(form.quantity, { attr: {
+                class: 'form-input-spinbox__input input-no-style js-spinbox-input display-none',
+                'data-spinbox-min': product.realMinimumAmount,
+                'data-spinbox-step': product.amountMultiplier,
+                'data-spinbox-max': product.realStockQuantity
+            } }) }}
             {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'btn btn--success list-article-product__item__button-add', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
         {% elseif displayVariantSelectButton is same as (true) %}
             <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="btn btn--success list-article-product__item__button-add">
                 {{- 'Choose variant'|trans -}}
             </a>
             {% do form.add.setRendered %}
+            {% do form.quantity.setRendered %}
         {% endif %}
     {% else %}
         <div class="box-detail-add__buttons{% if type == 'detailVariant' %} box-detail-add__buttons--small-gap{% endif %}">
