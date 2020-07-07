@@ -29,6 +29,7 @@ use App\Model\Product\ProductData;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
 use App\Model\Product\Transfer\Exception\ProductNotFoundInEshopException;
+use App\Model\Product\Transfer\Exception\RelatedProductNotFoundException;
 use App\Model\Product\Unit\Unit;
 use App\Model\Product\Unit\UnitFacade;
 use App\Model\Store\StoreFacade;
@@ -138,6 +139,11 @@ class PohodaProductMapper
     private $parameterValueDataFactory;
 
     /**
+     * @var int[]
+     */
+    private array $productIdsToQueueAgain;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
@@ -196,6 +202,7 @@ class PohodaProductMapper
         $this->parameterValueDataFactory = $parameterValueDataFactory;
 
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
+        $this->productIdsToQueueAgain = [];
     }
 
     /**
@@ -295,8 +302,9 @@ class PohodaProductMapper
             $relatedProductPohodaId = (int)$relatedProductArray[PohodaProduct::COL_RELATED_PRODUCT_REF_ID];
             $relatedProduct = $this->productFacade->findByPohodaId($relatedProductPohodaId);
             if ($relatedProduct === null) {
-                throw new ProductNotFoundInEshopException(sprintf(
-                    'Product pohodaId=%d doesn´t exist in e-shop database',
+                $this->productIdsToQueueAgain[] = $pohodaProduct->pohodaId;
+                throw new RelatedProductNotFoundException(sprintf(
+                    'Related product pohodaId=%d doesn´t exist in e-shop database',
                     $relatedProductPohodaId
                 ));
             }
@@ -600,5 +608,13 @@ class PohodaProductMapper
                 $productData->parameters[] = $productParameterValueData;
             }
         }
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getProductIdsToQueueAgain(): array
+    {
+        return $this->productIdsToQueueAgain;
     }
 }

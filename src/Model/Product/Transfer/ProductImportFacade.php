@@ -12,6 +12,8 @@ use App\Model\Product\ProductDataFactory;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
 use App\Model\Product\Transfer\Exception\ProductNotFoundInEshopException;
+use App\Model\Product\Transfer\Exception\RelatedProductNotFoundException;
+use DateTime;
 use Exception;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
@@ -90,6 +92,7 @@ class ProductImportFacade
             $updatedPohodaProductIds = $this->updateProductsByPohodaProducts($pohodaProducts);
         }
         $this->productInfoQueueImportFacade->removeProductsFromQueue($updatedPohodaProductIds);
+        $this->productInfoQueueImportFacade->insertChangedPohodaProductIds($this->pohodaProductMapper->getProductIdsToQueueAgain(), new DateTime());
         $this->logger->persistTransferIssues();
 
         return $changedPohodaProductIds;
@@ -185,8 +188,12 @@ class ProductImportFacade
             $this->logError('Kategorie nebyla v e-shopu nalezena', $exception, $pohodaProduct);
 
             return false;
-        } catch (ProductNotFoundInEshopException $exception) {
+        } catch (RelatedProductNotFoundException $exception) {
             $this->logError('Pro tento produkt nebyl nalezen v e-shopu produkt s ním související', $exception, $pohodaProduct);
+
+            return true;
+        } catch (ProductNotFoundInEshopException $exception) {
+            $this->logError('V e-shopu nebyl nalezen produkt, který patří do tohoto setu', $exception, $pohodaProduct);
 
             return false;
         } catch (Exception $exception) {
