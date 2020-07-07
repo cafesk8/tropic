@@ -74,9 +74,9 @@ class ProductImportFacade
     }
 
     /**
-     * @return bool
+     * @return int[]
      */
-    public function processImport(): bool
+    public function processImport(): array
     {
         $changedPohodaProductIds = $this->productInfoQueueImportFacade->findChangedPohodaProductIds(self::PRODUCT_EXPORT_MAX_BATCH_LIMIT);
         $pohodaProducts = $this->pohodaProductExportFacade->findPohodaProductsByPohodaIds(
@@ -92,7 +92,7 @@ class ProductImportFacade
         $this->productInfoQueueImportFacade->removeProductsFromQueue($updatedPohodaProductIds);
         $this->logger->persistTransferIssues();
 
-        return !$this->productInfoQueueImportFacade->isQueueEmpty() && count($changedPohodaProductIds) === self::PRODUCT_EXPORT_MAX_BATCH_LIMIT;
+        return $changedPohodaProductIds;
     }
 
     /**
