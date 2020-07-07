@@ -7,10 +7,7 @@ stages:
 
 .only-default: &only-default
     rules:
-        -   if: '$CI_COMMIT_BRANCH'
-        -   if: '$CI_PIPELINE_SOURCE == "schedule"'
-            when: never
-
+        -   if: '$CI_COMMIT_BRANCH && $CI_PIPELINE_SOURCE != "schedule"'
 
 .deploy: &deploy
     image:
@@ -104,7 +101,7 @@ review:stop:
         - docker-compose down --rmi all -v
         - /home/ci/clean.sh ${COMPOSE_PROJECT_NAME}
     rules:
-        -   if: '$CI_COMMIT_BRANCH'
+        -   if: '$CI_COMMIT_BRANCH && $CI_PIPELINE_SOURCE != "schedule"'
             when: manual
             allow_failure: true
     environment:
@@ -117,6 +114,8 @@ deploy:production:
     variables:
         KUBE_CONFIG: ${KUBE_CONFIG_PROD}
     rules:
+        -   if: '$CI_PIPELINE_SOURCE == "schedule"'
+            when: never
         -   if: '$CI_COMMIT_BRANCH == "master" || $CI_COMMIT_BRANCH =~ /^master-.*$/'
             when: manual
             allow_failure: false
@@ -130,6 +129,8 @@ deploy:devel:
     variables:
         KUBE_CONFIG: ${KUBE_CONFIG_DEVEL}
     rules:
+        -   if: '$CI_PIPELINE_SOURCE == "schedule"'
+            when: never
         -   if: '$CI_COMMIT_BRANCH == "devel" || $CI_COMMIT_BRANCH =~ /^devel-.*$/'
     environment:
         name: devel
@@ -142,9 +143,6 @@ repository:clean:
         - docker
     rules:
         -   if: '$CI_PIPELINE_SOURCE == "schedule"'
-            when: always
-        -   if: '$CI_PIPELINE_SOURCE != "schedule"'
-            when: never
     before_script:
         - chmod +x ./gitlab/scripts/repository-clean.sh
     script:
@@ -157,9 +155,7 @@ security:check:
     needs:
         - build
     rules:
-        -   if: '$CI_COMMIT_BRANCH == "master"'
-        -   if: '$CI_PIPELINE_SOURCE == "schedule"'
-            when: never
+        -   if: '$CI_COMMIT_BRANCH == "master" && $CI_PIPELINE_SOURCE != "schedule"'
     script:
         - docker run -i ${TAG} composer security-check
 
