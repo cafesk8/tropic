@@ -801,9 +801,14 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             'application/vnd.ms-powerpoint',
             'application/vnd.oasis.opendocument.chart',
             'application/vnd.oasis.opendocument.formula',
+            /* There is a bug in PHP https://bugs.php.net/bug.php?id=77784 that causes duplicated mime-type for XLSX, DOCX and similar file types
+               so this is a temporary fix until the bug is fixed */
             'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentationapplication/vnd.openxmlformats-officedocument.presentationml.presentation',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheetapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.documentapplication/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/xml',
             'application/zip',
             'image/bmp',
