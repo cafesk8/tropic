@@ -75,6 +75,7 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         foreach ($this->domain->getAllIds() as $domainId) {
             $categoryData->containsSaleProducts[$domainId] = false;
         }
+        $categoryData->unavailableProductsShown = true;
     }
 
     /**
@@ -98,5 +99,6 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         $categoryData->type = $category->getType();
         $categoryData->filterParameters = $category->getFilterParameters();
         $categoryData->containsSaleProducts = $category->containsSaleProducts();
+        $categoryData->unavailableProductsShown = $category->isUnavailableProductsShown();
     }
 }

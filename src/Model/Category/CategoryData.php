@@ -81,6 +81,8 @@ class CategoryData extends BaseCategoryData
      */
     public $containsSaleProducts;
 
+    public bool $unavailableProductsShown;
+
     public function __construct()
     {
         parent::__construct();
@@ -92,5 +94,6 @@ class CategoryData extends BaseCategoryData
         $this->type = null;
         $this->filterParameters = [];
         $this->containsSaleProducts = [];
+        $this->unavailableProductsShown = true;
     }
 }

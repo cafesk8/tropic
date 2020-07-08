@@ -102,6 +102,11 @@ class Category extends BaseCategory
     private $filterParameters;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $unavailableProductsShown;
+
+    /**
      * @param \App\Model\Category\CategoryData $categoryData
      */
     public function __construct(BaseCategoryData $categoryData)
@@ -138,6 +143,7 @@ class Category extends BaseCategory
         $this->setTranslations($categoryData);
         $this->filterParameters = new ArrayCollection($categoryData->filterParameters);
         $this->setDomains($categoryData);
+        $this->unavailableProductsShown = $categoryData->unavailableProductsShown;
     }
 
     /**
@@ -379,5 +385,13 @@ class Category extends BaseCategory
         }
 
         return $containsSaleProductByDomain;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnavailableProductsShown(): bool
+    {
+        return $this->unavailableProductsShown;
     }
 }
