@@ -114,7 +114,7 @@ class ProductController extends FrontBaseController
     private $gtmFacade;
 
     /**
-     * @var \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface
+     * @var \App\Model\Product\View\ListedProductViewElasticFacade
      */
     private $listedProductViewFacade;
 
@@ -152,7 +152,7 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
-     * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
+     * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewFacade
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewElasticFacade
@@ -302,7 +302,8 @@ class ProductController extends FrontBaseController
             $productFilterData,
             $orderingModeId,
             $page,
-            self::PRODUCTS_PER_PAGE
+            self::PRODUCTS_PER_PAGE,
+            $category->isUnavailableProductsShown()
         );
 
         $productFilterCountData = null;
@@ -379,7 +380,8 @@ class ProductController extends FrontBaseController
             $productFilterData,
             $orderingModeId,
             $page,
-            self::PRODUCTS_PER_PAGE
+            self::PRODUCTS_PER_PAGE,
+            $category->isUnavailableProductsShown()
         );
 
         $productFilterCountData = null;

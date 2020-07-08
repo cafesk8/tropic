@@ -6,6 +6,7 @@ namespace App\Model\Product;
 
 use App\Model\Product\Search\FilterQuery;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
+use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
@@ -19,7 +20,6 @@ use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
  * @method \App\Model\Product\Product getVisibleProductById(int $productId)
  * @method \App\Model\Product\Product[] getAccessoriesForProduct(\App\Model\Product\Product $product)
  * @method \App\Model\Product\Product[] getVariantsForProduct(\App\Model\Product\Product $product)
- * @method array getProductsByCategory(\App\Model\Category\Category $category, int $limit, int $offset, string $orderingModeId)
  */
 class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElasticFacade
 {
@@ -206,9 +206,63 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      *
      * @inheritDoc
      */
-    protected function createListableProductsInCategoryFilterQuery(ProductFilterData $productFilterData, string $orderingModeId, int $page, int $limit, int $categoryId): BaseFilterQuery
+    protected function createListableProductsInCategoryFilterQuery(ProductFilterData $productFilterData, string $orderingModeId, int $page, int $limit, int $categoryId, bool $showUnavailableProducts = true): BaseFilterQuery
     {
-        return $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit, null)
+        $filterQuery = $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit, null)
             ->filterByCategory([$categoryId]);
+
+        if (!$showUnavailableProducts) {
+            $filterQuery = $filterQuery->filterOnlySellable();
+        }
+
+        return $filterQuery;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param string $orderingModeId
+     * @param int $page
+     * @param int $limit
+     * @param int $categoryId
+     * @param bool $showUnavailableProducts
+     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
+     */
+    public function getPaginatedProductsInCategory(
+        ProductFilterData $productFilterData,
+        string $orderingModeId,
+        int $page,
+        int $limit,
+        int $categoryId,
+        bool $showUnavailableProducts = true
+    ): PaginationResult {
+        $filterQuery = $this->createListableProductsInCategoryFilterQuery($productFilterData, $orderingModeId, $page, $limit, $categoryId, $showUnavailableProducts);
+
+        $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
+
+        return new PaginationResult($page, $limit, $productsResult->getTotal(), $productsResult->getHits());
+    }
+
+    /**
+     * @param \App\Model\Category\Category $category
+     * @param int $limit
+     * @param int $offset
+     * @param string $orderingModeId
+     * @return array
+     */
+    public function getProductsByCategory(Category $category, int $limit, int $offset, string $orderingModeId): array
+    {
+        $emptyProductFilterData = new ProductFilterData();
+        $filterQuery = $this->createListableProductsInCategoryFilterQuery(
+            $emptyProductFilterData,
+            $orderingModeId,
+            1,
+            $limit,
+            $category->getId(),
+            $category->isUnavailableProductsShown()
+        )->setFrom($offset);
+
+        $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
+
+        return $productsResult->getHits();
     }
 }

@@ -365,7 +365,8 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
             ProductListOrderingConfig::ORDER_BY_NAME_ASC,
             $page,
             $limit,
-            $category->getId()
+            $category->getId(),
+            $category->isUnavailableProductsShown()
         );
     }
 
@@ -385,7 +386,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface
+     * @return \App\Model\Product\ProductOnCurrentDomainElasticFacade
      */
     abstract public function getProductOnCurrentDomainFacade(): ProductOnCurrentDomainFacadeInterface;
 }
