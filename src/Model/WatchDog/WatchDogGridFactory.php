@@ -81,7 +81,9 @@ class WatchDogGridFactory implements GridFactoryInterface
             ->where('pt.locale = :locale')
             ->andWhere('sv.name = :defaultDomainCurrencyId')
             ->setParameter('locale', $this->localization->getAdminLocale())
-            ->setParameter('defaultDomainCurrencyId', PricingSetting::DEFAULT_DOMAIN_CURRENCY);
+            ->setParameter('defaultDomainCurrencyId', PricingSetting::DEFAULT_DOMAIN_CURRENCY)
+            ->orderBy('wd.createdAt', 'DESC')
+            ->addOrderBy('wd.id', 'DESC');
 
         return new QueryBuilderDataSource($queryBuilder, 'wd.id');
     }
