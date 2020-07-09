@@ -69,24 +69,31 @@ class CategoryImportFacade
         $this->pohodaCategoryMapper = $pohodaCategoryMapper;
     }
 
-    public function processImport(): void
+    /**
+     * @return int
+     */
+    public function processImport(): int
     {
         $changedPohodaCategoryIds = $this->categoryQueueImportFacade->findChangedPohodaCategoryIds(self::MAX_BATCH_LIMIT);
         $pohodaCategories = $this->pohodaCategoryExportFacade->getPohodaCategoriesByPohodaCategoryIds(
             $changedPohodaCategoryIds
         );
+        $updatedPohodaCategoryIds = [];
+
         if (count($pohodaCategories) === 0) {
             $this->logger->addInfo('Žádné kategorie k importu z fronty');
         } else {
-            $this->logger->addInfo('Proběhne uložení kategorií', ['pohodaCategoriesCount' => count($pohodaCategories)]);
+            $this->logger->addInfo('Proběhne uložení kategorií z fronty', ['pohodaCategoriesCount' => count($pohodaCategories)]);
             $updatedPohodaCategoryIds = $this->updateCategoriesByPohodaCategories($pohodaCategories);
             $this->categoryQueueImportFacade->removeUpdatedCategories($updatedPohodaCategoryIds);
 
             $categoriesForOrderRecalculation = $this->categoryFacade->getCategoriesForOrderRecalculation();
-            $this->logger->addInfo('Proběhne přepočet kategorií', ['countCategoriesForOrderRecalculation' => count($categoriesForOrderRecalculation)]);
+            $this->logger->addInfo('Proběhne přepočet řazení kategorií', ['countCategoriesForOrderRecalculation' => count($categoriesForOrderRecalculation)]);
             $this->categoryFacade->editOrdering($categoriesForOrderRecalculation);
         }
         $this->logger->persistTransferIssues();
+
+        return count($updatedPohodaCategoryIds);
     }
 
     /**

@@ -106,14 +106,27 @@ class CategoryImportCronModule extends AbstractTransferCronModule
         $transfer = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER);
         $dateTimeBeforeTransferFromPohodaServer = $this->pohodaEntityManager->getCurrentDateTimeFromPohodaDatabase();
 
+        $this->logger->addInfo('Proběhne vložení kategorií do fronty', [
+            'changedCategoriesFrom' => $transfer->getLastStartAt(),
+        ]);
         $this->categoryQueueImportFacade->importDataToQueue($dateTimeBeforeTransferFromPohodaServer, $transfer->getLastStartAt());
-        $this->categoryImportFacade->processImport();
-        $this->categoryRemoveFacade->removeCategories();
 
-        $this->logger->addInfo('Proběhne přepočet viditelnosti kategorií a produktů');
-        $this->categoryVisibilityRepository->refreshCategoriesVisibility();
-        $this->productVisibilityRepository->refreshProductsVisibility();
-        $this->redisFacade->clearCacheByPattern('twig:', 'categories');
+        $changedCategoriesCount = $this->categoryImportFacade->processImport();
+        $changedCategoriesCount += $this->categoryRemoveFacade->removeCategories();
+
+        $this->logger->addInfo('Změněných kategorií importem nebo mazáním', [
+            'changedCategoriesCount' => $changedCategoriesCount,
+        ]);
+
+        if ($changedCategoriesCount > 0) {
+            $this->logger->addInfo('Proběhne přepočet viditelnosti kategorií');
+            $this->categoryVisibilityRepository->refreshCategoriesVisibility();
+
+            $this->logger->addInfo('Proběhne smazání cache kategorií');
+            $this->redisFacade->clearCacheByPattern('twig:', 'categories');
+        }
+
+        $this->logger->persistTransferIssues();
 
         return !$this->categoryQueueImportFacade->isQueueEmpty();
     }

@@ -43,17 +43,20 @@ class CategoryRemoveFacade
         $this->categoryFacade = $categoryFacade;
     }
 
-    public function removeCategories(): void
+    /**
+     * @return int
+     */
+    public function removeCategories(): int
     {
         $allPohodaIds = $this->pohodaCategoryExportFacade->getAllPohodaIds();
-        $this->logger->addInfo('Celkem kategorií z Pohody', ['allPohodaIdsCount' => count($allPohodaIds)]);
-
+        $this->logger->addInfo('Kontrola všech kategorií z Pohody pro porovnání stromu', ['allPohodaIdsCount' => count($allPohodaIds)]);
+        $removedCategoriesCount = 0;
         try {
             $removedCategories = $this->categoryFacade->removeCategoriesExceptPohodaIds($allPohodaIds);
-
-            if (count($removedCategories) > 0) {
-                $this->logger->addInfo('Kategorie odstraněny', [
-                    'removedCategoriesCount' => count($removedCategories),
+            $removedCategoriesCount = count($removedCategories);
+            if ($removedCategoriesCount > 0) {
+                $this->logger->addInfo('Kategorie odstraněny z e-shopu', [
+                    'removedCategoriesCount' => $removedCategoriesCount,
                     'removedCategories' => $removedCategories,
                 ]);
 
@@ -64,7 +67,7 @@ class CategoryRemoveFacade
                 );
                 $this->categoryFacade->editOrdering($categoriesForOrderRecalculation);
             } else {
-                $this->logger->addInfo('Žádné kategorie k odstranění');
+                $this->logger->addInfo('Žádné kategorie k odstranění z e-shopu');
             }
         } catch (MaximumPercentageOfCategoriesToRemoveLimitExceeded $exception) {
             $this->logger->addError(
@@ -73,5 +76,7 @@ class CategoryRemoveFacade
             );
         }
         $this->logger->persistTransferIssues();
+
+        return $removedCategoriesCount;
     }
 }

@@ -52,7 +52,7 @@ class CategoryQueueImportFacade
             $this->logger->addInfo('Žádné kategorie k importu do fronty');
         } else {
             $this->insertChangedPohodaCategoryIds($pohodaCategoryIds, $dateTimeBeforeTransferFromPohodaServer);
-            $this->logger->addInfo('Celkem změněných kategorií', ['pohodaCategoryIdsCount' => count($pohodaCategoryIds)]);
+            $this->logger->addInfo('Proběhlo vložení změněných kategorií do fronty', ['pohodaCategoryIdsCount' => count($pohodaCategoryIds)]);
         }
         $this->logger->persistTransferIssues();
     }
