@@ -320,4 +320,13 @@ class TransportFacade extends BaseTransportFacade
             }
         }
     }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getMinOrderPriceForFreeTransport(int $domainId): ?Money
+    {
+        return $this->transportRepository->getMinOrderPriceForFreeTransport($domainId);
+    }
 }

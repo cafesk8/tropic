@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Transport;
 
 use Doctrine\ORM\Query\Expr\Join;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDomain;
 use Shopsys\FrameworkBundle\Model\Transport\TransportRepository as BaseTransportRepository;
 
@@ -87,5 +88,28 @@ class TransportRepository extends BaseTransportRepository
         }
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getMinOrderPriceForFreeTransport(int $domainId): ?Money
+    {
+        $minOrderPriceResult = $this->getTransportRepository()->createQueryBuilder('t')
+            ->join(TransportPrice::class, 'tp', Join::WITH, 'tp.transport = t')
+            ->where('t.deleted = FALSE')
+            ->andWhere('tp.actionPrice = 0')
+            ->andWhere('tp.domainId = :domainId')
+            ->andWhere('(tp.actionDateFrom <= :currentDate OR tp.actionDateFrom IS NULL)')
+            ->andWhere('(DATE_ADD(tp.actionDateTo, 1, \'day\') >= :currentDate OR tp.actionDateTo IS NULL)')
+            ->setParameter('domainId', $domainId)
+            ->setParameter('currentDate', date('Y-m-d'))
+            ->orderBy('tp.minOrderPrice', 'ASC')
+            ->select('tp.minOrderPrice')
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+
+        return $minOrderPriceResult['minOrderPrice'] ?? null;
     }
 }
