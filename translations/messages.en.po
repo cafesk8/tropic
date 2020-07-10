@@ -1039,6 +1039,9 @@ msgstr "Optional name for administration"
 msgid "Nepovinný údaj"
 msgstr "Optional information"
 
+msgid "Nesouhlasím se zasláním objednávky do programu Heureka Ověřeno zákazníky"
+msgstr "I do not agree with sending an order to the Heureka program Verified by customers"
+
 msgid "New blog article"
 msgstr "New blog article"
 

@@ -175,8 +175,14 @@
                                 {{ form_row(form.postcode, { label: 'Postcode'|trans }) }}
                                 {{ form_row(form.country, { label: 'Country'|trans }) }}
                             </div>
-                            
+
                             {% do form.note.setRendered %}
+
+                            {% if form.disallowHeurekaVerifiedByCustomers is defined %}
+                                <div class="margin-top-10">
+                                    {{ form_row(form.disallowHeurekaVerifiedByCustomers) }}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 

@@ -1072,6 +1072,9 @@ msgstr "Nepovinný názov pre administráciu"
 msgid "Nepovinný údaj"
 msgstr "Nepovinný údaj"
 
+msgid "Nesouhlasím se zasláním objednávky do programu Heureka Ověřeno zákazníky"
+msgstr "Nesúhlasím so zaslaním objednávky do programu Heureka Overené zákazníkmi"
+
 msgid "New blog article"
 msgstr "Nový článok blogu"
 

@@ -570,10 +570,13 @@ class CartController extends FrontBaseController
         $addedItems = [];
         $totalAddedPrice = Money::zero();
         $totalAddedQuantity = 0;
+        $addedUnit = null;
+
         foreach ($addProductResults as $addProductResult) {
             $addedCartItem = $addProductResult->getCartItem();
             $addedItems[] = $addedCartItem;
             $addedItemPrice = $addedCartItem->getWatchedPrice();
+            $addedUnit = $addedCartItem->getProduct()->getUnit();
             $addedItemQuantity = $addProductResult->getAddedQuantity();
             if ($addedItemPrice !== null) {
                 $totalAddedPrice = $totalAddedPrice->add($addedItemPrice->multiply($addedItemQuantity));
@@ -585,6 +588,7 @@ class CartController extends FrontBaseController
             'addedQuantity' => $totalAddedQuantity,
             'addedPrice' => $totalAddedPrice,
             'addedItems' => $addedItems,
+            'addedUnit' => $addedUnit,
         ];
     }
 }
