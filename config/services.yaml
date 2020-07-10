@@ -714,3 +714,7 @@ services:
     App\Model\Transport\TransportPriceFactory: ~
 
     Shopsys\FrameworkBundle\Model\Transport\TransportPriceFactory: '@App\Model\Transport\TransportPriceFactory'
+
+    App\Model\Transport\TransportPriceCalculation: ~
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation: '@App\Model\Transport\TransportPriceCalculation'

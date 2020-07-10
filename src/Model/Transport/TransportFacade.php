@@ -39,6 +39,7 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation;
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Transport\Transport $transport)
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getPricesIndexedByDomainId(\App\Model\Transport\Transport|null $transport)
  * @method \App\Model\Transport\Transport getByUuid(string $uuid)
+ * @property \App\Model\Transport\TransportPriceCalculation $transportPriceCalculation
  */
 class TransportFacade extends BaseTransportFacade
 {
@@ -65,7 +66,7 @@ class TransportFacade extends BaseTransportFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
+     * @param \App\Model\Transport\TransportPriceCalculation $transportPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportFactoryInterface $transportFactory
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceFactoryInterface $transportPriceFactory
      * @param \App\Component\Balikobot\Pickup\PickupFacade $pickupFacade

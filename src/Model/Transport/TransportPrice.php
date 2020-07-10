@@ -7,6 +7,7 @@ namespace App\Model\Transport;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPrice as BaseTransportPrice;
 
@@ -125,5 +126,30 @@ class TransportPrice extends BaseTransportPrice
     public function setActionDateTo(?DateTime $actionDateTo): void
     {
         $this->actionDateTo = $actionDateTo;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
+     * @return bool
+     */
+    public function canUseActionPrice(Price $productsPrice): bool
+    {
+        if ($this->actionPrice === null || $this->actionPrice->isGreaterThan($this->price)) {
+            return false;
+        }
+
+        if ($this->minOrderPrice !== null && $this->minOrderPrice->isGreaterThan($productsPrice->getPriceWithVat())) {
+            return false;
+        }
+
+        if ($this->actionDateFrom !== null && $this->actionDateFrom->getTimestamp() > time()) {
+            return false;
+        }
+
+        if ($this->actionDateTo !== null && $this->actionDateTo->getTimestamp() + 86400 < time()) {
+            return false;
+        }
+
+        return true;
     }
 }
