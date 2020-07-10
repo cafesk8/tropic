@@ -146,25 +146,7 @@
                             </div>
 
                             {{ _self.parameters(product, productParameterValues, parametersHeadline, productVisibleProductCategoryDomains) }}
-
-                            <div class="in-tab__content__item__block">
-                                <div class="box-detail__downloads">
-                                    <h3 class="in-tab__content__item__title">
-                                        {{ 'Ke stažení'|trans }}
-                                    </h3>
-                                    <ul class="list-simple js-not-implemented-yet">
-                                        <li class="list-simple__item">
-                                            <a class="list-simple__item__link" href="">návod.pdf</a>
-                                        </li>
-                                        <li class="list-simple__item">
-                                            <a class="list-simple__item__link" href="">návod.pdf</a>
-                                        </li>
-                                        <li class="list-simple__item">
-                                            <a class="list-simple__item__link" href="">návod.pdf</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                            {{ _self.files(product) }}
                         </div>
                     {% endif %}
                 </div>
@@ -176,28 +158,28 @@
 
 {% macro parameters(product, productParameterValues, parametersHeadline, productVisibleProductCategoryDomains) %}
     {% if productParameterValues|length > 0 %}
-            <div class="in-tab__content__item__block">
-                <h3 class="in-tab__content__item__title">
-                    {{ parametersHeadline }}
-                </h3>
+        <div class="in-tab__content__item__block">
+            <h3 class="in-tab__content__item__title">
+                {{ parametersHeadline }}
+            </h3>
 
-                {% if productParameterValues > 0 %}
-                    <ul class="list-params">
-                        {% for productParameterValue in productParameterValues %}
-                            <li class="list-params__item">
-                                <span class="list-params__item__text">
-                                    <span class="list-params__item__text__name">
-                                        {{ productParameterValue.parameter.name }}:
-                                    </span>
-                                    <strong class="list-params__item__text__value">
-                                        {{ productParameterValue.value.text }}
-                                    </strong>
+            {% if productParameterValues > 0 %}
+                <ul class="list-params">
+                    {% for productParameterValue in productParameterValues %}
+                        <li class="list-params__item">
+                            <span class="list-params__item__text">
+                                <span class="list-params__item__text__name">
+                                    {{ productParameterValue.parameter.name }}:
                                 </span>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
+                                <strong class="list-params__item__text__value">
+                                    {{ productParameterValue.value.text }}
+                                </strong>
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
     {% endif %}
 {% endmacro %}
 
@@ -211,4 +193,27 @@
             </li>
         {% endfor %}
     </ul>
+{% endmacro %}
+
+{% macro files(product) %}
+    {% set files = uploadedFiles(product) %}
+
+    {% if files is not empty %}
+        <div class="in-tab__content__item__block">
+            <div class="box-detail__downloads">
+                <h3 class="in-tab__content__item__title">
+                    {{ 'Ke stažení'|trans }}
+                </h3>
+                <ul class="list-simple">
+                    {% for file in files %}
+                        <li class="list-simple__item">
+                            <a href="{{ uploadedFileUrl(file) }}" target="_blank" class="list-simple__item__link">
+                                {{ file.getNameWithExtension() }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
 {% endmacro %}

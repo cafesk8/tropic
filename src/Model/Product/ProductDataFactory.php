@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
+use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository;
@@ -41,6 +42,11 @@ class ProductDataFactory extends BaseProductDataFactory
     private $productFlagDataFactory;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface
+     */
+    private UploadedFileDataFactoryInterface $uploadedFileDataFactory;
+
+    /**
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductInputPriceFacade $productInputPriceFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade $unitFacade
@@ -56,6 +62,7 @@ class ProductDataFactory extends BaseProductDataFactory
      * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory
+     * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface $uploadedFileDataFactory
      */
     public function __construct(
         VatFacade $vatFacade,
@@ -72,7 +79,8 @@ class ProductDataFactory extends BaseProductDataFactory
         PricingGroupFacade $pricingGroupFacade,
         ProductGroupFacade $productGroupFacade,
         AvailabilityFacade $availabilityFacade,
-        ProductFlagDataFactory $productFlagDataFactory
+        ProductFlagDataFactory $productFlagDataFactory,
+        UploadedFileDataFactoryInterface $uploadedFileDataFactory
     ) {
         parent::__construct(
             $vatFacade,
@@ -91,6 +99,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $this->productGroupFacade = $productGroupFacade;
         $this->availabilityFacade = $availabilityFacade;
         $this->productFlagDataFactory = $productFlagDataFactory;
+        $this->uploadedFileDataFactory = $uploadedFileDataFactory;
     }
 
     /**
@@ -135,6 +144,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->usingStock = true;
         $productData->outOfStockAvailability = $this->availabilityFacade->getDefaultOutOfStockAvailability();
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+        $productData->files = $this->uploadedFileDataFactory->create();
     }
 
     /**
@@ -169,6 +179,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->deliveryDays = $product->getDeliveryDays();
         $productData->warranty = $product->getWarranty();
         $productData->flags = [];
+        $productData->files = $this->uploadedFileDataFactory->createByEntity($product);
 
         foreach ($product->getProductFlags() as $productFlag) {
             $productData->flags[] = $this->productFlagDataFactory->createFromProductFlag($productFlag);
