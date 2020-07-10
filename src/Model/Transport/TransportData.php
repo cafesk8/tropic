@@ -72,6 +72,26 @@ class TransportData extends BaseTransportData
      */
     public bool $oversizedAllowed;
 
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money[]|null[]
+     */
+    public array $actionPricesIndexedByDomainId;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money[]|null[]
+     */
+    public array $minOrderPricesIndexedByDomainId;
+
+    /**
+     * @var \DateTime[]|null[]
+     */
+    public array $actionDatesFromIndexedByDomainId;
+
+    /**
+     * @var \DateTime[]|null[]
+     */
+    public array $actionDatesToIndexedByDomainId;
+
     public function __construct()
     {
         parent::__construct();
@@ -80,5 +100,9 @@ class TransportData extends BaseTransportData
         $this->transportType = Transport::TYPE_NONE;
         $this->bulkyAllowed = true;
         $this->oversizedAllowed = true;
+        $this->actionPricesIndexedByDomainId = [];
+        $this->minOrderPricesIndexedByDomainId = [];
+        $this->actionDatesFromIndexedByDomainId = [];
+        $this->actionDatesToIndexedByDomainId = [];
     }
 }

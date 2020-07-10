@@ -17,7 +17,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Exception\TransportPriceNotFoundException;
 use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
-use Shopsys\FrameworkBundle\Model\Transport\TransportData;
+use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade as BaseTransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
@@ -31,13 +31,13 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation;
  * @property \App\Model\Transport\TransportVisibilityCalculation $transportVisibilityCalculation
  * @property \App\Component\Image\ImageFacade $imageFacade
  * @property \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+ * @property \App\Model\Transport\TransportPriceFactory $transportPriceFactory
  * @method \App\Model\Transport\Transport getById(int $id)
  * @method \App\Model\Transport\Transport[] getVisibleOnCurrentDomain(\App\Model\Payment\Payment[] $visiblePayments)
  * @method \App\Model\Transport\Transport[] getVisibleByDomainId(int $domainId, \App\Model\Payment\Payment[] $visiblePaymentsOnDomain)
  * @method \App\Model\Transport\Transport[] getAllIncludingDeleted()
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Transport\Transport $transport)
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getPricesIndexedByDomainId(\App\Model\Transport\Transport|null $transport)
- * @method updateTransportPrices(\App\Model\Transport\Transport $transport, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId)
  * @method \App\Model\Transport\Transport getByUuid(string $uuid)
  */
 class TransportFacade extends BaseTransportFacade
@@ -94,7 +94,7 @@ class TransportFacade extends BaseTransportFacade
      * @param \App\Model\Transport\TransportData $transportData
      * @return \App\Model\Transport\Transport
      */
-    public function create(TransportData $transportData): Transport
+    public function create(BaseTransportData $transportData): Transport
     {
         $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
         if ($transportData->transportType === Transport::TYPE_PERSONAL_TAKE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
@@ -106,6 +106,15 @@ class TransportFacade extends BaseTransportFacade
 
         /** @var \App\Model\Transport\Transport $transport */
         $transport = parent::create($transportData);
+        $this->updateTransportPrices(
+            $transport,
+            $transportData->pricesIndexedByDomainId,
+            $transportData->actionPricesIndexedByDomainId,
+            $transportData->minOrderPricesIndexedByDomainId,
+            $transportData->actionDatesFromIndexedByDomainId,
+            $transportData->actionDatesToIndexedByDomainId
+        );
+        $this->em->flush();
         $this->scheduleCronModule();
 
         return $transport;
@@ -115,7 +124,7 @@ class TransportFacade extends BaseTransportFacade
      * @param \App\Model\Transport\Transport $transport
      * @param \App\Model\Transport\TransportData $transportData
      */
-    public function edit(BaseTransport $transport, TransportData $transportData): void
+    public function edit(BaseTransport $transport, BaseTransportData $transportData): void
     {
         $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
         if ($transportData->transportType === Transport::TYPE_PERSONAL_TAKE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
@@ -129,7 +138,15 @@ class TransportFacade extends BaseTransportFacade
         }
 
         parent::edit($transport, $transportData);
-
+        $this->updateTransportPrices(
+            $transport,
+            $transportData->pricesIndexedByDomainId,
+            $transportData->actionPricesIndexedByDomainId,
+            $transportData->minOrderPricesIndexedByDomainId,
+            $transportData->actionDatesFromIndexedByDomainId,
+            $transportData->actionDatesToIndexedByDomainId
+        );
+        $this->em->flush();
         $this->scheduleCronModule();
     }
 
@@ -251,5 +268,56 @@ class TransportFacade extends BaseTransportFacade
         }
 
         return $transportPricesWithVatByTransportId;
+    }
+
+    /**
+     * @param \App\Model\Transport\Transport|null $transport
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    public function getActionPricesIndexedByDomainId(?Transport $transport): array
+    {
+        if ($transport === null) {
+            return [];
+        }
+
+        $prices = [];
+
+        foreach ($transport->getPrices() as $price) {
+            $prices[$price->getDomainId()] = $price->getActionPrice();
+        }
+
+        return $prices;
+    }
+
+    /**
+     * @param \App\Model\Transport\Transport $transport
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money[] $actionPricesIndexedByDomainId
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money[] $minOrderPricesIndexedByDomainId
+     * @param \DateTime[] $actionDatesFromIndexedByDomainId
+     * @param \DateTime[] $actionDatesToIndexedByDomainId
+     */
+    protected function updateTransportPrices(BaseTransport $transport, array $pricesIndexedByDomainId, array $actionPricesIndexedByDomainId = [], array $minOrderPricesIndexedByDomainId = [], array $actionDatesFromIndexedByDomainId = [], array $actionDatesToIndexedByDomainId = []): void
+    {
+        foreach ($this->domain->getAllIds() as $domainId) {
+            if ($transport->hasPriceForDomain($domainId)) {
+                $price = $transport->getPrice($domainId);
+                $price->setPrice($pricesIndexedByDomainId[$domainId]);
+                $price->setActionPrice($actionPricesIndexedByDomainId[$domainId] ?? null);
+                $price->setMinOrderPrice($minOrderPricesIndexedByDomainId[$domainId] ?? null);
+                $price->setActionDateFrom($actionDatesFromIndexedByDomainId[$domainId] ?? null);
+                $price->setActionDateTo($actionDatesToIndexedByDomainId[$domainId] ?? null);
+            } else {
+                $transport->addPrice($this->transportPriceFactory->create(
+                    $transport,
+                    $pricesIndexedByDomainId[$domainId],
+                    $domainId,
+                    $actionPricesIndexedByDomainId[$domainId] ?? null,
+                    $minOrderPricesIndexedByDomainId[$domainId] ?? null,
+                    $actionDatesFromIndexedByDomainId[$domainId] ?? null,
+                    $actionDatesToIndexedByDomainId[$domainId] ?? null
+                ));
+            }
+        }
     }
 }
