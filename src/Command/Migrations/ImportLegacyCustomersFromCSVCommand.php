@@ -7,6 +7,8 @@ namespace App\Command\Migrations;
 use App\Component\Doctrine\SqlLoggerFacade;
 use App\Component\String\HashGenerator;
 use App\Model\Country\CountryFacade;
+use App\Model\Customer\Migration\Issue\CustomerMigrationIssue;
+use App\Model\Customer\Migration\LegacyCustomerValidator;
 use App\Model\Customer\User\CustomerUserData;
 use App\Model\Customer\User\CustomerUserDataFactory;
 use App\Model\Customer\User\CustomerUserFacade;
@@ -58,9 +60,6 @@ class ImportLegacyCustomersFromCSVCommand extends Command
     private const USER_COL_INDEX_PRICE_CAT = 21;
 
     private const CSV_SKIP_N_ROWS = 1;
-
-    private const MAX_ZIP_LENGTH = 6;
-    private const MAX_LASTNAME_LENGTH = 30;
 
     /**
      * @var \Symfony\Component\Console\Output\OutputInterface
@@ -123,6 +122,11 @@ class ImportLegacyCustomersFromCSVCommand extends Command
     private $skippedInvalidCustomers = [];
 
     /**
+     * @var \App\Model\Customer\Migration\LegacyCustomerValidator
+     */
+    private $legacyCustomerValidator;
+
+    /**
      * @param string $shopsysMigrationsDirPath
      * @param \App\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $entityManager
@@ -133,6 +137,7 @@ class ImportLegacyCustomersFromCSVCommand extends Command
      * @param \App\Component\String\HashGenerator $hashGenerator
      * @param \App\Model\Country\CountryFacade $countryFacade
      * @param \App\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
+     * @param \App\Model\Customer\Migration\LegacyCustomerValidator $legacyCustomerValidator
      */
     public function __construct(
         string $shopsysMigrationsDirPath,
@@ -144,7 +149,8 @@ class ImportLegacyCustomersFromCSVCommand extends Command
         PricingGroupFacade $pricingGroupFacade,
         HashGenerator $hashGenerator,
         CountryFacade $countryFacade,
-        DeliveryAddressDataFactory $deliveryAddressDataFactory
+        DeliveryAddressDataFactory $deliveryAddressDataFactory,
+        LegacyCustomerValidator $legacyCustomerValidator
     ) {
         parent::__construct();
 
@@ -159,6 +165,7 @@ class ImportLegacyCustomersFromCSVCommand extends Command
 
         $this->countryFacade = $countryFacade;
         $this->deliveryAddressDataFactory = $deliveryAddressDataFactory;
+        $this->legacyCustomerValidator = $legacyCustomerValidator;
     }
 
     protected function configure(): void
@@ -246,6 +253,8 @@ class ImportLegacyCustomersFromCSVCommand extends Command
                     $customerUserUpdateData
                 );
 
+                $this->legacyCustomerValidator->validate($customerUserUpdateData);
+
                 if ($customerUser === null) {
                     $customerUser = $this->customerUserFacade->create($customerUserUpdateData);
                     $countCreated++;
@@ -282,18 +291,12 @@ class ImportLegacyCustomersFromCSVCommand extends Command
         CustomerUserData $customerUserData,
         CustomerUserUpdateData $customerUserUpdateData
     ): CustomerUserUpdateData {
-        $customerUserData->firstName = $csvRow[self::USER_COL_INDEX_FIRSTNAME];
-        $customerUserData->lastName = $csvRow[self::USER_COL_INDEX_LASTNAME];
-        $customerUserData->email = $csvRow[self::USER_COL_INDEX_EMAIL];
-        $customerUserData->telephone = $csvRow[self::USER_COL_INDEX_PHONE];
-        $customerUserData->legacyId = $csvRow[self::USER_COL_INDEX_LEGACY_ID];
+        $customerUserData->firstName = trim($csvRow[self::USER_COL_INDEX_FIRSTNAME]);
+        $customerUserData->lastName = trim($csvRow[self::USER_COL_INDEX_LASTNAME]);
+        $customerUserData->email = trim($csvRow[self::USER_COL_INDEX_EMAIL]);
+        $customerUserData->telephone = trim($csvRow[self::USER_COL_INDEX_PHONE]);
+        $customerUserData->legacyId = (int)trim($csvRow[self::USER_COL_INDEX_LEGACY_ID]);
         $customerUserData->customer = $customerUserUpdateData->customerUserData->customer;
-
-        $customerUserData->lastName = $this->checkMaxLength(
-            $csvRow[self::USER_COL_INDEX_LASTNAME],
-            self::MAX_LASTNAME_LENGTH,
-            'lastname'
-        );
 
         $this->mapBillingAddress($csvRow, $customerUserUpdateData);
         $this->mapDeliveryAddress($csvRow, $customerUserUpdateData);
@@ -313,17 +316,12 @@ class ImportLegacyCustomersFromCSVCommand extends Command
     ): void {
         $billingAddressData = $customerUserUpdateData->billingAddressData;
 
-        $billingAddressData->companyName = $csvRow[self::USER_COL_INDEX_BILLING_COMPANY];
-        $billingAddressData->companyNumber = $csvRow[self::USER_COL_INDEX_BILLING_COMPANY_ICO];
-        $billingAddressData->companyTaxNumber = $csvRow[self::USER_COL_INDEX_BILLING_COMPANY_DIC];
-        $billingAddressData->city = $csvRow[self::USER_COL_INDEX_BILLING_CITY];
-        $billingAddressData->street = $csvRow[self::USER_COL_INDEX_BILLING_STREET];
-
-        $billingAddressData->postcode = $this->checkMaxLength(
-            $csvRow[self::USER_COL_INDEX_BILLING_ZIP],
-            self::MAX_ZIP_LENGTH,
-            'billing zip'
-        );
+        $billingAddressData->companyName = trim($csvRow[self::USER_COL_INDEX_BILLING_COMPANY]);
+        $billingAddressData->companyNumber = trim($csvRow[self::USER_COL_INDEX_BILLING_COMPANY_ICO]);
+        $billingAddressData->companyTaxNumber = trim($csvRow[self::USER_COL_INDEX_BILLING_COMPANY_DIC]);
+        $billingAddressData->city = trim($csvRow[self::USER_COL_INDEX_BILLING_CITY]);
+        $billingAddressData->street = trim($csvRow[self::USER_COL_INDEX_BILLING_STREET]);
+        $billingAddressData->postcode = trim($csvRow[self::USER_COL_INDEX_BILLING_ZIP]);
 
         $billingAddressData->country = $this->countryFacade->findByCode($csvRow[self::USER_COL_INDEX_BILLING_COUNTRY]);
         $billingAddressData->companyCustomer = !empty($csvRow[self::USER_COL_INDEX_BILLING_COMPANY]);
@@ -346,43 +344,18 @@ class ImportLegacyCustomersFromCSVCommand extends Command
         }
 
         $deliveryAddressData->addressFilled = true;
-        $deliveryAddressData->companyName = $csvRow[self::USER_COL_INDEX_DELIVERY_COMPANY];
-        $deliveryAddressData->firstName = $csvRow[self::USER_COL_INDEX_DELIVERY_FIRSTNAME];
-        $deliveryAddressData->city = $csvRow[self::USER_COL_INDEX_DELIVERY_CITY];
+        $deliveryAddressData->companyName = trim($csvRow[self::USER_COL_INDEX_DELIVERY_COMPANY]);
+        $deliveryAddressData->firstName = trim($csvRow[self::USER_COL_INDEX_DELIVERY_FIRSTNAME]);
+        $deliveryAddressData->city = trim($csvRow[self::USER_COL_INDEX_DELIVERY_CITY]);
+        $deliveryAddressData->postcode = trim($csvRow[self::USER_COL_INDEX_DELIVERY_ZIP]);
+        $deliveryAddressData->lastName = trim($csvRow[self::USER_COL_INDEX_DELIVERY_LASTNAME]);
 
-        $deliveryAddressData->postcode = $this->checkMaxLength(
-            $csvRow[self::USER_COL_INDEX_DELIVERY_ZIP],
-            self::MAX_ZIP_LENGTH,
-            'delivery zip'
-        );
-
-        $deliveryAddressData->lastName = $this->checkMaxLength(
-            $csvRow[self::USER_COL_INDEX_DELIVERY_LASTNAME],
-            self::MAX_LASTNAME_LENGTH,
-            'delivery lastname'
-        );
-
-        $deliveryAddressData->street = $csvRow[self::USER_COL_INDEX_DELIVERY_STREET];
+        $deliveryAddressData->street = trim($csvRow[self::USER_COL_INDEX_DELIVERY_STREET]);
         $deliveryAddressData->country = $this->countryFacade->findByCode($csvRow[self::USER_COL_INDEX_DELIVERY_COUNTRY]);
 
         if ($deliveryAddress !== null) {
             $deliveryAddress->edit($deliveryAddressData);
         }
-    }
-
-    /**
-     * @param string $string
-     * @param int $maxLenght
-     * @param string $attributeName
-     * @return string
-     */
-    private function checkMaxLength($string, $maxLenght, $attributeName): string
-    {
-        if (strlen($string) > $maxLenght) {
-            throw new \Exception('Attribute ' . $attributeName . ' - "' . $string . '" too long, allowed length:' . $maxLenght);
-        }
-
-        return $string;
     }
 
     /**
@@ -411,6 +384,14 @@ class ImportLegacyCustomersFromCSVCommand extends Command
                     $skippedCustomer['reason for skip']
                 )
             );
+
+            $customerMigrationIssue = new CustomerMigrationIssue();
+            $customerMigrationIssue->setCustomerEmail($skippedCustomer['email']);
+            $customerMigrationIssue->setCustomerLegacyId($skippedCustomer['legacyId']);
+            $customerMigrationIssue->setMessage($skippedCustomer['reason for skip']);
+
+            $this->entityManager->persist($customerMigrationIssue);
+            $this->entityManager->flush($customerMigrationIssue);
         }
     }
 
