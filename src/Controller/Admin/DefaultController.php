@@ -14,7 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * @property \App\Component\Setting\Setting $setting
  * @property \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
  * @property \App\Component\Cron\CronModuleFacade $cronModuleFacade
- * @method __construct(\Shopsys\FrameworkBundle\Model\Statistics\StatisticsFacade $statisticsFacade, \Shopsys\FrameworkBundle\Model\Statistics\StatisticsProcessingFacade $statisticsProcessingFacade, \Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade $mailTemplateFacade, \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade $unitFacade, \App\Component\Setting\Setting $setting, \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade, \App\Component\Cron\CronModuleFacade $cronModuleFacade, \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory, \Shopsys\FrameworkBundle\Component\Cron\Config\CronConfig $cronConfig, \Shopsys\FrameworkBundle\Component\Cron\CronFacade $cronFacade)
+ * @method __construct(\Shopsys\FrameworkBundle\Model\Statistics\StatisticsFacade $statisticsFacade, \Shopsys\FrameworkBundle\Model\Statistics\StatisticsProcessingFacade $statisticsProcessingFacade, \Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade $mailTemplateFacade, \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade $unitFacade, \App\Component\Setting\Setting $setting, \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade, \App\Component\Cron\CronModuleFacade $cronModuleFacade, \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory, \App\Component\Cron\Config\CronConfig $cronConfig, \Shopsys\FrameworkBundle\Component\Cron\CronFacade $cronFacade)
+ * @property \App\Component\Cron\Config\CronConfig $cronConfig
  */
 class DefaultController extends BaseDefaultController
 {

@@ -671,3 +671,7 @@ services:
         class: App\Controller\Admin\DefaultController
 
     App\Component\WatchDog\WatchDogMail: ~
+
+    App\Component\Cron\Config\CronConfig: ~
+
+    Shopsys\FrameworkBundle\Component\Cron\Config\CronConfig: '@App\Component\Cron\Config\CronConfig'
