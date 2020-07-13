@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class LegacyDeliveryAddressConstraint extends Constraint
 {
-
     /**
      * @return string
      */

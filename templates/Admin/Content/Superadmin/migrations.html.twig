@@ -25,6 +25,7 @@
 			<tr>
 				<td>Zákazníci - importujte soubor s názvem "customers.csv"</td>
 				<td>
+					Pozor, na ostré verzi musí být u cenových skupin správně nastaveny ID cenových skupin z nového eshopu
 					SELECT C.`id`, C.`jmeno`, C.`prijmeni`, C.`email`, C.`telefon`,
 					C.ulice, C.`mesto`, C.`psc`, SCF.`code` AS `stat`, C.`firma`,
 					C.`firma_ic`, C.`firma_dic`, C.`dod_jmeno`, C.`dod_prijmeni`, C.`dod_ulice`,
@@ -34,6 +35,9 @@
 					LEFT JOIN `setting_country` SCF ON C.`stat` = SCF.`id`
 					LEFT JOIN `setting_country` SCD ON C.`dod_stat` = SCD.`id`
 					LEFT JOIN `pe_pricecategory` PC ON C.`sleva` = PC.`id`
+					LEFT JOIN `orders` O ON C.`id` = O.`client`
+					WHERE C.`regtime` > 1531472936 OR O.`id` IS NOT NULL
+					GROUP BY C.`id`
 				</td>
 			</tr>
 		</tbody>

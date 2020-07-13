@@ -23,18 +23,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Nuto zajistit ID cenove skupiny
- * Export query:
- *	SELECT C.`id`, C.`jmeno`, C.`prijmeni`, C.`email`, C.`telefon`,
- *	C.ulice, C.`mesto`, C.`psc`, SCF.`code` AS `stat`, C.`firma`,
- *	C.`firma_ic`, C.`firma_dic`, C.`dod_jmeno`, C.`dod_prijmeni`, C.`dod_ulice`,
- *	C.`dod_mesto`, C.`dod_psc`, SCD.`code` AS `dod_stat`, C.`login_name`, C.`dod_firma`,
- *	C.`domain`, C.`sleva`
- *	FROM `clientele` C
- *	LEFT JOIN `setting_country` SCF ON C.`stat` = SCF.`id`
- *	LEFT JOIN `setting_country` SCD ON C.`dod_stat` = SCD.`id`
- */
 class ImportLegacyCustomersFromCSVCommand extends Command
 {
     private const USER_COL_INDEX_LEGACY_ID = 0;
