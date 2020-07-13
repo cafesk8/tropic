@@ -9,12 +9,12 @@ use Shopsys\FrameworkBundle\Model\Product\Exception\ProductIsNotVariantException
 
 class ProductVariantTropicFacade
 {
-    public const VARIANT_ID_SEPARATOR = '/';
+    public const VARIANT_ID_SEPARATOR = '*';
 
     /**
      * @var \App\Model\Product\ProductRepository
      */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     /**
      * @param \App\Model\Product\ProductRepository $productRepository

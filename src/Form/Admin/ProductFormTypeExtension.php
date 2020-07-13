@@ -676,7 +676,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 || !preg_match('#^\d+$#', $variantNumber)
             ) {
                 $context->addViolation(
-                    'Zadané ID modifikace má neplatný formát (očekává se nenulový počet znaků před i za lomítkem, přičemž část za lomítkem by měla obsahovat jen číslice)'
+                    'Zadané ID modifikace má neplatný formát (očekává se nenulový počet znaků před i za hvězdičkou, přičemž část za hvězdičkou by měla obsahovat jen číslice)'
                 );
                 return;
             }

@@ -244,7 +244,7 @@ class PohodaProductExportFacade
             $productPohodaId = (int)$productParameter[PohodaProduct::COL_PRODUCT_REF_ID];
             $parameterValue = $this->getPohodaParameterValueByType($productParameter);
             if (isset($pohodaProductsResult[$productPohodaId]) && $parameterValue !== null) {
-                $pohodaParameterValuesArray = explode(';', $parameterValue);
+                $pohodaParameterValuesArray = explode('*', $parameterValue);
                 $pohodaParameterValues = [
                     DomainHelper::CZECH_LOCALE => $pohodaParameterValuesArray[0],
                     DomainHelper::SLOVAK_LOCALE => $pohodaParameterValuesArray[1] ?? $pohodaParameterValuesArray[0],
