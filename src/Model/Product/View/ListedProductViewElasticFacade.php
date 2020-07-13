@@ -257,4 +257,26 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
         return $this->createPaginationResultWithArray($paginationResult);
     }
+
+    /**
+     * @param int $categoryId
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
+     * @param string $orderingModeId
+     * @param int $page
+     * @param int $limit
+     * @param bool $showUnavailableProducts
+     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
+     */
+    public function getFilteredPaginatedInCategory(
+        int $categoryId,
+        ProductFilterData $filterData,
+        string $orderingModeId,
+        int $page,
+        int $limit,
+        bool $showUnavailableProducts = true
+    ): PaginationResult {
+        $paginationResult = $this->productOnCurrentDomainFacade->getPaginatedProductsInCategory($filterData, $orderingModeId, $page, $limit, $categoryId, $showUnavailableProducts);
+
+        return $this->createPaginationResultWithArray($paginationResult);
+    }
 }

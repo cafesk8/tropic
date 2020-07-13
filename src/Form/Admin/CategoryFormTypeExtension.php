@@ -147,6 +147,10 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('Předvýpis kategorií'),
             ])
+            ->add('unavailableProductsShown', YesNoType::class, [
+                'required' => false,
+                'label' => t('Zobrazit nedostupné produkty'),
+            ])
             ->add('leftBannerTexts', LocalizedType::class, [
                 'required' => false,
                 'label' => t('Levý textový baner dole'),
