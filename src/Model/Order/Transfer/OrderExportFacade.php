@@ -182,7 +182,7 @@ class OrderExportFacade
             if ($pohodaOrder->orderResponse->responsePackItemState !== PohodaResponse::POHODA_XML_RESPONSE_ITEM_STATE_OK) {
                 $this->logger->addError('Při exportu objednávky došlo k chybě', [
                     'orderId' => $pohodaOrder->eshopId,
-                    'responsePackItemNote' => $pohodaOrder->orderResponse->responsePackItemNote,
+                    'responsePackItemNote' => (string)$pohodaOrder->orderResponse->responsePackItemNote,
                 ]);
 
                 $this->orderFacade->markOrderAsFailedExported($pohodaOrder->eshopId);
@@ -191,7 +191,7 @@ class OrderExportFacade
 
             $order = $this->orderFacade->getById($pohodaOrder->eshopId);
             if ($pohodaOrder->orderResponse->responsePackItemState === PohodaResponse::POHODA_XML_RESPONSE_ITEM_STATE_OK) {
-                $this->orderFacade->markOrderAsExported($order->getId());
+                $this->orderFacade->markOrderAsExported($order->getId(), $pohodaOrder->orderResponse->producedDetailId);
             }
 
             $this->logger->addInfo('Objednávka byla exportována', [

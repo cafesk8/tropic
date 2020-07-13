@@ -49,6 +49,7 @@ parameters:
             - '*/src/Model/Cart/CartFacade.php'
             - '*/src/Component/Transfer/Pohoda/Product/PohodaProductDataValidator.php'
             - '*/src/Model/Product/ProductVisibilityRepository.php'
+            - '*/src/Form/Admin/OrderFormTypeExtension.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/App/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'

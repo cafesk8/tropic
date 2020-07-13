@@ -53,6 +53,13 @@ class OrderFormTypeExtension extends AbstractTypeExtension
                 'position' => [
                     'after' => 'exportStatus',
                 ],
+            ])
+            ->add('pohodaId', DisplayOnlyType::class, [
+                'label' => t('Pohoda ID'),
+                'data' => $order !== null && $order->getPohodaId() !== null ? $order->getPohodaId() : '-',
+                'position' => [
+                    'after' => 'exportedAt',
+                ],
             ]);
 
         if ($order !== null && $order->getMallOrderId() !== null) {

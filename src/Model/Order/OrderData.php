@@ -117,6 +117,8 @@ class OrderData extends BaseOrderData
      */
     public $giftCertificates;
 
+    public ?int $pohodaId;
+
     public function __construct()
     {
         parent::__construct();
@@ -126,5 +128,6 @@ class OrderData extends BaseOrderData
         $this->promoCodesCodes = [];
         $this->registration = false;
         $this->giftCertificates = [];
+        $this->pohodaId = null;
     }
 }

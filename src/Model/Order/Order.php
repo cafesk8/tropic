@@ -282,6 +282,11 @@ class Order extends BaseOrder
     private $giftCertificates;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $pohodaId;
+
+    /**
      * @param \App\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -337,6 +342,7 @@ class Order extends BaseOrder
         $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
         $this->giftCertificates = new ArrayCollection();
+        $this->pohodaId = $orderData->pohodaId;
     }
 
     /**
@@ -362,6 +368,7 @@ class Order extends BaseOrder
         $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
         $this->giftCertificates = new ArrayCollection($orderData->giftCertificates);
+        $this->pohodaId = $orderData->pohodaId;
 
         return $orderEditResult;
     }
@@ -489,10 +496,14 @@ class Order extends BaseOrder
         $this->exportStatus = $exportStatus;
     }
 
-    public function markAsExported(): void
+    /**
+     * @param int|null $pohodaId
+     */
+    public function markAsExported(?int $pohodaId): void
     {
         $this->setExportStatus(self::EXPORT_SUCCESS);
         $this->exportedAt = new DateTime();
+        $this->pohodaId = $pohodaId;
     }
 
     public function markAsFailedExported(): void
@@ -848,5 +859,13 @@ class Order extends BaseOrder
             }
         }
         throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\OrderItemNotFoundException('Order item with ID ' . $orderItemId . ' was not found.');
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPohodaId(): ?int
+    {
+        return $this->pohodaId;
     }
 }

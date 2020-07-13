@@ -139,6 +139,10 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Export objednávek a uživatelů do IS Pohoda' }
 
+    App\Model\Order\Transfer\Status\OrderStatusImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import stavů objednávek z IS Pohoda' }
+
     App\Model\Newsletter\Transfer\EcomailExportCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Export odběratelů emailů do Ecomail' }

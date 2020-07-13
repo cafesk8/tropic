@@ -384,12 +384,13 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param int $orderId
+     * @param int|null $pohodaId
      */
-    public function markOrderAsExported(int $orderId): void
+    public function markOrderAsExported(int $orderId, ?int $pohodaId): void
     {
         /** @var \App\Model\Order\Order $order */
         $order = $this->getById($orderId);
-        $order->markAsExported();
+        $order->markAsExported($pohodaId);
 
         $this->em->flush($order);
     }
@@ -809,5 +810,14 @@ class OrderFacade extends BaseOrderFacade
     public function getAllForTransfer(int $limit): array
     {
         return $this->orderRepository->getForTransfer($limit);
+    }
+
+    /**
+     * @param int $pohodaId
+     * @return \App\Model\Order\Order|null
+     */
+    public function findByPohodaId(int $pohodaId): ?Order
+    {
+        return $this->orderRepository->findByPohodaId($pohodaId);
     }
 }
