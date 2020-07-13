@@ -10,6 +10,7 @@ use App\Model\Country\CountryFacade;
 use App\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use App\Model\Store\StoreIdToEntityTransformer;
 use App\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer;
+use App\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\SingleCheckboxChoiceType;
 use Shopsys\FrameworkBundle\Model\Country\Country;
@@ -17,7 +18,7 @@ use Shopsys\FrameworkBundle\Model\Order\OrderData;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
-use Shopsys\FrameworkBundle\Model\Transport\Transport;
+use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -120,6 +121,8 @@ class TransportAndPaymentFormType extends AbstractType
         $payments = $this->paymentFacade->getVisibleByDomainIdAndGiftCertificateUsability($options['domain_id'], $showOnlyGiftCertificatePaymentsInCart);
 
         $showEmailTransportInCart = $this->cartFacade->showEmailTransportInCart();
+
+        $oversizedTransportRequired = $this->cartFacade->isOversizedTransportRequired();
         $transports = $this->transportFacade->getVisibleByDomainIdAndCountryAndTransportEmailType(
             $options['domain_id'],
             $payments,
@@ -153,6 +156,8 @@ class TransportAndPaymentFormType extends AbstractType
                 'choice_value' => 'id',
                 'constraints' => [
                     new Constraints\NotNull(['message' => 'Please choose shipping type']),
+                    new Constraints\Callback([$this, 'validateBulkyTransportRequirement']),
+                    new Constraints\Callback([$this, 'validateOversizedTransportRequirement']),
                 ],
                 'invalid_message' => 'Please choose shipping type',
             ])
@@ -211,7 +216,7 @@ class TransportAndPaymentFormType extends AbstractType
         $transport = $orderData->transport;
 
         $relationExists = false;
-        if ($payment instanceof Payment && $transport instanceof Transport) {
+        if ($payment instanceof Payment && $transport instanceof BaseTransport) {
             if (in_array($transport, $payment->getTransports(), true)) {
                 $relationExists = true;
             }
@@ -221,7 +226,7 @@ class TransportAndPaymentFormType extends AbstractType
             $context->addViolation('Please choose a valid combination of transport and payment');
         }
 
-        if ($transport instanceof Transport && $transport->isPickupPlaceType() && $this->isPickupPlaceAndStoreNull($orderData)) {
+        if ($transport instanceof BaseTransport && $transport->isPickupPlaceType() && $this->isPickupPlaceAndStoreNull($orderData)) {
             $context->addViolation('Vyberte prosím pobočku');
         }
     }
@@ -233,5 +238,57 @@ class TransportAndPaymentFormType extends AbstractType
     private function isPickupPlaceAndStoreNull(OrderData $orderData): bool
     {
         return $orderData->pickupPlace === null && $orderData->store === null;
+    }
+
+    /**
+     * @param \App\Model\Transport\Transport|null $transport
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
+     */
+    public function validateBulkyTransportRequirement(?Transport $transport, ExecutionContextInterface $context): void
+    {
+        $bulkyTransportRequired = $this->cartFacade->isBulkyTransportRequired();
+
+        if (!$bulkyTransportRequired || $transport === null || $transport->isBulkyAllowed()) {
+            return;
+        }
+
+        $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
+
+        if ($cart === null) {
+            return;
+        }
+
+        foreach ($cart->getItems() as $item) {
+            if ($item->getProduct()->isBulky()) {
+                $context->addViolation(t('Máte v košíku objemný produkt, ale zvolený způsob dopravy neumožňuje objemné produkty dopravovat'));
+                break;
+            }
+        }
+    }
+
+    /**
+     * @param \App\Model\Transport\Transport|null $transport
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
+     */
+    public function validateOversizedTransportRequirement(?Transport $transport, ExecutionContextInterface $context): void
+    {
+        $oversizedTransportRequired = $this->cartFacade->isOversizedTransportRequired();
+
+        if (!$oversizedTransportRequired || $transport === null || $transport->isOversizedAllowed()) {
+            return;
+        }
+
+        $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
+
+        if ($cart === null) {
+            return;
+        }
+
+        foreach ($cart->getItems() as $item) {
+            if ($item->getProduct()->isOversized()) {
+                $context->addViolation(t('Máte v košíku nadrozměrný produkt, ale zvolený způsob dopravy neumožňuje nadrozměrné produkty dopravovat'));
+                break;
+            }
+        }
     }
 }

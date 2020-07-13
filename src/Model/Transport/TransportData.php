@@ -62,11 +62,23 @@ class TransportData extends BaseTransportData
      */
     public $mergadoTransportType;
 
+    /**
+     * @var bool
+     */
+    public bool $bulkyAllowed;
+
+    /**
+     * @var bool
+     */
+    public bool $oversizedAllowed;
+
     public function __construct()
     {
         parent::__construct();
         $this->pickupPlace = false;
         $this->initialDownload = false;
         $this->transportType = Transport::TYPE_NONE;
+        $this->bulkyAllowed = true;
+        $this->oversizedAllowed = true;
     }
 }

@@ -12,6 +12,16 @@ export default class PaymentTransportRelations {
                 this.addPaymentTransportRelation(item.paymentId, item.transportId);
             });
         }
+
+        $('.js-order-transport-input').each(function (i, checkbox) {
+            const $checkbox = $(checkbox);
+
+            if ($checkbox.hasClass('js-oversized-disabled')) {
+                $checkbox.prop('disabled', true);
+                $checkbox.prop('checked', false);
+                $checkbox.closest('label.box-chooser__item').addClass('box-chooser__item--inactive');
+            }
+        });
     }
 
     addPaymentTransportRelation (paymentId, transportId) {
@@ -39,7 +49,7 @@ export default class PaymentTransportRelations {
             $('.js-order-transport-input').each(function (i, checkbox) {
                 const $checkbox = $(checkbox);
                 const id = $checkbox.data('id');
-                if (_this.paymentTransportRelationExists(checkedPaymentId, id)) {
+                if (_this.paymentTransportRelationExists(checkedPaymentId, id) && !$checkbox.hasClass('js-oversized-disabled')) {
                     $checkbox.prop('disabled', false);
                     $checkbox.closest('label.box-chooser__item').removeClass('box-chooser__item--inactive');
                 } else {
@@ -51,8 +61,11 @@ export default class PaymentTransportRelations {
         } else {
             $('.js-order-transport-input').each(function (i, checkbox) {
                 const $checkbox = $(checkbox);
-                $checkbox.prop('disabled', false);
-                $checkbox.closest('label.box-chooser__item').removeClass('box-chooser__item--active').removeClass('box-chooser__item--inactive');
+
+                if (!$checkbox.hasClass('js-oversized-disabled')) {
+                    $checkbox.prop('disabled', false);
+                    $checkbox.closest('label.box-chooser__item').removeClass('box-chooser__item--active').removeClass('box-chooser__item--inactive');
+                }
             });
         }
 

@@ -245,6 +245,20 @@ class Product extends BaseProduct
     protected $hidden;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private bool $bulky;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private bool $oversized;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -316,6 +330,8 @@ class Product extends BaseProduct
         $this->flags = new ArrayCollection();
         $this->descriptionAutomaticallyTranslated = $productData->descriptionAutomaticallyTranslated;
         $this->shortDescriptionAutomaticallyTranslated = $productData->shortDescriptionAutomaticallyTranslated;
+        $this->bulky = $productData->bulky;
+        $this->oversized = $productData->oversized;
     }
 
     /**
@@ -1380,5 +1396,21 @@ class Product extends BaseProduct
         }
 
         return $biggestQuantity;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBulky(): bool
+    {
+        return $this->bulky;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOversized(): bool
+    {
+        return $this->oversized;
     }
 }

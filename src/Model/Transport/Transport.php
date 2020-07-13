@@ -115,23 +115,26 @@ class Transport extends BaseTransport
     protected $mergadoTransportType;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private bool $bulkyAllowed;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private bool $oversizedAllowed;
+
+    /**
      * @param \App\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
     {
         parent::__construct($transportData);
-        $this->balikobot = $transportData->transportType === self::TYPE_PERSONAL_TAKE_BALIKOBOT;
-        $this->balikobotShipper = $transportData->balikobotShipper;
-        $this->balikobotShipperService = $transportData->balikobotShipperService;
-        $this->pickupPlace = $transportData->pickupPlace;
-        $this->initialDownload = $transportData->initialDownload;
-        $this->chooseStore = $transportData->transportType === self::TYPE_PERSONAL_TAKE_STORE;
-        $this->countries = $transportData->countries;
-        $this->mallType = $transportData->mallType;
-        $this->externalId = $transportData->externalId;
-        $this->setTransportType($transportData->transportType);
-        $this->trackingUrlPattern = $transportData->trackingUrlPattern;
-        $this->mergadoTransportType = $transportData->mergadoTransportType;
+        $this->fillCommonProperties($transportData);
     }
 
     /**
@@ -140,6 +143,14 @@ class Transport extends BaseTransport
     public function edit(BaseTransportData $transportData): void
     {
         parent::edit($transportData);
+        $this->fillCommonProperties($transportData);
+    }
+
+    /**
+     * @param \App\Model\Transport\TransportData $transportData
+     */
+    private function fillCommonProperties(TransportData $transportData): void
+    {
         $this->balikobot = $transportData->transportType === self::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $this->balikobotShipper = $transportData->balikobotShipper;
         $this->balikobotShipperService = $transportData->balikobotShipperService;
@@ -152,6 +163,8 @@ class Transport extends BaseTransport
         $this->setTransportType($transportData->transportType);
         $this->trackingUrlPattern = $transportData->trackingUrlPattern;
         $this->mergadoTransportType = $transportData->mergadoTransportType;
+        $this->bulkyAllowed = $transportData->bulkyAllowed;
+        $this->oversizedAllowed = $transportData->oversizedAllowed;
     }
 
     /**
@@ -302,5 +315,21 @@ class Transport extends BaseTransport
     public function getMergadoTransportType(): ?string
     {
         return $this->mergadoTransportType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBulkyAllowed(): bool
+    {
+        return $this->bulkyAllowed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOversizedAllowed(): bool
+    {
+        return $this->oversizedAllowed;
     }
 }

@@ -289,6 +289,24 @@ class PohodaProductMapper
         $productData->brand = $this->getMappedBrand($pohodaProduct->brandName);
         $productData->unit = $this->getMappedUnit($pohodaProduct);
         $productData->youtubeVideoIds = $this->getMappedYoutubeVideoIds($pohodaProduct->youtubeVideos);
+
+        switch ($pohodaProduct->volume) {
+            case 1:
+                $productData->bulky = true;
+                $productData->oversized = false;
+                break;
+            case 2:
+                $productData->bulky = false;
+                $productData->oversized = true;
+                break;
+            case 3:
+                $productData->bulky = true;
+                $productData->oversized = true;
+                break;
+            default:
+                $productData->bulky = false;
+                $productData->oversized = false;
+        }
     }
 
     /**

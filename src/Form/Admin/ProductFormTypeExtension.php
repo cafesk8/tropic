@@ -278,6 +278,14 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('giftCertificate', YesNoType::class, [
                 'required' => false,
                 'label' => t('Dárkový poukaz'),
+            ])
+            ->add('bulky', YesNoType::class, [
+                'required' => false,
+                'label' => t('Objemný'),
+            ])
+            ->add('oversized', YesNoType::class, [
+                'required' => false,
+                'label' => t('Nadrozměrný'),
             ]);
 
         $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);

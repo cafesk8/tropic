@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Transport;
 
-use Shopsys\FrameworkBundle\Model\Transport\Transport;
-use Shopsys\FrameworkBundle\Model\Transport\TransportData;
+use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
+use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactory as BaseTransportDataFactory;
 
 class TransportDataFactory extends BaseTransportDataFactory
@@ -13,9 +13,9 @@ class TransportDataFactory extends BaseTransportDataFactory
     /**
      * @return \App\Model\Transport\TransportData
      */
-    public function create(): TransportData
+    public function create(): BaseTransportData
     {
-        $transportData = new \App\Model\Transport\TransportData();
+        $transportData = new TransportData();
         $this->fillNew($transportData);
 
         return $transportData;
@@ -25,9 +25,9 @@ class TransportDataFactory extends BaseTransportDataFactory
      * @param \App\Model\Transport\Transport $transport
      * @return \App\Model\Transport\TransportData
      */
-    public function createFromTransport(Transport $transport): TransportData
+    public function createFromTransport(BaseTransport $transport): BaseTransportData
     {
-        $transportData = new \App\Model\Transport\TransportData();
+        $transportData = new TransportData();
         $this->fillFromTransport($transportData, $transport);
 
         return $transportData;
@@ -37,7 +37,7 @@ class TransportDataFactory extends BaseTransportDataFactory
      * @param \App\Model\Transport\TransportData $transportData
      * @param \App\Model\Transport\Transport $transport
      */
-    protected function fillFromTransport(TransportData $transportData, Transport $transport): void
+    protected function fillFromTransport(BaseTransportData $transportData, BaseTransport $transport): void
     {
         parent::fillFromTransport($transportData, $transport);
         $transportData->balikobotShipper = $transport->getBalikobotShipper();
@@ -50,5 +50,7 @@ class TransportDataFactory extends BaseTransportDataFactory
         $transportData->transportType = $transport->getTransportType();
         $transportData->trackingUrlPattern = $transport->getTrackingUrlPattern();
         $transportData->mergadoTransportType = $transport->getMergadoTransportType();
+        $transportData->bulkyAllowed = $transport->isBulkyAllowed();
+        $transportData->oversizedAllowed = $transport->isOversizedAllowed();
     }
 }
