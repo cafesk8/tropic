@@ -98,7 +98,7 @@
                     <typ:ids></typ:ids>
                 </ord:centre>
                 <ord:note></ord:note>
-                <ord:intNote></ord:intNote>
+                <ord:intNote>{{ pohodaOrder.internalNote }}</ord:intNote>
                 <ord:parameters>
                     {% if pohodaOrder.pohodaTransportId is not null -%}
                         <typ:parameter>
@@ -133,20 +133,22 @@
                                 <typ:unitPrice>{{ pohodaOrderItem.unitPriceWithVat.amount|round(4) }}</typ:unitPrice>
                             </ord:homeCurrency>
                         {% endif -%}
-                        <ord:stockItem>
-                            {% if pohodaOrderItem.catnum is not null -%}
-                                <typ:stockItem>
-                                    <typ:ids>
-                                        <![CDATA[{{ pohodaOrderItem.catnum }}]]>
-                                    </typ:ids>
-                                </typ:stockItem>
-                            {% endif -%}
-                            {% if pohodaOrderItem.pohodaStockId is not null -%}
-                                <typ:store>
-                                    <typ:id>{{ pohodaOrderItem.pohodaStockId }}</typ:id>
-                                </typ:store>
-                            {% endif -%}
-                        </ord:stockItem>
+                        {% if pohodaOrderItem.catnum is not null or pohodaOrderItem.pohodaStockId is not null -%}
+                            <ord:stockItem>
+                                {% if pohodaOrderItem.catnum is not null -%}
+                                    <typ:stockItem>
+                                        <typ:ids>
+                                            <![CDATA[{{ pohodaOrderItem.catnum }}]]>
+                                        </typ:ids>
+                                    </typ:stockItem>
+                                {% endif -%}
+                                {% if pohodaOrderItem.pohodaStockId is not null -%}
+                                    <typ:store>
+                                        <typ:id>{{ pohodaOrderItem.pohodaStockId }}</typ:id>
+                                    </typ:store>
+                                {% endif -%}
+                            </ord:stockItem>
+                        {% endif -%}
                         {% if pohodaOrderItem.pohodaStockName is not null -%}
                             <ord:parameters>
                                 <typ:parameter>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Transfer;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Pohoda\Customer\PohodaAddress;
 use App\Component\Transfer\Pohoda\Order\PohodaCurrency;
 use App\Component\Transfer\Pohoda\Order\PohodaOrder;
@@ -44,6 +45,23 @@ class PohodaOrderMapper
     public function mapOrderToPohodaOrder(Order $order, array $pohodaVatNames): PohodaOrder
     {
         $pohodaOrder = new PohodaOrder();
+
+        $this->mapBasicInformation($order, $pohodaOrder);
+        $this->mapInternalNote($order, $pohodaOrder);
+        $this->mapAddresses($order, $pohodaOrder);
+        $this->mapOrderItems($order, $pohodaOrder, $pohodaVatNames);
+        $this->mapCurrency($order, $pohodaOrder);
+        $this->mapPricingGroup($order, $pohodaOrder);
+
+        return $pohodaOrder;
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param \App\Component\Transfer\Pohoda\Order\PohodaOrder $pohodaOrder
+     */
+    private function mapBasicInformation(Order $order, PohodaOrder $pohodaOrder): void
+    {
         $pohodaOrder->dataPackItemId = $order->getNumber() . '-' . $order->getId();
         $pohodaOrder->eshopId = $order->getId();
         $pohodaOrder->number = $order->getNumber();
@@ -53,13 +71,23 @@ class PohodaOrderMapper
         $pohodaOrder->totalPriceWithVat = $order->getTotalPriceWithVat();
         $pohodaOrder->pohodaTransportId = $order->getTransport()->getExternalId();
         $pohodaOrder->pohodaPaymentName = $order->getPayment()->getExternalId();
+    }
 
-        $this->mapAddresses($order, $pohodaOrder);
-        $this->mapOrderItems($order, $pohodaOrder, $pohodaVatNames);
-        $this->mapCurrency($order, $pohodaOrder);
-        $this->mapPricingGroup($order, $pohodaOrder);
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param \App\Component\Transfer\Pohoda\Order\PohodaOrder $pohodaOrder
+     */
+    private function mapInternalNote(Order $order, PohodaOrder $pohodaOrder): void
+    {
+        $internalNoteParts = [];
+        if ($order->getDomainId() === DomainHelper::SLOVAK_DOMAIN) {
+            $internalNoteParts[] = 'Slovensko';
+        }
+        if ($order->getPayment()->waitsForPayment()) {
+            $internalNoteParts[] = 'Čekat na platbu';
+        }
 
-        return $pohodaOrder;
+        $pohodaOrder->internalNote = implode(' + ', $internalNoteParts);
     }
 
     /**
@@ -137,10 +165,8 @@ class PohodaOrderMapper
         $pohodaOrderItem->unitPriceWithVat = $orderItem->getPriceWithVat();
         $pohodaOrderItem->vatRate = $pohodaVatNames[$order->getDomainId()][(int)$orderItem->getVatPercent()] ?? null;
         $pohodaOrderItem->vatPercent = $orderItem->getVatPercent();
-        if ($stock !== null) {
-            $pohodaOrderItem->pohodaStockId = $stock->getExternalNumber();
-            $pohodaOrderItem->pohodaStockName = $stock->getPohodaName();
-        }
+        $pohodaOrderItem->pohodaStockId = $stock === null ? null : $stock->getExternalNumber();
+        $pohodaOrderItem->pohodaStockName = $stock === null ? null : $stock->getPohodaName();
 
         $pohodaOrder->orderItems[] = $pohodaOrderItem;
     }

@@ -56,6 +56,7 @@ class PaymentDataFactory extends BasePaymentDataFactory
         $paymentData->hiddenByGoPay = $payment->isHiddenByGoPay();
         $paymentData->usableForGiftCertificates = $payment->isUsableForGiftCertificates();
         $paymentData->activatesGiftCertificates = $payment->activatesGiftCertificates();
+        $paymentData->waitForPayment = $payment->waitsForPayment();
 
         return $paymentData;
     }
@@ -71,5 +72,6 @@ class PaymentDataFactory extends BasePaymentDataFactory
         $paymentData->hiddenByGoPay = false;
         $paymentData->usableForGiftCertificates = false;
         $paymentData->activatesGiftCertificates = false;
+        $paymentData->waitForPayment = false;
     }
 }

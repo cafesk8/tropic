@@ -47,6 +47,11 @@ class PaymentData extends BasePaymentData
      */
     public $activatesGiftCertificates;
 
+    /**
+     * @var bool
+     */
+    public bool $waitForPayment;
+
     public function __construct()
     {
         parent::__construct();
