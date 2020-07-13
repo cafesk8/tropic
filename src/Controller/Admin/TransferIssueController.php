@@ -114,7 +114,7 @@ class TransferIssueController extends AdminBaseController
         $administrator = $this->getUser();
         /* @var $administrator \App\Model\Administrator\Administrator */
 
-        $queryBuilder = $this->transferIssueFacade->getTransferIssuesWithContextByGroupIdQueryBuilderForDataGrid($groupId);
+        $queryBuilder = $this->transferIssueFacade->getTransferIssuesWithContextByGroupIdAndMessageQueryBuilderForDataGrid($groupId, $message);
         $dataSource = new QueryBuilderDataSource($queryBuilder, 'id');
         $grid = $this->gridFactory->create('transferIssueAggregatedList', $dataSource);
         $grid->enablePaging();

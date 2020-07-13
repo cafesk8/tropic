@@ -77,16 +77,19 @@ class TransferIssueRepository
 
     /**
      * @param string $groupId
+     * @param string $message
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getTransferIssuesWithContextByGroupIdQueryBuilderForDataGrid(string $groupId): QueryBuilder
+    public function getTransferIssuesWithContextByGroupIdAndMessageQueryBuilderForDataGrid(string $groupId, string $message): QueryBuilder
     {
         return $this->em->createQueryBuilder()
             ->select('ti')
             ->from(TransferIssue::class, 'ti')
             ->where('ti.context IS NOT NULL')
             ->andWhere('ti.groupId = :groupId')
+            ->andWhere('ti.message = :message')
             ->orderBy('ti.createdAt', 'DESC')
-            ->setParameter('groupId', $groupId);
+            ->setParameter('groupId', $groupId)
+            ->setParameter('message', $message);
     }
 }
