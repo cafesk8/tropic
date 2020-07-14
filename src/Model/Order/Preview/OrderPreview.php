@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Preview;
 
+use App\Model\Cart\Item\CartItem;
 use App\Model\Order\Discount\OrderDiscountLevel;
 use App\Model\Order\PromoCode\PromoCode;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
@@ -126,6 +127,21 @@ class OrderPreview extends BaseOrderPreview
     public function getGifts(): ?array
     {
         return $this->gifts;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return \App\Model\Cart\Item\CartItem|null
+     */
+    public function getGiftForProduct(Product $product): ?CartItem
+    {
+        foreach ($this->gifts as $gift) {
+            if ($gift->getGiftByProduct() !== null && $gift->getGiftByProduct()->getId() === $product->getId()) {
+                return $gift;
+            }
+        }
+
+        return null;
     }
 
     /**

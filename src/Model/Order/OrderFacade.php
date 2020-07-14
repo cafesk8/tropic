@@ -8,11 +8,13 @@ use App\Component\Domain\DomainHelper;
 use App\Component\Mall\MallImportOrderClient;
 use App\Component\SmsManager\SmsManagerFactory;
 use App\Component\SmsManager\SmsMessageFactory;
+use App\Model\Cart\Item\CartItem;
 use App\Model\GoPay\GoPayTransaction;
 use App\Model\Gtm\GtmHelper;
 use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
 use App\Model\Order\GiftCertificate\OrderGiftCertificateFacade;
 use App\Model\Order\Item\OrderItemFactory;
+use App\Model\Order\Item\QuantifiedProduct;
 use App\Model\Order\Mall\Exception\StatusChangException;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeFacade;
@@ -422,9 +424,11 @@ class OrderFacade extends BaseOrderFacade
      */
     protected function fillOrderItems(BaseOrder $order, OrderPreview $orderPreview): void
     {
-        parent::fillOrderItems($order, $orderPreview);
+        $locale = $this->domain->getDomainConfigById($order->getDomainId())->getLocale();
 
-        $this->fillOrderGifts($order, $orderPreview);
+        $this->fillOrderProducts($order, $orderPreview, $locale);
+        $this->fillOrderRounding($order, $orderPreview, $locale);
+
         $this->fillOrderGift($order, $orderPreview);
 
         $promoCodes = $orderPreview->getPromoCodesIndexedById();
@@ -437,6 +441,9 @@ class OrderFacade extends BaseOrderFacade
                 );
             }
         }
+
+        $this->fillOrderPayment($order, $orderPreview, $locale);
+        $this->fillOrderTransport($order, $orderPreview, $locale);
     }
 
     /**
@@ -608,7 +615,30 @@ class OrderFacade extends BaseOrderFacade
                     $orderDiscountLevel->getDiscountPercent()
                 );
             }
+
+            $giftForProduct = $orderPreview->getGiftForProduct($product);
+
+            if ($giftForProduct !== null && $this->isAllowedToAddGiftToOrder($orderPreview, $quantifiedProduct)) {
+                $this->fillOrderProductGift($order, $giftForProduct);
+            }
         }
+    }
+
+    /**
+     * @param \App\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \App\Model\Order\Item\QuantifiedProduct $currentQuantifiedProduct
+     * @return bool
+     */
+    private function isAllowedToAddGiftToOrder(OrderPreview $orderPreview, QuantifiedProduct $currentQuantifiedProduct): bool
+    {
+        $productCountInOrder = 0;
+        foreach ($orderPreview->getQuantifiedProducts() as $quantifiedProduct) {
+            if ($quantifiedProduct->getProduct()->getId() === $currentQuantifiedProduct->getProduct()->getId()) {
+                $productCountInOrder++;
+            }
+        }
+
+        return $productCountInOrder === 1 || ($productCountInOrder > 1 && !$currentQuantifiedProduct->isSaleItem());
     }
 
     /**
@@ -708,37 +738,34 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param \App\Model\Order\Order $order
-     * @param \App\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \App\Model\Cart\Item\CartItem $giftInCart
      */
-    private function fillOrderGifts(BaseOrder $order, OrderPreview $orderPreview): void
+    private function fillOrderProductGift(BaseOrder $order, CartItem $giftInCart): void
     {
-        /** @var \App\Model\Cart\Item\CartItem $giftInCart */
-        foreach ($orderPreview->getGifts() as $giftInCart) {
-            $gift = $giftInCart->getProduct();
+        $gift = $giftInCart->getProduct();
 
-            if (!$this->orderItemFactory instanceof OrderItemFactory) {
-                $message = 'Object "' . get_class($this->orderItemFactory) . '" has to be instance of \App\Model\Order\Item\OrderItemFactory.';
-                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
-            }
-
-            $giftPrice = new Price($this->productGiftPriceCalculation->getGiftPrice(), $this->productGiftPriceCalculation->getGiftPrice());
-            $giftTotalPrice = new Price(
-                $this->productGiftPriceCalculation->getGiftPrice()->multiply($giftInCart->getQuantity()),
-                $this->productGiftPriceCalculation->getGiftPrice()->multiply($giftInCart->getQuantity())
-            );
-
-            $this->orderItemFactory->createGift(
-                $order,
-                $gift->getName($this->domain->getLocale()),
-                $giftPrice,
-                $gift->getVatForDomain($order->getDomainId())->getPercent(),
-                $giftInCart->getQuantity(),
-                $gift->getUnit()->getName($this->domain->getLocale()),
-                $gift->getCatnum(),
-                $gift,
-                $giftTotalPrice
-            );
+        if (!$this->orderItemFactory instanceof OrderItemFactory) {
+            $message = 'Object "' . get_class($this->orderItemFactory) . '" has to be instance of \App\Model\Order\Item\OrderItemFactory.';
+            throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
         }
+
+        $giftPrice = new Price($this->productGiftPriceCalculation->getGiftPrice(), $this->productGiftPriceCalculation->getGiftPrice());
+        $giftTotalPrice = new Price(
+            $this->productGiftPriceCalculation->getGiftPrice()->multiply($giftInCart->getQuantity()),
+            $this->productGiftPriceCalculation->getGiftPrice()->multiply($giftInCart->getQuantity())
+        );
+
+        $this->orderItemFactory->createGift(
+            $order,
+            $gift->getName($this->domain->getLocale()),
+            $giftPrice,
+            $gift->getVatForDomain($order->getDomainId())->getPercent(),
+            $giftInCart->getQuantity(),
+            $gift->getUnit()->getName($this->domain->getLocale()),
+            $gift->getCatnum(),
+            $gift,
+            $giftTotalPrice
+        );
     }
 
     /**
