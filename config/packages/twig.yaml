@@ -25,6 +25,7 @@ twig:
         - 'Admin/Form/youtubeVideos.html.twig'
         - 'Admin/Form/productFlags.html.twig'
         - 'Admin/Form/imageUploadFields.html.twig'
+        - 'Admin/Form/orderItems.html.twig'
     strict_variables: true
     globals:
         globalMultipleFormSetting: '@Shopsys\FrameworkBundle\Component\Form\MultipleFormSetting'
