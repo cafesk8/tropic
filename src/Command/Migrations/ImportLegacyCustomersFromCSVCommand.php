@@ -259,7 +259,8 @@ class ImportLegacyCustomersFromCSVCommand extends Command
                 $countSkipped++;
 
                 $this->entityManager->rollback();
-                continue;
+            } finally {
+                $this->entityManager->clear();
             }
         }
 
