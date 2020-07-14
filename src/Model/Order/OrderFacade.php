@@ -662,10 +662,11 @@ class OrderFacade extends BaseOrderFacade
         }
 
         $name = sprintf(
-            '%s %s - %s',
+            '%s %s %s (SP) - %s',
             t('Promo code', [], 'messages', $locale),
+            $promoCode->getCode(),
             $discountValue,
-            $orderItem->getName()
+            $orderItem->getName(),
         );
 
         $this->orderItemFactory->createPromoCode(
@@ -690,8 +691,8 @@ class OrderFacade extends BaseOrderFacade
         $discountValue = $this->numberFormatterExtension->formatPercent('-' . $discountPercent, $locale);
 
         $name = sprintf(
-            '%s %s - %s',
-            t('Sleva na celý nákup', [], 'messages', $locale),
+            '%s %s (BP) - %s',
+            t('Sleva', [], 'messages', $locale),
             $discountValue,
             $orderItem->getName()
         );
