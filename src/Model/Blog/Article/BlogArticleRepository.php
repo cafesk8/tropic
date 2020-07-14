@@ -10,6 +10,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
@@ -300,5 +301,20 @@ class BlogArticleRepository
         }
 
         return $blogArticlesNameById;
+    }
+
+    /**
+     * @param int $articleId
+     * @return int[]
+     */
+    public function getProductIds(int $articleId): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('product_id', 'productId');
+        $articleProducts = $this->em->createNativeQuery('SELECT product_id FROM blog_article_products WHERE blog_article_id = :id', $resultSetMapping)
+            ->setParameter('id', $articleId)
+            ->getResult();
+
+        return array_column($articleProducts, 'productId');
     }
 }

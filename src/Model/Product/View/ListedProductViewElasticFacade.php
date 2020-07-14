@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
+use App\Model\Blog\Article\BlogArticle;
+use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
@@ -70,6 +72,8 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      */
     private $flagFacade;
 
+    private BlogArticleFacade $blogArticleFacade;
+
     /**
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
@@ -86,6 +90,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      */
     public function __construct(
         ProductFacade $productFacade,
@@ -102,7 +107,8 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         PriceBombProductFacade $priceBombProductFacade,
         PricingGroupFacade $pricingGroupFacade,
         ProductSetFacade $productSetFacade,
-        FlagFacade $flagFacade
+        FlagFacade $flagFacade,
+        BlogArticleFacade $blogArticleFacade
     ) {
         parent::__construct($productFacade, $productAccessoryFacade, $domain, $currentCustomerUser, $topProductFacade, $productOnCurrentDomainFacade, $listedProductViewFactory, $productActionViewFacade, $imageViewFacade);
         $this->cachedBestsellingProductFacade = $cachedBestsellingProductFacade;
@@ -111,6 +117,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->productSetFacade = $productSetFacade;
         $this->flagFacade = $flagFacade;
+        $this->blogArticleFacade = $blogArticleFacade;
     }
 
     /**
@@ -271,5 +278,16 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $paginationResult = $this->productOnCurrentDomainFacade->getPaginatedProductsInCategory($filterData, $orderingModeId, $page, $limit, $categoryId, $showUnavailableProducts);
 
         return $this->createPaginationResultWithArray($paginationResult);
+    }
+
+    /**
+     * @param \App\Model\Blog\Article\BlogArticle $article
+     * @return \App\Model\Product\View\ListedProductView[]
+     */
+    public function getByArticle(BlogArticle $article): array
+    {
+        return $this->createFromArray(
+            $this->productOnCurrentDomainFacade->getSellableHitsForIds($this->blogArticleFacade->getProductIds($article))
+        );
     }
 }
