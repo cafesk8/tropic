@@ -96,10 +96,11 @@ class TransferIssueFacade
 
     /**
      * @param string $groupId
+     * @param string $message
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getTransferIssuesWithContextByGroupIdQueryBuilderForDataGrid(string $groupId): QueryBuilder
+    public function getTransferIssuesWithContextByGroupIdAndMessageQueryBuilderForDataGrid(string $groupId, string $message): QueryBuilder
     {
-        return $this->transferIssueRepository->getTransferIssuesWithContextByGroupIdQueryBuilderForDataGrid($groupId);
+        return $this->transferIssueRepository->getTransferIssuesWithContextByGroupIdAndMessageQueryBuilderForDataGrid($groupId, $message);
     }
 }
