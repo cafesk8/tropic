@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Component\Router\FriendlyUrl;
 
-use App\Component\Router\FriendlyUrl\Exception\FriendlyUrlExistsException;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory;
@@ -16,20 +15,13 @@ use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlUniqueResult
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
+ * @property \App\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
  */
 class FriendlyUrlFacade extends BaseFriendlyUrlFacade
 {
     public const MAX_URL_UNIQUE_RESOLVE_ATTEMPT = 10000;
 
-    /**
-     * @var \App\Component\Router\FriendlyUrl\FriendlyUrlCacheFacade
-     */
-    private $friendlyUrlCacheFacade;
-
-    /**
-     * @var \App\Component\Router\FriendlyUrl\FriendlyUrlRepository
-     */
-    protected $friendlyUrlRepository;
+    private FriendlyUrlCacheFacade $friendlyUrlCacheFacade;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -54,38 +46,6 @@ class FriendlyUrlFacade extends BaseFriendlyUrlFacade
     }
 
     /**
-     * @param string $routeName
-     * @param int $entityId
-     * @param int $domainId
-     * @param string $slug
-     */
-    public function addNotMainFriendlyUrl(string $routeName, int $entityId, int $domainId, string $slug): void
-    {
-        $friendlyUrl = $this->friendlyUrlRepository->findByDomainIdAndSlug($domainId, $slug);
-
-        if ($friendlyUrl !== null) {
-            throw new FriendlyUrlExistsException();
-        }
-
-        $newFriendlyUrl = $this->friendlyUrlFactory->create($routeName, $entityId, $domainId, $slug);
-        $newFriendlyUrl->setMain(false);
-
-        $this->em->persist($newFriendlyUrl);
-        $this->em->flush($newFriendlyUrl);
-    }
-
-    /**
-     * @param int $domainId
-     * @param string $routeName
-     * @param int $entityId
-     * @return \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl|null
-     */
-    public function findMainFriendlyUrl($domainId, $routeName, $entityId)
-    {
-        return $this->friendlyUrlRepository->findMainFriendlyUrl($domainId, $routeName, $entityId);
-    }
-
-    /**
      * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl $mainFriendlyUrl
      */
     protected function setFriendlyUrlAsMain(FriendlyUrl $mainFriendlyUrl)
@@ -103,14 +63,5 @@ class FriendlyUrlFacade extends BaseFriendlyUrlFacade
         $this->em->flush($friendlyUrls);
 
         $this->friendlyUrlCacheFacade->saveToCache($mainFriendlyUrl);
-    }
-
-    /**
-     * @param string $slug
-     * @return \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl|null
-     */
-    public function findFriendlyUrlBySlugAndDomainId(string $slug): ?FriendlyUrl
-    {
-        return $this->friendlyUrlRepository->findFriendlyUrlBySlugAndDomainId($slug, $this->domain->getCurrentDomainConfig()->getId());
     }
 }
