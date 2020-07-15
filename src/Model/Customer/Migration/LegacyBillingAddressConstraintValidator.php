@@ -7,7 +7,6 @@ namespace App\Model\Customer\Migration;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -47,7 +46,6 @@ class LegacyBillingAddressConstraintValidator extends ConstraintValidator
                 'postcode' => [
                     new Type(['type' => 'string']),
                     new Length(['min' => 0, 'max' => 6]),
-                    new NotBlank(),
                 ],
                 'companyName' => [
                     new Type(['type' => 'string']),

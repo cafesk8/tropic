@@ -332,15 +332,23 @@ class ImportLegacyCustomersFromCSVCommand extends Command
             $deliveryAddressData = $customerUserUpdateData->deliveryAddressData;
         }
 
-        $deliveryAddressData->addressFilled = true;
         $deliveryAddressData->companyName = trim($csvRow[self::USER_COL_INDEX_DELIVERY_COMPANY]);
         $deliveryAddressData->firstName = trim($csvRow[self::USER_COL_INDEX_DELIVERY_FIRSTNAME]);
         $deliveryAddressData->city = trim($csvRow[self::USER_COL_INDEX_DELIVERY_CITY]);
         $deliveryAddressData->postcode = trim($csvRow[self::USER_COL_INDEX_DELIVERY_ZIP]);
         $deliveryAddressData->lastName = trim($csvRow[self::USER_COL_INDEX_DELIVERY_LASTNAME]);
-
         $deliveryAddressData->street = trim($csvRow[self::USER_COL_INDEX_DELIVERY_STREET]);
         $deliveryAddressData->country = $this->countryFacade->findByCode($csvRow[self::USER_COL_INDEX_DELIVERY_COUNTRY]);
+
+        if ($deliveryAddressData->companyName !== ''
+            || $deliveryAddressData->firstName !== ''
+            || $deliveryAddressData->lastName !== ''
+            || $deliveryAddressData->city !== ''
+            || $deliveryAddressData->postcode !== ''
+            || $deliveryAddressData->street !== ''
+        ) {
+            $deliveryAddressData->addressFilled = true;
+        }
 
         if ($deliveryAddress !== null) {
             $deliveryAddress->edit($deliveryAddressData);
