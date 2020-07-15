@@ -1,12 +1,14 @@
 {% macro productPreviewItem(product, quantity, price, saleItem = false) %}
     {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
-    <li class="list-cart-preview__item">
+    <li class="list-cart-preview__item{% if product.isPohodaProductTypeGroup %} list-cart-preview__item--sets{% endif %}">
         {% if product.isPohodaProductTypeGroup %}
-            {% for productGroup in product.productGroups %}
-                <div class="list-cart-preview__item__image">
-                    {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'mediumThumbnail'}) }}
-                </div>
-            {% endfor %}
+            <div class="list-cart-preview__item__wrap-image">
+                {% for productGroup in product.productGroups %}
+                    <div class="list-cart-preview__item__image list-cart-preview__item__image--sets svg svg-plus-big">
+                        {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}
+                    </div>
+                {% endfor %}
+            </div>
         {% else %}
             <div class="list-cart-preview__item__image">
                 {{ image(product.productForCreatingImageAccordingToVariant, { size: 'mediumThumbnail' }) }}

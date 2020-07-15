@@ -44,33 +44,39 @@
                                     {% set cartItemPrice = cartItemPrices[index] %}
                                     {% set cartItemUrl = url('front_product_detail', {id: cartItem.product.id}) %}
                                     <div class="table-cart__row js-cart-item js-maximum-amount-container">
-                                        <div class="table-cart__content">
-                                            <div class="table-cart__cell table-cart__cell--image">
+                                        <div class="table-cart__content{% if cartItem.product.isPohodaProductTypeGroup %} table-cart__content--sets{% endif %}">
+                                            <div class="table-cart__cell table-cart__cell--info">
                                                 <a href="{{ cartItemUrl }}" title="{{ cartItem.product.name }}">
                                                     {% if cartItem.product.isPohodaProductTypeGroup %}
-                                                        {% for productGroup in cartItem.product.productGroups %}
-                                                            {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}+
-                                                        {% endfor %}
+                                                        <div class="table-cart__cell__wrap-image">
+                                                            {% for productGroup in cartItem.product.productGroups %}
+                                                                <div class="table-cart__cell__image table-cart__cell__image--sets svg svg-plus-big">
+                                                                    {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
                                                     {% else %}
-                                                        {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'biggerThumbnail', lazy: true }) }}
+                                                        <div class="table-cart__cell__image">
+                                                            {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'biggerThumbnail', lazy: true }) }}
+                                                        </div>
                                                     {% endif %}
                                                 </a>
-                                            </div>
-                                            <div class="table-cart__cell table-cart__cell--name js-cart-item-name">
-                                                <a class="table-cart__cell__name" href="{{ cartItemUrl }}" title="{{ cartItem.name }}">
-                                                    {{ cartItem.name }}
-                                                </a>
-                                                {% if cartItem.product.id in cartGiftsByProductId|keys %}
-                                                    {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
-                                                    {% for giftVariant in cartItemGift %}
-                                                        <div class="table-cart__cell__gift">
-                                                            <div class="table-cart__cell__gift__block">
-                                                                <span class="table-cart__cell__gift__block__title">{{ 'Dárek'|trans }}</span>
-                                                                {{ giftVariant.gift.name }}
+                                                <div class="js-cart-item-name">
+                                                    <a class="table-cart__cell__name" href="{{ cartItemUrl }}" title="{{ cartItem.name }}">
+                                                        {{ cartItem.name }}
+                                                    </a>
+                                                    {% if cartItem.product.id in cartGiftsByProductId|keys %}
+                                                        {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
+                                                        {% for giftVariant in cartItemGift %}
+                                                            <div class="table-cart__cell__gift">
+                                                                <div class="table-cart__cell__gift__block">
+                                                                    <span class="table-cart__cell__gift__block__title">{{ 'Dárek'|trans }}</span>
+                                                                    {{ giftVariant.gift.name }}
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    {% endfor %}
-                                                {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                             <a
                                                 href="{{ url('front_cart_delete', {cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id)}) }}"

@@ -60,13 +60,17 @@
 
 {% macro productOrGroupLine(productOrGroup) %}
     <li class="search-hint__product__item">
-        <a href="{{ url('front_product_detail', { id: productOrGroup.id }) }}" class="search-hint__product__item__link">
+        <a href="{{ url('front_product_detail', { id: productOrGroup.id }) }}" 
+            class="search-hint__product__item__link{% if productOrGroup.isPohodaProductTypeGroup %} search-hint__product__item__link--sets{% endif %}"
+        >
             {% if productOrGroup.isPohodaProductTypeGroup %}
-                {% for productGroup in productOrGroup.productGroups %}
-                    <span class="search-hint__product__item__image">
-                        {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
-                    </span>+
-                {% endfor %}
+                <div class="search-hint__product__item__wrap-image">
+                    {% for productGroup in productOrGroup.productGroups %}
+                        <div class="search-hint__product__item__image search-hint__product__item__image--sets svg svg-plus-big">
+                            {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                        </div>
+                    {% endfor %}
+                </div>
             {% else %}
                 <span class="search-hint__product__item__image">
                     <img src="{{ imageUrl(productOrGroup, 'thumbnail') }}" title="{{ productOrGroup.name }}" width="30"/>
