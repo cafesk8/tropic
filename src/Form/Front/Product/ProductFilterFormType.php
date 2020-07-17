@@ -17,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ProductFilterFormType extends AbstractType
 {
     public const NAME = 'product_filter_form';
+    public const FIELD_BRANDS = 'brands';
     public const FIELD_PARAMETERS = 'parameters';
 
     /**
@@ -62,6 +63,7 @@ class ProductFilterFormType extends AbstractType
                 'choices' => $config->getBrandChoices(),
                 'choice_label' => 'name',
                 'choice_value' => 'id',
+                'choice_name' => 'slug',
                 'multiple' => true,
                 'expanded' => true,
             ])

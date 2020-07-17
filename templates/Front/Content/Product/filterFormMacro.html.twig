@@ -1,4 +1,4 @@
-{% macro filterForm(filterForm, actionUrl, resetUrl, searchText, page, productFilterCountData, priceRange, filterFormSubmitted) %}
+{% macro filterForm(filterForm, actionUrl, resetUrl, searchText, page, productFilterCountData, priceRange, filterFormSubmitted, allowBrandLinks = false) %}
     {{ form_start(filterForm, { action: actionUrl }) }}
         {% form_theme filterForm 'Front/Content/Product/filterFormTheme.html.twig' %}
 
@@ -106,7 +106,18 @@
                             <label class="form-choice form-choice--block{% if loop.index > visibleChoicesLimit %} js-product-filter-box-label display-none{% endif %}">
                                 {{ form_widget(brandForm, { attr: { class: 'form-choice__input css-checkbox', 'data-filter-name-with-entity-id': filterForm.brands.vars.id ~ '_' ~ brandForm.vars.value } }) }}
                                 <span class="form-choice__label css-checkbox__image">
-                                    <span class="form-choice__label__text">{{ brandForm.vars.label }}</span>
+                                    <span class="form-choice__label__text js-brand-label-text" data-form-id="{{ brandForm.vars.id }}">
+                                        {% if allowBrandLinks %}
+                                            {% set brandLink = resetUrl ~ (isSearch ? '&' : '?') ~ 'vyrobce=' ~ brandForm.vars.name %}
+                                            <a href="{{ brandLink }}" style="text-decoration: none; color: #33537e;" class="js-brand-filter-link"
+                                               data-brand-checkbox-id="{{ filterForm.brands.vars.id ~ '_' ~ brandForm.vars.value }}">
+                                                {{ brandForm.vars.label }}
+                                            </a>
+                                        {% else %}
+                                            {{ brandForm.vars.label }}
+                                        {% endif %}
+                                    </span>
+
                                     {% if productFilterCountData is not null %}
                                         <span
                                             class="js-product-filter-count"

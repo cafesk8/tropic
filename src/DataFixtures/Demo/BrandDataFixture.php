@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use App\Model\Product\Brand\BrandFacade;
+use Doctrine\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 
 class BrandDataFixture extends AbstractReferenceFixture
 {
@@ -37,20 +37,15 @@ class BrandDataFixture extends AbstractReferenceFixture
     public const BRAND_HYUNDAI = 'brand_hyundai';
     public const BRAND_NIKON = 'brand_nikon';
 
-    /** @var \App\Model\Product\Brand\BrandFacade */
-    protected $brandFacade;
+    protected BrandFacade $brandFacade;
 
-    /** @var \App\Model\Product\Brand\BrandDataFactory */
-    protected $brandDataFactory;
+    protected BrandDataFactoryInterface $brandDataFactory;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    protected $domain;
+    protected Domain $domain;
 
     /**
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
-     * @param \App\Model\Product\Brand\BrandDataFactory $brandDataFactory
+     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactory $brandDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(BrandFacade $brandFacade, BrandDataFactoryInterface $brandDataFactory, Domain $domain)
@@ -61,7 +56,7 @@ class BrandDataFixture extends AbstractReferenceFixture
     }
 
     /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {

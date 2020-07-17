@@ -187,8 +187,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@App\Model\Product\ProductOnCurrentDomainElasticFacade'
 
-    Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@App\Model\Product\Brand\BrandDataFactory'
-
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade: '@App\Model\Product\Brand\BrandFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandRepository: '@App\Model\Product\Brand\BrandRepository'
@@ -702,3 +700,7 @@ services:
     Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory: '@App\Component\Router\DomainRouterFactory'
 
     App\Component\Router\PrettyFilterUrl\PrettyFilterUrlRouterFactory: ~
+
+    App\Component\Router\PrettyFilterUrl\PrettyFilterUrlListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

@@ -11,10 +11,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class PrettyFilterUrlRouter implements RouterInterface
 {
-    public const FRIENDLY_URL_SUPPORTED_ROUTES = [
-        'front_product_list',
-        'front_brand_detail',
-    ];
+    public const BRAND_PARAM_NAME = 'vyrobce';
 
     private DomainConfig $domainConfig;
 

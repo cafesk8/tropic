@@ -14,13 +14,18 @@ class PrettyFilterUrlRouterFactory
 {
     private FriendlyUrlRepository $friendlyUrlRepository;
 
+    private PrettyFilterUrlFacade $prettyFilterUrlFacade;
+
     /**
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
+     * @param \App\Component\Router\PrettyFilterUrl\PrettyFilterUrlFacade $prettyFilterUrlFacade
      */
     public function __construct(
-        FriendlyUrlRepository $friendlyUrlRepository
+        FriendlyUrlRepository $friendlyUrlRepository,
+        PrettyFilterUrlFacade $prettyFilterUrlFacade
     ) {
         $this->friendlyUrlRepository = $friendlyUrlRepository;
+        $this->prettyFilterUrlFacade = $prettyFilterUrlFacade;
     }
 
     /**
@@ -33,7 +38,7 @@ class PrettyFilterUrlRouterFactory
     {
         return new PrettyFilterUrlRouter(
             $domainConfig,
-            new PrettyFilterUrlGenerator($context, $this->friendlyUrlRepository),
+            new PrettyFilterUrlGenerator($context, $this->friendlyUrlRepository, $this->prettyFilterUrlFacade),
             new PrettyFilterUrlMatcher(new FriendlyUrlMatcher($this->friendlyUrlRepository)),
             $context,
             $friendlyUrlRouteCollection

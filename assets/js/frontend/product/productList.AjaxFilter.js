@@ -11,6 +11,7 @@ export default class ProductListAjaxFilter {
         this.$showResultsButton = $filter.filterAllNodes('.js-product-filter-show-result-button');
         this.$selectedFiltersBox = $filter.filterAllNodes('#js-selected-filters-box');
         this.$resetFilterButton = $filter.filterAllNodes('.js-product-filter-reset-button');
+        this.$categoryTitle = $filter.filterAllNodes('.js-category-title');
         this.requestTimer = null;
         this.requestDelay = 1000;
 
@@ -40,6 +41,7 @@ export default class ProductListAjaxFilter {
         });
 
         this.updateFiltersDisabled();
+        this.refreshBrandLinks();
     }
 
     showProducts ($wrappedData) {
@@ -65,6 +67,19 @@ export default class ProductListAjaxFilter {
         });
     }
 
+    updateBrandLabelTexts ($wrappedData) {
+        const $existingBrandElements = $('.js-brand-label-text');
+        const $newBrandElements = $wrappedData.find('.js-brand-label-text');
+
+        $newBrandElements.each((index, element) => {
+            const $newBrandElement = $(element);
+            const $existingCountElement = $existingBrandElements
+                .filter('[data-form-id="' + $newBrandElement.data('form-id') + '"]');
+
+            $existingCountElement.html($newBrandElement.html());
+        });
+    }
+
     updateFiltersDisabled () {
         $('.js-product-filter-count').each(function (index, element) {
             const $countElement = $(element);
@@ -84,6 +99,10 @@ export default class ProductListAjaxFilter {
         });
     }
 
+    updateTitle ($wrappedData) {
+        this.$categoryTitle.html($wrappedData.filterAllNodes('#js-product-list-ajax-category-title').val());
+    }
+
     submitFormWithAjax (productListAjaxFilter) {
         Ajax.ajax({
             overlayDelay: 0,
@@ -96,6 +115,9 @@ export default class ProductListAjaxFilter {
                 productListAjaxFilter.updateFiltersCounts($wrappedData);
                 productListAjaxFilter.updateFiltersDisabled();
                 productListAjaxFilter.updateSelectedFilters($wrappedData);
+                productListAjaxFilter.updateBrandLabelTexts($wrappedData);
+                productListAjaxFilter.refreshBrandLinks();
+                productListAjaxFilter.updateTitle($wrappedData);
             }
         });
     }
@@ -109,6 +131,13 @@ export default class ProductListAjaxFilter {
         this.$selectedFiltersBox.html($newSelectedFiltersBox.html());
         (new Register()).registerNewContent(this.$selectedFiltersBox);
     };
+
+    refreshBrandLinks () {
+        $('.js-brand-filter-link').click((event) => {
+            event.preventDefault();
+            $('.form-choice__input[data-filter-name-with-entity-id="' + $(event.target).data('brand-checkbox-id') + '"]').click();
+        });
+    }
 
     static init ($container) {
         if ($container.filterAllNodes('.js-product-list-with-paginator').length > 0) {

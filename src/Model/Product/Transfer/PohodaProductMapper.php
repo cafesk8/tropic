@@ -15,7 +15,6 @@ use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Brand\Brand;
-use App\Model\Product\Brand\BrandDataFactory;
 use App\Model\Product\Brand\BrandFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
@@ -40,6 +39,7 @@ use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\TransformString;
+use Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\Brand\Exception\BrandNotFoundException;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\Unit\Exception\UnitNotFoundException;
@@ -102,7 +102,7 @@ class PohodaProductMapper
     private $brandFacade;
 
     /**
-     * @var \App\Model\Product\Brand\BrandDataFactory
+     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactory
      */
     private $brandDataFactory;
 
@@ -159,7 +159,7 @@ class PohodaProductMapper
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \App\Model\Product\Unit\UnitFacade $unitFacade
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
-     * @param \App\Model\Product\Brand\BrandDataFactory $brandDataFactory
+     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactory $brandDataFactory
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory

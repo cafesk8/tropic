@@ -17,7 +17,7 @@ class BrandDomainTest extends TransactionFunctionalTestCase
     public const DEMONSTRATIVE_SEO_H1 = 'Demonstrative seo h1';
 
     /**
-     * @var \App\Model\Product\Brand\BrandDataFactory
+     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactory
      */
     private $brandDataFactory;
 
