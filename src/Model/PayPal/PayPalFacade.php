@@ -28,7 +28,7 @@ class PayPalFacade
     private $payPalClient;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory
+     * @var \App\Component\Router\DomainRouterFactory
      */
     private $domainRouterFactory;
 
@@ -50,7 +50,7 @@ class PayPalFacade
     /**
      * PayPalFacade constructor.
      * @param \App\Model\PayPal\PayPalClient $payPalClient
-     * @param \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory
+     * @param \App\Component\Router\DomainRouterFactory $domainRouterFactory
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain

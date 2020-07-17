@@ -691,3 +691,14 @@ services:
             - '%cofidis_config%'
 
     Shopsys\ReadModelBundle\Image\ImageViewFacade: '@App\Model\Product\View\ImageViewFacade'
+
+    App\Component\Router\DomainRouter: ~
+
+    Shopsys\FrameworkBundle\Component\Router\DomainRouter: '@App\Component\Router\DomainRouter'
+
+    App\Component\Router\DomainRouterFactory:
+        arguments: ['%router.resource%']
+
+    Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory: '@App\Component\Router\DomainRouterFactory'
+
+    App\Component\Router\PrettyFilterUrl\PrettyFilterUrlRouterFactory: ~

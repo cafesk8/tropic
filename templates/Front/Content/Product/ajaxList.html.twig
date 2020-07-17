@@ -1,5 +1,6 @@
 {% import 'Front/Content/Product/filterFormMacro.html.twig' as productFilterForm %}
 
+<input type="hidden" id="js-product-list-ajax-filter-current-url" value="{{ url(getRoute(), getAllRequestParams()) }}">
 <div class="box-list__wrap">
     <div class="box-list__panel js-product-list-panel">
         <div class="box-filter js-product-filter">

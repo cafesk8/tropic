@@ -16,6 +16,7 @@ use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlUniqueResult
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
+ * @property \App\Component\Router\DomainRouterFactory $domainRouterFactory
  */
 class FriendlyUrlFacade extends BaseFriendlyUrlFacade
 {
@@ -25,7 +26,7 @@ class FriendlyUrlFacade extends BaseFriendlyUrlFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory
+     * @param \App\Component\Router\DomainRouterFactory $domainRouterFactory
      * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlUniqueResultFactory $friendlyUrlUniqueResultFactory
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain

@@ -78,7 +78,7 @@ class CategoryFacade extends BaseCategoryFacade
     private $productRepository;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory
+     * @var \App\Component\Router\DomainRouterFactory
      */
     private $domainRouterFactory;
 
@@ -101,7 +101,7 @@ class CategoryFacade extends BaseCategoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
      * @param \App\Model\Category\CategoryDataFactory $categoryDataFactory
      * @param \App\Model\Product\ProductRepository $productRepository
-     * @param \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory
+     * @param \App\Component\Router\DomainRouterFactory $domainRouterFactory
      * @param \App\Component\Redis\RedisFacade $redisFacade
      */
     public function __construct(

@@ -16,6 +16,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductFilterFormType extends AbstractType
 {
+    public const NAME = 'product_filter_form';
+    public const FIELD_PARAMETERS = 'parameters';
+
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options

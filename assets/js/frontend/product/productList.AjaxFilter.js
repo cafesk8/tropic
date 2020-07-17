@@ -18,7 +18,6 @@ export default class ProductListAjaxFilter {
         this.$productFilterForm.on('change', () => {
             clearTimeout(_this.requestTimer);
             _this.requestTimer = setTimeout(() => _this.submitFormWithAjax(_this), _this.requestDelay);
-            pushReloadState(getBaseUrl() + '?' + _this.$productFilterForm.serialize());
         });
 
         this.$showResultsButton.on('click', () => {
@@ -45,9 +44,10 @@ export default class ProductListAjaxFilter {
 
     showProducts ($wrappedData) {
         const $productsHtml = $wrappedData.find('.js-product-list-ajax-filter-products-with-controls');
+        const currentUrl = $wrappedData.filterAllNodes('#js-product-list-ajax-filter-current-url').val();
         this.$productsWithControls.html($productsHtml.html());
         this.$productsWithControls.show();
-
+        pushReloadState(currentUrl);
         (new Register()).registerNewContent(this.$productsWithControls);
     }
 
