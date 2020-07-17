@@ -282,13 +282,13 @@
                                     {% set productSellingPrice = getProductSellingPrice(productGroup.item) %}
                                     <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item" data-product-group-item-id="{{ productGroup.item.id }}">
                                         <div class="list-set__item__in">
-                                            {% if productGroup.itemCount > 1 %}
-                                                <div class="list-tags list-tags--sets">
-                                                    <div class="list-tags__tag">{{ productGroup.itemCount ~ 'x' }}</div>
-                                                </div>
-                                            {% endif %}
                                             <div class="list-set__item__image">
                                                 {{ image(productGroup.item, { size: 'listSet' }) }}
+                                                {% if productGroup.itemCount > 1 %}
+                                                    <div class="list-tags list-tags--secondary list-tags--sets-detail">
+                                                        <div class="list-tags__tag">{{ productGroup.itemCount ~ 'x' }}</div>
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                             <div class="list-set__item__content">
                                                 <div class="list-set__item__name">

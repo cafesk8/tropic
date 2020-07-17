@@ -6,10 +6,21 @@
     flex-wrap: wrap;
     margin-left: -@list-tags-item-gap;
 
-    &--sets {
+    &--secondary {
         position: absolute;
-        right: 22px;
         z-index: @z-index-above;
+    }
+
+    &--sets-slider {
+        right: 22px;
+    }
+
+    &--sets-detail {
+        right: 0;
+
+        @media @query-vl {
+            right: -12px;
+        }
     }
 
     &__tag {
@@ -25,7 +36,7 @@
         border-radius: 10px;
         background-color: @color-add;
 
-        .list-tags--sets & {
+        .list-tags--secondary & {
             line-height: 21px;
             text-transform: none;
 

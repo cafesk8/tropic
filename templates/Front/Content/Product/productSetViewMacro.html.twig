@@ -21,7 +21,7 @@
                                 {% for groupItem in productView.groupItems %}
                                     <a href="{{ productView.action.detailUrl }}" class="list-products-set__item">
                                         {% if groupItem.amount > 1 %}
-                                            <div class="list-tags list-tags--sets">
+                                            <div class="list-tags list-tags--secondary list-tags--sets-slider">
                                                 <div class="list-tags__tag">{{ groupItem.amount ~ '×' }}</div>
                                             </div>
                                         {% endif %}
