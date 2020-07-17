@@ -1,3 +1,5 @@
+@box-search-navigation-item-gap: 50px;
+
 .box-search {
     &__title {
         margin-bottom: 30px;
@@ -11,5 +13,29 @@
 
         text-transform: uppercase;
         font-size: 16px;
+    }
+
+    &__navigation {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 30px;
+
+        @media @query-sm {
+            flex-direction: row;
+            justify-content: center;   
+            margin-left: -@box-search-navigation-item-gap; 
+        }
+
+        &__item {
+            font-weight: 700;
+            font-size: @font-size;
+            text-decoration: none;
+            color: @color-base;
+            text-transform: uppercase;
+
+            @media @query-sm {
+                margin-left: @box-search-navigation-item-gap;
+            }
+        }
     }
 }
