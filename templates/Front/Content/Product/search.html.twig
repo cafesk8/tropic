@@ -79,7 +79,7 @@
                         {% endif %}
 
                         <div class="box-list__content{% if paginationResultProducts.results|length < 0 or not filterFormSubmitted %} box-list__content--full-width{% endif %} js-product-list-ajax-filter-products-with-controls">
-                            <div class="box-list__products">
+                            <div class="box-list__products box-list__products--without-gap">
                                 {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForSearchAction')) }}
                                 {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResultProducts, filterFormSubmitted: filterFormSubmitted, searchText: searchText, paging: false} %}
                             </div>

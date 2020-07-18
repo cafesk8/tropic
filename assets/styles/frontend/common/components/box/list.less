@@ -75,9 +75,15 @@
 
     &__products {
         margin-bottom: @box-list-bottom-gap;
+
+        &--without-gap {
+            margin-bottom: 0;
+        }
     }
 
     &__filter-opener {
+        position: relative;
+        z-index: @z-index-above;
         text-align: center;
         padding: @margin-gap 0;
 
