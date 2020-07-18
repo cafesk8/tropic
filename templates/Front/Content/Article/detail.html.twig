@@ -12,18 +12,22 @@
 
     <div class="web__line">
         <div class="web__container">
-            <h1 class="in-title in-title--big in-title--center">
-                {% if article.seoH1 is not null %}
-                    {{ article.seoH1 }}
-                {% else %}
-                    {{ article.name }}
-                {% endif %}
-            </h1>
-            <div class="in-article__container">
-                <div class="in-article__date">{{ article.createdAt|formatDate }}</div>
+            <div class="wrap-page">
+                <h1 class="in-title in-title--big in-title--center">
+                    {% if article.seoH1 is not null %}
+                        {{ article.seoH1 }}
+                    {% else %}
+                        {{ article.name }}
+                    {% endif %}
+                </h1>
+                <div class="in-article">
+                    <div class="in-article__container">
+                        <div class="in-article__date">{{ article.createdAt|formatDate }}</div>
 
-                <div class="in-article__text in-user-text">
-                    {{ article.text|raw }}
+                        <div class="in-article__text in-user-text">
+                            {{ article.text|raw }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
