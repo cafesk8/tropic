@@ -6,6 +6,23 @@
     flex-wrap: wrap;
     margin-left: -@list-tags-item-gap;
 
+    &--secondary {
+        position: absolute;
+        z-index: @z-index-above;
+    }
+
+    &--sets-slider {
+        right: 22px;
+    }
+
+    &--sets-detail {
+        right: 0;
+
+        @media @query-vl {
+            right: -12px;
+        }
+    }
+
     &__tag {
         line-height: 18px;
         padding: 1px 10px;
@@ -18,5 +35,13 @@
         font-weight: 600;
         border-radius: 10px;
         background-color: @color-add;
+
+        .list-tags--secondary & {
+            line-height: 21px;
+            text-transform: none;
+
+            font-size: @font-size-small;
+            border-radius: @radius-medium;
+        } 
     }
 }

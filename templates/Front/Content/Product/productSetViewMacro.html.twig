@@ -20,13 +20,13 @@
                             <div class="list-products-set__list js-horizontal-list-slides">
                                 {% for groupItem in productView.groupItems %}
                                     <a href="{{ productView.action.detailUrl }}" class="list-products-set__item">
+                                        {% if groupItem.amount > 1 %}
+                                            <div class="list-tags list-tags--secondary list-tags--sets-slider">
+                                                <div class="list-tags__tag">{{ groupItem.amount ~ '×' }}</div>
+                                            </div>
+                                        {% endif %}
                                         <div class="list-products-set__item__image">
                                             {{ image(groupItem.image, {size: 'listSet', alt: groupItem.name, lazy: true}) }}
-                                            {% if groupItem.amount > 1 %}
-                                                <div class="list-tags">
-                                                    <div class="list-tags__tag">{{ groupItem.amount ~ '×' }}</div>
-                                                </div>
-                                            {% endif %}
                                         </div>
                                         <div class="list-products-set__item__info">
                                             {{ groupItem.name }}

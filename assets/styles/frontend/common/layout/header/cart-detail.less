@@ -4,10 +4,11 @@
 @cart-detail-item-remove-padding-width: 10px;
 
 @cart-detail-item-bottom-gap: 20px;
-@cart-detail-item-image-size: 71px;
+@cart-detail-item-image-size: 50px;
+@cart-detail-item-image-size-small: 30px;
 @cart-detail-item-pieces-width: 100px;
 @cart-detail-item-remove-width: @cart-detail-remove-size + 2*@cart-detail-item-remove-padding-width;
-@cart-detail-item-content-width: calc(~"@{calc-base} - @{cart-detail-item-image-size} - @{cart-detail-item-pieces-width} - @{cart-detail-item-remove-width}");
+@cart-detail-item-content-width: calc(~"@{calc-base} - @{cart-detail-item-pieces-width} - @{cart-detail-item-remove-width}");
 @cart-detail-item-transport-width: 55%;
 
 .cart-detail {
@@ -29,10 +30,42 @@
         width: 100%;
         margin-bottom: @cart-detail-item-bottom-gap;
 
+        &__wrap-image {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 10px;
+        }
+
         &__image {
             position: relative;
             width: @cart-detail-item-image-size;
+            height: @cart-detail-item-image-size;
             margin-right: @cart-detail-padding;
+
+            &:last-child {
+                margin-right: 0;
+
+                &::before {
+                    display: none;
+                }
+            }
+
+            &--sets {
+                width: @cart-detail-item-image-size-small;
+                height: @cart-detail-item-image-size-small;
+                margin-right: 20px;
+
+                &:before {
+                    z-index: @z-index-above;
+                    position: absolute;
+                    right: -15px;
+                    top: 50%;
+                    transform: translateY(-50%);
+
+                    font-size: 11px;
+                    color: @color-turquoise;
+                }
+            }
 
             img {
                 .center-image();
@@ -40,10 +73,15 @@
         }
 
         &__content {
-            flex-direction: column;
+            display: flex;
+            flex-direction: row;
 
             @media @query-md {
                 width: @cart-detail-item-content-width;
+            }
+
+            .cart-detail__item--sets & {
+                flex-direction: column;
             }
 
             &__title {
