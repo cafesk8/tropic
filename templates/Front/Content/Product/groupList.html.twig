@@ -2,10 +2,11 @@
 {% import 'Front/Inline/Paginator/paginator.html.twig' as paginator %}
 
 {% if paginationResultGroups.results|length > 0 %}
+    <h3 class="box-search__subtitle">{{ 'Nalezené sety'|trans }}</h3>
     <div class="box-list__panel"></div>
 {% endif %}
 <div class="box-list__content">
-    <div class="box-list__products js-list-with-paginator">
+    <div class="box-list__products box-list__products--without-gap js-list-with-paginator">
         {{ productList.list(paginationResultGroups.results) }}
         <div class="box-list__actions">
             <div class="box-list__actions__button">

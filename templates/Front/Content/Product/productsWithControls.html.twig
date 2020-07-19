@@ -3,7 +3,7 @@
 
     <div class="js-product-list-with-paginator">
         {% if paginationResult.results|length == 0 %}
-            <div class="in-message in-message--info margin-bottom-20">
+            <div class="in-message in-message--info margin-bottom-0 margin-top-20">
                 {% if (filterFormSubmitted) %}
                     {{ 'No results matching filter'|trans }}
                 {% elseif searchText is defined %}
@@ -22,20 +22,22 @@
             </div>
         {% endif %}
 
-        {{ productList.list(paginationResult.results) }}
+        {% if paginationResult.results|length > 0 %}
+            {{ productList.list(paginationResult.results) }}
 
-        <div class="box-list__actions">
-            <div class="box-list__actions__button">
-                {{ paginator.loadMoreButton(paginationResult) }}
-            </div>
+            <div class="box-list__actions">
+                <div class="box-list__actions__button">
+                    {{ paginator.loadMoreButton(paginationResult) }}
+                </div>
 
-            <div class="box-list__actions__pagination">
-                {% set entityName = 'products'|trans %}
-                {% if paging is not defined %}
-                    {% set paging = true %}
-                {% endif %}
-                {{ paginator.paginatorNavigation(paginationResult, entityName, 'page', false, paging) }}
+                <div class="box-list__actions__pagination">
+                    {% set entityName = 'products'|trans %}
+                    {% if paging is not defined %}
+                        {% set paging = true %}
+                    {% endif %}
+                    {{ paginator.paginatorNavigation(paginationResult, entityName, 'page', false, paging) }}
+                </div>
             </div>
-         </div>
+        {% endif %}
     </div>
 

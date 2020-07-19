@@ -12,90 +12,83 @@
 {% endblock %}
 
 {% block main_content %}
-    <div class="web__line">
-        <div class="web__container">
-            <div class="box-search">
-                <div class="box-search__title">
-                    {{ 'Výsledky výrazu:'|trans }}
-                </div>
-                <span class="margin-left-10">"{{ searchText }}"</span>
-            </div>
-        </div>
-    </div>
-
-    {% if
-        foundCategories|length > 0
-        or paginationResultProducts.results|length > 0
-        or paginationResultGroups.results|length > 0
-    %}
+    <div class="box-search">
         <div class="web__line">
             <div class="web__container">
-                <div class="in-tab in-tab--full-width js-anchor-tabs">
-                    <div class="in-tab__wrap in-tab__wrap--small-gap">
-                        <div class="in-tab__head dont-print">
-                            {% if foundCategories|length > 0 %}
-                                <a href="#" class="in-tab__head__item js-tabs-button" data-tab-id="categories">
-                                    {{ 'Kategorie'|trans }} ({{ foundCategories|length }})
-                                </a>
-                            {% endif %}
-                            {% if paginationResultProducts.results|length > 0 %}
-                                <a href="#" class="in-tab__head__item js-tabs-button" data-tab-id="products">
-                                    {{ 'Produkty'|trans }} ({{ paginationResultProducts.totalCount }})
-                                </a>
-                            {% endif %}
-                            {% if paginationResultGroups.results|length > 0 %}
-                                <a href="#" class="in-tab__head__item js-tabs-button" data-tab-id="sets">
-                                    {{ 'Sety'|trans }} ({{ paginationResultGroups.totalCount }})
-                                </a>
-                            {% endif %}
-                        </div>
+                <h1 class="box-search__title">{{ 'Vyhledávání výrazu'|trans }} <strong>„{{ searchText }}“</strong></h1>
+            </div>
+        </div>
+
+        {% if
+            foundCategories|length > 0
+            or paginationResultProducts.results|length > 0
+            or paginationResultGroups.results|length > 0
+        %}
+            <div class="web__line">
+                <div class="web__container">
+                    <div class="box-search__navigation">
+                        {% if foundCategories|length > 0 %}
+                            <a href="#categories" data-space-above-position="0" class="box-search__navigation__item js-scroll-to-position" data-tab-id="categories">
+                                {{ 'Kategorie'|trans }} ({{ foundCategories|length }})
+                            </a>
+                        {% endif %}
+                        {% if paginationResultProducts.results|length > 0 %}
+                            <a href="#products" data-space-above-position="0" class="box-search__navigation__item js-scroll-to-position" data-tab-id="products">
+                                {{ 'Produkty'|trans }} ({{ paginationResultProducts.totalCount }})
+                            </a>
+                        {% endif %}
+                        {% if paginationResultGroups.results|length > 0 %}
+                            <a href="#sets" data-space-above-position="0" class="box-search__navigation__item js-scroll-to-position" data-tab-id="sets">
+                                {{ 'Sety'|trans }} ({{ paginationResultGroups.totalCount }})
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
 
-    <div class="web__line">
-        <div class="web__container">
-            {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': foundCategories, 'cssClass': 'list-categories--four-on-row', 'title': 'Nalezené kategorie'|trans, 'showText': false } %}
-        </div>
-    </div>
+        {% if foundCategories|length > 0 %}
+            <div class="web__line" id="categories">
+                <div class="web__container">
+                    <h3 class="box-search__subtitle">{{ 'Nalezené kategorie'|trans }}</h3>
+                    {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': foundCategories, 'cssClass': 'list-categories--four-on-row', 'title': 'Nalezené kategorie'|trans, 'showText': false } %}
+                </div>
+            </div>
+        {% endif %}
 
-    <div class="web__line">
-        <div class="web__container">
-            {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForSearchAction')) }}
-        </div>
-    </div>
+        <div class="web__line">
+            <div class="web__container">
+                <h3 class="box-search__subtitle" id="products">{{ 'Nalezené produkty'|trans }}</h3>
+                <div class="box-list box-list--search">
+                    <div class="box-list__wrap js-product-list-with-filter js-tabs-content">
+                        {% if paginationResultProducts.results|length > 0 or filterFormSubmitted %}
+                            <div class="box-list__panel js-product-list-panel">
+                                <div class="box-filter js-product-filter">
+                                    {{ productFilterForm.filterForm(
+                                        filterForm,
+                                        url('front_product_search'),
+                                        url('front_product_search', { (SEARCH_TEXT_PARAMETER) : searchText }),
+                                        searchText,
+                                        'search',
+                                        productFilterCountData,
+                                        priceRange,
+                                        filterFormSubmitted
+                                    ) }}
+                                </div>
+                            </div>
+                        {% endif %}
 
-    <div class="web__line">
-        <div class="web__container">
-            <div class="box-list box-list--search">
-                <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
-                    {% if paginationResultProducts.results|length > 0 or filterFormSubmitted %}
-                        <div class="box-list__panel js-product-list-panel">
-                            <div class="box-filter js-product-filter">
-                                {{ productFilterForm.filterForm(
-                                    filterForm,
-                                    url('front_product_search'),
-                                    url('front_product_search', { (SEARCH_TEXT_PARAMETER) : searchText }),
-                                    searchText,
-                                    'search',
-                                    productFilterCountData,
-                                    priceRange,
-                                    filterFormSubmitted
-                                ) }}
+                        <div class="box-list__content{% if paginationResultProducts.results|length < 0 or not filterFormSubmitted %} box-list__content--full-width{% endif %} js-product-list-ajax-filter-products-with-controls">
+                            <div class="box-list__products box-list__products--without-gap">
+                                {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForSearchAction')) }}
+                                {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResultProducts, filterFormSubmitted: filterFormSubmitted, searchText: searchText, paging: false} %}
                             </div>
                         </div>
-                    {% endif %}
-
-                    <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
-                        <div class="box-list__products">
-                            {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResultProducts, filterFormSubmitted: filterFormSubmitted, searchText: searchText, paging: false} %}
-                        </div>
                     </div>
-                </div>
-                <div class="box-list__wrap js-tabs-content" data-tab-id="sets">
-                    {{ render(controller('App\\Controller\\Front\\ProductController:renderGroupsBySearchTextAction', {paginationResultGroups: paginationResultGroups, searchText: searchText})) }}
+
+                    <div class="box-list__wrap box-list__wrap--wrapped js-tabs-content" id="sets">
+                        {{ render(controller('App\\Controller\\Front\\ProductController:renderGroupsBySearchTextAction', {paginationResultGroups: paginationResultGroups, searchText: searchText})) }}
+                    </div>
                 </div>
             </div>
         </div>

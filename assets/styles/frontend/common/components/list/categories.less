@@ -3,6 +3,13 @@
 @list-categories-image-size: 56px;
 @list-categories-item-border-size: 1px;
 
+.list-categories-wrap {
+    margin-bottom: 40px;
+        
+    border: 3px solid @color-border;
+    border-radius: @radius;
+}
+
 .list-categories {
     .reset-ul();
     .clearfix();
@@ -48,19 +55,8 @@
         }
 
         .list-categories--four-on-row & {
-            width: calc(~"@{calc-base} / 2");
-            max-height: 300px;
-
-            img {
-                max-height: 150px;
-            }
-
-            @media @query-md {
+            @media @query-vl {
                 width: calc(~"@{calc-base} / 4");
-
-                img {
-                    max-height: 200px;
-                }
             }
         }
 
