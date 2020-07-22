@@ -409,11 +409,13 @@
 @footer-bottom-domains-item-link-gap: 15px;
 
 .footer-bottom {
-    padding: 52px 0 64px;
+    padding-top: 52px;
+    padding-bottom: 64px;
     text-align: center;
 
     @media @query-lg {
-        padding: @footer-bottom-gap 0 ;
+        padding-top: @footer-bottom-gap;
+        padding-bottom: @footer-bottom-gap;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -621,6 +623,10 @@
 
                 @media @query-vl {
                     margin-bottom: 0;
+                }
+
+                .css-checkbox__image {
+                    color: @color-f !important;
                 }
             }
         }

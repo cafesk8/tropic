@@ -7,23 +7,19 @@
 
     <div class="box-pickup-place">
         <div class="box-pickup-place__search">
-            <div class="box-pickup-place__search__text">
+            <div class="box-pickup-place__search__input">
                 <label class="input-label">
                     {{ 'Zadejte město nebo PSČ:'|trans }}
                 </label>
-            </div>
-            <div class="box-pickup-place__search__input">
                 <input
                 type="text"
                 placeholder="{{ 'např. Praha'|trans }}"
                 class="js-pickup-place-city-post-code-autocomplete-input input"
                 autocomplete="off"
                 />
-                <div class="box-pickup-place__search__input__button">
-                    <button class="btn btn--success" type="button">
-                        {{ 'Vyhledat'|trans }}
-                    </button>
-                </div>
+                <button class="box-pickup-place__search__input__button btn btn--success" type="button">
+                    {{ 'Vyhledat'|trans }}
+                </button>
             </div>
         </div>
         <div class="js-pickup-place-autocomplete-results box-pickup-place__results {% if pickupPlaces|length > 0 %}display-block{% endif %}">

@@ -229,9 +229,7 @@
                                                 <div class="list-variants__item__actions">
                                                     {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'detailVariant'})) }}
                                                 </div>
-                                                <div>
-                                                    {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', {product: variant}) }}
-                                                </div>
+                                                {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', {product: variant}) }}
                                             </li>
                                         {% endfor %}
                                     </ul>
@@ -244,11 +242,13 @@
                                 {% endif %}
                             </div>
                         </div>
+
                         {% if not product.isMainVariant %}
                             {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', {product: product}) }}
                         {% endif %}
+                        
                         {% if product.isMainVariant %}
-                            <div class="wrap-gradient">
+                            <div class="wrap-gradient wrap-gradient--with-gap">
                                 <div class="wrap-gradient__in">
                                     <div class="box-detail__tags">
                                         <div class="box-detail__tags__title">{{ 'Produkt se nachází v kategoriích'|trans }}</div>
@@ -332,7 +332,7 @@
             <div class="web__line js-tabs-button js-tabs-content" data-tab-id="accessories">
                 <div class="web__container web__container--no-padding">
                     <div class="box-products-slider">
-                        <h2 class="box-products-slider__title">
+                        <h2 class="box-products-slider__title box-products-slider__title--secondary">
                             {{ accessoriesHeadline }}
                         </h2>
                         {{ productList.horizontalList(accessories, '', 'h3', 'accessories-products', true, false, true) }}

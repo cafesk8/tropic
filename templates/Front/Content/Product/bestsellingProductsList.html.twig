@@ -1,12 +1,12 @@
 {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
 {% if productViews|length > 0 %}
     <div class="web__line">
-        <div class="web__container">
+        <div class="web__container web__container--no-padding">
             <div class="box-products-slider">
                 <h2 class="box-products-slider__title">
                     {{ 'Nejoblíbenější kousky'|trans }}
                 </h2>
-                {{ productList.horizontalList(productViews, '', 'h3', 'best-selling', true) }}
+                {{ productList.horizontalList(productViews, '', 'h3', 'best-selling', true, false, true) }}
             </div>
         </div>
     </div>

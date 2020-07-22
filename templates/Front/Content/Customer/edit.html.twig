@@ -19,7 +19,7 @@
 
                 <div id="{{ form.customerUserData.vars.id }}">
                     <div class="wrap-box">
-                        <h2 class="wrap-box__title">{{ 'Personal data'|trans }}</h2>
+                        <h3 class="wrap-box__title">{{ 'Personal data'|trans }}</h3>
                         <div class="wrap-box__in">
                             {{ form_row(form.customerUserData.firstName, { label: 'First name'|trans}) }}
                             {{ form_row(form.customerUserData.lastName, { label: 'Last name'|trans}) }}
@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="wrap-box">
-                        <h2 class="wrap-box__title">{{ 'Changing password'|trans }}</h2>
+                        <h3 class="wrap-box__title">{{ 'Changing password'|trans }}</h3>
                         <div class="wrap-box__in" id="{{ form.customerUserData.password.vars.id }}">
                             <div class="form-line">
                                 <div class="form-line__input">
@@ -56,7 +56,7 @@
 
                 <div id="{{ form.billingAddressData.vars.id }}" class="js-billing-address-form">
                     <div class="wrap-box">
-                        <h2 class="wrap-box__title">{{ 'Company data'|trans }}</h2>
+                        <h3 class="wrap-box__title">{{ 'Company data'|trans }}</h3>
                         <div class="wrap-box__in">
                             {{ form_widget(form.billingAddressData.companyCustomer, {
                             attr: { class: 'css-checkbox js-checkbox-toggle js-billing-address-company-customer', 'data-checkbox-toggle-container-id': 'js-company-fields' }})
@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="wrap-box margin-top-20">
-                    <h2 class="wrap-box__title">{{ 'Fakturační adresa'|trans }}</h2>
+                    <h3 class="wrap-box__title">{{ 'Fakturační adresa'|trans }}</h3>
 
                     <div class="wrap-box__in">
                         {{ form_row(form.billingAddressData.street, { label: 'Street'|trans}) }}
@@ -86,7 +86,7 @@
 
                 <div id="{{ form.deliveryAddressData.vars.id }}" class="js-delivery-address-form">
                     <div class="wrap-box">
-                        <h2 class="wrap-box__title">{{ 'Doručovací adresy'|trans }}</h2>
+                        <h3 class="wrap-box__title">{{ 'Doručovací adresy'|trans }}</h3>
                         <div class="wrap-box__in">
                             {{ form_row(form.customerUserData.defaultDeliveryAddress) }}
                             {{ form_widget(form.deliveryAddressData.addressFilled, {

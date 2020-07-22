@@ -185,7 +185,12 @@
 
                             {% if form.disallowHeurekaVerifiedByCustomers is defined %}
                                 <div class="margin-top-10">
-                                    {{ form_row(form.disallowHeurekaVerifiedByCustomers) }}
+                                    {{ form_widget(form.disallowHeurekaVerifiedByCustomers, {
+                                        attr: { class: 'css-checkbox' }})
+                                    }}
+                                    <label for="{{ form.disallowHeurekaVerifiedByCustomers.vars.id }}" class="css-checkbox__image">
+                                        {{ 'Nesouhlasím se zasláním objednávky do programu Heureka Ověřeno zákazníky'|trans }}
+                                    </label>
                                 </div>
                             {% endif %}
                         </div>

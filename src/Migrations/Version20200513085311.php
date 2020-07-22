@@ -18,7 +18,7 @@ class Version20200513085311 extends AbstractMigration
             'UPDATE availability_translations SET name = :newInStockAvailabilityName
             WHERE name = :oldInStockAvailabilityName',
             [
-                'newInStockAvailabilityName' => 'Skladem v e-shopu',
+                'newInStockAvailabilityName' => 'Skladem v e‑shopu',
                 'oldInStockAvailabilityName' => 'Skladem',
             ]
         );
