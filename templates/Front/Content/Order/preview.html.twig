@@ -1,4 +1,4 @@
-{% macro productPreviewItem(product, quantity, price, saleItem = false) %}
+{% macro productPreviewItem(product, quantity, price, saleItem = false, canShowAvailability = true) %}
     {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
     <li class="list-cart-preview__item{% if product.isPohodaProductTypeGroup %} list-cart-preview__item--sets{% endif %}">
         {% if product.isPohodaProductTypeGroup %}
@@ -23,10 +23,11 @@
         </span>
 
         <div class="list-cart-preview__item__info">
-            <div class="list-cart-preview__item__availability">
-                {{ availability.productAvailability(product, saleItem) }}
-            </div>
-
+            {% if canShowAvailability is same as (true) %}
+                <div class="list-cart-preview__item__availability">
+                    {{ availability.productAvailability(product, saleItem) }}
+                </div>
+            {% endif %}
             <div class="list-cart-preview__item__pieces">
                 {{ quantity|formatNumber }}&nbsp;{{ product.unit.name }}
             </div>
@@ -66,11 +67,11 @@
                                 <li class="list-cart-preview__title">{{ 'Dárek k vaší objednávce:'|trans }}</li>
                             {% endif %}
                             {% if orderGiftProduct is not null %}
-                                {{ _self.productPreviewItem(orderGiftProduct, 1, orderGiftProductPrice) }}
+                                {{ _self.productPreviewItem(orderGiftProduct, 1, orderGiftProductPrice, false, false) }}
                             {% endif %}
                             {% if orderPreview.gifts is not empty %}
                                 {% for gift in orderPreview.gifts %}
-                                    {{ _self.productPreviewItem(gift.product, gift.quantity, gift.totalPrice) }}
+                                    {{ _self.productPreviewItem(gift.product, gift.quantity, gift.totalPrice, false, false) }}
                                 {% endfor %}
                             {% endif %}
                         </ul>
