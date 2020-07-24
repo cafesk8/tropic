@@ -176,7 +176,7 @@
                                                     <div class="list-variants__item__description">
                                                         <div class="list-variants__item__description__image">
                                                             {% if imageExists(variant) %}
-                                                                <a href="{{ imageUrl(variant, 'original') }}" class="js-popup-image">
+                                                                <a href="{{ imageUrl(variant, 'original') }}"  data-original-image="{{ imageUrl(variant, 'largeThumbnail') }}" class="list-variants__item__description__image__wrap js-popup-image js-hover-image">
                                                                     {{ image(variant, { size: 'thumbnail' }) }}
                                                                 </a>
                                                             {% else %}

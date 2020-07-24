@@ -11,6 +11,7 @@ import './frameworkBundleCustomOverrides';
 import './history';
 import './honeyPot';
 import './horizontalList';
+import './hoverImage';
 import './hoverIntent';
 import './HoverIntentSetting';
 import './infoRow';
