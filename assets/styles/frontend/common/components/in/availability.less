@@ -6,6 +6,7 @@
 
     color: @color-green;
     font-size: @font-size-small;
+    font-weight: 400;
 
     &--without-gap {
         margin-bottom: 0;
@@ -36,6 +37,7 @@
 
         font-size: @font-size-small;
         color: @color-green;
+        font-weight: 400;
 
         &--out-of-stock {
             color: @color-alert;
@@ -52,6 +54,7 @@
         line-height: @in-availability-stores-height;
 
         font-size: @font-size;
+        font-weight: 400;
 
         @media @query-md {
             height: @in-availability-stores-height;
@@ -70,6 +73,7 @@
         line-height: @font-size-big;
 
         font-size: @font-size-big;
+        font-weight: 400;
 
         .list-variants & {
             font-size: @font-size;
@@ -80,7 +84,6 @@
             text-align: right;
 
             font-size: @font-size-small;
-            font-weight: 400;
         }
 
         .list-cart-preview & {
@@ -88,30 +91,19 @@
             text-align: right;
 
             font-size: @font-size-extra-small;
-            font-weight: 400;
         }
     }
 
     &__date {
         color: @color-green;
-        font-weight: 500;
-
-        .list-variants & {
-            font-weight: 700;
-        }
+        font-weight: 400;
 
         .list-article-product & {
             font-size: @font-size-small;
-            font-weight: 400;
         }
 
         .list-cart-preview & {
             font-size: @font-size-extra-small;
-            font-weight: 400;
-        }
-
-        .table-cart & {
-            font-weight: 400;
         }
 
         &--not-available {
