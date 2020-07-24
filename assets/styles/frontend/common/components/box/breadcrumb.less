@@ -7,10 +7,12 @@
 @box-breadcrumb-bottom-gap: 25px;
 
 .box-breadcrumb {
+    position: relative;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     margin-bottom: @box-breadcrumb-bottom-gap;
+    z-index: @z-index-above;
 
     font-size: 0;
 

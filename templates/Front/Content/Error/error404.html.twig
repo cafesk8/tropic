@@ -1,20 +1,10 @@
 {% extends 'Front/Content/Error/errorCommon.html.twig' %}
 
 {% block error_content %}
-    <div class="box-promo-image">
-        <div class="box-promo-image__left">
-            <div class="box-promo-image__title">
-                <span class="box-promo-image__title__text">
-                    {{ 'Je nám líto'|trans }}<br>
-                    {{ 'požadovaná stránka na našem'|trans }}<br>
-                    {{ 'webu neexistuje'|trans }}
-                </span>
-            </div>
-            <div class="box-promo-image__content">
-                <div class="box-promo-image__content__button">
-                    <a href="{{ url('front_homepage') }}" class="btn">{{ 'Pokračujte na úvodní stránku'|trans }}</a>
-                </div>
-            </div>
-        </div>
+    <div class="box-page-404">
+        <img class="box-page-404__image" src="{{ asset('public/frontend/images/404-boot.jpg') }}" alt="{{ '404-boot'|trans }}">
+        <h2 class="box-page-404__title">{{ 'Tak tady nic nechytíš :-)'|trans }}</h2>
+        <p class="box-page-404__text">{{ 'požadovaná stránka na našem webu neexistuje.'|trans }}</p>
+        <a class="box-page-404__button btn btn--large" href="{{ url('front_homepage') }}">{{ 'Pokračujte na úvodní stránku'|trans }}</a>
     </div>
 {% endblock %}
