@@ -42,16 +42,39 @@
             align-items: center;
 
             &__image {
-                position: relative;
+                display: inline-block;
+                text-align: center;
                 width: @list-variants-image-size - 20px;
                 height: @list-variants-image-size;
+                line-height: @list-variants-image-size;
 
                 @media @query-md {
                     width: @list-variants-image-size;
                 }
 
+                &__wrap {
+                    display: inline-block;
+                    position: relative;
+                    line-height: 0;
+                    vertical-align: middle;
+                }
+            }
+
+            &__image-original {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 100%;
+                width: 280px;
+                z-index: @z-index-above;
+                text-align: right;
+
+                @media @query-lg {
+                    display: block;
+                }
+
                 img {
-                    .center-image();
+                    border: 1px solid @color-border;
                 }
             }
 

@@ -97,6 +97,11 @@
             height: 50
             crop: false
             occurrence: 'Front-end: gift on product detail'
+        -   name: largeThumbnail
+            width: 500
+            height: 500
+            crop: false
+            occurrence: 'Front-end: hover image for variant products on the product detail'
         -   name: biggerThumbnail
             width: 90
             height: 90
