@@ -1,9 +1,9 @@
 @list-cart-preview-image-size: 70px;
 @list-cart-preview-image-size-small: 50px;
-@list-cart-preview-title-size: 120px;
 @list-cart-preview-item-bottom-gap: 25px;
 @list-cart-preview-item-title-lines: 2;
 @list-cart-preview-item-gap: 10px;
+@list-cart-preview-item-info-item-line-height: 18px;
 
 .list-cart-preview {
     .reset-ul();
@@ -29,10 +29,6 @@
         padding-bottom: @list-cart-preview-item-bottom-gap / 2;
 
         border-bottom: 1px solid @color-border;
-
-        @media @query-md {
-            flex-wrap: nowrap;
-        }
 
         &:last-child {
             margin-bottom: 0;
@@ -99,28 +95,40 @@
             }
         }
 
-        &__pieces {
-            line-height: 18px;
-            padding: 0 @list-cart-preview-item-gap;
-
-            font-size: @font-size-extra-small;
-        }
-
         &__title {
-            width: @list-cart-preview-title-size;
+            flex: 1;
             line-height: 18px;
             overflow: hidden;
-            padding-right: @list-cart-preview-item-gap;
+            padding-left: @list-cart-preview-item-gap;
 
             color: @color-base;
             font-size: @font-size-extra-small;
             text-decoration: none;
+
+            .list-cart-preview__item--sets & {
+                padding-left: 0;
+                width: 100%;
+                flex: auto;
+            }
         }
 
         &__info {
-            flex: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        &__availability {
+            line-height: @list-cart-preview-item-info-item-line-height;
+        }
+
+        &__pieces {
+            line-height: @list-cart-preview-item-info-item-line-height;
+            padding-left: @list-cart-preview-item-gap;
             margin-left: auto;
-            text-align: right;
+
+            font-size: @font-size-extra-small;
         }
 
         &__price {
@@ -128,7 +136,8 @@
             align-self: center;
             justify-content: flex-end;
             text-align: right;
-            line-height: 18px;
+            line-height: @list-cart-preview-item-info-item-line-height;
+            padding-left: @list-cart-preview-item-gap;
 
             color: @color-base;
             font-size: @font-size-mobile;

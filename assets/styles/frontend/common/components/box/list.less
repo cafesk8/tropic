@@ -220,24 +220,9 @@
             display: flex;
             flex-direction: row;
             justify-content: center;
+            margin: auto;
             margin-bottom: @margin-gap;
-
-            @media @query-lg {
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            @media @query-vl {
-                position: static;
-                transform: none;
-            }
-
-            @media @query-xl {
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-            }
+            flex: 1;
 
             &__icon {
                 opacity: 0.6;
@@ -251,15 +236,16 @@
 
         &__pagination {
             @media @query-lg {
-                margin-left: auto;
+                position: absolute;
+                right: 0;
             }
 
             @media @query-vl {
-                margin-left: 0;
+                position: static;
             }
 
             @media @query-xl {
-                margin-left: auto;
+                position: absolute;
             }
         }
     }

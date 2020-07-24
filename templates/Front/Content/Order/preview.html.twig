@@ -15,10 +15,6 @@
             </div>
         {% endif %}
 
-        <div class="list-cart-preview__item__pieces">
-            {{ quantity|formatNumber }} {{ product.unit.name }}
-        </div>
-
         <span class="list-cart-preview__item__title">
             {{ product.name }}
             {% if saleItem is same as (true) %}
@@ -27,11 +23,16 @@
         </span>
 
         <div class="list-cart-preview__item__info">
-            <div class="list-cart-preview__item__price">
-                {{ price|priceText }}
-            </div>
             <div class="list-cart-preview__item__availability">
                 {{ availability.productAvailability(product) }}
+            </div>
+
+            <div class="list-cart-preview__item__pieces">
+                {{ quantity|formatNumber }}&nbsp;{{ product.unit.name }}
+            </div>
+
+            <div class="list-cart-preview__item__price">
+                {{ price|priceText }}
             </div>
         </div>
     </li>
