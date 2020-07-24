@@ -23,7 +23,7 @@ class ListedProductView extends BaseListedProductView
     private $gifts;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $stockQuantity;
 
@@ -67,7 +67,7 @@ class ListedProductView extends BaseListedProductView
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $action
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $image
      * @param string[][] $gifts
-     * @param int $stockQuantity
+     * @param int|null $stockQuantity
      * @param int $variantsCount
      * @param array[] $groupItems
      * @param string|null $deliveryDays
@@ -85,7 +85,7 @@ class ListedProductView extends BaseListedProductView
         ProductActionView $action,
         ?ImageView $image,
         array $gifts,
-        int $stockQuantity,
+        ?int $stockQuantity,
         int $variantsCount,
         array $groupItems,
         ?string $deliveryDays,
@@ -136,9 +136,9 @@ class ListedProductView extends BaseListedProductView
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getStockQuantity(): int
+    public function getStockQuantity(): ?int
     {
         return $this->stockQuantity;
     }
