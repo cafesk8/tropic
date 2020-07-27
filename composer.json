@@ -22,6 +22,10 @@
         {
             "type": "vcs",
             "url": "https://gitlab+deploy-token-4:yqMfHR2F4qc6rbFequP4@gitlab.shopsys.cz/devops/kubernetes-deployment.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://gitlab+deploy-token-23:r3JFL4v-MPmhxEmzu3ZL@gitlab.shopsys.cz/ss6-projects/cdn.git"
         }
     ],
     "require": {
@@ -85,6 +89,7 @@
         "psr/log": "~1.0.2",
         "sensio/framework-extra-bundle": "^5.2",
         "sensiolabs/security-checker": "^6.0",
+        "shopsys/cdn": "^1.0.0",
         "shopsys/doctrine-orm": "^2.7.2",
         "shopsys/form-types-bundle": "9.0.0",
         "shopsys/framework": "9.0.0",

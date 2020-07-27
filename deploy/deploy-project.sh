@@ -55,6 +55,7 @@ function deploy() {
         ["S3_API_BUCKET_NAME"]=${PROJECT_NAME}
         ["REDIS_PREFIX"]=${PROJECT_NAME}
         ["ELASTIC_SEARCH_INDEX_PREFIX"]=${PROJECT_NAME}
+        ["CDN_DOMAIN"]=${CDN_DOMAIN}
    )
 
     VARS=(
@@ -75,6 +76,7 @@ function deploy() {
 function merge() {
     source "${BASE_PATH}/vendor/devops/kubernetes-deployment/deploy/functions.sh"
     merge_configuration
+    source "${BASE_PATH}/vendor/shopsys/cdn/deploymentPatch/cdnPatch.sh"
 }
 
 case "$1" in

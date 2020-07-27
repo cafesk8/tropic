@@ -678,6 +678,9 @@
             "project-base/config/packages/security_checker.yaml"
         ]
     },
+    "shopsys/cdn": {
+        "version": "1.0.0"
+    },
     "shopsys/coding-standards": {
         "version": "dev-mg-weird-flex-but-ok"
     },
