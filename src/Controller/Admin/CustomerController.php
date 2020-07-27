@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
+use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Grid\Grid;
 use Shopsys\FrameworkBundle\Component\Grid\MoneyConvertingDataSourceDecorator;
 use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderDataSource;
@@ -101,7 +101,7 @@ class CustomerController extends BaseCustomerController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder $queryBuilder
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
      * @return \Shopsys\FrameworkBundle\Component\Grid\Grid
      */
     private function getCustomerGrid(QueryBuilder $queryBuilder): Grid

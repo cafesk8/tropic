@@ -31,6 +31,14 @@ services:
         tags:
             - { name: doctrine.event_subscriber, priority: -10 }
 
+    App\Component\EntityExtension\EntityManagerDecorator:
+        decorates: 'doctrine.orm.default_entity_manager'
+        decoration_inner_name: 'App\Component\EntityExtension\EntityManagerDecorator.inner'
+        arguments:
+            - '@App\Component\EntityExtension\EntityManagerDecorator.inner'
+            - '@doctrine.orm.default_configuration'
+
+
     App\Controller\:
         resource: '../src/Controller/'
         public: true

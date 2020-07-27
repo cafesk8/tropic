@@ -149,6 +149,7 @@ class CategoryDataFixture
         $categoryData->descriptions = [
             1 => $this->faker->paragraph(3, false),
             2 => $this->faker->paragraph(3, false),
+            3 => $this->faker->paragraph(3, false),
         ];
         $categoryData->parent = $parentCategory;
 

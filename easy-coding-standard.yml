@@ -129,3 +129,6 @@ parameters:
             - '*/tests/App/Test/Codeception/Helper/NumberFormatHelper.php'
             - '*/tests/App/Test/Codeception/Helper/SymfonyHelper.php'
             - '*/tests/App/Test/Codeception/Module/Db.php'
+
+        PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\CamelCapsFunctionNameSniff:
+            - '*/src/Component/EntityExtension/QueryBuilder.php'
