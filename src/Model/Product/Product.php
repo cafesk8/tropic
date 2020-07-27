@@ -922,11 +922,12 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param int $domainId
      * @return int
      */
-    public function getVariantsCount(): int
+    public function getVariantsCount(int $domainId): int
     {
-        return $this->variants->count();
+        return $this->variants->filter(fn (Product $variant) => $variant->isShownOnDomain($domainId))->count();
     }
 
     /**

@@ -174,7 +174,6 @@
 {% endmacro %}
 
 {% macro lastVisitedList(productViews, productHeadingTagName, type, onlyRefresh = false) %}
-    {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     <div class="list-last-visited js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
         <span class="list-last-visited__arrow list-last-visited__arrow--prev js-horizontal-list-action-prev">

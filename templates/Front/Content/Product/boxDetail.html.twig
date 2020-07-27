@@ -7,6 +7,7 @@
     {% set showGalleryMaxCount = 3 %}
     {% set showFlagsMaxCount = 3 %}
     {% set typeSet = product.pohodaProductType is same as(5) %}
+    {% set variantsCount = product.getVariantsCount(domain.id) %}
 
     <div class="box-detail">
         <div class="web__line">
@@ -32,7 +33,7 @@
                                     {% endif %}
                                 </div>
 
-                                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, product.variantsCount) }}
+                                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, variantsCount) }}
 
                                 {% if showGallery %}
                                     <div class="box-gallery dont-print js-gallery">
@@ -123,7 +124,7 @@
                                             {{ product.getSeoH1(domain.id)|default(product.name) }}
                                         </h2>
                                         <div class="box-detail__description__flags">
-                                            {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail in-flag--in-set', false, sellingPrice, product.variantsCount) }}
+                                            {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail in-flag--in-set', false, sellingPrice, variantsCount) }}
                                         </div>
                                     </div>
 
