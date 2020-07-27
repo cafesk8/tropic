@@ -14,10 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CofidisBannerController extends AdminBaseController
 {
-    /**
-     * @var \App\Component\Setting\Setting
-     */
-    private $setting;
+    private Setting $setting;
 
     /**
      * @param \App\Component\Setting\Setting $setting

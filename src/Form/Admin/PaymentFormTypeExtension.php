@@ -24,15 +24,9 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
      */
     private $goPayPaymentMethodFacade;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
+    private Domain $domain;
 
-    /**
-     * @var \App\Model\Pricing\Currency\CurrencyFacade
-     */
-    private $currencyFacade;
+    private CurrencyFacade $currencyFacade;
 
     /**
      * @param \App\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade $goPayPaymentMethodFacade

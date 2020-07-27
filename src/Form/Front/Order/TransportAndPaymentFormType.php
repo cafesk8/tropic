@@ -78,10 +78,7 @@ class TransportAndPaymentFormType extends AbstractType
      */
     private $cartFacade;
 
-    /**
-     * @var \App\Model\Order\Preview\OrderPreviewFactory
-     */
-    private $orderPreviewFactory;
+    private OrderPreviewFactory $orderPreviewFactory;
 
     /**
      * @param \App\Model\Transport\TransportFacade $transportFacade

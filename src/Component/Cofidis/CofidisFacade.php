@@ -8,15 +8,9 @@ use App\Model\Order\Order;
 
 class CofidisFacade
 {
-    /**
-     * @var \App\Component\Cofidis\CofidisClientFactory
-     */
-    private $cofidisClientFactory;
+    private CofidisClientFactory $cofidisClientFactory;
 
-    /**
-     * @var \App\Component\Cofidis\CofidisOrderMapper
-     */
-    private $cofidisOrderMapper;
+    private CofidisOrderMapper $cofidisOrderMapper;
 
     /**
      * @param \App\Component\Cofidis\CofidisClientFactory $cofidisClientFactory

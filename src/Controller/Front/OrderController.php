@@ -223,10 +223,7 @@ class OrderController extends FrontBaseController
      */
     private FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade;
 
-    /**
-     * @var \App\Component\Cofidis\CofidisFacade
-     */
-    private $cofidisFacade;
+    private CofidisFacade $cofidisFacade;
 
     /**
      * @param \App\Model\Order\OrderFacade $orderFacade

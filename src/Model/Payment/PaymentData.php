@@ -55,7 +55,7 @@ class PaymentData extends BasePaymentData
     /**
      * @var \Shopsys\FrameworkBundle\Component\Money\Money[]
      */
-    public $minimumOrderPrices;
+    public array $minimumOrderPrices;
 
     public function __construct()
     {

@@ -8,10 +8,7 @@ use App\Component\Cofidis\Exception\CofidisNotConfiguredException;
 
 class CofidisClientFactory
 {
-    /**
-     * @var array
-     */
-    private $config;
+    private array $config;
 
     /**
      * @param array $config

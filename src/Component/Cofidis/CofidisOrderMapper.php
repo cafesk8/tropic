@@ -14,20 +14,11 @@ class CofidisOrderMapper
     private const PRODUCT_IDS_MAX_LENGTH = 50;
     private const PRODUCT_NAMES_MAX_LENGTH = 255;
 
-    /**
-     * @var \App\Component\Cofidis\CofidisSignatureFacade
-     */
-    private $cofidisSignatureFacade;
+    private CofidisSignatureFacade $cofidisSignatureFacade;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory
-     */
-    private $domainRouterFactory;
+    private DomainRouterFactory $domainRouterFactory;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
+    private Domain $domain;
 
     /**
      * @param \App\Component\Cofidis\CofidisSignatureFacade $cofidisSignatureFacade

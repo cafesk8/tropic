@@ -13,20 +13,11 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 
 class CofidisBannerFacade
 {
-    /**
-     * @var \App\Component\Setting\Setting
-     */
-    private $setting;
+    private Setting $setting;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
+    private Domain $domain;
 
-    /**
-     * @var \App\Model\Payment\PaymentFacade
-     */
-    private $paymentFacade;
+    private PaymentFacade $paymentFacade;
 
     /**
      * @param \App\Component\Setting\Setting $setting

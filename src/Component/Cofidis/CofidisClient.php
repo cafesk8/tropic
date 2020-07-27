@@ -12,10 +12,7 @@ class CofidisClient
     private const COFIDIS_TEST_GATEWAY_URL = 'https://test.gw1.iplatba.cz/Service/StartLoanDemand';
     private const COFIDIS_GATEWAY_URL = 'https://gw1.iplatba.cz/Service/StartLoanDemand';
 
-    /**
-     * @var array
-     */
-    private $config;
+    private array $config;
 
     /**
      * @param array $config

@@ -103,15 +103,9 @@ class CartController extends FrontBaseController
      */
     private $pricingGroupFacade;
 
-    /**
-     * @var \App\Component\Cofidis\Banner\CofidisBannerFacade
-     */
-    private $cofidisBannerFacade;
+    private CofidisBannerFacade $cofidisBannerFacade;
 
-    /**
-     * @var \App\Model\Product\ProductCachedAttributesFacade
-     */
-    private $productCachedAttributesFacade;
+    private ProductCachedAttributesFacade $productCachedAttributesFacade;
 
     /**
      * @param \App\Model\Cart\CartFacade $cartFacade

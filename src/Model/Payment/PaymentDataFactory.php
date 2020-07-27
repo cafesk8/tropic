@@ -76,9 +76,5 @@ class PaymentDataFactory extends BasePaymentDataFactory
         $paymentData->usableForGiftCertificates = false;
         $paymentData->activatesGiftCertificates = false;
         $paymentData->waitForPayment = false;
-
-        foreach ($this->domain->getAllIds() as $domainId) {
-            $paymentData->minimumOrderPrices[$domainId] = Money::zero();
-        }
     }
 }

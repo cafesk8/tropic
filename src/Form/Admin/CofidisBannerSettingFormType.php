@@ -15,10 +15,7 @@ use Symfony\Component\Validator\Constraints;
 
 class CofidisBannerSettingFormType extends AbstractType
 {
-    /**
-     * @var \App\Model\Pricing\Currency\CurrencyFacade
-     */
-    private $currencyFacade;
+    private CurrencyFacade $currencyFacade;
 
     /**
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade

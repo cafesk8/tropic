@@ -20,11 +20,9 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentDomain as BasePaymentDomain;
 class PaymentDomain extends BasePaymentDomain
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Money\Money
-     *
      * @ORM\Column(type="money", precision=20, scale=6)
      */
-    private $minimumOrderPrice;
+    private Money $minimumOrderPrice;
 
     /**
      * @return \Shopsys\FrameworkBundle\Component\Money\Money
