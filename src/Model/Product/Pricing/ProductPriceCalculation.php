@@ -96,21 +96,17 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
 
         $manualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, $pricingGroups, $domainId);
 
+        if ($product->isMainVariant() && count($manualInputPrices) === 0) {
+            $manualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, $pricingGroups, $domainId, true);
+        }
+
+        list($defaultPrice, $defaultMaxInputPrice) = $this->getDefaultPrices($manualInputPrices, $defaultPricingGroup->getId());
+
         $inputPrice = Money::zero();
-        $defaultPrice = Money::zero();
-        $defaultMaxInputPrice = Money::zero();
         $maxInputPrice = Money::zero();
         $standardPriceInput = null;
         $defaultCurrencyPriceInput = null;
         $maxDefaultCurrencyPriceInput = null;
-
-        foreach ($manualInputPrices as $manualInputPrice) {
-            if ($manualInputPrice !== null && $manualInputPrice['pricingGroupId'] === $defaultPricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
-                $defaultPrice = Money::create($manualInputPrice['inputPrice']);
-                $defaultMaxInputPrice = Money::create($manualInputPrice['maxInputPrice']);
-                break;
-            }
-        }
 
         foreach ($manualInputPrices as $manualInputPrice) {
             if ($manualInputPrice !== null) {
@@ -182,5 +178,25 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $defaultPrice,
             $standardPrice
         );
+    }
+
+    /**
+     * @param array $manualInputPrices
+     * @param int $defaultPricingGroupId
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    private function getDefaultPrices(array $manualInputPrices, int $defaultPricingGroupId): array
+    {
+        $defaultPrices = [Money::zero(), Money::zero()];
+
+        foreach ($manualInputPrices as $manualInputPrice) {
+            if ($manualInputPrice !== null && $manualInputPrice['pricingGroupId'] === $defaultPricingGroupId && $manualInputPrice['inputPrice'] !== null) {
+                $defaultPrices[0] = Money::create($manualInputPrice['inputPrice']);
+                $defaultPrices[1] = Money::create($manualInputPrice['maxInputPrice']);
+                break;
+            }
+        }
+
+        return $defaultPrices;
     }
 }

@@ -23,7 +23,6 @@
                                 {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice, productView.variantsCount) }}
                             </a>
 
-                            {% set productSellingPrice = productView.sellingPrice %}
                             <div class="list-products__item__info">
                                 <a class="list-products__item__info__link" href="{{ productView.action.detailUrl }}">
                                     <{{ productHeadingTagName|default('h2') }} class="list-products__item__info__title">
