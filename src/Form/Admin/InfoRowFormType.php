@@ -38,6 +38,10 @@ class InfoRowFormType extends AbstractType
                             'groups' => [self::VALIDATION_GROUP_IS_VISIBLE],
                         ]),
                     ],
+                    'attr' => [
+                        'labelIcon' => true,
+                        'labelIconTitle' => t('Pro nadpis zvolte formát textu "Nadpis 3" a pro standardní text v informačním řádku zvolte formát textu "Normální (DIV)"'),
+                    ],
                 ])
             ->add('save', SubmitType::class);
     }

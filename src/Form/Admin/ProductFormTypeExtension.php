@@ -509,8 +509,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'label' => t('Display on'),
                 'position' => ['after' => 'sellingTo'],
                 'attr' => [
-                    'icon' => true,
-                    'iconTitle' => t('Skryté zboží se nezobrazuje ve výpisech ani nelze vyhledat. Detail tohoto zboží není dostupný přímým přístupem z URL. Zboží nelze vložit do košíku.'),
+                    'labelIcon' => true,
+                    'labelIconTitle' => t('Skryté zboží se nezobrazuje ve výpisech ani nelze vyhledat. Detail tohoto zboží není dostupný přímým přístupem z URL. Zboží nelze vložit do košíku.'),
                 ],
             ])
             ->add('sellingDenied', YesNoType::class, [

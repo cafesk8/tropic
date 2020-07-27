@@ -69,6 +69,15 @@
     {% endif %}
 {%- endblock %}
 
+{% block label_info_block %}
+    {% if attr.labelIcon is defined %}
+        <i class="svg svg-{{ attr.labelIconType|default('info') }} in-icon cursor-help form-line__item form-line__item--info js-tooltip"
+           data-toggle="tooltip" data-placement="{{ attr.labelIconPlacement|default('right') }}"
+           title="{{ attr.labelIconTitle|default('') }}"
+        ></i>
+    {% endif %}
+{%- endblock %}
+
 {% block products_list_row -%}
     {% if top_info_title is not empty %}
         <strong>{{ top_info_title }}</strong>
@@ -153,3 +162,35 @@
         </table>
     {% endif %}
 {% endblock %}
+
+{% block form_label %}
+    {% apply spaceless %}
+        {% if label is not same as(false) %}
+            {% if not compound %}
+                {% set label_attr = label_attr|merge({'for': id}) %}
+            {% endif %}
+            {% if required %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+            {% endif %}
+            {% if label is empty %}
+                {% set label = name|humanize %}
+            {% endif %}
+            <label class="{{ isCheckbox|default(false) or isSimple|default(false) ? '' : 'form-line__label' }}"{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+                {% if raw is not defined %}
+                    {{ label }}{% if not isCheckbox|default(false) %}:{% endif %}
+                {% else %}
+                    {{ label|raw }}{% if not isCheckbox|default(false) %}:{% endif %}
+                {% endif %}
+                {% if required %}
+                    <span class="js-form-compulsory form-compulsory {{ isCheckbox|default(false) or isSimple|default(false) ? '' : 'form-line__compulsory' }} {{ compulsoryClass|default('') }}">
+                            <img src="{{ asset('public/admin/images/icons/star.png') }}" />
+                        </span>
+                {% endif %}
+
+                <div class="form-choice__info">
+                    {{- block('label_info_block') -}}
+                </div>
+            </label>
+        {% endif %}
+    {% endapply %}
+{% endblock form_label %}
