@@ -12,16 +12,6 @@ export default class PaymentTransportRelations {
                 this.addPaymentTransportRelation(item.paymentId, item.transportId);
             });
         }
-
-        $('.js-order-transport-input').each(function (i, checkbox) {
-            const $checkbox = $(checkbox);
-
-            if ($checkbox.hasClass('js-oversized-disabled')) {
-                $checkbox.prop('disabled', true);
-                $checkbox.prop('checked', false);
-                $checkbox.closest('label.box-chooser__item').addClass('box-chooser__item--inactive');
-            }
-        });
     }
 
     addPaymentTransportRelation (paymentId, transportId) {

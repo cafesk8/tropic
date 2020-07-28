@@ -17,11 +17,10 @@
             {% for child in form.transport %}
                 {% set choice = form.transport.vars.choices[child.vars.name] %}
                 {% set transportPrice = transportsPrices[choice.data.id] %}
-                {% set oversizedDisabled = (bulkyTransportRequired and not choice.data.bulkyAllowed) or (oversizedTransportRequired and not choice.data.oversizedAllowed) %}
                 <label class="box-chooser__item js-order-transport{% if loop.index > 3 %} js-additional-transport display-none{% endif %}">
                     <span class="box-chooser__item__check">
                         {{ form_widget(child, { attr: {
-                            class: 'css-radio js-order-transport-input' ~ (oversizedDisabled ? ' js-oversized-disabled' : ''),
+                            class: 'css-radio js-order-transport-input',
                             'data-id': choice.data.id,
                             'data-transport-pickup': choice.data.pickupPlace,
                             'data-choose-store': choice.data.chooseStore
