@@ -158,6 +158,7 @@ class ProductImageImportFacade
                     $this->logger->addInfo('Aktualizována pozice obrázku', [
                         'pohodaImage' => $pohodaImage,
                         'productId' => $product->getId(),
+                        'catnum' => $product->getCatnum(),
                     ]);
                 }
                 return;
@@ -177,16 +178,21 @@ class ProductImageImportFacade
             $this->logger->addInfo('Obrázek uložen', [
                 'pohodaImage' => $pohodaImage,
                 'productId' => $product->getId(),
+                'catnum' => $product->getCatnum(),
             ]);
         } catch (PohodaMServerException $ex) {
             $this->logger->addError('Problém s připojením na mServer', [
                 'message' => $ex->getMessage(),
                 'pohodaImage' => $pohodaImage,
+                'productId' => $product->getId(),
+                'catnum' => $product->getCatnum(),
             ]);
         } catch (\Exception $ex) {
             $this->logger->addError('Při importu došlo k chybě', [
                 'message' => $ex->getMessage(),
                 'pohodaImage' => $pohodaImage,
+                'productId' => $product->getId(),
+                'catnum' => $product->getCatnum(),
             ]);
         }
     }
