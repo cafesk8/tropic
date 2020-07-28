@@ -1,0 +1,81 @@
+{% block order_items_widget %}
+
+    {% import '@ShopsysFramework/Admin/Content/Order/orderItem.html.twig' as orderItemMacro %}
+    <div class="wrap-divider">
+        <h2>{{ 'Order items'|trans }}</h2>
+        <div class="form-line form-line--no-padd">
+            <div class="table-touch-always">
+                {{ form_errors(form.itemsWithoutTransportAndPayment) }}
+                <div class="table-touch-always__in">
+                    <table class="table-main table-main--with-inline-form">
+                        <thead>
+                            <tr>
+                                <th><span class="padding-left-10">{{ 'Name'|trans }}</span></th>
+                                <th class="text-right">{{ 'Catalog number'|trans }}</th>
+                                <th class="text-right"><span class="table-main__column-with-info">{{ 'Unit price including VAT'|trans }} ({{ currencySymbolByCurrencyId(order.currency.id) }})</span></th>
+                                <th class="text-right">{{ 'Amount'|trans }}</th>
+                                <th class="text-right">{{ 'Unit'|trans }}</th>
+                                <th class="text-right">{{ 'VAT rate (%)'|trans }}</th>
+                                <th class="text-center">
+                                    <span class="display-inline-block min-width-80">
+                                        {{ 'Set prices manually'|trans }}
+                                        <i class="svg svg-info cursor-help js-tooltip"
+                                           data-toggle="tooltip" data-placement="bottom"
+                                           title="{{ 'All prices have to be handled manually if checked, otherwise the unit price without VAT and the total prices for that item will be recalculated automatically.'|trans }}"
+                                        ></i>
+                                    </span>
+                                </th>
+                                <th class="text-right">{{ 'Unit price excluding VAT'|trans }} ({{ currencySymbolByCurrencyId(order.currency.id) }})</th>
+                                <th class="text-right">{{ 'Total including VAT'|trans }} ({{ currencySymbolByCurrencyId(order.currency.id) }})</th>
+                                <th class="text-right">{{ 'Total excluding VAT'|trans }} ({{ currencySymbolByCurrencyId(order.currency.id) }})</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody
+                            id="js-order-items"
+                            data-prototype="{{ orderItemMacro.orderItem(form.itemsWithoutTransportAndPayment.vars.prototype, null, null)|escape }}"
+                            data-order-product-add-url="{{ url('admin_order_addproduct', { orderId: order.id }) }}"
+                        >
+                            {% for item in order.itemsWithoutTransportAndPayment %}
+                                {% if item.isTypeProduct %}
+                                    {{ orderItemMacro.orderItem(form.itemsWithoutTransportAndPayment[item.id], item.id, item) }}
+                                {% else %}
+                                    {{ orderItemMacro.orderItem(form.itemsWithoutTransportAndPayment[item.id], item.id, null) }}
+                                {% endif %}
+                            {% endfor %}
+
+                            {{ orderItemMacro.orderPayment(form.orderPayment, paymentPricesWithVatByPaymentId, paymentVatPercentsByPaymentId) }}
+                            {{ orderItemMacro.orderTransport(form.orderTransport, transportPricesWithVatByTransportId, transportVatPercentsByTransportId) }}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="11">
+                                    <div class="padding-left-10">
+                                        <a id="js-order-item-add" href="#" class="btn btn--plus">
+                                            <i class="btn__icon">+</i>
+                                            {{ 'Add item'|trans }}
+                                        </a>
+                                        <a id="js-order-item-add-product" href="#" class="btn btn--plus" data-product-picker-url="{{ url('admin_productpicker_picksingle', {allowMainVariants: false}) }}">
+                                            <i class="btn__icon">+</i>
+                                            {{ 'Add product'|trans }}
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="8">
+                                    <div class="padding-left-10">
+                                        {{ 'Total'|trans }}:
+                                    </div>
+                                </th>
+                                <th class="text-right">{{ order.totalPriceWithVat|priceWithCurrency(order.currency) }}</th>
+                                <th class="text-right">{{ order.totalPriceWithoutVat|priceWithCurrency(order.currency) }}</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock order_items_widget %}
