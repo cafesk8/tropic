@@ -1,4 +1,7 @@
 {
+    "adoy/fastcgi-client": {
+        "version": "1.0.2"
+    },
     "arvenil/ninja-mutex": {
         "version": "0.4.1"
     },
@@ -296,6 +299,9 @@
     },
     "gopay/payments-sdk-php": {
         "version": "v1.4.1"
+    },
+    "gordalina/cachetool": {
+        "version": "4.1.1"
     },
     "grpc/grpc": {
         "version": "1.27.0"

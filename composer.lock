@@ -4,8 +4,45 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "21c477de7b7c42d5eb3b046f31bc44a3",
+    "content-hash": "98e29e8538f6e6f0af2196f4511c44ce",
     "packages": [
+        {
+            "name": "adoy/fastcgi-client",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adoy/PHP-FastCGI-Client.git",
+                "reference": "6d9a552f0206a1db7feb442824540aa6c55e5b27"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adoy/PHP-FastCGI-Client/zipball/6d9a552f0206a1db7feb442824540aa6c55e5b27",
+                "reference": "6d9a552f0206a1db7feb442824540aa6c55e5b27",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Adoy\\FastCGI\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pierrick Charron",
+                    "email": "pierrick@adoy.net"
+                }
+            ],
+            "description": "Lightweight, single file FastCGI client for PHP.",
+            "keywords": [
+                "fastcgi",
+                "fcgi"
+            ],
+            "time": "2019-12-11T13:49:21+00:00"
+        },
         {
             "name": "arvenil/ninja-mutex",
             "version": "0.6.0",
@@ -1151,17 +1188,18 @@
         },
         {
             "name": "devops/kubernetes-deployment",
-            "version": "1.3.5",
+            "version": "1.4",
             "source": {
                 "type": "git",
                 "url": "https://gitlab+deploy-token-4:yqMfHR2F4qc6rbFequP4@gitlab.shopsys.cz/devops/kubernetes-deployment.git",
-                "reference": "a97012711ce89b1a8c8eda1a6a5f70c32c7f529f"
+                "reference": "5014912500163f390add9e09602093da851b9013"
             },
             "require": {
                 "arvenil/ninja-mutex": "^0.4.1",
                 "doctrine/annotations": "^1.6.0",
                 "doctrine/common": "^2.8.1",
                 "doctrine/doctrine-bundle": "^1.8.1",
+                "gordalina/cachetool": "~4.0",
                 "league/flysystem": "^1.0",
                 "league/flysystem-aws-s3-v3": "^1.0",
                 "php": "^7.1",
@@ -1199,7 +1237,7 @@
                 "shopsys",
                 "symfony"
             ],
-            "time": "2020-05-20T16:24:01+00:00"
+            "time": "2020-07-28T06:44:32+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -3748,6 +3786,65 @@
                 "sdk"
             ],
             "time": "2019-07-11T12:34:04+00:00"
+        },
+        {
+            "name": "gordalina/cachetool",
+            "version": "4.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gordalina/cachetool.git",
+                "reference": "9ca25fe645dce263caeb6ae24527947f3e5035a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gordalina/cachetool/zipball/9ca25fe645dce263caeb6ae24527947f3e5035a0",
+                "reference": "9ca25fe645dce263caeb6ae24527947f3e5035a0",
+                "shasum": ""
+            },
+            "require": {
+                "adoy/fastcgi-client": "~1.0",
+                "monolog/monolog": "~1.0 || ~2.0",
+                "php": ">=7.1.0",
+                "psr/log": "~1.0",
+                "symfony/console": "~4.0",
+                "symfony/dependency-injection": "~4.0",
+                "symfony/finder": "~4.0",
+                "symfony/process": "~4.0",
+                "symfony/yaml": "~4.0"
+            },
+            "require-dev": {
+                "herrera-io/phar-update": "~2.0",
+                "phpunit/phpunit": "~7.0"
+            },
+            "bin": [
+                "bin/cachetool"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CacheTool\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "gordalina",
+                    "email": "samuel.gordalina@gmail.com"
+                }
+            ],
+            "description": "Manage your OPcache & APCu cache through the CLI",
+            "keywords": [
+                "Opcache",
+                "apcu",
+                "cache",
+                "fastcgi",
+                "fpm",
+                "opcode"
+            ],
+            "time": "2019-12-03T20:39:24+00:00"
         },
         {
             "name": "grpc/grpc",
