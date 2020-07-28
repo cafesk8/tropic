@@ -6,6 +6,7 @@ namespace App\Model\Transfer\Issue;
 
 use App\Model\Administrator\Administrator;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 
 class TransferIssueRepository
@@ -39,21 +40,18 @@ class TransferIssueRepository
             ->groupBy('ti.message, t.id, ti.groupId');
     }
 
-    public function deleteExcessiveTransferIssues()
+    public function deleteExcessiveTransferIssues(): void
     {
-        $oldIssues = $this->em
-            ->createQueryBuilder()
-            ->select('ti')
-            ->from(TransferIssue::class, 'ti')
-            ->setFirstResult(self::LIMIT_TRANSFER_ISSUES_COUNT)
-            ->orderBy('ti.createdAt', 'DESC')
-            ->getQuery()
-            ->execute();
-
-        foreach ($oldIssues as $oldIssue) {
-            $this->em->remove($oldIssue);
-        }
-        $this->em->flush($oldIssues);
+        $this->em->createNativeQuery(
+            'DELETE FROM transfer_issues 
+            WHERE id IN (
+                SELECT id 
+                FROM transfer_issues 
+                ORDER BY created_at DESC
+                OFFSET :limitTransferIssuesCount
+            )',
+            new ResultSetMapping()
+        )->setParameter('limitTransferIssuesCount', self::LIMIT_TRANSFER_ISSUES_COUNT)->execute();
     }
 
     /**
@@ -80,8 +78,10 @@ class TransferIssueRepository
      * @param string $message
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getTransferIssuesWithContextByGroupIdAndMessageQueryBuilderForDataGrid(string $groupId, string $message): QueryBuilder
-    {
+    public function getTransferIssuesWithContextByGroupIdAndMessageQueryBuilderForDataGrid(
+        string $groupId,
+        string $message
+    ): QueryBuilder {
         return $this->em->createQueryBuilder()
             ->select('ti')
             ->from(TransferIssue::class, 'ti')
