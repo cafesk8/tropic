@@ -56,7 +56,6 @@ use Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository;
  * @method \Doctrine\ORM\QueryBuilder getAllSellableUsingStockInStockQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
  * @method \App\Model\Product\Product[] getAtLeastSomewhereSellableVariantsByMainVariant(\App\Model\Product\Product $mainVariant)
  * @method \App\Model\Product\Product[] getOfferedByIds(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int[] $sortedProductIds)
- * @method \App\Model\Product\Product[] getListableByIds(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int[] $sortedProductIds)
  * @method \App\Model\Product\Product getOneByCatnumExcludeMainVariants(string $productCatnum)
  * @method \App\Model\Product\Product getOneByUuid(string $uuid)
  * @method array getAllOfferedProducts(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
@@ -753,5 +752,30 @@ class ProductRepository extends BaseProductRepository
             $queryBuilder->andWhere('f.flag IN (:flags)');
             $queryBuilder->setParameter('flags', $this->flagFacade->getSaleFlags());
         }
+    }
+
+    /**
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param int[] $sortedProductIds
+     * @return \App\Model\Product\Product[]
+     */
+    public function getListableByIds(int $domainId, BasePricingGroup $pricingGroup, array $sortedProductIds): array
+    {
+        if (count($sortedProductIds) === 0) {
+            return [];
+        }
+
+        $queryBuilder = $this->getAllListableQueryBuilder($domainId, $pricingGroup);
+        $queryBuilder
+            ->andWhere('p.id IN (:productIds)')
+            ->setParameter('productIds', $sortedProductIds)
+            ->addSelect('field(p.id, ' . implode(',', $sortedProductIds) . ') AS HIDDEN relevance')
+            ->orderBy('relevance');
+
+        $query = $queryBuilder->getQuery();
+        $query->useQueryCache(false);
+
+        return $query->execute();
     }
 }
