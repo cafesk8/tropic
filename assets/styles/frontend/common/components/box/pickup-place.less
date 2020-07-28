@@ -7,11 +7,8 @@
     &__search {
         margin: 20px 0;
 
-        &__text {
-            margin-bottom: 5px;
-        }
-
         &__input {
+            position: relative;
             display: flex;
             flex-direction: row;
 
@@ -23,11 +20,8 @@
             }
 
             &__button {
+                border-radius: 0 @radius @radius 0;
                 width: @box-pick-up-place-button-width;
-
-                button {
-                    border-radius: 0 @radius-small @radius-small 0;
-                }
             }
         }
     }

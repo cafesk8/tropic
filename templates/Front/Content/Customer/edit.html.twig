@@ -12,112 +12,114 @@
 {% block main_content %}
 <div class="web__line">
     <div class="web__container">
-        <h1 class="in-title in-title--big in-title--center">{{ 'Personal data'|trans }}</h1>
-        {{ form_start(form) }}
-            {{ form_errors(form) }}
+        <div class="wrap-page">
+            <h1 class="in-title in-title--big in-title--center">{{ 'Personal data'|trans }}</h1>
+            {{ form_start(form) }}
+                {{ form_errors(form) }}
 
-            <div id="{{ form.customerUserData.vars.id }}">
-                <div class="wrap-box">
-                    <h2 class="wrap-box__title">{{ 'Personal data'|trans }}</h2>
-                    <div class="wrap-box__in">
-                        {{ form_row(form.customerUserData.firstName, { label: 'First name'|trans}) }}
-                        {{ form_row(form.customerUserData.lastName, { label: 'Last name'|trans}) }}
-                        {{ form_row(form.customerUserData.telephone, { label: 'Telephone'|trans}) }}
-                        {{ form_row(form.customerUserData.email, { label: 'E-mail'|trans}) }}
-                        <p>
-                            {{ 'To prevent the possibility of account theft, the change of the e-mail address must be dealt with individually. If your e-mail address has changed, please contact us.'|trans }}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="wrap-box">
-                    <h2 class="wrap-box__title">{{ 'Changing password'|trans }}</h2>
-                    <div class="wrap-box__in" id="{{ form.customerUserData.password.vars.id }}">
-                        <div class="form-line">
-                            <div class="form-line__input">
-                                <label class="input-label">{{ 'Heslo'|trans }}</label>
-                                {{ form_widget(form.customerUserData.password.first, { label: 'Password'|trans}) }}
-                                <i class="svg svg-info in-icon in-icon--info js-tooltip"
-                                    data-toggle="tooltip"
-                                    data-placement="right"
-                                    title=""
-                                    data-original-title="{{ 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans }}">
-                                </i>
-                            </div>
-                            <div class="form-line__error">
-                                {{ form_errors(form.customerUserData.password.first, { label: 'Password'|trans}) }}
-                            </div>
-                        </div>
-                        {{ form_row(form.customerUserData.password.second, { label: 'Password again'|trans}) }}
-                    </div>
-                </div>
-            </div>
-
-            <div id="{{ form.billingAddressData.vars.id }}" class="js-billing-address-form">
-                <div class="wrap-box">
-                    <h2 class="wrap-box__title">{{ 'Company data'|trans }}</h2>
-                    <div class="wrap-box__in">
-                        {{ form_widget(form.billingAddressData.companyCustomer, {
-                        attr: { class: 'css-checkbox js-checkbox-toggle js-billing-address-company-customer', 'data-checkbox-toggle-container-id': 'js-company-fields' }})
-                        }}
-                        <label class="css-checkbox__image" for="{{ form.billingAddressData.companyCustomer.vars.id }}">
-                            {{ 'I buy on company behalf'|trans }}
-                        </label>
-                        <div id="js-company-fields" class="margin-top-20" style="display: none;">
-                            {{ form_row(form.billingAddressData.companyName, { label: 'Company'|trans}) }}
-                            {{ form_row(form.billingAddressData.companyNumber, { label: 'Company number'|trans}) }}
-                            {{ form_row(form.billingAddressData.companyTaxNumber, { label: 'Tax number'|trans}) }}
+                <div id="{{ form.customerUserData.vars.id }}">
+                    <div class="wrap-box">
+                        <h3 class="wrap-box__title">{{ 'Personal data'|trans }}</h3>
+                        <div class="wrap-box__in">
+                            {{ form_row(form.customerUserData.firstName, { label: 'First name'|trans}) }}
+                            {{ form_row(form.customerUserData.lastName, { label: 'Last name'|trans}) }}
+                            {{ form_row(form.customerUserData.telephone, { label: 'Telephone'|trans}) }}
+                            {{ form_row(form.customerUserData.email, { label: 'E-mail'|trans}) }}
+                            <p>
+                                {{ 'To prevent the possibility of account theft, the change of the e-mail address must be dealt with individually. If your e-mail address has changed, please contact us.'|trans }}
+                            </p>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="wrap-box margin-top-20">
-                <h2 class="wrap-box__title">{{ 'Fakturační adresa'|trans }}</h2>
-
-                <div class="wrap-box__in">
-                    {{ form_row(form.billingAddressData.street, { label: 'Street'|trans}) }}
-                    {{ form_row(form.billingAddressData.city, { label: 'City'|trans}) }}
-                    {{ form_row(form.billingAddressData.postcode, { label: 'Postcode'|trans}) }}
-                    {{ form_row(form.billingAddressData.country, { label: 'Country'|trans}) }}
-                </div>
-            </div>
-
-            <div id="{{ form.deliveryAddressData.vars.id }}" class="js-delivery-address-form">
-                <div class="wrap-box">
-                    <h2 class="wrap-box__title">{{ 'Doručovací adresy'|trans }}</h2>
-                    <div class="wrap-box__in">
-                        {{ form_row(form.customerUserData.defaultDeliveryAddress) }}
-                        {{ form_widget(form.deliveryAddressData.addressFilled, {
-                            attr: { class: 'css-checkbox js-checkbox-toggle js-delivery-address-address-filled', 'data-checkbox-toggle-container-id': 'js-delivery-address-fields' }})
-                        }}
-                        <label class="css-checkbox__image" for="{{ form.deliveryAddressData.addressFilled.vars.id }}">
-                            {{ 'Chci zadat novou doručovací adresu'|trans }}
-                        </label>
-                        <div id="js-delivery-address-fields" class="margin-top-20">
-                            {{ form_row(form.deliveryAddressData.companyName, { label: 'Company'|trans}) }}
-                            {{ form_row(form.deliveryAddressData.street, { label: 'Street'|trans}) }}
-                            {{ form_row(form.deliveryAddressData.city, { label: 'City'|trans}) }}
-                            {{ form_row(form.deliveryAddressData.postcode, { label: 'Postcode'|trans}) }}
-
-                            {% if isEnglishDomain() is same as (true) %}
-                                {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans}) }}
-                            {% else %}
-                                <div class="display-none">
-                                    {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans }) }}
+                    <div class="wrap-box">
+                        <h3 class="wrap-box__title">{{ 'Changing password'|trans }}</h3>
+                        <div class="wrap-box__in" id="{{ form.customerUserData.password.vars.id }}">
+                            <div class="form-line">
+                                <div class="form-line__input">
+                                    <label class="input-label">{{ 'Heslo'|trans }}</label>
+                                    {{ form_widget(form.customerUserData.password.first, { label: 'Password'|trans}) }}
+                                    <i class="svg svg-info in-icon in-icon--info js-tooltip"
+                                        data-toggle="tooltip"
+                                        data-placement="right"
+                                        title=""
+                                        data-original-title="{{ 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans }}">
+                                    </i>
                                 </div>
-                            {% endif %}
-
+                                <div class="form-line__error">
+                                    {{ form_errors(form.customerUserData.password.first, { label: 'Password'|trans}) }}
+                                </div>
+                            </div>
+                            {{ form_row(form.customerUserData.password.second, { label: 'Password again'|trans}) }}
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="text-right margin-bottom-20">
-                {{ form_widget(form.save, { label: 'Save changes'|trans}) }}
-            </div>
+                <div id="{{ form.billingAddressData.vars.id }}" class="js-billing-address-form">
+                    <div class="wrap-box">
+                        <h3 class="wrap-box__title">{{ 'Company data'|trans }}</h3>
+                        <div class="wrap-box__in">
+                            {{ form_widget(form.billingAddressData.companyCustomer, {
+                            attr: { class: 'css-checkbox js-checkbox-toggle js-billing-address-company-customer', 'data-checkbox-toggle-container-id': 'js-company-fields' }})
+                            }}
+                            <label class="css-checkbox__image" for="{{ form.billingAddressData.companyCustomer.vars.id }}">
+                                {{ 'I buy on company behalf'|trans }}
+                            </label>
+                            <div id="js-company-fields" class="margin-top-20" style="display: none;">
+                                {{ form_row(form.billingAddressData.companyName, { label: 'Company'|trans}) }}
+                                {{ form_row(form.billingAddressData.companyNumber, { label: 'Company number'|trans}) }}
+                                {{ form_row(form.billingAddressData.companyTaxNumber, { label: 'Tax number'|trans}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        {{ form_end(form) }}
+                <div class="wrap-box margin-top-20">
+                    <h3 class="wrap-box__title">{{ 'Fakturační adresa'|trans }}</h3>
+
+                    <div class="wrap-box__in">
+                        {{ form_row(form.billingAddressData.street, { label: 'Street'|trans}) }}
+                        {{ form_row(form.billingAddressData.city, { label: 'City'|trans}) }}
+                        {{ form_row(form.billingAddressData.postcode, { label: 'Postcode'|trans}) }}
+                        {{ form_row(form.billingAddressData.country, { label: 'Country'|trans}) }}
+                    </div>
+                </div>
+
+                <div id="{{ form.deliveryAddressData.vars.id }}" class="js-delivery-address-form">
+                    <div class="wrap-box">
+                        <h3 class="wrap-box__title">{{ 'Doručovací adresy'|trans }}</h3>
+                        <div class="wrap-box__in">
+                            {{ form_row(form.customerUserData.defaultDeliveryAddress) }}
+                            {{ form_widget(form.deliveryAddressData.addressFilled, {
+                                attr: { class: 'css-checkbox js-checkbox-toggle js-delivery-address-address-filled', 'data-checkbox-toggle-container-id': 'js-delivery-address-fields' }})
+                            }}
+                            <label class="css-checkbox__image" for="{{ form.deliveryAddressData.addressFilled.vars.id }}">
+                                {{ 'Chci zadat novou doručovací adresu'|trans }}
+                            </label>
+                            <div id="js-delivery-address-fields" class="margin-top-20">
+                                {{ form_row(form.deliveryAddressData.companyName, { label: 'Company'|trans}) }}
+                                {{ form_row(form.deliveryAddressData.street, { label: 'Street'|trans}) }}
+                                {{ form_row(form.deliveryAddressData.city, { label: 'City'|trans}) }}
+                                {{ form_row(form.deliveryAddressData.postcode, { label: 'Postcode'|trans}) }}
+
+                                {% if isEnglishDomain() is same as (true) %}
+                                    {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans}) }}
+                                {% else %}
+                                    <div class="display-none">
+                                        {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans }) }}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-right margin-bottom-20">
+                    {{ form_widget(form.save, { label: 'Save changes'|trans}) }}
+                </div>
+
+            {{ form_end(form) }}
+        </div>
     </div>
 </div>
 {% endblock %}

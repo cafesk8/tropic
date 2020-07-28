@@ -7,76 +7,77 @@
 {% block main_content %}
 <div class="web__line">
     <div class="web__container">
+        <div class="wrap-page">
+            <h1 class="in-title in-title--big in-title--center">{{ 'Registration'|trans }}</h1>
 
-        <h1 class="in-title in-title--big in-title--center">{{ 'Registration'|trans }}</h1>
+            <div class="wrap-well wrap-well--big-padding">
+                {{ form_errors(form) }}
 
-        <div class="wrap-well wrap-well--big-padding">
-            {{ form_errors(form) }}
-
-            {{ form_start(form) }}
-                <div class="wrap-article__row">
-                    <div class="wrap-article__row__half">
-                        {{ form_row(form.customerUserData.firstName, { label: 'First name'|trans, errors_attr: { class: 'form-error--under' } }) }}
+                {{ form_start(form) }}
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.customerUserData.firstName, { label: 'First name'|trans, errors_attr: { class: 'form-error--under' } }) }}
+                        </div>
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.customerUserData.lastName, { label: 'Last name'|trans, errors_attr: { class: 'form-error--under' }}) }}
+                        </div>
                     </div>
-                    <div class="wrap-article__row__half">
-                        {{ form_row(form.customerUserData.lastName, { label: 'Last name'|trans, errors_attr: { class: 'form-error--under' }}) }}
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__full">
+                            <div class="form-line">
+                                <div class="form-line__input">
+                                    <label class="input-label" for="{{ form.customerUserData.email.vars.id }}">
+                                        {{ 'E-mail'|trans }}
+                                    </label>
+                                    {{ form_widget(form.customerUserData.email, { attr: {'data-request-url' : url('front_registration_exists_email') } }) }}
+                                </div>
+                                <div class="form-line__error">
+                                    {{ form_errors(form.customerUserData.email, {errors_attr: { class: 'form-error--under' }}) }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="wrap-article__row">
-                    <div class="wrap-article__row__full">
-                        <div class="form-line">
-                            <div class="form-line__input">
-                                <label class="input-label" for="{{ form.customerUserData.email.vars.id }}">
-                                    {{ 'E-mail'|trans }}
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.customerUserData.password.first, {
+                                label: 'Password'|trans,
+                                errors_attr: { class: 'form-error--under' },
+                                icon: {
+                                    class: 'in-icon in-icon--info js-tooltip',
+                                    title: 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans
+                                }
+                            }) }}
+                        </div>
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.customerUserData.password.second, { label: 'Password again'|trans, errors_attr: { class: 'form-error--under' } }) }}
+                        </div>
+                    </div>
+
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__full">
+                            <div class="form-line">
+                                {{ form_widget(form.privacyPolicy, { attr: {class: 'css-checkbox'}}) }}
+
+                                <label class="css-checkbox__image margin-bottom-10" for="{{ form.privacyPolicy.vars.id }}">
+                                    {% if privacyPolicyArticle is not null %}
+                                        {% set articleUrl = url('front_article_detail', {'id': privacyPolicyArticle.id}) %}
+                                        {{ "Souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobních údajů</a> a chci odebírat novinky a akční nabídky"|trans({'%url%': articleUrl})|raw }}
+                                    {% else %}
+                                        {{ 'Souhlasím se zpracováním osobních údajů a chci odebírat novinky a akční nabídky'|trans }}
+                                    {% endif %}
                                 </label>
-                                {{ form_widget(form.customerUserData.email, { attr: {'data-request-url' : url('front_registration_exists_email') } }) }}
-                            </div>
-                            <div class="form-line__error">
-                                {{ form_errors(form.customerUserData.email, {errors_attr: { class: 'form-error--under' }}) }}
+                                {{ form_errors(form.privacyPolicy, {errors_attr: { class: 'form-error--under' }}) }}
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="wrap-article__row">
-                    <div class="wrap-article__row__half">
-                        {{ form_row(form.customerUserData.password.first, {
-                            label: 'Password'|trans,
-                            errors_attr: { class: 'form-error--under' },
-                            icon: {
-                                class: 'in-icon in-icon--info js-tooltip',
-                                title: 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans
-                            }
-                        }) }}
-                    </div>
-                    <div class="wrap-article__row__half">
-                        {{ form_row(form.customerUserData.password.second, { label: 'Password again'|trans, errors_attr: { class: 'form-error--under' } }) }}
-                    </div>
-                </div>
-
-                <div class="wrap-article__row">
-                    <div class="wrap-article__row__full">
-                        <div class="form-line">
-                            {{ form_widget(form.privacyPolicy, { attr: {class: 'css-checkbox'}}) }}
-
-                            <label class="css-checkbox__image margin-bottom-10" for="{{ form.privacyPolicy.vars.id }}">
-                                {% if privacyPolicyArticle is not null %}
-                                    {% set articleUrl = url('front_article_detail', {'id': privacyPolicyArticle.id}) %}
-                                    {{ "Souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobních údajů</a> a chci odebírat novinky a akční nabídky"|trans({'%url%': articleUrl})|raw }}
-                                {% else %}
-                                    {{ 'Souhlasím se zpracováním osobních údajů a chci odebírat novinky a akční nabídky'|trans }}
-                                {% endif %}
-                            </label>
-                            {{ form_errors(form.privacyPolicy, {errors_attr: { class: 'form-error--under' }}) }}
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__full text-center margin-top-20">
+                            {{ form_widget(form.save, { label: 'Register'|trans, attr: {class: 'btn btn--success'} }) }}
                         </div>
                     </div>
-                </div>
-                <div class="wrap-article__row">
-                    <div class="wrap-article__row__full text-center margin-top-20">
-                        {{ form_widget(form.save, { label: 'Register'|trans, attr: {class: 'btn btn--success'} }) }}
-                    </div>
-                </div>
 
-            {{ form_end(form) }}
+                {{ form_end(form) }}
+            </div>
         </div>
     </div>
 </div>

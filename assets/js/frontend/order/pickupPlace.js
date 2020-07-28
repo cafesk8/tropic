@@ -74,7 +74,7 @@ import windowClose from '../utils/windowFunctions';
                 /* eslint-disable no-new */
                 const $window = new Window({
                     content: data,
-                    cssClass: 'window-popup--standard box-pickup-place'
+                    cssClass: 'window-popup--wide box-pickup-place'
                 });
                 $window.getWindow().data('transportInput', $selectedTransportInput);
             }

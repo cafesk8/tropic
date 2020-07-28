@@ -176,21 +176,25 @@
             tr td {
                 background-color: @color-box;
                 font-weight: 700;
-                text-align: center;
             }
         }
 
         tr td {
             padding: 10px;
             line-height: 16px;
-            text-align: center;
 
             font-size: @in-user-text-font-size;
             border: 1px solid @color-border;
+            word-break: break-all;
 
             &:first-child {
                 text-align: left;
             }
         }
+    }
+
+    iframe {
+        width: 100%;
+        max-width: 560px;
     }
 }

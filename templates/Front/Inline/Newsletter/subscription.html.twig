@@ -28,9 +28,9 @@
                                 <span class="css-checkbox__image css-checkbox__image--vertical">
                                     {% if privacyPolicyArticle is not null %}
                                         {% set articleUrl = url('front_article_detail', {'id': privacyPolicyArticle.id}) %}
-                                        {{ "Chci odebírat novinky a souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobním údajů</a>"|trans({'%url%': articleUrl})|raw }}
+                                        {{ "Chci odebírat novinky a souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobních údajů</a>"|trans({'%url%': articleUrl})|raw }}
                                     {% else %}
-                                        {{ 'Chci odebírat novinky a souhlasím se zpracováním osobním údajů'|trans }}
+                                        {{ 'Chci odebírat novinky a souhlasím se zpracováním osobních údajů'|trans }}
                                     {% endif %}
                                 </span>
                             </label>

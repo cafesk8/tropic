@@ -64,7 +64,7 @@
                             </div>
 
                             <div class="box-order__info__content__right">
-                                <h3 class="box-order__info__title"><strong>3% sleva</strong> za registraci platí <strong>již na tento nákup!</strong></h3>
+                                <h3 class="box-order__info__title"><strong>{{ '3% sleva'|trans }}</strong> {{ 'za registraci může platit'|trans }} <strong>{{ 'již na tento nákup!'|trans }}</strong></h3>
 
                                 <div class="js-order-registration-fields display-none">
                                     {{ form_widget(form.registration, {
@@ -185,7 +185,12 @@
 
                             {% if form.disallowHeurekaVerifiedByCustomers is defined %}
                                 <div class="margin-top-10">
-                                    {{ form_row(form.disallowHeurekaVerifiedByCustomers) }}
+                                    {{ form_widget(form.disallowHeurekaVerifiedByCustomers, {
+                                        attr: { class: 'css-checkbox' }})
+                                    }}
+                                    <label for="{{ form.disallowHeurekaVerifiedByCustomers.vars.id }}" class="css-checkbox__image">
+                                        {{ 'Nesouhlasím se zasláním objednávky do programu Heureka Ověřeno zákazníky'|trans }}
+                                    </label>
                                 </div>
                             {% endif %}
                         </div>

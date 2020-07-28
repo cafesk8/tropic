@@ -231,53 +231,47 @@
     <div class="{{ listCssClass }}" data-count-of-product="{{ products|length }}">
         {% for product in products %}
             <div class="{{ listCssClass }}__item">
-                <a href="{{ url('front_product_detail', {'id': product.id}) }}">
-                    <div class="{{ listCssClass }}__item__image dont-print">
-                        {{ image(product.productForCreatingImageAccordingToVariant, { size: 'listDetailArticle', alt: product.name, lazy: true }) }}
-                    </div>
+                <a class="{{ listCssClass }}__item__image dont-print" href="{{ url('front_product_detail', {'id': product.id}) }}">
+                    {{ image(product.productForCreatingImageAccordingToVariant, { size: 'listDetailArticle', alt: product.name, lazy: true }) }}
                 </a>
 
+                <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__title" href="{{ url('front_product_detail', {'id': product.id}) }}">
+                    {{ product.name|striptags|raw }}
+                <{{ '/' ~ productHeadingTagName|default('h2') }}>
+
                 <div class="{{ listCssClass }}__item__info">
-                    <div class="{{ listCssClass }}__item__info__content">
-                        <div class="{{ listCssClass }}__item__info__content__left">
-                            <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title" href="{{ url('front_product_detail', {'id': product.id}) }}">
-                                {{ product.name|striptags|raw }}
-                            <{{ '/' ~ productHeadingTagName|default('h2') }}>
-                        </div>
-
-                        <div class="{{ listCssClass }}__item__info__content__right">
-                            {% set productSellingPrice = getProductSellingPrice(product) %}
-
-                            {% if productSellingPrice is not null %}
-                                <div class="{{ listCssClass }}__item__info__price">
-                                    <div class="{{ listCssClass }}__item__info__price__main">
-                                        {% if productSellingPrice.priceFrom %}
-                                            {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
-                                        {% else %}
-                                            {{ productSellingPrice.priceWithVat|price }}
-                                        {% endif %}
-                                        
-                                        {% if productSellingPrice.hasHigherStandardPrice %}
-                                            <div class="{{ listCssClass }}__item__info__price__old">
-                                                {{ productSellingPrice.standardPrice.priceWithVat|price }}
-                                            </div>
-                                        {% endif %}
-                                    </div>
+                    <div class="{{ listCssClass }}__item__info__left">
+                        {% if not product.isMainVariant and product.calculatedAvailability %}
+                            {% if not product.isMainVariant and product.calculatedAvailability %}
+                                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product, setDisplayNone: false, type: 'small' } %}
+                            {% else %}
+                                <div class="in-availability">
+                                    {{ 'Dostupnost dle varianty'|trans }}
                                 </div>
                             {% endif %}
-                            
-                            {% if not product.isMainVariant and product.calculatedAvailability %}
-                                {% if not product.isMainVariant and product.calculatedAvailability %}
-                                    {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product, setDisplayNone: false, type: 'small' } %}
-                                {% else %}
-                                    <div class="in-availability">
-                                        {{ 'Dostupnost dle varianty'|trans }}
-                                    </div>
-                                {% endif %}
-                            {% endif %}
-                        </div>
+                        {% endif %}
                     </div>
-                    <div class="{{ listCssClass }}__item__add-button">
+
+                    <div class="{{ listCssClass }}__item__info__right">
+                        {% set productSellingPrice = getProductSellingPrice(product) %}
+
+                        {% if productSellingPrice is not null %}
+                            <div class="{{ listCssClass }}__item__info__price">
+                                <div class="{{ listCssClass }}__item__info__price__main">
+                                    {% if productSellingPrice.priceFrom %}
+                                        {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                    {% else %}
+                                        {{ productSellingPrice.priceWithVat|price }}
+                                    {% endif %}
+                                    
+                                    {% if productSellingPrice.hasHigherStandardPrice %}
+                                        <div class="{{ listCssClass }}__item__info__price__old">
+                                            {{ productSellingPrice.standardPrice.priceWithVat|price }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
                         {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, showAmountInput: false, type: 'detailArticle', displayVariantSelectButton: true})) }}
                     </div>
                 </div>

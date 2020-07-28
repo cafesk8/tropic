@@ -12,7 +12,10 @@
     flex-direction: row;
     flex-wrap: wrap;
     flex: 1;
-    margin-bottom: -@list-order-gifts-item-gap-bottom;
+
+    @media @query-md {
+        margin-bottom: -@list-order-gifts-item-gap-bottom;
+    }
 
     &__item {
         display: flex;

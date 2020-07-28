@@ -26,18 +26,18 @@ import Timeout from 'framework/common/utils/Timeout';
             const types = {
                 'last-visited': [1, 2, 3, 3, 5],
                 'top-products': [1, 2, 2, 3, 4],
-                'best-selling': [1, 2, 3, 4, 6],
+                'best-selling': [1, 2, 2, 3, 4],
                 'new-products': [1, 2, 2, 3, 4],
-                'accessories-products': [1, 2, 3, 4, 4],
+                'accessories-products': [1, 2, 2, 3, 4],
                 'products-set': [1, 2, 3, 2, 3]
             };
 
             const slideTypes = {
                 'last-visited': [1, 2, 3, 3, 5],
                 'top-products': [1, 2, 2, 3, 4],
-                'best-selling': [1, 2, 3, 4, 6],
+                'best-selling': [1, 2, 2, 3, 4],
                 'new-products': [1, 2, 2, 3, 4],
-                'accessories-products': [1, 2, 3, 4, 4],
+                'accessories-products': [1, 2, 2, 3, 4],
                 'products-set': [1, 1, 1, 1, 1]
             };
 
