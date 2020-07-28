@@ -19,7 +19,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 
 class ProductImportFacade
 {
-    public const PRODUCT_EXPORT_MAX_BATCH_LIMIT = 1000;
+    public const PRODUCT_EXPORT_MAX_BATCH_LIMIT = 100;
 
     /**
      * @var \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade
@@ -50,6 +50,11 @@ class ProductImportFacade
      * @var \App\Model\Product\Transfer\ProductInfoQueueImportFacade
      */
     private $productInfoQueueImportFacade;
+
+    /**
+     * @var int[]
+     */
+    private array $updatedPohodaProductIds = [];
 
     /**
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
@@ -84,38 +89,53 @@ class ProductImportFacade
         $pohodaProducts = $this->pohodaProductExportFacade->findPohodaProductsByPohodaIds(
             $changedPohodaProductIds
         );
-        $updatedPohodaProductIds = [];
-        if (count($pohodaProducts) === 0) {
-            $this->logger->addInfo('Nejsou žádná data ve frontě ke zpracování');
-        } else {
-            $this->logger->addInfo('Proběhne uložení produktů z fronty', ['pohodaProductsCount' => count($pohodaProducts)]);
-            $updatedPohodaProductIds = $this->updateProductsByPohodaProducts($pohodaProducts);
+        try {
+            if (count($pohodaProducts) === 0) {
+                $this->logger->addInfo('Nejsou žádná data ve frontě ke zpracování');
+            } else {
+                $this->logger->addInfo('Proběhne uložení produktů z fronty', [
+                    'pohodaProductsCount' => count($pohodaProducts),
+                ]);
+                $this->updateProductsByPohodaProducts($pohodaProducts);
+            }
+        } catch (Exception $exception) {
+            $this->logger->addError('Import produktů selhal', [
+                'exceptionMessage' => $exception->getMessage(),
+            ]);
+        } finally {
+            $this->logger->addInfo('Proběhne smazání produktů z fronty', [
+                'updatedPohodaProductIdsCount' => count($this->updatedPohodaProductIds),
+            ]);
+            $this->productInfoQueueImportFacade->removeProductsFromQueue($this->updatedPohodaProductIds);
+
+            $this->logger->addInfo('Proběhne nové přidání produktů do fronty - produkty, které je nutné zpracovat znova', [
+                'productIdsToQueueAgainCount' => count($this->pohodaProductMapper->getProductIdsToQueueAgain()),
+            ]);
+            $this->productInfoQueueImportFacade->insertChangedPohodaProductIds(
+                $this->pohodaProductMapper->getProductIdsToQueueAgain(),
+                new DateTime()
+            );
+
+            $this->logger->persistTransferIssues();
         }
-        $this->productInfoQueueImportFacade->removeProductsFromQueue($updatedPohodaProductIds);
-        $this->productInfoQueueImportFacade->insertChangedPohodaProductIds($this->pohodaProductMapper->getProductIdsToQueueAgain(), new DateTime());
-        $this->logger->persistTransferIssues();
 
         return $changedPohodaProductIds;
     }
 
     /**
      * @param array $pohodaProducts
-     * @return int[]
      */
-    private function updateProductsByPohodaProducts(array $pohodaProducts): array
+    private function updateProductsByPohodaProducts(array $pohodaProducts): void
     {
-        $updatedPohodaProductIds = [];
         foreach ($pohodaProducts as $pohodaProduct) {
             $product = $this->productFacade->findByPohodaId($pohodaProduct->pohodaId);
 
             if ($product !== null) {
-                $updatedPohodaProductIds[] = $this->editProductByPohodaProduct($product, $pohodaProduct);
+                $this->updatedPohodaProductIds[] = $this->editProductByPohodaProduct($product, $pohodaProduct);
             } else {
-                $updatedPohodaProductIds[] = $this->createProductByPohodaProduct($pohodaProduct);
+                $this->updatedPohodaProductIds[] = $this->createProductByPohodaProduct($pohodaProduct);
             }
         }
-
-        return array_filter($updatedPohodaProductIds);
     }
 
     /**
