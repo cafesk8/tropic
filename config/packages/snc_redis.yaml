@@ -48,4 +48,5 @@ snc_redis:
                 prefix: '%env(REDIS_PREFIX)%%build-version%:cache:twig:'
     session:
         client: 'session'
+        ttl: 604800
         prefix: '%env(REDIS_PREFIX)%session:'
