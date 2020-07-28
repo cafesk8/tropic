@@ -1,5 +1,5 @@
 <div class="web__line">
-    <div class="web__container modal">
+    <div class="web__container web__container--full-width">
         <h1 class="in-title in-title--big in-title--center">
             {% if article.seoH1 is not null %}
                 {{ article.seoH1 }}
@@ -7,7 +7,7 @@
                 {{ article.name }}
             {% endif %}
         </h1>
-        <div class="in-article__container modal">
+        <div class="in-article__container in-article__container--full-width">
             <div class="in-article__date">{{ article.createdAt|formatDate }}</div>
             <div class="in-article__text in-user-text">
                 {{ article.text|raw }}

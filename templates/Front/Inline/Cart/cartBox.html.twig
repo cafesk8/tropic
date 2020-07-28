@@ -77,7 +77,7 @@
                         </ul>
 
                         {% for promoCodeId, promoCode in orderPreview.promoCodesIndexedById %}
-                            <div class="cart-detail__promo-code__item">
+                            <div class="cart-detail__promo-code">
                                 {{ 'Sleva'|trans }}
                                 <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': promoCode.code }) }}
                                 <span class="cart-detail__promo-code__discount">

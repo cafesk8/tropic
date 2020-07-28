@@ -14,7 +14,7 @@ export default class ProductFilterBox {
 
     showFilterBox ($parameterContainer) {
         $parameterContainer.find('.js-product-filter-box-label').each(function () {
-            $(this).removeClass('inactive');
+            $(this).removeClass('display-none');
         });
 
         $parameterContainer.find('.js-product-filter-box-button-show').toggleClass('display-none');
@@ -25,7 +25,7 @@ export default class ProductFilterBox {
         $parameterContainer.find('.js-product-filter-box-label').each(function () {
             const $choiceInput = $(this).find('input');
             if ($choiceInput.prop('checked') === false) {
-                $(this).addClass('inactive');
+                $(this).addClass('display-none');
             }
         });
 

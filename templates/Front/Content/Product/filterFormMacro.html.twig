@@ -103,7 +103,7 @@
                     </div>
                     <div class="box-filter__choice__content" id="filter-brand">
                         {% for brandForm in filterForm.brands %}
-                            <label class="form-choice form-choice--block{% if loop.index > visibleChoicesLimit %} js-product-filter-box-label{% endif %}{% if not brandForm.vars.checked %} inactive{% endif %}">
+                            <label class="form-choice form-choice--block{% if loop.index > visibleChoicesLimit %} js-product-filter-box-label display-none{% endif %}">
                                 {{ form_widget(brandForm, { attr: { class: 'form-choice__input css-checkbox', 'data-filter-name-with-entity-id': filterForm.brands.vars.id ~ '_' ~ brandForm.vars.value } }) }}
                                 <span class="form-choice__label css-checkbox__image">
                                     <span class="form-choice__label__text">{{ brandForm.vars.label }}</span>
