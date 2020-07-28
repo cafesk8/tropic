@@ -108,3 +108,5 @@ parameters:
     ecomail_api_key: 5ec3934b9d96b5ec3934b9d96e
     ecomail_list_id: 2
     ecomail_list_id_sk: 3
+
+    env(CDN_DOMAIN): '//'

@@ -22,9 +22,6 @@
 
         {{ render(controller('App\\Controller\\Front\\HeurekaController:embedWidgetAction')) }}
 
-        {{ encore_entry_script_tags('frontend') }}
-        {% block javascripts %}{% endblock %}
-
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('public/frontend/images/favicons/apple-touch-icon.png') }}">
         <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('public/frontend/images/favicons/favicon-32x32.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('public/frontend/images/favicons/favicon-16x16.png') }}">
@@ -46,7 +43,9 @@
 
         {% block html_body %}{% endblock %}
 
-        {% block javascripts_bottom %}{% endblock %}
+        {{ encore_entry_script_tags('frontend') }}
+        {% block javascripts %}{% endblock %}
+
         {{ js_validator_config() }}
         {{ init_js_validation() }}
 

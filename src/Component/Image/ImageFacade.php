@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Component\Image;
 
+use Shopsys\Cdn\Component\Image\ImageFacade as BaseImageFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
-
-use Shopsys\FrameworkBundle\Component\Image\ImageFacade as BaseImageFacade;
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
