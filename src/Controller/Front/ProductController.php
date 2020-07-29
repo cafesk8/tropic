@@ -324,7 +324,7 @@ class ProductController extends FrontBaseController
             'filterForm' => $filterForm->createView(),
             'filterFormSubmitted' => $filterForm->isSubmitted(),
             'visibleChildren' => $visibleChildren,
-            'saleCategoryFriendlyUrl' => null,
+            'isSaleCategory' => false,
             'priceRange' => $productFilterConfig->getPriceRange(),
             'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
                 $category,
@@ -344,10 +344,10 @@ class ProductController extends FrontBaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $friendlyUrl
+     * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listBySaleCategoryAction(Request $request, string $friendlyUrl): Response
+    public function listBySaleCategoryAction(Request $request, int $id): Response
     {
         $params = $request->query->get('product_filter_form');
         foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
@@ -355,8 +355,7 @@ class ProductController extends FrontBaseController
         }
         $request->query->set('product_filter_form', $params);
 
-        /** @var \App\Model\Category\Category $category */
-        $category = $this->categoryFacade->getSaleCategoryByFriendlyUrl($friendlyUrl);
+        $category = $this->categoryFacade->getById($id);
 
         $requestPage = $request->get(self::PAGE_QUERY_PARAMETER);
         if (!$this->isRequestPageValid($requestPage)) {
@@ -404,7 +403,7 @@ class ProductController extends FrontBaseController
             'filterForm' => $filterForm->createView(),
             'filterFormSubmitted' => $filterForm->isSubmitted(),
             'visibleChildren' => null,
-            'saleCategoryFriendlyUrl' => $friendlyUrl,
+            'isSaleCategory' => true,
             'priceRange' => $productFilterConfig->getPriceRange(),
             'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
                 $category,

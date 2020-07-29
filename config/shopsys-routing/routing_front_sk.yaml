@@ -93,7 +93,3 @@ front_store_detail:
 front_brand_list:
     path: /prehlad-znaciek/
     defaults: { _controller: App\Controller\Front\BrandController:listAction }
-
-front_sale_product_list:
-    path: /vypredaj/{friendlyUrl}/
-    defaults: { _controller: App\Controller\Front\ProductController:listBySaleCategoryAction }

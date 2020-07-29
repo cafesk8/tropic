@@ -35,8 +35,8 @@
                     {% if paginationResult.results|length > 0 or filterFormSubmitted %}
                         <div class="box-list__panel js-product-list-panel">
                             <div class="box-filter js-product-filter">
-                                {% if saleCategoryFriendlyUrl is not null %}
-                                    {% set categoryUrl = url('front_sale_product_list', { friendlyUrl: saleCategoryFriendlyUrl }) %}
+                                {% if isSaleCategory %}
+                                    {% set categoryUrl = url('front_sale_product_list', { id: category.id }) %}
                                 {% else %}
                                     {% set categoryUrl = url('front_product_list', { id: category.id }) %}
                                 {% endif %}

@@ -704,3 +704,9 @@ services:
     App\Component\Router\PrettyFilterUrl\PrettyFilterUrlListener:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    App\Model\Product\SaleProductListFriendlyUrlDataProvider:
+        tags:
+            - {name: shopsys.friendly_url_provider}
+
+    Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFactory: '@App\Component\Router\FriendlyUrl\FriendlyUrlFactory'
