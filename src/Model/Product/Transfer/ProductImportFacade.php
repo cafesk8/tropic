@@ -110,6 +110,8 @@ class ProductImportFacade
                 'exceptionMessage' => $exception->getMessage(),
             ]);
         } finally {
+            $this->updatedPohodaProductIds = array_filter($this->updatedPohodaProductIds);
+
             $this->logger->addInfo('Proběhne smazání produktů z fronty', [
                 'updatedPohodaProductIdsCount' => count($this->updatedPohodaProductIds),
             ]);
@@ -171,7 +173,7 @@ class ProductImportFacade
         try {
             $createdProduct = $this->productFacade->create($productData);
         } catch (Exception $exc) {
-            $this->logError('Import položky selhal.', $exc, $pohodaProduct);
+            $this->logError('Import položky při vytvoření selhal', $exc, $pohodaProduct);
 
             return null;
         }
@@ -201,7 +203,7 @@ class ProductImportFacade
         try {
             $editedProduct = $this->productFacade->edit($product->getId(), $productData);
         } catch (Exception $exc) {
-            $this->logError('Import položky selhal.', $exc, $pohodaProduct);
+            $this->logError('Import položky při úpravě selhal', $exc, $pohodaProduct);
 
             return null;
         }
@@ -245,7 +247,7 @@ class ProductImportFacade
 
             return false;
         } catch (Exception $exception) {
-            $this->logError('Import položky selhal.', $exception, $pohodaProduct);
+            $this->logError('Namapování položky selhalo', $exception, $pohodaProduct);
 
             return false;
         }
