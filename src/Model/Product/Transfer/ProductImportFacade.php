@@ -11,6 +11,8 @@ use App\Model\Product\ProductData;
 use App\Model\Product\ProductDataFactory;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
+use App\Model\Product\Transfer\Exception\DuplicateVariantIdException;
+use App\Model\Product\Transfer\Exception\MainVariantNotFoundInEshopException;
 use App\Model\Product\Transfer\Exception\ProductNotFoundInEshopException;
 use App\Model\Product\Transfer\Exception\RelatedProductNotFoundException;
 use DateTime;
@@ -55,6 +57,11 @@ class ProductImportFacade
      * @var int[]
      */
     private array $updatedPohodaProductIds = [];
+
+    /**
+     * @var int[]
+     */
+    private array $notUpdatedPohodaProductIds = [];
 
     /**
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
@@ -116,6 +123,11 @@ class ProductImportFacade
                 new DateTime()
             );
 
+            $this->logger->addInfo('Proběhne zařazení produktů na konec fronty - nevalidní produkty', [
+                'productIdsToQueueAgainCount' => count($this->notUpdatedPohodaProductIds),
+            ]);
+            $this->productInfoQueueImportFacade->moveProductsToEndOfQueue($this->notUpdatedPohodaProductIds);
+
             $this->logger->persistTransferIssues();
         }
 
@@ -131,9 +143,15 @@ class ProductImportFacade
             $product = $this->productFacade->findByPohodaId($pohodaProduct->pohodaId);
 
             if ($product !== null) {
-                $this->updatedPohodaProductIds[] = $this->editProductByPohodaProduct($product, $pohodaProduct);
+                $updatedPohodaProductId = $this->editProductByPohodaProduct($product, $pohodaProduct);
             } else {
-                $this->updatedPohodaProductIds[] = $this->createProductByPohodaProduct($pohodaProduct);
+                $updatedPohodaProductId = $this->createProductByPohodaProduct($pohodaProduct);
+            }
+
+            if ($updatedPohodaProductId !== null) {
+                $this->updatedPohodaProductIds[] = $updatedPohodaProductId;
+            } else {
+                $this->notUpdatedPohodaProductIds[] = $pohodaProduct->pohodaId;
             }
         }
     }
@@ -216,6 +234,14 @@ class ProductImportFacade
             return true;
         } catch (ProductNotFoundInEshopException $exception) {
             $this->logError('V e-shopu nebyl nalezen produkt, který patří do tohoto setu', $exception, $pohodaProduct);
+
+            return false;
+        } catch (MainVariantNotFoundInEshopException $exception) {
+            $this->logError('Není možné vyvořit variantu pro kterou neexistuje odpovídající hlavní varianta', $exception, $pohodaProduct);
+
+            return false;
+        } catch (DuplicateVariantIdException $exception) {
+            $this->logError('Zadané ID modifikace je již v systému přiřazeno jinému produktu', $exception, $pohodaProduct);
 
             return false;
         } catch (Exception $exception) {

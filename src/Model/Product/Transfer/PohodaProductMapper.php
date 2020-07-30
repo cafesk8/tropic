@@ -27,7 +27,10 @@ use App\Model\Product\Parameter\ParameterValueDataFactory;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductFacade;
+use App\Model\Product\ProductVariantTropicFacade;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
+use App\Model\Product\Transfer\Exception\DuplicateVariantIdException;
+use App\Model\Product\Transfer\Exception\MainVariantNotFoundInEshopException;
 use App\Model\Product\Transfer\Exception\ProductNotFoundInEshopException;
 use App\Model\Product\Transfer\Exception\RelatedProductNotFoundException;
 use App\Model\Product\Unit\Unit;
@@ -143,6 +146,8 @@ class PohodaProductMapper
      */
     private array $productIdsToQueueAgain;
 
+    private ProductVariantTropicFacade $productVariantTropicFacade;
+
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
@@ -162,6 +167,7 @@ class PohodaProductMapper
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory $productParameterValueDataFactory
      * @param \App\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
      * @param \App\Model\Product\Parameter\ParameterDataFactory $parameterDataFactory
+     * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
      */
     public function __construct(
         Domain $domain,
@@ -181,7 +187,8 @@ class PohodaProductMapper
         ParameterFacade $parameterFacade,
         ProductParameterValueDataFactory $productParameterValueDataFactory,
         ParameterValueDataFactory $parameterValueDataFactory,
-        ParameterDataFactory $parameterDataFactory
+        ParameterDataFactory $parameterDataFactory,
+        ProductVariantTropicFacade $productVariantTropicFacade
     ) {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
@@ -200,6 +207,7 @@ class PohodaProductMapper
         $this->productParameterValueDataFactory = $productParameterValueDataFactory;
         $this->parameterDataFactory = $parameterDataFactory;
         $this->parameterValueDataFactory = $parameterValueDataFactory;
+        $this->productVariantTropicFacade = $productVariantTropicFacade;
 
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
         $this->productIdsToQueueAgain = [];
@@ -214,6 +222,7 @@ class PohodaProductMapper
         ProductData $productData
     ): void {
         $this->mapBasicInfoToProductData($pohodaProduct, $productData);
+        $this->mapVariantToProductData($pohodaProduct, $productData);
         $this->mapFlagsToProductData($pohodaProduct, $productData);
         $this->mapDomainDataToProductData($pohodaProduct, $productData);
         $this->mapRelatedProductsToProductData($pohodaProduct, $productData);
@@ -254,12 +263,35 @@ class PohodaProductMapper
         $productData->vatsIndexedByDomainId[DomainHelper::CZECH_DOMAIN] = $this->vatFacade->getByPohodaId($pohodaProduct->vatRateId);
         $productData->vatsIndexedByDomainId[DomainHelper::SLOVAK_DOMAIN] = $this->vatFacade->getDefaultVatForDomain(DomainHelper::SLOVAK_DOMAIN);
         $productData->vatsIndexedByDomainId[DomainHelper::ENGLISH_DOMAIN] = $this->vatFacade->getDefaultVatForDomain(DomainHelper::ENGLISH_DOMAIN);
-        $productData->variantId = TransformString::emptyToNull($pohodaProduct->variantId);
-        $productData->variantAlias[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAlias);
-        $productData->variantAlias[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAliasSk);
         $productData->shown[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shown;
         $productData->shown[DomainHelper::SLOVAK_DOMAIN] = $pohodaProduct->shownSk;
         $productData->shown[DomainHelper::ENGLISH_DOMAIN] = $pohodaProduct->shown;
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function mapVariantToProductData(PohodaProduct $pohodaProduct, ProductData $productData): void
+    {
+        if ($this->productVariantTropicFacade->isVariant($pohodaProduct->variantId)
+            && $this->productVariantTropicFacade->findMainVariantByVariantId($pohodaProduct->variantId) === null
+        ) {
+            throw new MainVariantNotFoundInEshopException($pohodaProduct->variantId);
+        }
+
+        if ($pohodaProduct->variantId !== null) {
+            $existingProductByVariantId = $this->productVariantTropicFacade->findByVariantId($pohodaProduct->variantId);
+            if ($existingProductByVariantId !== null
+                    && $existingProductByVariantId->getPohodaId() !== $pohodaProduct->pohodaId
+            ) {
+                throw new DuplicateVariantIdException($pohodaProduct->variantId);
+            }
+        }
+
+        $productData->variantId = TransformString::emptyToNull($pohodaProduct->variantId);
+        $productData->variantAlias[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAlias);
+        $productData->variantAlias[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAliasSk);
     }
 
     /**

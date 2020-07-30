@@ -27,11 +27,6 @@ class PohodaProductDataValidator
     private $productVariantTropicFacade;
 
     /**
-     * @var string[]
-     */
-    private $variantIdsCache;
-
-    /**
      * @param \Symfony\Component\Validator\Validator\ValidatorInterface $validator
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
      */
@@ -39,7 +34,6 @@ class PohodaProductDataValidator
     {
         $this->validator = $validator;
         $this->productVariantTropicFacade = $productVariantTropicFacade;
-        $this->variantIdsCache = [];
     }
 
     /**
@@ -81,7 +75,7 @@ class PohodaProductDataValidator
                     new Type(['type' => 'array']),
                 ],
                 PohodaProduct::COL_VARIANT_ID => [
-                    new Callback(['callback' => [$this, 'validateVariantId'], 'payload' => $pohodaProductData]),
+                    new Callback(['callback' => [$this, 'validateVariantId']]),
                 ],
                 PohodaProduct::COL_AUTO_EUR_PRICE => [
                     new NotBlank(),
@@ -111,17 +105,14 @@ class PohodaProductDataValidator
 
         if (count($violations) > 0) {
             throw new PohodaInvalidDataException($violations);
-        } else {
-            $this->variantIdsCache[] = $pohodaProductData[PohodaProduct::COL_VARIANT_ID];
         }
     }
 
     /**
      * @param string|null $variantId
      * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
-     * @param array $pohodaProductData
      */
-    public function validateVariantId(?string $variantId, ExecutionContextInterface $context, array $pohodaProductData): void
+    public function validateVariantId(?string $variantId, ExecutionContextInterface $context): void
     {
         if ($this->productVariantTropicFacade->isVariant($variantId)) {
             $mainVariantVariantId = Product::getMainVariantVariantIdFromVariantVariantId($variantId);
@@ -134,16 +125,6 @@ class PohodaProductDataValidator
                     'Zadané ID modifikace má neplatný formát (očekává se nenulový počet znaků před i za hvězdičkou, přičemž část za hvězdičkou by měla obsahovat jen číslice)'
                 );
                 return;
-            }
-        }
-
-        if ($variantId !== null) {
-            $existingProductByVariantId = $this->productVariantTropicFacade->findByVariantId($variantId);
-            if (($existingProductByVariantId !== null
-                    && $existingProductByVariantId->getPohodaId() !== (int)$pohodaProductData[PohodaProduct::COL_POHODA_ID])
-                || in_array($pohodaProductData[PohodaProduct::COL_VARIANT_ID], $this->variantIdsCache, true)
-            ) {
-                $context->addViolation('Zadané ID modifikace je již v systému přiřazeno jinému produktu');
             }
         }
     }

@@ -98,4 +98,22 @@ class ProductInfoQueueImportRepository
             'updatedProducts' => $updatedPohodaProductIds,
         ]);
     }
+
+    /**
+     * @param array $pohodaProductIds
+     */
+    public function moveProductsToEndOfQueue(array $pohodaProductIds): void
+    {
+        $queryBuilder = $this->em->createNativeQuery(
+            'UPDATE pohoda_changed_products_basic_info_queue
+            SET inserted_at = :insertedAtNow
+            WHERE pohoda_id IN(:updatedProducts)',
+            new ResultSetMapping()
+        );
+
+        $queryBuilder->execute([
+            'insertedAtNow' => new \DateTime(),
+            'updatedProducts' => $pohodaProductIds,
+        ]);
+    }
 }
