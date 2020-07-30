@@ -96,6 +96,9 @@
                                 {% do form.deliveryCity.setRendered %}
                                 {% do form.deliveryPostcode.setRendered %}
                                 {% do form.deliveryCountry.setRendered %}
+                                {% if app.user is not null %}
+                                    {% do form.deliveryAddress.setRendered %}
+                                {% endif %}
                             {% else %}
                                 <div id="js-delivery-address" class="margin-top-20">
                                     {% if app.user is not null %}
