@@ -250,7 +250,7 @@ class PohodaProductExportFacade
                     DomainHelper::SLOVAK_LOCALE => $pohodaParameterValuesArray[1] ?? $pohodaParameterValuesArray[0],
                 ];
                 $pohodaParameter = new PohodaParameter(
-                    $productParameter[PohodaProduct::COL_PARAMETER_NAME],
+                    trim($productParameter[PohodaProduct::COL_PARAMETER_NAME]),
                     $pohodaParameterValues,
                     (int)$productParameter[PohodaProduct::COL_PARAMETER_TYPE]
                 );
