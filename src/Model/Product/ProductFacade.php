@@ -16,8 +16,8 @@ use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Flag\ProductFlagData;
 use App\Model\Product\Flag\ProductFlagDataFactory;
 use App\Model\Product\Flag\ProductFlagFacade;
-use App\Model\Product\Group\ProductGroupFacade;
-use App\Model\Product\Group\ProductGroupFactory;
+use App\Model\Product\Set\ProductSetFacade;
+use App\Model\Product\Set\ProductSetFactory;
 use App\Model\Product\StoreStock\ProductStoreStockFactory;
 use App\Model\Store\StoreFacade;
 use DateTime;
@@ -134,14 +134,14 @@ class ProductFacade extends BaseProductFacade
     private $logger;
 
     /**
-     * @var \App\Model\Product\Group\ProductGroupFacade
+     * @var \App\Model\Product\Set\ProductSetFacade
      */
-    private $productGroupFacade;
+    private $productSetFacade;
 
     /**
-     * @var \App\Model\Product\Group\ProductGroupFactory
+     * @var \App\Model\Product\Set\ProductSetFactory
      */
-    private $productGroupFactory;
+    private $productSetFactory;
 
     /**
      * @var \App\Model\Category\CategoryFacade
@@ -201,8 +201,8 @@ class ProductFacade extends BaseProductFacade
      * @param \Psr\Log\LoggerInterface $logger
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
      * @param \App\Model\Product\ProductDataFactory $productDataFactory
-     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
-     * @param \App\Model\Product\Group\ProductGroupFactory $productGroupFactory
+     * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
+     * @param \App\Model\Product\Set\ProductSetFactory $productSetFactory
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Product\Flag\ProductFlagFacade $productFlagFacade
@@ -242,8 +242,8 @@ class ProductFacade extends BaseProductFacade
         LoggerInterface $logger,
         ProductVariantTropicFacade $productVariantTropicFacade,
         ProductDataFactory $productDataFactory,
-        ProductGroupFacade $productGroupFacade,
-        ProductGroupFactory $productGroupFactory,
+        ProductSetFacade $productSetFacade,
+        ProductSetFactory $productSetFactory,
         CategoryFacade $categoryFacade,
         FlagFacade $flagFacade,
         ProductFlagFacade $productFlagFacade,
@@ -285,8 +285,8 @@ class ProductFacade extends BaseProductFacade
         $this->logger = $logger;
         $this->productVariantTropicFacade = $productVariantTropicFacade;
         $this->productDataFactory = $productDataFactory;
-        $this->productGroupFacade = $productGroupFacade;
-        $this->productGroupFactory = $productGroupFactory;
+        $this->productSetFacade = $productSetFacade;
+        $this->productSetFactory = $productSetFactory;
         $this->categoryFacade = $categoryFacade;
         $this->flagFacade = $flagFacade;
         $this->productFlagFacade = $productFlagFacade;
@@ -345,7 +345,7 @@ class ProductFacade extends BaseProductFacade
         $productCategoryDomains = $this->productCategoryDomainFactory->createMultiple($product, $productData->categoriesByDomainId);
         $product->setProductCategoryDomains($productCategoryDomains);
 
-        if ($productData->pohodaProductType === Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP) {
+        if ($productData->pohodaProductType === Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET) {
             $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
         }
 
@@ -356,7 +356,7 @@ class ProductFacade extends BaseProductFacade
         $this->createProductVisibilities($product);
         $this->refreshProductManualInputPrices($product, $productData->manualInputPricesByPricingGroupId);
         $this->refreshProductAccessories($product, $productData->accessories);
-        $this->refreshProductGroups($product, $productData->groupItems);
+        $this->refreshProductSets($product, $productData->setItems);
         $this->refreshProductFlags($product, $productData->flags);
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
 
@@ -384,7 +384,7 @@ class ProductFacade extends BaseProductFacade
     {
         $product = $this->getById($productId);
 
-        if ($productData->pohodaProductType === Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP) {
+        if ($productData->pohodaProductType === Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET) {
             $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
         }
 
@@ -403,7 +403,7 @@ class ProductFacade extends BaseProductFacade
 
         $this->refreshProductFlags($product, $productData->flags);
         parent::edit($productId, $productData);
-        $this->refreshProductGroups($product, $productData->groupItems);
+        $this->refreshProductSets($product, $productData->setItems);
         $this->updateProductStoreStocks($productData, $product);
         $this->updateMainProductsStoreStocks($product);
         $this->imageFacade->manageImages($product, $productData->stickers, Product::IMAGE_TYPE_STICKER);
@@ -446,9 +446,9 @@ class ProductFacade extends BaseProductFacade
             return;
         }
 
-        if ($product->isPohodaProductTypeGroup()) {
+        if ($product->isPohodaProductTypeSet()) {
             $internalStockId = $this->storeFacade->findByExternalNumber((string)PohodaProductExportRepository::POHODA_STOCK_TROPIC_ID)->getId();
-            $stockQuantities = [$internalStockId => $this->getTheLowestStockQuantityFromProductGroups($product)];
+            $stockQuantities = [$internalStockId => $this->getTheLowestStockQuantityFromProductSets($product)];
         } else {
             $stockQuantities = $productData->stockQuantityByStoreId;
         }
@@ -1004,23 +1004,23 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \App\Model\Product\Product $product
-     * @param array $groupItems
+     * @param array $setItems
      */
-    private function refreshProductGroups(Product $product, array $groupItems): void
+    private function refreshProductSets(Product $product, array $setItems): void
     {
-        $oldGroupItems = $this->productGroupFacade->getAllByMainProduct($product);
-        foreach ($oldGroupItems as $oldGroupItem) {
-            $this->em->remove($oldGroupItem);
+        $oldSetItems = $this->productSetFacade->getAllByMainProduct($product);
+        foreach ($oldSetItems as $oldSetItem) {
+            $this->em->remove($oldSetItem);
         }
-        $this->em->flush($oldGroupItems);
+        $this->em->flush($oldSetItems);
 
         $toFlush = [];
-        foreach ($groupItems as $groupItemArray) {
-            if (isset($groupItemArray['item'], $groupItemArray['item_count'])) {
-                $groupItem = $this->productGroupFactory->create($product, $groupItemArray['item'], $groupItemArray['item_count']);
-                $this->em->persist($groupItem);
-                $product->addProductGroup($groupItem);
-                $toFlush[] = $groupItem;
+        foreach ($setItems as $setItemArray) {
+            if (isset($setItemArray['item'], $setItemArray['item_count'])) {
+                $setItem = $this->productSetFactory->create($product, $setItemArray['item'], $setItemArray['item_count']);
+                $this->em->persist($setItem);
+                $product->addProductSet($setItem);
+                $toFlush[] = $setItem;
             }
         }
 
@@ -1122,14 +1122,14 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\Product $product
      * @return int
      */
-    private function getTheLowestStockQuantityFromProductGroups(Product $product): int
+    private function getTheLowestStockQuantityFromProductSets(Product $product): int
     {
         $bigStockQuantityPlaceholder = 9999999;
         $lowestStockQuantity = $bigStockQuantityPlaceholder;
         $groupStockQuantities = [];
 
-        foreach ($product->getProductGroups() as $productGroup) {
-            $groupStockQuantities[] = $this->productGroupFacade->getStockQuantity($productGroup);
+        foreach ($product->getProductSets() as $productSet) {
+            $groupStockQuantities[] = $this->productSetFacade->getStockQuantity($productSet);
         }
 
         foreach ($groupStockQuantities as $groupStockQuantity) {
@@ -1144,10 +1144,10 @@ class ProductFacade extends BaseProductFacade
      */
     private function updateMainProductsStoreStocks(Product $product): void
     {
-        $productGroups = $this->productGroupFacade->getAllByItem($product);
+        $productSets = $this->productSetFacade->getAllByItem($product);
 
-        foreach ($productGroups as $productGroup) {
-            $this->updateProductStoreStocks($this->productDataFactory->createFromProduct($productGroup->getMainProduct()), $productGroup->getMainProduct());
+        foreach ($productSets as $productSet) {
+            $this->updateProductStoreStocks($this->productDataFactory->createFromProduct($productSet->getMainProduct()), $productSet->getMainProduct());
         }
     }
 
@@ -1156,9 +1156,9 @@ class ProductFacade extends BaseProductFacade
      */
     private function refreshMainProducts(Product $product): void
     {
-        foreach ($this->productGroupFacade->getAllByItem($product) as $productGroup) {
-            $this->em->refresh($productGroup->getMainProduct());
-            $this->edit($productGroup->getMainProduct()->getId(), $this->productDataFactory->createFromProduct($productGroup->getMainProduct()));
+        foreach ($this->productSetFacade->getAllByItem($product) as $productSet) {
+            $this->em->refresh($productSet->getMainProduct());
+            $this->edit($productSet->getMainProduct()->getId(), $this->productDataFactory->createFromProduct($productSet->getMainProduct()));
         }
     }
 

@@ -103,7 +103,7 @@ class ProductData extends BaseProductData
     /**
      * @var array[]
      */
-    public $groupItems;
+    public $setItems;
 
     /**
      * @var int
@@ -180,7 +180,7 @@ class ProductData extends BaseProductData
         $this->giftCertificate = false;
         $this->registrationDiscountDisabled = false;
         $this->promoDiscountDisabled = false;
-        $this->groupItems = [];
+        $this->setItems = [];
         $this->generateToMergadoXmlFeeds = [];
         $this->descriptionHashes = [];
         $this->shortDescriptionHashes = [];

@@ -44,14 +44,14 @@
                                     {% set cartItemPrice = cartItemPrices[index] %}
                                     {% set cartItemUrl = url('front_product_detail', {id: cartItem.product.id}) %}
                                     <div class="table-cart__row js-cart-item js-maximum-amount-container">
-                                        <div class="table-cart__content{% if cartItem.product.isPohodaProductTypeGroup %} table-cart__content--sets{% endif %}">
+                                        <div class="table-cart__content{% if cartItem.product.isPohodaProductTypeSet %} table-cart__content--sets{% endif %}">
                                             <div class="table-cart__cell table-cart__cell--info">
                                                 <a href="{{ cartItemUrl }}" title="{{ cartItem.product.name }}">
-                                                    {% if cartItem.product.isPohodaProductTypeGroup %}
+                                                    {% if cartItem.product.isPohodaProductTypeSet %}
                                                         <div class="table-cart__cell__wrap-image">
-                                                            {% for productGroup in cartItem.product.productGroups %}
+                                                            {% for productSet in cartItem.product.productSets %}
                                                                 <div class="table-cart__cell__image table-cart__cell__image--sets svg svg-plus-big">
-                                                                    {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}
+                                                                    {{ image(productSet.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}
                                                                 </div>
                                                             {% endfor %}
                                                         </div>

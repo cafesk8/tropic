@@ -7,8 +7,8 @@ namespace App\Model\Product;
 use App\Component\Domain\DomainHelper;
 use App\Model\Product\Exception\ProductIsNotMainVariantException;
 use App\Model\Product\Flag\ProductFlag;
-use App\Model\Product\Group\ProductGroup;
 use App\Model\Product\Mall\ProductMallExportMapper;
+use App\Model\Product\Set\ProductSet;
 use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -53,7 +53,7 @@ class Product extends BaseProduct
 {
     public const IMAGE_TYPE_STICKER = 'sticker';
     public const POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT = 1;
-    public const POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP = 5;
+    public const POHODA_PRODUCT_TYPE_ID_PRODUCT_SET = 5;
 
     /**
      * @var \App\Model\Product\StoreStock\ProductStoreStock[]|\Doctrine\Common\Collections\Collection
@@ -182,11 +182,11 @@ class Product extends BaseProduct
     private $pohodaProductType;
 
     /**
-     * @var \App\Model\Product\Group\ProductGroup[]|\Doctrine\Common\Collections\Collection
+     * @var \App\Model\Product\Set\ProductSet[]|\Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Model\Product\Group\ProductGroup", mappedBy="mainProduct")
+     * @ORM\OneToMany(targetEntity="App\Model\Product\Set\ProductSet", mappedBy="mainProduct")
      */
-    private $productGroups;
+    private $productSets;
 
     /**
      * @var string|null
@@ -317,7 +317,7 @@ class Product extends BaseProduct
         $this->updatedByPohodaAt = $productData->updatedByPohodaAt;
         $this->pohodaProductType = $productData->pohodaProductType;
         $this->warranty = $productData->warranty;
-        $this->productGroups = new ArrayCollection();
+        $this->productSets = new ArrayCollection();
         $this->deliveryDays = $productData->deliveryDays;
         $this->refresh = false;
         $this->flags = new ArrayCollection();
@@ -989,9 +989,9 @@ class Product extends BaseProduct
     /**
      * @return bool
      */
-    public function isPohodaProductTypeGroup(): bool
+    public function isPohodaProductTypeSet(): bool
     {
-        return $this->pohodaProductType === self::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP;
+        return $this->pohodaProductType === self::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET;
     }
 
     /**
@@ -1003,11 +1003,11 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param \App\Model\Product\Group\ProductGroup $groupItem
+     * @param \App\Model\Product\Set\ProductSet $setItem
      */
-    public function addProductGroup(ProductGroup $groupItem)
+    public function addProductSet(ProductSet $setItem)
     {
-        $this->productGroups[] = $groupItem;
+        $this->productSets[] = $setItem;
     }
 
     /**
@@ -1066,11 +1066,11 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return \App\Model\Product\Group\ProductGroup[]
+     * @return \App\Model\Product\Set\ProductSet[]
      */
-    public function getProductGroups(): array
+    public function getProductSets(): array
     {
-        return $this->productGroups->toArray();
+        return $this->productSets->toArray();
     }
 
     /**

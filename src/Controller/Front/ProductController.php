@@ -38,7 +38,7 @@ class ProductController extends FrontBaseController
 {
     public const SEARCH_TEXT_PARAMETER = 'q';
     public const PAGE_QUERY_PARAMETER = 'page';
-    public const PAGE_GROUPS_QUERY_PARAMETER = 'pageGroups';
+    public const PAGE_SETS_QUERY_PARAMETER = 'pageSets';
     public const PRODUCTS_PER_PAGE = 24;
     public const VISIBLE_FILTER_CHOICES_LIMIT = 4;
     private const PRODUCT_BLOG_ARTICLES_LIMIT = 2;
@@ -486,20 +486,20 @@ class ProductController extends FrontBaseController
             return $this->render('Front/Content/Product/ajaxSearch.html.twig', $viewParameters);
         } else {
             $viewParameters['foundCategories'] = $this->searchCategories($searchText);
-            $viewParameters['paginationResultGroups'] = $this->getPaginationResultGroups($searchText, $orderingModeId, 1);
+            $viewParameters['paginationResultSets'] = $this->getPaginationResultSets($searchText, $orderingModeId, 1);
             return $this->render('Front/Content/Product/search.html.twig', $viewParameters);
         }
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult $paginationResultGroups
+     * @param \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult $paginationResultSets
      * @param string $searchText
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function renderGroupsBySearchTextAction(PaginationResult $paginationResultGroups, string $searchText): Response
+    public function renderSetsBySearchTextAction(PaginationResult $paginationResultSets, string $searchText): Response
     {
-        return $this->render('Front/Content/Product/groupList.html.twig', [
-            'paginationResultGroups' => $paginationResultGroups,
+        return $this->render('Front/Content/Product/setList.html.twig', [
+            'paginationResultSets' => $paginationResultSets,
             'searchText' => $searchText,
         ]);
     }
@@ -508,18 +508,18 @@ class ProductController extends FrontBaseController
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function searchGroupsAction(Request $request): Response
+    public function searchSetsAction(Request $request): Response
     {
         $searchText = $request->query->get(self::SEARCH_TEXT_PARAMETER, '');
         $orderingModeId = $this->productListOrderingModeForSearchFacade->getOrderingModeIdFromRequest(
             $request
         );
-        $requestPage = $request->get(self::PAGE_GROUPS_QUERY_PARAMETER);
+        $requestPage = $request->get(self::PAGE_SETS_QUERY_PARAMETER);
         $page = $requestPage === null ? 1 : (int)$requestPage;
 
-        $paginationResultGroups = $this->getPaginationResultGroups($searchText, $orderingModeId, $page);
+        $paginationResultSets = $this->getPaginationResultSets($searchText, $orderingModeId, $page);
 
-        return $this->renderGroupsBySearchTextAction($paginationResultGroups, $searchText);
+        return $this->renderSetsBySearchTextAction($paginationResultSets, $searchText);
     }
 
     /**
@@ -679,7 +679,7 @@ class ProductController extends FrontBaseController
      * @param int $page
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
      */
-    private function getPaginationResultGroups(string $searchText, string $orderingModeId, int $page): PaginationResult
+    private function getPaginationResultSets(string $searchText, string $orderingModeId, int $page): PaginationResult
     {
         return $this->listedProductViewElasticFacade->getFilteredPaginatedForSearch(
             $searchText,
@@ -687,7 +687,7 @@ class ProductController extends FrontBaseController
             $orderingModeId,
             $page,
             self::PRODUCTS_PER_PAGE,
-            Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP
+            Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET
         );
     }
 

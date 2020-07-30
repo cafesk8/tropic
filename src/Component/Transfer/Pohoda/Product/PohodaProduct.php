@@ -51,12 +51,12 @@ class PohodaProduct
     public const COL_EXTERNAL_STOCK = 'externalStock';
     public const COL_STOCK_TOTAL = 'totalStock';
 
-    public const COL_PRODUCT_GROUP_ITEM_REF_ID = 'groupItemPohodaId';
-    public const COL_PRODUCT_GROUP_ITEM_COUNT = 'productGroupItemCount';
+    public const COL_PRODUCT_SET_ITEM_REF_ID = 'setItemPohodaId';
+    public const COL_PRODUCT_SET_ITEM_COUNT = 'productSetItemCount';
 
     public const COL_SALE_INFORMATION = 'saleInformation';
     public const COL_STOCKS_INFORMATION = 'stockInformation';
-    public const COL_PRODUCT_GROUP_ITEMS = 'productGroupItems';
+    public const COL_PRODUCT_SET_ITEMS = 'productSetItems';
     public const COL_RELATED_PRODUCTS = 'relatedProducts';
     public const COL_PRODUCT_VIDEOS = 'productVideos';
 
@@ -179,7 +179,7 @@ class PohodaProduct
     /**
      * @var array
      */
-    public $productGroups;
+    public $productSets;
 
     /**
      * @var array
@@ -332,7 +332,7 @@ class PohodaProduct
         $this->variantAliasSk = (string)$pohodaProductData[self::COL_VARIANT_ALIAS_SK];
         $this->pohodaCategoryIds = $pohodaProductData[self::COL_PRODUCT_CATEGORIES];
         $this->stocksInformation = $pohodaProductData[self::COL_STOCKS_INFORMATION];
-        $this->productGroups = $pohodaProductData[self::COL_PRODUCT_GROUP_ITEMS];
+        $this->productSets = $pohodaProductData[self::COL_PRODUCT_SET_ITEMS];
         $this->automaticDescriptionTranslation = (bool)$pohodaProductData[self::COL_AUTO_DESCRIPTION_TRANSLATION];
         $this->relatedProducts = $pohodaProductData[self::COL_RELATED_PRODUCTS];
         $this->deliveryDays = $pohodaProductData[self::COL_DELIVERY_DAYS];

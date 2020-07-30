@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Model\Product\View;
 
 use App\Model\Product\Flag\Flag;
-use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\ProductFacade;
+use App\Model\Product\Set\ProductSetFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
@@ -27,7 +27,10 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
 {
     private ProductFacade $productFacade;
 
-    private ProductGroupFacade $productGroupFacade;
+    /**
+     * @var \App\Model\Product\Set\ProductSetFacade
+     */
+    private ProductSetFacade $productSetFacade;
 
     private ImageViewFacade $imageViewFacade;
 
@@ -35,19 +38,19 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \App\Model\Product\ProductFacade $productFacade
-     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Product\View\ImageViewFacade $imageViewFacade
      */
     public function __construct(
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
         ProductFacade $productFacade,
-        ProductGroupFacade $productGroupFacade,
+        ProductSetFacade $productSetFacade,
         ImageViewFacade $imageViewFacade
     ) {
         parent::__construct($domain, $productCachedAttributesFacade);
         $this->productFacade = $productFacade;
-        $this->productGroupFacade = $productGroupFacade;
+        $this->productSetFacade = $productSetFacade;
         $this->imageViewFacade = $imageViewFacade;
     }
 
@@ -82,7 +85,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productArray['gifts'],
             $productArray['stock_quantity'],
             $productArray['variants_count'],
-            $productArray['group_items'],
+            $productArray['set_items'],
             $productArray['delivery_days'],
             $productArray['is_available_in_days'],
             $productArray['real_sale_stocks_quantity'],
@@ -114,7 +117,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $this->productFacade->getProductGiftNames($product, $this->domain->getId(), $this->domain->getLocale()),
             $product->getStockQuantity(),
             $product->getVariantsCount($this->domain->getId()),
-            $this->productGroupFacade->getAllForElasticByMainProduct($product, $this->domain->getLocale()),
+            $this->productSetFacade->getAllForElasticByMainProduct($product, $this->domain->getLocale()),
             $product->isMainVariant() ? '' : $product->getDeliveryDays(),
             $product->isMainVariant() ? false : $product->isAvailableInDays(),
             $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity(),

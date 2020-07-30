@@ -332,7 +332,7 @@
       "variants_count": {
         "type": "integer"
       },
-      "group_items": {
+      "set_items": {
         "type": "nested",
         "properties": {
           "id": {

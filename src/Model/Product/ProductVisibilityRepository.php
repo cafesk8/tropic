@@ -93,27 +93,27 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
                             OR
                             (
                                 (
-                                    SELECT COUNT(pg.item_id)
-                                    FROM product_groups AS pg
-                                    JOIN product_calculated_prices AS pgicp ON pgicp.product_id = pg.item_id
+                                    SELECT COUNT(ps.item_id)
+                                    FROM product_sets AS ps
+                                    JOIN product_calculated_prices AS pgicp ON pgicp.product_id = ps.item_id
                                     JOIN pricing_groups AS pcg ON pcg.id = pgicp.pricing_group_id
                                     WHERE pgicp.price_with_vat > 0
-                                        AND pg.main_product_id = pv.product_id
+                                        AND ps.main_product_id = pv.product_id
                                         AND pcg.internal_id IN (\'ordinary_customer\', \'registered_customer\')
                                         AND pcg.domain_id = pv.domain_id
                                 )
                                 =
                                 (
                                     SELECT COUNT(pg2.item_id) * 2
-                                    FROM product_groups AS pg2
+                                    FROM product_sets AS pg2
                                     WHERE pg2.main_product_id = pv.product_id
                                 )
                                 AND
                                 NOT EXISTS (
                                     SELECT 1
-                                    FROM product_groups AS pg
-                                    JOIN product_translations AS pt2 ON pt2.translatable_id = pg.item_id
-                                    WHERE pg.main_product_id = pv.product_id
+                                    FROM product_sets AS ps
+                                    JOIN product_translations AS pt2 ON pt2.translatable_id = ps.item_id
+                                    WHERE ps.main_product_id = pv.product_id
                                         AND pt2.locale = :locale
                                         AND pt2.name IS NULL
                                 )
@@ -157,7 +157,7 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
                 'domainId' => $domain->getId(),
                 'pricingGroupId' => $pricingGroup->getId(),
                 'variantTypeMain' => Product::VARIANT_TYPE_MAIN,
-                'groupProductType' => Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP,
+                'groupProductType' => Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET,
             ]);
         }
     }

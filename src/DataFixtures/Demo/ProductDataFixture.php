@@ -5508,8 +5508,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
-        $productData->pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP;
-        $productData->groupItems = [
+        $productData->pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET;
+        $productData->setItems = [
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '4'), 'item_count' => 1],
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '17'), 'item_count' => 1],
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '24'), 'item_count' => 1],
@@ -5549,8 +5549,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
-        $productData->pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP;
-        $productData->groupItems = [
+        $productData->pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET;
+        $productData->setItems = [
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '16'), 'item_count' => 1],
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '17'), 'item_count' => 2],
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '18'), 'item_count' => 3],

@@ -1,16 +1,16 @@
 {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
 {% import 'Front/Inline/Paginator/paginator.html.twig' as paginator %}
 
-{% if paginationResultGroups.results|length > 0 %}
+{% if paginationResultSets.results|length > 0 %}
     <h3 class="box-search__subtitle box-search__subtitle--big-gap-mobile">{{ 'Nalezené sety'|trans }}</h3>
     <div class="box-list__panel"></div>
 {% endif %}
 <div class="box-list__content">
     <div class="box-list__products box-list__products--without-gap js-list-with-paginator">
-        {{ productList.list(paginationResultGroups.results) }}
+        {{ productList.list(paginationResultSets.results) }}
         <div class="box-list__actions">
             <div class="box-list__actions__button">
-                {{ paginator.loadMoreButton(paginationResultGroups, url('front_product_search_groups', {'q': searchText}), 'pageGroups') }}
+                {{ paginator.loadMoreButton(paginationResultSets, url('front_product_search_sets', {'q': searchText}), 'pageSets') }}
             </div>
         </div>
     </div>

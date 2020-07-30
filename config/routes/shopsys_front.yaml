@@ -217,7 +217,7 @@ front_watch_dog_subscribe:
     defaults: { _controller: App\Controller\Front\WatchDogController:subscribeAction }
     methods: [POST]
 
-front_product_search_groups:
-    path: /product/search-groups/
-    defaults: { _controller: App\Controller\Front\ProductController:searchGroupsAction }
+front_product_search_sets:
+    path: /product/search-sets/
+    defaults: { _controller: App\Controller\Front\ProductController:searchSetsAction }
     condition: "request.isXmlHttpRequest()"

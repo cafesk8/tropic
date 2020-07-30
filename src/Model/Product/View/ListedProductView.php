@@ -33,9 +33,9 @@ class ListedProductView extends BaseListedProductView
     private $variantsCount;
 
     /**
-     * @var \App\Model\Product\View\ListedGroupItem[]
+     * @var \App\Model\Product\View\ListedSetItem[]
      */
-    private $groupItems;
+    private $setItems;
 
     /**
      * @var string|null
@@ -74,7 +74,7 @@ class ListedProductView extends BaseListedProductView
      * @param string[][] $gifts
      * @param int|null $stockQuantity
      * @param int $variantsCount
-     * @param array[] $groupItems
+     * @param array[] $setItems
      * @param string|null $deliveryDays
      * @param bool $isAvailableInDays
      * @param int $realSaleStocksQuantity
@@ -93,7 +93,7 @@ class ListedProductView extends BaseListedProductView
         array $gifts,
         ?int $stockQuantity,
         int $variantsCount,
-        array $groupItems,
+        array $setItems,
         ?string $deliveryDays,
         bool $isAvailableInDays,
         int $realSaleStocksQuantity,
@@ -105,9 +105,9 @@ class ListedProductView extends BaseListedProductView
         $this->stockQuantity = $stockQuantity ?? 0;
         $this->gifts = $gifts;
         $this->variantsCount = $variantsCount;
-        $this->groupItems = array_map(function (array $groupItem) {
-            return new ListedGroupItem($groupItem['name'], $groupItem['amount'], $groupItem['image']);
-        }, $groupItems);
+        $this->setItems = array_map(function (array $setItem) {
+            return new ListedSetItem($setItem['name'], $setItem['amount'], $setItem['image']);
+        }, $setItems);
         $this->deliveryDays = $deliveryDays;
         $this->isAvailableInDays = $isAvailableInDays;
         $this->realSaleStocksQuantity = $realSaleStocksQuantity;
@@ -160,11 +160,11 @@ class ListedProductView extends BaseListedProductView
     }
 
     /**
-     * @return \App\Model\Product\View\ListedGroupItem[]
+     * @return \App\Model\Product\View\ListedSetItem[]
      */
-    public function getGroupItems(): array
+    public function getSetItems(): array
     {
-        return $this->groupItems;
+        return $this->setItems;
     }
 
     /**

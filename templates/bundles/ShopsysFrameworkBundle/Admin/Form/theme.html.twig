@@ -123,7 +123,7 @@
     </table>
 {% endblock %}
 
-{% block product_group_items_list_row -%}
+{% block product_set_items_list_row -%}
     <div class="wrap-divider">
         <div class="form-group">
             {% if top_info_title is not empty %}
@@ -134,8 +134,8 @@
     </div>
 {%- endblock %}
 
-{% block product_group_items_list_widget %}
-    {% if form.vars.product_group_items is not empty %}
+{% block product_set_items_list_widget %}
+    {% if form.vars.product_set_items is not empty %}
         <table class="table-form">
             <thead>
             <tr class="table-form__row">
@@ -144,7 +144,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for product_item in form.vars.product_group_items %}
+            {% for product_item in form.vars.product_set_items %}
                 {% if product_item is not null %}
                 <tr class="table-form__row">
                     <td class="table-form__cell">

@@ -22,7 +22,7 @@
         {% if
             foundCategories|length > 0
             or paginationResultProducts.results|length > 0
-            or paginationResultGroups.results|length > 0
+            or paginationResultSets.results|length > 0
         %}
             <div class="web__line">
                 <div class="web__container">
@@ -37,9 +37,9 @@
                                 {{ 'Produkty'|trans }} ({{ paginationResultProducts.totalCount }})
                             </a>
                         {% endif %}
-                        {% if paginationResultGroups.results|length > 0 %}
+                        {% if paginationResultSets.results|length > 0 %}
                             <a href="#sets" data-space-above-position="0" class="box-search__navigation__item js-scroll-to-position" data-tab-id="sets">
-                                {{ 'Sety'|trans }} ({{ paginationResultGroups.totalCount }})
+                                {{ 'Sety'|trans }} ({{ paginationResultSets.totalCount }})
                             </a>
                         {% endif %}
                     </div>
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="box-list__wrap box-list__wrap--wrapped js-tabs-content" id="sets">
-                        {{ render(controller('App\\Controller\\Front\\ProductController:renderGroupsBySearchTextAction', {paginationResultGroups: paginationResultGroups, searchText: searchText})) }}
+                        {{ render(controller('App\\Controller\\Front\\ProductController:renderSetsBySearchTextAction', {paginationResultSets: paginationResultSets, searchText: searchText})) }}
                     </div>
                 </div>
             </div>

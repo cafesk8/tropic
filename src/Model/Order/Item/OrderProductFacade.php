@@ -88,11 +88,11 @@ class OrderProductFacade extends BaseOrderProductFacade
                     $this->orderItemSourceStockFacade->create($orderItemSourceStockData);
                 }
 
-                if ($product->isPohodaProductTypeGroup()) {
-                    foreach ($product->getProductGroups() as $productGroup) {
+                if ($product->isPohodaProductTypeSet()) {
+                    foreach ($product->getProductSets() as $productSet) {
                         $this->subtractStockQuantity(
-                            $productGroup->getItem(),
-                            $orderProductUsingStock->getQuantity() * $productGroup->getItemCount(),
+                            $productSet->getItem(),
+                            $orderProductUsingStock->getQuantity() * $productSet->getItemCount(),
                             $orderProductUsingStock->isSaleItem()
                         );
                     }
@@ -152,9 +152,9 @@ class OrderProductFacade extends BaseOrderProductFacade
                 $product = $orderProductUsingStock->getProduct();
                 $product->addStockQuantity($orderProductUsingStock->getQuantity());
 
-                if ($product->isPohodaProductTypeGroup()) {
-                    foreach ($product->getProductGroups() as $productGroup) {
-                        $productGroup->getItem()->addStockQuantity($orderProductUsingStock->getQuantity() * $productGroup->getItemCount());
+                if ($product->isPohodaProductTypeSet()) {
+                    foreach ($product->getProductSets() as $productSet) {
+                        $productSet->getItem()->addStockQuantity($orderProductUsingStock->getQuantity() * $productSet->getItemCount());
                     }
                 }
                 $this->productFacade->updateTotalProductStockQuantity($product);

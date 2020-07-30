@@ -9,12 +9,12 @@ use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
-use App\Model\Product\Group\ProductGroup;
-use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade;
 use App\Model\Product\Listing\ProductListOrderingConfig;
 use App\Model\Product\PriceBombProduct\PriceBombProductFacade;
 use App\Model\Product\Product;
+use App\Model\Product\Set\ProductSet;
+use App\Model\Product\Set\ProductSetFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Model\Category\Category;
@@ -60,9 +60,9 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
     protected $priceBombProductFacade;
 
     /**
-     * @var \App\Model\Product\Group\ProductGroupFacade
+     * @var \App\Model\Product\Set\ProductSetFacade
      */
-    private $productGroupFacade;
+    private $productSetFacade;
 
     /**
      * @var \App\Model\Product\Flag\FlagFacade
@@ -83,7 +83,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      * @param \App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade $lastVisitedProductsFacade
      * @param \App\Model\Product\PriceBombProduct\PriceBombProductFacade $priceBombProductFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
-     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
@@ -100,7 +100,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         LastVisitedProductsFacade $lastVisitedProductsFacade,
         PriceBombProductFacade $priceBombProductFacade,
         PricingGroupFacade $pricingGroupFacade,
-        ProductGroupFacade $productGroupFacade,
+        ProductSetFacade $productSetFacade,
         FlagFacade $flagFacade
     ) {
         parent::__construct($productFacade, $productAccessoryFacade, $domain, $currentCustomerUser, $topProductFacade, $productOnCurrentDomainFacade, $listedProductViewFactory, $productActionViewFacade, $imageViewFacade);
@@ -108,7 +108,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $this->lastVisitedProductsFacade = $lastVisitedProductsFacade;
         $this->priceBombProductFacade = $priceBombProductFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
-        $this->productGroupFacade = $productGroupFacade;
+        $this->productSetFacade = $productSetFacade;
         $this->flagFacade = $flagFacade;
     }
 
@@ -165,9 +165,9 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      */
     public function getParentSetsByProduct(Product $product, int $domainId, PricingGroup $pricingGroup): array
     {
-        return $this->createFromProducts(array_map(function (ProductGroup $productGroup) {
-            return $productGroup->getMainProduct();
-        }, $this->productGroupFacade->getVisibleByItem($product, $domainId, $pricingGroup)));
+        return $this->createFromProducts(array_map(function (ProductSet $productSet) {
+            return $productSet->getMainProduct();
+        }, $this->productSetFacade->getVisibleByItem($product, $domainId, $pricingGroup)));
     }
 
     /**
@@ -209,8 +209,8 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         foreach ($productsArray as $productArray) {
             $productIds[] = $productArray['id'];
 
-            foreach ($productArray['group_items'] as $groupItem) {
-                $productIds[] = $groupItem['id'];
+            foreach ($productArray['set_items'] as $setItem) {
+                $productIds[] = $setItem['id'];
             }
         }
 
@@ -221,8 +221,8 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         foreach ($productsArray as $productArray) {
             $productId = $productArray['id'];
 
-            foreach ($productArray['group_items'] as &$groupItem) {
-                $groupItem['image'] = $imageViews[$groupItem['id']];
+            foreach ($productArray['set_items'] as &$setItem) {
+                $setItem['image'] = $imageViews[$setItem['id']];
             }
 
             $listedProductViews[$productId] = $this->listedProductViewFactory->createFromArray(

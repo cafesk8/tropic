@@ -89,7 +89,7 @@
                                                                 <div class="box-gallery__item__link__play__icon"></div>
                                                             </div>
                                                         </a>
-                                                    {% else %} 
+                                                    {% else %}
                                                         <a
                                                             href="#video"
                                                             class="box-gallery__item__link js-anchor-link"
@@ -255,7 +255,7 @@
                         {% if not product.isMainVariant %}
                             {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', {product: product}) }}
                         {% endif %}
-                        
+
                         {% if product.isMainVariant %}
                             <div class="wrap-gradient wrap-gradient--with-gap">
                                 <div class="wrap-gradient__in">
@@ -287,22 +287,22 @@
                     <div class="box-set">
                         <h3 class="box-set__title">{{ 'Set obsahuje toto zboží'|trans }}</h3>
                         <div class="box-set__wrap">
-                            <ul class="list-set list-set--{{ product.productGroups|length }} js-list-set-container">
-                                {% for productGroup in sortProductGroupsByPrice(product.productGroups) %}
-                                    {% set productSellingPrice = getProductSellingPrice(productGroup.item) %}
-                                    <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item" data-product-group-item-id="{{ productGroup.item.id }}">
+                            <ul class="list-set list-set--{{ product.productSets|length }} js-list-set-container">
+                                {% for productSet in sortProductSetsByPrice(product.productSets) %}
+                                    {% set productSellingPrice = getProductSellingPrice(productSet.item) %}
+                                    <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item" data-product-set-item-id="{{ productSet.item.id }}">
                                         <div class="list-set__item__in">
                                             <div class="list-set__item__image">
-                                                {{ image(productGroup.item, { size: 'listSet' }) }}
-                                                {% if productGroup.itemCount > 1 %}
+                                                {{ image(productSet.item, { size: 'listSet' }) }}
+                                                {% if productSet.itemCount > 1 %}
                                                     <div class="list-tags list-tags--secondary list-tags--sets-detail">
-                                                        <div class="list-tags__tag">{{ productGroup.itemCount }} {{ 'ks'|trans }}</div>
+                                                        <div class="list-tags__tag">{{ productSet.itemCount }} {{ 'ks'|trans }}</div>
                                                     </div>
                                                 {% endif %}
                                             </div>
                                             <div class="list-set__item__content">
                                                 <div class="list-set__item__name">
-                                                    {{ productGroup.item.name }}
+                                                    {{ productSet.item.name }}
                                                 </div>
                                                 <div class="list-set__item__price">
                                                     {% if productSellingPrice is not null %}
@@ -314,10 +314,10 @@
                                                     {% endif %}
                                                 </div>
                                                 <div class="in-availability in-availability--without-gap">
-                                                    {% if productGroup.item.isMainVariant %}
+                                                    {% if productSet.item.isMainVariant %}
                                                         {{ 'Dostupnost dle varianty'|trans }}
                                                     {% else %}
-                                                        {{ availability.productAvailability(productGroup.item) }}
+                                                        {{ availability.productAvailability(productSet.item) }}
                                                     {% endif %}
                                                 </div>
                                                 <div class="list-set__item__info">
@@ -355,8 +355,8 @@
                 {% if not typeSet %}
                     {% set productId = product.id %}
                 {% else %}
-                    {% set firstProductGroup = sortProductGroupsByPrice(product.productGroups)|first %}
-                    {% set productId = firstProductGroup.item.id %}
+                    {% set firstProductSet = sortProductSetsByPrice(product.productSets)|first %}
+                    {% set productId = firstProductSet.item.id %}
                 {% endif %}
                 {{ render(controller('App\\Controller\\Front\\ProductController:boxTabsAction', { productId: productId })) }}
             </div>

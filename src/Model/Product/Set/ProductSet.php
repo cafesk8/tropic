@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Product\Group;
+namespace App\Model\Product\Set;
 
 use App\Model\Product\Product;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="product_groups")
+ * @ORM\Table(name="product_sets")
  * @ORM\Entity
  */
-class ProductGroup
+class ProductSet
 {
     /**
      * @var \App\Model\Product\Product
-     * @ORM\ManyToOne(targetEntity="App\Model\Product\Product", inversedBy="productGroups")
+     * @ORM\ManyToOne(targetEntity="App\Model\Product\Product", inversedBy="productSets")
      * @ORM\JoinColumn(nullable=false, name="main_product_id", referencedColumnName="id", onDelete="CASCADE")
      * @ORM\Id
      */

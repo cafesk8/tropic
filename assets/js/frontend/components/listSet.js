@@ -12,7 +12,7 @@ export default function listSet () {
         } else {
             items.removeClass('active');
             $clickedItem.addClass('active');
-            const itemId = $clickedItem.data('product-group-item-id');
+            const itemId = $clickedItem.data('product-set-item-id');
             const $boxTabs = $('.js-box-tabs');
 
             Ajax.ajax({

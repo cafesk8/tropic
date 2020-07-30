@@ -77,7 +77,7 @@ class BlogArticleFormType extends AbstractType
         $builderImageGroup = $this->createImageGroup($builder, $options);
         $builderPerexGroup = $this->createPerexGroup($builder);
         $mainPhotoTitleGroup = $this->createMainPhotoTitleGroup($builder);
-        $builderProductGroup = $this->createProductGroup($builder);
+        $builderProductSet = $this->createProductSet($builder);
 
         $builder
             ->add($builderSettingsGroup)
@@ -86,7 +86,7 @@ class BlogArticleFormType extends AbstractType
             ->add($builderDescriptionGroup)
             ->add($mainPhotoTitleGroup)
             ->add($builderImageGroup)
-            ->add($builderProductGroup)
+            ->add($builderProductSet)
             ->add('save', SubmitType::class);
     }
 
@@ -375,13 +375,13 @@ class BlogArticleFormType extends AbstractType
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function createProductGroup(FormBuilderInterface $builder): FormBuilderInterface
+    private function createProductSet(FormBuilderInterface $builder): FormBuilderInterface
     {
-        $builderProductGroup = $builder->create('products', GroupType::class, [
+        $builderProductSet = $builder->create('products', GroupType::class, [
             'label' => t('Produkty k článku blogu'),
         ]);
 
-        $builderProductGroup
+        $builderProductSet
             ->add('products', ProductsType::class, [
                 'required' => false,
                 'allow_main_variants' => true,
@@ -389,6 +389,6 @@ class BlogArticleFormType extends AbstractType
             ])
             ->addViewTransformer($this->removeDuplicatesTransformer);
 
-        return $builderProductGroup;
+        return $builderProductSet;
     }
 }

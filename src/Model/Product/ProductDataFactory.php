@@ -6,7 +6,7 @@ namespace App\Model\Product;
 
 use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Flag\ProductFlagDataFactory;
-use App\Model\Product\Group\ProductGroupFacade;
+use App\Model\Product\Set\ProductSetFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
@@ -29,7 +29,7 @@ use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
  */
 class ProductDataFactory extends BaseProductDataFactory
 {
-    private ProductGroupFacade $productGroupFacade;
+    private ProductSetFacade $productSetFacade;
 
     private ProductFlagDataFactory $productFlagDataFactory;
 
@@ -48,7 +48,7 @@ class ProductDataFactory extends BaseProductDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade $pluginDataFormExtensionFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactoryInterface $productParameterValueDataFactory
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
-     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory
      * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface $uploadedFileDataFactory
@@ -66,7 +66,7 @@ class ProductDataFactory extends BaseProductDataFactory
         PluginCrudExtensionFacade $pluginDataFormExtensionFacade,
         ProductParameterValueDataFactoryInterface $productParameterValueDataFactory,
         PricingGroupFacade $pricingGroupFacade,
-        ProductGroupFacade $productGroupFacade,
+        ProductSetFacade $productSetFacade,
         AvailabilityFacade $availabilityFacade,
         ProductFlagDataFactory $productFlagDataFactory,
         UploadedFileDataFactoryInterface $uploadedFileDataFactory
@@ -86,7 +86,7 @@ class ProductDataFactory extends BaseProductDataFactory
             $pricingGroupFacade,
             $availabilityFacade
         );
-        $this->productGroupFacade = $productGroupFacade;
+        $this->productSetFacade = $productSetFacade;
         $this->productFlagDataFactory = $productFlagDataFactory;
         $this->uploadedFileDataFactory = $uploadedFileDataFactory;
     }
@@ -163,7 +163,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->variantId = $product->getVariantId();
         $productData->registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
         $productData->promoDiscountDisabled = $product->isPromoDiscountDisabled();
-        $productData->groupItems = $this->getProductGroups($product);
+        $productData->setItems = $this->getProductSets($product);
         $productData->deliveryDays = $product->getDeliveryDays();
         $productData->warranty = $product->getWarranty();
         $productData->flags = [];
@@ -191,16 +191,16 @@ class ProductDataFactory extends BaseProductDataFactory
      * @param \App\Model\Product\Product $product
      * @return array
      */
-    protected function getProductGroups(Product $product): array
+    protected function getProductSets(Product $product): array
     {
-        $productGroups = [];
-        foreach ($this->productGroupFacade->getAllByMainProduct($product) as $groupItem) {
-            $productGroups[] = [
-                'item' => $groupItem->getItem(),
-                'item_count' => $groupItem->getItemCount(),
+        $productSets = [];
+        foreach ($this->productSetFacade->getAllByMainProduct($product) as $setItem) {
+            $productSets[] = [
+                'item' => $setItem->getItem(),
+                'item_count' => $setItem->getItemCount(),
             ];
         }
 
-        return $productGroups;
+        return $productSets;
     }
 }

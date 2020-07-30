@@ -36,7 +36,7 @@ class PohodaProductExportRepository
         self::POHODA_STOCK_STORE_SALE_ID,
     ];
 
-    private const PRODUCT_TYPE_GROUP_ID = 5;
+    private const PRODUCT_TYPE_SET_ID = 5;
 
     private const SELLING_EUR_PRICE_ID = 4;
 
@@ -131,7 +131,7 @@ class PohodaProductExportRepository
         foreach ($pohodaProductResult as $pohodaProduct) {
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]] = $pohodaProduct;
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_CATEGORIES] = [];
-            $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_GROUP_ITEMS] = [];
+            $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_SET_ITEMS] = [];
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_RELATED_PRODUCTS] = [];
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_VIDEOS] = [];
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PARAMETERS] = [];
@@ -301,29 +301,29 @@ class PohodaProductExportRepository
      * @param int[] $pohodaProductIds
      * @return array
      */
-    public function getProductGroupsByPohodaIds(array $pohodaProductIds): array
+    public function getProductSetsByPohodaIds(array $pohodaProductIds): array
     {
         $resultSetMapping = new ResultSetMapping();
         $resultSetMapping->addScalarResult('RefAg', PohodaProduct::COL_PRODUCT_REF_ID)
-            ->addScalarResult('RefSKz', PohodaProduct::COL_PRODUCT_GROUP_ITEM_REF_ID)
-            ->addScalarResult('Mnozstvi', PohodaProduct::COL_PRODUCT_GROUP_ITEM_COUNT);
+            ->addScalarResult('RefSKz', PohodaProduct::COL_PRODUCT_SET_ITEM_REF_ID)
+            ->addScalarResult('Mnozstvi', PohodaProduct::COL_PRODUCT_SET_ITEM_COUNT);
 
         $query = $this->pohodaEntityManager->createNativeQuery(
-            'SELECT ProductGroup.RefAg, ProductGroup.RefSKz, ProductGroup.Mnozstvi
-            FROM SKzPol AS ProductGroup
-            JOIN Skz AS ProductGroupItem ON ProductGroupItem.ID = ProductGroup.RefSKz
-            JOIN Skz AS MainProduct ON MainProduct.ID = ProductGroup.RefAg
-            WHERE ProductGroup.RefAg IN(:pohodaProductIds)
-                AND ProductGroupItem.RefSklad = :defaultStock
-                AND ProductGroupItem.IObchod = 1
-                AND MainProduct.RelSkTyp = :productTypeGroup
-            ORDER BY ProductGroup.OrderFld',
+            'SELECT ProductSet.RefAg, ProductSet.RefSKz, ProductSet.Mnozstvi
+            FROM SKzPol AS ProductSet
+            JOIN Skz AS ProductSetItem ON ProductSetItem.ID = ProductSet.RefSKz
+            JOIN Skz AS MainProduct ON MainProduct.ID = ProductSet.RefAg
+            WHERE ProductSet.RefAg IN(:pohodaProductIds)
+                AND ProductSetItem.RefSklad = :defaultStock
+                AND ProductSetItem.IObchod = 1
+                AND MainProduct.RelSkTyp = :productTypeSet
+            ORDER BY ProductSet.OrderFld',
             $resultSetMapping
         )
             ->setParameters([
                 'pohodaProductIds' => $pohodaProductIds,
                 'defaultStock' => self::DEFAULT_POHODA_STOCK_ID,
-                'productTypeGroup' => self::PRODUCT_TYPE_GROUP_ID,
+                'productTypeSet' => self::PRODUCT_TYPE_SET_ID,
             ]);
 
         return $query->getResult();
