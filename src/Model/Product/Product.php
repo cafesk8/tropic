@@ -51,6 +51,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  */
 class Product extends BaseProduct
 {
+    public const IMAGE_TYPE_STICKER = 'sticker';
     public const POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT = 1;
     public const POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP = 5;
 

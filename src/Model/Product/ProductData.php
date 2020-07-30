@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product;
 
 use DateTime;
+use Shopsys\FrameworkBundle\Component\FileUpload\ImageUploadData;
 use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileData;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
@@ -169,6 +170,8 @@ class ProductData extends BaseProductData
      */
     public bool $oversized;
 
+    public ImageUploadData $stickers;
+
     public function __construct()
     {
         parent::__construct();
@@ -192,5 +195,6 @@ class ProductData extends BaseProductData
         $this->shown = [];
         $this->bulky = false;
         $this->oversized = false;
+        $this->stickers = new ImageUploadData();
     }
 }
