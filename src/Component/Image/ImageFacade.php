@@ -109,4 +109,15 @@ class ImageFacade extends BaseImageFacade
     {
         return $this->imageRepository->deleteImagesWithNotExistingPohodaId($currentPohodaImageIdsIndexedByProductId);
     }
+
+    /**
+     * @param string $entityName
+     * @param int $entityId
+     * @param string|null $type
+     * @return \App\Component\Image\Image[]
+     */
+    public function getImagesByEntityIdIndexedById(string $entityName, int $entityId, ?string $type): array
+    {
+        return $this->imageRepository->getImagesByEntityIndexedById($entityName, $entityId, $type);
+    }
 }

@@ -58,6 +58,11 @@ class ListedProductView extends BaseListedProductView
     private $unitName;
 
     /**
+     * @var \Shopsys\ReadModelBundle\Image\ImageView[]
+     */
+    private array $stickers;
+
+    /**
      * @param int $id
      * @param string $name
      * @param string|null $shortDescription
@@ -74,6 +79,7 @@ class ListedProductView extends BaseListedProductView
      * @param bool $isAvailableInDays
      * @param int $realSaleStocksQuantity
      * @param string $unitName
+     * @param array $stickers
      */
     public function __construct(
         int $id,
@@ -91,7 +97,8 @@ class ListedProductView extends BaseListedProductView
         ?string $deliveryDays,
         bool $isAvailableInDays,
         int $realSaleStocksQuantity,
-        string $unitName
+        string $unitName,
+        array $stickers
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
@@ -105,6 +112,7 @@ class ListedProductView extends BaseListedProductView
         $this->isAvailableInDays = $isAvailableInDays;
         $this->realSaleStocksQuantity = $realSaleStocksQuantity;
         $this->unitName = $unitName;
+        $this->stickers = $stickers;
     }
 
     /**
@@ -189,5 +197,13 @@ class ListedProductView extends BaseListedProductView
     public function getUnitName(): string
     {
         return $this->unitName;
+    }
+
+    /**
+     * @return \Shopsys\ReadModelBundle\Image\ImageView[]
+     */
+    public function getStickers(): array
+    {
+        return $this->stickers;
     }
 }

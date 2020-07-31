@@ -25,31 +25,30 @@ use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory as BaseListe
  */
 class ListedProductViewFactory extends BaseListedProductViewFactory
 {
-    /**
-     * @var \App\Model\Product\ProductFacade
-     */
-    private $productFacade;
+    private ProductFacade $productFacade;
 
-    /**
-     * @var \App\Model\Product\Group\ProductGroupFacade
-     */
-    private $productGroupFacade;
+    private ProductGroupFacade $productGroupFacade;
+
+    private ImageViewFacade $imageViewFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Product\View\ImageViewFacade $imageViewFacade
      */
     public function __construct(
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
         ProductFacade $productFacade,
-        ProductGroupFacade $productGroupFacade
+        ProductGroupFacade $productGroupFacade,
+        ImageViewFacade $imageViewFacade
     ) {
         parent::__construct($domain, $productCachedAttributesFacade);
         $this->productFacade = $productFacade;
         $this->productGroupFacade = $productGroupFacade;
+        $this->imageViewFacade = $imageViewFacade;
     }
 
     /**
@@ -87,7 +86,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productArray['delivery_days'],
             $productArray['is_available_in_days'],
             $productArray['real_sale_stocks_quantity'],
-            $productArray['unit']
+            $productArray['unit'],
+            $this->imageViewFacade->getStickerViewsByProductId($productArray['id'])
         );
     }
 
@@ -118,7 +118,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $product->isMainVariant() ? '' : $product->getDeliveryDays(),
             $product->isMainVariant() ? false : $product->isAvailableInDays(),
             $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity(),
-            $product->getUnit()->getName($this->domain->getLocale())
+            $product->getUnit()->getName($this->domain->getLocale()),
+            $this->imageViewFacade->getStickerViewsByProductId($product->getId())
         );
     }
 
