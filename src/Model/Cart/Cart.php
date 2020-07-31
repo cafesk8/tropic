@@ -187,7 +187,7 @@ class Cart extends BaseCart
     /**
      * @return \App\Model\Order\Item\QuantifiedProduct[]
      */
-    public function getQuantifiedProducts()
+    public function getQuantifiedProducts(): array
     {
         $quantifiedProducts = [];
         foreach ($this->getItems() as $item) {

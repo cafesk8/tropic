@@ -1097,15 +1097,17 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param bool $withoutSaleStock
      * @return bool
      */
-    public function isProductOnlyAtExternalStock(): bool
+    public function isProductOnlyAtExternalStock(bool $withoutSaleStock = false): bool
     {
         if ($this->isMainVariant()) {
             throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant!');
         }
+        $stockQuantity = $withoutSaleStock ? $this->getRealNonSaleStocksQuantity() : $this->getRealStockQuantity();
 
-        return $this->getRealExternalStockQuantity() > 0 && $this->getRealExternalStockQuantity() === $this->getRealStockQuantity();
+        return $this->getRealExternalStockQuantity() > 0 && $this->getRealExternalStockQuantity() === $stockQuantity;
     }
 
     /**
@@ -1122,15 +1124,16 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param bool $withoutSaleStock
      * @return bool
      */
-    public function isAvailableInDays(): bool
+    public function isAvailableInDays(bool $withoutSaleStock = false): bool
     {
         if ($this->isMainVariant()) {
             throw new \Exception('Don\'t call isAvailableInDays from main variant!');
         }
 
-        return $this->isProductOnlyAtExternalStock() && $this->getDeliveryDays() !== null;
+        return $this->isProductOnlyAtExternalStock($withoutSaleStock) && $this->getDeliveryDays() !== null;
     }
 
     /**

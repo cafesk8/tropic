@@ -1,14 +1,15 @@
-{% macro productAvailability(product) %}
+{% macro productAvailability(product, showSaleStockAvailability = true) %}
     {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
+
     {% if product.isMainVariant %}
         <span class="in-availability__date">
             {{ 'Dostupnost dle varianty'|trans }}
         </span>
-    {% elseif product.inAnySaleStock and not product.sellingDenied %}
+    {% elseif product.inAnySaleStock and not product.sellingDenied and showSaleStockAvailability %}
         <span class="in-availability__date">
             {{ saleStockQuantity.showInfo(product.realSaleStocksQuantity, product.unit.name) }}
         </span>
-    {% elseif product.isAvailableInDays %}
+    {% elseif product.isAvailableInDays or (showSaleStockAvailability is same as(false) and product.isAvailableInDays(true) is same as(true)) %}
         <span class="in-availability__date in-availability__date--available-in-days">
             {% if product.deliveryDays == 1 %}
                 {{ 'Dostupné do %days% dne'|trans({ '%days%': product.deliveryDays }) }}

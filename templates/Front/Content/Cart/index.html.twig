@@ -85,7 +85,7 @@
                                                 <i class="svg svg-remove"></i>
                                             </a>
                                             <div class="table-cart__cell table-cart__cell--availability">
-                                                {{ productAvailability.productAvailability(cartItem.product) }}
+                                                {{ productAvailability.productAvailability(cartItem.product, cartItem.saleItem) }}
                                             </div>
                                             <div class="table-cart__cell table-cart__cell--price-unit">
                                                 {{ cartItemPrice.unitPrice.priceWithVat|price }}
