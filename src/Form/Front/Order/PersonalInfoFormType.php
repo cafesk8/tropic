@@ -400,6 +400,10 @@ class PersonalInfoFormType extends AbstractType
      */
     private function isPickupPlaceAndStoreNull(FrontOrderData $orderData): bool
     {
+        if ($orderData->transport !== null && !$orderData->transport->isPickupPlaceType()) {
+            return true;
+        }
+
         return $orderData->pickupPlace === null && $orderData->store === null;
     }
 }
