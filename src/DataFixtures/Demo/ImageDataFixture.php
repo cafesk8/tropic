@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures\Demo;
 
 use App\Component\Image\ImageFacade;
+use App\Model\Product\Product;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -114,6 +115,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         $this->processPaymentsImages();
         $this->processTransportsImages();
         $this->processProductsImages();
+        $this->processStickersImages();
         $this->processSliderItemsImages();
         $this->imageFacade->restartImagesIdsDbSequence(109);
     }
@@ -316,5 +318,12 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
             SliderItemDataFixture::class,
             StoreDataFixture::class,
         ];
+    }
+
+    private function processStickersImages(): void
+    {
+        $this->imageFacade->saveImageIntoDb(1, 'product', 201, 'png', null, Product::IMAGE_TYPE_STICKER);
+        $this->imageFacade->saveImageIntoDb(2, 'product', 202, 'png', null, Product::IMAGE_TYPE_STICKER);
+        $this->imageFacade->saveImageIntoDb(1, 'product', 203, 'png', null, Product::IMAGE_TYPE_STICKER);
     }
 }
