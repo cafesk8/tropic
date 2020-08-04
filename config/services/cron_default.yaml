@@ -34,18 +34,6 @@ services:
     #        tags:
     #            - { name: shopsys.cron, hours: '23', minutes: '00', readableName: 'Smazání produktů z Mall' }
 
-    #################################
-    ## PAYMENT GATES CRON INSTANCE ##
-    #################################
-
-    App\Model\GoPay\OrderGoPayStatusUpdateCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '15', instanceName: customers, readableName: 'Aktualizace objednávek pro platby GoPay' }
-
-    App\Model\PayPal\OrderPayPalStatusUpdateCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '15', instanceName: customers, readableName: 'Aktualizace objednávek pro platby PayPal' }
-
     #####################################
     ## PRODUCTS TRANSFER CRON INSTANCE ##
     #####################################
@@ -134,14 +122,6 @@ services:
     Shopsys\FrameworkBundle\Component\Error\ErrorPageCronModule:
         tags:
             - { name: shopsys.cron, hours: '21', minutes: '10', readableName: 'Vygenerování chybových stránek' }
-
-    App\Model\Order\Transfer\OrderExportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Export objednávek a uživatelů do IS Pohoda' }
-
-    App\Model\Order\Transfer\Status\OrderStatusImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import stavů objednávek z IS Pohoda' }
 
     App\Model\Newsletter\Transfer\EcomailExportCronModule:
         tags:
