@@ -384,7 +384,7 @@ class ProductRepository extends BaseProductRepository
      * @param array $productIds
      * @return \App\Model\Product\Product[]
      */
-    private function findByIds(array $productIds): array
+    public function findByIds(array $productIds): array
     {
         return $this->em->createQueryBuilder()
             ->select('p')
