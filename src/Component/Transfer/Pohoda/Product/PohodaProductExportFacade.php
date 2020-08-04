@@ -289,15 +289,7 @@ class PohodaProductExportFacade
     {
         foreach ($params as $param) {
             if ($param->name === $parameter->name && $param->type === $parameter->type) {
-                $valuesAreIdentical = true;
-
-                foreach ($param->values as $locale => $value) {
-                    $valuesAreIdentical &= $value === $parameter->values[$locale];
-                }
-
-                if ($valuesAreIdentical) {
-                    return true;
-                }
+                return true;
             }
         }
 
