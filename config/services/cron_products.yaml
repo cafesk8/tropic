@@ -1,0 +1,52 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # ONCE PER DAY ----------------------------------------------------------------------------------
+    Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '0', minutes: '0', readableName: "Export všech produktů do Elasticsearch", instanceName: products }
+
+    Shopsys\FrameworkBundle\Model\Product\ProductVisibilityMidnightCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '0', minutes: '30', readableName: 'Přepočet viditelností produktů (všechny produkty)', instanceName: products }
+
+    # ALWAYS -----------------------------------------------------------------------------------------
+    App\Model\Product\Transfer\ProductImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import změněných produktů a zařazení produktů do kategorií z Pohoda IS', instanceName: products }
+
+    Shopsys\FrameworkBundle\Model\Product\ProductVisibilityImmediateCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet viditelností produktů (pouze produkty označené k přepočtu)', instanceName: products }
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet cen produktů', instanceName: products }
+
+    Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet dostupností produktů', instanceName: products }
+
+    App\Model\Product\ProductRefreshCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přeuložení označených produktů pro správný přepočet přiřazení výprodejových štítků apod.', instanceName: products }
+
+    App\Model\Product\Translation\ProductTranslationCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Automatický překlad produktů přes Google Translate', instanceName: products }
+
+    Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportChangedCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: "Export změněných produktů do Elasticsearch", instanceName: products }
+
+
+#    App\Model\Product\Mall\MallProductExportCronModule:
+#        tags:
+#            - { name: shopsys.cron, hours: '23', minutes: '00' }
+
+#    App\Model\Product\Mall\MallProductDeleteCronModule:
+#        tags:
+#            - { name: shopsys.cron, hours: '23', minutes: '00', readableName: 'Smazání produktů z Mall' }

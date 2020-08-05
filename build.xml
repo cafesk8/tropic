@@ -28,6 +28,14 @@
         </exec>
     </target>
 
+    <target name="cron-products" description="Runs products background jobs. Should be executed periodically by system Cron every 5 minutes.">
+        <exec executable="${path.php.executable}" passthru="true" checkreturn="true">
+            <arg value="${path.bin-console}" />
+            <arg value="shopsys:cron" />
+            <arg value="--instance-name=products" />
+        </exec>
+    </target>
+
     <target name="cron-orders" description="Runs orders background jobs. Should be executed periodically by system Cron every 5 minutes.">
         <exec executable="${path.php.executable}" passthru="true" checkreturn="true">
             <arg value="${path.bin-console}" />
