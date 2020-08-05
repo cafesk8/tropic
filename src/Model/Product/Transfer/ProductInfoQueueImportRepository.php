@@ -28,6 +28,8 @@ class ProductInfoQueueImportRepository
      */
     public function insertChangedPohodaProductIds(array $pohodaProductIds, \DateTime $pohodaTransferDateTime): void
     {
+        $pohodaTransferDateTime->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
         foreach ($pohodaProductIds as $pohodaProductId) {
             $query = $this->em->createNativeQuery(
                 'INSERT INTO pohoda_changed_products_basic_info_queue (pohoda_id, inserted_at)

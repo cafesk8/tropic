@@ -35,6 +35,6 @@ class PohodaEntityManager extends EntityManagerDecorator
         $query = $this->createNativeQuery('SELECT GETDATE() as datetime', $rsm);
         $dateTimeStringWithMicroSeconds = $query->getSingleScalarResult();
 
-        return new \DateTime($dateTimeStringWithMicroSeconds);
+        return new \DateTime($dateTimeStringWithMicroSeconds, new \DateTimeZone('Europe/Prague'));
     }
 }
