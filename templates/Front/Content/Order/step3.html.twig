@@ -63,18 +63,22 @@
                                 {% endif %}
                             </div>
 
-                            <div class="box-order__info__content__right">
-                                <h3 class="box-order__info__title"><strong>{{ '3% sleva'|trans }}</strong> {{ 'za registraci může platit'|trans }} <strong>{{ 'již na tento nákup!'|trans }}</strong></h3>
+                            {% if not is_granted('ROLE_LOGGED_CUSTOMER') %}
+                                <div class="box-order__info__content__right">
+                                    <h3 class="box-order__info__title"><strong>{{ '3% sleva'|trans }}</strong> {{ 'za registraci může platit'|trans }} <strong>{{ 'již na tento nákup!'|trans }}</strong></h3>
 
-                                <div class="js-order-registration-fields display-none">
-                                    {{ form_widget(form.registration, {
-                                        attr: { class: 'css-checkbox js-checkbox-toggle js-order-registration-checkbox', 'data-checkbox-toggle-container-id': 'js-password-fields' }})
-                                    }}
-                                    <label for="{{ form.registration.vars.id }}" class="css-checkbox__image">
-                                        {{ 'Chci se zaregistrovat'|trans }}
-                                    </label>
+                                    <div class="js-order-registration-fields display-none">
+                                        {{ form_widget(form.registration, {
+                                            attr: { class: 'css-checkbox js-checkbox-toggle js-order-registration-checkbox', 'data-checkbox-toggle-container-id': 'js-password-fields' }})
+                                        }}
+                                        <label for="{{ form.registration.vars.id }}" class="css-checkbox__image">
+                                            {{ 'Chci se zaregistrovat'|trans }}
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
+                            {% else %}
+                                {% do form.registration.setRendered %}
+                            {% endif %}
                         </div>
 
                         <div class="box-order__info__content box-order__info__content--without-gap">
