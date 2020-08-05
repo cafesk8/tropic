@@ -100,7 +100,14 @@ export default class ProductListAjaxFilter {
     }
 
     updateTitle ($wrappedData) {
-        this.$categoryTitle.html($wrappedData.filterAllNodes('#js-product-list-ajax-category-title').val());
+        const title = $wrappedData.filterAllNodes('#js-product-list-ajax-category-title').val();
+        const $titleElement = $('title');
+
+        this.$categoryTitle.html(title);
+        let titleParts = $titleElement.text().split('|');
+        titleParts[0] = title;
+        titleParts[1] = titleParts[1].trim();
+        $titleElement.text(titleParts.join(' | '));
     }
 
     submitFormWithAjax (productListAjaxFilter) {
@@ -117,6 +124,7 @@ export default class ProductListAjaxFilter {
                 productListAjaxFilter.updateSelectedFilters($wrappedData);
                 productListAjaxFilter.updateBrandLabelTexts($wrappedData);
                 productListAjaxFilter.refreshBrandLinks();
+                productListAjaxFilter.updateMetaTag($wrappedData);
                 productListAjaxFilter.updateTitle($wrappedData);
             }
         });
@@ -137,6 +145,18 @@ export default class ProductListAjaxFilter {
             event.preventDefault();
             $('.form-choice__input[data-filter-name-with-entity-id="' + $(event.target).data('brand-checkbox-id') + '"]').click();
         });
+    }
+
+    updateMetaTag ($wrappedData) {
+        const $indexingDisabled = $wrappedData.filterAllNodes('#js-disable-indexing');
+
+        if ($indexingDisabled.val()) {
+            if ($('#js-disable-indexing-ajax-meta').length === 0) {
+                $('head').append('<meta id="js-disable-indexing-ajax-meta" name="robots" content="noindex, follow">');
+            }
+        } else {
+            $('#js-disable-indexing-ajax-meta').remove();
+        }
     }
 
     static init ($container) {

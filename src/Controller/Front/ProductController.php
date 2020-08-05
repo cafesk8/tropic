@@ -333,6 +333,7 @@ class ProductController extends FrontBaseController
             ),
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData),
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData),
+            'disableIndexing' => count($productFilterData->brands) >= 2,
         ];
 
         if ($request->isXmlHttpRequest()) {
@@ -350,10 +351,12 @@ class ProductController extends FrontBaseController
     public function listBySaleCategoryAction(Request $request, int $id): Response
     {
         $params = $request->query->get('product_filter_form');
+        $tmpParams = $params;
+
         foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
-            $params['flags'][] = $saleFlag->getId();
+            $tmpParams['flags'][] = $saleFlag->getId();
         }
-        $request->query->set('product_filter_form', $params);
+        $request->query->set('product_filter_form', $tmpParams);
 
         $category = $this->categoryFacade->getById($id);
 
@@ -412,7 +415,10 @@ class ProductController extends FrontBaseController
             ),
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData, true),
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData, Category::SALE_TYPE),
+            'disableIndexing' => count($productFilterData->brands) >= 2,
         ];
+
+        $request->query->set('product_filter_form', $params);
 
         if ($request->isXmlHttpRequest()) {
             return $this->render('Front/Content/Product/ajaxList.html.twig', $viewParameters);
@@ -473,6 +479,7 @@ class ProductController extends FrontBaseController
             'SEARCH_TEXT_PARAMETER' => self::SEARCH_TEXT_PARAMETER,
             'priceRange' => $productFilterConfig->getPriceRange(),
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData),
+            'disableIndexing' => count($productFilterData->brands) >= 2,
         ];
 
         if ($request->isXmlHttpRequest()) {

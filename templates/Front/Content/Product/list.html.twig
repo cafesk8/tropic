@@ -6,7 +6,7 @@
 {% set domain = getDomain() %}
 
 {% block meta_robots %}
-    {{ paginator.metaRobots(paginationResult) }}
+    {{ paginator.metaRobots(paginationResult, disableIndexing) }}
 {% endblock %}
 
 {% block meta_description %}
@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block title %}
-    {{ category.getSeoTitle(domain.id)|default(category.name) }}
+    {{ categoryTitle }}
 {% endblock %}
 
 {% block main_content %}

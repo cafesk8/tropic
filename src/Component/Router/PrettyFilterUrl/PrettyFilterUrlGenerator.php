@@ -33,12 +33,6 @@ class PrettyFilterUrlGenerator extends FriendlyUrlGenerator
     public function getGeneratedUrl($routeName, Route $route, FriendlyUrl $friendlyUrl, array $parameters, $referenceType)
     {
         $tokens = [];
-        $filters = $parameters[ProductFilterFormType::NAME] ?? [];
-
-        if (isset($filters[ProductFilterFormType::FIELD_PARAMETERS]) && count($filters[ProductFilterFormType::FIELD_PARAMETERS]) > 2) {
-            $tokens[] = ['text', 'ni/'];
-        }
-
         $parameters = $this->processBrandFilters($parameters);
         $parameters = $this->removeEmptyFilters($parameters);
 
