@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\Domain\DomainHelper;
 use App\Model\Payment\Payment;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -161,6 +162,30 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         }
         $paymentData->enabled[Domain::FIRST_DOMAIN_ID] = true;
         $paymentData->hidden = true;
+        $this->createPayment(Payment::TYPE_PAY_PAL, $paymentData, [
+            TransportDataFixture::TRANSPORT_PERSONAL,
+            TransportDataFixture::TRANSPORT_PPL,
+            TransportDataFixture::TRANSPORT_CZECH_POST,
+            TransportDataFixture::TRANSPORT_PPL_DE,
+            TransportDataFixture::TRANSPORT_PPL_FR,
+        ]);
+
+        $paymentData = $this->paymentDataFactory->create();
+        $paymentData->type = Payment::TYPE_COFIDIS;
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $paymentData->name[$locale] = t('Cofidis', [], 'dataFixtures', $locale);
+        }
+        $paymentData->czkRounding = false;
+        $this->setPriceForAllDomainDefaultCurrencies($paymentData, Money::zero());
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $paymentData->description[$locale] = t('Platba provedena u Cofidis', [], 'dataFixtures', $locale);
+            $paymentData->instructions[$locale] = t('<b>Zvolili jste platbu Cofidis, budete přesměrováni na platební bránu. Po dokončení žádosti prosím vyčkejte. V nejbližší možné době Vás budeme kontaktovat ohledně dalšího postupu ve splátkovém prodeji.</b>', [], 'dataFixtures', $locale);
+        }
+        $paymentData->enabled[DomainHelper::CZECH_DOMAIN] = true;
+        $paymentData->enabled[DomainHelper::SLOVAK_DOMAIN] = false;
+        $paymentData->enabled[DomainHelper::ENGLISH_DOMAIN] = false;
+        $paymentData->hidden = false;
+        $paymentData->minimumOrderPrices[Domain::FIRST_DOMAIN_ID] = Money::create(3000);
         $this->createPayment(Payment::TYPE_PAY_PAL, $paymentData, [
             TransportDataFixture::TRANSPORT_PERSONAL,
             TransportDataFixture::TRANSPORT_PPL,

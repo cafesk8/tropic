@@ -6,6 +6,7 @@ namespace App\Model\Payment;
 
 use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Payment\Payment as BasePayment;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentData as BasePaymentData;
 
@@ -18,8 +19,8 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentData as BasePaymentData;
  * @method removeTransport(\App\Model\Transport\Transport $transport)
  * @method \App\Model\Transport\Transport[] getTransports()
  * @method setTranslations(\App\Model\Payment\PaymentData $paymentData)
- * @method setDomains(\App\Model\Payment\PaymentData $paymentData)
- * @method createDomains(\App\Model\Payment\PaymentData $paymentData)
+ * @property \App\Model\Payment\PaymentDomain[]|\Doctrine\Common\Collections\Collection $domains
+ * @method \App\Model\Payment\PaymentDomain getPaymentDomain(int $domainId)
  */
 class Payment extends BasePayment
 {
@@ -27,6 +28,7 @@ class Payment extends BasePayment
     public const TYPE_GOPAY = 'goPay';
     public const TYPE_PAY_PAL = 'payPal';
     public const TYPE_MALL = 'mall';
+    public const TYPE_COFIDIS = 'cofidis';
 
     /**
      * @var string
@@ -137,6 +139,14 @@ class Payment extends BasePayment
     }
 
     /**
+     * @return bool
+     */
+    public function isCofidis(): bool
+    {
+        return $this->type === self::TYPE_COFIDIS;
+    }
+
+    /**
      * @return string
      */
     public function getType(): string
@@ -230,5 +240,42 @@ class Payment extends BasePayment
     public function waitsForPayment(): bool
     {
         return $this->waitForPayment;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    public function getMinimumOrderPrice(int $domainId): Money
+    {
+        return $this->getPaymentDomain($domainId)->getMinimumOrderPrice();
+    }
+
+    /**
+     * @param \App\Model\Payment\PaymentData $paymentData
+     */
+    protected function setDomains(BasePaymentData $paymentData): void
+    {
+        parent::setDomains($paymentData);
+
+        foreach ($this->domains as $paymentDomain) {
+            $domainId = $paymentDomain->getDomainId();
+            $paymentDomain->setMinimumOrderPrice($paymentData->minimumOrderPrices[$domainId] ?? Money::zero());
+        }
+    }
+
+    /**
+     * @param \App\Model\Payment\PaymentData $paymentData
+     */
+    protected function createDomains(BasePaymentData $paymentData)
+    {
+        $domainIds = array_keys($paymentData->enabled);
+
+        foreach ($domainIds as $domainId) {
+            $paymentDomain = new PaymentDomain($this, $domainId, $paymentData->vatsIndexedByDomainId[$domainId]);
+            $this->domains->add($paymentDomain);
+        }
+
+        $this->setDomains($paymentData);
     }
 }

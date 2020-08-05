@@ -38,6 +38,10 @@
         {% include 'Front/Inline/Payment/payPalPayment.html.twig' %}
     {% endif %}
 
+    {% if cofidisPaymentLink is defined and cofidisPaymentLink is not null %}
+        {% include 'Front/Inline/Payment/cofidisPayment.html.twig' %}
+    {% endif %}
+
     <div class="web__line">
         <div class="web__container web__container--border-radius web__container--dark">
             {% include 'Front/Content/Article/index.html.twig' with { blogArticles: homepageBlogArticles, articleClassModification: 'list-articles--white' } %}

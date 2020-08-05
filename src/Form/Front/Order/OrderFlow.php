@@ -7,6 +7,7 @@ namespace App\Form\Front\Order;
 use App\Model\Customer\User\CustomerUser;
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\StepInterface;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 
 class OrderFlow extends FormFlow
@@ -25,6 +26,11 @@ class OrderFlow extends FormFlow
      * @var \App\Model\Country\Country|null
      */
     private $country;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    private $orderPrice;
 
     /**
      * @param int $domainId
@@ -65,6 +71,7 @@ class OrderFlow extends FormFlow
                 'form_options' => [
                     'domain_id' => $this->domainId,
                     'country' => $this->country,
+                    'order_price' => $this->orderPrice,
                 ],
             ],
             [
@@ -276,5 +283,13 @@ class OrderFlow extends FormFlow
         }
 
         return $newFormAddressData;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $orderPrice
+     */
+    public function setOrderPrice(Money $orderPrice): void
+    {
+        $this->orderPrice = $orderPrice;
     }
 }

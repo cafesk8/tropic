@@ -110,3 +110,12 @@ parameters:
     ecomail_list_id_sk: 3
 
     env(CDN_DOMAIN): '//'
+
+    cofidis_config:
+        merchant_id: 15002
+        login: NESS
+        cofisun_pass: F3C0K54C
+        inbound_pass: password
+        outbound_pass: password
+        isProductionMode: false
+        timeout: 30

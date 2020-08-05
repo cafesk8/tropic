@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Component\Cofidis\CofidisFacade;
+use App\Component\Cofidis\Exception\CofidisException;
 use App\Form\Front\Customer\Password\NewPasswordFormType;
 use App\Form\Front\Order\DomainAwareOrderFlowFactory;
 use App\Form\Front\Order\OrderFlow;
@@ -221,6 +223,8 @@ class OrderController extends FrontBaseController
      */
     private FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade;
 
+    private CofidisFacade $cofidisFacade;
+
     /**
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
@@ -253,6 +257,7 @@ class OrderController extends FrontBaseController
      * @param \App\Model\Order\Item\OrderItemFactory $orderItemFactory
      * @param \App\Model\Order\Item\OrderItemDataFactory $orderItemDataFactory
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
+     * @param \App\Component\Cofidis\CofidisFacade $cofidisFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -285,7 +290,8 @@ class OrderController extends FrontBaseController
         OrderDataFactory $orderDataFactory,
         OrderItemFactory $orderItemFactory,
         OrderItemDataFactory $orderItemDataFactory,
-        FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
+        FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
+        CofidisFacade $cofidisFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -318,6 +324,7 @@ class OrderController extends FrontBaseController
         $this->orderItemFactory = $orderItemFactory;
         $this->orderItemDataFactory = $orderItemDataFactory;
         $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
+        $this->cofidisFacade = $cofidisFacade;
     }
 
     /**
@@ -392,6 +399,8 @@ class OrderController extends FrontBaseController
         }
 
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment, $frontOrderFormData->registration);
+        $orderFlow->setOrderPrice($orderPreview->getProductsPrice()->getPriceWithVat());
+
         $payments = $this->paymentFacade->getVisibleOnCurrentDomain();
         $transports = $this->transportFacade->getVisibleOnCurrentDomain($payments);
         $this->checkTransportAndPaymentChanges($orderData, $orderPreview, $transports, $payments);
@@ -713,6 +722,8 @@ class OrderController extends FrontBaseController
             }
         }
 
+        $cofidisPaymentLink = $this->getCofidisPaymentLink($order);
+
         $this->gtmFacade->onOrderSentPage($order);
 
         return $this->render('Front/Content/Order/sent.html.twig', [
@@ -720,6 +731,7 @@ class OrderController extends FrontBaseController
             'order' => $order,
             'goPayData' => $goPayData,
             'payPalApprovalLink' => $payPalApprovalLink,
+            'cofidisPaymentLink' => $cofidisPaymentLink,
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
                 $this->domain->getId(),
                 $this->domain->getLocale(),
@@ -838,7 +850,7 @@ class OrderController extends FrontBaseController
         }
 
         if ($this->orderFacade->isUnpaidOrderPaymentChangeable($order)) {
-            $payments = $this->paymentFacade->getVisibleOnCurrentDomainByTransport($order->getTransport());
+            $payments = $this->paymentFacade->getVisibleOnCurrentDomainByTransport($order->getTransport(), $order->getTotalProductPriceWithVat());
             $goPayBankSwifts = $this->goPayBankSwiftFacade->getAllByCurrencyId($order->getCurrency()->getId());
 
             $form = $this->createForm(PaymentFormType::class, [], [
@@ -963,15 +975,32 @@ class OrderController extends FrontBaseController
 
         $this->addInfoFlash(t('Způsob platby byl úspěšně změněn'));
 
+        if ($order->getPayment()->isCofidis()) {
+            $cofidisPaymentLink = $this->getCofidisPaymentLink($order);
+
+            return $this->redirectToRoute('front_order_sent', [
+                'pageContent' => $this->orderFacade->getOrderSentPageContent($order->getId()),
+                'order' => $order,
+                'goPayData' => null,
+                'payPalApprovalLink' => null,
+                'cofidisPaymentLink' => $cofidisPaymentLink,
+                'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
+                    $this->domain->getId(),
+                    $this->domain->getLocale(),
+                    self::HOMEPAGE_ARTICLES_LIMIT
+                ),
+            ]);
+        }
+
         if ($this->getUser() instanceof CustomerUser) {
             return $this->redirectToRoute('front_customer_order_detail_registered', [
                 'orderNumber' => $order->getNumber(),
             ]);
-        } else {
-            return $this->redirectToRoute('front_customer_order_detail_unregistered', [
-                'urlHash' => $order->getUrlHash(),
-            ]);
         }
+
+        return $this->redirectToRoute('front_customer_order_detail_unregistered', [
+            'urlHash' => $order->getUrlHash(),
+        ]);
     }
 
     /**
@@ -1036,5 +1065,23 @@ class OrderController extends FrontBaseController
     {
         return $this->isGranted(Roles::ROLE_LOGGED_CUSTOMER) ||
             $this->customerUserFacade->findCustomerUserByEmailAndDomain($email, $this->domain->getId()) !== null;
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @return string|null
+     */
+    private function getCofidisPaymentLink(Order $order): ?string
+    {
+        $cofidisPaymentLink = null;
+        if ($order->getPayment()->isCofidis()) {
+            try {
+                $cofidisPaymentLink = $this->cofidisFacade->sendPaymentToCofidis($order);
+            } catch (CofidisException $e) {
+                $this->addErrorFlash(t('Připojení k bráně Cofidis selhalo.'));
+            }
+        }
+
+        return $cofidisPaymentLink;
     }
 }

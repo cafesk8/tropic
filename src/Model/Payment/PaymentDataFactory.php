@@ -58,6 +58,9 @@ class PaymentDataFactory extends BasePaymentDataFactory
         $paymentData->activatesGiftCertificates = $payment->activatesGiftCertificates();
         $paymentData->waitForPayment = $payment->waitsForPayment();
 
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $paymentData->minimumOrderPrices[$domainId] = $payment->getMinimumOrderPrice($domainId);
+        }
         return $paymentData;
     }
 

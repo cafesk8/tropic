@@ -8,10 +8,12 @@ use App\Component\Domain\DomainHelper;
 use App\Model\Cart\CartFacade;
 use App\Model\Country\CountryFacade;
 use App\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
+use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\Store\StoreIdToEntityTransformer;
 use App\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer;
 use App\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Form\SingleCheckboxChoiceType;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Order\OrderData;
@@ -76,6 +78,8 @@ class TransportAndPaymentFormType extends AbstractType
      */
     private $cartFacade;
 
+    private OrderPreviewFactory $orderPreviewFactory;
+
     /**
      * @param \App\Model\Transport\TransportFacade $transportFacade
      * @param \App\Model\Payment\PaymentFacade $paymentFacade
@@ -86,6 +90,7 @@ class TransportAndPaymentFormType extends AbstractType
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Country\CountryFacade $countryFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
+     * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
      */
     public function __construct(
         TransportFacade $transportFacade,
@@ -96,7 +101,8 @@ class TransportAndPaymentFormType extends AbstractType
         StoreIdToEntityTransformer $storeIdToEntityTransformer,
         Domain $domain,
         CountryFacade $countryFacade,
-        CartFacade $cartFacade
+        CartFacade $cartFacade,
+        OrderPreviewFactory $orderPreviewFactory
     ) {
         $this->transportFacade = $transportFacade;
         $this->paymentFacade = $paymentFacade;
@@ -107,6 +113,7 @@ class TransportAndPaymentFormType extends AbstractType
         $this->domain = $domain;
         $this->countryFacade = $countryFacade;
         $this->cartFacade = $cartFacade;
+        $this->orderPreviewFactory = $orderPreviewFactory;
     }
 
     /**
@@ -116,10 +123,10 @@ class TransportAndPaymentFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $country = $options['country'] ?? $this->countryFacade->getHackedCountry();
-
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
+        $orderPrice = $orderPreview->getTotalPrice()->getPriceWithVat();
         $showOnlyGiftCertificatePaymentsInCart = $this->cartFacade->showOnlyGiftCertificatePaymentsInCart();
-        $payments = $this->paymentFacade->getVisibleByDomainIdAndGiftCertificateUsability($options['domain_id'], $showOnlyGiftCertificatePaymentsInCart);
-
+        $payments = $this->paymentFacade->getVisibleByDomainIdAndGiftCertificateUsabilityAndPrice($options['domain_id'], $showOnlyGiftCertificatePaymentsInCart, $orderPrice);
         $showEmailTransportInCart = $this->cartFacade->showEmailTransportInCart();
 
         $oversizedTransportRequired = $this->cartFacade->isOversizedTransportRequired();
@@ -198,6 +205,8 @@ class TransportAndPaymentFormType extends AbstractType
             ->setAllowedTypes('domain_id', 'int')
             ->setRequired('country')
             ->setAllowedTypes('country', [Country::class, 'null'])
+            ->setRequired('order_price')
+            ->setAllowedTypes('order_price', [Money::class, 'null'])
             ->setDefaults([
                 'attr' => ['novalidate' => 'novalidate'],
                 'constraints' => [

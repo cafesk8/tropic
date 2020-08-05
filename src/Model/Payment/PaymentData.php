@@ -52,10 +52,16 @@ class PaymentData extends BasePaymentData
      */
     public bool $waitForPayment;
 
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    public array $minimumOrderPrices;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->type = Payment::TYPE_BASIC;
+        $this->minimumOrderPrices = [];
     }
 }
