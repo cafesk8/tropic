@@ -96,6 +96,6 @@ class ProductImportCronModule extends AbstractTransferCronModule
             $this->productExportSubscriber->exportScheduledRows();
         }
 
-        return !$this->productInfoQueueImportFacade->isQueueEmpty() && count($changedPohodaProductIds) === ProductImportFacade::PRODUCT_EXPORT_MAX_BATCH_LIMIT;
+        return false;
     }
 }
