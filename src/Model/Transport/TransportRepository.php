@@ -96,20 +96,38 @@ class TransportRepository extends BaseTransportRepository
      */
     public function getMinOrderPriceForFreeTransport(int $domainId): ?Money
     {
-        $minOrderPriceResult = $this->getTransportRepository()->createQueryBuilder('t')
+        $freeResult = $this->getTransportRepository()->createQueryBuilder('t')
             ->join(TransportPrice::class, 'tp', Join::WITH, 'tp.transport = t')
             ->where('t.deleted = FALSE')
+            ->andWhere('tp.domainId = :domainId')
+            ->andWhere('tp.minFreeOrderPrice IS NOT NULL')
+            ->setParameter('domainId', $domainId)
+            ->orderBy('tp.minFreeOrderPrice', 'ASC')
+            ->select('tp.minFreeOrderPrice')
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+
+        $actionResult = $this->getTransportRepository()->createQueryBuilder('t')
+            ->join(TransportPrice::class, 'tp', Join::WITH, 'tp.transport = t')
+            ->where('t.deleted = FALSE')
+            ->andWhere('tp.actionActive = TRUE')
             ->andWhere('tp.actionPrice = 0')
             ->andWhere('tp.domainId = :domainId')
             ->andWhere('(tp.actionDateFrom <= :currentDate OR tp.actionDateFrom IS NULL)')
             ->andWhere('(DATE_ADD(tp.actionDateTo, 1, \'day\') >= :currentDate OR tp.actionDateTo IS NULL)')
             ->setParameter('domainId', $domainId)
             ->setParameter('currentDate', date('Y-m-d'))
-            ->orderBy('tp.minOrderPrice', 'ASC')
-            ->select('tp.minOrderPrice')
+            ->orderBy('tp.minActionOrderPrice', 'ASC')
+            ->select('tp.minActionOrderPrice')
             ->setMaxResults(1)
             ->getQuery()->getOneOrNullResult();
 
-        return $minOrderPriceResult['minOrderPrice'] ?? null;
+        if (!isset($freeResult['minFreeOrderPrice'])) {
+            return $actionResult['minActionOrderPrice'] ?? null;
+        } elseif (!isset($actionResult['minActionOrderPrice'])) {
+            return $freeResult['minFreeOrderPrice'] ?? null;
+        }
+
+        return $actionResult['minActionOrderPrice']->isGreaterThan($freeResult['minFreeOrderPrice']) ? $freeResult['minFreeOrderPrice'] : $actionResult['minActionOrderPrice'];
     }
 }

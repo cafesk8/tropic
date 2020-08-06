@@ -16,9 +16,11 @@ class TransportPriceFactory extends BaseTransportPriceFactory
      * @param \Shopsys\FrameworkBundle\Component\Money\Money $price
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPrice
-     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minOrderPrice
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minActionOrderPrice
      * @param \DateTime|null $actionDateFrom
      * @param \DateTime|null $actionDateTo
+     * @param bool $actionActive
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minFreeOrderPrice
      * @return \App\Model\Transport\TransportPrice
      */
     public function create(
@@ -26,10 +28,12 @@ class TransportPriceFactory extends BaseTransportPriceFactory
         Money $price,
         int $domainId,
         ?Money $actionPrice = null,
-        ?Money $minOrderPrice = null,
+        ?Money $minActionOrderPrice = null,
         ?DateTime $actionDateFrom = null,
-        ?DateTime $actionDateTo = null
+        ?DateTime $actionDateTo = null,
+        bool $actionActive = false,
+        ?Money $minFreeOrderPrice = null
     ): TransportPrice {
-        return new TransportPrice($transport, $price, $domainId, $actionPrice, $minOrderPrice, $actionDateFrom, $actionDateTo);
+        return new TransportPrice($transport, $price, $domainId, $actionPrice, $minActionOrderPrice, $actionDateFrom, $actionDateTo, $actionActive, $minFreeOrderPrice);
     }
 }

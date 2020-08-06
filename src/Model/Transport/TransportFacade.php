@@ -111,9 +111,11 @@ class TransportFacade extends BaseTransportFacade
             $transport,
             $transportData->pricesIndexedByDomainId,
             $transportData->actionPricesIndexedByDomainId,
-            $transportData->minOrderPricesIndexedByDomainId,
+            $transportData->minActionOrderPricesIndexedByDomainId,
             $transportData->actionDatesFromIndexedByDomainId,
-            $transportData->actionDatesToIndexedByDomainId
+            $transportData->actionDatesToIndexedByDomainId,
+            $transportData->actionActiveIndexedByDomainId,
+            $transportData->minFreeOrderPricesIndexedByDomainId
         );
         $this->em->flush();
         $this->scheduleCronModule();
@@ -143,9 +145,11 @@ class TransportFacade extends BaseTransportFacade
             $transport,
             $transportData->pricesIndexedByDomainId,
             $transportData->actionPricesIndexedByDomainId,
-            $transportData->minOrderPricesIndexedByDomainId,
+            $transportData->minActionOrderPricesIndexedByDomainId,
             $transportData->actionDatesFromIndexedByDomainId,
-            $transportData->actionDatesToIndexedByDomainId
+            $transportData->actionDatesToIndexedByDomainId,
+            $transportData->actionActiveIndexedByDomainId,
+            $transportData->minFreeOrderPricesIndexedByDomainId
         );
         $this->em->flush();
         $this->scheduleCronModule();
@@ -294,29 +298,36 @@ class TransportFacade extends BaseTransportFacade
      * @param \App\Model\Transport\Transport $transport
      * @param \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId
      * @param \Shopsys\FrameworkBundle\Component\Money\Money[] $actionPricesIndexedByDomainId
-     * @param \Shopsys\FrameworkBundle\Component\Money\Money[] $minOrderPricesIndexedByDomainId
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money[] $minActionOrderPricesIndexedByDomainId
      * @param \DateTime[] $actionDatesFromIndexedByDomainId
      * @param \DateTime[] $actionDatesToIndexedByDomainId
+     * @param array $actionActiveIndexedByDomainId
+     * @param array $minFreeOrderPricesIndexedByDomainId
      */
-    protected function updateTransportPrices(BaseTransport $transport, array $pricesIndexedByDomainId, array $actionPricesIndexedByDomainId = [], array $minOrderPricesIndexedByDomainId = [], array $actionDatesFromIndexedByDomainId = [], array $actionDatesToIndexedByDomainId = []): void
+    protected function updateTransportPrices(BaseTransport $transport, array $pricesIndexedByDomainId, array $actionPricesIndexedByDomainId = [], array $minActionOrderPricesIndexedByDomainId = [], array $actionDatesFromIndexedByDomainId = [], array $actionDatesToIndexedByDomainId = [], array $actionActiveIndexedByDomainId = [], array $minFreeOrderPricesIndexedByDomainId = []): void
     {
         foreach ($this->domain->getAllIds() as $domainId) {
             if ($transport->hasPriceForDomain($domainId)) {
                 $price = $transport->getPrice($domainId);
                 $price->setPrice($pricesIndexedByDomainId[$domainId]);
                 $price->setActionPrice($actionPricesIndexedByDomainId[$domainId] ?? null);
-                $price->setMinOrderPrice($minOrderPricesIndexedByDomainId[$domainId] ?? null);
+                $price->setMinActionOrderPrice($minActionOrderPricesIndexedByDomainId[$domainId] ?? null);
                 $price->setActionDateFrom($actionDatesFromIndexedByDomainId[$domainId] ?? null);
                 $price->setActionDateTo($actionDatesToIndexedByDomainId[$domainId] ?? null);
+                $price->setActionDateTo($actionDatesToIndexedByDomainId[$domainId] ?? null);
+                $price->setActionActive($actionActiveIndexedByDomainId[$domainId] ?? false);
+                $price->setMinFreeOrderPrice($minFreeOrderPricesIndexedByDomainId[$domainId] ?? null);
             } else {
                 $transport->addPrice($this->transportPriceFactory->create(
                     $transport,
                     $pricesIndexedByDomainId[$domainId],
                     $domainId,
                     $actionPricesIndexedByDomainId[$domainId] ?? null,
-                    $minOrderPricesIndexedByDomainId[$domainId] ?? null,
+                    $minActionOrderPricesIndexedByDomainId[$domainId] ?? null,
                     $actionDatesFromIndexedByDomainId[$domainId] ?? null,
-                    $actionDatesToIndexedByDomainId[$domainId] ?? null
+                    $actionDatesToIndexedByDomainId[$domainId] ?? null,
+                    $actionActiveIndexedByDomainId[$domainId] ?? false,
+                    $minFreeOrderPricesIndexedByDomainId[$domainId] ?? null
                 ));
             }
         }

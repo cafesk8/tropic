@@ -58,49 +58,72 @@
 
                 <div class="form-line form-line--in-box">
                     <div class="form-line__label">
-                        {{ form_label(form.actionPricesIndexedByDomainId[domainId]) }}
+                        {{ form_label(form.minFreeOrderPricesIndexedByDomainId[domainId]) }}
                     </div>
                     <div class="form-line__side">
                         <div class="form-line__item">
-                            {{ form_widget(form.actionPricesIndexedByDomainId[domainId], { symbolAfterInput: currencySymbolByDomainId(domainId) }) }}
+                            {{ form_widget(form.minFreeOrderPricesIndexedByDomainId[domainId], { symbolAfterInput: currencySymbolByDomainId(domainId) }) }}
                         </div>
                         <div>
-                            {{ form_errors(form.actionPricesIndexedByDomainId[domainId] ) }}
+                            {{ form_errors(form.minFreeOrderPricesIndexedByDomainId[domainId] ) }}
                         </div>
                     </div>
                 </div>
 
                 <div class="form-line form-line--in-box">
                     <div class="form-line__label">
-                        {{ form_label(form.minOrderPricesIndexedByDomainId[domainId]) }}
+                        {{ form_widget(form.actionActiveIndexedByDomainId[domainId], {attr: {class: 'js-action-cb', 'data-domain': domainId}}) }}
+                        {{ form_label(form.actionActiveIndexedByDomainId[domainId]) }}
                     </div>
-                    <div class="form-line__side">
-                        <div class="form-line__item">
-                            {{ form_widget(form.minOrderPricesIndexedByDomainId[domainId], { symbolAfterInput: currencySymbolByDomainId(domainId) }) }}
+                </div>
+
+                <div class="js-action-price-wrapper-{{ domainId }} display-none">
+                    <div class="form-line form-line--in-box">
+                        <div class="form-line__label">
+                            {{ form_label(form.actionPricesIndexedByDomainId[domainId]) }}
                         </div>
+                        <div class="form-line__side">
+                            <div class="form-line__item">
+                                {{ form_widget(form.actionPricesIndexedByDomainId[domainId], { symbolAfterInput: currencySymbolByDomainId(domainId) }) }}
+                            </div>
+                            <div>
+                                {{ form_errors(form.actionPricesIndexedByDomainId[domainId] ) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-line form-line--in-box">
+                        <div class="form-line__label">
+                            {{ form_label(form.minActionOrderPricesIndexedByDomainId[domainId]) }}
+                        </div>
+                        <div class="form-line__side">
+                            <div class="form-line__item">
+                                {{ form_widget(form.minActionOrderPricesIndexedByDomainId[domainId], { symbolAfterInput: currencySymbolByDomainId(domainId) }) }}
+                            </div>
+                            <div>
+                                {{ form_errors(form.minActionOrderPricesIndexedByDomainId[domainId] ) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-line form-line--in-box">
+                        <div class="form-line__label">
+                            {{ form_label(form.actionDatesFromIndexedByDomainId[domainId]) }}
+                        </div>
+                        {{ form_widget(form.actionDatesFromIndexedByDomainId[domainId]) }}
                         <div>
-                            {{ form_errors(form.minOrderPricesIndexedByDomainId[domainId] ) }}
+                            {{ form_errors(form.actionDatesFromIndexedByDomainId[domainId] ) }}
                         </div>
                     </div>
-                </div>
 
-                <div class="form-line form-line--in-box">
-                    <div class="form-line__label">
-                        {{ form_label(form.actionDatesFromIndexedByDomainId[domainId]) }}
-                    </div>
-                    {{ form_widget(form.actionDatesFromIndexedByDomainId[domainId]) }}
-                    <div>
-                        {{ form_errors(form.actionDatesFromIndexedByDomainId[domainId] ) }}
-                    </div>
-                </div>
-
-                <div class="form-line form-line--in-box">
-                    <div class="form-line__label">
-                        {{ form_label(form.actionDatesToIndexedByDomainId[domainId]) }}
-                    </div>
-                    {{ form_widget(form.actionDatesToIndexedByDomainId[domainId]) }}
-                    <div>
-                        {{ form_errors(form.actionDatesToIndexedByDomainId[domainId] ) }}
+                    <div class="form-line form-line--in-box">
+                        <div class="form-line__label">
+                            {{ form_label(form.actionDatesToIndexedByDomainId[domainId]) }}
+                        </div>
+                        {{ form_widget(form.actionDatesToIndexedByDomainId[domainId]) }}
+                        <div>
+                            {{ form_errors(form.actionDatesToIndexedByDomainId[domainId] ) }}
+                        </div>
                     </div>
                 </div>
             </div>

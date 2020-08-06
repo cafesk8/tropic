@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Transport;
 
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
@@ -24,6 +25,15 @@ class TransportPriceCalculation extends BaseTransportPriceCalculation
      */
     public function calculatePrice(Transport $transport, Currency $currency, Price $productsPrice, int $domainId): Price
     {
+        if ($transport->getPrice($domainId)->isFree($productsPrice)) {
+            return $this->basePriceCalculation->calculateBasePriceRoundedByCurrency(
+                Money::zero(),
+                $this->pricingSetting->getInputPriceType(),
+                $transport->getTransportDomain($domainId)->getVat(),
+                $currency
+            );
+        }
+
         if ($transport->getPrice($domainId)->canUseActionPrice($productsPrice)) {
             return $this->basePriceCalculation->calculateBasePriceRoundedByCurrency(
                 $transport->getPrice($domainId)->getActionPrice(),

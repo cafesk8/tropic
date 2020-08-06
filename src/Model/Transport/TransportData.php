@@ -80,7 +80,7 @@ class TransportData extends BaseTransportData
     /**
      * @var \Shopsys\FrameworkBundle\Component\Money\Money[]|null[]
      */
-    public array $minOrderPricesIndexedByDomainId;
+    public array $minActionOrderPricesIndexedByDomainId;
 
     /**
      * @var \DateTime[]|null[]
@@ -92,6 +92,16 @@ class TransportData extends BaseTransportData
      */
     public array $actionDatesToIndexedByDomainId;
 
+    /**
+     * @var bool[]
+     */
+    public array $actionActiveIndexedByDomainId;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money[]|null[]
+     */
+    public array $minFreeOrderPricesIndexedByDomainId;
+
     public function __construct()
     {
         parent::__construct();
@@ -101,8 +111,10 @@ class TransportData extends BaseTransportData
         $this->bulkyAllowed = true;
         $this->oversizedAllowed = true;
         $this->actionPricesIndexedByDomainId = [];
-        $this->minOrderPricesIndexedByDomainId = [];
+        $this->minActionOrderPricesIndexedByDomainId = [];
         $this->actionDatesFromIndexedByDomainId = [];
         $this->actionDatesToIndexedByDomainId = [];
+        $this->actionActiveIndexedByDomainId = [];
+        $this->minFreeOrderPricesIndexedByDomainId = [];
     }
 }

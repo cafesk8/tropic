@@ -27,7 +27,7 @@ class TransportPrice extends BaseTransportPrice
     /**
      * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
      */
-    private ?Money $minOrderPrice;
+    private ?Money $minActionOrderPrice;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -40,28 +40,44 @@ class TransportPrice extends BaseTransportPrice
     private ?DateTime $actionDateTo;
 
     /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private bool $actionActive;
+
+    /**
+     * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
+     */
+    private ?Money $minFreeOrderPrice;
+
+    /**
      * @param \App\Model\Transport\Transport $transport
      * @param \Shopsys\FrameworkBundle\Component\Money\Money $price
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPrice
-     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minOrderPrice
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minActionOrderPrice
      * @param \DateTime|null $actionDateFrom
      * @param \DateTime|null $actionDateTo
+     * @param bool $actionActive
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minFreeOrderPrice
      */
     public function __construct(
         BaseTransport $transport,
         Money $price,
         int $domainId,
         ?Money $actionPrice,
-        ?Money $minOrderPrice,
+        ?Money $minActionOrderPrice,
         ?DateTime $actionDateFrom,
-        ?DateTime $actionDateTo
+        ?DateTime $actionDateTo,
+        bool $actionActive,
+        ?Money $minFreeOrderPrice
     ) {
         parent::__construct($transport, $price, $domainId);
         $this->actionPrice = $actionPrice;
-        $this->minOrderPrice = $minOrderPrice;
+        $this->minActionOrderPrice = $minActionOrderPrice;
         $this->actionDateFrom = $actionDateFrom;
         $this->actionDateTo = $actionDateTo;
+        $this->actionActive = $actionActive;
+        $this->minFreeOrderPrice = $minFreeOrderPrice;
     }
 
     /**
@@ -83,17 +99,17 @@ class TransportPrice extends BaseTransportPrice
     /**
      * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
      */
-    public function getMinOrderPrice(): ?Money
+    public function getMinActionOrderPrice(): ?Money
     {
-        return $this->minOrderPrice;
+        return $this->minActionOrderPrice;
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minOrderPrice
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minActionOrderPrice
      */
-    public function setMinOrderPrice(?Money $minOrderPrice): void
+    public function setMinActionOrderPrice(?Money $minActionOrderPrice): void
     {
-        $this->minOrderPrice = $minOrderPrice;
+        $this->minActionOrderPrice = $minActionOrderPrice;
     }
 
     /**
@@ -129,16 +145,52 @@ class TransportPrice extends BaseTransportPrice
     }
 
     /**
+     * @return bool
+     */
+    public function isActionActive(): bool
+    {
+        return $this->actionActive;
+    }
+
+    /**
+     * @param bool $actionActive
+     */
+    public function setActionActive(bool $actionActive): void
+    {
+        $this->actionActive = $actionActive;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getMinFreeOrderPrice(): ?\Shopsys\FrameworkBundle\Component\Money\Money
+    {
+        return $this->minFreeOrderPrice;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minFreeOrderPrice
+     */
+    public function setMinFreeOrderPrice(?Money $minFreeOrderPrice): void
+    {
+        $this->minFreeOrderPrice = $minFreeOrderPrice;
+    }
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @return bool
      */
     public function canUseActionPrice(Price $productsPrice): bool
     {
+        if (!$this->actionActive) {
+            return false;
+        }
+
         if ($this->actionPrice === null || $this->actionPrice->isGreaterThan($this->price)) {
             return false;
         }
 
-        if ($this->minOrderPrice !== null && $this->minOrderPrice->isGreaterThan($productsPrice->getPriceWithVat())) {
+        if ($this->minActionOrderPrice !== null && $this->minActionOrderPrice->isGreaterThan($productsPrice->getPriceWithVat())) {
             return false;
         }
 
@@ -147,6 +199,19 @@ class TransportPrice extends BaseTransportPrice
         }
 
         if ($this->actionDateTo !== null && $this->actionDateTo->getTimestamp() + 86400 < time()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
+     * @return bool
+     */
+    public function isFree(Price $productsPrice): bool
+    {
+        if ($this->minFreeOrderPrice === null || $this->minFreeOrderPrice->isGreaterThan($productsPrice->getPriceWithVat())) {
             return false;
         }
 

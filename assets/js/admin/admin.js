@@ -12,6 +12,7 @@ import './productPickerAddAll';
 import './promoCode';
 import './promoCode.validation';
 import './promoCodeGroup';
+import './transport';
 import './transportSelect';
 import './validation.form.transport';
 import './windowOpener';
