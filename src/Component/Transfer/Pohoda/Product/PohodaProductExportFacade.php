@@ -250,12 +250,14 @@ class PohodaProductExportFacade
                     DomainHelper::SLOVAK_LOCALE => $pohodaParameterValuesArray[1] ?? $pohodaParameterValuesArray[0],
                 ];
                 $pohodaParameter = new PohodaParameter(
-                    $productParameter[PohodaProduct::COL_PARAMETER_NAME],
+                    trim($productParameter[PohodaProduct::COL_PARAMETER_NAME]),
                     $pohodaParameterValues,
                     (int)$productParameter[PohodaProduct::COL_PARAMETER_TYPE]
                 );
 
-                $pohodaProductsResult[$productPohodaId][PohodaProduct::COL_PARAMETERS][] = $pohodaParameter;
+                if (!$this->isParamDuplicate($pohodaProductsResult[$productPohodaId][PohodaProduct::COL_PARAMETERS], $pohodaParameter)) {
+                    $pohodaProductsResult[$productPohodaId][PohodaProduct::COL_PARAMETERS][] = $pohodaParameter;
+                }
             }
         }
     }
@@ -276,5 +278,21 @@ class PohodaProductExportFacade
         }
 
         return $pohodaParameter[PohodaProduct::COL_PARAMETER_VALUE_TYPE_TEXT];
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaParameter[] $params
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaParameter $parameter
+     * @return bool
+     */
+    private function isParamDuplicate(array $params, PohodaParameter $parameter): bool
+    {
+        foreach ($params as $param) {
+            if ($param->name === $parameter->name && $param->type === $parameter->type) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

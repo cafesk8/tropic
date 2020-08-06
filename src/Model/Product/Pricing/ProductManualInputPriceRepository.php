@@ -20,10 +20,15 @@ class ProductManualInputPriceRepository extends BaseProductManualInputPriceRepos
      * @param \App\Model\Product\Product $product
      * @param \App\Model\Pricing\Group\PricingGroup[] $pricingGroups
      * @param int $domainId
+     * @param bool $allowSellingDeniedVariants
      * @return array
      */
-    public function findByProductAndPricingGroupsForDomain(Product $product, array $pricingGroups, int $domainId)
-    {
+    public function findByProductAndPricingGroupsForDomain(
+        Product $product,
+        array $pricingGroups,
+        int $domainId,
+        bool $allowSellingDeniedVariants = false
+    ) {
         $queryBuilder = $this->getProductManualInputPriceRepository()
             ->createQueryBuilder('pmip')
             ->select('MIN(pmip.inputPrice) as inputPrice, MAX(pmip.inputPrice) as maxInputPrice, IDENTITY(pmip.pricingGroup) as pricingGroupId')
@@ -34,8 +39,13 @@ class ProductManualInputPriceRepository extends BaseProductManualInputPriceRepos
         if ($product->isMainVariant()) {
             $queryBuilder
                 ->join(Product::class, 'p', Join::WITH, 'pmip.product = p.id AND p.mainVariant = :mainVariantId')
-                ->leftJoin(ProductVisibility::class, 'pv', Join::WITH, 'p.id = pv.product')
-                ->andWhere('p.calculatedSellingDenied = false')
+                ->leftJoin(ProductVisibility::class, 'pv', Join::WITH, 'p.id = pv.product');
+
+            if (!$allowSellingDeniedVariants) {
+                $queryBuilder->andWhere('p.calculatedSellingDenied = false');
+            }
+
+            $queryBuilder
                 ->andWhere('pv.visible = true')
                 ->setParameter('mainVariantId', $product);
         } else {

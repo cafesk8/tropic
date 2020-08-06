@@ -95,7 +95,7 @@ class ListedProductView extends BaseListedProductView
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
-        $this->stockQuantity = $stockQuantity;
+        $this->stockQuantity = $stockQuantity ?? 0;
         $this->gifts = $gifts;
         $this->variantsCount = $variantsCount;
         $this->groupItems = array_map(function (array $groupItem) {
