@@ -181,30 +181,24 @@ export default class PaymentTransportRelations {
 
     checkLoginNotice () {
         const emailField = $('.js-order-personal-info-form-email');
-        const checkEmail = function () {
-            Ajax.ajax({
-                loaderElement: '.js-order-personal-info-form-email',
-                type: 'POST',
-                data: { email: emailField.val() },
-                url: emailField.data('url'),
-                success: function (data) {
-                    const $container = $('.js-order-personal-info-form-email');
-                    $container.empty().append(data);
+        Ajax.ajax({
+            loaderElement: '.js-order-personal-info-form-email-wrapper',
+            type: 'POST',
+            data: { email: emailField.val() },
+            url: emailField.data('url'),
+            success: function (data) {
+                const $container = $('.js-order-personal-info-form-email-wrapper');
+                $container.empty().append(data);
 
-                    if (data.includes('js-email-not-registered-notice')) {
-                        $('.js-order-registration-fields').show();
-                    } else {
-                        $('.js-order-registration-fields').hide();
-                    }
-
-                    new Register().registerNewContent($container);
+                if (data.includes('js-email-not-registered-notice')) {
+                    $('.js-order-registration-fields').show();
+                } else {
+                    $('.js-order-registration-fields').hide();
                 }
-            });
-        };
 
-        if (!emailField.attr('data-is-logged-customer')) {
-            emailField.on('focusout', checkEmail);
-        }
+                new Register().registerNewContent($container);
+            }
+        });
     };
 
     static copyEmail () {
@@ -228,6 +222,11 @@ export default class PaymentTransportRelations {
         const $emailField = $('.js-order-personal-info-form-email');
         const isLoggedCustomer = $emailField.data('is-logged-customer');
 
+        if (!isLoggedCustomer) {
+            $emailField.unbind('focusout', paymentTransportRelations.checkLoginNotice);
+            $emailField.on('focusout', paymentTransportRelations.checkLoginNotice);
+        }
+
         $transportInputs.change((event) => paymentTransportRelations.onTransportChange(event, paymentTransportRelations));
         $paymentInputs.change((event) => paymentTransportRelations.onPaymentChange(event, paymentTransportRelations));
         paymentTransportRelations.updateTransports();
@@ -237,7 +236,6 @@ export default class PaymentTransportRelations {
         $paymentInputs.change(paymentTransportRelations.updateContinueButton);
         $paymentInputs.filter(':checked').change();
         paymentTransportRelations.updateContinueButton();
-        paymentTransportRelations.checkLoginNotice();
 
         $toggleAdditionalTransportsButton.click(function () {
             $additionalTransports.toggleClass('display-none');
