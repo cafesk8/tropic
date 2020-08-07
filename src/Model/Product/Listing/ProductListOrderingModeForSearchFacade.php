@@ -15,11 +15,12 @@ class ProductListOrderingModeForSearchFacade extends BaseProductListOrderingMode
     {
         return new ProductListOrderingConfig(
             [
+                ProductListOrderingConfig::ORDER_BY_RELEVANCE => t('Relevance'),
                 ProductListOrderingConfig::ORDER_BY_PRIORITY => t('Doporučené'),
                 ProductListOrderingConfig::ORDER_BY_PRICE_ASC => t('Nejlevnější'),
                 ProductListOrderingConfig::ORDER_BY_PRICE_DESC => t('Nejdražší'),
             ],
-            ProductListOrderingConfig::ORDER_BY_PRIORITY,
+            ProductListOrderingConfig::ORDER_BY_RELEVANCE,
             static::COOKIE_NAME
         );
     }
