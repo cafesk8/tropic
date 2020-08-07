@@ -1,0 +1,22 @@
+resources:
+    - ../../cron/php-fpm-cron-executor-default.yaml
+    - ../../cron/php-fpm-cron-executor-products.yaml
+    - ../../cron/php-fpm-cron-executor-orders.yaml
+    - ../../deployments/redis.yaml
+    - ../../deployments/webserver-php-fpm.yaml
+    - ../../services/redis.yaml
+    - ../../services/webserver-php-fpm.yaml
+    - ../../ingress.yaml
+    - ../../namespace.yaml
+    - ../../configmap/nginx.yaml
+    - ../../configmap/redis-health.yaml
+    - ../../configmap/production-php-fpm.yaml
+    - ../../configmap/production-php-opcache.yaml
+namespace: "{{PROJECT_NAME}}"
+configMapGenerator:
+    -   name: domains-urls
+        files:
+            - ../../../../../{{DOMAINS_URLS_FILEPATH}}
+    -   name: parameters
+        files:
+            - ../../../../../{{PARAMETERS_FILEPATH}}

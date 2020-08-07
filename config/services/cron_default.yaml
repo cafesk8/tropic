@@ -1,0 +1,70 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # ONCE PER DAY ----------------------------------------------------------------------------------
+    App\Model\Category\Transfer\CategoryImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '23', minutes: '30', readableName: 'Import změněných kategorií z Pohoda IS' }
+
+    App\Model\GoPay\GoPayAvailablePaymentsCronModule:
+        arguments:
+            - '%gopay_config%'
+        tags:
+            - { name: shopsys.cron, hours: '3', minutes: '50', readableName: 'Stažení GoPay platebních metod' }
+
+    App\Component\Balikobot\Pickup\DownloadPickupPlacesCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '1', minutes: '00', readableName: 'Stažení Balikobot odběrných míst' }
+
+    Shopsys\FrameworkBundle\Model\Sitemap\SitemapCronModule: ~
+
+    overriddenSitemapCronModule:
+        class: Shopsys\FrameworkBundle\Model\Sitemap\SitemapCronModule
+        tags:
+            - { name: shopsys.cron, hours: '4', minutes: '0', readableName: 'Generování sitemap' }
+
+    Shopsys\FrameworkBundle\Model\Cart\Item\DeleteOldCartsCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '0', minutes: '0', readableName: 'Smazání starých košíků' }
+
+    # TWICE PER DAY ----------------------------------------------------------------------------------
+    Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule: ~
+
+    overriddenDailyFeedCronModule:
+        class: App\Model\Feed\DailyFeedCronModule
+        tags:
+            - { name: shopsys.cron, hours: '*/6', minutes: '0', readableName: 'Generování denních feedů' }
+
+    # ONCE PER HOUR ----------------------------------------------------------------------------------
+    Shopsys\FrameworkBundle\Model\Feed\HourlyFeedCronModule: ~
+
+    overriddenHourlyFeedCronModule:
+        class: Shopsys\FrameworkBundle\Model\Feed\HourlyFeedCronModule
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '10', readableName: 'Generování hodinových feedů' }
+
+    # ALWAYS -----------------------------------------------------------------------------------------
+    App\Model\Category\CategorySaleProductsCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Označení kategorií s výprodejovými produkty' }
+
+    App\Model\Newsletter\Transfer\EcomailExportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Export odběratelů emailů do Ecomail' }
+
+    App\Model\WatchDog\WatchDogCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Hlídač ceny a dostupnosti' }
+
+    Shopsys\FrameworkBundle\Model\Pricing\Vat\VatDeletionCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Smazání starých sazeb DPH' }
+
+    # ERROR PAGES ------------------------------------------------------------------------------------
+    # This module should run as last because it creates multiple kernels and fake requests.
+    Shopsys\FrameworkBundle\Component\Error\ErrorPageCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '21', minutes: '10', readableName: 'Vygenerování chybových stránek' }

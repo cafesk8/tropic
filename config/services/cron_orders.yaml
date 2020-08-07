@@ -1,0 +1,23 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # ALWAYS -----------------------------------------------------------------------------------------
+    App\Model\Order\Transfer\OrderExportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Export objednávek a uživatelů do IS Pohoda', instanceName: orders }
+
+    App\Model\Order\Transfer\Status\OrderStatusImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import stavů objednávek z IS Pohoda', instanceName: orders }
+
+    # ONCE PER HOUR ----------------------------------------------------------------------------------
+    App\Model\GoPay\OrderGoPayStatusUpdateCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '15', readableName: 'Aktualizace objednávek pro platby GoPay', instanceName: orders }
+
+    App\Model\PayPal\OrderPayPalStatusUpdateCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '15', readableName: 'Aktualizace objednávek pro platby PayPal', instanceName: orders }
