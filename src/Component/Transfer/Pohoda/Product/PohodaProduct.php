@@ -47,6 +47,7 @@ class PohodaProduct
     public const COL_SHOWN = 'shown';
     public const COL_SHOWN_SK = 'shownSk';
     public const COL_VOLUME = 'volume';
+    public const COL_SUPPLIER_SET = 'supplierSet';
 
     public const COL_EXTERNAL_STOCK = 'externalStock';
     public const COL_STOCK_TOTAL = 'totalStock';
@@ -306,6 +307,8 @@ class PohodaProduct
      */
     public int $volume;
 
+    public bool $supplierSet;
+
     /**
      * @param array $pohodaProductData
      */
@@ -358,5 +361,6 @@ class PohodaProduct
         $this->shownSk = (bool)$pohodaProductData[self::COL_SHOWN_SK];
         $this->parameters = $pohodaProductData[self::COL_PARAMETERS];
         $this->volume = (int)$pohodaProductData[self::COL_VOLUME];
+        $this->supplierSet = (bool)$pohodaProductData[self::COL_SUPPLIER_SET];
     }
 }

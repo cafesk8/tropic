@@ -338,6 +338,7 @@ class PohodaProductMapper
                 $productData->bulky = false;
                 $productData->oversized = false;
         }
+        $productData->supplierSet = $pohodaProduct->supplierSet;
     }
 
     /**

@@ -75,6 +75,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'images',
         'shown',
         'parameters',
+        'supplierSet',
     ];
 
     /**
@@ -224,6 +225,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                     'label' => t('Typ produktu z Pohody'),
                 ]);
         }
+        $builderBasicInformationGroup
+            ->add('supplierSet', YesNoType::class, [
+                'label' => t('Výrobek od dodavatele'),
+            ]);
 
         $productFlagsGroup = $builder->create('productFlagsGroup', GroupType::class, [
             'label' => t('Příznaky'),

@@ -80,6 +80,7 @@ class PohodaProductExportRepository
         'VPrZobrazCZ' => PohodaProduct::COL_SHOWN,
         'VPrZobrazSK' => PohodaProduct::COL_SHOWN_SK,
         'Objem' => PohodaProduct::COL_VOLUME,
+        'VPrVyrOdDod' => PohodaProduct::COL_SUPPLIER_SET,
     ];
 
     /**

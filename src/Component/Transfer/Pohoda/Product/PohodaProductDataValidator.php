@@ -103,6 +103,9 @@ class PohodaProductDataValidator
                 PohodaProduct::COL_AUTO_DESCRIPTION_TRANSLATION => [
                     new NotBlank(),
                 ],
+                PohodaProduct::COL_SUPPLIER_SET => [
+                    new NotBlank(),
+                ],
             ],
         ]));
 

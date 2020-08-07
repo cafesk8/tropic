@@ -253,6 +253,11 @@ class Product extends BaseProduct
     private bool $oversized;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $supplierSet;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -325,6 +330,7 @@ class Product extends BaseProduct
         $this->shortDescriptionAutomaticallyTranslated = $productData->shortDescriptionAutomaticallyTranslated;
         $this->bulky = $productData->bulky;
         $this->oversized = $productData->oversized;
+        $this->supplierSet = $productData->supplierSet;
     }
 
     /**
@@ -1401,5 +1407,13 @@ class Product extends BaseProduct
     public function isOversized(): bool
     {
         return $this->oversized;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupplierSet(): bool
+    {
+        return $this->supplierSet;
     }
 }
