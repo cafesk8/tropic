@@ -30,7 +30,7 @@ class PohodaImageDataValidator
     public function validate(array $pohodaCategoryData): void
     {
         $violations = $this->validator->validate($pohodaCategoryData, new Collection([
-            'allowExtraFields' => false,
+            'allowExtraFields' => true,
             'fields' => [
                 PohodaImage::ALIAS_POSITION => [
                     new NotBlank(),

@@ -62,6 +62,7 @@ class ImageFacade extends BaseImageFacade
      * @param int|null $position
      * @param string|null $type
      * @param int|null $pohodaId
+     * @param string|null $description
      */
     public function saveImageIntoDb(
         int $entityId,
@@ -70,9 +71,10 @@ class ImageFacade extends BaseImageFacade
         string $extension,
         ?int $position = null,
         ?string $type = null,
-        ?int $pohodaId = null
+        ?int $pohodaId = null,
+        ?string $description = null
     ): void {
-        $this->imageRepository->saveImageIntoDb($entityId, $entityName, $imageId, $extension, $position, $type, $pohodaId);
+        $this->imageRepository->saveImageIntoDb($entityId, $entityName, $imageId, $extension, $position, $type, $pohodaId, $description);
     }
 
     /**
@@ -99,6 +101,15 @@ class ImageFacade extends BaseImageFacade
     public function updateImagePosition(int $imageId, int $position): void
     {
         $this->imageRepository->updateImagePosition($imageId, $position);
+    }
+
+    /**
+     * @param int $imageId
+     * @param string|null $description
+     */
+    public function updateImageDescription(int $imageId, ?string $description): void
+    {
+        $this->imageRepository->updateImageDescription($imageId, $description);
     }
 
     /**

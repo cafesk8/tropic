@@ -161,6 +161,13 @@ class ProductImageImportFacade
                         'catnum' => $product->getCatnum(),
                     ]);
                 }
+                if ($imageByPohodaId->getDescription() !== $pohodaImage->description) {
+                    $this->imageFacade->updateImageDescription($imageByPohodaId->getId(), $pohodaImage->description);
+                    $this->logger->addInfo('Aktualizován popis obrázku', [
+                        'pohodaImage' => $pohodaImage,
+                        'productId' => $product->getId(),
+                    ]);
+                }
                 return;
             }
             $image = $this->mServerClient->getImage('/documents/Obrázky/' . rawurlencode($pohodaImage->file));
@@ -173,7 +180,8 @@ class ProductImageImportFacade
                 $pohodaImage->extension,
                 $pohodaImage->position,
                 null,
-                $pohodaImage->id
+                $pohodaImage->id,
+                $pohodaImage->description
             );
             $this->logger->addInfo('Obrázek uložen', [
                 'pohodaImage' => $pohodaImage,

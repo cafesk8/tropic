@@ -11,6 +11,7 @@ class PohodaImage
     public const ALIAS_PRODUCT_POHODA_ID = 'productPohodaId';
     public const ALIAS_FILE = 'file';
     public const ALIAS_POSITION = 'position';
+    public const ALIAS_DESCRIPTION = 'description';
 
     /**
      * @var int
@@ -37,6 +38,8 @@ class PohodaImage
      */
     public $extension;
 
+    public ?string $description;
+
     /**
      * @param array $pohodaImageData
      */
@@ -47,6 +50,7 @@ class PohodaImage
         $this->position = $this->getImagePosition($pohodaImageData);
         $this->file = (string)$pohodaImageData[self::ALIAS_FILE];
         $this->extension = $this->getImageExtension();
+        $this->description = $pohodaImageData[self::ALIAS_DESCRIPTION];
     }
 
     /**

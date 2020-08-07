@@ -19,4 +19,20 @@ class Image extends BaseImage
      * @ORM\Column(type="integer", nullable=true)
      */
     private $pohodaId;
+
+    /**
+     * the attribute is used for proper displaying of "supplier sets", @see \App\Model\Product\Product::$supplierSet
+     * https://shopsys.atlassian.net/browse/TF-567
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $description = null;
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 }

@@ -33,6 +33,7 @@ class ImageRepository extends BaseImageRepository
      * @param int|null $position
      * @param string|null $type
      * @param int|null $pohodaId
+     * @param string|null $description
      */
     public function saveImageIntoDb(
         int $entityId,
@@ -41,11 +42,12 @@ class ImageRepository extends BaseImageRepository
         string $extension,
         ?int $position = null,
         ?string $type = null,
-        ?int $pohodaId = null
+        ?int $pohodaId = null,
+        ?string $description = null
     ): void {
         $query = $this->em->createNativeQuery(
-            'INSERT INTO images (id, entity_name, entity_id, type, extension, position, modified_at, pohoda_id)
-            VALUES (:id, :entity_name, :entity_id, :type, :extension, :position, :modified_at, :pohoda_id)',
+            'INSERT INTO images (id, entity_name, entity_id, type, extension, position, modified_at, pohoda_id, description)
+            VALUES (:id, :entity_name, :entity_id, :type, :extension, :position, :modified_at, :pohoda_id, :description)',
             new ResultSetMapping()
         );
 
@@ -58,6 +60,7 @@ class ImageRepository extends BaseImageRepository
             'position' => $position,
             'modified_at' => new \DateTime(),
             'pohoda_id' => $pohodaId,
+            'description' => $description,
         ]);
     }
 
@@ -86,6 +89,18 @@ class ImageRepository extends BaseImageRepository
     {
         $this->em->createNativeQuery('UPDATE images SET position = :position WHERE id = :id', new ResultSetMapping())->execute([
             'position' => $position,
+            'id' => $imageId,
+        ]);
+    }
+
+    /**
+     * @param int $imageId
+     * @param string|null $description
+     */
+    public function updateImageDescription(int $imageId, ?string $description): void
+    {
+        $this->em->createNativeQuery('UPDATE images SET description = :description WHERE id = :id', new ResultSetMapping())->execute([
+            'description' => $description,
             'id' => $imageId,
         ]);
     }
