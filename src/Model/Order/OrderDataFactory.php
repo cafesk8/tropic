@@ -54,5 +54,6 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->trackingNumber = $order->getTrackingNumber();
         $orderData->giftCertificates = $order->getGiftCertificates();
         $orderData->pohodaId = $order->getPohodaId();
+        $orderData->legacyId = $order->getLegacyId();
     }
 }

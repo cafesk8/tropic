@@ -60,6 +60,13 @@ class OrderFormTypeExtension extends AbstractTypeExtension
                 'position' => [
                     'after' => 'exportedAt',
                 ],
+            ])
+            ->add('legacyId', DisplayOnlyType::class, [
+                'label' => t('ID z původního e-shopu'),
+                'data' => $order !== null && $order->getLegacyId() !== null ? $order->getLegacyId() : '-',
+                'position' => [
+                    'after' => 'pohodaId',
+                ],
             ]);
 
         if ($order !== null && $order->getMallOrderId() !== null) {
