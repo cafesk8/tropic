@@ -5567,6 +5567,33 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $this->createProduct($productData);
 
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = 'SUPPLIERSET123';
+        $productData->partno = '123456';
+        $productData->ean = '654321';
+        $productData->supplierSet = true;
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Výhodný set prut + pouzdro', [], 'dataFixtures', $locale);
+            $productData->descriptions[$domain->getId()] = t('Perfektní kaprový prut a dvoukomorové pouzdro', [], 'dataFixtures', $domain->getLocale());
+            $productData->shortDescriptions[$domain->getId()] = t('Perfektní kaprový prut a dvoukomorové pouzdro', [], 'dataFixtures', $domain->getLocale());
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '1999');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '10.08.2020');
+        $this->setSellingTo($productData, null);
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_GARDEN_TOOLS]);
+
+        $this->setBrand($productData, BrandDataFixture::BRAND_SONY);
+
+        $this->createProduct($productData);
+
         $this->createVariants();
     }
 

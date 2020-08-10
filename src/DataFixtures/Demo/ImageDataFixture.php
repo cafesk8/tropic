@@ -22,6 +22,9 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
     public const IMAGES_TABLE_NAME = 'images';
 
     public const IMAGE_TYPE = 'jpg';
+    public const SUPPLIER_SET_THIRD_IMAGE_ID = 111;
+    public const SUPPLIER_SET_SECOND_IMAGE_ID = 110;
+    public const SUPPLIER_SET_FIRST_IMAGE_ID = 109;
 
     /**
      * @var string
@@ -117,7 +120,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         $this->processProductsImages();
         $this->processStickersImages();
         $this->processSliderItemsImages();
-        $this->imageFacade->restartImagesIdsDbSequence(109);
+        $this->imageFacade->restartImagesIdsDbSequence(112);
     }
 
     private function processAdvertImages()
@@ -242,6 +245,9 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         $specificProductsIdsIndexedByImagesIds = [
             64 => 1,
             67 => 5,
+            self::SUPPLIER_SET_FIRST_IMAGE_ID => 150,
+            self::SUPPLIER_SET_SECOND_IMAGE_ID => 150,
+            self::SUPPLIER_SET_THIRD_IMAGE_ID => 150,
         ];
 
         foreach ($productsIdsWithImageIdSameAsProductId as $productId) {
@@ -249,7 +255,13 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         }
 
         foreach ($specificProductsIdsIndexedByImagesIds as $imageId => $productId) {
-            $this->saveImageIntoDb($productId, 'product', $imageId);
+            $description = null;
+            if ($imageId === self::SUPPLIER_SET_SECOND_IMAGE_ID) {
+                $description = 'Prut Zfish Kingstone*2';
+            } elseif ($imageId === self::SUPPLIER_SET_THIRD_IMAGE_ID) {
+                $description = 'Pouzdro pro prut Zfish';
+            }
+            $this->saveImageIntoDb($productId, 'product', $imageId, $description);
         }
     }
 
@@ -270,10 +282,11 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
      * @param int $entityId
      * @param string $entityName
      * @param int $imageId
+     * @param string|null $description
      */
-    protected function saveImageIntoDb(int $entityId, string $entityName, int $imageId)
+    protected function saveImageIntoDb(int $entityId, string $entityName, int $imageId, ?string $description = null)
     {
-        $this->imageFacade->saveImageIntoDb($entityId, $entityName, $imageId, self::IMAGE_TYPE);
+        $this->imageFacade->saveImageIntoDb($entityId, $entityName, $imageId, self::IMAGE_TYPE, null, null, null, $description);
     }
 
     /**
