@@ -88,6 +88,7 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\Order $order, \App\Model\Order\OrderData $orderData)
  * @property \App\Model\Order\Status\OrderStatusRepository $orderStatusRepository
  * @property \App\Model\Order\Item\OrderProductFacade $orderProductFacade
+ * @method updateTransportAndPaymentNamesInOrderData(\App\Model\Order\OrderData $orderData, \App\Model\Order\Order $order)
  */
 class OrderFacade extends BaseOrderFacade
 {
