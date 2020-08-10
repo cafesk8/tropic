@@ -1,0 +1,30 @@
+{% set images = getSupplierSetImagesExcludingMain(product) %}
+
+<ul class="list-set list-set--{{ images|length }} js-list-set-container" data-is-supplier-set="true">
+    {% for image in images %}
+        <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item">
+            <div class="list-set__item__in">
+                <div class="list-set__item__image">
+                    {{ image(image, { size: 'listSet' }) }}
+                    {% set itemCount = getSupplierSetItemCount(image.description) %}
+                    {% if itemCount > 1 %}
+                        <div class="list-tags list-tags--secondary list-tags--sets-detail">
+                            <div class="list-tags__tag">{{ itemCount ~ 'ks'|trans }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="list-set__item__content">
+                    <div class="list-set__item__name">
+                        {{ getSupplierSetItemName(image.description) }}
+                    </div>
+                    <div class="list-set__item__info">
+                        {{ 'Níže je popis tohoto produktu'|trans }}
+                    </div>
+                    <div class="list-set__item__plus">
+                        <i class="svg svg-plus-big"></i>
+                    </div>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

@@ -54,6 +54,7 @@ class Product extends BaseProduct
     public const IMAGE_TYPE_STICKER = 'sticker';
     public const POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT = 1;
     public const POHODA_PRODUCT_TYPE_ID_PRODUCT_SET = 5;
+    public const SUPPLIER_SET_ITEM_NAME_COUNT_SEPARATOR = '*';
 
     /**
      * @var \App\Model\Product\StoreStock\ProductStoreStock[]|\Doctrine\Common\Collections\Collection

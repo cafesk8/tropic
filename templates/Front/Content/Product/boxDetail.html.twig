@@ -7,17 +7,19 @@
     {% set showGalleryMaxCount = 3 %}
     {% set showFlagsMaxCount = 3 %}
     {% set typeSet = product.pohodaProductType is same as(5) %}
+    {% set typeSupplierSet = product.supplierSet is same as(true) %}
+    {% set typeSetOrSupplierSet = typeSet or typeSupplierSet %}
     {% set variantsCount = product.getVariantsCount(domain.id) %}
 
     <div class="box-detail">
         <div class="web__line">
             <div class="web__container">
-                <div class="box-detail__product{% if typeSet %} box-detail__product--small-gap{% endif %}{% if product.isMainVariant %} box-detail__product--variant{% endif %}">
+                <div class="box-detail__product{% if typeSetOrSupplierSet %} box-detail__product--small-gap{% endif %}{% if product.isMainVariant %} box-detail__product--variant{% endif %}">
                     {# @var \App\Model\Product\Pricing\ProductPrice sellingPrice #}
                     {% set sellingPrice = getProductSellingPrice(product) %}
 
                     <div class="box-detail__left">
-                        {% if not typeSet %}
+                        {% if not typeSetOrSupplierSet %}
                             <div class="box-detail__image">
                                 {% set galleryImages = getImages(product) %}
                                 {% set showGallery = galleryImages|length > 0 or youtubeDetails %}
@@ -127,7 +129,7 @@
                             </div>
                         {% else %}
                             <div class="box-detail__description">
-                                {% if typeSet %}
+                                {% if typeSetOrSupplierSet %}
                                     <div class="box-detail__description__wrap">
                                         <h2 class="box-detail__description__title" itemprop="name">
                                             {{ product.getSeoH1(domain.id)|default(product.name) }}
@@ -147,7 +149,7 @@
                     </div>
 
                     <div class="box-detail__info">
-                        {% if not typeSet %}
+                        {% if not typeSetOrSupplierSet %}
                             <h2 class="box-detail__info__title{% if product.isMainVariant %} box-detail__info__title--big-gap{% endif %}" itemprop="name">
                                 {{ product.getSeoH1(domain.id)|default(product.name) }}
                             </h2>
@@ -279,7 +281,7 @@
             </div>
         </div>
 
-        {% if typeSet %}
+        {% if typeSetOrSupplierSet %}
             <div class="web__line">
                 <div class="web__container">
                     {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
@@ -287,50 +289,54 @@
                     <div class="box-set">
                         <h3 class="box-set__title">{{ 'Set obsahuje toto zboží'|trans }}</h3>
                         <div class="box-set__wrap">
-                            <ul class="list-set list-set--{{ product.productSets|length }} js-list-set-container">
-                                {% for productSet in sortProductSetsByPrice(product.productSets) %}
-                                    {% set productSellingPrice = getProductSellingPrice(productSet.item) %}
-                                    <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item" data-product-set-item-id="{{ productSet.item.id }}">
-                                        <div class="list-set__item__in">
-                                            <div class="list-set__item__image">
-                                                {{ image(productSet.item, { size: 'listSet' }) }}
-                                                {% if productSet.itemCount > 1 %}
-                                                    <div class="list-tags list-tags--secondary list-tags--sets-detail">
-                                                        <div class="list-tags__tag">{{ productSet.itemCount }} {{ 'ks'|trans }}</div>
+                            {% if typeSupplierSet %}
+                                {% include 'Front/Content/Product/supplierSetDetailItems.html.twig' with { product: product } %}
+                            {% else %}
+                                <ul class="list-set list-set--{{ product.productSets|length }} js-list-set-container" data-is-supplier-set="true">
+                                    {% for productSet in sortProductSetsByPrice(product.productSets) %}
+                                        {% set productSellingPrice = getProductSellingPrice(productSet.item) %}
+                                        <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item" data-product-set-item-id="{{ productSet.item.id }}">
+                                            <div class="list-set__item__in">
+                                                <div class="list-set__item__image">
+                                                    {{ image(productSet.item, { size: 'listSet' }) }}
+                                                    {% if productSet.itemCount > 1 %}
+                                                        <div class="list-tags list-tags--secondary list-tags--sets-detail">
+                                                            <div class="list-tags__tag">{{ productSet.itemCount ~ 'ks'|trans }}</div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="list-set__item__content">
+                                                    <div class="list-set__item__name">
+                                                        {{ productSet.item.name }}
                                                     </div>
-                                                {% endif %}
-                                            </div>
-                                            <div class="list-set__item__content">
-                                                <div class="list-set__item__name">
-                                                    {{ productSet.item.name }}
-                                                </div>
-                                                <div class="list-set__item__price">
-                                                    {% if productSellingPrice is not null %}
-                                                        {% if productSellingPrice.priceFrom %}
-                                                            {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
-                                                        {% else %}
-                                                            {{ productSellingPrice.priceWithVat|price }}
+                                                    <div class="list-set__item__price">
+                                                        {% if productSellingPrice is not null %}
+                                                            {% if productSellingPrice.priceFrom %}
+                                                                {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                                            {% else %}
+                                                                {{ productSellingPrice.priceWithVat|price }}
+                                                            {% endif %}
                                                         {% endif %}
-                                                    {% endif %}
-                                                </div>
-                                                <div class="in-availability in-availability--without-gap">
-                                                    {% if productSet.item.isMainVariant %}
-                                                        {{ 'Dostupnost dle varianty'|trans }}
-                                                    {% else %}
-                                                        {{ availability.productAvailability(productSet.item) }}
-                                                    {% endif %}
-                                                </div>
-                                                <div class="list-set__item__info">
-                                                    {{ 'Níže je popis tohoto produktu'|trans }}
-                                                </div>
-                                                <div class="list-set__item__plus">
-                                                    <i class="svg svg-plus-big"></i>
+                                                    </div>
+                                                    <div class="in-availability in-availability--without-gap">
+                                                        {% if productSet.item.isMainVariant %}
+                                                            {{ 'Dostupnost dle varianty'|trans }}
+                                                        {% else %}
+                                                            {{ availability.productAvailability(productSet.item) }}
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="list-set__item__info">
+                                                        {{ 'Níže je popis tohoto produktu'|trans }}
+                                                    </div>
+                                                    <div class="list-set__item__plus">
+                                                        <i class="svg svg-plus-big"></i>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
