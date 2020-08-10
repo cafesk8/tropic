@@ -34,6 +34,8 @@ function deploy() {
         ["parameters.ecomail_api_key"]="${ECOMAIL_API_KEY}"
         ["parameters.ecomail_list_id"]="${ECOMAIL_LIST_ID}"
         ["parameters.ecomail_list_id_sk"]="${ECOMAIL_LIST_ID_SK}"
+        ["parameters.balikobot.username"]="${BALIKOBOT_USERNAME}"
+        ["parameters.balikobot.apiKey"]="${BALIKOBOT_APIKEY}"
 
         # GoPay
         ["parameters.gopay_config.cs.goid"]="${GOPAY_CONFIG_GOID_CS}"
