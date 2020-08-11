@@ -4,29 +4,26 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Set;
 
+use App\Component\Image\ImageFacade;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
-use Shopsys\ReadModelBundle\Image\ImageViewFacade;
 
 class ProductSetFacade
 {
     private ProductSetRepository $productSetRepository;
 
-    /**
-     * @var \Shopsys\ReadModelBundle\Image\ImageViewFacade
-     */
-    private $imageViewFacade;
+    private ImageFacade $imageFacade;
 
     /**
      * @param \App\Model\Product\Set\ProductSetRepository $productSetRepository
-     * @param \Shopsys\ReadModelBundle\Image\ImageViewFacade $imageViewFacade
+     * @param \App\Component\Image\ImageFacade $imageFacade
      */
-    public function __construct(ProductSetRepository $productSetRepository, ImageViewFacade $imageViewFacade)
+    public function __construct(ProductSetRepository $productSetRepository, ImageFacade $imageFacade)
     {
         $this->productSetRepository = $productSetRepository;
-        $this->imageViewFacade = $imageViewFacade;
+        $this->imageFacade = $imageFacade;
     }
 
     /**
@@ -63,20 +60,30 @@ class ProductSetFacade
      * @param string $locale
      * @return array[]
      */
-    public function getAllForElasticByMainProduct(Product $mainProduct, string $locale): array
+    public function getAllItemsDataByMainProduct(Product $mainProduct, string $locale): array
     {
         $productSets = $this->getAllByMainProduct($mainProduct);
-        $imageViews = $this->imageViewFacade->getForEntityIds(BaseProduct::class, array_map(function (ProductSet $productSet) {
+        $images = $this->imageFacade->getImagesByEntitiesIndexedByEntityId(array_map(function (ProductSet $productSet) {
             return $productSet->getItem()->getId();
-        }, $productSets));
+        }, $productSets), BaseProduct::class);
 
-        return array_map(function (ProductSet $productSet) use ($locale, $imageViews) {
-            return [
+        return array_map(function (ProductSet $productSet) use ($locale, $images) {
+            $result = [
                 'id' => $productSet->getItem()->getId(),
                 'name' => $productSet->getItem()->getName($locale),
                 'amount' => $productSet->getItemCount(),
-                'image' => $imageViews[$productSet->getItem()->getId()],
+                'image' => null,
             ];
+            $image = $images[$productSet->getItem()->getId()] ?? null;
+            if ($image !== null) {
+                $result['image'] = [
+                    'id' => $image->getId(),
+                    'extension' => $image->getExtension(),
+                    'entity_name' => $image->getEntityName(),
+                    'type' => $image->getType(),
+                ];
+            }
+            return $result;
         }, $productSets);
     }
 

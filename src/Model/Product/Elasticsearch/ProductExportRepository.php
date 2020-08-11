@@ -97,7 +97,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['amount_multiplier'] = $product->getAmountMultiplier();
         $result['variants_aliases'] = $this->getVariantsAliases($product, $locale, $domainId);
         $result['variants_count'] = count($result['variants_aliases']);
-        $result['set_items'] = $this->productSetFacade->getAllForElasticByMainProduct($product, $locale);
+        $result['set_items'] = $this->productSetFacade->getAllItemsDataByMainProduct($product, $locale);
         if ($product->isMainVariant()) {
             $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
         }

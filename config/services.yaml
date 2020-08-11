@@ -718,3 +718,5 @@ services:
     App\Model\Transport\TransportPriceCalculation: ~
 
     Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation: '@App\Model\Transport\TransportPriceCalculation'
+
+    Shopsys\ReadModelBundle\Image\ImageViewFactory: '@App\Model\Image\ImageViewFactory'

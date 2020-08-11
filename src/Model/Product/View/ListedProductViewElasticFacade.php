@@ -208,10 +208,6 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
         foreach ($productsArray as $productArray) {
             $productIds[] = $productArray['id'];
-
-            foreach ($productArray['set_items'] as $setItem) {
-                $productIds[] = $setItem['id'];
-            }
         }
 
         $imageViews = $this->imageViewFacade->getForEntityIds(BaseProduct::class, $productIds);
@@ -220,10 +216,6 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $listedProductViews = [];
         foreach ($productsArray as $productArray) {
             $productId = $productArray['id'];
-
-            foreach ($productArray['set_items'] as &$setItem) {
-                $setItem['image'] = $imageViews[$setItem['id']];
-            }
 
             $listedProductViews[$productId] = $this->listedProductViewFactory->createFromArray(
                 $productArray,

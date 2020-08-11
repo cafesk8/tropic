@@ -74,7 +74,7 @@ class ListedProductView extends BaseListedProductView
      * @param string[][] $gifts
      * @param int|null $stockQuantity
      * @param int $variantsCount
-     * @param array[] $setItems
+     * @param \App\Model\Product\View\ListedSetItem[] $setItems
      * @param string|null $deliveryDays
      * @param bool $isAvailableInDays
      * @param int $realSaleStocksQuantity
@@ -105,9 +105,7 @@ class ListedProductView extends BaseListedProductView
         $this->stockQuantity = $stockQuantity ?? 0;
         $this->gifts = $gifts;
         $this->variantsCount = $variantsCount;
-        $this->setItems = array_map(function (array $setItem) {
-            return new ListedSetItem($setItem['name'], $setItem['amount'], $setItem['image']);
-        }, $setItems);
+        $this->setItems = $setItems;
         $this->deliveryDays = $deliveryDays;
         $this->isAvailableInDays = $isAvailableInDays;
         $this->realSaleStocksQuantity = $realSaleStocksQuantity;

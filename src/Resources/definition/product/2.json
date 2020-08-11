@@ -343,6 +343,23 @@
           },
           "amount": {
             "type": "integer"
+          },
+          "image": {
+            "type": "nested",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "extension": {
+                "type": "text"
+              },
+              "entity_name": {
+                "type": "text"
+              },
+              "type": {
+                "type": "text"
+              }
+            }
           }
         }
       },
