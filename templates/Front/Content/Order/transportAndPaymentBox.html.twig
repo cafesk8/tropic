@@ -95,7 +95,7 @@
             {{ 'Vyberte způsob platby'|trans }}
         </h2>
 
-        <div id="{{ form.payment.vars.id }}" class="js-payments-wrapper">
+        <div id="{{ form.payment.vars.id }}">
             {% set bankTransferRendered = false %}
             {% set goPayBankSwiftForm = form.goPayBankSwift %}
             {% for child in form.payment %}

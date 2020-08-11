@@ -114,7 +114,7 @@
     {% set errors_attr = errors_attr|default({})|merge({'class': (errors_attr.class|default(''))}) %}
     {% apply spaceless %}
         {% if errors|length > 0 %}    
-            <span class="js-validation-errors-list js-validation-error-list-{{ form.vars.id }} {{ form.parent ? 'form-error' : 'in-message' }} {{ errors_attr.class }}">
+            <span class="js-validation-errors-list-{{ form.vars.id }} {{ form.parent ? 'form-error' : 'in-message' }} {{ errors_attr.class }}">
                 <ul class="{{ form.parent ? 'form-error__list' : 'in-message__list' }}">
                     {% for error in errors %}
                         <li>{{ error.message }}</li>
