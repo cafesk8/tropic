@@ -110,6 +110,7 @@ class ProductDataFactory extends BaseProductDataFactory
     {
         $productData = new ProductData();
         $this->fillFromProduct($productData, $product);
+        $productData->setNotNew();
 
         return $productData;
     }
