@@ -189,6 +189,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->shortDescriptionAutomaticallyTranslated = $product->isShortDescriptionAutomaticallyTranslated();
         $productData->bulky = $product->isBulky();
         $productData->oversized = $product->isOversized();
+        $productData->stickers->orderedImages = $this->imageFacade->getImagesByEntityIndexedById($product, Product::IMAGE_TYPE_STICKER);
 
         foreach ($this->domain->getAllIds() as $domainId) {
             $productData->generateToMergadoXmlFeeds[$domainId] = $product->isGenerateToMergadoXmlFeed($domainId);

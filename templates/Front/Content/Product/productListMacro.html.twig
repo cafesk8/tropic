@@ -14,12 +14,21 @@
                             <a href="{{ productView.action.detailUrl }}" class="list-products__item__image-wrap">
                                 <div class="list-products__item__image dont-print">
                                     {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
-                                    {% set productFlagIds = productView.flagIds %}
-                                    {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
-                                    {% if freeTransportAndPaymentFlagId is not null %}
-                                        {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+
+                                    {% if productView.stickers|length > 0 %}
+                                        <div class="list-products__item__image__stickers">
+                                            {% for sticker in productView.stickers %}
+                                                {{ image(sticker) }}
+                                            {% endfor %}
+                                        </div>
                                     {% endif %}
                                 </div>
+
+                                {% set productFlagIds = productView.flagIds %}
+                                {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
+                                {% if freeTransportAndPaymentFlagId is not null %}
+                                    {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+                                {% endif %}
                                 {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice, productView.variantsCount) }}
                             </a>
 
@@ -107,12 +116,21 @@
                                 <a class="list-products-slider__item__image-wrap" href="{{ productView.action.detailUrl }}">
                                     <div class="list-products-slider__item__image dont-print">
                                         {{ image(productView.image, { size: 'listSlider', alt: productView.name, lazy: true }) }}
-                                        {% set productFlagIds = productView.flagIds %}
-                                        {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
-                                        {% if freeTransportAndPaymentFlagId is not null %}
-                                            {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+
+                                        {% if productView.stickers|length > 0 %}
+                                            <div class="list-products-slider__item__image__stickers">
+                                                {% for sticker in productView.stickers %}
+                                                    {{ image(sticker) }}
+                                                {% endfor %}
+                                            </div>
                                         {% endif %}
                                     </div>
+
+                                    {% set productFlagIds = productView.flagIds %}
+                                    {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
+                                    {% if freeTransportAndPaymentFlagId is not null %}
+                                        {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+                                    {% endif %}
                                     {{ renderFlagsByIds(productFlagIds, 'in-flag--slider', true, productSellingPrice, productView.variantsCount) }}
                                 </a>
 
@@ -300,6 +318,14 @@
 
                     <div class="list-products-bomb__item__image dont-print">
                         {{ image(productView.image, { size: 'biggerThumbnail', alt: productView.name, lazy: true }) }}
+
+                        {% if productView.stickers|length > 0 %}
+                            <div class="list-products__item__image__stickers">
+                                {% for sticker in productView.stickers %}
+                                    {{ image(sticker) }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
 
                     {% if productSellingPrice is not null %}

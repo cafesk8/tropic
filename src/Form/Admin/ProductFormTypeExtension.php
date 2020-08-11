@@ -30,7 +30,9 @@ use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
 use Shopsys\FrameworkBundle\Form\DomainsType;
 use Shopsys\FrameworkBundle\Form\FileUploadType;
 use Shopsys\FrameworkBundle\Form\GroupType;
+use Shopsys\FrameworkBundle\Form\ImageUploadType;
 use Shopsys\FrameworkBundle\Form\WarningMessageType;
+use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -261,6 +263,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         $this->addFileGroup($builder, $options);
         $this->addVideoGroup($builder);
+        $this->addStickersGroup($builder, $options);
         $this->addDiscountExclusionGroup($builder, $product);
 
         if ($product === null || ($product !== null && $product->isMainVariant() === false)) {
@@ -771,7 +774,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     {
         $filesGroup = $builder->create('fileGroup', GroupType::class, [
             'label' => t('Soubory'),
-            'position' => ['after' => 'imageGroup'],
+            'position' => ['after' => 'stickersGroup'],
             'required' => false,
         ]);
 
@@ -829,6 +832,43 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             'text/plain',
             'text/xml',
         ];
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     */
+    private function addStickersGroup(FormBuilderInterface $builder, array $options): void
+    {
+        $builderStickersGroup = $builder->create('stickersGroup', GroupType::class, [
+            'label' => t('Grafické nálepky'),
+            'position' => ['after' => 'videosGroup'],
+        ]);
+
+        $builderStickersGroup
+            ->add('stickers', ImageUploadType::class, [
+                'required' => false,
+                'image_entity_class' => BaseProduct::class,
+                'file_constraints' => [
+                    new Constraints\Image([
+                        'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],
+                        'mimeTypesMessage' => 'Image can be only in JPG, GIF or PNG format',
+                        'maxSize' => '2M',
+                        'maxSizeMessage' => 'Uploaded image is to large ({{ size }} {{ suffix }}). '
+                            . 'Maximum size of an image is {{ limit }} {{ suffix }}.',
+                    ]),
+                ],
+                'entity' => $options['product'],
+                'info_text' => t('You can upload following formats: PNG, JPG, GIF'),
+                'label' => t('Grafické nálepky'),
+                'image_type' => Product::IMAGE_TYPE_STICKER,
+            ])
+            ->add('stickerDimensionsInfo', DisplayOnlyType::class, [
+                'label' => t('Doporučené rozměry'),
+                'data' => t('šířka: 100px, výška: 100px'),
+            ]);
+
+        $builder->add($builderStickersGroup);
     }
 
     /**

@@ -361,6 +361,7 @@ class ProductFacade extends BaseProductFacade
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
 
         $this->imageFacade->manageImages($product, $productData->images);
+        $this->imageFacade->manageImages($product, $productData->stickers, Product::IMAGE_TYPE_STICKER);
         $this->friendlyUrlFacade->createFriendlyUrls('front_product_detail', $product->getId(), $product->getNames());
 
         $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($product);
@@ -405,6 +406,7 @@ class ProductFacade extends BaseProductFacade
         $this->refreshProductGroups($product, $productData->groupItems);
         $this->updateProductStoreStocks($productData, $product);
         $this->updateMainProductsStoreStocks($product);
+        $this->imageFacade->manageImages($product, $productData->stickers, Product::IMAGE_TYPE_STICKER);
         $this->uploadedFileFacade->manageFiles($product, $productData->files);
 
         if ($product->isVariant()) {

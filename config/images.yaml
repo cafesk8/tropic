@@ -112,6 +112,15 @@
             height: 70
             crop: false
             occurrence: 'Front-end: next gift in cart'
+    types:
+        -   name: sticker
+            multiple: true
+            sizes:
+                -   name: ~
+                    width: 100
+                    height: 100
+                    crop: false
+                    occurrence: 'Front-end: On top of product''s main photo'
 
 -   name: sliderItem
     class: Shopsys\FrameworkBundle\Model\Slider\SliderItem
