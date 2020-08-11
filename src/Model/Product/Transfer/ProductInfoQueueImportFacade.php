@@ -92,4 +92,12 @@ class ProductInfoQueueImportFacade
     {
         return $this->productInfoQueueImportRepository->isQueueEmpty();
     }
+
+    /**
+     * @param array $pohodaProductIds
+     */
+    public function moveProductsToEndOfQueue(array $pohodaProductIds): void
+    {
+        $this->productInfoQueueImportRepository->moveProductsToEndOfQueue($pohodaProductIds);
+    }
 }

@@ -28,6 +28,8 @@ class ProductInfoQueueImportRepository
      */
     public function insertChangedPohodaProductIds(array $pohodaProductIds, \DateTime $pohodaTransferDateTime): void
     {
+        $pohodaTransferDateTime->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
         foreach ($pohodaProductIds as $pohodaProductId) {
             $query = $this->em->createNativeQuery(
                 'INSERT INTO pohoda_changed_products_basic_info_queue (pohoda_id, inserted_at)
@@ -96,6 +98,24 @@ class ProductInfoQueueImportRepository
 
         $queryBuilder->execute([
             'updatedProducts' => $updatedPohodaProductIds,
+        ]);
+    }
+
+    /**
+     * @param array $pohodaProductIds
+     */
+    public function moveProductsToEndOfQueue(array $pohodaProductIds): void
+    {
+        $queryBuilder = $this->em->createNativeQuery(
+            'UPDATE pohoda_changed_products_basic_info_queue
+            SET inserted_at = :insertedAtNow
+            WHERE pohoda_id IN(:updatedProducts)',
+            new ResultSetMapping()
+        );
+
+        $queryBuilder->execute([
+            'insertedAtNow' => new \DateTime(),
+            'updatedProducts' => $pohodaProductIds,
         ]);
     }
 }

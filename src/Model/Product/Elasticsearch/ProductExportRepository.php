@@ -189,7 +189,7 @@ class ProductExportRepository extends BaseProductExportRepository
             $variantsAliases[] = $variant->getVariantAlias($locale);
         }
 
-        return array_filter($variantsAliases);
+        return array_values(array_filter($variantsAliases));
     }
 
     /**
