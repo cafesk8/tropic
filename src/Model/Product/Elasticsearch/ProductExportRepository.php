@@ -106,7 +106,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['is_available_in_days'] = $product->isMainVariant() ? false : $product->isAvailableInDays();
         $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
         $result['is_in_any_sale_stock'] = $product->isInAnySaleStock();
-        $result['pohoda_product_type'] = $product->getPohodaProductType() ?? Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
+        $result['pohoda_product_type'] = $this->getPohodaProductType($product);
         $result['ordering_priority'] = $product->getBiggestVariantOrderingPriority();
         $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
         $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
@@ -254,5 +254,17 @@ class ProductExportRepository extends BaseProductExportRepository
         return array_map(function (Flag $flag) {
             return $flag->getId();
         }, $product->getActiveFlags());
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return int
+     */
+    private function getPohodaProductType(Product $product): int
+    {
+        if ($product->isSupplierSet()) {
+            return Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET;
+        }
+        return $product->getPohodaProductType() ?? Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
     }
 }
