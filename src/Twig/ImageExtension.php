@@ -103,10 +103,7 @@ class ImageExtension extends BaseImageExtension
      */
     public function getSupplierSetImagesExcludingMain(Product $product)
     {
-        $images = $this->getImages($product, null);
-        array_shift($images);
-
-        return $images;
+        return $this->imageFacade->getImagesExcludingMain($product);
     }
 
     /**
@@ -115,15 +112,7 @@ class ImageExtension extends BaseImageExtension
      */
     public function getSupplierSetItemName(?string $imageDescription): string
     {
-        if ($imageDescription === null) {
-            return '';
-        }
-        $separatorPosition = strpos($imageDescription, Product::SUPPLIER_SET_ITEM_NAME_COUNT_SEPARATOR);
-        if ($separatorPosition === false) {
-            return $imageDescription;
-        }
-
-        return substr($imageDescription, 0, $separatorPosition);
+        return $this->imageFacade->getSupplierSetItemName($imageDescription);
     }
 
     /**
@@ -132,14 +121,6 @@ class ImageExtension extends BaseImageExtension
      */
     public function getSupplierSetItemCount(?string $imageDescription): int
     {
-        if ($imageDescription === null) {
-            return 1;
-        }
-        $separatorPosition = strpos($imageDescription, Product::SUPPLIER_SET_ITEM_NAME_COUNT_SEPARATOR);
-        if ($separatorPosition === false) {
-            return 1;
-        }
-
-        return (int)substr($imageDescription, $separatorPosition + 1);
+        return $this->imageFacade->getSupplierSetItemCount($imageDescription);
     }
 }

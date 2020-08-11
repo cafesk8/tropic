@@ -62,6 +62,9 @@ class ProductSetFacade
      */
     public function getAllItemsDataByMainProduct(Product $mainProduct, string $locale): array
     {
+        if ($mainProduct->isSupplierSet() === true) {
+            return $this->getSupplierSetItemsData($mainProduct);
+        }
         $productSets = $this->getAllByMainProduct($mainProduct);
         $images = $this->imageFacade->getImagesByEntitiesIndexedByEntityId(array_map(function (ProductSet $productSet) {
             return $productSet->getItem()->getId();
@@ -107,5 +110,32 @@ class ProductSetFacade
         }
 
         return (int)floor($quantity / $productSet->getItemCount());
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return array
+     */
+    private function getSupplierSetItemsData(Product $product): array
+    {
+        $productId = $product->getId();
+        $supplierSetItemsData = [];
+        $images = $this->imageFacade->getImagesExcludingMain($product);
+        foreach ($images as $image) {
+            $imageDescription = $image->getDescription();
+            $supplierSetItemsData[] = [
+                'id' => $productId,
+                'name' => $this->imageFacade->getSupplierSetItemName($imageDescription),
+                'amount' => $this->imageFacade->getSupplierSetItemCount($imageDescription),
+                'image' => [
+                    'id' => $image->getId(),
+                    'extension' => $image->getExtension(),
+                    'entity_name' => $image->getEntityName(),
+                    'type' => $image->getType(),
+                ],
+            ];
+        }
+
+        return $supplierSetItemsData;
     }
 }
