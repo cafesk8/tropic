@@ -994,6 +994,9 @@ msgstr "NS-9310 Infant náhradní sáčky papírové pro VP-9310"
 msgid "NS-9710 Prominent replacement paper bags for VP-9711/12/13"
 msgstr "NS-9710 Prominent náhradní sáčky papírové pro VP-9711/12/13"
 
+msgid "Nepřevzato zákazníkem"
+msgstr "Neprevzaté zákazníkom"
+
 msgid "New [adjective]"
 msgstr "Nová"
 
@@ -1638,6 +1641,9 @@ msgstr "ks"
 
 msgid "white"
 msgstr "bílá"
+
+msgid "Zaplaceno"
+msgstr "Zaplatené"
 
 msgid "| Demo eshop"
 msgstr "| Demo obchod"
