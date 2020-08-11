@@ -10,7 +10,7 @@
                 {% include 'Front/Svg/cart.svg' %}
                 {% if cart is not null %}
                     <span class="cart__icon__count">
-                        {{ cart.itemsCount }}
+                        {{ cart.items|length }}
                     </span>
                 {% endif %}
             </div>
