@@ -58,9 +58,6 @@
                                     </div>
                                 </div>
                                 {{ form_row(form.telephone, { label: 'Telephone'|trans, attr: { placeholder: 'např. 603 123 456'|trans }}) }}
-                                {% if isEnglishDomain() is same as (true) or isSlovakDomain() is same as (true) %}
-                                    <span class="form-line__info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
-                                {% endif %}
                             </div>
 
                             {% if not is_granted('ROLE_LOGGED_CUSTOMER') %}

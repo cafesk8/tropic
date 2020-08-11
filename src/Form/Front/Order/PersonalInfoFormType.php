@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Order;
 
-use App\Component\Domain\DomainHelper;
 use App\Model\Order\FrontOrderData;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Constraints\Email;
@@ -34,7 +33,6 @@ class PersonalInfoFormType extends AbstractType
     public const VALIDATION_GROUP_COMPANY_CUSTOMER = 'companyCustomer';
     public const VALIDATION_GROUP_BILLING_ADDRESS_FILLED = 'billingAddressFilled';
     public const VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED = 'deliveryAddressRequired';
-    public const VALIDATION_GROUP_PHONE_PLUS_REQUIRED = 'phonePlusRequired';
     public const VALIDATION_GROUP_REGISTRATION_PASSWORD_REQUIRED = 'passwordRequired';
 
     /**
@@ -144,11 +142,6 @@ class PersonalInfoFormType extends AbstractType
                     new Constraints\Length([
                         'max' => 20,
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
-                    ]),
-                    new Constraints\Regex([
-                        'pattern' => '/^\+{1}[^\+]+$/',
-                        'message' => 'Telefonní číslo musí začínat znakem +',
-                        'groups' => [self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED],
                     ]),
                     new Constraints\Regex([
                         // https://regex101.com/r/tyKloi/1
@@ -383,10 +376,6 @@ class PersonalInfoFormType extends AbstractType
                     }
                     if ($this->isPickupPlaceAndStoreNull($orderData) === true && $orderData->deliveryAddress === null) {
                         $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED;
-                    }
-
-                    if (DomainHelper::isEnglishDomain($this->domain) || DomainHelper::isSlovakDomain($this->domain)) {
-                        $validationGroups[] = self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED;
                     }
 
                     return $validationGroups;
