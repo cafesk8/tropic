@@ -162,7 +162,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->youtubeVideoIds = $product->getYoutubeVideoIds();
         $productData->variantId = $product->getVariantId();
         $productData->registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
-        $productData->eurCalculatedAutomatically = $product->isEurCalculatedAutomatically();
         $productData->promoDiscountDisabled = $product->isPromoDiscountDisabled();
         $productData->groupItems = $this->getProductGroups($product);
         $productData->deliveryDays = $product->getDeliveryDays();

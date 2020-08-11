@@ -386,11 +386,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private function getPricesGroup(FormBuilderInterface $builder, ?Product $product): FormBuilderInterface
     {
         $pricesGroupBuilder = $builder->get('pricesGroup');
-        $pricesGroupBuilder->add('eurCalculatedAutomatically', YesNoType::class, [
-            'label' => t('Ceny se automaticky přepočítávají na Euro'),
-            'position' => 'first',
-        ]);
-
         $productCalculatedPricesGroup = $pricesGroupBuilder->get('productCalculatedPricesGroup');
         $productCalculatedPricesGroup->remove('manualInputPricesByPricingGroupId');
 
@@ -410,7 +405,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                         $pricingGroup->isCalculatedFromDefault()
                         || (
                             $product !== null
-                            && $product->isEurCalculatedAutomatically()
                             && $this->currencyFacade->getDomainDefaultCurrencyByDomainId($pricingGroup->getDomainId())->getCode() === Currency::CODE_EUR
                         )
                     ),

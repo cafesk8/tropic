@@ -77,9 +77,6 @@ class PohodaProductDataValidator
                 PohodaProduct::COL_VARIANT_ID => [
                     new Callback(['callback' => [$this, 'validateVariantId']]),
                 ],
-                PohodaProduct::COL_AUTO_EUR_PRICE => [
-                    new NotBlank(),
-                ],
                 PohodaProduct::COL_POHODA_PRODUCT_MINIMUM_AMOUNT_AND_MULTIPLIER => [
                     new Type(['type' => 'numeric']),
                     new NotBlank(),

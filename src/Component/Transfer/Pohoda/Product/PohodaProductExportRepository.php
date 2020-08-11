@@ -55,7 +55,6 @@ class PohodaProductExportRepository
         'SText' => PohodaProduct::COL_VARIANT_ALIAS,
         'SText1' => PohodaProduct::COL_VARIANT_ALIAS_SK,
         'RelSkTyp' => PohodaProduct::COL_POHODA_PRODUCT_TYPE,
-        'VPrAutPrepEUR' => PohodaProduct::COL_AUTO_EUR_PRICE,
         'VPrAutomatSK' => PohodaProduct::COL_AUTO_DESCRIPTION_TRANSLATION,
         'Dodani' => PohodaProduct::COL_DELIVERY_DAYS,
         'VPrNovinkaOd' => PohodaProduct::COL_FLAG_NEW_FROM,

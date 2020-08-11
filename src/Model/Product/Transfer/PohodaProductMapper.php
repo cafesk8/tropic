@@ -230,7 +230,6 @@ class PohodaProductMapper
 
         $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
         $productData->groupItems = $this->getMappedProductGroupItems($pohodaProduct->productGroups);
-        $productData->eurCalculatedAutomatically = $pohodaProduct->automaticEurCalculation;
         $productData->descriptionAutomaticallyTranslated = $pohodaProduct->automaticDescriptionTranslation;
         $productData->shortDescriptionAutomaticallyTranslated = $pohodaProduct->automaticDescriptionTranslation;
 
@@ -454,14 +453,14 @@ class PohodaProductMapper
      */
     private function addPricesForDomain(PohodaProduct $pohodaProduct, ProductData $productData, int $domainId): void
     {
-        if ($domainId !== DomainHelper::CZECH_DOMAIN && !$pohodaProduct->automaticEurCalculation) {
+        if ($domainId !== DomainHelper::CZECH_DOMAIN) {
             return;
         }
 
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
         $currencyMultiplier = '1';
 
-        if ($domainId !== DomainHelper::CZECH_DOMAIN && $pohodaProduct->automaticEurCalculation && $currency->getCode() === Currency::CODE_EUR) {
+        if ($domainId !== DomainHelper::CZECH_DOMAIN && $currency->getCode() === Currency::CODE_EUR) {
             $currencyMultiplier = $currency->getExchangeRate();
         }
 
