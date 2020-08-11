@@ -1,11 +1,19 @@
 {% macro productPreviewItem(product, quantity, price, saleItem = false, canShowAvailability = true) %}
     {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
-    <li class="list-cart-preview__item{% if product.isPohodaProductTypeSet %} list-cart-preview__item--sets{% endif %}">
+    <li class="list-cart-preview__item{% if product.isPohodaProductTypeSet or product.isSupplierSet %} list-cart-preview__item--sets{% endif %}">
         {% if product.isPohodaProductTypeSet %}
             <div class="list-cart-preview__item__wrap-image">
                 {% for productSet in product.productSets %}
                     <div class="list-cart-preview__item__image list-cart-preview__item__image--sets svg svg-plus-big">
                         {{ image(productSet.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% elseif product.isSupplierSet %}
+            <div class="list-cart-preview__item__wrap-image">
+                {% for image in getSupplierSetImagesExcludingMain(product) %}
+                    <div class="list-cart-preview__item__image list-cart-preview__item__image--sets svg svg-plus-big">
+                        {{ image(image, {size: 'thumbnail'}) }}
                     </div>
                 {% endfor %}
             </div>

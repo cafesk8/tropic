@@ -61,13 +61,21 @@
 {% macro productOrSetLine(productOrSet) %}
     <li class="search-hint__product__item">
         <a href="{{ url('front_product_detail', { id: productOrSet.id }) }}"
-            class="search-hint__product__item__link{% if productOrSet.isPohodaProductTypeSet %} search-hint__product__item__link--sets{% endif %}"
+            class="search-hint__product__item__link{% if productOrSet.isPohodaProductTypeSet or productOrSet.isSupplierSet %} search-hint__product__item__link--sets{% endif %}"
         >
             {% if productOrSet.isPohodaProductTypeSet %}
                 <div class="search-hint__product__item__wrap-image">
                     {% for productSet in productOrSet.productSets %}
                         <div class="search-hint__product__item__image search-hint__product__item__image--sets svg svg-plus-big">
                             {{ image(productSet.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% elseif productOrSet.isSupplierSet %}
+                <div class="search-hint__product__item__wrap-image">
+                    {% for image in getSupplierSetImagesExcludingMain(productOrSet) %}
+                        <div class="search-hint__product__item__image search-hint__product__item__image--sets svg svg-plus-big">
+                            {{ image(image, {size: 'thumbnail', lazy: false}) }}
                         </div>
                     {% endfor %}
                 </div>

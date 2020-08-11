@@ -42,7 +42,7 @@
                         <ul class="cart-detail">
                             {% for cartItem in cartItems %}
                                 {% set quantifiedItemPrice = orderPreview.quantifiedItemsPrices[loop.index0] %}
-                                <li class="cart-detail__item{% if cartItem.product.isPohodaProductTypeSet %} cart-detail__item--sets{% endif %}">
+                                <li class="cart-detail__item{% if cartItem.product.isPohodaProductTypeSet or cartItem.product.isSupplierSet %} cart-detail__item--sets{% endif %}">
                                     <div class="cart-detail__item__content">
                                          {% if cartItem.product.isPohodaProductTypeSet %}
                                             <div class="cart-detail__item__wrap-image">
@@ -52,6 +52,14 @@
                                                     </div>
                                                 {% endfor %}
                                             </div>
+                                         {% elseif cartItem.product.isSupplierSet %}
+                                             <div class="cart-detail__item__wrap-image">
+                                                 {% for image in getSupplierSetImagesExcludingMain(cartItem.product) %}
+                                                     <div class="cart-detail__item__image cart-detail__item__image--sets svg svg-plus-big">
+                                                         {{ image(image, {size: 'thumbnail'}) }}
+                                                     </div>
+                                                 {% endfor %}
+                                             </div>
                                         {% else %}
                                             <div class="cart-detail__item__image">
                                                 {{ image(cartItem.product.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}
