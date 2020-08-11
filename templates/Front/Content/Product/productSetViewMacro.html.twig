@@ -22,7 +22,7 @@
                                     <a href="{{ productView.action.detailUrl }}" class="list-products-set__item">
                                         {% if groupItem.amount > 1 %}
                                             <div class="list-tags list-tags--secondary list-tags--sets-slider">
-                                                <div class="list-tags__tag">{{ groupItem.amount ~ '×' }}</div>
+                                                <div class="list-tags__tag">{{ groupItem.amount }} {{ 'ks'|trans }}</div>
                                             </div>
                                         {% endif %}
                                         <div class="list-products-set__item__image">

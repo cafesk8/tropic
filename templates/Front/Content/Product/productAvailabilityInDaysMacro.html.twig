@@ -1,0 +1,11 @@
+{% macro productAvailabilityInDays(deliveryDays) %}
+    <span class="in-availability__date in-availability__date--available-in-days">
+        {% if deliveryDays == 1 %}
+            {{ 'Dostupnost %days% den'|trans({ '%days%': deliveryDays }) }}
+        {% elseif deliveryDays > 1 and deliveryDays < 5 %}
+            {{ 'Dostupnost %days% dny'|trans({ '%days%': deliveryDays }) }}
+        {% else %}
+            {{ 'Dostupnost %days% dní'|trans({ '%days%': deliveryDays }) }}
+        {% endif %}
+    </span>
+{% endmacro %}

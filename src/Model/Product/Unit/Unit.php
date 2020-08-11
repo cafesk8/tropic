@@ -12,7 +12,6 @@ use Shopsys\FrameworkBundle\Model\Product\Unit\UnitData;
  * @ORM\Table(name="units")
  * @ORM\Entity
  * @method setTranslations(\App\Model\Product\Unit\UnitData $unitData)
- * @method edit(\App\Model\Product\Unit\UnitData $unitData)
  */
 class Unit extends BaseUnit
 {
@@ -38,5 +37,14 @@ class Unit extends BaseUnit
     {
         $this->pohodaName = $unitData->pohodaName;
         parent::__construct($unitData);
+    }
+
+    /**
+     * @param \App\Model\Product\Unit\UnitData $unitData
+     */
+    public function edit(UnitData $unitData)
+    {
+        parent::edit($unitData);
+        $this->pohodaName = $unitData->pohodaName;
     }
 }

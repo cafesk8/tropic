@@ -130,11 +130,15 @@ class TransportAndPaymentFormType extends AbstractType
         $showEmailTransportInCart = $this->cartFacade->showEmailTransportInCart();
 
         $oversizedTransportRequired = $this->cartFacade->isOversizedTransportRequired();
+        $bulkyTransportRequired = $this->cartFacade->isBulkyTransportRequired();
+
         $transports = $this->transportFacade->getVisibleByDomainIdAndCountryAndTransportEmailType(
             $options['domain_id'],
             $payments,
             $country,
-            $showEmailTransportInCart
+            $showEmailTransportInCart,
+            $oversizedTransportRequired,
+            $bulkyTransportRequired,
         );
 
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($options['domain_id']);

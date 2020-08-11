@@ -161,6 +161,7 @@ class ProductImportFacade
         $this->logger->addInfo('Produkt vytvořen', [
             'pohodaId' => $createdProduct->getPohodaId(),
             'productId' => $createdProduct->getId(),
+            'catnum' => $createdProduct->getCatnum(),
         ]);
 
         return $createdProduct->getPohodaId();
@@ -190,6 +191,7 @@ class ProductImportFacade
         $this->logger->addInfo('Produkt upraven', [
             'pohodaId' => $editedProduct->getPohodaId(),
             'productId' => $editedProduct->getId(),
+            'catnum' => $editedProduct->getCatnum(),
         ]);
 
         return $editedProduct->getPohodaId();

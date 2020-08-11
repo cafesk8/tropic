@@ -1,10 +1,11 @@
 {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
+{% import 'Front/Content/Product/productAvailabilityInDaysMacro.html.twig' as availabilityInDays %}
 {% if productView.action.isMainVariant %}
     {{ 'Dostupnost dle varianty'|trans }}
 {% elseif productView.realSaleStocksQuantity > 0 %}
     {{ saleStockQuantity.showInfo(productView.realSaleStocksQuantity, productView.unitName) }}
 {% elseif productView.isAvailableInDays %}
-    <span class="in-availability__date in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
+    {{ availabilityInDays.productAvailabilityInDays(productView.deliveryDays) }}
 {% else %}
     {{ productView.availability }}
 {% endif %}

@@ -22,9 +22,6 @@
                         {{ _self.filterRow('Flags'|trans, flag.name, filterForm.flags.vars.id ~ '_' ~ flag.id) }}
                     {% endfor %}
                 {% endif %}
-                {% if filterForm.inStock.vars.data %}
-                    {{ _self.filterRow('Skladovost'|trans, 'Products in stock only'|trans, filterForm.inStock.vars.id) }}
-                {% endif %}
                 {% if filterForm.parameters.vars.data|length > 0 %}
                     {% for parameterFilterData in filterForm.parameters.vars.data %}
                         {% if parameterFilterData.values|length > 0 %}

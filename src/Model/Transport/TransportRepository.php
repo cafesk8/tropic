@@ -59,10 +59,16 @@ class TransportRepository extends BaseTransportRepository
     /**
      * @param int $domainId
      * @param bool $showEmailTransportInCart
+     * @param bool $oversizedTransportAllowed
+     * @param bool $bulkyTransportAllowed
      * @return \App\Model\Transport\Transport[]
      */
-    public function getAllByDomainIdAndTransportEmailType(int $domainId, bool $showEmailTransportInCart)
-    {
+    public function getAllByDomainIdAndTransportEmailType(
+        int $domainId,
+        bool $showEmailTransportInCart,
+        bool $oversizedTransportAllowed,
+        bool $bulkyTransportAllowed
+    ): array {
         $queryBuilder = $this->getQueryBuilderForAll()
             ->join(TransportDomain::class, 'td', Join::WITH, 't.id = td.transport AND td.domainId = :domainId')
             ->setParameter('domainId', $domainId);
@@ -70,6 +76,14 @@ class TransportRepository extends BaseTransportRepository
         if ($showEmailTransportInCart === false) {
             $queryBuilder->andWhere('t.transportType != :transportEmailType');
             $queryBuilder->setParameter('transportEmailType', Transport::TYPE_EMAIL);
+        }
+
+        if ($oversizedTransportAllowed) {
+            $queryBuilder->andWhere('t.oversizedAllowed = true');
+        }
+
+        if ($bulkyTransportAllowed) {
+            $queryBuilder->andWhere('t.bulkyAllowed = true');
         }
 
         return $queryBuilder->getQuery()->getResult();

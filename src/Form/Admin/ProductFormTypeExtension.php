@@ -786,7 +786,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                     new Constraints\File([
                         'mimeTypes' => $this->getAllowedFileMimeTypes(),
                         'mimeTypesMessage' => 'Soubor může být pouze ve formátu PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP',
-                        'maxSize' => '30M',
+                        'maxSize' => '45M',
                         'maxSizeMessage' => 'Velikost souboru je příliš velká: ({{ size }} {{ suffix }}). '
                             . 'Maximální velikost souboru je {{ limit }} {{ suffix }}.',
                     ]),

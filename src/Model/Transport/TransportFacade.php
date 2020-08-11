@@ -168,12 +168,20 @@ class TransportFacade extends BaseTransportFacade
      * @param \App\Model\Payment\Payment[] $visiblePaymentsOnDomain
      * @param \App\Model\Country\Country|null $country
      * @param bool $showEmailTransportInCart
+     * @param bool $oversizedTransportRequired
+     * @param bool $bulkyTransportRequired
      * @return \App\Model\Transport\Transport[]
      */
-    public function getVisibleByDomainIdAndCountryAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, ?Country $country, bool $showEmailTransportInCart)
-    {
+    public function getVisibleByDomainIdAndCountryAndTransportEmailType(
+        int $domainId,
+        array $visiblePaymentsOnDomain,
+        ?Country $country,
+        bool $showEmailTransportInCart,
+        bool $oversizedTransportRequired,
+        bool $bulkyTransportRequired
+    ): array {
         /** @var \App\Model\Transport\Transport[] $visibleTransports */
-        $visibleTransports = $this->getVisibleByDomainIdAndTransportEmailType($domainId, $visiblePaymentsOnDomain, $showEmailTransportInCart);
+        $visibleTransports = $this->getVisibleByDomainIdAndTransportEmailType($domainId, $visiblePaymentsOnDomain, $showEmailTransportInCart, $oversizedTransportRequired, $bulkyTransportRequired);
 
         if ($country === null) {
             return $visibleTransports;
@@ -193,11 +201,18 @@ class TransportFacade extends BaseTransportFacade
      * @param int $domainId
      * @param \App\Model\Payment\Payment[] $visiblePaymentsOnDomain
      * @param bool $showEmailTransportInCart
+     * @param bool $oversizedTransportRequired
+     * @param bool $bulkyTransportRequired
      * @return \App\Model\Transport\Transport[]
      */
-    private function getVisibleByDomainIdAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, bool $showEmailTransportInCart)
-    {
-        $transports = $this->transportRepository->getAllByDomainIdAndTransportEmailType($domainId, $showEmailTransportInCart);
+    private function getVisibleByDomainIdAndTransportEmailType(
+        int $domainId,
+        array $visiblePaymentsOnDomain,
+        bool $showEmailTransportInCart,
+        bool $oversizedTransportRequired,
+        bool $bulkyTransportRequired
+    ): array {
+        $transports = $this->transportRepository->getAllByDomainIdAndTransportEmailType($domainId, $showEmailTransportInCart, $oversizedTransportRequired, $bulkyTransportRequired);
 
         return $this->transportVisibilityCalculation->filterVisible($transports, $visiblePaymentsOnDomain, $domainId);
     }
