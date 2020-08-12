@@ -2223,8 +2223,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
             $this->addParameterTranslations($parameterTranslations, t('Screen size', [], 'dataFixtures', $locale), t('36"', [], 'dataFixtures', $locale), $locale, $i);
             $this->addParameterTranslations($parameterTranslations, t('Technology', [], 'dataFixtures', $locale), t('LED', [], 'dataFixtures', $locale), $locale, $i);
             $this->addParameterTranslations($parameterTranslations, t('Resolution', [], 'dataFixtures', $locale), t('1366×768 (HD Ready)', [], 'dataFixtures', $locale), $locale, $i);
-            $this->addParameterTranslations($parameterTranslations, t('USB', [], 'dataFixtures', $locale), t('Yes', [], 'dataFixtures', $locale), $locale, $i);
-            $this->addParameterTranslations($parameterTranslations, t('HDMI', [], 'dataFixtures', $locale), t('No', [], 'dataFixtures', $locale), $locale, $i);
         }
 
         $this->setParametersByTranslations($productData, $parameterTranslations);
@@ -2266,8 +2264,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
             $this->addParameterTranslations($parameterTranslations, t('Screen size', [], 'dataFixtures', $locale), t('54"', [], 'dataFixtures', $locale), $locale, $i);
             $this->addParameterTranslations($parameterTranslations, t('Technology', [], 'dataFixtures', $locale), t('LED', [], 'dataFixtures', $locale), $locale, $i);
             $this->addParameterTranslations($parameterTranslations, t('Resolution', [], 'dataFixtures', $locale), t('1366×768 (HD Ready)', [], 'dataFixtures', $locale), $locale, $i);
-            $this->addParameterTranslations($parameterTranslations, t('USB', [], 'dataFixtures', $locale), t('Yes', [], 'dataFixtures', $locale), $locale, $i);
-            $this->addParameterTranslations($parameterTranslations, t('HDMI', [], 'dataFixtures', $locale), t('No', [], 'dataFixtures', $locale), $locale, $i);
         }
 
         $this->setParametersByTranslations($productData, $parameterTranslations);
@@ -2811,12 +2807,20 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->partno = '32PFL4308';
         $productData->ean = '8845781243205';
 
+        $parameterTranslations = [];
+
         foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
             $locale = $domain->getLocale();
             $productData->name[$locale] = t('Philips 32PFL4308', [], 'dataFixtures', $locale);
             $productData->descriptions[$domain->getId()] = t('TV LED, 100Hz, diagonal 80cm 100Hz, Full HD 1920 x 1080, DVB-T / C, 2x HDMI, USB, CI +, VGA, SCART, speakers 16W, energy. Class A + ', [], 'dataFixtures', $domain->getLocale());
             $productData->shortDescriptions[$domain->getId()] = t('TV LED, 100Hz, diagonal 80cm 100Hz, Full HD 1920 x 1080, DVB-T / C, 2x HDMI, USB, CI +, VGA, SCART, speakers 16W, energy. Class A + ', [], 'dataFixtures', $domain->getLocale());
+
+            $i = 0;
+            $this->addParameterTranslations($parameterTranslations, t('Technology', [], 'dataFixtures', $locale), t('OLED', [], 'dataFixtures', $locale), $locale, $i);
+            $this->addParameterTranslations($parameterTranslations, t('USB', [], 'dataFixtures', $locale), t('Yes', [], 'dataFixtures', $locale), $locale, $i);
+            $this->addParameterTranslations($parameterTranslations, t('HDMI', [], 'dataFixtures', $locale), t('Yes', [], 'dataFixtures', $locale), $locale, $i);
         }
+        $this->setParametersByTranslations($productData, $parameterTranslations);
 
         $this->setPriceForAllPricingGroups($productData, '9173.5');
 
