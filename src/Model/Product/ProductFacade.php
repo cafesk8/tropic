@@ -40,6 +40,7 @@ use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation;
@@ -758,9 +759,42 @@ class ProductFacade extends BaseProductFacade
     /**
      * @inheritDoc
      */
-    public function saveParameters(BaseProduct $product, array $productParameterValuesData)
+    protected function saveParameters(BaseProduct $product, array $productParameterValuesData)
     {
         parent::saveParameters($product, $productParameterValuesData);
+        if ($product->isMainVariant()) {
+            foreach ($product->getVariants() as $variant) {
+                $mergedProductParameterValuesData = $this->mergeMainVariantAndVariantProductParameterValuesData($productParameterValuesData, $variant);
+                $this->saveParameters($variant, $mergedProductParameterValuesData);
+            }
+        }
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[] $mainVariantProductParameterValuesData
+     * @param \App\Model\Product\Product $variant
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
+     */
+    private function mergeMainVariantAndVariantProductParameterValuesData(
+        array $mainVariantProductParameterValuesData,
+        Product $variant
+    ): array {
+        $variantData = $this->productDataFactory->createFromProduct($variant);
+        $mergedProductParameterValuesData = $variantData->parameters;
+        foreach ($mainVariantProductParameterValuesData as $mainVariantProductParameterValueData) {
+            $variantAlreadyHasGivenParameter = false;
+            foreach ($variantData->parameters as $variantProductParameterData) {
+                if ($mainVariantProductParameterValueData->parameter === $variantProductParameterData->parameter) {
+                    $variantAlreadyHasGivenParameter = true;
+                    break;
+                }
+            }
+            if ($variantAlreadyHasGivenParameter === false) {
+                $mergedProductParameterValuesData[] = $mainVariantProductParameterValueData;
+            }
+        }
+
+        return $mergedProductParameterValuesData;
     }
 
     /**
