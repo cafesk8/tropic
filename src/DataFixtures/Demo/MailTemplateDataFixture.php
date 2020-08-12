@@ -142,9 +142,9 @@ class MailTemplateDataFixture extends AbstractReferenceFixture
             $mailTemplateData->subject = t('Dárkový poukaz', [], 'dataFixtures', $locale);
             $mailTemplateData->body = t('Dobrý den,<br /><br />
             zakoupil/a jste dárkový poukaz s kódem 
-            <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CODE . '</b> v hodnotě 
-            <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALUE . ' ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CURRENCY . '</b>. 
-            Tento poukaz však bude aktivován až po obdržení platby za objednávku ' . OrderGiftCertificateMail::VARIABLE_ORDER_NUMBER . ', 
+            <b>{gift_certificate_code}</b> v hodnotě 
+            <b>{gift_certificate_value} {gift_certificate_currency}</b>. 
+            Tento poukaz však bude aktivován až po obdržení platby za objednávku {order_number}, 
             o čemž vás budeme informovat dalším emailem.', [], 'dataFixtures', $locale);
 
             $this->createMailTemplate($manager, OrderGiftCertificateMail::MAIL_TEMPLATE_DEFAULT_NAME, $mailTemplateData, $domainId);
@@ -152,16 +152,16 @@ class MailTemplateDataFixture extends AbstractReferenceFixture
             $mailTemplateData->subject = t('Dárkový poukaz - aktivován', [], 'dataFixtures', $locale);
             $mailTemplateData->body = t('Dobrý den,<br /><br />
             váš dárkový poukaz s kódem 
-            <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CODE . '</b> v hodnotě 
-            <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALUE . ' ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CURRENCY . '</b> byl právě aktivován. 
-            Certifikát je platný do ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL . '. 
+            <b>{gift_certificate_code}</b> v hodnotě 
+            <b>{gift_certificate_value} {gift_certificate_currency}</b> byl právě aktivován. 
+            Certifikát je platný do {gift_certificate_valid_until}. 
             Děkujeme za váš nákup.', [], 'dataFixtures', $locale);
 
             $this->createMailTemplate($manager, OrderGiftCertificateMail::MAIL_TEMPLATE_ACTIVATED_NAME, $mailTemplateData, $domainId);
 
             $mailTemplateData->subject = t('Hlídač ceny a dostupnosti', [], 'dataFixtures', $locale);
             $mailTemplateData->body = t('Dobrý den,<br /><br />
-            produkt <a href="' . WatchDogMail::VARIABLE_PRODUCT_URL . '">' . WatchDogMail::VARIABLE_PRODUCT_NAME . '</a>, 
+            produkt <a href="{product_url}">{product_name}</a>, 
             který jste se rozhodli sledovat, je nyní k dispozici za vámi požadovanou cenu.<br /><br />
             S pozdravem<br />
             tým Tropic Fishing', [], 'dataFixtures', $locale);

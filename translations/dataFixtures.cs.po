@@ -4,11 +4,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs\n"
 
+msgid "%locale% perex lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus felis nisi, tincidunt sollicitudin augue eu."
+msgstr ""
+
 msgid "(Mon - Sat: 9 - 10 a.m. to 8 - 10 p.m.)"
 msgstr "(po-pá, 10:00 - 16:00)"
 
+msgid "(Po - Pá: 8:00 - 16:00)"
+msgstr ""
+
 msgid "+1-234-567-8989"
 msgstr "+420123456789"
+
+msgid "+420 595 177 177"
+msgstr ""
 
 msgid "1 kg"
 msgstr "1 kg"
@@ -103,6 +112,9 @@ msgstr "250 kWh/rok"
 msgid "255 x 255 x 15"
 msgstr "255 x 255 x 15"
 
+msgid "27 palců Philips"
+msgstr ""
+
 msgid "27\""
 msgstr "27\""
 
@@ -147,6 +159,12 @@ msgstr "320 x 300 x 10 mm"
 
 msgid "32” Hyundai 32PFL4400"
 msgstr "Hyundai 32PFL4400"
+
+msgid "36 palců Hyundai"
+msgstr ""
+
+msgid "36 palců Philips"
+msgstr ""
 
 msgid "36\""
 msgstr "36\""
@@ -226,6 +244,9 @@ msgstr "50"
 msgid "50 g"
 msgstr "50 g"
 
+msgid "51,5 palců Hyundai"
+msgstr ""
+
 msgid "51,5” Hyundai 22HD44D"
 msgstr "51,5” Hyundai 22HD44D"
 
@@ -249,6 +270,9 @@ msgstr "580 g"
 
 msgid "5“"
 msgstr "5“"
+
+msgid "60 palců Hyundai"
+msgstr ""
 
 msgid "60\""
 msgstr "60\""
@@ -276,6 +300,18 @@ msgstr "9 Mpix"
 
 msgid "<b>You have chosen payment by credit card. Please finish it in two business days.</b>"
 msgstr "<b>Zvolili jste platbu kreditní kartou. Prosím proveďte ji do dvou pracovních dnů.</b>"
+
+msgid "<b>Zvolili jste platbu Cofidis, budete přesměrováni na platební bránu. Po dokončení žádosti prosím vyčkejte. V nejbližší možné době Vás budeme kontaktovat ohledně dalšího postupu ve splátkovém prodeji.</b>"
+msgstr ""
+
+msgid "<b>Zvolili jste platbu GoPay, bude Vám zobrazena platební brána.</b>"
+msgstr ""
+
+msgid "<b>Zvolili jste platbu PayPal, budete přesměrováni na platební bránu.</b>"
+msgstr ""
+
+msgid "<b>Zvolili jste platbu kreditní kartou. Prosím proveďte ji do dvou pracovních dnů.</b>"
+msgstr ""
 
 msgid "<h2> Cookbook </h2> <br /> <br /> <p> What can be cooked in a steam oven? <br /> Using a steamer Concept is surprisingly versatile. It can be used to prepare appetizers, soups, meat, fish, vegetables, vegetarian dishes, dumplings, rice, fruit and desserts. <br /> 75 pages of cookbooks Concept - cook healthy steamed - contains recipes with practical procedures. Each recipe includes: </p> <br /> <br /> <p> The list of ingredients </p> <br /> <p> Method </p> <br /> <p> How many people </p > <br /> <p> Preparation time </p> <br /> <p> The degree of difficulty </p> <br /> <p> + time + temperature </p> <br /> <br /> From under the lids give you some tips - Asparagus with tuna sauce, salmon in vermouth sauce, soup minestrone, chicken mint surprise Cabbage leaves stuffed with minced meat, grilled chop with vegetables, potatoes baked with blue cheese, pear with chocolate sauce, roasted mandelimi and ice cream, etc."
 msgstr "<h2>Kuchařka</h2><br /><p>Co vše lze vařit v parní troubě?<br />Použití parní trouby Concept  je překvapivě všestranné. Lze v ní připravit předkrmy, polévky, maso, ryby, zeleninu, vegetariánská jídla, knedlíky, rýži, ovoce i dezerty.<br />75 stran kuchařky Concept – Vaříme zdravě, vaříme v páře - obsahuje recepty s praktickými postupy. Každý recept obsahuje:</p><br /><br /><p>Seznam ingrediencí</p><br />Postup<br /><p>Pro kolik osob</p><br /><p>Doba přípravy</p><br /><p>Stupeň obtížnosti</p><br /><p> Funkce + doba + teplota</p><br /><ul><li>Z pod pokličky prozradíme pár tipů – Chřest s tuňákovou omáčkou, Losos ve vermutové omáčce, Polévka minestrone, Kuřecí mátové překvapení, Zelné listy plněné mletým masem, Grilovaná kotleta se zeleninou, Brambory zapékané s nivou, Hruška s čokoládovou omáčkou, praženými mandelimi a zmrzlinou atd.</li></ul><br />"
@@ -316,6 +352,9 @@ msgstr "DeLonghi ECAM 44.660 B Luxusní plnoautomatický kávovar Eletta Plus v 
 msgid "<h2>GENIUS SP-M120 black</h2><p align=\"justify\"> Sleek and compact stereo speakers in combination of black and metallic surface. Speakers provide basic computer sound system with an output of 2 W RMS. On the front is virtually placed in a large volume control, but not forgotten even the popular headphone jack. <br><strong> Specifications: <br> Performance: <br></strong> 2 x 1 W RMS <br><strong> Frequency Range: </strong> 100 Hz - 20KHz <br><strong> Signal/noise ratio: </strong> 75 db <br><strong> Dimensions: </strong> 50 x 90 mm </p>"
 msgstr "Jednopásmové stereo reproduktory SP-M120 s celkovým hudebním výkonem 2 W, černým lesklým povrchem a elegantním kovovým krytem. Přední panel obsahuje 2 ovládací prvky (ovládání hlasitosti, zapnutí/vypnutí) a výstup pro sluchátka."
 
+msgid "<h2>GENIUS SP-M120 black</h2><p> Sleek and compact stereo speakers in combination of black and metallic surface. Speakers provide basic computer sound system with an output of 2 W RMS. On the front is virtually placed in a large volume control, but not forgotten even the popular headphone jack. <br><strong> Specifications: <br> Performance: <br></strong> 2 x 1 W RMS <br><strong> Frequency Range: </strong> 100 Hz - 20KHz <br><strong> Signal/noise ratio: </strong> 75 db <br><strong> Dimensions: </strong> 50 x 90 mm </p>"
+msgstr ""
+
 msgid "<h2>GIGABYTE GK-KM7580 Black</h2>Quality set keyboard and optical mouse from Gigabyte. Both components are color-matched to the sleek glossy black color. The keyboard has 15 multimedia keys for quick access to the Internet, email and other applications. The multimedia keys also used for various tasks (volume control, ...). Optical mouse has a sensor with a resolution of 500 to 1000 DPI resolution can be switched. Mouse fits both the left and the right hand. Wireless communication provides a miniature USB receiver for keyboard and mouse. This set will contrast nicely on any desk. <br><br><strong> Specifications: </strong> <br><br><strong> Multimedia keys: </strong><br> 15 hotkeys <br><br><strong> Interface: </strong><br> USB receiver <br><br><strong> Communication: </strong><br> wireless, 2.4 GHz band <br><br><strong> Power: </strong><br> Keyboard: 2x AAA <br> Mouse: 2x AAA"
 msgstr "klávesnice s myší, multimediální, bezdrátová rádiová 2.4GHz, nano přijímač na USB, 15 multimediálních kláves, dosah až 5m, napájení klávesnice a myši 4x AAA, hmotnost 518 a 60 gramů, klávesnice obsahuje české znaky"
 
@@ -348,6 +387,9 @@ msgstr "tiskárna samolepících štítků, ruční, rychlost tisku 20 mm/s, kl�
 
 msgid "<p> It is safe for you to your loved ones as important as us? In that case, you will appreciate with hob SDV-3460 feature residual heat indicators - H that you and your loved ones will protect against nasty burns. The residual heat indicator signals a residual temperature of the cooking zone even after power off. </p><br /> <h2> Reasons to opt just for built-in ceramic plate Concept SDV-3460: </h2><br /> <ol> <li> The built-in ceramic hob SDV-3460 you will be astonished <strong> handy touch controls </strong>. </li><li> Special radiators cooking zones <strong> HI-LIGHT </strong> are able to warm up to a maximum of a few seconds. </li><li> <strong> The residual heat indicator H </strong> - protects you against nasty burns. Indicates residual temperature of the cooking zone even after power off. </li><li> If you want to directly select the time that you want to cook, be sure to take the opportunity of the <strong> off-delay </strong>. </li></ol><br /> <h2> Specifications: </h2><br /> <ul> <li> Height: 60 mm </li> <li> Width: 590 mm </li><li> Depth: 520 mm </li><li> Glass ceramics </li><li> Accessories cleaning scraper </li><li> Touch control </li><li> The residual heat indicator - H </li><li> Without frame, angled edges Grounded </li><li> 4 cooking zones </li><li> Auto-off function - EXTRA SECURE </li><li> The off-delay </li><li> Beep </li><li> Control Panel front center </li><li> Child lock </li><li> The ON state </li></ul><br /> <h2> Details: </h2><br /> <ul> <li> Dimensions for installation (HxWxD): 50 x 560 x 490 mm </li><li> Main switch </li><li> <strong> Left Front plate: </strong> </li><li> The diameter of the front left plates: 165x265 mm </li><li> Input left front plate: 1100/2000 W </li><li> <strong> Rear Left plate: </strong> Circular HI-LIGHT </li><li> The diameter of the rear left of the plate 165 mm </li><li> Input left rear plate: 1200 W </li><li> <strong> The right rear plate: </strong> Circular HI-LIGHT </li><li> The diameter of the rear right plate: 200mm </li><li> wattage right rear plate: 1800 W </li><li> <strong> The front right plate: </strong> Circular HI-lihgt </li><li> The diameter of the front right plate: 165 mm </li><li> Input right front plate: 1200 W </li><li> Max.příkon-el .: 5700-6800 W </li><li> Weight: 10 kg </li><li> Voltage: 220-240 / 400 V 2N ~ 50/60 Hz </li> </ul>"
 msgstr "<p>Je pro Vás bezpečí Vašich blízkých stejně důležité jako pro nás? V tom případě uvítáte u varné desky SDV-3460 funkci ukazatele zbytkového tepla - H, která Vás a Vaše blízké uchrání před nepříjemným popálením. Ukazatel zbytkového tepla signalizuje zbytkovou teplotu varné zóny i po jejím vypnutí.</p><br /><h2>Důvody proč se rozhodnout právě pro vestavnou sklokeramickou desku Concept SDV-3460:</h2><br /><ol><li>Tato vestavná sklokeramická deska SDV-3460 Vás jistě zaujme <strong>praktickým dotykovým ovládáním</strong>.</li><li>Speciální topná tělesa varných zón <strong>HI-LIGHT</strong> se dokáží rozehřát na maximum během několika málo sekund.</li><li><strong>Ukazatel zbytkového tepla –H</strong>- Vás ochrání před nepříjemným popálením. Signalizuje zbytkovou teplotu varné zóny i po jejím vypnutí.</li><li>Jestliže si chcete přímo navolit čas, po který chcete vařit, určitě využijete možnosti funkce <strong>zpožděného vypnutí</strong>.</li></ol><br /><h2>Technické parametry:</h2><br /><ul><li>Výška: 60 mm</li><li>Šířka: 590 mm</li><li>Hloubka: 520 mm</li><li>Sklokeramika</li><li>V příslušenství čistící škrabka</li><li>Dotykové ovládání</li><li>Ukazatel zbytkového tepla - H</li><li>Bez rámu, šikmé zabroušené hrany</li><li>4 varné zóny</li><li>Funkce automatického vypnutí - EXTRA BEZPEČNÁ</li><li>Funkce zpožděného vypnutí</li><li>Akustický signál</li><li>Ovládací panel vpředu uprostřed</li><li>Dětská pojistka</li><li>Ukazatel zapnutého stavu</li></ul><br /><h2>Detailní popis:</h2><br /><ul><li>Rozměry pro vestavbu (vxšxh): 50 x 560 x 490 mm</li><li>Hlavní vypínač</li><li>Průměr přední levé plotny: 165x265 mm</li><li>Příkon přední levé plotny: 1100/2000 W</li><li><strong>Zadní levá plotna:</strong> kruhová HI-LIGHT</li><li>Průměr zadní levé plotny: 165 mm</li><li>Příkon zadní levé plotny: 1200 W</li><li><strong>Zadní pravá plotna:</strong> kruhová HI-LIGHT</li><li>Průměr zadní pravé plotny: 200mm</li><li>Příkon zadní pravé plotny: 1800 W</li><li><strong>Přední pravá plotna:</strong> kruhová HI-LIHGT</li><li>Průměr přední pravé plotny: 165 mm</li><li>Příkon přední pravé plotny: 1200 W</li><li>Max.příkon-el.: 5700 - 6800 W</li><li>Hmotnost: 10 kg</li><li>Napětí: 220-240/400 V 2N ~ 50/60 Hz</li></ul>"
+
+msgid "<p> Objednávka číslo {number} byla odeslána, děkujeme za Váš nákup. Budeme Vás kontaktovat o dalším průběhu vyřizování. <br /><br /> Uschovejte si permanentní <a href=\"{order_detail_url}\">odkaz na detail objednávky</a>. <br /> {transport_instructions} <br /> {payment_instructions} <br /> </p>"
+msgstr ""
 
 msgid "<p> Order number {number} has been sent, thank you for your purchase. We will contact you about next order status. <br /><br /> <a href=\"{order_detail_url}\">Track</a> the status of your order. <br /> {transport_instructions} <br /> {payment_instructions} <br /> </p>"
 msgstr "<p> Objednávka číslo {number} byla odeslána, děkujeme za Váš nákup. Budeme Vás kontaktovat o dalším průběhu vyřizování. <br /><br /> Uschovejte si permanentní <a href=\"{order_detail_url}\">odkaz na detail objednávky</a>. <br /> {transport_instructions} <br /> {payment_instructions} <br /> </p>"
@@ -421,6 +463,9 @@ msgstr "Aktivní"
 msgid "Active/Passive"
 msgstr "Aktivní/Pasivní"
 
+msgid "Akce"
+msgstr ""
+
 msgid "Annual energy consumption"
 msgstr "Roční spotřeba energie"
 
@@ -459,6 +504,9 @@ msgstr "Zadáním emailu níže si můžete stáhnout své osobní a jiné infor
 
 msgid "By entering an email below, you can view your personal information that we register in our online store. An email with a link will be sent to you after entering your email address, to verify your identity. Clicking on the link will take you to a page listing all the personal details we have connected to your email address."
 msgstr "Zadáním emailu níže si můžete nechat zobrazit vaše osobní údaje, která evidujeme v našem internetovém obchodu. Pro ověření vaší totožnosti vám po zadání emailové adresy bude zaslán email s odkazem.  Klikem na odkaz se dostanete na stránku s přehledem těchto osobních údajů - půjde o všechny údaje evidované k dané emailové adrese."
+
+msgid "Běžná cena"
+msgstr ""
 
 msgid "CD-R VERBATIM 210MB"
 msgstr "CD-R VERBATIM 210MB"
@@ -529,6 +577,9 @@ msgstr "Hotově"
 msgid "Cash on delivery"
 msgstr "Dobírka"
 
+msgid "Cena pro Výprodej"
+msgstr ""
+
 msgid "Circumaural"
 msgstr "Okolo uší - Circumaurální"
 
@@ -543,6 +594,9 @@ msgstr "Kávovary"
 
 msgid "Coffeemakers or coffee machines are cooking appliances used to brew coffee. While there are many different types of coffeemakers using a number of different brewing principles, in the most common devices, coffee grounds are placed in a paper or metal filter inside a funnel, which is set over a glass or ceramic coffee pot, a cooking pot in the kettle family. Cold water is poured into a separate chamber, which is than heated up to the boiling point, and directed into the funnel."
 msgstr "Kávovar je stroj určený pro výrobu kávy takovým způsobem, aby se voda nemusela vařit v oddělené nádobě. Existuje obrovské množství kávovarů, nicméně princip přípravy kávy je vždy stejný: do kovového či papírového filtru se vloží rozemletá káva. Filtr s kávou se vloží do kávovaru, kde se přes něj (většinou pod tlakem) nechá přetéct horká voda vytékající do připravené nádoby na kávu (hrnek, sklenici apod.)."
+
+msgid "Cofidis"
+msgstr ""
 
 msgid "Collection of classical Czech fairy tales."
 msgstr "Prohlížejte obrázky a vyprávějte si s dětmi příběhy veselých mužíčků, Křemílka a Vochomůrky!"
@@ -561,6 +615,9 @@ msgstr "Konektory"
 
 msgid "Construction"
 msgstr "Konstrukce"
+
+msgid "Cookies"
+msgstr ""
 
 msgid "Coupon valued to 100 Czech crowns. You can cash it at any exchange office"
 msgstr "Poukázka na 100 Kč. Můžete ji využít v libovolné směnárně."
@@ -688,11 +745,56 @@ msgstr "Velikost displeje"
 msgid "Display type"
 msgstr "Typ displeje"
 
+msgid "Do you have a question?"
+msgstr ""
+
+msgid "Dobrý den,<br /><br /> produkt <a href=\"{product_url}\">{product_name}</a>, který jste se rozhodli sledovat, je nyní k dispozici za vámi požadovanou cenu.<br /><br /> S pozdravem<br /> tým Tropic Fishing"
+msgstr ""
+
+msgid "Dobrý den,<br /><br /> váš dárkový poukaz s kódem <b>{gift_certificate_code}</b> v hodnotě <b>{gift_certificate_value} {gift_certificate_currency}</b> byl právě aktivován. Certifikát je platný do {gift_certificate_valid_until}. Děkujeme za váš nákup."
+msgstr ""
+
+msgid "Dobrý den,<br /><br /> zakoupil/a jste dárkový poukaz s kódem <b>{gift_certificate_code}</b> v hodnotě <b>{gift_certificate_value} {gift_certificate_currency}</b>. Tento poukaz však bude aktivován až po obdržení platby za objednávku {order_number}, o čemž vás budeme informovat dalším emailem."
+msgstr ""
+
+msgid "Dobrý den,<br /><br />Vaše objednávka byla úspěšně vytvořena.<br /><br />O dalších stavech objednávky Vás budeme informovat.<br />Čislo objednávky: {number} <br />Datum a čas vytvoření: {date} <br />URL adresa eshopu: {url} <br />URL adresa na detail objednávky: {order_detail_url} <br />Doprava: {transport} <br />Číslo pro sledování zásilky: {tracking_number} <br />URL pro sledování zásilky: {tracking_url} <br />Platba: {payment} <br />Celková cena s DPH: {total_price} <br />Fakturační adresa:<br /> {billing_address} <br />Doručovací adresa: {delivery_address} <br />Poznámka: {note} <br />Produkty: {products} <br />{transport_instructions} <br />{payment_instructions}"
+msgstr ""
+
+msgid "Dobrý den,<br /><br />produkt <a href=\"{product_url}\">{product_name}</a>, který jste se rozhodli sledovat, je nyní k dispozici za vámi požadovanou cenu.<br /><br />S pozdravem<br />tým Tropic Fishing"
+msgstr ""
+
+msgid "Dobrý den,<br /><br />váš dárkový poukaz s kódem <b>{gift_certificate_code}</b> v hodnotě <b>{gift_certificate_value} {gift_certificate_currency}</b> byl právě aktivován. Certifikát je platný do {gift_certificate_valid_until}. Děkujeme za váš nákup."
+msgstr ""
+
+msgid "Dobrý den,<br /><br />zakoupil/a jste dárkový poukaz s kódem <b>{gift_certificate_code}</b> v hodnotě <b>{gift_certificate_value} {gift_certificate_currency}</b>. Tento poukaz však bude aktivován až po obdržení platby za objednávku {order_number}, o čemž vás budeme informovat dalším emailem."
+msgstr ""
+
+msgid "Dobírka"
+msgstr ""
+
 msgid "Done"
 msgstr "Vyřízena"
 
+msgid "Donec at dolor mi. Nullam ornare, massa in cursus imperdiet, felis nisl auctor ante, vel aliquet tortor lacus sit amet ipsum. Proin ultrices euismod elementum. Integer sodales hendrerit tortor, vel semper turpis interdum eu. Phasellus quam tortor, feugiat vel condimentum vel, tristique et ipsum. Duis blandit lectus in odio cursus rutrum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam pulvinar massa at imperdiet venenatis. Maecenas convallis lobortis quam in fringilla. Mauris gravida turpis eget sapien imperdiet pulvinar. Nunc velit urna, fringilla nec est sit amet, accumsan varius nunc. Morbi sed tincidunt diam, sit amet laoreet nisl. Nulla tempus id lectus non lacinia.\\n\\nVestibulum interdum adipiscing iaculis. Nunc posuere pharetra velit. Nunc ac ante non massa scelerisque blandit sit amet vel velit. Integer in massa sed augue pulvinar malesuada. Pellentesque laoreet orci augue, in fermentum nisl feugiat ut. Nunc congue et nisi a interdum. Aenean mauris mi, interdum vel lacus et, placerat gravida augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed sagittis ipsum et consequat euismod. Praesent a ipsum dapibus, aliquet justo a, consectetur magna. Phasellus imperdiet tempor laoreet. Sed a accumsan lacus, accumsan faucibus dolor. Praesent euismod justo quis ipsum aliquam suscipit. Sed quis blandit urna."
+msgstr ""
+
+msgid "Doporučujeme"
+msgstr ""
+
+msgid "Doprodej"
+msgstr ""
+
+msgid "Dárkový poukaz"
+msgstr ""
+
+msgid "Dárkový poukaz - aktivován"
+msgstr ""
+
 msgid "DéLonghi ECAM 44.660.B. Start the morning with your favorite drink with the DeLonghi ECAM 44.660.B Eletta automatic coffee maker"
 msgstr "DeLonghi ECAM 44.660 B Luxusní plnoautomatický kávovar Eletta Plus v černé barvě s nerezovými částmi,1450 W"
+
+msgid "Děkujeme za objednávku č. {number} ze dne {date}"
+msgstr ""
 
 msgid "Ear Coupling"
 msgstr "Uložení - Ear coupling"
@@ -705,6 +807,9 @@ msgstr "Multifunkční tiskárna CANON PIXMA MG2450, A4, print/scan/copy, USB, V
 
 msgid "Electronics"
 msgstr "Elektro"
+
+msgid "Elektro"
+msgstr ""
 
 msgid "Element arrangement"
 msgstr "Uspořádání prvků"
@@ -721,8 +826,17 @@ msgstr "Enter"
 msgid "Ergonomics"
 msgstr "Ergonomie"
 
+msgid "Eshopová hvězda"
+msgstr ""
+
+msgid "Export osobních údajů - {domain}"
+msgstr ""
+
 msgid "Extension rod plastic TM-4610"
 msgstr "Nástavec tyčový plast TM-4610"
+
+msgid "Externí sklad"
+msgstr ""
 
 msgid "Features of modern and elegantly prepared MFPs with new wireless capabilities. Function automatic two-sided printing"
 msgstr "Stylové kompaktní multifunkční zařízení s Wi-Fi a snadným mobilním tiskem."
@@ -754,6 +868,12 @@ msgstr "Jídlo"
 msgid "Food is any substance consumed to provide nutritional support for the body. It is usually of plant or animal origin, and contains essential nutrients, such as fats, proteins, vitamins, or minerals. The substance is ingested by an organism and assimilated by the organism's cells to provide energy, maintain life, or stimulate growth."
 msgstr "Potravina je výrobek nebo látka určená pro výživu lidí a konzumovaná ústy v nezměněném nebo upraveném stavu. Potraviny se dělí na poživatiny a pochutiny. Potraviny mohou být rostlinného, živočišného nebo jiného původu."
 
+msgid "Fotoaparáty"
+msgstr ""
+
+msgid "Francie"
+msgstr ""
+
 msgid "GENIUS LuxeMate I222 is a stylish black keyboard, which at first glance invites you to use your Apple design."
 msgstr "klávesnice s myší, bezdrátová, ultratenká, nano přijímač s konektorem USB, s bezdrátovou optickou myší s turborolováním, dosah až 10m, klávesnice obsahuje české znaky"
 
@@ -783,6 +903,9 @@ msgstr "Genius repro SP-M120 černá"
 
 msgid "Glass cleaner and a glass-ceramic plates (4019786908123)"
 msgstr "Čistič skla a sklokeramických desek ( 4019786908123 )"
+
+msgid "GoPay - Platba kartou"
+msgstr ""
 
 msgid "HDMI"
 msgstr "HDMI"
@@ -826,6 +949,9 @@ msgstr "S touto jednoduchou a cenově dostupnou multifunkční tiskárnou HP Des
 msgid "High quality, elegant, soft, and yet reliably protecting brand case for your Canon digital camera CANON EOS 650D or 700D."
 msgstr "Canon EH-22L - pouzdro pro EOS 650D"
 
+msgid "Hlídač ceny a dostupnosti"
+msgstr ""
+
 msgid "Home Listening"
 msgstr "Domácí poslech"
 
@@ -834,6 +960,9 @@ msgstr "Hadice VP-9241"
 
 msgid "Hose VP-9310"
 msgstr "Hadice VP-9310"
+
+msgid "Hotově"
+msgstr ""
 
 msgid "Hyundai 22HD44D"
 msgstr "Hyundai 22HD44D"
@@ -850,17 +979,35 @@ msgstr "Informace o cookies"
 msgid "Interface"
 msgstr "Rozhraní"
 
+msgid "Interní sklad"
+msgstr ""
+
 msgid "Intuitive operation with its easy to handle even a novice in this field. Another big advantage is the use of technology burning \"on the fly\", which is spared not only your time but also the capacity of the disk, because the process does not create any storage (temporary) files on your hard disk."
 msgstr "Existují stovky programů pro vypalování, avšak vyznat se v nich není ani pro zkušeného uživatele vůbec jednoduché. Právě proto jsme pro vás s autorem českých bestsellerů připravili 2. aktualizované vydání této úspěšné publikace. S knihou získáte nejen průvodce nejrůznějším vypalováním na CD a DVD, ale všechny programy a aplikace si můžete okamžitě vyzkoušet, neboť je obsahuje přiložené DVD."
 
 msgid "JURA Impressa J9 TFT Carbon"
 msgstr "JURA Impressa J9 TFT Carbon"
 
+msgid "Jídlo"
+msgstr ""
+
 msgid "Kabel HDMI A - HDMI A M/M 2m gold-plated connectors High Speed HD"
 msgstr "Kabel HDMI A - HDMI A M/M 2m zlacene konektory High Speed HD"
 
+msgid "Kamenná prodejna v Liberci"
+msgstr ""
+
 msgid "Knife potato RM-3240/3250"
 msgstr "Nůž na bramboráky RM-3240/3250"
+
+msgid "Knihy"
+msgstr ""
+
+msgid "Kreditní kartou"
+msgstr ""
+
+msgid "Kávovary"
+msgstr ""
 
 msgid "LCD"
 msgstr "LCD"
@@ -904,11 +1051,14 @@ msgstr "JURA Impressa J9 TFT Carbon Automatický kávovar/espresso,barevný LCD"
 msgid "MIO Cyclo 100, bicycle computer, 1,8\""
 msgstr "MIO Cyclo 100, cyklopočítač na jízdní kolo, 1,8\""
 
+msgid "Magazine capacity for beans"
+msgstr "Kapacita zásobníku na zrna"
+
 msgid "Magazín"
 msgstr "Magazín"
 
-msgid "Magazine capacity for beans"
-msgstr "Kapacita zásobníku na zrna"
+msgid "Mall"
+msgstr ""
 
 msgid "Maximum size"
 msgstr "Maximální formát"
@@ -964,6 +1114,9 @@ msgstr "Mobilní telefon pochází z oficiální české distribuce, má české
 msgid "Mobile phone 4.7\" 720x1280, procesor 1,5GHz, internal memory 16GB, camera 8mpx, GPS, WiFi, Bluetooth, 3G, FM, microSD, micro USB, Android 4.0"
 msgstr "Model LG E410 Optimus L1 II zaujme uživatele elegatním vzhledem řady L style a praktickou velikostí."
 
+msgid "Mobilní telefony"
+msgstr ""
+
 msgid "Modern stereo speakers in a stylish black design, with an output of 2.3 W, suitable only for desktops and laptops, but also for CD or MP3 players."
 msgstr "Standardní sterefonní reproduktory, které jsou svou velikostí vhodné např. k notebookům."
 
@@ -993,6 +1146,30 @@ msgstr "NS-9310 Infant náhradní sáčky papírové pro VP-9310"
 
 msgid "NS-9710 Prominent replacement paper bags for VP-9711/12/13"
 msgstr "NS-9710 Prominent náhradní sáčky papírové pro VP-9711/12/13"
+
+msgid "Na dotaz"
+msgstr ""
+
+msgid "Na tento produkt se nevztahuje sleva pro registrované zákazníky"
+msgstr ""
+
+msgid "Na tento produkt se nevztahuje sleva za slevové kupóny"
+msgstr ""
+
+msgid "Na tento produkt se nevztahují žádné slevy"
+msgstr ""
+
+msgid "Nabídka potisků triček"
+msgstr ""
+
+msgid "Naše hodnoty"
+msgstr ""
+
+msgid "Nejeden filozof by mohl tvrdit, že balónky se sluncem závodí, ale fyzikové by to jistě vyvrátili"
+msgstr ""
+
+msgid "Nejprodávanější"
+msgstr ""
 
 msgid "Nepřevzato zákazníkem"
 msgstr "Nepřevzato zákazníkem"
@@ -1030,6 +1207,18 @@ msgstr "Nikon VH-520"
 msgid "No"
 msgstr "Ne"
 
+msgid "Novinka"
+msgstr ""
+
+msgid "Novinky"
+msgstr ""
+
+msgid "Nová"
+msgstr ""
+
+msgid "Nové produkty v naší nabídce"
+msgstr ""
+
 msgid "Nozzle with brush VP-4290"
 msgstr "Hubice s kartáčem VP-4290"
 
@@ -1041,6 +1230,18 @@ msgstr "Počet barev"
 
 msgid "Number of processor cores"
 msgstr "Počet jader procesoru"
+
+msgid "Nákup na splátky"
+msgstr ""
+
+msgid "Nákupní cena"
+msgstr ""
+
+msgid "Německo"
+msgstr ""
+
+msgid "O nás"
+msgstr ""
 
 msgid "OKI MC861cdxm"
 msgstr "OKI MC861cdxm"
@@ -1072,11 +1273,17 @@ msgstr "OPP-2060  Odsavač par podstavný 60 cm"
 msgid "OPV-3260 Built-in retractable hood is 60 cm"
 msgstr "OPV-3260 Vestavný odsavač výsuvný 60cm"
 
+msgid "Obchodní podmínky"
+msgstr ""
+
 msgid "On request"
 msgstr "Na dotaz"
 
 msgid "Open"
 msgstr "Otevřená"
+
+msgid "Open-source Ecommerce Framework"
+msgstr ""
 
 msgid "Optical"
 msgstr "Optická"
@@ -1092,6 +1299,9 @@ msgstr "Stav objednávky se změnil"
 
 msgid "Ordinary customer"
 msgstr "Obyčejný zákazník"
+
+msgid "Osobní převzetí"
+msgstr ""
 
 msgid "Other"
 msgstr "Pevné"
@@ -1114,6 +1324,12 @@ msgstr "POS kuchařka_parní trouba CZ"
 msgid "PPL"
 msgstr "PPL"
 
+msgid "PPL - de"
+msgstr ""
+
+msgid "PPL - fr"
+msgstr ""
+
 msgid "PRIMECOOLER PC-AD2 3D glasses"
 msgstr "PRIMECOOLER PC-AD2 3D brýle"
 
@@ -1125,6 +1341,9 @@ msgstr "Paralelní port"
 
 msgid "Partner"
 msgstr "Partner"
+
+msgid "PayPal"
+msgstr ""
 
 msgid "Perfectly cleans, treats and protects stainless steel surfaces in one step.<ul> <li> <strong> remove </strong> without smudges dust, dirt, fingerprints and grease </li><li> long-lasting protective film <strong> repellent </strong> water and prevents new settling of dirt </li><li> <strong> acts </strong> antistatically </li></ul>"
 msgstr "<p>Dokonale čistí, ošetřuje a chrání nerezové plochy v jednom pracovním kroku.</p><ul><li><strong>odstraňuje</strong> bez šmouh prach, špínu, otisky prstů a mastnotu</li><li>dlouhotrvající ochranný film <strong>odpuzující</strong> vodu a zabraňující novému usazování špíny</li><li><strong>působí</strong> antistaticky</li><li><strong>neobsahuje</strong> silikon</li></ul>"
@@ -1150,6 +1369,15 @@ msgstr "Fotografův sen. Hlavní fotoaparát s 13 megapixely a přední fotoapar
 msgid "Photographer's dream. Main camera with 13-megapixel front camera and a 5 megapixel guarantee photos in high definition on each side. Thanks to the built-in tools for editing and sharing can capture moving images in HD and combine the results to show from multiple angles. Incredible design, giant 5,5palcový display with HD resolution, two front stereo speakers, customized channels with real-time information and a quad-core processor - all combine to form one of the best smartphones in the world."
 msgstr "Fotografův sen. Hlavní fotoaparát s 13 megapixely a přední fotoaparát s 5 megapixely zaručují fotky ve vysokém rozlišení z každé strany. Díky vestavěným nástrojům pro úpravu a sdílení můžete zachytit pohyblivé obrázky v HD kvalitě a kombinovat výsledky do zobrazení z více úhlů. Neuvěřitelný design, obří 5,5palcový displej s HD rozlišením, dva přední stereo reproduktory, přizpůsobené kanály s informacemi v reálném čase a čtyřjádrový procesor – to vše dohromady tvoří jeden z nejvýhodnějších smartphonů na světě."
 
+msgid "Platba provedena u Cofidis"
+msgstr ""
+
+msgid "Platba provedena u mall.cz"
+msgstr ""
+
+msgid "Po - Pá: 9:00 - 18:00, So: 9:00 - 12:00"
+msgstr ""
+
 msgid "Pot holder, black"
 msgstr "Držák na hrnce, černý"
 
@@ -1164,6 +1392,9 @@ msgstr "Výkonná barevná inkoustová tiskárna, formát A4, kvalitní tisk fot
 
 msgid "Powerful color inkjet printer A4 size, quality photo printing, high resolution up to 9600 x 2400dpi, the rate of up to 15 st. / Min in monochrome and up to 10 st. / Min in color, duplex printing, tray for up to 125 sheets, USB 2.0, WiFi 802.11b / g / n, possibility of printing discs. Canon PIXMA iP7250 is a compact portable printer for home or office thous. This is a quality color inkjet printer up to A4 with gentle tiskem.Má stylish and compact design with a hinged upper portion serving as a feeder print media. It is intended primarily for use as a small family or a printer portable printer - especially for printing photographs. It allows users to print documents and fotografií.Je equipped with precision 1 picolitre FINE for printing with tiny particles. It allows you to achieve resolutions up to 9600 x 2400dpi. The printer has five individual ink tanks with the ChromaLife100 +. Printer can print borderless photos. Maximum print speed is 15 pages per minute in black and white or 10 in color. E.g. print borderless 10 x 15 cm photo takes about 21 seconds. The printer also offers direct disc printing and automatic two-sided tisk.Připojení to the computer is done via the USB 2.0 port or through a wireless interface, WiFi 802.11b / g / n. The printer has the dimensions 451 x 368 x 128 mm and weighs 6.6 kg. The included software for easy photo printing My Image Garden."
 msgstr "Výkonná barevná inkoustová tiskárna, formát A4, kvalitní tisk fotografií, vysoké rozlišení až 9600 x 2400dpi, rychlost až 15 st./min černobíle a až 10 st./min barevně, duplexní tisk, zásobník pro až 125 listů, rozhraní USB 2.0, WiFi 802.11b/g/n, možnost potisku disků. Canon PIXMA iP7250 je kompaktní přenosná tiskárna pro domácí nebo kancelářský tis. Jedná se o kvalitní barevnou inkoustovou tiskárnu až do formátu A4 s šetrným tiskem.Má stylový a kompaktní design s vrchní odklopnou částí, sloužící jako podavač tiskových médií. Je určena především pro použití jako malá rodinná tiskárna nebo přenosná tiskárna - a to především pro tisk fotografií. Umožňuje kvalitní tisk dokumentů i fotografií.Je vybavena precizní 1 pikolitrovou technologií FINE pro tisk s miniaturními částečkami. Ta umožňuje dosáhnout rozlišení až 9600 x 2400dpi. Tiskárna má celkem pět samostatných zásobníků inkoustu se systémem ChromaLife100+.Tiskárna dokáže tisknout bezokrajové fotografie. Maximální rychlosti tisku jsou 15 stránek za minutu černobíle, případně 10 barevně. Např. bezokrajový tisk 10 x 15cm fotografie zabere přibližně 21 sekund. Tiskárna nabídne i přímý potisk disků a automatický oboustranný tisk.Připojení k počítači se realizuje přes USB 2.0 port nebo pomocí bezdrátové rozhraní WiFi 802.11b/g/n. Tiskárna má rozměry 451 x 368 x 128mm a váží 6.6kg. Součástí balení je i software pro snadný tisk fotografií My Image Garden."
+
+msgid "Počítače & příslušenství"
+msgstr ""
 
 msgid "Practical and stylish optical mouse ideal for everyday office use.With its ergonomic shape fits perfect and is suitable for left and for right-handers."
 msgstr "Tato USB myš funguje spolehlivě na téměř libovolném povrchu a je uzpůsobená pro ovládání pravou i levou rukou."
@@ -1198,8 +1429,26 @@ msgstr "Tiskárny"
 msgid "Privacy policy"
 msgstr "Zásady ochrany osobních údajů"
 
+msgid "Pro obchodníky"
+msgstr ""
+
 msgid "Processor frequency"
 msgstr "Frekvence procesoru"
+
+msgid "Prodejna - výprodej"
+msgstr ""
+
+msgid "Prohlédněte si produkty s výprodejovými cenami"
+msgstr ""
+
+msgid "Proti slunci to vypadá, že se slunce pohybuje k západu rychleji než balónky, a možná to tak skutečně je. Nejeden filozof by mohl tvrdit, že balónky se sluncem závodí, ale fyzikové by to jistě vyvrátili. Z fyzikálního pohledu totiž balónky působí zcela nezajímavě. Nejvíc bezpochyby zaujmou děti - jedna malá holčička zrovna včera div nebrečela, že by snad balónky mohly prasknout. A co teprve ta stuha. Stuha, kterou je každý z trojice balónků uvázán, aby se nevypustil."
+msgstr ""
+
+msgid "Přehled osobních údajů - {domain}"
+msgstr ""
+
+msgid "Připravujeme"
+msgstr ""
 
 msgid "Quality digital camera with CMOS sensor with a resolution of 18 megapixels"
 msgstr "Kvalitní digitální zrcadlovka s CMOS snímačem s rozlišením 18 megapixelů"
@@ -1222,6 +1471,9 @@ msgstr "Záznam na"
 msgid "Red and green paper glasses for watching"
 msgstr "papírové brýle růžovo-zelené pro prohlížení 3D obrázků nebo sledování 3D filmů"
 
+msgid "Red seems a little smaller next to blue and green, but that's probably just an optical illusion"
+msgstr ""
+
 msgid "Reducing the diameter of 35 mm to 32 mm"
 msgstr "Redukce průměru z 35 mm na 32 mm"
 
@@ -1231,8 +1483,14 @@ msgstr "Redukce prům. OPK OPO 150/120mm"
 msgid "Reflective tape for safe movement on the road"
 msgstr "Reflexní páska pro bezpečný pohyb na cestě"
 
+msgid "Registrace byla dokončena"
+msgstr ""
+
 msgid "Registration completed"
 msgstr "Registrace byla dokončena"
+
+msgid "Registrovaný zákazník"
+msgstr ""
 
 msgid "Replacement textile bag for vacuum cleaners CONCEPT Sprinter - VP9070. Package: 1 pc"
 msgstr "Náhradní textilní sáček pro vysavače CONCEPT Sprinter - VP9070. Balení: 1 ks"
@@ -1248,6 +1506,9 @@ msgstr "Rozlišení standardní zadní kamery"
 
 msgid "Right-handed"
 msgstr "Pravoruká"
+
+msgid "Rychle, levně a spolehlivě!"
+msgstr ""
 
 msgid "SDV 3360-built ceramic plate 60 cm"
 msgstr "SDV-3360 Sklokeramická deska vestavná 60 cm"
@@ -1266,6 +1527,15 @@ msgstr "SONY DSCRX100"
 
 msgid "SONY Xperia SP C5303"
 msgstr "SONY Xperia SP C5303"
+
+msgid "Sada \"Géniů\""
+msgstr ""
+
+msgid "Sada příslušenství"
+msgstr ""
+
+msgid "Sada příslušenství k PC"
+msgstr ""
 
 msgid "Samsung Galaxy Core 2 (SM-G355) - black"
 msgstr "Samsung Galaxy Core 2 (SM-G355) - černý"
@@ -1303,8 +1573,17 @@ msgstr "Citlivost (ISO)"
 msgid "Shopping guide"
 msgstr "Jak nakupovat"
 
+msgid "Shopsys"
+msgstr ""
+
 msgid "Shopsys Framework - Title page"
 msgstr "Shopsys Framework - Titulní strana"
+
+msgid "Shopsys Framework - Titulní strana"
+msgstr ""
+
+msgid "Shopsys Framework - nejlepší řešení pro váš internetový obchod."
+msgstr ""
 
 msgid "Shopsys Framework - the best solution for your eshop."
 msgstr "Shopsys Framework - nejlepší řešení pro váš internetový obchod."
@@ -1318,14 +1597,29 @@ msgstr "myš optická, konektor USB, 1200dpi, vhodná pro notebooky"
 msgid "Simple Genius Mouse NetScroll 310 offers the most widely used functional elements of a basic ergonomics. It has an optical sensor with a resolution of 800 DPI, which can handle work on a large number of standard surfaces. There are two classic buttons and the third with the paging function wheel. Genius NetScroll 310 is equipped with modern USB interface and finds use in conserving ambidextrous or in an office environment. <br><strong> Specifications: </strong><br><strong> Supported OS: </strong><br> Microsoft Windows 7, Vista, XP, 2003, 2000, 98SE <br> Mac OS 8.6 or later"
 msgstr "myš optická, konektor USB, 1200dpi, vhodná pro notebooky"
 
+msgid "Skladem v e‑shopu"
+msgstr ""
+
+msgid "Skladové zásoby na prodejně"
+msgstr ""
+
 msgid "Sleek and compact stereo speakers in combination of black and metallic surface."
 msgstr "Jednopásmové stereo reproduktory SP-M120 s celkovým hudebním výkonem 2 W, černým lesklým povrchem a elegantním kovovým krytem."
+
+msgid "Sleva"
+msgstr ""
+
+msgid "Slevový program"
+msgstr ""
 
 msgid "Slicer Pizza ETV-2860"
 msgstr "Kráječ na pizzu ETV-2860"
 
 msgid "Slovakia"
 msgstr "Slovensko"
+
+msgid "Slovenská republika"
+msgstr ""
 
 msgid "Spare paper bags for vacuum cleaners CONCEPT Clipper 9030/31/32/33 VP and VP 9130/31/32"
 msgstr "Náhradní papírové sáčky pro vysavače CONCEPT Clipper VP 9030/31/32/33 a VP 9130/31/32"
@@ -1359,6 +1653,12 @@ msgstr "Kapesní reproduktor pro MP3 přehrávače, mobilní telefony, počíta�
 
 msgid "Speakers 2 x 3W RMS, 2.0 stereo, portable, volume control, frequency range of 150Hz-20kHz, sensitivity 80dB, 4Ohm impedance, power supply via USB, 3.5 mm audio jack, dimensions 85x85x107mm, weight 550 g"
 msgstr "Kapesní reproduktor pro MP3 přehrávače, mobilní telefony, počítače, notebooky, tablety atd. Stačí vybalit, zapojit a spustit přehrávání. S tímto reproduktorem získáte 360° zvukový zážitek na cestách."
+
+msgid "Stav objednávky se změnil"
+msgstr ""
+
+msgid "Stornována"
+msgstr ""
 
 msgid "Super LCD"
 msgstr "Super LCD"
@@ -1404,6 +1704,9 @@ msgstr "Televize SMART LED TV, úhlopříčka 147cm, 4K Ultra HD 3840x2160, 4K U
 
 msgid "TV, audio"
 msgstr "Televize, audio"
+
+msgid "Tabulka velikostí pro produkty"
+msgstr ""
 
 msgid "Technology"
 msgstr "Technologie"
@@ -1453,8 +1756,14 @@ msgstr "Televizní monitor IPS, 5M:1, 250cd/m2, 5ms GTG, FullHD 1920x1080, DVB-T
 msgid "Television or TV is a telecommunication medium used for transmitting sound with moving images in monochrome (black-and-white), or in color, and in two or three dimensions"
 msgstr "Televize (z řeckého tele – daleko a latinského vize – vidět) je široce používané jednosměrné dálkové plošné vysílání (tzv. broadcasting) a individuální přijímání televizního vysílání – obrazu a zvuku do televizoru. Výrazně přispívá k celkové socializaci lidí takřka po celém světě."
 
+msgid "Televize, audio"
+msgstr ""
+
 msgid "Terms and conditions"
 msgstr "Obchodní podmínky"
+
+msgid "Testovací soubor"
+msgstr ""
 
 msgid "Thank you for your order no. {number} placed at {date}"
 msgstr "Děkujeme za objednávku č. {number} ze dne {date}"
@@ -1501,11 +1810,17 @@ msgstr "Konec nemotornému odkládání hrnců na novou kuchyňskou linku nebo n
 msgid "This product is not an independently functional unit and may require professional installation."
 msgstr "Přenosný pevný disk GT SuperSpeed USB 3.0 se inspiruje dlouhou historií sportovních vozů"
 
+msgid "Tiskárny"
+msgstr ""
+
 msgid "Toilet paper with Euro pictures. Even you can feel rich now!"
 msgstr "toaleťák s potiskem bankovek EURO, pocit z použití tohoto toaletního papíru dá zapomenout na jakékoliv trable spojené s finanční krizí"
 
 msgid "Toner for MC861/ 851, 7000 pages"
 msgstr "OKI MC861cdxn+, barevná A3 34/26 ppm ProQ2400 dpi PCL/PS,USB 2.0,LPT,LAN"
+
+msgid "Toto je popis značky %brandName%."
+msgstr ""
 
 msgid "Toys"
 msgstr "Hračky a další"
@@ -1519,11 +1834,26 @@ msgstr "Tuner"
 msgid "Type nozzles: Universal. Diameter: 32 mm. Turbobrush: Big."
 msgstr "Typ hubice: Univerzální. Průměr: 32 mm. Turbokartáč: Velký."
 
+msgid "Těšíme se na Vaši návštěvu."
+msgstr ""
+
 msgid "USB"
 msgstr "USB"
 
+msgid "Ukázkový článek blogu %locale%"
+msgstr ""
+
+msgid "Unikátní alias"
+msgstr ""
+
+msgid "Upozornění pro naše zákazníky - tato verze e-shopu obsahuje testovací data."
+msgstr ""
+
 msgid "Using a steamer Concept is surprisingly versatile. It can be used to prepare appetizers, soups, meat, fish, vegetables, vegetarian dishes, dumplings, rice, fruit and desserts."
 msgstr "Použití parní trouby Concept  je překvapivě všestranné. Lze v ní připravit předkrmy, polévky, maso, ryby, zeleninu, vegetariánská jídla, knedlíky, rýži, ovoce i dezerty."
+
+msgid "Uvítá Vás milý personál!"
+msgstr ""
 
 msgid "VERBATIM 1TB external HDD 2,5\" USB 3.0 GT SuperSpeed red"
 msgstr "VERBATIM 1TB externí disk 2,5\" USB 3.0 GT SuperSpeed červený"
@@ -1531,11 +1861,53 @@ msgstr "VERBATIM 1TB externí disk 2,5\" USB 3.0 GT SuperSpeed červený"
 msgid "VIP customer"
 msgstr "VIP zákazník"
 
+msgid "Velká Británie"
+msgstr ""
+
 msgid "Video"
 msgstr "Video"
 
 msgid "Viewfinder type"
 msgstr "Typ hledáčku"
+
+msgid "Vyřizuje se"
+msgstr ""
+
+msgid "Vyřízena"
+msgstr ""
+
+msgid "Vážený zákazníku, <br /><br />Vaše objednávka byla zrušena."
+msgstr ""
+
+msgid "Vážený zákazníku, <br /><br />Vaše objednávka se zpracovává."
+msgstr ""
+
+msgid "Vážený zákazníku, <br /><br />Vaše registrace je dokončena. <br />Jméno: {first_name} {last_name}<br />E-mail: {email}<br />Adresa e-shopu: {url}<br />Přihlašovací stránka: {login_page}"
+msgstr ""
+
+msgid "Vážený zákazníku, <br /><br />zpracování objednávky bylo dokončeno."
+msgstr ""
+
+msgid "Vážený zákazníku,<br /><br /> na základě vašeho zadaného emailu {email}, Vám zasíláme odkaz na zobrazení osobních údajů. Klikem na odkaz níže se dostanete na stránku s <br/> přehledem všech osobních údajů, které k Vašemu e-mailu evidujeme na našem e-shopu {domain}.<br/><br/> Pro zobrazení osobních údajů klikněte zde - {url}<br/> Odkaz je platný 24 hodin.<br/><br/> S pozdravem<br/> tým {domain}"
+msgstr ""
+
+msgid "Vážený zákazníku,<br /><br />na tomto odkazu můžete nastavit nové heslo: <a href=\"{new_password_url}\">{new_password_url}</a>"
+msgstr ""
+
+msgid "Vážený zákazníku,<br/><br/> na základě vašeho zadaného emailu {email}, Vám zasíláme odkaz ke stažení Vašich<br/> údajů evidovaných na našem internetovém obchodě ve strojově čitelném formátu.<br/> Klikem na odkaz se dostanete na stránku s s možností stažení těchto informací, které k<br/> Vašemu e-mailu evidujeme na našem internetovém obchodu {domain}.<br/><br/> Pro přechod na stažení údajů, prosím, klikněte zde - {url}<br/> Odkaz je platný 24 hodin.<br/><br/> S pozdravem<br/> tým {domain}"
+msgstr ""
+
+msgid "Výhodná sada příslušenství k vašemu počítači"
+msgstr ""
+
+msgid "Výprodej"
+msgstr ""
+
+msgid "Výprodejový sklad"
+msgstr ""
+
+msgid "Výprodejový sklad na prodejně"
+msgstr ""
 
 msgid "Watch broadcast in stunning Full HD, while at the same stylish devices work."
 msgstr "Sledujte vysílání v úžasném rozlišení Full HD a zároveň na stejném stylovém zařízení pracujte."
@@ -1597,6 +1969,18 @@ msgstr "Uvítá Vás milý personál!"
 msgid "ZN-8009 steam iron Ferrato stainless steel 2200 Watt Blue"
 msgstr "ZN-8009 napařovací žehlička Ferratte nerez 2200 W modrá"
 
+msgid "Zadáním e-mailu níže si můžete nechat zobrazit vaše osobní údaje, která evidujeme v našem internetovém obchodu. Pro ověření vaší totožnosti vám po zadání e-mailové adresy bude zaslán e-mail s odkazem. Klikem na odkaz se dostanete na stránku s přehledem těchto osobních údajů - půjde o všechny údaje evidované k dané e-mailové adrese."
+msgstr ""
+
+msgid "Zadáním e-mailu níže si můžete stáhnout své osobní a jiné informace (například historii objednávek) z našeho internetového obchodu. Pro ověření vaší totožnosti vám po zadání e-mailové adresy bude zaslán e-mail s odkazem. Klikem na odkaz se dostanete na stránku s s možností stažení těchto informací ve strojově čitelném formátu - půjde o údaje evidované k dané e-mailové adrese na této doméně internetového obchodu."
+msgstr ""
+
+msgid "Zahradní náčiní"
+msgstr ""
+
+msgid "Zásady ochrany osobních údajů"
+msgstr ""
+
 msgid "battery"
 msgstr "akumulátor"
 
@@ -1615,8 +1999,14 @@ msgstr "flash disk"
 msgid "hardcover"
 msgstr "pevný"
 
+msgid "info@shopsys.com"
+msgstr ""
+
 msgid "inkjet"
 msgstr "inkoustové"
+
+msgid "ks"
+msgstr ""
 
 msgid "media 210MB, 24min., writing speed 24x, slim box"
 msgstr "médium 210MB, 24min., rychlost zápisu 24x, slim box"
@@ -1647,3 +2037,16 @@ msgstr "Zaplaceno"
 
 msgid "| Demo eshop"
 msgstr "| Demo obchod"
+
+msgid "| Demo obchod"
+msgstr ""
+
+msgid "Česká pošta - balík do ruky"
+msgstr ""
+
+msgid "Česká republika"
+msgstr ""
+
+msgid "Žádost o heslo"
+msgstr ""
+

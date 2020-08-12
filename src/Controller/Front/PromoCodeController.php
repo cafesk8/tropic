@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Model\Order\PromoCode\Exception\InactivePromoCodeException;
 use App\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
 use App\Model\Order\PromoCode\Exception\PromoCodeIsNotBetterThanOrderLevelDiscountException;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
+use App\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -120,12 +122,15 @@ class PromoCodeController extends FrontBaseController
                 'result' => false,
                 'message' => t('{{title}} není platný. Prosím, zkontrolujte ho.', ['{{title}}' => $this->getErrorMessageTitle($promoCode)]),
             ]);
-        } catch (\App\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException $ex) {
-            $message = $promoCode->isActive() ? '{{title}} byl již vyčerpán.' : '{{title}} není aktivní.';
-
+        } catch (UsageLimitPromoCodeException $ex) {
             return new JsonResponse([
                 'result' => false,
-                'message' => t($message, ['{{title}}' => $this->getErrorMessageTitle($promoCode)]),
+                'message' => t('{{title}} byl již vyčerpán.', ['{{title}}' => $this->getErrorMessageTitle($promoCode)]),
+            ]);
+        } catch (InactivePromoCodeException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('{{title}} není aktivní.', ['{{title}}' => $this->getErrorMessageTitle($promoCode)]),
             ]);
         } catch (\App\Model\Order\PromoCode\Exception\PromoCodeIsNotValidNow $ex) {
             $message = $this->getPromoCodeIsNotValidMessage($request, $promoCode);

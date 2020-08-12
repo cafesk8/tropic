@@ -40,7 +40,7 @@ class CofidisBannerSettingFormType extends AbstractType
                 ],
                 'attr' => [
                     'icon' => true,
-                    'iconTitle' => t('Kallkulačka se bude od této cenové hladiny zobrazovat na detailu produktu.'),
+                    'iconTitle' => t('Kalkulačka se bude od této cenové hladiny zobrazovat na detailu produktu.'),
                 ],
                 'currency' => $this->currencyFacade->getDomainDefaultCurrencyByDomainId(DomainHelper::CZECH_DOMAIN)->getCode(),
             ]);
