@@ -71,6 +71,12 @@ class PohodaProductDataValidator
                     new Type(['type' => 'numeric']),
                     new NotBlank(),
                 ],
+                PohodaProduct::COL_SELLING_PRICE_EUR => [
+                    new Type(['type' => 'numeric']),
+                ],
+                PohodaProduct::COL_STANDARD_PRICE_EUR => [
+                    new Type(['type' => 'numeric']),
+                ],
                 PohodaProduct::COL_SALE_INFORMATION => [
                     new Type(['type' => 'array']),
                 ],

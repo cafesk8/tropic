@@ -19,6 +19,8 @@ class PohodaProduct
     public const COL_SELLING_VAT_RATE_ID = 'vatRateId';
     public const COL_PURCHASE_PRICE = 'purchasePriceWithVat';
     public const COL_STANDARD_PRICE = 'standardPriceWithVat';
+    public const COL_SELLING_PRICE_EUR = 'sellingEurPriceWithVat';
+    public const COL_STANDARD_PRICE_EUR = 'standardEurPriceWithVat';
     public const COL_STOCK_ID = 'stockId';
     public const COL_VARIANT_ID = 'variantId';
     public const COL_VARIANT_ALIAS = 'variantAlias';
@@ -139,6 +141,10 @@ class PohodaProduct
      * @var string|null
      */
     public $standardPrice;
+
+    public ?string $sellingPriceEur;
+
+    public ?string $standardPriceEur;
 
     /**
      * @var array
@@ -318,6 +324,8 @@ class PohodaProduct
         $this->vatRateId = (int)$pohodaProductData[self::COL_SELLING_VAT_RATE_ID];
         $this->purchasePrice = $pohodaProductData[self::COL_PURCHASE_PRICE];
         $this->standardPrice = $pohodaProductData[self::COL_STANDARD_PRICE];
+        $this->sellingPriceEur = $pohodaProductData[self::COL_SELLING_PRICE_EUR];
+        $this->standardPriceEur = $pohodaProductData[self::COL_STANDARD_PRICE_EUR];
         $this->saleInformation = $pohodaProductData[self::COL_SALE_INFORMATION];
         $this->variantId = (string)$pohodaProductData[self::COL_VARIANT_ID];
         $this->variantAlias = (string)$pohodaProductData[self::COL_VARIANT_ALIAS];

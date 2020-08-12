@@ -437,7 +437,7 @@ class PohodaProductMapper
      * @param string $currencyMultiplier
      * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
      */
-    private function getPriceFromString(?string $priceString, string $currencyMultiplier): ?Money
+    private function getPriceFromString(?string $priceString, string $currencyMultiplier = '1'): ?Money
     {
         if ($priceString === null) {
             return null;
@@ -453,31 +453,25 @@ class PohodaProductMapper
      */
     private function addPricesForDomain(PohodaProduct $pohodaProduct, ProductData $productData, int $domainId): void
     {
-        if ($domainId !== DomainHelper::CZECH_DOMAIN) {
-            return;
-        }
-
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
-        $currencyMultiplier = '1';
-
-        if ($domainId !== DomainHelper::CZECH_DOMAIN && $currency->getCode() === Currency::CODE_EUR) {
-            $currencyMultiplier = $currency->getExchangeRate();
-        }
+        $currencyMultiplier = $currency->getExchangeRate();
+        $standardPricingGroupId = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId)->getId();
+        $salePricingGroupId = $this->pricingGroupFacade->getSalePricePricingGroup($domainId)->getId();
 
         $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getOrdinaryCustomerPricingGroup($domainId)->getId()] = $this->getPriceFromString(
-            $pohodaProduct->sellingPrice,
-            $currencyMultiplier
+            $currency->getCode() === Currency::CODE_EUR ? $pohodaProduct->sellingPriceEur : $pohodaProduct->sellingPrice
         );
         $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getPurchasePricePricingGroup($domainId)->getId()] = $this->getPriceFromString(
             $pohodaProduct->purchasePrice,
             $currencyMultiplier
         );
-        $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getStandardPricePricingGroup($domainId)->getId()] = $this->getPriceFromString(
-            $pohodaProduct->standardPrice,
-            $currencyMultiplier
-        );
 
-        $salePricingGroupId = $this->pricingGroupFacade->getSalePricePricingGroup($domainId)->getId();
+        if ($currency->getCode() === Currency::CODE_EUR && $pohodaProduct->standardPriceEur !== null) {
+            $productData->manualInputPricesByPricingGroupId[$standardPricingGroupId] = $this->getPriceFromString($pohodaProduct->standardPriceEur);
+        } else {
+            $productData->manualInputPricesByPricingGroupId[$standardPricingGroupId] = $this->getPriceFromString($pohodaProduct->standardPrice, $currencyMultiplier);
+        }
+
         $productData->manualInputPricesByPricingGroupId[$salePricingGroupId] = null;
 
         foreach (PohodaProductExportRepository::SALE_STOCK_IDS_ORDERED_BY_PRIORITY as $stockId) {
