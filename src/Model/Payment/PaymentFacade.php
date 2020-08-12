@@ -156,4 +156,15 @@ class PaymentFacade extends BasePaymentFacade
 
         return $filteredPayments;
     }
+
+    /**
+     * @param string $paymentName
+     * @param bool $czkRounding
+     * @param string $locale
+     * @return \App\Model\Payment\Payment
+     */
+    public function findByNameAndCzkRounding(string $paymentName, bool $czkRounding, string $locale): ?Payment
+    {
+        return $this->paymentRepository->findByNameAndCzkRounding($paymentName, $czkRounding, $locale);
+    }
 }

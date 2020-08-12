@@ -8,6 +8,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDomain;
 use Shopsys\FrameworkBundle\Model\Transport\TransportRepository as BaseTransportRepository;
+use Shopsys\FrameworkBundle\Model\Transport\TransportTranslation;
 
 /**
  * @method \App\Model\Transport\Transport[] getAll()
@@ -129,5 +130,24 @@ class TransportRepository extends BaseTransportRepository
         }
 
         return $actionResult['minActionOrderPrice']->isGreaterThan($freeResult['minFreeOrderPrice']) ? $freeResult['minFreeOrderPrice'] : $actionResult['minActionOrderPrice'];
+    }
+
+    /**
+     * @param string $transportName
+     * @param string $locale
+     * @return \App\Model\Transport\Transport|null
+     */
+    public function findByName(string $transportName, string $locale): ?Transport
+    {
+        return $this->getTransportRepository()->createQueryBuilder('t')
+            ->select('t')
+            ->join(TransportTranslation::class, 'tt', Join::WITH, 'tt.translatable = t.id')
+            ->where('tt.name = :transportName')
+            ->andWhere('tt.locale = :transportLocale')
+            ->setParameter('transportName', $transportName)
+            ->setParameter('transportLocale', $locale)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

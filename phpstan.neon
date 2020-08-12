@@ -23,6 +23,8 @@ parameters:
             # the method is overridden to be deprecated
             message: '#^Method App\\Model\\Product\\ProductVariantFacade::createVariant\(\) should return App\\Model\\Product\\Product but return statement is missing\.$#'
             path: %currentWorkingDirectory%/src/Model/Product/ProductVariantFacade.php
+    excludes_analyse:
+        - %currentWorkingDirectory%/src/Command/Migrations/ImportLegacyOrdersFromCSVCommand.php
 includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Model\Payment;
 
 use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
+use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository as BasePaymentRepository;
+use Shopsys\FrameworkBundle\Model\Payment\PaymentTranslation;
 
 /**
  * @method \App\Model\Payment\Payment[] getAll()
@@ -36,5 +38,27 @@ class PaymentRepository extends BasePaymentRepository
             ->andWhere('p.type = :type')->setParameter('type', $type)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param string $paymentName
+     * @param bool $czkRounding
+     * @param string $locale
+     * @return \App\Model\Payment\Payment|null
+     */
+    public function findByNameAndCzkRounding(string $paymentName, bool $czkRounding, string $locale): ?Payment
+    {
+        return $this->getPaymentRepository()->createQueryBuilder('p')
+            ->select('p')
+            ->join(PaymentTranslation::class, 'pt', Join::WITH, 'pt.translatable = p.id')
+            ->where('p.czkRounding = :czkRounding')
+            ->andWhere('pt.name = :paymentName')
+            ->andWhere('pt.locale = :paymentLocale')
+            ->setParameter('czkRounding', $czkRounding)
+            ->setParameter('paymentName', $paymentName)
+            ->setParameter('paymentLocale', $locale)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }
