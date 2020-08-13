@@ -122,7 +122,7 @@ class ProductExportRepository extends BaseProductExportRepository
     protected function extractPrices(int $domainId, BaseProduct $product): array
     {
         $defaultPricingGroupOnDomain = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
-        $standardPricingGroupOnDomain = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
+        $standardPricingGroupOnDomain = $product->isInAnySaleStock() ? $defaultPricingGroupOnDomain : $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
         $pricesArray = parent::extractPrices($domainId, $product);
 
         $defaultPricingGroupId = $defaultPricingGroupOnDomain->getId();
