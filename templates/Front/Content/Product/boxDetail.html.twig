@@ -2,7 +2,9 @@
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
+    {% import 'Front/Content/Product/productGalleryImagesMacro.html.twig' as productImages %}
     {% import 'Front/Inline/Common/discountExclusionNoticeMacro.html.twig' as discountExclusion %}
+    
     {% set domain = getDomain() %}
     {% set showGalleryMaxCount = 3 %}
     {% set showFlagsMaxCount = 3 %}
@@ -47,69 +49,7 @@
                                 {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, variantsCount) }}
 
                                 {% if showGallery %}
-                                    <div class="box-gallery dont-print js-gallery">
-                                        <div class="box-gallery__images">
-                                            {% for galleryImage in galleryImages %}
-                                                <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %}
-                                                    {% if loop.index == 1 %} display-none{% else %} js-gallery-item{% endif %}"
-                                                >
-                                                    <a href="{{ imageUrl(galleryImage, 'original') }}"
-                                                    class="box-gallery__item__link js-gallery-slide-link">
-                                                        {{ image(galleryImage, {size: 'thumbnail'}) }}
-                                                    </a>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                        <div class="box-gallery__links">
-                                            {% if galleryImages|length > showGalleryMaxCount %}
-                                                <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
-                                                    <a href="#" class="box-gallery__item__link">
-                                                        {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
-                                                    </a>
-                                                </div>
-                                            {% endif %}
-                                            {% if youtubeDetails %}
-                                                <div class="box-gallery__item box-gallery__item--video{% if galleryImages|length <= 1%} box-gallery__item--without-border{% endif %}">
-                                                    {% if product.isMainVariant %}
-                                                        <a
-                                                            href="#video-variant-desktop"
-                                                            class="box-gallery__item__link box-gallery__item__link--desktop js-anchor-link"
-                                                        >
-                                                            <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
-                                                                alt="{{ youtubeDetails|first.getVideoTitle() }}"
-                                                                title="{{ youtubeDetails|first.getVideoTitle() }}">
-                                                            <div class="box-gallery__item__link__play">
-                                                                <div class="box-gallery__item__link__play__icon"></div>
-                                                            </div>
-                                                        </a>
-                                                        <a
-                                                            href="#video"
-                                                            class="box-gallery__item__link box-gallery__item__link--mobile js-anchor-link"
-                                                        >
-                                                            <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
-                                                                alt="{{ youtubeDetails|first.getVideoTitle() }}"
-                                                                title="{{ youtubeDetails|first.getVideoTitle() }}">
-                                                            <div class="box-gallery__item__link__play">
-                                                                <div class="box-gallery__item__link__play__icon"></div>
-                                                            </div>
-                                                        </a>
-                                                    {% else %}
-                                                        <a
-                                                            href="#video"
-                                                            class="box-gallery__item__link js-anchor-link"
-                                                        >
-                                                            <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
-                                                                alt="{{ youtubeDetails|first.getVideoTitle() }}"
-                                                                title="{{ youtubeDetails|first.getVideoTitle() }}">
-                                                            <div class="box-gallery__item__link__play">
-                                                                <div class="box-gallery__item__link__play__icon"></div>
-                                                            </div>
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
+                                    {{ productImages.loadGalleryImages(galleryImages, showGalleryMaxCount, youtubeDetails, 'productGallery') }}
                                 {% endif %}
 
                                 {% if product.isMainVariant %}
@@ -147,6 +87,15 @@
                                     {% if not typeSupplierSet %}
                                         <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
                                     {% endif %}
+                                    <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
+                                    
+                                    <div class="box-gallery">
+                                        {% set galleryImages = getProductGroupsImages(product.productGroups) %}
+                                        {% set showGallery = galleryImages|length > 0 %}
+                                        {% if showGallery %}
+                                            {{ productImages.loadGalleryImages(galleryImages, showGalleryMaxCount, youtubeDetails, 'productSetGallery') }}
+                                        {% endif %}
+                                    </div>
                                 {% endif %}
                             </div>
                         {% endif %}

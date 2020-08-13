@@ -49,15 +49,13 @@ class ImageExtension extends BaseImageExtension
         $this->assetsPackage = $assetsPackage;
     }
 
-    /**
-     * @return \Twig\TwigFunction[]
-     */
     public function getFunctions()
     {
         $functions = parent::getFunctions();
         $functions[] = new TwigFunction('getSupplierSetImagesExcludingMain', [$this, 'getSupplierSetImagesExcludingMain']);
         $functions[] = new TwigFunction('getSupplierSetItemName', [$this, 'getSupplierSetItemName']);
         $functions[] = new TwigFunction('getSupplierSetItemCount', [$this, 'getSupplierSetItemCount']);
+        $functions[] = new TwigFunction('getProductGroupsImages',[$this, 'getProductGroupsImages']);
 
         return $functions;
     }
@@ -122,5 +120,25 @@ class ImageExtension extends BaseImageExtension
     public function getSupplierSetItemCount(?string $imageDescription): int
     {
         return $this->imageFacade->getSupplierSetItemCount($imageDescription);
+
+    }
+
+    /**
+     * @param array $productGroups
+     * @return \App\Component\Image\Image[]
+     */
+    public function getProductGroupsImages(array $productGroups): array
+    {
+        $aggregatedArray = [];
+        foreach ($productGroups as $productGroup) {
+            try {
+                $images = $this->imageFacade->getImagesByEntityIndexedById($productGroup->getItem(), null);
+                $aggregatedArray = array_merge($aggregatedArray, $images);
+            } catch (\Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException $e) {
+                continue;
+            }
+        }
+
+        return $aggregatedArray;
     }
 }

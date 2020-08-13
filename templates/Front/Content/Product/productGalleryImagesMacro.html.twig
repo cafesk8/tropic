@@ -1,0 +1,86 @@
+{% macro loadGalleryImages(galleryImages, showGalleryMaxCount, youtubeDetails, type) %}
+    {% if type is same as('productSetGallery') %}
+        <div class="box-gallery dont-print js-gallery">
+            <div class="box-gallery__images">
+                {% for galleryImage in galleryImages %}
+                    <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
+                        <a href="{{ imageUrl(galleryImage, 'original') }}"
+                        class="box-gallery__item__link js-gallery-slide-link">
+                            {{ image(galleryImage, {size: 'thumbnail'}) }}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="box-gallery__links">
+                {% if galleryImages|length > showGalleryMaxCount %}
+                    <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
+                        <a href="#" class="box-gallery__item__link">
+                            {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
+                        </a>
+                    </div>
+                {% endif %}
+                {% if youtubeDetails %}
+                    <div class="box-gallery__item box-gallery__item--video">
+                        {% if product.isMainVariant %}
+                            <a
+                                href="#video-variant-desktop"
+                                class="box-gallery__item__link box-gallery__item__link--desktop js-anchor-link"
+                            >
+                                <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
+                                    alt="{{ youtubeDetails|first.getVideoTitle() }}"
+                                    title="{{ youtubeDetails|first.getVideoTitle() }}">
+                                <div class="box-gallery__item__link__play">
+                                    <div class="box-gallery__item__link__play__icon"></div>
+                                </div>
+                            </a>
+                            <a
+                                href="#video"
+                                class="box-gallery__item__link box-gallery__item__link--mobile js-anchor-link"
+                            >
+                                <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
+                                    alt="{{ youtubeDetails|first.getVideoTitle() }}"
+                                    title="{{ youtubeDetails|first.getVideoTitle() }}">
+                                <div class="box-gallery__item__link__play">
+                                    <div class="box-gallery__item__link__play__icon"></div>
+                                </div>
+                            </a>
+                        {% else %} 
+                            <a
+                                href="#video"
+                                class="box-gallery__item__link js-anchor-link"
+                            >
+                                <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
+                                    alt="{{ youtubeDetails|first.getVideoTitle() }}"
+                                    title="{{ youtubeDetails|first.getVideoTitle() }}">
+                                <div class="box-gallery__item__link__play">
+                                    <div class="box-gallery__item__link__play__icon"></div>
+                                </div>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <div class="box-gallery dont-print js-gallery">
+            <div class="box-gallery__images">
+                {% for galleryImage in galleryImages %}
+                    <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
+                        <a href="{{ imageUrl(galleryImage, 'original') }}"
+                        class="box-gallery__item__link js-gallery-slide-link">
+                            {{ image(galleryImage, {size: 'thumbnail'}) }} 
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if galleryImages|length > showGalleryMaxCount %}
+                <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
+                    <a href="#" class="box-gallery__item__link">
+                        {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
+                    </a>
+                </div>
+            {% endif %}
+        </div> 
+    {% endif %}
+{% endmacro %}
