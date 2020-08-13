@@ -17,11 +17,12 @@ class Version20200717073541 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->sql('ALTER TABLE brands ADD slug VARCHAR(255) DEFAULT NULL');
+        $brands = $this->sql('SELECT id, name FROM brands')->fetchAll(FetchMode::ASSOCIATIVE);
 
-        while (($row = $this->sql('SELECT id, name FROM brands')->fetch(FetchMode::ASSOCIATIVE)) !== false) {
+        foreach ($brands as $brand) {
             $this->sql('UPDATE brands SET slug = :slug WHERE id = :id', [
-                'slug' => TransformString::stringToFriendlyUrlSlug($row['name']),
-                'id' => $row['id'],
+                'slug' => TransformString::stringToFriendlyUrlSlug($brand['name']),
+                'id' => $brand['id'],
             ]);
         }
 
