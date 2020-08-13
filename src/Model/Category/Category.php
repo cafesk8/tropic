@@ -9,6 +9,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
 use Shopsys\FrameworkBundle\Model\Category\CategoryData as BaseCategoryData;
 
@@ -393,5 +394,14 @@ class Category extends BaseCategory
     public function isUnavailableProductsShown(): bool
     {
         return $this->unavailableProductsShown;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @return string
+     */
+    public function getTitle(Domain $domain): string
+    {
+        return $this->getSeoH1($domain->getId()) ?? $this->getName($domain->getLocale());
     }
 }

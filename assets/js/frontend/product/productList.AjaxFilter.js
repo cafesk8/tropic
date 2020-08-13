@@ -11,6 +11,7 @@ export default class ProductListAjaxFilter {
         this.$showResultsButton = $filter.filterAllNodes('.js-product-filter-show-result-button');
         this.$selectedFiltersBox = $filter.filterAllNodes('#js-selected-filters-box');
         this.$resetFilterButton = $filter.filterAllNodes('.js-product-filter-reset-button');
+        this.$categoryTitle = $filter.filterAllNodes('.js-category-title');
         this.requestTimer = null;
         this.requestDelay = 1000;
 
@@ -18,7 +19,6 @@ export default class ProductListAjaxFilter {
         this.$productFilterForm.on('change', () => {
             clearTimeout(_this.requestTimer);
             _this.requestTimer = setTimeout(() => _this.submitFormWithAjax(_this), _this.requestDelay);
-            pushReloadState(getBaseUrl() + '?' + _this.$productFilterForm.serialize());
         });
 
         this.$showResultsButton.on('click', () => {
@@ -41,13 +41,15 @@ export default class ProductListAjaxFilter {
         });
 
         this.updateFiltersDisabled();
+        this.refreshBrandLinks();
     }
 
     showProducts ($wrappedData) {
         const $productsHtml = $wrappedData.find('.js-product-list-ajax-filter-products-with-controls');
+        const currentUrl = $wrappedData.filterAllNodes('#js-product-list-ajax-filter-current-url').val();
         this.$productsWithControls.html($productsHtml.html());
         this.$productsWithControls.show();
-
+        pushReloadState(currentUrl);
         (new Register()).registerNewContent(this.$productsWithControls);
     }
 
@@ -62,6 +64,19 @@ export default class ProductListAjaxFilter {
                 .filter('[data-form-id="' + $newCountElement.data('form-id') + '"]');
 
             $existingCountElement.html($newCountElement.html());
+        });
+    }
+
+    updateBrandLabelTexts ($wrappedData) {
+        const $existingBrandElements = $('.js-brand-label-text');
+        const $newBrandElements = $wrappedData.find('.js-brand-label-text');
+
+        $newBrandElements.each((index, element) => {
+            const $newBrandElement = $(element);
+            const $existingCountElement = $existingBrandElements
+                .filter('[data-form-id="' + $newBrandElement.data('form-id') + '"]');
+
+            $existingCountElement.html($newBrandElement.html());
         });
     }
 
@@ -84,6 +99,17 @@ export default class ProductListAjaxFilter {
         });
     }
 
+    updateTitle ($wrappedData) {
+        const title = $wrappedData.filterAllNodes('#js-product-list-ajax-category-title').val();
+        const $titleElement = $('title');
+
+        this.$categoryTitle.html(title);
+        let titleParts = $titleElement.text().split('|');
+        titleParts[0] = title;
+        titleParts[1] = titleParts[1].trim();
+        $titleElement.text(titleParts.join(' | '));
+    }
+
     submitFormWithAjax (productListAjaxFilter) {
         Ajax.ajax({
             overlayDelay: 0,
@@ -96,6 +122,10 @@ export default class ProductListAjaxFilter {
                 productListAjaxFilter.updateFiltersCounts($wrappedData);
                 productListAjaxFilter.updateFiltersDisabled();
                 productListAjaxFilter.updateSelectedFilters($wrappedData);
+                productListAjaxFilter.updateBrandLabelTexts($wrappedData);
+                productListAjaxFilter.refreshBrandLinks();
+                productListAjaxFilter.updateMetaTag($wrappedData);
+                productListAjaxFilter.updateTitle($wrappedData);
             }
         });
     }
@@ -109,6 +139,25 @@ export default class ProductListAjaxFilter {
         this.$selectedFiltersBox.html($newSelectedFiltersBox.html());
         (new Register()).registerNewContent(this.$selectedFiltersBox);
     };
+
+    refreshBrandLinks () {
+        $('.js-brand-filter-link').click((event) => {
+            event.preventDefault();
+            $('.form-choice__input[data-filter-name-with-entity-id="' + $(event.target).data('brand-checkbox-id') + '"]').click();
+        });
+    }
+
+    updateMetaTag ($wrappedData) {
+        const $indexingDisabled = $wrappedData.filterAllNodes('#js-disable-indexing');
+
+        if ($indexingDisabled.val()) {
+            if ($('#js-disable-indexing-ajax-meta').length === 0) {
+                $('head').append('<meta id="js-disable-indexing-ajax-meta" name="robots" content="noindex, follow">');
+            }
+        } else {
+            $('#js-disable-indexing-ajax-meta').remove();
+        }
+    }
 
     static init ($container) {
         if ($container.filterAllNodes('.js-product-list-with-paginator').length > 0) {

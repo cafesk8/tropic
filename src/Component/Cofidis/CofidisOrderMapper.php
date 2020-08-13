@@ -23,7 +23,7 @@ class CofidisOrderMapper
     /**
      * @param \App\Component\Cofidis\CofidisSignatureFacade $cofidisSignatureFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory
+     * @param \App\Component\Router\DomainRouterFactory $domainRouterFactory
      */
     public function __construct(
         CofidisSignatureFacade $cofidisSignatureFacade,

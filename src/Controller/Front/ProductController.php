@@ -7,16 +7,18 @@ namespace App\Controller\Front;
 use App\Component\DiscountExclusion\DiscountExclusionFacade;
 use App\Form\Front\Product\ProductFilterFormType;
 use App\Model\Blog\Article\BlogArticleFacade;
+use App\Model\Category\Category;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use App\Model\Gtm\GtmFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Brand\Brand;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\View\ListedProductViewElasticFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
-use Shopsys\FrameworkBundle\Model\Category\Category;
+use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
@@ -322,13 +324,16 @@ class ProductController extends FrontBaseController
             'filterForm' => $filterForm->createView(),
             'filterFormSubmitted' => $filterForm->isSubmitted(),
             'visibleChildren' => $visibleChildren,
-            'saleCategoryFriendlyUrl' => null,
+            'isSaleCategory' => false,
             'priceRange' => $productFilterConfig->getPriceRange(),
             'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
                 $category,
                 $this->domain->getId(),
                 self::LIST_BLOG_ARTICLES_LIMIT
             ),
+            'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData),
+            'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData),
+            'disableIndexing' => count($productFilterData->brands) >= 2,
         ];
 
         if ($request->isXmlHttpRequest()) {
@@ -340,19 +345,20 @@ class ProductController extends FrontBaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $friendlyUrl
+     * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listBySaleCategoryAction(Request $request, string $friendlyUrl): Response
+    public function listBySaleCategoryAction(Request $request, int $id): Response
     {
         $params = $request->query->get('product_filter_form');
-        foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
-            $params['flags'][] = $saleFlag->getId();
-        }
-        $request->query->set('product_filter_form', $params);
+        $tmpParams = $params;
 
-        /** @var \App\Model\Category\Category $category */
-        $category = $this->categoryFacade->getSaleCategoryByFriendlyUrl($friendlyUrl);
+        foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
+            $tmpParams['flags'][] = $saleFlag->getId();
+        }
+        $request->query->set('product_filter_form', $tmpParams);
+
+        $category = $this->categoryFacade->getById($id);
 
         $requestPage = $request->get(self::PAGE_QUERY_PARAMETER);
         if (!$this->isRequestPageValid($requestPage)) {
@@ -400,14 +406,19 @@ class ProductController extends FrontBaseController
             'filterForm' => $filterForm->createView(),
             'filterFormSubmitted' => $filterForm->isSubmitted(),
             'visibleChildren' => null,
-            'saleCategoryFriendlyUrl' => $friendlyUrl,
+            'isSaleCategory' => true,
             'priceRange' => $productFilterConfig->getPriceRange(),
             'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
                 $category,
                 $this->domain->getId(),
                 self::LIST_BLOG_ARTICLES_LIMIT
             ),
+            'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData, true),
+            'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData, Category::SALE_TYPE),
+            'disableIndexing' => count($productFilterData->brands) >= 2,
         ];
+
+        $request->query->set('product_filter_form', $params);
 
         if ($request->isXmlHttpRequest()) {
             return $this->render('Front/Content/Product/ajaxList.html.twig', $viewParameters);
@@ -418,6 +429,7 @@ class ProductController extends FrontBaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function searchAction(Request $request)
     {
@@ -466,6 +478,8 @@ class ProductController extends FrontBaseController
             'searchText' => $searchText,
             'SEARCH_TEXT_PARAMETER' => self::SEARCH_TEXT_PARAMETER,
             'priceRange' => $productFilterConfig->getPriceRange(),
+            'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData),
+            'disableIndexing' => count($productFilterData->brands) >= 2,
         ];
 
         if ($request->isXmlHttpRequest()) {
@@ -513,7 +527,7 @@ class ProductController extends FrontBaseController
      * @param bool $isSaleCategory
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
-    private function createProductFilterConfigForCategory(Category $category, bool $isSaleCategory = false)
+    private function createProductFilterConfigForCategory(BaseCategory $category, bool $isSaleCategory = false)
     {
         return $this->productFilterConfigFactory->createForCategory(
             $this->domain->getId(),
@@ -675,5 +689,65 @@ class ProductController extends FrontBaseController
             self::PRODUCTS_PER_PAGE,
             Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP
         );
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param bool $isSpecialCategory
+     * @return bool
+     */
+    private function isAnyFilterActive(ProductFilterData $productFilterData, bool $isSpecialCategory = false): bool
+    {
+        if ($productFilterData->minimalPrice !== null) {
+            return true;
+        }
+
+        if ($productFilterData->maximalPrice !== null) {
+            return true;
+        }
+
+        if ($productFilterData->inStock === true) {
+            return true;
+        }
+
+        if ($isSpecialCategory) {
+            if (count($productFilterData->flags) > 1) {
+                return true;
+            }
+        } else {
+            if (!empty($productFilterData->flags)) {
+                return true;
+            }
+        }
+
+        if (!empty($productFilterData->brands)) {
+            return true;
+        }
+
+        foreach ($productFilterData->parameters as $parameter) {
+            if (!empty($parameter->values)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \App\Model\Category\Category $category
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param string|null $type
+     * @return string
+     */
+    private function getCategoryTitleWithActiveBrands(Category $category, ProductFilterData $productFilterData, ?string $type = null): string
+    {
+        $categoryTitle = $type === Category::SALE_TYPE ? t('Výprodej') . ' - ' : '';
+        $categoryTitle .= $category->getTitle($this->domain);
+
+        if (!empty($productFilterData->brands)) {
+            $categoryTitle .= ' - ' . implode(', ', array_map(fn (Brand $brand) => $brand->getName(), $productFilterData->brands));
+        }
+
+        return $categoryTitle;
     }
 }

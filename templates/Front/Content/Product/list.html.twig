@@ -6,7 +6,7 @@
 {% set domain = getDomain() %}
 
 {% block meta_robots %}
-    {{ paginator.metaRobots(paginationResult) }}
+    {{ paginator.metaRobots(paginationResult, disableIndexing) }}
 {% endblock %}
 
 {% block meta_description %}
@@ -14,18 +14,15 @@
 {% endblock %}
 
 {% block title %}
-    {{ category.getSeoTitle(domain.id)|default(category.name) }}
+    {{ categoryTitle }}
 {% endblock %}
 
 {% block main_content %}
     <div class="box-list">
         <div class="web__line">
             <div class="web__container">
-                <h1 class="box-list__title">
-                    {% if saleCategoryFriendlyUrl is not null %}
-                    Výprodej -
-                    {% endif %}
-                    {{ category.getSeoH1(domain.id)|default(category.name) }}
+                <h1 class="box-list__title js-category-title">
+                    {{ categoryTitle }}
                 </h1>
 
                 {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert' : category.getAdvert()})) }}
@@ -38,8 +35,8 @@
                     {% if paginationResult.results|length > 0 or filterFormSubmitted %}
                         <div class="box-list__panel js-product-list-panel">
                             <div class="box-filter js-product-filter">
-                                {% if saleCategoryFriendlyUrl is not null %}
-                                    {% set categoryUrl = url('front_sale_product_list', { friendlyUrl: saleCategoryFriendlyUrl }) %}
+                                {% if isSaleCategory %}
+                                    {% set categoryUrl = url('front_sale_product_list', { id: category.id }) %}
                                 {% else %}
                                     {% set categoryUrl = url('front_product_list', { id: category.id }) %}
                                 {% endif %}
@@ -51,7 +48,8 @@
                                     'product_list',
                                     productFilterCountData,
                                     priceRange,
-                                    filterFormSubmitted
+                                    filterFormSubmitted,
+                                    allowBrandLinks
                                 ) }}
                             </div>
                         </div>

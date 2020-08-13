@@ -2,6 +2,7 @@
 <div class="web__line">
     <div class="web__container">
         <div class="box-list box-list--search">
+            <input type="hidden" id="js-product-list-ajax-filter-current-url" value="{{ url(getRoute(), getAllRequestParams()) }}">
             <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
                 <div class="box-list__panel js-product-list-panel">
                     <div class="box-filter js-product-filter">
@@ -13,7 +14,8 @@
                             'search',
                             productFilterCountData,
                             priceRange,
-                            filterFormSubmitted
+                            filterFormSubmitted,
+                            allowBrandLinks
                         ) }}
                     </div>
                 </div>

@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace App\Component\Router\FriendlyUrl;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl;
+use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\Exception\FriendlyUrlNotFoundException;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository as BaseFriendlyUrlRepository;
 
 class FriendlyUrlRepository extends BaseFriendlyUrlRepository
 {
-    /**
-     * @var \App\Component\Router\FriendlyUrl\FriendlyUrlCacheFacade
-     */
-    private $friendlyUrlCacheFacade;
+    private FriendlyUrlCacheFacade $friendlyUrlCacheFacade;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -50,19 +47,9 @@ class FriendlyUrlRepository extends BaseFriendlyUrlRepository
         }
 
         if ($friendlyUrl === null) {
-            throw new \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\Exception\FriendlyUrlNotFoundException();
+            throw new FriendlyUrlNotFoundException();
         }
 
         return $friendlyUrl;
-    }
-
-    /**
-     * @param string $slug
-     * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl|null
-     */
-    public function findFriendlyUrlBySlugAndDomainId(string $slug, int $domainId): ?FriendlyUrl
-    {
-        return $this->getFriendlyUrlRepository()->findOneBy(['slug' => $slug, 'domainId' => $domainId]);
     }
 }

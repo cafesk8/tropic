@@ -27,13 +27,13 @@ class WatchDogMail implements MessageFactoryInterface
     private $setting;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory
+     * @var \App\Component\Router\DomainRouterFactory
      */
     private $domainRouterFactory;
 
     /**
      * @param \App\Component\Setting\Setting $setting
-     * @param \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory
+     * @param \App\Component\Router\DomainRouterFactory $domainRouterFactory
      */
     public function __construct(Setting $setting, DomainRouterFactory $domainRouterFactory)
     {

@@ -28,4 +28,26 @@ class BrandRepository extends BaseBrandRepository
 
         return $brand;
     }
+
+    /**
+     * @param int[] $ids
+     * @return string[]
+     */
+    public function getSlugsByIds(array $ids): array
+    {
+        $brands = $this->getBrandRepository()->findBy(['id' => $ids]);
+
+        return array_map(fn (Brand $brand) => $brand->getSlug(), $brands);
+    }
+
+    /**
+     * @param string[] $slugs
+     * @return int[]
+     */
+    public function getIdsBySlugs(array $slugs): array
+    {
+        $brands = $this->getBrandRepository()->findBy(['slug' => $slugs]);
+
+        return array_map(fn (Brand $brand) => $brand->getId(), $brands);
+    }
 }

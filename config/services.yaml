@@ -187,8 +187,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@App\Model\Product\ProductOnCurrentDomainElasticFacade'
 
-    Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@App\Model\Product\Brand\BrandDataFactory'
-
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade: '@App\Model\Product\Brand\BrandFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandRepository: '@App\Model\Product\Brand\BrandRepository'
@@ -691,3 +689,24 @@ services:
             - '%cofidis_config%'
 
     Shopsys\ReadModelBundle\Image\ImageViewFacade: '@App\Model\Product\View\ImageViewFacade'
+
+    App\Component\Router\DomainRouter: ~
+
+    Shopsys\FrameworkBundle\Component\Router\DomainRouter: '@App\Component\Router\DomainRouter'
+
+    App\Component\Router\DomainRouterFactory:
+        arguments: ['%router.resource%']
+
+    Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory: '@App\Component\Router\DomainRouterFactory'
+
+    App\Component\Router\PrettyFilterUrl\PrettyFilterUrlRouterFactory: ~
+
+    App\Component\Router\PrettyFilterUrl\PrettyFilterUrlListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    App\Model\Product\SaleProductListFriendlyUrlDataProvider:
+        tags:
+            - {name: shopsys.friendly_url_provider}
+
+    Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFactory: '@App\Component\Router\FriendlyUrl\FriendlyUrlFactory'

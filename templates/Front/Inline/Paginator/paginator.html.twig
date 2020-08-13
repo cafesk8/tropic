@@ -82,8 +82,8 @@
     </div>
 {% endmacro %}
 
-{% macro metaRobots(paginationResult) %}
-    {% if paginationResult.page != 1 %}
+{% macro metaRobots(paginationResult, disableIndexing) %}
+    {% if paginationResult.page != 1 or disableIndexing %}
         <meta name="robots" content="noindex, follow">
     {% endif %}
 {% endmacro %}

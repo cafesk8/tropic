@@ -24,7 +24,7 @@
     {% set category = categoryWithLazyLoadedVisibleChildren.category %}
     {% set hasChildren = category.hasChildren or category.saleType %}
     {% if isSaleCategoryChild %}
-        {% set categoryUrl = url('front_sale_product_list', { friendlyUrl: findMainFriendlyUrl('front_product_list', category.id) }) %}
+        {% set categoryUrl = url('front_sale_product_list', { id: category.id }) %}
     {% else %}
         {% set categoryUrl = url('front_product_list', { id: category.id }) %}
     {% endif %}
