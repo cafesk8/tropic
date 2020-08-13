@@ -24,26 +24,15 @@ use Shopsys\FrameworkBundle\Model\Product\ProductDataFactory as BaseProductDataF
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
 
+/**
+ * @property \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
+ */
 class ProductDataFactory extends BaseProductDataFactory
 {
-    /**
-     * @var \App\Model\Product\Group\ProductGroupFacade
-     */
-    private $productGroupFacade;
+    private ProductGroupFacade $productGroupFacade;
 
-    /**
-     * @var \App\Model\Product\Availability\AvailabilityFacade
-     */
-    private $availabilityFacade;
+    private ProductFlagDataFactory $productFlagDataFactory;
 
-    /**
-     * @var \App\Model\Product\Flag\ProductFlagDataFactory
-     */
-    private $productFlagDataFactory;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface
-     */
     private UploadedFileDataFactoryInterface $uploadedFileDataFactory;
 
     /**
@@ -94,10 +83,10 @@ class ProductDataFactory extends BaseProductDataFactory
             $imageFacade,
             $pluginDataFormExtensionFacade,
             $productParameterValueDataFactory,
-            $pricingGroupFacade
+            $pricingGroupFacade,
+            $availabilityFacade
         );
         $this->productGroupFacade = $productGroupFacade;
-        $this->availabilityFacade = $availabilityFacade;
         $this->productFlagDataFactory = $productFlagDataFactory;
         $this->uploadedFileDataFactory = $uploadedFileDataFactory;
     }

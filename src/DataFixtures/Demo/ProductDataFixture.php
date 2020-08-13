@@ -5,24 +5,28 @@ declare(strict_types=1);
 namespace App\DataFixtures\Demo;
 
 use App\Component\FileUpload\FileUpload;
+use App\Component\Setting\Setting;
+use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Flag\ProductFlagDataFactory;
+use App\Model\Product\Parameter\Parameter;
+use App\Model\Product\Parameter\ParameterDataFactory;
+use App\Model\Product\Parameter\ParameterFacade;
+use App\Model\Product\Parameter\ParameterValueDataFactory;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
+use App\Model\Product\ProductDataFactory;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\ProductVariantTropicFacade;
 use DateTime;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 
@@ -40,85 +44,44 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     public const VARIANT_5_CATNUM = '7700777';
     public const VARIANT_6_CATNUM = '7700769Z';
 
-    /**
-     * @var \App\Model\Product\ProductFacade
-     */
-    protected $productFacade;
+    protected ProductFacade $productFacade;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    protected $domain;
+    protected Domain $domain;
 
-    /**
-     * @var \App\Model\Pricing\Group\PricingGroupFacade
-     */
-    protected $pricingGroupFacade;
+    protected PricingGroupFacade $pricingGroupFacade;
 
-    /**
-     * @var \App\Model\Product\ProductDataFactory
-     */
-    protected $productDataFactory;
+    protected ProductDataFactory $productDataFactory;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory
-     */
-    protected $productParameterValueDataFactory;
+    protected ProductParameterValueDataFactory $productParameterValueDataFactory;
 
-    /**
-     * @var \App\Model\Product\Parameter\ParameterValueDataFactory
-     */
-    protected $parameterValueDataFactory;
+    protected ParameterValueDataFactory $parameterValueDataFactory;
 
-    /**
-     * @var \App\Model\Product\Parameter\ParameterFacade
-     */
-    protected $parameterFacade;
+    protected ParameterFacade $parameterFacade;
 
-    /**
-     * @var \App\Model\Product\Parameter\ParameterDataFactory
-     */
-    protected $parameterDataFactory;
+    protected ParameterDataFactory $parameterDataFactory;
 
     /**
      * @var \App\Model\Product\Parameter\Parameter[]
      */
-    protected $parameters;
+    protected array $parameters;
+
+    protected int $productNo = 1;
 
     /**
-     * @var int
+     * @var int[]
      */
-    protected $productNo = 1;
+    protected array $productIdsByCatnum = [];
 
-    /**
-     * @var \App\Model\Product\Product[]
-     */
-    protected $productsByCatnum = [];
+    protected PriceConverter $priceConverter;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\PriceConverter
-     */
-    protected $priceConverter;
+    protected Setting $setting;
 
-    /**
-     * @var \App\Component\Setting\Setting
-     */
-    protected $setting;
+    private ProductFlagDataFactory $productFlagDataFactory;
 
-    /**
-     * @var \App\Model\Product\Flag\ProductFlagDataFactory
-     */
-    private $productFlagDataFactory;
-
-    /**
-     * @var \App\Component\FileUpload\FileUpload
-     */
     private FileUpload $fileUpload;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface
-     */
     private UploadedFileDataFactoryInterface $uploadedFileDataFactory;
+    private EntityManagerInterface $em;
 
     /**
      * @param \App\Model\Product\ProductFacade $productFacade
@@ -133,6 +96,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory
      * @param \App\Component\FileUpload\FileUpload $fileUpload
      * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface $uploadedFileDataFactory
+     * @param \Doctrine\ORM\EntityManagerInterface $em
      */
     public function __construct(
         ProductFacade $productFacade,
@@ -146,7 +110,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         PriceConverter $priceConverter,
         ProductFlagDataFactory $productFlagDataFactory,
         FileUpload $fileUpload,
-        UploadedFileDataFactoryInterface $uploadedFileDataFactory
+        UploadedFileDataFactoryInterface $uploadedFileDataFactory,
+        EntityManagerInterface $em
     ) {
         $this->productFacade = $productFacade;
         $this->domain = $domain;
@@ -160,6 +125,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->productFlagDataFactory = $productFlagDataFactory;
         $this->fileUpload = $fileUpload;
         $this->uploadedFileDataFactory = $uploadedFileDataFactory;
+        $this->em = $em;
     }
 
     /**
@@ -5694,13 +5660,13 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $variantCatnumsByMainVariantCatnum = $this->getVariantCatnumsByMainVariantCatnum();
 
         foreach ($variantCatnumsByMainVariantCatnum as $mainVariantCatnum => $variantsCatnums) {
-            $mainVariant = $this->productsByCatnum[$mainVariantCatnum];
+            $mainVariant = $this->getProductFromCacheByCatnum($mainVariantCatnum);
             $mainVariantData = $this->productDataFactory->createFromProduct($mainVariant);
             $mainVariantData->variantId = $mainVariantCatnum;
             $this->productFacade->edit($mainVariant->getId(), $mainVariantData);
 
             foreach ($variantsCatnums as $key => $variantCatnum) {
-                $variant = $this->productsByCatnum[$variantCatnum];
+                $variant = $this->getProductFromCacheByCatnum($variantCatnum);
                 $variantData = $this->productDataFactory->createFromProduct($variant);
                 $variantVariantId = sprintf('%s%s%s', $mainVariantCatnum, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR, $key + 1);
                 $variantData->variantId = $variantVariantId;
@@ -5716,25 +5682,17 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      */
     protected function findParameterByNamesOrCreateNew(array $parameterNamesByLocale): Parameter
     {
-        $cacheId = json_encode($parameterNamesByLocale);
-
-        if (isset($this->parameters[$cacheId])) {
-            return $this->parameters[$cacheId];
-        }
-
         $parameter = $this->parameterFacade->findParameterByNames($parameterNamesByLocale);
 
         if ($parameter === null) {
             $parameterData = $this->parameterDataFactory->create();
             $parameterData->name = $parameterNamesByLocale;
             $parameterData->visible = true;
-            if ($parameterNamesByLocale === \App\Model\Product\Parameter\ParameterFacade::PARAMETER_COLOR) {
-                $parameterData->type = \App\Model\Product\Parameter\Parameter::TYPE_COLOR;
+            if ($parameterNamesByLocale === ParameterFacade::PARAMETER_COLOR) {
+                $parameterData->type = Parameter::TYPE_COLOR;
             }
             $parameter = $this->parameterFacade->create($parameterData);
         }
-
-        $this->parameters[$cacheId] = $parameter;
 
         return $parameter;
     }
@@ -5879,8 +5837,30 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     public function addProductReference(Product $product)
     {
         $this->addReference(self::PRODUCT_PREFIX . $this->productNo, $product);
-        $this->productsByCatnum[$product->getCatnum()] = $product;
         $this->productNo++;
+
+        if (in_array($product->getCatnum(), $this->getAllVariantCatnumsFromAssociativeArray(self::getVariantCatnumsByMainVariantCatnum()), true)) {
+            $this->saveProductToCache($product);
+        }
+
+        $this->em->clear();
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     */
+    private function saveProductToCache(Product $product): void
+    {
+        $this->productIdsByCatnum[$product->getCatnum()] = $product->getId();
+    }
+
+    /**
+     * @param string $catnum
+     * @return \App\Model\Product\Product
+     */
+    private function getProductFromCacheByCatnum(string $catnum): Product
+    {
+        return $this->productFacade->getById($this->productIdsByCatnum[$catnum]);
     }
 
     /**
@@ -5991,5 +5971,22 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         if (!is_dir($this->fileUpload->getTemporaryDirectory())) {
             mkdir($this->fileUpload->getTemporaryDirectory());
         }
+    }
+
+    /**
+     * @param array $productCatnumsByMainVariantCatnum
+     *
+     * @return string[]
+     */
+    private function getAllVariantCatnumsFromAssociativeArray(array $productCatnumsByMainVariantCatnum): array
+    {
+        $catnums = [];
+
+        foreach ($productCatnumsByMainVariantCatnum as $mainVariantCatnum => $variantCatnums) {
+            $catnums[] = $mainVariantCatnum;
+            $catnums = array_merge($catnums, $variantCatnums);
+        }
+
+        return array_unique($catnums);
     }
 }

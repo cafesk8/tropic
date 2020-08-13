@@ -13,6 +13,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
  * @method \App\Model\Product\Availability\Availability calculateMainVariantAvailability(\App\Model\Product\Product $mainVariant)
  * @method \App\Model\Product\Product[] getAtLeastSomewhereSellableVariantsByMainVariant(\App\Model\Product\Product $mainVariant)
  * @property \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
+ * @method \App\Model\Product\Availability\Availability calculateAvailabilityForUsingStockProduct(\App\Model\Product\Product $product)
  */
 class ProductAvailabilityCalculation extends BaseProductAvailabilityCalculation
 {

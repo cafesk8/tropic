@@ -38,4 +38,6 @@ return [
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     DevOps\KubernetesDeployment\DevOpsKubernetesDeploymentBundle::class => ['all' => true],
     Shopsys\Cdn\CdnBundle::class => ['all' => true],
+    Symplify\ConsoleColorDiff\ConsoleColorDiffBundle::class => ['dev' => true, 'test' => true],
+    Symplify\ParameterNameGuard\ParameterNameGuardBundle::class => ['dev' => true, 'test' => true],
 ];

@@ -8,8 +8,6 @@ const defaults = {
     buttonClose: true,
     buttonCancel: false,
     buttonContinue: false,
-    textContinue: Translator.trans('Yes'),
-    textCancel: Translator.trans('No'),
     textHeading: '',
     urlContinue: '#',
     cssClass: 'window-popup--standard',
@@ -41,7 +39,7 @@ export default class Window {
     constructor (inputOptions) {
         this.$activeWindow = null;
 
-        this.options = { ...defaults, ...inputOptions };
+        this.options = { textContinue: Translator.trans('Yes'), textCancel: Translator.trans('No'), ...defaults, ...inputOptions };
 
         if (this.$activeWindow !== null) {
             this.$activeWindow.trigger('windowFastClose');
