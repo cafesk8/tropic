@@ -4,11 +4,25 @@ declare(strict_types=1);
 
 namespace App\Model\TransportAndPayment;
 
+use App\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade as BaseFreeTransportAndPaymentFacade;
 
 class FreeTransportAndPaymentFacade extends BaseFreeTransportAndPaymentFacade
 {
+    private TransportFacade $transportFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
+     * @param \App\Model\Transport\TransportFacade $transportFacade
+     */
+    public function __construct(PricingSetting $pricingSetting, TransportFacade $transportFacade)
+    {
+        parent::__construct($pricingSetting);
+        $this->transportFacade = $transportFacade;
+    }
+
     /**
      * @param \Shopsys\FrameworkBundle\Component\Money\Money $productsPriceWithVat
      * @param int $domainId
@@ -27,5 +41,13 @@ class FreeTransportAndPaymentFacade extends BaseFreeTransportAndPaymentFacade
         }
 
         return (int)($productsPriceWithVat->divide($freeTransportAndPaymentPriceLimitOnDomain->getAmount(), 2)->multiply(100))->getAmount();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getFreeTransportAndPaymentPriceLimitOnDomain($domainId): ?Money
+    {
+        return $this->transportFacade->getMinOrderPriceForFreeTransport($domainId);
     }
 }

@@ -9,6 +9,7 @@ use App\Component\Balikobot\Shipper\ShipperServiceFacade;
 use App\Component\MergadoTransportType\MergadoTransportTypeFacade;
 use App\Model\Country\CountryFacade;
 use App\Model\Transport\Transport;
+use App\Model\Transport\TransportFacade;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter;
 use Shopsys\FrameworkBundle\Form\Admin\Transport\TransportFormType;
@@ -54,25 +55,30 @@ class TransportFormTypeExtension extends AbstractTypeExtension
      */
     private $mergadoTransportTypeFacade;
 
+    private TransportFacade $transportFacade;
+
     /**
      * @param \App\Component\Balikobot\Shipper\ShipperFacade $shipperFacade
      * @param \App\Component\Balikobot\Shipper\ShipperServiceFacade $shipperServiceFacade
      * @param \Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter $currentDomainRouter
      * @param \App\Model\Country\CountryFacade $countryFacade
      * @param \App\Component\MergadoTransportType\MergadoTransportTypeFacade $mergadoTransportTypeFacade
+     * @param \App\Model\Transport\TransportFacade $transportFacade
      */
     public function __construct(
         ShipperFacade $shipperFacade,
         ShipperServiceFacade $shipperServiceFacade,
         CurrentDomainRouter $currentDomainRouter,
         CountryFacade $countryFacade,
-        MergadoTransportTypeFacade $mergadoTransportTypeFacade
+        MergadoTransportTypeFacade $mergadoTransportTypeFacade,
+        TransportFacade $transportFacade
     ) {
         $this->shipperFacade = $shipperFacade;
         $this->shipperServiceFacade = $shipperServiceFacade;
         $this->currentDomainRouter = $currentDomainRouter;
         $this->countryFacade = $countryFacade;
         $this->mergadoTransportTypeFacade = $mergadoTransportTypeFacade;
+        $this->transportFacade = $transportFacade;
     }
 
     /**
@@ -80,6 +86,9 @@ class TransportFormTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var \App\Model\Transport\Transport|null $transport */
+        $transport = $options['transport'];
+
         $countries = $this->countryFacade->getAll();
         $builderBasicInformationGroup = $builder->get('basicInformation');
         $builderBasicInformationGroup
@@ -115,6 +124,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             ]);
 
         $builder->add($this->getTransportTypeGroup($builder));
+        $this->extendPricesGroup($builder, $transport);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
 
@@ -253,6 +263,22 @@ class TransportFormTypeExtension extends AbstractTypeExtension
                 'class' => 'js-transport-select-shipper-service js-transport-depend-on-balikobot',
             ],
             'constraints' => $validationGroupForShipperService,
+        ]);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \App\Model\Transport\Transport|null $transport
+     */
+    private function extendPricesGroup(FormBuilderInterface $builder, ?Transport $transport): void
+    {
+        $pricesGroup = $builder->get('prices');
+        $pricesGroup->remove('pricesByDomains');
+
+        $pricesGroup->add('pricesByDomains', TransportPricesType::class, [
+            'pricesIndexedByDomainId' => $this->transportFacade->getPricesIndexedByDomainId($transport),
+            'inherit_data' => true,
+            'render_form_row' => false,
         ]);
     }
 }

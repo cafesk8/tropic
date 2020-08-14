@@ -89,6 +89,7 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @property \App\Model\Order\Status\OrderStatusRepository $orderStatusRepository
  * @property \App\Model\Order\Item\OrderProductFacade $orderProductFacade
  * @method updateTransportAndPaymentNamesInOrderData(\App\Model\Order\OrderData $orderData, \App\Model\Order\Order $order)
+ * @property \App\Model\Transport\TransportPriceCalculation $transportPriceCalculation
  */
 class OrderFacade extends BaseOrderFacade
 {
@@ -172,7 +173,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\FrontOrderDataMapper $frontOrderDataMapper
      * @param \App\Twig\NumberFormatterExtension $numberFormatterExtension
      * @param \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
+     * @param \App\Model\Transport\TransportPriceCalculation $transportPriceCalculation
      * @param \App\Model\Order\Item\OrderItemFactory $orderItemFactory
      * @param \App\Model\Product\Gift\ProductGiftPriceCalculation $productGiftPriceCalculation
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade

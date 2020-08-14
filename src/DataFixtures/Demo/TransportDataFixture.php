@@ -180,6 +180,12 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             $vat = $this->getReferenceForDomain(VatDataFixture::VAT_HIGH, $domain->getId());
             $transportData->vatsIndexedByDomainId[$domain->getId()] = $vat;
             $transportData->pricesIndexedByDomainId[$domain->getId()] = $price;
+            $transportData->actionPricesIndexedByDomainId[$domain->getId()] = Money::create('0');
+            $transportData->minActionOrderPricesIndexedByDomainId[$domain->getId()] = Money::create('100000');
+            $transportData->actionDatesFromIndexedByDomainId[$domain->getId()] = null;
+            $transportData->actionDatesToIndexedByDomainId[$domain->getId()] = null;
+            $transportData->actionActiveIndexedByDomainId[$domain->getId()] = true;
+            $transportData->minFreeOrderPricesIndexedByDomainId[$domain->getId()] = null;
         }
     }
 

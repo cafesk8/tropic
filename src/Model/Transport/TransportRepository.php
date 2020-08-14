@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Transport;
 
 use Doctrine\ORM\Query\Expr\Join;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDomain;
 use Shopsys\FrameworkBundle\Model\Transport\TransportRepository as BaseTransportRepository;
 
@@ -87,5 +88,46 @@ class TransportRepository extends BaseTransportRepository
         }
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getMinOrderPriceForFreeTransport(int $domainId): ?Money
+    {
+        $freeResult = $this->getTransportRepository()->createQueryBuilder('t')
+            ->join(TransportPrice::class, 'tp', Join::WITH, 'tp.transport = t')
+            ->where('t.deleted = FALSE')
+            ->andWhere('tp.domainId = :domainId')
+            ->andWhere('tp.minFreeOrderPrice IS NOT NULL')
+            ->setParameter('domainId', $domainId)
+            ->orderBy('tp.minFreeOrderPrice', 'ASC')
+            ->select('tp.minFreeOrderPrice')
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+
+        $actionResult = $this->getTransportRepository()->createQueryBuilder('t')
+            ->join(TransportPrice::class, 'tp', Join::WITH, 'tp.transport = t')
+            ->where('t.deleted = FALSE')
+            ->andWhere('tp.actionActive = TRUE')
+            ->andWhere('tp.actionPrice = 0')
+            ->andWhere('tp.domainId = :domainId')
+            ->andWhere('(tp.actionDateFrom <= :currentDate OR tp.actionDateFrom IS NULL)')
+            ->andWhere('(DATE_ADD(tp.actionDateTo, 1, \'day\') >= :currentDate OR tp.actionDateTo IS NULL)')
+            ->setParameter('domainId', $domainId)
+            ->setParameter('currentDate', date('Y-m-d'))
+            ->orderBy('tp.minActionOrderPrice', 'ASC')
+            ->select('tp.minActionOrderPrice')
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+
+        if (!isset($freeResult['minFreeOrderPrice'])) {
+            return $actionResult['minActionOrderPrice'] ?? null;
+        } elseif (!isset($actionResult['minActionOrderPrice'])) {
+            return $freeResult['minFreeOrderPrice'] ?? null;
+        }
+
+        return $actionResult['minActionOrderPrice']->isGreaterThan($freeResult['minFreeOrderPrice']) ? $freeResult['minFreeOrderPrice'] : $actionResult['minActionOrderPrice'];
     }
 }

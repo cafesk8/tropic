@@ -129,7 +129,7 @@ class OrderController extends FrontBaseController
     private $transportFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation
+     * @var \App\Model\Transport\TransportPriceCalculation
      */
     private $transportPriceCalculation;
 
@@ -229,7 +229,7 @@ class OrderController extends FrontBaseController
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
+     * @param \App\Model\Transport\TransportPriceCalculation $transportPriceCalculation
      * @param \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Transport\TransportFacade $transportFacade

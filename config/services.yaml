@@ -710,3 +710,11 @@ services:
             - {name: shopsys.friendly_url_provider}
 
     Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFactory: '@App\Component\Router\FriendlyUrl\FriendlyUrlFactory'
+
+    App\Model\Transport\TransportPriceFactory: ~
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportPriceFactory: '@App\Model\Transport\TransportPriceFactory'
+
+    App\Model\Transport\TransportPriceCalculation: ~
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation: '@App\Model\Transport\TransportPriceCalculation'

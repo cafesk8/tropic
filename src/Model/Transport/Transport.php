@@ -21,6 +21,10 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
  * @method setPayments(\App\Model\Payment\Payment[] $payments)
  * @method removePayment(\App\Model\Payment\Payment $payment)
  * @method \App\Model\Payment\Payment[] getPayments()
+ * @method \App\Model\Transport\TransportPrice[] getPrices()
+ * @property \App\Model\Transport\TransportPrice[]|\Doctrine\Common\Collections\Collection $prices
+ * @method addPrice(\App\Model\Transport\TransportPrice $transportPrice)
+ * @method \App\Model\Transport\TransportPrice getPrice(int $domainId)
  */
 class Transport extends BaseTransport
 {

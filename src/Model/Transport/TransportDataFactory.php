@@ -52,5 +52,26 @@ class TransportDataFactory extends BaseTransportDataFactory
         $transportData->mergadoTransportType = $transport->getMergadoTransportType();
         $transportData->bulkyAllowed = $transport->isBulkyAllowed();
         $transportData->oversizedAllowed = $transport->isOversizedAllowed();
+
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $transportData->actionPricesIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->getActionPrice();
+            $transportData->minActionOrderPricesIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->getMinActionOrderPrice();
+            $transportData->actionDatesFromIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->getActionDateFrom();
+            $transportData->actionDatesToIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->getActionDateTo();
+            $transportData->actionActiveIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->isActionActive();
+            $transportData->minFreeOrderPricesIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->getMinFreeOrderPrice();
+        }
+    }
+
+    /**
+     * @param \App\Model\Transport\TransportData $transportData
+     */
+    protected function fillNew(BaseTransportData $transportData)
+    {
+        parent::fillNew($transportData);
+
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $transportData->actionActiveIndexedByDomainId[$domainId] = false;
+        }
     }
 }
