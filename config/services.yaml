@@ -728,3 +728,5 @@ services:
     App\Controller\Admin\SuperadminController:
         arguments:
             $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'
+
+    Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\BestsellingProductFacade: '@App\Model\Product\BestsellingProduct\BestsellingProductFacade'

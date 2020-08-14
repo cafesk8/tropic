@@ -11,12 +11,13 @@ use Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\CachedBestsellingPr
 /**
  * @property \App\Model\Product\ProductRepository $productRepository
  * @property \App\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository
- * @method __construct(\Doctrine\Common\Cache\CacheProvider $cacheProvider, \Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\BestsellingProductFacade $bestsellingProductFacade, \App\Model\Product\ProductRepository $productRepository, \App\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository)
+ * @method __construct(\Doctrine\Common\Cache\CacheProvider $cacheProvider, \App\Model\Product\BestsellingProduct\BestsellingProductFacade $bestsellingProductFacade, \App\Model\Product\ProductRepository $productRepository, \App\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository)
  * @method \App\Model\Product\Product[] getAllOfferedBestsellingProducts(int $domainId, \App\Model\Category\Category $category, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
  * @method invalidateCacheByDomainIdAndCategory(int $domainId, \App\Model\Category\Category $category)
  * @method saveToCache(\App\Model\Product\Product[] $bestsellingProducts, string $cacheId)
  * @method \App\Model\Product\Product[] getSortedProducts(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int[] $sortedProductIds)
  * @method string getCacheId(int $domainId, \App\Model\Category\Category $category, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
+ * @property \App\Model\Product\BestsellingProduct\BestsellingProductFacade $bestsellingProductFacade
  */
 class CachedBestsellingProductFacade extends BaseCachedBestsellingProductFacade
 {
