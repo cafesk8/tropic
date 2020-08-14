@@ -48,6 +48,9 @@ class PohodaProduct
     public const COL_SHOWN_SK = 'shownSk';
     public const COL_VOLUME = 'volume';
     public const COL_SUPPLIER_SET = 'supplierSet';
+    public const COL_PRIORITY = 'priority';
+    public const COL_FOREIGN_SUPPLIER = 'foreignSupplier';
+    public const COL_WEIGHT = 'weight';
 
     public const COL_EXTERNAL_STOCK = 'externalStock';
     public const COL_STOCK_TOTAL = 'totalStock';
@@ -309,6 +312,12 @@ class PohodaProduct
 
     public bool $supplierSet;
 
+    public int $priority;
+
+    public bool $foreignSupplier;
+
+    public float $weight;
+
     /**
      * @param array $pohodaProductData
      */
@@ -362,5 +371,8 @@ class PohodaProduct
         $this->parameters = $pohodaProductData[self::COL_PARAMETERS];
         $this->volume = (int)$pohodaProductData[self::COL_VOLUME];
         $this->supplierSet = (bool)$pohodaProductData[self::COL_SUPPLIER_SET];
+        $this->priority = (int)$pohodaProductData[self::COL_PRIORITY];
+        $this->foreignSupplier = (bool)$pohodaProductData[self::COL_FOREIGN_SUPPLIER];
+        $this->weight = (float)$pohodaProductData[self::COL_WEIGHT];
     }
 }

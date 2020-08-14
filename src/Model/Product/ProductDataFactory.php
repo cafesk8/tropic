@@ -181,6 +181,8 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->stickers->orderedImages = $this->imageFacade->getImagesByEntityIndexedById($product, Product::IMAGE_TYPE_STICKER);
         $productData->supplierSet = $product->isSupplierSet();
         $productData->updatedByPohodaAt = $product->getUpdatedByPohodaAt();
+        $productData->foreignSupplier = $product->isForeignSupplier();
+        $productData->weight = $product->getWeight();
 
         foreach ($this->domain->getAllIds() as $domainId) {
             $productData->generateToMergadoXmlFeeds[$domainId] = $product->isGenerateToMergadoXmlFeed($domainId);

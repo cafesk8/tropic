@@ -106,6 +106,15 @@ class PohodaProductDataValidator
                 PohodaProduct::COL_SUPPLIER_SET => [
                     new NotBlank(),
                 ],
+                PohodaProduct::COL_PRIORITY => [
+                    new Type(['type' => 'numeric']),
+                ],
+                PohodaProduct::COL_FOREIGN_SUPPLIER => [
+                    new NotBlank(),
+                ],
+                PohodaProduct::COL_WEIGHT => [
+                    new Type(['type' => 'numeric']),
+                ],
             ],
         ]));
 

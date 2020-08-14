@@ -81,6 +81,9 @@ class PohodaProductExportRepository
         'VPrZobrazSK' => PohodaProduct::COL_SHOWN_SK,
         'Objem' => PohodaProduct::COL_VOLUME,
         'VPrVyrOdDod' => PohodaProduct::COL_SUPPLIER_SET,
+        'VPrSouprava' => PohodaProduct::COL_PRIORITY,
+        'VPrZahrDodav' => PohodaProduct::COL_FOREIGN_SUPPLIER,
+        'Hmotnost' => PohodaProduct::COL_WEIGHT,
     ];
 
     /**
