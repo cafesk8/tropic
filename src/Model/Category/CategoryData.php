@@ -79,7 +79,12 @@ class CategoryData extends BaseCategoryData
     /**
      * @var bool[]
      */
-    public $containsSaleProducts;
+    public array $containsSaleProducts;
+
+    /**
+     * @var bool[]
+     */
+    public array $containsNewsProducts;
 
     public bool $unavailableProductsShown;
 
@@ -94,6 +99,7 @@ class CategoryData extends BaseCategoryData
         $this->type = null;
         $this->filterParameters = [];
         $this->containsSaleProducts = [];
+        $this->containsNewsProducts = [];
         $this->unavailableProductsShown = true;
     }
 }

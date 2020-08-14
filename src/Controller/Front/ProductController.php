@@ -325,6 +325,7 @@ class ProductController extends FrontBaseController
             'filterFormSubmitted' => $filterForm->isSubmitted(),
             'visibleChildren' => $visibleChildren,
             'isSaleCategory' => false,
+            'isNewsCategory' => false,
             'priceRange' => $productFilterConfig->getPriceRange(),
             'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
                 $category,
@@ -369,12 +370,13 @@ class ProductController extends FrontBaseController
         $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest($request);
 
         $productFilterData = new ProductFilterData();
+        $saleFlags = $this->flagFacade->getSaleFlags();
 
-        foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
+        foreach ($saleFlags as $saleFlag) {
             $productFilterData->flags[] = $saleFlag;
         }
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, true);
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, $saleFlags);
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -407,6 +409,7 @@ class ProductController extends FrontBaseController
             'filterFormSubmitted' => $filterForm->isSubmitted(),
             'visibleChildren' => null,
             'isSaleCategory' => true,
+            'isNewsCategory' => false,
             'priceRange' => $productFilterConfig->getPriceRange(),
             'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
                 $category,
@@ -415,6 +418,92 @@ class ProductController extends FrontBaseController
             ),
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData, true),
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData, Category::SALE_TYPE),
+            'disableIndexing' => count($productFilterData->brands) >= 2,
+        ];
+
+        $request->query->set('product_filter_form', $params);
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('Front/Content/Product/ajaxList.html.twig', $viewParameters);
+        } else {
+            return $this->render('Front/Content/Product/list.html.twig', $viewParameters);
+        }
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listByNewsCategoryAction(Request $request, int $id): Response
+    {
+        $params = $request->query->get('product_filter_form');
+        $tmpParams = $params;
+
+        foreach ($this->flagFacade->getSaleFlags() as $newsFlag) {
+            $tmpParams['flags'][] = $newsFlag->getId();
+        }
+        $request->query->set('product_filter_form', $tmpParams);
+
+        $category = $this->categoryFacade->getById($id);
+
+        $requestPage = $request->get(self::PAGE_QUERY_PARAMETER);
+        if (!$this->isRequestPageValid($requestPage)) {
+            return $this->redirectToRoute('front_sale_product_list', $this->getRequestParametersWithoutPage());
+        }
+        $page = $requestPage === null ? 1 : (int)$requestPage;
+
+        $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest($request);
+
+        $productFilterData = new ProductFilterData();
+        $newsFlags = $this->flagFacade->getNewsFlags();
+
+        foreach ($newsFlags as $newsFlag) {
+            $productFilterData->flags[] = $newsFlag;
+        }
+
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, $newsFlags);
+        $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
+            'product_filter_config' => $productFilterConfig,
+        ]);
+
+        $filterForm->handleRequest($request);
+
+        $paginationResult = $this->listedProductViewFacade->getFilteredPaginatedInCategory(
+            $category->getId(),
+            $productFilterData,
+            $orderingModeId,
+            $page,
+            self::PRODUCTS_PER_PAGE,
+            $category->isUnavailableProductsShown()
+        );
+
+        $productFilterCountData = null;
+        if ($this->moduleFacade->isEnabled(ModuleList::PRODUCT_FILTER_COUNTS)) {
+            $productFilterCountData = $this->productOnCurrentDomainFacade->getProductFilterCountDataInCategory(
+                $category->getId(),
+                $productFilterConfig,
+                $productFilterData
+            );
+        }
+
+        $viewParameters = [
+            'paginationResult' => $paginationResult,
+            'productFilterCountData' => $productFilterCountData,
+            'category' => $category,
+            'filterForm' => $filterForm->createView(),
+            'filterFormSubmitted' => $filterForm->isSubmitted(),
+            'visibleChildren' => null,
+            'isSaleCategory' => false,
+            'isNewsCategory' => true,
+            'priceRange' => $productFilterConfig->getPriceRange(),
+            'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
+                $category,
+                $this->domain->getId(),
+                self::LIST_BLOG_ARTICLES_LIMIT
+            ),
+            'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData, true),
+            'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData, Category::NEWS_TYPE),
             'disableIndexing' => count($productFilterData->brands) >= 2,
         ];
 
@@ -524,16 +613,16 @@ class ProductController extends FrontBaseController
 
     /**
      * @param \App\Model\Category\Category $category
-     * @param bool $isSaleCategory
+     * @param \App\Model\Product\Flag\Flag[] $onlyFlags
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
-    private function createProductFilterConfigForCategory(BaseCategory $category, bool $isSaleCategory = false)
+    private function createProductFilterConfigForCategory(BaseCategory $category, array $onlyFlags = [])
     {
         return $this->productFilterConfigFactory->createForCategory(
             $this->domain->getId(),
             $this->domain->getLocale(),
             $category,
-            $isSaleCategory
+            $onlyFlags
         );
     }
 
@@ -741,7 +830,14 @@ class ProductController extends FrontBaseController
      */
     private function getCategoryTitleWithActiveBrands(Category $category, ProductFilterData $productFilterData, ?string $type = null): string
     {
-        $categoryTitle = $type === Category::SALE_TYPE ? t('Výprodej') . ' - ' : '';
+        $categoryTitle = '';
+
+        if ($type === Category::SALE_TYPE) {
+            $categoryTitle .= t('Výprodej') . ' - ';
+        } elseif ($type === Category::NEWS_TYPE) {
+            $categoryTitle .= t('Novinky') . ' - ';
+        }
+
         $categoryTitle .= $category->getTitle($this->domain);
 
         if (!empty($productFilterData->brands)) {

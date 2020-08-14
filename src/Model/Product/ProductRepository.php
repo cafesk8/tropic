@@ -702,17 +702,17 @@ class ProductRepository extends BaseProductRepository
      * @param int $domainId
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param \App\Model\Category\Category $category
-     * @param bool $isSaleCategory
+     * @param \App\Model\Product\Flag\Flag[] $onlyFlags
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function getListableInCategoryQueryBuilder(
         $domainId,
         BasePricingGroup $pricingGroup,
         BaseCategory $category,
-        bool $isSaleCategory = false
+        array $onlyFlags = []
     ) {
         $queryBuilder = $this->getAllListableQueryBuilder($domainId, $pricingGroup);
-        $this->filterByCategory($queryBuilder, $category, $domainId, $isSaleCategory);
+        $this->filterByCategory($queryBuilder, $category, $domainId, $onlyFlags);
         return $queryBuilder;
     }
 
@@ -720,17 +720,17 @@ class ProductRepository extends BaseProductRepository
      * @param int $domainId
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param \App\Model\Category\Category $category
-     * @param bool $isSaleCategory
+     * @param \App\Model\Product\Flag\Flag[] $onlyFlags
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function getOfferedInCategoryQueryBuilder(
         $domainId,
         BasePricingGroup $pricingGroup,
         BaseCategory $category,
-        bool $isSaleCategory = false
+        array $onlyFlags = []
     ) {
         $queryBuilder = $this->getAllOfferedQueryBuilder($domainId, $pricingGroup);
-        $this->filterByCategory($queryBuilder, $category, $domainId, $isSaleCategory);
+        $this->filterByCategory($queryBuilder, $category, $domainId, $onlyFlags);
 
         return $queryBuilder;
     }
@@ -739,18 +739,16 @@ class ProductRepository extends BaseProductRepository
      * @param \Doctrine\ORM\QueryBuilder $queryBuilder
      * @param \App\Model\Category\Category $category
      * @param int $domainId
-     * @param bool $isSaleCategory
+     * @param \App\Model\Product\Flag\Flag[] $onlyFlags
      */
-    protected function filterByCategory(QueryBuilder $queryBuilder, BaseCategory $category, $domainId, bool $isSaleCategory = false)
+    protected function filterByCategory(QueryBuilder $queryBuilder, BaseCategory $category, $domainId, array $onlyFlags = [])
     {
-        $queryBuilder->join('p.productCategoryDomains', 'pcd', Join::WITH, 'pcd.category = :category AND pcd.domainId = :domainId');
-        $queryBuilder->setParameter('category', $category);
-        $queryBuilder->setParameter('domainId', $domainId);
+        parent::filterByCategory($queryBuilder, $category, $domainId);
 
-        if ($isSaleCategory) {
+        if (!empty($onlyFlags)) {
             $queryBuilder->leftJoin('p.flags', 'f');
             $queryBuilder->andWhere('f.flag IN (:flags)');
-            $queryBuilder->setParameter('flags', $this->flagFacade->getSaleFlags());
+            $queryBuilder->setParameter('flags', $onlyFlags);
         }
     }
 

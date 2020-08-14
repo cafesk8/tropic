@@ -7,12 +7,9 @@ namespace App\Model\Category;
 use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
 use Symfony\Bridge\Monolog\Logger;
 
-class CategorySaleProductsCronModule implements SimpleCronModuleInterface
+class SpecialCategoriesCronModule implements SimpleCronModuleInterface
 {
-    /**
-     * @var \App\Model\Category\CategoryFacade
-     */
-    protected $categoryFacade;
+    protected CategoryFacade $categoryFacade;
 
     /**
      * @param \App\Model\Category\CategoryFacade $categoryFacade
@@ -32,5 +29,6 @@ class CategorySaleProductsCronModule implements SimpleCronModuleInterface
     public function run()
     {
         $this->categoryFacade->markSaleCategories();
+        $this->categoryFacade->markNewsCategories();
     }
 }

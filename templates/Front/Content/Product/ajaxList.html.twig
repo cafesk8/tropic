@@ -9,6 +9,8 @@
         <div class="box-filter js-product-filter">
             {% if isSaleCategory %}
                 {% set categoryUrl = url('front_sale_product_list', { id: category.id }) %}
+            {% elseif isNewsCategory %}
+                {% set categoryUrl = url('front_news_product_list', { id: category.id }) %}
             {% else %}
                 {% set categoryUrl = url('front_product_list', { id: category.id }) %}
             {% endif %}

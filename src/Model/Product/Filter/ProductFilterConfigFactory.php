@@ -21,19 +21,19 @@ class ProductFilterConfigFactory extends BaseProductFilterConfigFactory
      * @param int $domainId
      * @param string $locale
      * @param \App\Model\Category\Category $category
-     * @param bool $isSaleCategory
+     * @param \App\Model\Product\Flag\Flag[] $onlyFlags
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
-    public function createForCategory($domainId, $locale, BaseCategory $category, $isSaleCategory = false)
+    public function createForCategory($domainId, $locale, BaseCategory $category, array $onlyFlags = [])
     {
-        if ($isSaleCategory) {
+        if ($onlyFlags) {
             $pricingGroup = $this->currentCustomerUser->getPricingGroup();
 
             $productFilterConfig = new ProductFilterConfig(
                 [],
                 [],
-                $this->brandFilterChoiceRepository->getBrandFilterChoicesInCategory($domainId, $pricingGroup, $category, true),
-                $this->priceRangeRepository->getPriceRangeInCategory($domainId, $pricingGroup, $category, true)
+                $this->brandFilterChoiceRepository->getBrandFilterChoicesInCategory($domainId, $pricingGroup, $category, $onlyFlags),
+                $this->priceRangeRepository->getPriceRangeInCategory($domainId, $pricingGroup, $category, $onlyFlags)
             );
         } else {
             $productFilterConfig = parent::createForCategory($domainId, $locale, $category);

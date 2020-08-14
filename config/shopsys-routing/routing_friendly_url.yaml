@@ -17,6 +17,10 @@ front_sale_product_list:
     path: friendly-url
     defaults: { _controller: App\Controller\Front\ProductController:listBySaleCategoryAction }
 
+front_news_product_list:
+    path: friendly-url
+    defaults: { _controller: App\Controller\Front\ProductController:listByNewsCategoryAction }
+
 front_blogarticle_detail:
     path: friendly-url
     defaults: { _controller: App\Controller\Front\BlogArticleController:detailAction }

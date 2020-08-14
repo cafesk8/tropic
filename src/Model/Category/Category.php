@@ -266,6 +266,7 @@ class Category extends BaseCategory
         foreach ($this->domains as $categoryDomain) {
             $domainId = $categoryDomain->getDomainId();
             $categoryDomain->setContainsSaleProduct($categoryData->containsSaleProducts[$domainId]);
+            $categoryDomain->setContainsNewsProduct($categoryData->containsNewsProducts[$domainId]);
         }
     }
 
@@ -386,6 +387,29 @@ class Category extends BaseCategory
         }
 
         return $containsSaleProductByDomain;
+    }
+
+    /**
+     * @param int $domainId
+     * @return bool
+     */
+    public function containsNewsProduct(int $domainId): bool
+    {
+        return $this->getCategoryDomain($domainId)->containsNewsProduct();
+    }
+
+    /**
+     * @return bool[]
+     */
+    public function containsNewsProducts(): array
+    {
+        $containsNewsProductByDomain = [];
+
+        foreach ($this->domains as $domain) {
+            $containsNewsProductByDomain[$domain->getDomainId()] = $this->containsNewsProduct($domain->getDomainId());
+        }
+
+        return $containsNewsProductByDomain;
     }
 
     /**
