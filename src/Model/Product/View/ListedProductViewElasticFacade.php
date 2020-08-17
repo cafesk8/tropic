@@ -124,7 +124,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
             $limit
         );
 
-        return $this->createFromArray($this->productOnCurrentDomainFacade->getSellableHitsForIds($lastVisitedProductIds));
+        return $this->createFromArray($this->productOnCurrentDomainFacade->getHitsForIds($lastVisitedProductIds));
     }
 
     /**

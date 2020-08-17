@@ -265,4 +265,26 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 
         return $productsResult->getHits();
     }
+
+    /**
+     * @param int[] $ids
+     * @return array
+     */
+    public function getHitsForIds(array $ids): array
+    {
+        $filterQuery = $this->filterQueryFactory->create($this->getIndexName())->filterIds(array_values($ids));
+
+        $hits = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery)->getHits();
+
+        $hitsSortedByOriginalArray = [];
+        foreach ($hits as $hit) {
+            $originalIndex = array_search($hit['id'], $ids, true);
+            if ($originalIndex !== false) {
+                $hitsSortedByOriginalArray[$originalIndex] = $hit;
+            }
+        }
+        ksort($hitsSortedByOriginalArray);
+
+        return $hitsSortedByOriginalArray;
+    }
 }
