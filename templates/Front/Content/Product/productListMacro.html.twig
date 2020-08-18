@@ -5,7 +5,7 @@
         {% for productView in productViews %}
             {% set productSellingPrice = productView.sellingPrice %}
 
-            {% if productView.groupItems is not empty %}
+            {% if productView.setItems is not empty %}
                 {{ productSetMacro.productSetView(productView) }}
             {% else %}
                 <li class="list-products__item js-list-products-item js-maximum-amount-container">
@@ -84,9 +84,9 @@
                                         {{ 'Větší množství není možné nakoupit'|trans }}
                                     </div>
                                 {% endif %}
-                                
+
                                 <div class="list-products__item__hover">
-                                    
+
                                     {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { listedProductView: productView } )) }}
                                 </div>
                             </div>
@@ -280,7 +280,7 @@
                                     {% else %}
                                         {{ productSellingPrice.priceWithVat|price }}
                                     {% endif %}
-                                    
+
                                     {% if productSellingPrice.hasHigherStandardPrice %}
                                         <div class="{{ listCssClass }}__item__info__price__old">
                                             {{ productSellingPrice.standardPrice.priceWithVat|price }}

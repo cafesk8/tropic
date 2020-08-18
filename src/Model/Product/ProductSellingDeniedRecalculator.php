@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
-use App\Model\Product\Group\ProductGroup;
-use App\Model\Product\Group\ProductGroupFacade;
+use App\Model\Product\Set\ProductSet;
+use App\Model\Product\Set\ProductSetFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator as BaseProductSellingDeniedRecalculator;
@@ -18,18 +18,18 @@ use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator as Ba
 class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalculator
 {
     /**
-     * @var \App\Model\Product\Group\ProductGroupFacade
+     * @var \App\Model\Product\Set\ProductSetFacade
      */
-    private $productGroupFacade;
+    private $productSetFacade;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      */
-    public function __construct(EntityManagerInterface $entityManager, ProductGroupFacade $productGroupFacade)
+    public function __construct(EntityManagerInterface $entityManager, ProductSetFacade $productSetFacade)
     {
         parent::__construct($entityManager);
-        $this->productGroupFacade = $productGroupFacade;
+        $this->productSetFacade = $productSetFacade;
     }
 
     /**
@@ -38,7 +38,7 @@ class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalcula
     protected function calculate(array $products = [])
     {
         parent::calculate($products);
-        $this->propagateSellingDeniedFromGroupItems($products);
+        $this->propagateSellingDeniedFromSetItems($products);
     }
 
     /**
@@ -49,10 +49,10 @@ class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalcula
     {
         /** @var \App\Model\Product\Product[] $products */
         $products = parent::getProductsForCalculations($product);
-        $productGroups = $this->productGroupFacade->getAllByItem($product);
+        $productSets = $this->productSetFacade->getAllByItem($product);
 
-        foreach ($productGroups as $productGroup) {
-            $products[] = $productGroup->getMainProduct();
+        foreach ($productSets as $productSet) {
+            $products[] = $productSet->getMainProduct();
         }
 
         return $products;
@@ -61,12 +61,12 @@ class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalcula
     /**
      * @param \App\Model\Product\Product[] $products
      */
-    private function propagateSellingDeniedFromGroupItems(array $products)
+    private function propagateSellingDeniedFromSetItems(array $products)
     {
         foreach ($products as $product) {
-            $productIds = array_map(function (ProductGroup $productGroup) {
-                return $productGroup->getItem()->getId();
-            }, $product->getProductGroups());
+            $productIds = array_map(function (ProductSet $productSet) {
+                return $productSet->getItem()->getId();
+            }, $product->getProductSets());
 
             if (count($productIds) < 1) {
                 continue;

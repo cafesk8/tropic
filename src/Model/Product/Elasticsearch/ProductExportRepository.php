@@ -6,8 +6,8 @@ namespace App\Model\Product\Elasticsearch;
 
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Flag\Flag;
-use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Product;
+use App\Model\Product\Set\ProductSetFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
@@ -46,10 +46,7 @@ class ProductExportRepository extends BaseProductExportRepository
      */
     private $pricingGroupSettingFacade;
 
-    /**
-     * @var \App\Model\Product\Group\ProductGroupFacade
-     */
-    private $productGroupFacade;
+    private ProductSetFacade $productSetFacade;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -60,7 +57,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
-     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
@@ -72,12 +69,12 @@ class ProductExportRepository extends BaseProductExportRepository
         ProductVisibilityRepository $productVisibilityRepository,
         FriendlyUrlFacade $friendlyUrlFacade,
         PricingGroupSettingFacade $pricingGroupSettingFacade,
-        ProductGroupFacade $productGroupFacade,
+        ProductSetFacade $productSetFacade,
         PricingGroupFacade $pricingGroupFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
-        $this->productGroupFacade = $productGroupFacade;
+        $this->productSetFacade = $productSetFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
@@ -100,7 +97,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['amount_multiplier'] = $product->getAmountMultiplier();
         $result['variants_aliases'] = $this->getVariantsAliases($product, $locale, $domainId);
         $result['variants_count'] = count($result['variants_aliases']);
-        $result['group_items'] = $this->productGroupFacade->getAllForElasticByMainProduct($product, $locale);
+        $result['set_items'] = $this->productSetFacade->getAllItemsDataByMainProduct($product, $locale);
         if ($product->isMainVariant()) {
             $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
         }
@@ -109,7 +106,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['is_available_in_days'] = $product->isMainVariant() ? false : $product->isAvailableInDays();
         $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
         $result['is_in_any_sale_stock'] = $product->isInAnySaleStock();
-        $result['pohoda_product_type'] = $product->getPohodaProductType() ?? Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
+        $result['pohoda_product_type'] = $this->getPohodaProductType($product);
         $result['ordering_priority'] = $product->getBiggestVariantOrderingPriority();
         $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
         $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
@@ -257,5 +254,17 @@ class ProductExportRepository extends BaseProductExportRepository
         return array_map(function (Flag $flag) {
             return $flag->getId();
         }, $product->getActiveFlags());
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return int
+     */
+    private function getPohodaProductType(Product $product): int
+    {
+        if ($product->isSupplierSet()) {
+            return Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET;
+        }
+        return $product->getPohodaProductType() ?? Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
     }
 }

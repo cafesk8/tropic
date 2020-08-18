@@ -2,14 +2,14 @@
 
 <div class="search__autocomplete">
     <div class="search-hint" id="js-search-autocomplete-list">
-        {% if groupsPaginationResult.totalCount > 0 %}
+        {% if setsPaginationResult.totalCount > 0 %}
             <div class="search-hint__left">
                 <div class="search-hint__title">
-                    {{ 'Sety'|trans }} ({{ groupsPaginationResult.totalCount }})
+                    {{ 'Sety'|trans }} ({{ setsPaginationResult.totalCount }})
                 </div>
                 <ul class="search-hint__product">
-                    {% for set in groupsPaginationResult.results %}
-                        {{ _self.productOrGroupLine(set) }}
+                    {% for set in setsPaginationResult.results %}
+                        {{ _self.productOrSetLine(set) }}
                     {% endfor %}
                 </ul>
             </div>
@@ -39,7 +39,7 @@
             </div>
             <ul class="search-hint__product">
                 {% for product in productsPaginationResult.results %}
-                    {{ _self.productOrGroupLine(product) }}
+                    {{ _self.productOrSetLine(product) }}
                 {% else %}
                     <li>
                         {{ 'Vyhledávání neodpovídá žádný produkt'|trans }}
@@ -50,7 +50,7 @@
     </div>
 
     <div class="search-hint__bottom">
-        {% if categoriesPaginationResult.totalCount > 0 or productsPaginationResult.totalCount > 0 or groupsPaginationResult.totalCount %}
+        {% if categoriesPaginationResult.totalCount > 0 or productsPaginationResult.totalCount > 0 or setsPaginationResult.totalCount %}
             <a href="{{ searchUrl }}" class="btn btn--success search-hint__bottom__button">
                 {{ 'Zobrazit všechny výsledky'|trans }}
             </a>
@@ -58,29 +58,37 @@
     </div>
 </div>
 
-{% macro productOrGroupLine(productOrGroup) %}
+{% macro productOrSetLine(productOrSet) %}
     <li class="search-hint__product__item">
-        <a href="{{ url('front_product_detail', { id: productOrGroup.id }) }}" 
-            class="search-hint__product__item__link{% if productOrGroup.isPohodaProductTypeGroup %} search-hint__product__item__link--sets{% endif %}"
+        <a href="{{ url('front_product_detail', { id: productOrSet.id }) }}"
+            class="search-hint__product__item__link{% if productOrSet.isPohodaProductTypeSet or productOrSet.isSupplierSet %} search-hint__product__item__link--sets{% endif %}"
         >
-            {% if productOrGroup.isPohodaProductTypeGroup %}
+            {% if productOrSet.isPohodaProductTypeSet %}
                 <div class="search-hint__product__item__wrap-image">
-                    {% for productGroup in productOrGroup.productGroups %}
+                    {% for productSet in productOrSet.productSets %}
                         <div class="search-hint__product__item__image search-hint__product__item__image--sets svg svg-plus-big">
-                            {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                            {{ image(productSet.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% elseif productOrSet.isSupplierSet %}
+                <div class="search-hint__product__item__wrap-image">
+                    {% for image in getSupplierSetImagesExcludingMain(productOrSet) %}
+                        <div class="search-hint__product__item__image search-hint__product__item__image--sets svg svg-plus-big">
+                            {{ image(image, {size: 'thumbnail', lazy: false}) }}
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
                 <span class="search-hint__product__item__image">
-                    <img src="{{ imageUrl(productOrGroup, 'thumbnail') }}" title="{{ productOrGroup.name }}" width="30"/>
+                    <img src="{{ imageUrl(productOrSet, 'thumbnail') }}" title="{{ productOrSet.name }}" width="30"/>
                 </span>
             {% endif %}
             <span class="search-hint__product__item__name js-search-autocomplete-item-label">
-                {{ productOrGroup.name }}
-                {% if not productOrGroup.calculatedSellingDenied %}
+                {{ productOrSet.name }}
+                {% if not productOrSet.calculatedSellingDenied %}
                     <span class="search-hint__product__item__price">
-                        {% set sellingPrice = getProductSellingPrice(productOrGroup) %}
+                        {% set sellingPrice = getProductSellingPrice(productOrSet) %}
                         {% if sellingPrice.priceFrom %}
                             {{ 'from %price%'|trans({'%price%': sellingPrice.priceWithVat|price}) }}
                         {% else %}

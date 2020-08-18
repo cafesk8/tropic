@@ -229,7 +229,7 @@ class PohodaProductMapper
         $this->mapProductParameters($pohodaProduct, $productData);
 
         $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
-        $productData->groupItems = $this->getMappedProductGroupItems($pohodaProduct->productGroups);
+        $productData->setItems = $this->getMappedProductSetItems($pohodaProduct->productSets);
         $productData->descriptionAutomaticallyTranslated = $pohodaProduct->automaticDescriptionTranslation;
         $productData->shortDescriptionAutomaticallyTranslated = $pohodaProduct->automaticDescriptionTranslation;
 
@@ -338,6 +338,7 @@ class PohodaProductMapper
                 $productData->bulky = false;
                 $productData->oversized = false;
         }
+        $productData->supplierSet = $pohodaProduct->supplierSet;
     }
 
     /**
@@ -392,29 +393,29 @@ class PohodaProductMapper
     }
 
     /**
-     * @param array $pohodaProductGroups
+     * @param array $pohodaProductSets
      * @return array
      */
-    private function getMappedProductGroupItems(array $pohodaProductGroups): array
+    private function getMappedProductSetItems(array $pohodaProductSets): array
     {
-        $productGroupItems = [];
-        foreach ($pohodaProductGroups as $pohodaProductGroup) {
-            $productGroupItemPohodaId = (int)$pohodaProductGroup[PohodaProduct::COL_PRODUCT_GROUP_ITEM_REF_ID];
-            $productGroupItem = $this->productFacade->findByPohodaId($productGroupItemPohodaId);
+        $productSetItems = [];
+        foreach ($pohodaProductSets as $pohodaProductSet) {
+            $productSetItemPohodaId = (int)$pohodaProductSet[PohodaProduct::COL_PRODUCT_SET_ITEM_REF_ID];
+            $productSetItem = $this->productFacade->findByPohodaId($productSetItemPohodaId);
 
-            if ($productGroupItem === null) {
+            if ($productSetItem === null) {
                 throw new ProductNotFoundInEshopException(sprintf(
-                    'Group item pohodaId=%d not found in e-shop database!',
-                    $productGroupItemPohodaId
+                    'Set item pohodaId=%d not found in e-shop database!',
+                    $productSetItemPohodaId
                 ));
             }
-            $productGroupItems[] = [
-                'item' => $productGroupItem,
-                'item_count' => (int)$pohodaProductGroup[PohodaProduct::COL_PRODUCT_GROUP_ITEM_COUNT],
+            $productSetItems[] = [
+                'item' => $productSetItem,
+                'item_count' => (int)$pohodaProductSet[PohodaProduct::COL_PRODUCT_SET_ITEM_COUNT],
             ];
         }
 
-        return $productGroupItems;
+        return $productSetItems;
     }
 
     /**

@@ -9,7 +9,7 @@
 
             <div class="box-products-set__row box-products-set__row--without-gap">
                 <div class="box-products-set__left">
-                    <div class="list-products-set js-horizontal-list" data-type="products-set" data-count-of-product="{{ productView.groupItems|length }}">
+                    <div class="list-products-set js-horizontal-list" data-type="products-set" data-count-of-product="{{ productView.setItems|length }}">
                         <span class="list-products-set__arrow list-products-set__arrow--prev js-horizontal-list-action-prev">
                             <i class="svg svg-slider-arrow"></i>
                         </span>
@@ -18,18 +18,18 @@
                             <div class="list-products-set__overlay"></div>
                             <div class="list-products-set__overlay list-products-set__overlay--right"></div>
                             <div class="list-products-set__list js-horizontal-list-slides">
-                                {% for groupItem in productView.groupItems %}
+                                {% for setItem in productView.setItems %}
                                     <a href="{{ productView.action.detailUrl }}" class="list-products-set__item">
-                                        {% if groupItem.amount > 1 %}
+                                        {% if setItem.amount > 1 %}
                                             <div class="list-tags list-tags--secondary list-tags--sets-slider">
-                                                <div class="list-tags__tag">{{ groupItem.amount }} {{ 'ks'|trans }}</div>
+                                                <div class="list-tags__tag">{{ setItem.amount }} {{ 'ks'|trans }}</div>
                                             </div>
                                         {% endif %}
                                         <div class="list-products-set__item__image">
-                                            {{ image(groupItem.image, {size: 'listSet', alt: groupItem.name, lazy: true}) }}
+                                            {{ image(setItem.image, {size: 'listSet', alt: setItem.name, lazy: true}) }}
                                         </div>
                                         <div class="list-products-set__item__info">
-                                            {{ groupItem.name }}
+                                            {{ setItem.name }}
                                         </div>
                                         {% if not loop.last %}
                                             <div class="list-products-set__item__plus">

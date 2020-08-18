@@ -6,7 +6,7 @@ namespace App\Model\Product\View;
 
 use Shopsys\ReadModelBundle\Image\ImageView;
 
-class ListedGroupItem
+class ListedSetItem
 {
     /**
      * @var string

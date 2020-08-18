@@ -332,7 +332,7 @@
       "variants_count": {
         "type": "integer"
       },
-      "group_items": {
+      "set_items": {
         "type": "nested",
         "properties": {
           "id": {
@@ -343,6 +343,23 @@
           },
           "amount": {
             "type": "integer"
+          },
+          "image": {
+            "type": "nested",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "extension": {
+                "type": "text"
+              },
+              "entity_name": {
+                "type": "text"
+              },
+              "type": {
+                "type": "text"
+              }
+            }
           }
         }
       },

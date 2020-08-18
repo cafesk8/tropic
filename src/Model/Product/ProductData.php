@@ -103,7 +103,7 @@ class ProductData extends BaseProductData
     /**
      * @var array[]
      */
-    public $groupItems;
+    public $setItems;
 
     /**
      * @var int
@@ -167,6 +167,8 @@ class ProductData extends BaseProductData
 
     public ImageUploadData $stickers;
 
+    public bool $supplierSet;
+
     public function __construct()
     {
         parent::__construct();
@@ -180,7 +182,7 @@ class ProductData extends BaseProductData
         $this->giftCertificate = false;
         $this->registrationDiscountDisabled = false;
         $this->promoDiscountDisabled = false;
-        $this->groupItems = [];
+        $this->setItems = [];
         $this->generateToMergadoXmlFeeds = [];
         $this->descriptionHashes = [];
         $this->shortDescriptionHashes = [];
@@ -190,5 +192,6 @@ class ProductData extends BaseProductData
         $this->bulky = false;
         $this->oversized = false;
         $this->stickers = new ImageUploadData();
+        $this->supplierSet = false;
     }
 }

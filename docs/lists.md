@@ -10,6 +10,6 @@
 | V článku píšeme o těchto produktech (blog) | articleProducts        |   verticalList  |   productListMacro  |   V článku na boku  | databáze - není přes view |
 | Výpis vyhledávání                          |                        |       list      |   productListMacro  |                     |       ElasticSearch       |
 | Výpis kategorie                            |                        |       list      |   productListMacro  |                     |       ElasticSearch       |
-| Detail setu                                | product.groupItems     |  productSetView | productSetViewMacro |                     |          databáze         |
-| Výpis setu - vyhledávání/kategorie         | productView.groupItems |  productSetView | productSetViewMacro |                     |       ElasticSearch       |
+| Detail setu                                | product.setItems     |  productSetView | productSetViewMacro |                     |          databáze         |
+| Výpis setu - vyhledávání/kategorie         | productView.setItems |  productSetView | productSetViewMacro |                     |       ElasticSearch       |
 | Novinky                                    | newProducts            |  horizontalList |   productListMacro  |       Homepage      |       ElasticSearch       |

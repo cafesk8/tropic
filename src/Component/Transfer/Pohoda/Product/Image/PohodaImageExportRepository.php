@@ -34,7 +34,8 @@ class PohodaImageExportRepository
             ->addScalarResult('Vychozi', PohodaImage::ALIAS_DEFAULT)
             ->addScalarResult('RefAg', PohodaImage::ALIAS_PRODUCT_POHODA_ID)
             ->addScalarResult('Soubor', PohodaImage::ALIAS_FILE)
-            ->addScalarResult('OrderFld', PohodaImage::ALIAS_POSITION);
+            ->addScalarResult('OrderFld', PohodaImage::ALIAS_POSITION)
+            ->addScalarResult('Popis', PohodaImage::ALIAS_DESCRIPTION);
 
         $query = $this->pohodaEntityManager
             ->createNativeQuery(
@@ -43,7 +44,8 @@ class PohodaImageExportRepository
             img.Vychozi,
             img.RefAg,
             img.Soubor,
-            img.OrderFld
+            img.OrderFld,
+            img.Popis
             FROM
             SkRefObraz img
             WHERE img.RefAg IN (:productPohodaIds)            

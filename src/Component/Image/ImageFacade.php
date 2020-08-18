@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Image;
 
+use App\Model\Product\Product;
 use Shopsys\Cdn\Component\Image\ImageFacade as BaseImageFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 
@@ -62,6 +63,7 @@ class ImageFacade extends BaseImageFacade
      * @param int|null $position
      * @param string|null $type
      * @param int|null $pohodaId
+     * @param string|null $description
      */
     public function saveImageIntoDb(
         int $entityId,
@@ -70,9 +72,10 @@ class ImageFacade extends BaseImageFacade
         string $extension,
         ?int $position = null,
         ?string $type = null,
-        ?int $pohodaId = null
+        ?int $pohodaId = null,
+        ?string $description = null
     ): void {
-        $this->imageRepository->saveImageIntoDb($entityId, $entityName, $imageId, $extension, $position, $type, $pohodaId);
+        $this->imageRepository->saveImageIntoDb($entityId, $entityName, $imageId, $extension, $position, $type, $pohodaId, $description);
     }
 
     /**
@@ -102,6 +105,15 @@ class ImageFacade extends BaseImageFacade
     }
 
     /**
+     * @param int $imageId
+     * @param string|null $description
+     */
+    public function updateImageDescription(int $imageId, ?string $description): void
+    {
+        $this->imageRepository->updateImageDescription($imageId, $description);
+    }
+
+    /**
      * @param int[] $currentPohodaImageIdsIndexedByProductId
      * @return int[]
      */
@@ -119,5 +131,51 @@ class ImageFacade extends BaseImageFacade
     public function getImagesByEntityIdIndexedById(string $entityName, int $entityId, ?string $type): array
     {
         return $this->imageRepository->getImagesByEntityIndexedById($entityName, $entityId, $type);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return \App\Component\Image\Image[]
+     */
+    public function getImagesExcludingMain(Product $product): array
+    {
+        $images = $this->getImagesByEntityIndexedById($product, null);
+        array_shift($images);
+
+        return $images;
+    }
+
+    /**
+     * @param string|null $imageDescription
+     * @return string
+     */
+    public function getSupplierSetItemName(?string $imageDescription): string
+    {
+        if ($imageDescription === null) {
+            return '';
+        }
+        $separatorPosition = strpos($imageDescription, Product::SUPPLIER_SET_ITEM_NAME_COUNT_SEPARATOR);
+        if ($separatorPosition === false) {
+            return $imageDescription;
+        }
+
+        return substr($imageDescription, 0, $separatorPosition);
+    }
+
+    /**
+     * @param string|null $imageDescription
+     * @return int
+     */
+    public function getSupplierSetItemCount(?string $imageDescription): int
+    {
+        if ($imageDescription === null) {
+            return 1;
+        }
+        $separatorPosition = strpos($imageDescription, Product::SUPPLIER_SET_ITEM_NAME_COUNT_SEPARATOR);
+        if ($separatorPosition === false) {
+            return 1;
+        }
+
+        return (int)substr($imageDescription, $separatorPosition + 1);
     }
 }

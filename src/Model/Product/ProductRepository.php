@@ -693,7 +693,7 @@ class ProductRepository extends BaseProductRepository
         $queryBuilder = parent::getListableBySearchTextQueryBuilder($domainId, $pricingGroup, $locale, $searchText);
         $queryBuilder
             ->andWhere('(p.pohodaProductType != :pohodaGroupType OR p.pohodaProductType IS NULL)')
-            ->setParameter('pohodaGroupType', Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP);
+            ->setParameter('pohodaGroupType', Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET);
 
         return $queryBuilder;
     }

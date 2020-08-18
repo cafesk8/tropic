@@ -11,12 +11,20 @@
             </span>
         </div>
         {% for cartItem in addedItems %}
-            <div class="box-popup-add__content__product{% if cartItem.product.isPohodaProductTypeGroup %} box-popup-add__content__product--sets{% endif %}">
-                {% if cartItem.product.isPohodaProductTypeGroup %}
+            <div class="box-popup-add__content__product{% if cartItem.product.isPohodaProductTypeSet or cartItem.product.isSupplierSet %} box-popup-add__content__product--sets{% endif %}">
+                {% if cartItem.product.isPohodaProductTypeSet %}
                     <div class="box-popup-add__content__product__wrap-image">
-                        {% for productGroup in cartItem.product.productGroups %}
+                        {% for productSet in cartItem.product.productSets %}
                             <div class="box-popup-add__content__product__image box-popup-add__content__product__image--sets svg svg-plus-big">
-                                {{ image(productGroup.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                                {{ image(productSet.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% elseif cartItem.product.isSupplierSet %}
+                    <div class="box-popup-add__content__product__wrap-image">
+                        {% for image in getSupplierSetImagesExcludingMain(cartItem.product) %}
+                            <div class="box-popup-add__content__product__image box-popup-add__content__product__image--sets svg svg-plus-big">
+                                {{ image(image, {size: 'thumbnail', lazy: false}) }}
                             </div>
                         {% endfor %}
                     </div>

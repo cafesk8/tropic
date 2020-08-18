@@ -5508,8 +5508,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
-        $productData->pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP;
-        $productData->groupItems = [
+        $productData->pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET;
+        $productData->setItems = [
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '4'), 'item_count' => 1],
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '17'), 'item_count' => 1],
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '24'), 'item_count' => 1],
@@ -5549,8 +5549,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
-        $productData->pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP;
-        $productData->groupItems = [
+        $productData->pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET;
+        $productData->setItems = [
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '16'), 'item_count' => 1],
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '17'), 'item_count' => 2],
             ['item' => $this->getReference(self::PRODUCT_PREFIX . '18'), 'item_count' => 3],
@@ -5564,6 +5564,33 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_GENIUS);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = 'SUPPLIERSET123';
+        $productData->partno = '123456';
+        $productData->ean = '654321';
+        $productData->supplierSet = true;
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Výhodný set prut + pouzdro', [], 'dataFixtures', $locale);
+            $productData->descriptions[$domain->getId()] = t('Perfektní kaprový prut a dvoukomorové pouzdro', [], 'dataFixtures', $domain->getLocale());
+            $productData->shortDescriptions[$domain->getId()] = t('Perfektní kaprový prut a dvoukomorové pouzdro', [], 'dataFixtures', $domain->getLocale());
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '1999');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '10.08.2020');
+        $this->setSellingTo($productData, null);
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_GARDEN_TOOLS]);
+
+        $this->setBrand($productData, BrandDataFixture::BRAND_SONY);
 
         $this->createProduct($productData);
 

@@ -8,7 +8,7 @@ use App\Component\Domain\DomainHelper;
 use App\Component\FlashMessage\FlashMessageSender;
 use App\Component\Form\FormBuilderHelper;
 use App\Component\GoogleApi\GoogleClient;
-use App\Form\ProductGroupItemsListType;
+use App\Form\ProductSetItemsListType;
 use App\Form\ProductsListType;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Currency\Currency;
@@ -75,6 +75,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'images',
         'shown',
         'parameters',
+        'supplierSet',
     ];
 
     /**
@@ -211,7 +212,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ]);
 
         if ($product !== null) {
-            if ($product->isPohodaProductTypeGroup()) {
+            if ($product->isPohodaProductTypeSet()) {
                 $pohodaProductType = t('Výrobek');
             } elseif ($product->isPohodaProductTypeSingle()) {
                 $pohodaProductType = t('Karta');
@@ -224,6 +225,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                     'label' => t('Typ produktu z Pohody'),
                 ]);
         }
+        $builderBasicInformationGroup
+            ->add('supplierSet', YesNoType::class, [
+                'label' => t('Výrobek od dodavatele'),
+            ]);
 
         $productFlagsGroup = $builder->create('productFlagsGroup', GroupType::class, [
             'label' => t('Příznaky'),
@@ -235,7 +240,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $builderBasicInformationGroup->remove('flags');
 
         $builderStoreStockGroup = $builder->create('storeStock', GroupType::class, [
-            'disabled' => $product !== null && $product->isPohodaProductTypeGroup(),
+            'disabled' => $product !== null && $product->isPohodaProductTypeSet(),
             'label' => t('Skladové zásoby'),
             'position' => ['after' => 'displayAvailabilityGroup'],
         ]);
@@ -295,7 +300,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->extendAccessoriesGroup($builder);
         $this->extendDisplayAvailabilityGroup($builder->get('displayAvailabilityGroup'), $product);
         $this->addAmountGroup($builder, $product);
-        $this->addProductGroupItemsGroup($builder, $product);
+        $this->addProductSetItemsGroup($builder, $product);
         $this->extendDescriptionGroups($builder, $product);
 
         $this->formBuilderHelper->disableFieldsByConfigurations($builder, $this->getDisabledFields());
@@ -341,23 +346,23 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \App\Model\Product\Product $product
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    public function addProductGroupItemsGroup(FormBuilderInterface $builder, ?Product $product): FormBuilderInterface
+    public function addProductSetItemsGroup(FormBuilderInterface $builder, ?Product $product): FormBuilderInterface
     {
-        $groupItemGroup = $builder->create('groupItemsGroup', GroupType::class, [
+        $setItemGroup = $builder->create('setItemsGroup', GroupType::class, [
             'label' => t('Položky setu'),
             'position' => ['after' => 'accessories'],
         ]);
 
         if ($product !== null) {
-            $groupItemGroup->add('groupItems', ProductGroupItemsListType::class, [
+            $setItemGroup->add('setItems', ProductSetItemsListType::class, [
                 'label' => t('Položky setu'),
                 'required' => false,
                 'main_product' => $product,
-                'top_info_title' => !$product->isPohodaProductTypeGroup() ? t('Produkt není v Pohodě typu "Výrobek"') : '',
+                'top_info_title' => !$product->isPohodaProductTypeSet() ? t('Produkt není v Pohodě typu "Výrobek"') : '',
             ]);
         }
 
-        return $builder->add($groupItemGroup);
+        return $builder->add($setItemGroup);
     }
 
     /**
@@ -451,7 +456,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 $codeFieldOptions['constraints'] = null;
             }
 
-            if ($product->isPohodaProductTypeGroup()) {
+            if ($product->isPohodaProductTypeSet()) {
                 $codeFieldType = DisplayOnlyType::class;
                 $codeFieldOptions = [
                     'data' => t('Exclude from sale'),

@@ -9,14 +9,14 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductGroupItemsListType extends AbstractType
+class ProductSetItemsListType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['product_group_items'] = $form->getData();
+        $view->vars['product_set_items'] = $form->getData();
         $view->vars['main_product'] = $options['main_product'];
         $view->vars['top_info_title'] = $options['top_info_title'];
     }

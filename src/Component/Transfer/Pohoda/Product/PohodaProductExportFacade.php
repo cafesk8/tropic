@@ -61,7 +61,7 @@ class PohodaProductExportFacade
             $pohodaProductIds
         );
         $this->addProductCategoriesToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
-        $this->addProductGroupsToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
+        $this->addProductSetsToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
         $this->addRelatedProductsToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
         $this->addProductVideosToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
         $this->addProductParametersToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
@@ -192,13 +192,13 @@ class PohodaProductExportFacade
      * @param array $pohodaProductsResult
      * @param array $pohodaProductIds
      */
-    private function addProductGroupsToPohodaProductsResult(array &$pohodaProductsResult, array $pohodaProductIds): void
+    private function addProductSetsToPohodaProductsResult(array &$pohodaProductsResult, array $pohodaProductIds): void
     {
-        $pohodaProductGroupItems = $this->pohodaProductExportRepository->getProductGroupsByPohodaIds($pohodaProductIds);
-        foreach ($pohodaProductGroupItems as $pohodaGroupItem) {
-            $mainProductPohodaId = (int)$pohodaGroupItem[PohodaProduct::COL_PRODUCT_REF_ID];
+        $pohodaProductSetItems = $this->pohodaProductExportRepository->getProductSetsByPohodaIds($pohodaProductIds);
+        foreach ($pohodaProductSetItems as $pohodaSetItem) {
+            $mainProductPohodaId = (int)$pohodaSetItem[PohodaProduct::COL_PRODUCT_REF_ID];
             if (isset($pohodaProductsResult[$mainProductPohodaId])) {
-                $pohodaProductsResult[$mainProductPohodaId][PohodaProduct::COL_PRODUCT_GROUP_ITEMS][] = $pohodaGroupItem;
+                $pohodaProductsResult[$mainProductPohodaId][PohodaProduct::COL_PRODUCT_SET_ITEMS][] = $pohodaSetItem;
             }
         }
     }

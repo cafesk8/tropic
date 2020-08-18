@@ -8,12 +8,12 @@ use App\Model\Product\Availability\AvailabilityData;
 use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
-use App\Model\Product\Group\ProductGroup;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Parameter\ParameterValue;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
+use App\Model\Product\Set\ProductSet;
 use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
@@ -153,8 +153,8 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 [$this, 'filterOnlyVisibleVariants']
             ),
             new TwigFunction(
-                'sortProductGroupsByPrice',
-                [$this, 'sortProductGroupsByPrice']
+                'sortProductSetsByPrice',
+                [$this, 'sortProductSetsByPrice']
             ),
         ];
     }
@@ -265,17 +265,17 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     }
 
     /**
-     * @param \App\Model\Product\Group\ProductGroup[] $productGroups
-     * @return \App\Model\Product\Group\ProductGroup[]
+     * @param \App\Model\Product\Set\ProductSet[] $productSets
+     * @return \App\Model\Product\Set\ProductSet[]
      */
-    public function sortProductGroupsByPrice(array $productGroups): array
+    public function sortProductSetsByPrice(array $productSets): array
     {
-        usort($productGroups, function (ProductGroup $productGroup1, ProductGroup $productGroup2) {
-            return (int)$this->productCachedAttributesFacade->getProductSellingPrice($productGroup2->getItem())->getPriceWithVat()->subtract(
-                $this->productCachedAttributesFacade->getProductSellingPrice($productGroup1->getItem())->getPriceWithVat()
+        usort($productSets, function (ProductSet $productSet1, ProductSet $productSet2) {
+            return (int)$this->productCachedAttributesFacade->getProductSellingPrice($productSet2->getItem())->getPriceWithVat()->subtract(
+                $this->productCachedAttributesFacade->getProductSellingPrice($productSet1->getItem())->getPriceWithVat()
             )->getAmount();
         });
 
-        return $productGroups;
+        return $productSets;
     }
 }
