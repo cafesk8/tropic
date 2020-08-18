@@ -111,11 +111,6 @@ class ProductData extends BaseProductData
     public $pohodaProductType;
 
     /**
-     * @var bool
-     */
-    public $eurCalculatedAutomatically;
-
-    /**
      * @var string|null
      */
     public $deliveryDays;
@@ -187,7 +182,6 @@ class ProductData extends BaseProductData
         $this->promoDiscountDisabled = false;
         $this->groupItems = [];
         $this->generateToMergadoXmlFeeds = [];
-        $this->eurCalculatedAutomatically = true;
         $this->descriptionHashes = [];
         $this->shortDescriptionHashes = [];
         $this->descriptionAutomaticallyTranslated = true;

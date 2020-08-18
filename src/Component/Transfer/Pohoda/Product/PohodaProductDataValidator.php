@@ -71,14 +71,17 @@ class PohodaProductDataValidator
                     new Type(['type' => 'numeric']),
                     new NotBlank(),
                 ],
+                PohodaProduct::COL_SELLING_PRICE_EUR => [
+                    new Type(['type' => 'numeric']),
+                ],
+                PohodaProduct::COL_STANDARD_PRICE_EUR => [
+                    new Type(['type' => 'numeric']),
+                ],
                 PohodaProduct::COL_SALE_INFORMATION => [
                     new Type(['type' => 'array']),
                 ],
                 PohodaProduct::COL_VARIANT_ID => [
                     new Callback(['callback' => [$this, 'validateVariantId']]),
-                ],
-                PohodaProduct::COL_AUTO_EUR_PRICE => [
-                    new NotBlank(),
                 ],
                 PohodaProduct::COL_POHODA_PRODUCT_MINIMUM_AMOUNT_AND_MULTIPLIER => [
                     new Type(['type' => 'numeric']),

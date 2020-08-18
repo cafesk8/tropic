@@ -38,6 +38,8 @@ class PohodaProductExportRepository
 
     private const PRODUCT_TYPE_GROUP_ID = 5;
 
+    private const SELLING_EUR_PRICE_ID = 4;
+
     private const POHODA_PRODUCT_COLUMN_ALIASES = [
         'ID' => PohodaProduct::COL_POHODA_ID,
         'IDS' => PohodaProduct::COL_CATNUM,
@@ -51,11 +53,11 @@ class PohodaProductExportRepository
         'RelDPHp' => PohodaProduct::COL_SELLING_VAT_RATE_ID,
         'NakupDPH' => PohodaProduct::COL_PURCHASE_PRICE,
         'VPrBCena' => PohodaProduct::COL_STANDARD_PRICE,
+        'VPrBCenaEur' => PohodaProduct::COL_STANDARD_PRICE_EUR,
         'ObjNazev' => PohodaProduct::COL_VARIANT_ID,
         'SText' => PohodaProduct::COL_VARIANT_ALIAS,
         'SText1' => PohodaProduct::COL_VARIANT_ALIAS_SK,
         'RelSkTyp' => PohodaProduct::COL_POHODA_PRODUCT_TYPE,
-        'VPrAutPrepEUR' => PohodaProduct::COL_AUTO_EUR_PRICE,
         'VPrAutomatSK' => PohodaProduct::COL_AUTO_DESCRIPTION_TRANSLATION,
         'Dodani' => PohodaProduct::COL_DELIVERY_DAYS,
         'VPrNovinkaOd' => PohodaProduct::COL_FLAG_NEW_FROM,
@@ -107,15 +109,21 @@ class PohodaProductExportRepository
             $queryColumns[] = 'Product.' . $column;
         }
 
+        $resultSetMapping->addScalarResult('ProdejC', PohodaProduct::COL_SELLING_PRICE_EUR);
+        $queryColumns[] = 'Prices.ProdejC';
         $query = $this->pohodaEntityManager->createNativeQuery(
             'SELECT ' . implode(', ', $queryColumns) . '
              FROM Skz Product
+             LEFT JOIN SKzCn Prices
+                ON Product.ID = Prices.RefAg
+                    AND Prices.RefSkCeny = :sellingEurPriceId
              WHERE Product.ID IN (:pohodaProductIds)
                 AND Product.IObchod = 1
              ORDER BY Product.DatSave',
             $resultSetMapping
         )->setParameters([
             'pohodaProductIds' => $pohodaProductIds,
+            'sellingEurPriceId' => self::SELLING_EUR_PRICE_ID,
         ]);
 
         $pohodaProductResult = $query->getResult();

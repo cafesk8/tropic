@@ -19,6 +19,8 @@ class PohodaProduct
     public const COL_SELLING_VAT_RATE_ID = 'vatRateId';
     public const COL_PURCHASE_PRICE = 'purchasePriceWithVat';
     public const COL_STANDARD_PRICE = 'standardPriceWithVat';
+    public const COL_SELLING_PRICE_EUR = 'sellingEurPriceWithVat';
+    public const COL_STANDARD_PRICE_EUR = 'standardEurPriceWithVat';
     public const COL_STOCK_ID = 'stockId';
     public const COL_VARIANT_ID = 'variantId';
     public const COL_VARIANT_ALIAS = 'variantAlias';
@@ -29,7 +31,6 @@ class PohodaProduct
     public const COL_RELATED_PRODUCT_REF_ID = 'relatedProductPohodaId';
     public const COL_RELATED_PRODUCT_POSITION = 'relatedProductOrder';
     public const COL_DELIVERY_DAYS = 'deliveryDays';
-    public const COL_AUTO_EUR_PRICE = 'automaticEurPrice';
     public const COL_AUTO_DESCRIPTION_TRANSLATION = 'automaticDescriptionTranslation';
     public const COL_FLAG_NEW_FROM = 'flagNewFrom';
     public const COL_FLAG_NEW_TO = 'flagNewTo';
@@ -141,6 +142,10 @@ class PohodaProduct
      */
     public $standardPrice;
 
+    public ?string $sellingPriceEur;
+
+    public ?string $standardPriceEur;
+
     /**
      * @var array
      */
@@ -210,11 +215,6 @@ class PohodaProduct
      * @var array
      */
     public $youtubeVideos;
-
-    /**
-     * @var bool
-     */
-    public $automaticEurCalculation;
 
     /**
      * @var bool
@@ -324,6 +324,8 @@ class PohodaProduct
         $this->vatRateId = (int)$pohodaProductData[self::COL_SELLING_VAT_RATE_ID];
         $this->purchasePrice = $pohodaProductData[self::COL_PURCHASE_PRICE];
         $this->standardPrice = $pohodaProductData[self::COL_STANDARD_PRICE];
+        $this->sellingPriceEur = $pohodaProductData[self::COL_SELLING_PRICE_EUR];
+        $this->standardPriceEur = $pohodaProductData[self::COL_STANDARD_PRICE_EUR];
         $this->saleInformation = $pohodaProductData[self::COL_SALE_INFORMATION];
         $this->variantId = (string)$pohodaProductData[self::COL_VARIANT_ID];
         $this->variantAlias = (string)$pohodaProductData[self::COL_VARIANT_ALIAS];
@@ -331,7 +333,6 @@ class PohodaProduct
         $this->pohodaCategoryIds = $pohodaProductData[self::COL_PRODUCT_CATEGORIES];
         $this->stocksInformation = $pohodaProductData[self::COL_STOCKS_INFORMATION];
         $this->productGroups = $pohodaProductData[self::COL_PRODUCT_GROUP_ITEMS];
-        $this->automaticEurCalculation = (bool)$pohodaProductData[self::COL_AUTO_EUR_PRICE];
         $this->automaticDescriptionTranslation = (bool)$pohodaProductData[self::COL_AUTO_DESCRIPTION_TRANSLATION];
         $this->relatedProducts = $pohodaProductData[self::COL_RELATED_PRODUCTS];
         $this->deliveryDays = $pohodaProductData[self::COL_DELIVERY_DAYS];

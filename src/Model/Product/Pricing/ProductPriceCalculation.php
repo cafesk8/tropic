@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Product\Pricing;
 
 use App\Component\Domain\DomainHelper;
-use App\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
@@ -132,11 +131,6 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
                     $maxDefaultCurrencyPriceInput = Money::create($manualInputPrice['maxInputPrice']);
                 }
             }
-        }
-
-        if ($defaultCurrency->getCode() === Currency::CODE_EUR && $product->isEurCalculatedAutomatically() && $defaultCurrencyPriceInput !== null) {
-            $inputPrice = $defaultCurrencyPriceInput->divide($defaultCurrency->getExchangeRate(), 2);
-            $maxInputPrice = $maxDefaultCurrencyPriceInput->divide($defaultCurrency->getExchangeRate(), 2);
         }
 
         $isPriceFrom = false;

@@ -182,13 +182,6 @@ class Product extends BaseProduct
     private $pohodaProductType;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $eurCalculatedAutomatically;
-
-    /**
      * @var \App\Model\Product\Group\ProductGroup[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="App\Model\Product\Group\ProductGroup", mappedBy="mainProduct")
@@ -324,7 +317,6 @@ class Product extends BaseProduct
         $this->updatedByPohodaAt = $productData->updatedByPohodaAt;
         $this->pohodaProductType = $productData->pohodaProductType;
         $this->warranty = $productData->warranty;
-        $this->eurCalculatedAutomatically = $productData->eurCalculatedAutomatically;
         $this->productGroups = new ArrayCollection();
         $this->deliveryDays = $productData->deliveryDays;
         $this->refresh = false;
@@ -1071,14 +1063,6 @@ class Product extends BaseProduct
                 $this->translation($locale)->setVariantAlias($variantAlias ?? self::getVariantNumber($this->getVariantId()));
             }
         }
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEurCalculatedAutomatically(): bool
-    {
-        return $this->eurCalculatedAutomatically;
     }
 
     /**
