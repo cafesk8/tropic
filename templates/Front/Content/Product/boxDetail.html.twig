@@ -142,7 +142,9 @@
                                     <p class="box-detail__description__code">
                                         {{ product.catnum }}
                                     </p>
-                                    <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
+                                    {% if not typeSupplierSet %}
+                                        <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         {% endif %}
