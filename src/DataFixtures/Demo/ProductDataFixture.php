@@ -2937,7 +2937,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setFlags($productData, [FlagDataFixture::FLAG_TOP_PRODUCT]);
 
         $productData->sellingDenied = false;
-        $this->setBrand($productData, null);
+        $productData->giftCertificate = true;
 
         $this->createProduct($productData);
 
@@ -5599,6 +5599,68 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->createProduct($productData);
 
         $this->createVariants();
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = 'giftCertificate1';
+        $productData->partno = '8594049736699';
+        $productData->ean = '8845781246099';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Dárkový kupón 1000 Kč', [], 'dataFixtures', $locale);
+            $productData->descriptions[$domain->getId()] = t('Dárkový kupón, který lze uplatnit na většinu neslevněných produktů v našem obchodu. Ideální dárek pro vaše rybářské kamarády.', [], 'dataFixtures', $domain->getLocale());
+            $productData->shortDescriptions[$domain->getId()] = t('Dárkový kupón v hodnotě 1000 Kč', [], 'dataFixtures', $domain->getLocale());
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '1000');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '14.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 123;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_BOOKS]);
+
+        $productData->sellingDenied = false;
+        $productData->giftCertificate = true;
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = 'giftCertificate2';
+        $productData->partno = '8594049736688';
+        $productData->ean = '8845781246088';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Dárkový kupón 500 Kč', [], 'dataFixtures', $locale);
+            $productData->descriptions[$domain->getId()] = t('Dárkový kupón, který lze uplatnit na většinu neslevněných produktů v našem obchodu. Ideální dárek pro vaše rybářské kamarády.', [], 'dataFixtures', $domain->getLocale());
+            $productData->shortDescriptions[$domain->getId()] = t('Dárkový kupón v hodnotě 500 Kč', [], 'dataFixtures', $domain->getLocale());
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '500');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '14.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 132;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_BOOKS]);
+
+        $productData->sellingDenied = false;
+        $productData->giftCertificate = true;
+
+        $this->createProduct($productData);
     }
 
     /**

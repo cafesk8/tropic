@@ -53,10 +53,12 @@ class OrderGiftCertificatePdfFacade
     public function create(OrderGiftCertificate $orderGiftCertificate): void
     {
         $dompdf = new Dompdf();
+        $giftCertificate = $orderGiftCertificate->getGiftCertificate();
         $html = $this->twigEnvironment->render('Mail/Order/GiftCertificate/giftCertificate.html.twig', [
-            'giftCertificateCode' => $orderGiftCertificate->getGiftCertificate()->getCode(),
+            'giftCertificateCode' => $giftCertificate->getCode(),
             'giftCertificateCurrency' => $orderGiftCertificate->getOrder()->getCurrency(),
-            'giftCertificateValue' => $orderGiftCertificate->getGiftCertificate()->getCertificateValue(),
+            'giftCertificateValue' => $giftCertificate->getCertificateValue(),
+            'giftCertificateValidTo' => $giftCertificate->isActive() ? $giftCertificate->getValidTo() : null,
         ]);
         $dompdf->loadHtml($html);
         $dompdf->render();
@@ -82,5 +84,13 @@ class OrderGiftCertificatePdfFacade
     public function getFiles(OrderGiftCertificate $orderGiftCertificate): array
     {
         return $this->uploadedFileFacade->getUploadedFilesByEntity($orderGiftCertificate);
+    }
+
+    /**
+     * @param \App\Model\Order\GiftCertificate\OrderGiftCertificate $orderGiftCertificate
+     */
+    public function delete(OrderGiftCertificate $orderGiftCertificate): void
+    {
+        $this->uploadedFileFacade->deleteAllUploadedFilesByEntity($orderGiftCertificate);
     }
 }

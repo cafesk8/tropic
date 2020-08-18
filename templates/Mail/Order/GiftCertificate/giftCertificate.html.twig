@@ -9,5 +9,8 @@
         <b>{{ giftCertificateCode }}</b>
     </p>
     <p>Hodnota: <b>{{ giftCertificateValue|priceWithCurrency(giftCertificateCurrency) }}</b></p>
+    {% if giftCertificateValidTo is not empty %}
+        <p>Platný do: <b>{{ giftCertificateValidTo|formatDateTime }}</b></p>
+    {% endif %}
 </body>
 </html>
