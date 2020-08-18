@@ -874,4 +874,13 @@ class OrderFacade extends BaseOrderFacade
     {
         return $this->orderRepository->findByLegacyId($legacyId);
     }
+
+    /**
+     * @param \DateTime $fromDate
+     * @return \App\Model\Order\Order[]
+     */
+    public function getOrdersWithLegacyIdAndWithoutPohodaIdFromDate(DateTime $fromDate): array
+    {
+        return $this->orderRepository->getOrdersWithLegacyIdAndWithoutPohodaIdFromDate($fromDate);
+    }
 }
