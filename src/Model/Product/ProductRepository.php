@@ -7,6 +7,7 @@ namespace App\Model\Product;
 use App\Model\Category\Category;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Flag\FlagFacade;
+use App\Model\Product\Set\ProductSet;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
@@ -68,10 +69,7 @@ use Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository;
  */
 class ProductRepository extends BaseProductRepository
 {
-    /**
-     * @var \App\Model\Product\Flag\FlagFacade
-     */
-    private $flagFacade;
+    private FlagFacade $flagFacade;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -731,6 +729,27 @@ class ProductRepository extends BaseProductRepository
     ) {
         $queryBuilder = $this->getAllOfferedQueryBuilder($domainId, $pricingGroup);
         $this->filterByCategory($queryBuilder, $category, $domainId, $onlyFlags);
+
+        return $queryBuilder;
+    }
+
+    /**
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \App\Model\Category\Category $category
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getVisibleSetItemsInCategoryQueryBuilder(
+        int $domainId,
+        PricingGroup $pricingGroup,
+        Category $category
+    ): QueryBuilder {
+        $queryBuilder = $this->getAllOfferedQueryBuilder($domainId, $pricingGroup)
+            ->andWhere('p.pohodaProductType = :pohodaSetType')
+            ->join(ProductSet::class, 'ps', Join::WITH, 'ps.mainProduct = p')
+            ->join(Product::class, 'setItem', Join::WITH, 'ps.item = setItem')
+            ->setParameter('pohodaSetType', Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET);
+        $this->filterByCategory($queryBuilder, $category, $domainId);
 
         return $queryBuilder;
     }
