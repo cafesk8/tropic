@@ -23,6 +23,7 @@ use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransform
 use Shopsys\FrameworkBundle\Form\WarningMessageType;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -240,9 +241,18 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
             ->add('invisibleParameters', WarningMessageType::class, [
                 'data' => t('Některé parametry jsou globálně skryté, proto jejich nastavení nelze zde ovlivnit. Globální nastavení se nachází v Nastavení -> Seznamy a číselníky -> Parametry.'),
             ])
+            ->add('toggleAll', CheckboxType::class, [
+                'attr' => ['class' => 'js-filters-toggle-checkbox'],
+                'label' => t('Zaškrtnout všechny parametry'),
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('filterParameters', ChoiceType::class, [
                 'choice_attr' => function (Parameter $parameter) {
-                    return ['disabled' => !$parameter->isVisible()];
+                    return [
+                        'class' => 'js-filter-checkbox',
+                        'disabled' => !$parameter->isVisible()
+                    ];
                 },
                 'choice_label' => 'name',
                 'choice_value' => 'id',

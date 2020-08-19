@@ -9,10 +9,12 @@ import Register from 'framework/common/utils/Register';
         const $preListingCategorySetting = $categoryForm.filterAllNodes('[name="category_form[settings][preListingCategory]"]');
         const $leftBannerTextInputs = $categoryForm.filterAllNodes('.js-category-left-banner-texts');
         const $rightBannerTextInputs = $categoryForm.filterAllNodes('.js-category-right-banner-texts');
+        const $filtersToggleCheckbox = $categoryForm.filterAllNodes('.js-filters-toggle-checkbox');
 
         this.init = function () {
             $preListingCategorySetting.change(toggleAdditionalBannerTextInputs);
             toggleAdditionalBannerTextInputs();
+            $filtersToggleCheckbox.change(toggleFilters);
         };
 
         function toggleAdditionalBannerTextInputs () {
@@ -20,6 +22,10 @@ import Register from 'framework/common/utils/Register';
 
             $leftBannerTextInputs.closest('.form-line').toggleClass('display-none', !isPreListingCategorySettingAllowed);
             $rightBannerTextInputs.closest('.form-line').toggleClass('display-none', !isPreListingCategorySettingAllowed);
+        }
+
+        function toggleFilters () {
+            $('.js-filter-checkbox').prop('checked', this.checked);
         }
     };
 
