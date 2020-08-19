@@ -51,6 +51,7 @@ parameters:
             - '*/src/Model/Product/ProductVisibilityRepository.php'
             - '*/src/Form/Admin/OrderFormTypeExtension.php'
             - '*/src/Form/Admin/PaymentFormTypeExtension.php'
+            - '*/src/Command/Migrations/ImportLegacyCustomersFromCSVCommand.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/App/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'

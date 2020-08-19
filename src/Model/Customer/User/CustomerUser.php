@@ -97,6 +97,12 @@ class CustomerUser extends BaseCustomerUser
     private $pohodaId;
 
     /**
+     * @var int|null
+     * @ORM\Column(type="integer", nullable=true, unique=true)
+     */
+    private $legacyId;
+
+    /**
      * @param \App\Model\Customer\User\CustomerUserData $customerUserData
      */
     public function __construct(BaseCustomerUserData $customerUserData)
@@ -108,6 +114,7 @@ class CustomerUser extends BaseCustomerUser
         $this->pricingGroupUpdatedAt = $customerUserData->pricingGroupUpdatedAt;
         $this->userTransferId = new ArrayCollection();
         $this->pohodaId = $customerUserData->pohodaId;
+        $this->legacyId = $customerUserData->legacyId;
     }
 
     /**
@@ -121,6 +128,7 @@ class CustomerUser extends BaseCustomerUser
         $this->setExportStatus(self::EXPORT_NOT_YET);
 
         $this->pohodaId = $customerUserData->pohodaId;
+        $this->legacyId = $customerUserData->legacyId;
     }
 
     /**
@@ -248,5 +256,13 @@ class CustomerUser extends BaseCustomerUser
     public function getPohodaId(): ?int
     {
         return $this->pohodaId;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLegacyId(): ?int
+    {
+        return $this->legacyId;
     }
 }

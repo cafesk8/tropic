@@ -364,4 +364,13 @@ class CustomerUserFacade extends BaseCustomerUserFacade
 
         return $customerUser;
     }
+
+    /**
+     * @param int $legacyId
+     * @return \App\Model\Customer\User\CustomerUser|null
+     */
+    public function findByLegacyId($legacyId): ?CustomerUser
+    {
+        return $this->customerUserRepository->findByLegacyId($legacyId);
+    }
 }

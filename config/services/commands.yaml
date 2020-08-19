@@ -19,3 +19,8 @@ services:
             - '%shopsys.framework.root_dir%'
 
     Shopsys\FrameworkBundle\Command\RecalculationsCommand: '@App\Command\RecalculationsCommand'
+
+    App\Command\Migrations\ImportLegacyCustomersFromCSVCommand:
+        arguments:
+            $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'
+

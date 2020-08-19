@@ -18,9 +18,15 @@
 				<adb:update update="true" add="true">
 					<ftr:filter>
 						<ftr:extId>
-							<typ:ids>{{ pohodaCustomer.eshopId }}</typ:ids>
-							<typ:exSystemName>ShopsysB2C</typ:exSystemName>
-							<typ:exSystemText>ShopsysB2C</typ:exSystemText>
+							{% if pohodaCustomer.legacyId > 0 %}
+								<typ:ids>{{ pohodaCustomer.legacyId }}</typ:ids>
+								<typ:exSystemName>ShopSys</typ:exSystemName>
+								<typ:exSystemText>ShopSys</typ:exSystemText>
+							{% else %}
+								<typ:ids>{{ pohodaCustomer.eshopId }}</typ:ids>
+								<typ:exSystemName>ShopsysB2C</typ:exSystemName>
+								<typ:exSystemText>ShopsysB2C</typ:exSystemText>
+							{% endif %}
 						</ftr:extId>
 					</ftr:filter>
 				</adb:update>
@@ -28,9 +34,15 @@
 			<adb:addressbookHeader>
 				<adb:identity>
 					<typ:extId>
-						<typ:ids>{{ pohodaCustomer.eshopId }}</typ:ids>
-						<typ:exSystemName>ShopsysB2C</typ:exSystemName>
-						<typ:exSystemText>ShopsysB2C</typ:exSystemText>
+						{% if pohodaCustomer.legacyId > 0 %}
+							<typ:ids>{{ pohodaCustomer.legacyId }}</typ:ids>
+							<typ:exSystemName>ShopSys</typ:exSystemName>
+							<typ:exSystemText>ShopSys</typ:exSystemText>
+						{% else %}
+							<typ:ids>{{ pohodaCustomer.eshopId }}</typ:ids>
+							<typ:exSystemName>ShopsysB2C</typ:exSystemName>
+							<typ:exSystemText>ShopsysB2C</typ:exSystemText>
+						{% endif %}
 					</typ:extId>
 
 					<typ:address>
