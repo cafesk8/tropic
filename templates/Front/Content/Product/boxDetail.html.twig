@@ -51,7 +51,7 @@
                                         <div class="box-gallery__images">
                                             {% for galleryImage in galleryImages %}
                                                 <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %}
-                                                    {% if loop.index == 1 %} display-none {% endif %}js-gallery-item"
+                                                    {% if loop.index == 1 %} display-none{% else %} js-gallery-item{% endif %}"
                                                 >
                                                     <a href="{{ imageUrl(galleryImage, 'original') }}"
                                                     class="box-gallery__item__link js-gallery-slide-link">
