@@ -96,8 +96,6 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
     {
         $marketingMenu = $event->getMenu();
 
-        $marketingMenu->addChild('articles_settings', ['route' => 'admin_articlesettings_setting', 'label' => t('Věrnostní program')]);
-
         $marketingMenu->addChild('header_text', [
             'route' => 'admin_headertextsetting_setting', 
             'label' => t('Text v hlavičce')]);
@@ -111,6 +109,11 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
             'route' => 'admin_inforow_detail',
             'label' => t('Informační řádek'),
         ]);
+
+        $marketingMenu->addChild('top_products', ['route' => 'admin_topproduct_list', 'label' => t('Akce na titulní stránce')]);
+
+        $marketingMenu->removeChild('top_categories');
+        $marketingMenu->removeChild('slider' );
 
         $adverts = $marketingMenu->getChild('adverts');
         $adverts->setLabel(t('Bannery'));
@@ -126,7 +129,7 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         $blogMenu->addChild('blog_article', ['route' => 'admin_blogarticle_list', 'label' => t('Blog articles')]);
         $blogMenu->addChild('blog_article_new', ['route' => 'admin_blogarticle_new', 'label' => t('New blog article'), 'display' => false]);
         $blogMenu->addChild('blog_article_edit', ['route' => 'admin_blogarticle_edit', 'label' => t('Editing blog article'), 'display' => false]);
-
+    
         $menuManipulator = new MenuManipulator();
         $menuManipulator->moveToPosition($adverts, 1);
         $menuManipulator->moveToPosition($priceBombProducts, 4);

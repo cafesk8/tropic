@@ -89,16 +89,6 @@ class CategoryController extends FrontBaseController
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function topAction(): Response
-    {
-        return $this->render('Front/Content/Category/top.html.twig', [
-            'categories' => $this->topCategoryFacade->getVisibleCategoriesByDomainId($this->domain->getId()),
-        ]);
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function horizontalMenuAction(): Response
     {
         $categories = $this->horizontalCategoryFacade->getCategoriesForHorizontalMenuOnCurrentDomain();
