@@ -34,10 +34,12 @@ class CustomerUserUpdateDataFactory extends BaseCustomerDataFactory
         $customerUserUpdateData->customerUserData->firstName = $order->getFirstName();
         $customerUserUpdateData->customerUserData->lastName = $order->getLastName();
         $customerUserUpdateData->customerUserData->telephone = $order->getTelephone();
-        $customerUserUpdateData->billingAddressData = $this->getAmendedBillingAddressDataByOrder($order, $billingAddress);
 
-        if ($order->getTransport()->isPickupPlace() === false && $order->getTransport()->isChooseStore() === false) {
+        if (!$order->getTransport()->isPickupPlaceType()) {
+            $customerUserUpdateData->billingAddressData = $this->getAmendedBillingAddressDataByOrder($order, $billingAddress);
             $customerUserUpdateData->deliveryAddressData = $this->getAmendedDeliveryAddressDataByOrder($order, $deliveryAddress);
+        } elseif (!$order->isDeliveryAddressSameAsBillingAddress()) {
+            $customerUserUpdateData->billingAddressData = $this->getAmendedBillingAddressDataByOrder($order, $billingAddress);
         }
 
         return $customerUserUpdateData;
