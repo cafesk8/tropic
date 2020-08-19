@@ -50,7 +50,9 @@
                                     <div class="box-gallery dont-print js-gallery">
                                         <div class="box-gallery__images">
                                             {% for galleryImage in galleryImages %}
-                                                <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
+                                                <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %}
+                                                    {% if loop.index == 1 %} display-none {% endif %}js-gallery-item"
+                                                >
                                                     <a href="{{ imageUrl(galleryImage, 'original') }}"
                                                     class="box-gallery__item__link js-gallery-slide-link">
                                                         {{ image(galleryImage, {size: 'thumbnail'}) }}
@@ -67,7 +69,7 @@
                                                 </div>
                                             {% endif %}
                                             {% if youtubeDetails %}
-                                                <div class="box-gallery__item box-gallery__item--video">
+                                                <div class="box-gallery__item box-gallery__item--video{% if galleryImages|length <= 1%} box-gallery__item--without-border{% endif %}">
                                                     {% if product.isMainVariant %}
                                                         <a
                                                             href="#video-variant-desktop"
