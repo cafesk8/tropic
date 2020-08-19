@@ -345,7 +345,7 @@
             </div>
         {% endif %}
 
-        {% if accessories|length > 0 %}
+        {% if accessories|length > 0 and not typeSetOrSupplierSet %}
             <div class="web__line js-tabs-button js-tabs-content" data-tab-id="accessories">
                 <div class="web__container web__container--no-padding">
                     <div class="box-products-slider">
@@ -385,6 +385,19 @@
                                 {{ productSetMacro.productSetView(parentSetView) }}
                             {% endfor %}
                         </ul>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if accessories|length > 0 and typeSetOrSupplierSet %}
+            <div class="web__line js-tabs-button js-tabs-content" data-tab-id="accessories">
+                <div class="web__container web__container--no-padding">
+                    <div class="box-products-slider">
+                        <h2 class="box-products-slider__title box-products-slider__title--secondary">
+                            {{ accessoriesHeadline }}
+                        </h2>
+                        {{ productList.horizontalList(accessories, '', 'h3', 'accessories-products', true, false, true) }}
                     </div>
                 </div>
             </div>
