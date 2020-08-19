@@ -7,6 +7,7 @@ namespace App\Controller\Front;
 use App\Model\Blog\Article\BlogArticle;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Category\BlogCategoryFacade;
+use App\Model\Heureka\HeurekaReviewFacade;
 use App\Model\Product\View\ListedProductViewElasticFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,21 +32,29 @@ class BlogArticleController extends FrontBaseController
     private ListedProductViewElasticFacade $listedProductViewElasticFacade;
 
     /**
+     * @var \App\Model\Heureka\HeurekaReviewFacade
+     */
+    private $heurekaReviewFacade;
+
+    /**
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \App\Model\Blog\Category\BlogCategoryFacade $blogCategoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewElasticFacade
+     * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
      */
     public function __construct(
         BlogArticleFacade $blogArticleFacade,
         BlogCategoryFacade $blogCategoryFacade,
         Domain $domain,
-        ListedProductViewElasticFacade $listedProductViewElasticFacade
+        ListedProductViewElasticFacade $listedProductViewElasticFacade,
+        HeurekaReviewFacade $heurekaReviewFacade
     ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->domain = $domain;
         $this->blogCategoryFacade = $blogCategoryFacade;
         $this->listedProductViewElasticFacade = $listedProductViewElasticFacade;
+        $this->heurekaReviewFacade = $heurekaReviewFacade;
     }
 
     /**
@@ -65,6 +74,7 @@ class BlogArticleController extends FrontBaseController
             'blogArticle' => $blogArticle,
             'activeCategories' => $blogCategoryIds,
             'domainId' => $this->domain->getId(),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ]);
     }
 

@@ -8,6 +8,7 @@ use App\Component\Setting\Setting;
 use App\Model\Article\ArticleFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\CategoryFacade;
+use App\Model\Heureka\HeurekaReviewFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
 use Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade;
@@ -55,6 +56,11 @@ class HomepageController extends FrontBaseController
     private $categoryFacade;
 
     /**
+     * @var \App\Model\Heureka\HeurekaReviewFacade
+     */
+    private $heurekaReviewFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade $sliderItemFacade
      * @param \Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade $seoSettingFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -62,6 +68,7 @@ class HomepageController extends FrontBaseController
      * @param \App\Model\Article\ArticleFacade $articleFacade
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
+     * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
      */
     public function __construct(
         SliderItemFacade $sliderItemFacade,
@@ -70,7 +77,8 @@ class HomepageController extends FrontBaseController
         BlogArticleFacade $blogArticleFacade,
         ArticleFacade $articleFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
-        CategoryFacade $categoryFacade
+        CategoryFacade $categoryFacade,
+        HeurekaReviewFacade $heurekaReviewFacade
     ) {
         $this->sliderItemFacade = $sliderItemFacade;
         $this->seoSettingFacade = $seoSettingFacade;
@@ -79,6 +87,7 @@ class HomepageController extends FrontBaseController
         $this->articleFacade = $articleFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->categoryFacade = $categoryFacade;
+        $this->heurekaReviewFacade = $heurekaReviewFacade;
     }
 
     public function indexAction()
@@ -100,6 +109,7 @@ class HomepageController extends FrontBaseController
             ),
             'domainId' => $this->domain->getId(),
             'loyaltyProgramArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $this->domain->getId()),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ]);
     }
 }

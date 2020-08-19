@@ -10,6 +10,7 @@ use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use App\Model\Gtm\GtmFacade;
+use App\Model\Heureka\HeurekaReviewFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Brand\Brand;
 use App\Model\Product\Flag\FlagFacade;
@@ -141,6 +142,11 @@ class ProductController extends FrontBaseController
     private $flagFacade;
 
     /**
+     * @var \App\Model\Heureka\HeurekaReviewFacade
+     */
+    private $heurekaReviewFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -160,6 +166,7 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewElasticFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -180,7 +187,8 @@ class ProductController extends FrontBaseController
         DiscountExclusionFacade $discountExclusionFacade,
         ListedProductViewElasticFacade $listedProductViewElasticFacade,
         PricingGroupFacade $pricingGroupFacade,
-        FlagFacade $flagFacade
+        FlagFacade $flagFacade,
+        HeurekaReviewFacade $heurekaReviewFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -201,6 +209,7 @@ class ProductController extends FrontBaseController
         $this->listedProductViewElasticFacade = $listedProductViewElasticFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->flagFacade = $flagFacade;
+        $this->heurekaReviewFacade = $heurekaReviewFacade;
     }
 
     /**
@@ -237,6 +246,7 @@ class ProductController extends FrontBaseController
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
             'parentSetViews' => $this->listedProductViewElasticFacade->getParentSetsByProduct($product, $domainId, $this->pricingGroupFacade->getCurrentPricingGroup($customerUser)),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ]);
     }
 
@@ -335,6 +345,7 @@ class ProductController extends FrontBaseController
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData),
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData),
             'disableIndexing' => count($productFilterData->brands) >= 2,
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ];
 
         if ($request->isXmlHttpRequest()) {
@@ -419,6 +430,7 @@ class ProductController extends FrontBaseController
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData, true),
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData, Category::SALE_TYPE),
             'disableIndexing' => count($productFilterData->brands) >= 2,
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ];
 
         $request->query->set('product_filter_form', $params);
@@ -505,6 +517,7 @@ class ProductController extends FrontBaseController
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData, true),
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData, Category::NEWS_TYPE),
             'disableIndexing' => count($productFilterData->brands) >= 2,
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ];
 
         $request->query->set('product_filter_form', $params);
@@ -569,6 +582,7 @@ class ProductController extends FrontBaseController
             'priceRange' => $productFilterConfig->getPriceRange(),
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData),
             'disableIndexing' => count($productFilterData->brands) >= 2,
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ];
 
         if ($request->isXmlHttpRequest()) {

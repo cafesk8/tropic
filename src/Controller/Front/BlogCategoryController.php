@@ -8,6 +8,7 @@ use App\Model\Blog\Article\BlogArticle;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Category\BlogCategory;
 use App\Model\Blog\Category\BlogCategoryFacade;
+use App\Model\Heureka\HeurekaReviewFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,18 +34,26 @@ class BlogCategoryController extends FrontBaseController
     private $blogArticleFacade;
 
     /**
+     * @var \App\Model\Heureka\HeurekaReviewFacade
+     */
+    private $heurekaReviewFacade;
+
+    /**
      * @param \App\Model\Blog\Category\BlogCategoryFacade $blogCategoryFacade
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
      */
     public function __construct(
         BlogCategoryFacade $blogCategoryFacade,
         BlogArticleFacade $blogArticleFacade,
-        Domain $domain
+        Domain $domain,
+        HeurekaReviewFacade $heurekaReviewFacade
     ) {
         $this->blogCategoryFacade = $blogCategoryFacade;
         $this->domain = $domain;
         $this->blogArticleFacade = $blogArticleFacade;
+        $this->heurekaReviewFacade = $heurekaReviewFacade;
     }
 
     /**
@@ -82,6 +91,7 @@ class BlogCategoryController extends FrontBaseController
             'isMainPage' => $blogCategory->isMainPage(),
             'blogArticlePaginationResult' => $blogArticlePaginationResult,
             'lastBlogCategoryForBlogArticlesByBlogArticleId' => $lastBlogCategoryForBlogArticlesByBlogArticleId,
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ]);
     }
 

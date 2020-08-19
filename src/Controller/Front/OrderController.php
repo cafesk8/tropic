@@ -22,6 +22,7 @@ use App\Model\GoPay\GoPayFacadeOnCurrentDomain;
 use App\Model\GoPay\GoPayTransactionFacade;
 use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 use App\Model\Gtm\GtmFacade;
+use App\Model\Heureka\HeurekaReviewFacade;
 use App\Model\Order\FrontOrderData;
 use App\Model\Order\Item\OrderItemDataFactory;
 use App\Model\Order\Item\OrderItemFactory;
@@ -226,6 +227,11 @@ class OrderController extends FrontBaseController
     private CofidisFacade $cofidisFacade;
 
     /**
+     * @var \App\Model\Heureka\HeurekaReviewFacade
+     */
+    private $heurekaReviewFacade;
+
+    /**
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -258,6 +264,7 @@ class OrderController extends FrontBaseController
      * @param \App\Model\Order\Item\OrderItemDataFactory $orderItemDataFactory
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \App\Component\Cofidis\CofidisFacade $cofidisFacade
+     * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -291,7 +298,8 @@ class OrderController extends FrontBaseController
         OrderItemFactory $orderItemFactory,
         OrderItemDataFactory $orderItemDataFactory,
         FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
-        CofidisFacade $cofidisFacade
+        CofidisFacade $cofidisFacade,
+        HeurekaReviewFacade $heurekaReviewFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -325,6 +333,7 @@ class OrderController extends FrontBaseController
         $this->orderItemDataFactory = $orderItemDataFactory;
         $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
         $this->cofidisFacade = $cofidisFacade;
+        $this->heurekaReviewFacade = $heurekaReviewFacade;
     }
 
     /**
@@ -736,6 +745,7 @@ class OrderController extends FrontBaseController
                 $this->domain->getLocale(),
                 self::HOMEPAGE_ARTICLES_LIMIT
             ),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ]);
     }
 

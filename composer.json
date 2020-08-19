@@ -46,6 +46,7 @@
         "ext-pdo_pgsql": "*",
         "ext-pdo_sqlsrv": "*",
         "ext-redis": "*",
+        "ext-simplexml": "*",
         "ext-xml": "*",
         "arvenil/ninja-mutex": "0.6.0 as 0.4.1",
         "commerceguys/intl": "^1.0.0",

@@ -6,6 +6,7 @@ namespace App\Controller\Front;
 
 use App\Component\Setting\Setting;
 use App\Model\Article\ArticleFacade;
+use App\Model\Heureka\HeurekaReviewFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,14 +22,18 @@ class AboutUsController extends FrontBaseController
      */
     private $domain;
 
+    private HeurekaReviewFacade $heurekaReviewFacade;
+
     /**
      * @param \App\Model\Article\ArticleFacade $articleFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
      */
-    public function __construct(ArticleFacade $articleFacade, Domain $domain)
+    public function __construct(ArticleFacade $articleFacade, Domain $domain, HeurekaReviewFacade $heurekaReviewFacade)
     {
         $this->articleFacade = $articleFacade;
         $this->domain = $domain;
+        $this->heurekaReviewFacade = $heurekaReviewFacade;
     }
 
     /**
@@ -43,6 +48,7 @@ class AboutUsController extends FrontBaseController
 
         return $this->render('Front/Content/AboutUs/info.html.twig', [
             'loyaltyProgramArticle' => $loyaltyProgramArticle,
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ]);
     }
 }

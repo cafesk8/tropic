@@ -135,3 +135,7 @@ parameters:
 
         PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\CamelCapsFunctionNameSniff:
             - '*/src/Component/EntityExtension/QueryBuilder.php'
+
+        PHP_CodeSniffer\Standards\Squiz\Sniffs\NamingConventions\ValidVariableNameSniff.NotCamelCaps:
+            - '*/src/Model/Heureka/HeurekaReviewCronModule.php'
+            - '*/src/Model/Heureka/HeurekaReviewItemFactory.php'

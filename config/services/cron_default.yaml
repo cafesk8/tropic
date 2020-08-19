@@ -30,6 +30,10 @@ services:
         tags:
             - { name: shopsys.cron, hours: '0', minutes: '0', readableName: 'Smazání starých košíků' }
 
+    App\Model\Heureka\HeurekaReviewCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '0', minutes: '0', readableName: 'Stahování recenzí e-shopu z Heureky' }
+
     # TWICE PER DAY ----------------------------------------------------------------------------------
     Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule: ~
 
