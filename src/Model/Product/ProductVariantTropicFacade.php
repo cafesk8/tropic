@@ -60,7 +60,16 @@ class ProductVariantTropicFacade
             return null;
         }
 
-        return $this->productRepository->findMainVariantByVariantId(Product::getMainVariantVariantIdFromVariantVariantId($variantId));
+        $mainVariant = $this->productRepository->findMainVariantByVariantId(Product::getMainVariantVariantIdFromVariantVariantId($variantId));
+
+        if ($mainVariant === null) {
+            $mainVariant = $this->productRepository->findMainVariantByVariantId(trim(Product::getMainVariantVariantIdFromVariantVariantId($variantId)));
+        }
+        if ($mainVariant === null) {
+            $mainVariant = $this->productRepository->findMainVariantByVariantId(Product::getMainVariantVariantIdFromVariantVariantId($variantId) . ' ');
+        }
+
+        return $mainVariant;
     }
 
     /**
