@@ -24,3 +24,6 @@ services:
         arguments:
             $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'
 
+    App\Command\Migrations\ImportLegacySlovakDescriptionsFromCSVCommand:
+        arguments:
+            $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'
