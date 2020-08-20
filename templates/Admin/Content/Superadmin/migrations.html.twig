@@ -40,6 +40,16 @@
 					GROUP BY C.`id`
 				</td>
 			</tr>
+			<tr>
+				<td>Slovenské popisy - importujte soubor s názvem "descriptions.csv"</td>
+				<td>
+					SELECT G.catnum
+					FROM goods G
+					JOIN goods_translate GT ON GT.id = G.id
+					WHERE GT.language = 2
+					AND GT.long_desc NOT LIKE "%--sk--%"
+				</td>
+			</tr>
 		</tbody>
 
 	</table>
