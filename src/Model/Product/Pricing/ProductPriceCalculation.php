@@ -85,7 +85,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         );
 
         $matchingPricingGroupOnFirstDomain = $pricingGroup->getInternalId() !== null ? $this->pricingGroupFacade->getByNameAndDomainId($pricingGroup->getInternalId(), DomainHelper::CZECH_DOMAIN) : null;
-        $standardPricingGroup = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
+        $standardPricingGroup = $product->isInAnySaleStock() ? $defaultPricingGroup : $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
         $salePricingGroup = $this->pricingGroupFacade->getSalePricePricingGroup($domainId);
         $pricingGroups = [$pricingGroup, $defaultPricingGroup, $standardPricingGroup, $salePricingGroup];
 

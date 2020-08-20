@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
+use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\ProductFacade;
@@ -130,7 +131,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      */
     private function getSellingPrice(
         array $pricesArray,
-        BasePricingGroup $pricingGroup,
+        PricingGroup $pricingGroup,
         int $productId
     ): ?BaseProductPrice {
         $pricingGroupId = $pricingGroup->getId();
