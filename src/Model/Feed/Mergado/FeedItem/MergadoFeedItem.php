@@ -123,6 +123,8 @@ class MergadoFeedItem implements FeedItemInterface
      */
     private $warranty;
 
+    private string $purchaseVsSellingPriceDifference;
+
     /**
      * @param int $id
      * @param int|null $itemGroupId
@@ -140,13 +142,14 @@ class MergadoFeedItem implements FeedItemInterface
      * @param string $currency
      * @param string $availability
      * @param int $deliveryDays
-     * @param string $image
+     * @param string|null $image
      * @param string[] $imagesAlternative
-     * @param string $video
+     * @param string|null $video
      * @param array $videosAlternative
      * @param string[] $params
      * @param \App\Model\Feed\Mergado\FeedItem\MergadoFeedDeliveryItem[] $deliveries
      * @param int|null $warranty
+     * @param string $purchaseVsSellingPriceDifference
      */
     public function __construct(
         int $id,
@@ -171,7 +174,8 @@ class MergadoFeedItem implements FeedItemInterface
         array $videosAlternative,
         array $params,
         array $deliveries,
-        ?int $warranty
+        ?int $warranty,
+        string $purchaseVsSellingPriceDifference
     ) {
         $this->id = $id;
         $this->itemGroupId = $itemGroupId;
@@ -196,6 +200,7 @@ class MergadoFeedItem implements FeedItemInterface
         $this->params = $params;
         $this->deliveries = $deliveries;
         $this->warranty = $warranty;
+        $this->purchaseVsSellingPriceDifference = $purchaseVsSellingPriceDifference;
     }
 
     /**
@@ -388,5 +393,13 @@ class MergadoFeedItem implements FeedItemInterface
     public function getWarranty(): ?int
     {
         return $this->warranty;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPurchaseVsSellingPriceDifference(): string
+    {
+        return $this->purchaseVsSellingPriceDifference;
     }
 }
