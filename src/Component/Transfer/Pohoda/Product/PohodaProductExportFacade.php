@@ -295,4 +295,13 @@ class PohodaProductExportFacade
 
         return false;
     }
+
+    /**
+     * @param string $mainVariantId
+     * @return int[]
+     */
+    public function getVariantIdsByMainVariantId(string $mainVariantId): array
+    {
+        return array_map(fn (array $variant) => $variant[PohodaProduct::COL_POHODA_ID], $this->pohodaProductExportRepository->getVariantIdsByMainVariantId($mainVariantId));
+    }
 }

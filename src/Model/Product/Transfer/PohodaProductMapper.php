@@ -7,6 +7,7 @@ namespace App\Model\Product\Transfer;
 use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Component\Transfer\Pohoda\Product\PohodaProduct;
+use App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Category\CategoryFacade;
 use App\Model\Pricing\Currency\Currency;
@@ -146,6 +147,8 @@ class PohodaProductMapper
      */
     private array $productIdsToQueueAgain;
 
+    private PohodaProductExportFacade $pohodaProductExportFacade;
+
     private ProductVariantTropicFacade $productVariantTropicFacade;
 
     /**
@@ -168,6 +171,7 @@ class PohodaProductMapper
      * @param \App\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
      * @param \App\Model\Product\Parameter\ParameterDataFactory $parameterDataFactory
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade $pohodaProductExportFacade
      */
     public function __construct(
         Domain $domain,
@@ -188,7 +192,8 @@ class PohodaProductMapper
         ProductParameterValueDataFactory $productParameterValueDataFactory,
         ParameterValueDataFactory $parameterValueDataFactory,
         ParameterDataFactory $parameterDataFactory,
-        ProductVariantTropicFacade $productVariantTropicFacade
+        ProductVariantTropicFacade $productVariantTropicFacade,
+        PohodaProductExportFacade $pohodaProductExportFacade
     ) {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
@@ -211,6 +216,7 @@ class PohodaProductMapper
 
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
         $this->productIdsToQueueAgain = [];
+        $this->pohodaProductExportFacade = $pohodaProductExportFacade;
     }
 
     /**
@@ -273,6 +279,8 @@ class PohodaProductMapper
      */
     private function mapVariantToProductData(PohodaProduct $pohodaProduct, ProductData $productData): void
     {
+        $oldVariantId = $productData->variantId;
+
         if ($this->productVariantTropicFacade->isVariant($pohodaProduct->variantId)
             && $this->productVariantTropicFacade->findMainVariantByVariantId($pohodaProduct->variantId) === null
         ) {
@@ -291,6 +299,16 @@ class PohodaProductMapper
         $productData->variantId = TransformString::emptyToNull($pohodaProduct->variantId);
         $productData->variantAlias[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAlias);
         $productData->variantAlias[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAliasSk);
+
+        if (!$productData->isNew() &&
+            $productData->variantId !== null &&
+            $oldVariantId !== $productData->variantId &&
+            !str_contains($productData->variantId, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR)
+        ) {
+            foreach ($this->pohodaProductExportFacade->getVariantIdsByMainVariantId($productData->variantId) as $variantId) {
+                $this->productIdsToQueueAgain[] = $variantId;
+            }
+        }
     }
 
     /**

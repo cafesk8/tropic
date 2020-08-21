@@ -401,4 +401,29 @@ class PohodaProductExportRepository
 
         return $pohodaParameterResult;
     }
+
+    /**
+     * @param string $mainVariantId
+     * @return array
+     */
+    public function getVariantIdsByMainVariantId(string $mainVariantId): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('ID', PohodaProduct::COL_POHODA_ID);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT Product.ID
+            FROM Skz Product
+            WHERE Product.RefSklad = :defaultStockId 
+                AND Product.ObjNazev LIKE :variantId
+                AND Product.IObchod = 1',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'defaultStockId' => self::DEFAULT_POHODA_STOCK_ID,
+                'variantId' => $mainVariantId . '*%',
+            ]);
+
+        return $query->getResult();
+    }
 }

@@ -169,6 +169,8 @@ class ProductData extends BaseProductData
 
     public bool $supplierSet;
 
+    private bool $new;
+
     public function __construct()
     {
         parent::__construct();
@@ -193,5 +195,19 @@ class ProductData extends BaseProductData
         $this->oversized = false;
         $this->stickers = new ImageUploadData();
         $this->supplierSet = false;
+        $this->new = true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew(): bool
+    {
+        return $this->new;
+    }
+
+    public function setNotNew(): void
+    {
+        $this->new = false;
     }
 }
