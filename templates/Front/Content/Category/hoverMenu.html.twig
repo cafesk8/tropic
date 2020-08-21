@@ -1,30 +1,32 @@
-{% macro rightContent(categoriesWithLazyLoadedVisibleChildren, modificationClass = '', dropdownMenu, showImage, children, isSaleCategoryChild, parentCategoryId) %}
+{% macro rightContent(categoriesWithLazyLoadedVisibleChildren, modificationClass = '', dropdownMenu, showImage, children, isSaleCategoryChild, isNewsCategoryChild, parentCategoryId) %}
     {% if categoriesWithLazyLoadedVisibleChildren|length > 0 %}
         <ul class="{% if not children %}list-menu{% else %}list-menu__submenu{% endif %} {{ modificationClass }}">
             {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
                 {% if not categoryWithLazyLoadedVisibleChildren.category.saleType and not categoryWithLazyLoadedVisibleChildren.category.newsType %}
-                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length, isSaleCategoryChild, parentCategoryId) }}
+                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length, isSaleCategoryChild, isNewsCategoryChild, parentCategoryId) }}
                 {% endif %}
             {% endfor %}
             {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
                 {% if categoryWithLazyLoadedVisibleChildren.category.newsType %}
-                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length, isSaleCategoryChild, parentCategoryId) }}
+                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length, isSaleCategoryChild, isNewsCategoryChild, parentCategoryId) }}
                 {% endif %}
             {% endfor %}
             {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
                 {% if categoryWithLazyLoadedVisibleChildren.category.saleType %}
-                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length, isSaleCategoryChild, parentCategoryId) }}
+                    {{ _self.mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loop.index, loop.length, isSaleCategoryChild, isNewsCategoryChild, parentCategoryId) }}
                 {% endif %}
             {% endfor %}
         </ul>
     {% endif %}
 {% endmacro %}
 
-{% macro mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loopIndex, loopLength, isSaleCategoryChild, parentCategoryId) %}
+{% macro mainCategory(categoryWithLazyLoadedVisibleChildren, dropdownMenu, showImage, loopIndex, loopLength, isSaleCategoryChild, isNewsCategoryChild, parentCategoryId) %}
     {% set category = categoryWithLazyLoadedVisibleChildren.category %}
-    {% set hasChildren = category.hasChildren or category.saleType %}
+    {% set hasChildren = category.hasChildren or category.saleType or category.newsType %}
     {% if isSaleCategoryChild %}
         {% set categoryUrl = url('front_sale_product_list', { id: category.id }) %}
+    {% elseif isNewsCategoryChild %}
+        {% set categoryUrl = url('front_news_product_list', { id: category.id }) %}
     {% else %}
         {% set categoryUrl = url('front_product_list', { id: category.id }) %}
     {% endif %}
@@ -40,9 +42,9 @@
                     {% endif %}
                 </a>
             </div>
-            {% if hasChildren and (category.saleType is same as (false) or showImage is same as (true)) %}
+            {% if hasChildren and (category.saleType is same as (false) or showImage is same as (true)) and (category.newsType is same as (false) or showImage is same as (true)) %}
                 <div class="list-menu__item__options">
-                    {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, '', false, showImage, true, category.saleType, category.id) }}
+                    {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, '', false, showImage, true, category.saleType, category.newsType, category.id) }}
                 </div>
             {% endif %}
         </li>
@@ -59,8 +61,8 @@
                        class="list-menu__submenu__item__title list-menu__submenu__item__title--level-{{ category.level }}">
                         {{ category.name }}
                     </a>
-                    {% if hasChildren and category.level == 2 and not isSaleCategoryChild%}
-                        {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, 'list-menu__submenu--children', false, false, true, category.saleType, category.id) }}
+                    {% if hasChildren and category.level == 2 and not (isSaleCategoryChild or isNewsCategoryChild) %}
+                        {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, 'list-menu__submenu--children', false, false, true, category.saleType, category.newsType, category.id) }}
                     {% endif %}
                 </div>
             </li>
@@ -74,4 +76,4 @@
     {% endif %}
 {% endmacro %}
 
-{{ _self.rightContent(categoriesWithLazyLoadedVisibleChildren, '', dropdownMenu, showImage, children, false, 0) }}
+{{ _self.rightContent(categoriesWithLazyLoadedVisibleChildren, '', dropdownMenu, showImage, children, false, false, 0) }}

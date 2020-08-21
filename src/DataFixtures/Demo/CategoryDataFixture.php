@@ -91,6 +91,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             $categoryData->leftBannerTexts[$locale] = null;
             $categoryData->rightBannerTexts[$locale] = null;
             $categoryData->containsSaleProducts[$domainConfig->getId()] = true;
+            $categoryData->containsNewsProducts[$domainConfig->getId()] = true;
         }
         $categoryData->preListingCategory = false;
         $categoryElectronics = $this->getReference(self::CATEGORY_ELECTRONICS);
@@ -103,6 +104,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             $categoryData->descriptions[$domainConfig->getId()] = t('A camera is an optical instrument for recording or capturing images, which may be stored locally, '
                 . 'transmitted to another location, or both.', [], 'dataFixtures', $locale);
             $categoryData->containsSaleProducts[$domainConfig->getId()] = false;
+            $categoryData->containsNewsProducts[$domainConfig->getId()] = false;
         }
         $this->createCategory($categoryData, self::CATEGORY_PHOTO);
 

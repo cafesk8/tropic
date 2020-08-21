@@ -36,6 +36,16 @@ class CategoryWithLazyLoadedVisibleChildrenFactory extends BaseCategoryWithLazyL
                     $category,
                     true
                 );
+            } elseif ($category->isNewsType()) {
+                $categoriesWithLazyLoadedVisibleAndListableChildren[] = new CategoryWithLazyLoadedVisibleChildren(
+                    function () use ($domainConfig) {
+                        $categories = $this->categoryRepository->getAllVisibleAndListableNewsCategoriesByDomain($domainConfig);
+
+                        return $this->createCategoriesWithLazyLoadedVisibleAndListableChildren($categories, $domainConfig);
+                    },
+                    $category,
+                    true
+                );
             } else {
                 $hasChildren = in_array($category, $categoriesWithVisibleAndListableChildren, true);
                 $categoriesWithLazyLoadedVisibleAndListableChildren[] = new CategoryWithLazyLoadedVisibleChildren(

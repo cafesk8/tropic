@@ -494,6 +494,10 @@ class RouteConfigCustomization
             ->customizeByRouteName(['front_sale_product_list'], function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Check category televize-audio as sale category.')
                     ->setParameter('id', 3);
+            })
+            ->customizeByRouteName(['front_news_product_list'], function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Check category televize-audio as news category.')
+                    ->setParameter('id', 3);
             });
     }
 

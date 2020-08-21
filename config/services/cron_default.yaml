@@ -47,9 +47,9 @@ services:
             - { name: shopsys.cron, hours: '*', minutes: '10', readableName: 'Generování hodinových feedů' }
 
     # ALWAYS -----------------------------------------------------------------------------------------
-    App\Model\Category\CategorySaleProductsCronModule:
+    App\Model\Category\SpecialCategoriesCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Označení kategorií s výprodejovými produkty' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Označení kategorií s výprodejovými produkty a novinkami' }
 
     App\Model\Newsletter\Transfer\EcomailExportCronModule:
         tags:

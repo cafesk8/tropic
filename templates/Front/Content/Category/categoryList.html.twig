@@ -4,6 +4,8 @@
             {% for category in categories %}
                 {% if currentCategory is defined and currentCategory.isSaleType %}
                     {% set categoryUrl = url('front_sale_product_list', { friendlyUrl: findMainFriendlyUrl('front_product_list', category.id) }) %}
+                {% elseif currentCategory is defined and currentCategory.isNewsType %}
+                    {% set categoryUrl = url('front_news_product_list', { friendlyUrl: findMainFriendlyUrl('front_product_list', category.id) }) %}
                 {% else %}
                     {% set categoryUrl = url('front_product_list', { id: category.id }) %}
                 {% endif %}
@@ -38,6 +40,8 @@
                 {% for category in categories %}
                     {% if currentCategory is defined and currentCategory.isSaleType %}
                         {% set categoryUrl = url('front_sale_product_list', { id: category.id }) %}
+                    {% elseif currentCategory is defined and currentCategory.isNewsType %}
+                        {% set categoryUrl = url('front_news_product_list', { id: category.id }) %}
                     {% else %}
                         {% set categoryUrl = url('front_product_list', { id: category.id }) %}
                     {% endif %}

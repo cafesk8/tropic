@@ -16,6 +16,11 @@ class FriendlyUrlFactory extends BaseFriendlyUrlFactory
             DomainHelper::SLOVAK_DOMAIN => 'vypredaj',
             DomainHelper::ENGLISH_DOMAIN => 'sale',
         ],
+        'front_news_product_list' => [
+            DomainHelper::CZECH_DOMAIN => 'novinky',
+            DomainHelper::SLOVAK_DOMAIN => 'novinky',
+            DomainHelper::ENGLISH_DOMAIN => 'news',
+        ],
     ];
 
     /**

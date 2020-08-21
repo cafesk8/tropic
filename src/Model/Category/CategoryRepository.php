@@ -189,7 +189,15 @@ class CategoryRepository extends BaseCategoryRepository
             $queryBuilder->andWhere('c.level = :level')
                 ->andWhere('cd.containsSaleProduct = true')
                 ->setParameter('level', CategoryFacade::SALE_CATEGORIES_LEVEL);
-        } else {
+        }
+
+        if ($category->isNewsType()) {
+            $queryBuilder->andWhere('c.level = :level')
+                ->andWhere('cd.containsNewsProduct = true')
+                ->setParameter('level', CategoryFacade::NEWS_CATEGORIES_LEVEL);
+        }
+
+        if (!$category->isSaleType() && !$category->isNewsType()) {
             $queryBuilder->andWhere('c.parent = :category')
                 ->setParameter('category', $category);
         }
@@ -342,6 +350,20 @@ class CategoryRepository extends BaseCategoryRepository
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @return array
+     */
+    public function getAllVisibleAndListableNewsCategoriesByDomain(DomainConfig $domainConfig): array
+    {
+        $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainConfig->getId())
+            ->andWhere('c.level = :level')
+            ->andWhere('cd.containsNewsProduct = true')
+            ->setParameter('level', CategoryFacade::NEWS_CATEGORIES_LEVEL);
+
+        return $queryBuilder->getQuery()->execute();
+    }
+
+    /**
      * @return string
      */
     public function getSaleCategoriesHash(): string
@@ -381,6 +403,66 @@ class CategoryRepository extends BaseCategoryRepository
                             INNER JOIN product_visibilities pv ON pv.product_id = pcd.product_id AND pv.domain_id = pcd.domain_id
                             INNER JOIN pricing_groups pg ON pg.id = pv.pricing_group_id AND pg.domain_id = pcd.domain_id
                             WHERE f.sale = true
+                                AND (pf.active_from IS NULL OR pf.active_from <= :now)
+                                AND (pf.active_to IS NULL OR pf.active_to >= :now)
+                                AND pv.visible = true
+                                AND pg.internal_id = \'ordinary_customer\'
+                                AND pcd.domain_id = cd.domain_id
+                                AND pcd.category_id = cd.category_id
+                            GROUP BY pcd.category_id
+                        )
+                    )
+                    THEN TRUE
+                    ELSE FALSE
+                END',
+            new ResultSetMapping()
+        );
+
+        $query->execute([
+            'now' => $now,
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewsCategoriesHash(): string
+    {
+        $hashBase = '';
+        $newsCategories = $this->getAllQueryBuilder()
+            ->select('c.id, cd.domainId')
+            ->join(CategoryDomain::class, 'cd', Join::WITH, 'cd.category = c.id')
+            ->andWhere('c.level = :level')
+            ->andWhere('cd.containsNewsProduct = true')
+            ->setParameter('level', CategoryFacade::NEWS_CATEGORIES_LEVEL)
+            ->orderBy('c.id, cd.domainId')
+            ->getQuery()->execute();
+
+        foreach ($newsCategories as $newsCategory) {
+            $hashBase .= $newsCategory['id'] . $newsCategory['domainId'];
+        }
+
+        return md5($hashBase);
+    }
+
+    public function markNewsCategories(): void
+    {
+        $now = new DateTime();
+
+        $query = $this->em->createNativeQuery(
+            'UPDATE
+                category_domains AS cd
+                SET
+                contains_news_product = CASE
+                    WHEN (
+                        EXISTS(
+                            SELECT pcd.category_id
+                            FROM product_category_domains pcd
+                            INNER JOIN product_flags pf ON pf.product_id = pcd.product_id
+                            INNER JOIN flags f ON pf.flag_id = f.id
+                            INNER JOIN product_visibilities pv ON pv.product_id = pcd.product_id AND pv.domain_id = pcd.domain_id
+                            INNER JOIN pricing_groups pg ON pg.id = pv.pricing_group_id AND pg.domain_id = pcd.domain_id
+                            WHERE f.news = true
                                 AND (pf.active_from IS NULL OR pf.active_from <= :now)
                                 AND (pf.active_to IS NULL OR pf.active_to >= :now)
                                 AND pv.visible = true

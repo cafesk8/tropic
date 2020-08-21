@@ -56,6 +56,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CategoryFacade extends BaseCategoryFacade
 {
     public const SALE_CATEGORIES_LEVEL = 2;
+    public const NEWS_CATEGORIES_LEVEL = 2;
 
     /**
      * @var \App\Model\Category\CategoryRepository
@@ -473,31 +474,14 @@ class CategoryFacade extends BaseCategoryFacade
         }
     }
 
-    /**
-     * @param string $friendlyUrl
-     * @return \App\Model\Category\Category
-     */
-    public function getSaleCategoryByFriendlyUrl(string $friendlyUrl): Category
+    public function markNewsCategories(): void
     {
-        $domainId = $this->domain->getId();
-        $friendlyUrl = '/' . $friendlyUrl . '/';
-        $domainRouter = $this->domainRouterFactory->getFriendlyUrlRouter($this->domain->getCurrentDomainConfig());
+        $newsCategoriesHash = $this->categoryRepository->getNewsCategoriesHash();
 
-        try {
-            $matchedRouteData = $domainRouter->match($friendlyUrl);
-        } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
-            $message = sprintf('No route found for "GET %s"', $friendlyUrl);
-            throw new NotFoundHttpException($message);
+        $this->categoryRepository->markNewsCategories();
+
+        if ($newsCategoriesHash !== $this->categoryRepository->getNewsCategoriesHash()) {
+            $this->redisFacade->clearCacheByPattern('twig:', 'categories');
         }
-
-        $category = $this->categoryRepository->findById($matchedRouteData['id']);
-
-        if ($category === null || !$category->isVisible($domainId) || !$category->containsSaleProduct($domainId) ||
-            $category->getLevel() != SELF::SALE_CATEGORIES_LEVEL) {
-            $message = 'Category ID ' . $matchedRouteData['id'] . ' is not visible on domain ID ' . $domainId;
-            throw new CategoryNotFoundException($message);
-        }
-
-        return $category;
     }
 }

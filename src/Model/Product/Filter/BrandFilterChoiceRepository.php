@@ -20,16 +20,16 @@ class BrandFilterChoiceRepository extends BaseBrandFilterChoiceRepository
      * @param int $domainId
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param \App\Model\Category\Category $category
-     * @param bool $isSaleCategory
+     * @param \App\Model\Product\Flag\Flag[] $onlyFlags
      * @return \App\Model\Product\Brand\Brand[]
      */
-    public function getBrandFilterChoicesInCategory($domainId, PricingGroup $pricingGroup, Category $category, bool $isSaleCategory = false)
+    public function getBrandFilterChoicesInCategory($domainId, PricingGroup $pricingGroup, Category $category, array $onlyFlags = [])
     {
         $productsQueryBuilder = $this->productRepository->getListableInCategoryQueryBuilder(
             $domainId,
             $pricingGroup,
             $category,
-            $isSaleCategory
+            $onlyFlags
         );
 
         return $this->getBrandsByProductsQueryBuilder($productsQueryBuilder);

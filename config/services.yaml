@@ -709,6 +709,10 @@ services:
         tags:
             - {name: shopsys.friendly_url_provider}
 
+    App\Model\Product\NewsProductListFriendlyUrlDataProvider:
+        tags:
+            - {name: shopsys.friendly_url_provider}
+
     Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFactory: '@App\Component\Router\FriendlyUrl\FriendlyUrlFactory'
 
     App\Model\Transport\TransportPriceFactory: ~
