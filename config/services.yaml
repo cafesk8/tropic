@@ -744,3 +744,9 @@ services:
     Shopsys\FrameworkBundle\Model\Sitemap\SitemapRepository: '@App\Model\Sitemap\SitemapRepository'
 
     Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository: '@App\Model\Order\OrderNumberSequenceRepository'
+
+    Shopsys\FrameworkBundle\Model\ShopInfo\ShopInfoSettingFacade:
+        class: App\Model\ShopInfo\ShopInfoSettingFacade
+
+    Shopsys\FrameworkBundle\Controller\Admin\ShopInfoController:
+        class: App\Controller\Admin\ShopInfoController

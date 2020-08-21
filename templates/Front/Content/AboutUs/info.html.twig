@@ -46,7 +46,6 @@
                         <img src="{{ asset('public/frontend/images/design/contact.png')}}" alt="{{ 'Sídlo'|trans }}">
                     </div>
                     <div class="wrap-article__row__half">
-                        {% if domainId != 2 %}
                             <div class="wrap-article__row">
                                 <div class="wrap-article__row__full">
                                     <h4>{{ 'Provozovna'|trans }}</h4>
@@ -59,12 +58,11 @@
                                     {{ '702 00 Ostrava'|trans }}<br>
                                 </div>
                                 <div class="wrap-article__row__half">
-                                    {{ 'Pondělí až pátek 8:00 – 16:00'|trans }}<br>
+                                    {{ infoOpeningHours|raw }}<br>
                                     {{ 'tel.: +420 595 177 177'|trans }}<br>
                                     {{ 'info@shopsys.com'|trans }}<br>
                                 </div>
                             </div>
-                        {% endif %}
                         <div class="wrap-article__row">
                             <div class="wrap-article__row__full">
                                 <h4>{{ 'Sídlo'|trans }}</h4>
