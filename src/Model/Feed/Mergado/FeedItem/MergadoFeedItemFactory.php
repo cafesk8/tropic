@@ -160,7 +160,8 @@ class MergadoFeedItemFactory
             $this->productParametersBatchLoader->getProductParametersByName($product, $domainConfig),
             $this->getMergadoTransports($currency, $domainConfig),
             $product->getWarranty(),
-            $this->getPurchaseVsSellingPriceDifference($product, $sellingPrice, $domainId)
+            $this->getPurchaseVsSellingPriceDifference($product, $sellingPrice, $domainId),
+            $this->getSaleExclusionType($product)
         );
     }
 
@@ -360,5 +361,26 @@ class MergadoFeedItemFactory
         $purchasePriceWithVat = $purchasePrice->getPriceWithVat();
 
         return $sellingPriceWithVat->subtract($purchasePriceWithVat)->getAmount();
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return int|null
+     */
+    private function getSaleExclusionType(Product $product): ?int
+    {
+        $registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
+        $promoDiscountDisabled = $product->isPromoDiscountDisabled();
+        if ($registrationDiscountDisabled && $promoDiscountDisabled) {
+            return 3;
+        }
+        if ($registrationDiscountDisabled) {
+            return 1;
+        }
+        if ($promoDiscountDisabled) {
+            return 2;
+        }
+
+        return null;
     }
 }

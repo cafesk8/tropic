@@ -125,6 +125,8 @@ class MergadoFeedItem implements FeedItemInterface
 
     private string $purchaseVsSellingPriceDifference;
 
+    private ?int $saleExclusionType;
+
     /**
      * @param int $id
      * @param int|null $itemGroupId
@@ -150,6 +152,7 @@ class MergadoFeedItem implements FeedItemInterface
      * @param \App\Model\Feed\Mergado\FeedItem\MergadoFeedDeliveryItem[] $deliveries
      * @param int|null $warranty
      * @param string $purchaseVsSellingPriceDifference
+     * @param int|null $saleExclusionType
      */
     public function __construct(
         int $id,
@@ -175,7 +178,8 @@ class MergadoFeedItem implements FeedItemInterface
         array $params,
         array $deliveries,
         ?int $warranty,
-        string $purchaseVsSellingPriceDifference
+        string $purchaseVsSellingPriceDifference,
+        ?int $saleExclusionType
     ) {
         $this->id = $id;
         $this->itemGroupId = $itemGroupId;
@@ -201,6 +205,7 @@ class MergadoFeedItem implements FeedItemInterface
         $this->deliveries = $deliveries;
         $this->warranty = $warranty;
         $this->purchaseVsSellingPriceDifference = $purchaseVsSellingPriceDifference;
+        $this->saleExclusionType = $saleExclusionType;
     }
 
     /**
@@ -401,5 +406,13 @@ class MergadoFeedItem implements FeedItemInterface
     public function getPurchaseVsSellingPriceDifference(): string
     {
         return $this->purchaseVsSellingPriceDifference;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSaleExclusionType(): ?int
+    {
+        return $this->saleExclusionType;
     }
 }
