@@ -73,6 +73,7 @@ class OrderGiftCertificateFacade
         $this->em->flush($orderGiftCertificate);
         $this->orderGiftCertificatePdfFacade->create($orderGiftCertificate);
         $this->orderGiftCertificateMailFacade->sendGiftCertificateEmail($orderGiftCertificate, OrderGiftCertificateMail::MAIL_TEMPLATE_DEFAULT_NAME);
+        $this->orderGiftCertificatePdfFacade->delete($orderGiftCertificate);
 
         return $orderGiftCertificate;
     }
@@ -87,7 +88,9 @@ class OrderGiftCertificateFacade
             $promoCodeData->usageLimit = 1;
             $promoCodeData->validTo = new DateTime('+365 days');
             $orderGiftCertificate->getGiftCertificate()->edit($promoCodeData);
+            $this->orderGiftCertificatePdfFacade->create($orderGiftCertificate);
             $this->orderGiftCertificateMailFacade->sendGiftCertificateEmail($orderGiftCertificate, OrderGiftCertificateMail::MAIL_TEMPLATE_ACTIVATED_NAME);
+            $this->orderGiftCertificatePdfFacade->delete($orderGiftCertificate);
         }
 
         $this->em->flush();
