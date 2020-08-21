@@ -22,4 +22,24 @@ class ImageViewFacade extends BaseImageViewFacade
 
         return array_map(fn ($image) => $this->imageViewFactory->createFromImage($image), $images);
     }
+
+    /**
+     * @param string $entityClass
+     * @param array $entityIds
+     * @param string|null $type
+     * @return \Shopsys\ReadModelBundle\Image\ImageView[]|null[]
+     */
+    public function getForEntityIds(string $entityClass, array $entityIds, ?string $type = null): array
+    {
+        $imagesIndexedByEntityIds = $this->imageFacade->getImagesByEntitiesIndexedByEntityId($entityIds, $entityClass, $type);
+
+        $imageViewsOrNullsIndexedByEntityIds = [];
+        foreach ($entityIds as $entityId) {
+            $imageOrNull = $this->getImageOrNullFromArray($imagesIndexedByEntityIds, $entityId);
+
+            $imageViewsOrNullsIndexedByEntityIds[$entityId] = $this->createImageViewOrNullFromImage($imageOrNull);
+        }
+
+        return $imageViewsOrNullsIndexedByEntityIds;
+    }
 }

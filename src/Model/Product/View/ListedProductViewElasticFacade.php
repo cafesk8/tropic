@@ -35,6 +35,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  * @property \App\Model\Product\View\ListedProductViewFactory $listedProductViewFactory
  * @property \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
  * @property \App\Model\Product\ProductFacade $productFacade
+ * @property \App\Model\Product\View\ImageViewFacade $imageViewFacade
  * @method \App\Model\Product\View\ListedProductView[] createFromProducts(array $products)
  */
 class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
@@ -210,7 +211,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
             $productIds[] = $productArray['id'];
         }
 
-        $imageViews = $this->imageViewFacade->getForEntityIds(BaseProduct::class, $productIds);
+        $imageViews = $this->imageViewFacade->getForEntityIds(BaseProduct::class, $productIds, null);
         $salePricingGroup = $this->pricingGroupFacade->getSalePricePricingGroup($this->domain->getId());
 
         $listedProductViews = [];

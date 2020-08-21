@@ -25,7 +25,6 @@ use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
  * @method \App\Component\Image\Image getImageByObject(\App\Component\Image\Image|object $imageOrEntity, string|null $type)
  * @method \App\Component\Image\Image getById(int $imageId)
  * @method setImagePositionsByOrder(\App\Component\Image\Image[] $orderedImages)
- * @method \App\Component\Image\Image[] getImagesByEntitiesIndexedByEntityId(int[] $entityIds, string $entityClass)
  * @method \App\Component\Image\Image[] getImagesByEntityIdAndNameIndexedById(int $entityId, string $entityName, string|null $type)
  */
 class ImageFacade extends BaseImageFacade
@@ -177,5 +176,18 @@ class ImageFacade extends BaseImageFacade
         }
 
         return (int)substr($imageDescription, $separatorPosition + 1);
+    }
+
+    /**
+     * @param array $entityIds
+     * @param string $entityClass
+     * @param string|null $type
+     * @return Image[]
+     */
+    public function getImagesByEntitiesIndexedByEntityId(array $entityIds, string $entityClass, ?string $type = null): array
+    {
+        $entityName = $this->imageConfig->getImageEntityConfigByClass($entityClass)->getEntityName();
+
+        return $this->imageRepository->getMainImagesByEntitiesIndexedByEntityId($entityIds, $entityName, $type);
     }
 }
