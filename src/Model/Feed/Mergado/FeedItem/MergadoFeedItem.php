@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Feed\Mergado\FeedItem;
 
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Feed\FeedItemInterface;
 
 class MergadoFeedItem implements FeedItemInterface
@@ -127,6 +128,8 @@ class MergadoFeedItem implements FeedItemInterface
 
     private ?int $saleExclusionType;
 
+    private ?string $standardPrice;
+
     /**
      * @param int $id
      * @param int|null $itemGroupId
@@ -153,6 +156,7 @@ class MergadoFeedItem implements FeedItemInterface
      * @param int|null $warranty
      * @param string $purchaseVsSellingPriceDifference
      * @param int|null $saleExclusionType
+     * @param string|null $standardPrice
      */
     public function __construct(
         int $id,
@@ -179,7 +183,8 @@ class MergadoFeedItem implements FeedItemInterface
         array $deliveries,
         ?int $warranty,
         string $purchaseVsSellingPriceDifference,
-        ?int $saleExclusionType
+        ?int $saleExclusionType,
+        ?string $standardPrice
     ) {
         $this->id = $id;
         $this->itemGroupId = $itemGroupId;
@@ -206,6 +211,7 @@ class MergadoFeedItem implements FeedItemInterface
         $this->warranty = $warranty;
         $this->purchaseVsSellingPriceDifference = $purchaseVsSellingPriceDifference;
         $this->saleExclusionType = $saleExclusionType;
+        $this->standardPrice = $standardPrice;
     }
 
     /**
@@ -414,5 +420,13 @@ class MergadoFeedItem implements FeedItemInterface
     public function getSaleExclusionType(): ?int
     {
         return $this->saleExclusionType;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStandardPrice(): ?string
+    {
+        return $this->standardPrice;
     }
 }

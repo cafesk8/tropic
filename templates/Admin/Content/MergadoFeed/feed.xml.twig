@@ -82,6 +82,9 @@
         {% if item.saleExclusionType is not null %}
             <CUSTOM_LABEL_1>{{ item.saleExclusionType }}</CUSTOM_LABEL_1>
         {% endif %}
+        {% if item.standardPrice is not null %}
+            <CUSTOM_LABEL_2>{{ item.standardPrice }}</CUSTOM_LABEL_2>
+        {% endif %}
     </ITEM>
 {% endblock %}
 
