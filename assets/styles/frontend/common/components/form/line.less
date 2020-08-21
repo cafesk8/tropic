@@ -9,9 +9,17 @@
     margin: 0 0 @form-line-margin-bottom;
     padding: 0;
 
+    &--without-gap {
+        margin: 0;
+    }
+
     &__input {
         position: relative;
         margin-bottom: 5px;
+
+        .form-line--without-gap & {
+            margin-bottom: 0;
+        }
     }
 
     &__info {

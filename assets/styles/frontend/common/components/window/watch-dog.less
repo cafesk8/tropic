@@ -1,0 +1,41 @@
+@window-watch-dog-item-gap: 20px;
+
+.window-watch-dog {
+    &__row {
+        display: flex;
+        flex-wrap: wrap;
+
+        @media @query-md {
+            flex-wrap: nowrap;
+            margin-left: -@window-watch-dog-item-gap;
+        }
+    }
+
+    &__item {
+        width: 100%;
+        margin-bottom: 10px;
+
+        @media @query-md {
+            width: 100% / 2;
+            margin-left: @window-watch-dog-item-gap;
+        }
+
+        &--full-width {
+            width: 100%;
+        }
+    }
+
+    &__target-price {
+        display: flex;
+        align-items: center;
+
+        &__input {
+            flex: 1;
+        }
+
+        &__currency {
+            width: 30px;
+            margin-left: 10px;
+        }
+    }
+}
