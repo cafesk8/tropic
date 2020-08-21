@@ -24,8 +24,8 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 class ParameterFilterChoiceRepository extends BaseParameterFilterChoiceRepository
 {
     /**
-     * The only difference with the parent method is that here we use getOfferedInCategoryQueryBuilder instead of getListableInCategoryQueryBuilder
-     * so variant parameters are included in the filter
+     * The difference with the parent method is that here we use getOfferedInCategoryQueryBuilder instead of getListableInCategoryQueryBuilder
+     * so variant parameters are included in the filter and then we append set items' parameters as well
      *
      * @param int $domainId
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
@@ -56,6 +56,28 @@ class ParameterFilterChoiceRepository extends BaseParameterFilterChoiceRepositor
             ->setParameter('parameters', $category->getFilterParameters());
 
         $rows = $productsQueryBuilder->getQuery()->execute(null, GroupedScalarHydrator::HYDRATION_MODE);
+
+        $setItemsQueryBuilder = $this->productRepository->getVisibleSetItemsInCategoryQueryBuilder(
+            $domainId,
+            $pricingGroup,
+            $category
+        );
+
+        $setItemsQueryBuilder
+            ->select('MIN(setItem), pp, pv')
+            ->join(ProductParameterValue::class, 'ppv', Join::WITH, 'ppv.product = setItem')
+            ->join(Parameter::class, 'pp', Join::WITH, 'pp = ppv.parameter AND pp IN (:parameters)')
+            ->join(ParameterValue::class, 'pv', Join::WITH, 'pv = ppv.value AND pv.locale = :locale')
+            ->groupBy('pp, pv')
+            ->resetDQLPart('orderBy')
+            ->setParameter('locale', $locale)
+            ->setParameter('parameters', $category->getFilterParameters());
+
+        $setItemRows = $setItemsQueryBuilder->getQuery()->execute(null, GroupedScalarHydrator::HYDRATION_MODE);
+
+        foreach ($setItemRows as $setItemRow) {
+            $rows[] = $setItemRow;
+        }
 
         $visibleParametersIndexedById = $this->getVisibleParametersIndexedByIdOrderedByName($rows, $locale);
         $parameterValuesIndexedByParameterId = $this->getParameterValuesIndexedByParameterIdOrderedByValueText($rows, $locale);

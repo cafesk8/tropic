@@ -28,23 +28,13 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
  * @method array extractVisibility(int $domainId, \App\Model\Product\Product $product)
  * @method int[] extractVariantIds(\App\Model\Product\Product $product)
  * @property \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
+ * @property \App\Model\Product\ProductFacade $productFacade
  */
 class ProductExportRepository extends BaseProductExportRepository
 {
-    /**
-     * @var \App\Model\Product\ProductFacade
-     */
-    protected $productFacade;
+    private PricingGroupFacade $pricingGroupFacade;
 
-    /**
-     * @var \App\Model\Pricing\Group\PricingGroupFacade
-     */
-    private $pricingGroupFacade;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
-     */
-    private $pricingGroupSettingFacade;
+    private PricingGroupSettingFacade $pricingGroupSettingFacade;
 
     private ProductSetFacade $productSetFacade;
 
@@ -110,6 +100,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['ordering_priority'] = $product->getBiggestVariantOrderingPriority();
         $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
         $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
+        $result['parameters'] = $this->appendSetItemParameters($locale, $product, $result['parameters']);
 
         return $result;
     }
@@ -266,5 +257,30 @@ class ProductExportRepository extends BaseProductExportRepository
             return Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET;
         }
         return $product->getPohodaProductType() ?? Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
+    }
+
+    /**
+     * @param string $locale
+     * @param \App\Model\Product\Product $product
+     * @param array $parameters
+     * @return array
+     */
+    private function appendSetItemParameters(string $locale, Product $product, array $parameters): array
+    {
+        foreach ($product->getProductSets() as $setItem) {
+            foreach ($this->extractParameters($locale, $setItem->getItem()) as $parameter) {
+                $parameters[] = $parameter;
+            }
+        }
+
+        $uniqueParameters = [];
+
+        foreach ($parameters as $parameter) {
+            if (!in_array($parameter, $uniqueParameters, true)) {
+                $uniqueParameters[] = $parameter;
+            }
+        }
+
+        return $uniqueParameters;
     }
 }
