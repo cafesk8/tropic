@@ -179,7 +179,27 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     }
 
     /**
+     * Includes visible not-sellable products
+     *
+     * @inheritDoc
+     */
+    public function getProductFilterCountDataInCategory(int $categoryId, ProductFilterConfig $productFilterConfig, ProductFilterData $productFilterData): ProductFilterCountData
+    {
+        $baseFilterQuery = $this->filterQueryFactory->create($this->getIndexName())
+            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
+            ->filterByCategory([$categoryId]);
+        $baseFilterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $baseFilterQuery, $this->currentCustomerUser->getPricingGroup());
+        $baseFilterQuery = $this->productFilterDataToQueryTransformer->addStockToQuery($productFilterData, $baseFilterQuery);
+
+        return $this->productFilterCountDataElasticsearchRepository->getProductFilterCountDataInCategory(
+            $productFilterData,
+            $baseFilterQuery
+        );
+    }
+
+    /**
      * Override removes product groups from filter counts
+     * Includes visible not-sellable products
      *
      * @inheritDoc
      */
@@ -188,7 +208,6 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         $searchText = $searchText ?? '';
 
         $baseFilterQuery = $this->filterQueryFactory->create($this->getIndexName())
-            ->filterOnlySellable()
             ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
             ->filterByPohodaProductType(Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT)
             ->search($searchText);
