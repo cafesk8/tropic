@@ -14,11 +14,17 @@ class ImageViewFacade extends BaseImageViewFacade
 {
     /**
      * @param int $productId
+     * @param int|null $warranty
      * @return \Shopsys\ReadModelBundle\Image\ImageView[]
      */
-    public function getStickerViewsByProductId(int $productId): array
+    public function getStickerViewsByProductId(int $productId, ?int $warranty): array
     {
         $images = $this->imageFacade->getImagesByEntityIdIndexedById('product', $productId, Product::IMAGE_TYPE_STICKER);
+
+        if ($warranty !== null && $warranty > 24) {
+            $warrantyStickers = $this->imageFacade->getImagesByEntityIdIndexedById('product', 0, Product::IMAGE_TYPE_STICKER);
+            array_walk($warrantyStickers, fn ($sticker) => $images[] = $sticker);
+        }
 
         return array_map(fn ($image) => $this->imageViewFactory->createFromImage($image), $images);
     }

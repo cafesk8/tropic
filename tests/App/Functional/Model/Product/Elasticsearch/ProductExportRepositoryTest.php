@@ -89,6 +89,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'pohoda_product_type',
             'internal_stocks_quantity',
             'external_stocks_quantity',
+            'warranty',
         ];
     }
 }
