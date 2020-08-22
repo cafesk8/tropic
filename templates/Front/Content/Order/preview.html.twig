@@ -101,6 +101,16 @@
                             {% endif %}
                         </td>
                     </tr>
+                    {% if (orderPreview.simulateRegistration is same as (true) or app.user is not null) and orderPreview.isProductsPriceWithoutDiscountsLessThenDefault %}
+                        <tr class="table-cart-preview__row">
+                            <td class="table-cart-preview__cell">
+                                {{ 'Sleva za registraci'|trans }}
+                            </td>
+                            <td class="table-cart-preview__cell table-cart-preview__cell--price table-cart-preview__cell--important">
+                                - {{ orderPreview.productsPriceVsDefaultProductsPriceDifference|price }}
+                            </td>
+                        </tr>
+                    {% endif %}
                     {% if orderPreview.activeOrderDiscountLevel is not null %}
                         <tr class="table-cart-preview__row">
                             <td class="table-cart-preview__cell">
