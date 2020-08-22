@@ -314,4 +314,24 @@ class OrderPreview extends BaseOrderPreview
     {
         return $this->simulateRegistration;
     }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    public function getTotalDiscount(): Money
+    {
+        $totalDiscount = Money::zero();
+        foreach ($this->getQuantifiedItemsDiscountsIndexedByPromoCodeId() as $promoCodeId => $discounts) {
+            foreach ($discounts as $discount) {
+                /** @var \Shopsys\FrameworkBundle\Model\Pricing\Price $discount */
+                if ($discount !== null) {
+                    $totalDiscount = $totalDiscount->add($discount->getPriceWithVat());
+                }
+            }
+        }
+        $totalDiscount = $totalDiscount->add($this->getProductsPriceVsDefaultProductsPriceDifference());
+        $totalDiscount = $totalDiscount->add($this->getOrderDiscountLevelTotalDiscount()->getPriceWithVat());
+
+        return $totalDiscount;
+    }
 }

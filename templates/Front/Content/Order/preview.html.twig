@@ -180,7 +180,9 @@
             <div id="js-order-preview-total-price" class="table-cart-preview table-cart-preview--without-gap">
                 <div class="table-cart-preview__total">
                     {% if orderPreview.activeOrderDiscountLevel is not null or promocodeActive %}
-                        <span class="table-cart-preview__total__discount js-not-implemented-yet">Ušetříte 3 175 Kč</span>
+                        <span class="table-cart-preview__total__discount ">
+                            {{ 'Ušetříte %price%'|trans({ '%price%': orderPreview.totalDiscount|price }) }}
+                        </span>
                     {% endif %}
                     <span class="table-cart-preview__total__price-primary {% if orderPreview.activeOrderDiscountLevel is not null or promocodeActive %}table-cart-preview__total__price-primary--colored{% endif %}">
                         {{ orderPreview.totalPrice.priceWithVat|price }}
