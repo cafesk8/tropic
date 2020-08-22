@@ -128,7 +128,12 @@
                             <tr class="table-cart-preview__row">
                                 <td class="table-cart-preview__cell">
                                     {{ 'Sleva'|trans }}
-                                    <span class="next-line"></span> {{ '%code% -%percent%'|trans({ '%code%': promoCode.code, '%percent%': promoCode.percent|formatPercent }) }}
+                                    <span class="next-line"></span>
+                                    {% if promoCode.isUseNominalDiscount is same as (true) or promoCode.isTypeGiftCertificate %}
+                                        {{ '%code%'|trans({ '%code%': promoCode.code }) }}
+                                    {% else %}
+                                        {{ '%code% -%percent%'|trans({ '%code%': promoCode.code, '%percent%': promoCode.percent|formatPercent }) }}
+                                    {% endif %}
                                 </td>
                                 <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
                                     -&nbsp;{{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
