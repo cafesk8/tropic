@@ -740,3 +740,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository: '@App\Model\Product\Accessory\ProductAccessoryRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade: '@App\Model\Product\Accessory\ProductAccessoryFacade'
+
+    Shopsys\FrameworkBundle\Model\Sitemap\SitemapRepository: '@App\Model\Sitemap\SitemapRepository'

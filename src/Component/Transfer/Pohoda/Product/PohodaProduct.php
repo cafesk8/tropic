@@ -46,6 +46,7 @@ class PohodaProduct
     public const COL_FLAG_PREPARATION_TO = 'flagPreparationTo';
     public const COL_SHOWN = 'shown';
     public const COL_SHOWN_SK = 'shownSk';
+    public const COL_SELLING_DENIED = 'sellingDenied';
     public const COL_VOLUME = 'volume';
     public const COL_SUPPLIER_SET = 'supplierSet';
     public const COL_PRIORITY = 'priority';
@@ -318,6 +319,8 @@ class PohodaProduct
 
     public float $weight;
 
+    public bool $sellingDenied;
+
     /**
      * @param array $pohodaProductData
      */
@@ -368,6 +371,7 @@ class PohodaProduct
         $this->flagPreparationTo = $pohodaProductData[self::COL_FLAG_PREPARATION_TO];
         $this->shown = (bool)$pohodaProductData[self::COL_SHOWN];
         $this->shownSk = (bool)$pohodaProductData[self::COL_SHOWN_SK];
+        $this->sellingDenied = (bool)$pohodaProductData[self::COL_SELLING_DENIED];
         $this->parameters = $pohodaProductData[self::COL_PARAMETERS];
         $this->volume = (int)$pohodaProductData[self::COL_VOLUME];
         $this->supplierSet = (bool)$pohodaProductData[self::COL_SUPPLIER_SET];

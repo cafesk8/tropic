@@ -80,6 +80,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'orderingPriority',
         'foreignSupplier',
         'weight',
+        'sellingDenied',
     ];
 
     /**
@@ -494,7 +495,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         FormBuilderInterface $displayAvailabilityGroup,
         ?Product $product
     ): void {
-        $displayAvailabilityGroup->remove('sellingDenied');
         $displayAvailabilityGroup->remove('hidden');
 
         if ($product !== null && $product->isUsingStock() && $product->getCalculatedSellingDenied()
@@ -517,19 +517,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('shown', DomainsType::class, [
                 'required' => false,
                 'label' => t('Display on'),
-                'position' => ['after' => 'sellingTo'],
+                'position' => ['before' => 'sellingDenied'],
                 'attr' => [
                     'labelIcon' => true,
                     'labelIconTitle' => t('Skryté zboží se nezobrazuje ve výpisech ani nelze vyhledat. Detail tohoto zboží není dostupný přímým přístupem z URL. Zboží nelze vložit do košíku.'),
-                ],
-            ])
-            ->add('sellingDenied', YesNoType::class, [
-                'required' => false,
-                'label' => t('Vyprodané zboží'),
-                'position' => ['after' => 'shown'],
-                'attr' => [
-                    'icon' => true,
-                    'iconTitle' => t('Vyprodané zboží se zobrazuje ve výpisech a lze jej vyhledat. Detail tohoto zboží je dostupný přímým přístupem z URL, zboží ale nelze vložit do košíku.'),
                 ],
             ])
             ->add('mallExport', YesNoType::class, [

@@ -115,6 +115,9 @@ class PohodaProductDataValidator
                 PohodaProduct::COL_WEIGHT => [
                     new Type(['type' => 'numeric']),
                 ],
+                PohodaProduct::COL_SELLING_DENIED => [
+                    new NotBlank(),
+                ],
             ],
         ]));
 
