@@ -736,3 +736,7 @@ services:
     Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductRepository: '@App\Model\Product\TopProduct\TopProductRepository'
 
     Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade: '@App\Model\Product\TopProduct\TopProductFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository: '@App\Model\Product\Accessory\ProductAccessoryRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade: '@App\Model\Product\Accessory\ProductAccessoryFacade'

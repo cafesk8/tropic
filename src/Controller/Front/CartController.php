@@ -345,6 +345,7 @@ class CartController extends FrontBaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addProductAction(Request $request)
     {
@@ -393,6 +394,7 @@ class CartController extends FrontBaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addProductAjaxAction(Request $request)
     {

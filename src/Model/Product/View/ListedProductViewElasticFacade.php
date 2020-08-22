@@ -39,6 +39,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  * @property \App\Model\Product\ProductFacade $productFacade
  * @property \App\Model\Product\View\ImageViewFacade $imageViewFacade
  * @property \App\Model\Product\TopProduct\TopProductFacade $topProductFacade
+ * @property \App\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
  * @method \App\Model\Product\View\ListedProductView[] createFromProducts(array $products)
  */
 class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
@@ -77,7 +78,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
     /**
      * @param \App\Model\Product\ProductFacade $productFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
+     * @param \App\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Product\TopProduct\TopProductFacade $topProductFacade
@@ -310,5 +311,25 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         );
 
         return $productViews;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAccessories(int $productId, int $limit): array
+    {
+        return array_slice($this->createFromArray(
+            $this->productOnCurrentDomainFacade->getSellableHitsForIds($this->productAccessoryFacade->getProductIds($productId))
+        ), 0, $limit);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllAccessories(int $productId): array
+    {
+        return $this->createFromArray(
+            $this->productOnCurrentDomainFacade->getSellableHitsForIds($this->productAccessoryFacade->getProductIds($productId))
+        );
     }
 }
