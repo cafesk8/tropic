@@ -166,4 +166,13 @@ class ImageRepository extends BaseImageRepository
 
         return $imagesByEntityId;
     }
+
+    /**
+     * @param int $imageId
+     * @return \App\Component\Image\Image|null
+     */
+    public function findById($imageId): ?Image
+    {
+        return $this->getImageRepository()->find($imageId);
+    }
 }

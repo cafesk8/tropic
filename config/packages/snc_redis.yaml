@@ -30,6 +30,12 @@ snc_redis:
             dsn: 'redis://%redis_host%'
             options:
                 prefix: '%env(REDIS_PREFIX)%%build-version%'
+        image:
+            type: 'phpredis'
+            alias: 'image'
+            dsn: 'redis://%redis_host%'
+            options:
+                prefix: '%env(REDIS_PREFIX)%%build-version%:cache:image:'
         session:
             type: 'phpredis'
             alias: 'session'

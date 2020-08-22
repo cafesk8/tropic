@@ -143,6 +143,16 @@ services:
         arguments:
             - '@shopsys.shop.component.friendly_url.cache_provider'
 
+    shopsys.shop.component.image.cache_provider:
+        class: Doctrine\Common\Cache\RedisCache
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.image'] }
+
+    App\Component\Image\ImageCacheFacade:
+        arguments:
+            - '@shopsys.shop.component.image.cache_provider'
+
+
     Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface: '@App\Model\Category\CategoryDataFactory'
 
 
