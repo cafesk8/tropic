@@ -148,7 +148,7 @@ class MergadoFeedItemFactory
             $product->getCatnum(),
             $product->getEan(),
             $this->productUrlsBatchLoader->getProductUrl($product, $domainConfig),
-            $product->getName($domainConfig->getLocale()),
+            $this->getNameExact($product, $domainConfig),
             $this->categoryFacade->getCategoryFullPath($product, $domainConfig, ' / '),
             $this->getShortDescription($product, $domainId),
             $this->getDescription($product, $domainId),
@@ -409,5 +409,18 @@ class MergadoFeedItemFactory
         }
 
         return $this->priceExtension->priceTextWithCurrencyByCurrencyIdAndLocaleFilter($standardPriceWithVat, $currencyId, $locale);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @return string|null
+     */
+    private function getNameExact(Product $product, DomainConfig $domainConfig): ?string
+    {
+        $nameForMergadoFeed = $product->getNameForMergadoFeed($domainConfig->getId());
+        $name = $product->getName($domainConfig->getLocale());
+
+        return $nameForMergadoFeed ?? $name;
     }
 }

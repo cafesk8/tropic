@@ -47,6 +47,11 @@ class ProductDomain extends BaseProductDomain
     private $shown;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $nameForMergadoFeed = null;
+
+    /**
      * @param \App\Model\Product\Product $product
      * @param int $domainId
      */
@@ -130,5 +135,21 @@ class ProductDomain extends BaseProductDomain
     public function setShown(bool $shown): void
     {
         $this->shown = $shown;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNameForMergadoFeed(): ?string
+    {
+        return $this->nameForMergadoFeed;
+    }
+
+    /**
+     * @param string|null $nameForMergadoFeed
+     */
+    public function setNameForMergadoFeed(?string $nameForMergadoFeed): void
+    {
+        $this->nameForMergadoFeed = $nameForMergadoFeed;
     }
 }
