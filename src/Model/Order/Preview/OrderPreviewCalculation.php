@@ -238,7 +238,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         $transportPrice = $this->getTransportPrice($transport, $currency, $productsPrice, $domainId);
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
         $roundingPrice = $this->getRoundingPrice($payment, $currency, $productsPrice, $paymentPrice, $transportPrice);
-        $totalDiscount = $this->orderDiscountCalculation->calculateTotalDiscount($promoCodes, $quantifiedItemsDiscountsByIndex, $quantifiedItemsDiscountsIndexedByPromoCodeId);
+        $orderDiscountLevelTotalDiscount = $this->orderDiscountCalculation->calculateOrderDiscountLevelTotalDiscount($quantifiedItemsDiscountsByIndex);
         $totalPriceWithoutGiftCertificate = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
 
         $totalPrice = $this->getTotalPriceAffectedByGiftCertificates($totalPriceWithoutGiftCertificate, $promoCodes);
@@ -264,7 +264,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $simulateRegistration
         );
         $orderPreview->setPromoCodes($promoCodes);
-        $orderPreview->setTotalDiscount($totalDiscount);
+        $orderPreview->setOrderDiscountLevelTotalDiscount($orderDiscountLevelTotalDiscount);
 
         return $orderPreview;
     }

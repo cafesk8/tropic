@@ -87,26 +87,11 @@ class OrderDiscountCalculation
     }
 
     /**
-     * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[] $quantifiedItemsDiscountsByIndex
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    public function calculateTotalDiscount(
-        array $promoCodes,
-        array $quantifiedItemsDiscountsByIndex,
-        array $quantifiedItemsDiscountsIndexedByPromoCodeId
-    ): Price {
+    public function calculateOrderDiscountLevelTotalDiscount(array $quantifiedItemsDiscountsByIndex): Price {
         $totalDiscount = Price::zero();
-        foreach ($promoCodes as $promoCode) {
-            if ($promoCode->isTypeGiftCertificate()) {
-                $totalDiscount = $totalDiscount->add(new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue()));
-            } else {
-                $totalDiscountForPromoCode = $this->calculateTotalDiscountForPromoCode($quantifiedItemsDiscountsIndexedByPromoCodeId, $promoCode);
-
-                $totalDiscount = $totalDiscount->add($totalDiscountForPromoCode);
-            }
-        }
         foreach ($quantifiedItemsDiscountsByIndex as $quantifiedItemDiscount) {
             $totalDiscount = $totalDiscount->add($quantifiedItemDiscount);
         }

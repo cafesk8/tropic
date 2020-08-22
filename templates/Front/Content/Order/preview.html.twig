@@ -117,7 +117,7 @@
                                 {{ 'Sleva %percent%'|trans({'%percent%': orderPreview.activeOrderDiscountLevel.discountPercent|formatPercent}) }}
                             </td>
                             <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
-                                -&nbsp;{{ orderPreview.totalDiscount.priceWithVat|price }}
+                                    -&nbsp;{{ orderPreview.orderDiscountLevelTotalDiscount.priceWithVat|price }}
                             </td>
                         </tr>
                     {% endif %}

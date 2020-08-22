@@ -42,7 +42,7 @@ class OrderPreview extends BaseOrderPreview
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    private $totalDiscount;
+    private $orderDiscountLevelTotalDiscount;
 
     /**
      * @var \App\Model\Cart\Item\CartItem[]
@@ -174,11 +174,11 @@ class OrderPreview extends BaseOrderPreview
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $totalDiscount
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $orderDiscountLevelTotalDiscount
      */
-    public function setTotalDiscount(Price $totalDiscount): void
+    public function setOrderDiscountLevelTotalDiscount(Price $orderDiscountLevelTotalDiscount): void
     {
-        $this->totalDiscount = $totalDiscount;
+        $this->orderDiscountLevelTotalDiscount = $orderDiscountLevelTotalDiscount;
     }
 
     /**
@@ -201,13 +201,13 @@ class OrderPreview extends BaseOrderPreview
     /**
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    public function getTotalDiscount(): Price
+    public function getOrderDiscountLevelTotalDiscount(): Price
     {
-        if ($this->totalDiscount === null) {
+        if ($this->orderDiscountLevelTotalDiscount === null) {
             return Price::zero();
         }
 
-        return $this->totalDiscount;
+        return $this->orderDiscountLevelTotalDiscount;
     }
 
     /**

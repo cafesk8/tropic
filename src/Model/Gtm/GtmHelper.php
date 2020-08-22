@@ -108,12 +108,10 @@ class GtmHelper
             return '';
         }
 
-        if ($usedPromoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-            $priceWithoutDiscount = $orderPreview->getTotalPrice()->add($orderPreview->getTotalDiscount());
-        } elseif ($usedPromoCode->isUseNominalDiscount()) {
-            $priceWithoutDiscount = $orderPreview->getProductsPrice()->add($orderPreview->getTotalDiscount());
-        } else {
-            $priceWithoutDiscount = $orderPreview->getProductsPrice()->add($orderPreview->getTotalDiscount());
+        $priceWithoutDiscount = $orderPreview->getProductsPrice();
+        if ($usedPromoCode->isTypePromoCode()) {
+            $totalPromoCodeDiscount = $orderPreview->getTotalItemDiscountsIndexedByPromoCodeId()[$usedPromoCode->getId()];
+            $orderPreview->getProductsPrice()->add($totalPromoCodeDiscount);
         }
 
         return $this->priceExtension->priceFilter($priceWithoutDiscount->getPriceWithVat());
