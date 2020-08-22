@@ -89,16 +89,18 @@
 
             <table id="js-order-preview-fees" class="table-cart-preview">
                 <tbody>
-                    {% if orderStep == "1" %}
-                        <tr class="table-cart-preview__row">
-                            <td class="table-cart-preview__cell">
-                                {{ 'Za zboží bez slevy'|trans }}
-                            </td>
-                            <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                                {{ orderPreview.totalPrice.priceWithVat|price }}
-                            </td>
-                        </tr>
-                    {% endif %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Za zboží bez slevy'|trans }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {% if (orderPreview.simulateRegistration is same as (true) or app.user is not null) and orderPreview.isProductsPriceWithoutDiscountsLessThenDefault %}
+                                {{ orderPreview.defaultProductsPriceWithoutDiscounts.priceWithVat|price }}
+                            {% else %}
+                                {{ orderPreview.productsPriceWithoutDiscounts.priceWithVat|price }}
+                            {% endif %}
+                        </td>
+                    </tr>
                     {% if orderPreview.activeOrderDiscountLevel is not null %}
                         <tr class="table-cart-preview__row">
                             <td class="table-cart-preview__cell">

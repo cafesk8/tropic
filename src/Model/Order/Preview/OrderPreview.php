@@ -7,6 +7,7 @@ namespace App\Model\Order\Preview;
 use App\Model\Cart\Item\CartItem;
 use App\Model\Order\Discount\OrderDiscountLevel;
 use App\Model\Order\PromoCode\PromoCode;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
@@ -58,12 +59,20 @@ class OrderPreview extends BaseOrderPreview
      */
     private $quantifiedItemsDiscountsIndexedByPromoCodeId;
 
+    private Price $defaultProductsPriceWithoutDiscounts;
+
+    private Price $productsPriceWithoutDiscounts;
+
+    private bool $simulateRegistration;
+
     /**
      * @param array $quantifiedProductsByIndex
      * @param array $quantifiedItemsPricesByIndex
      * @param array $quantifiedItemsDiscountsByIndex
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $totalPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPriceWithoutDiscounts
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $defaultProductsPriceWithoutDiscounts
      * @param \App\Model\Transport\Transport|null $transport
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice
      * @param \App\Model\Payment\Payment|null $payment
@@ -74,6 +83,7 @@ class OrderPreview extends BaseOrderPreview
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
      * @param \App\Model\Product\Product|null $orderGiftProduct
      * @param \App\Model\Order\Discount\OrderDiscountLevel|null $activeOrderDiscountLevel
+     * @param bool $simulateRegistration
      */
     public function __construct(
         array $quantifiedProductsByIndex,
@@ -81,6 +91,8 @@ class OrderPreview extends BaseOrderPreview
         array $quantifiedItemsDiscountsByIndex,
         Price $productsPrice,
         Price $totalPrice,
+        Price $productsPriceWithoutDiscounts,
+        Price $defaultProductsPriceWithoutDiscounts,
         ?Transport $transport = null,
         ?Price $transportPrice = null,
         ?Payment $payment = null,
@@ -90,7 +102,8 @@ class OrderPreview extends BaseOrderPreview
         array $gifts = [],
         array $quantifiedItemsDiscountsIndexedByPromoCodeId = [],
         ?Product $orderGiftProduct = null,
-        ?OrderDiscountLevel $activeOrderDiscountLevel = null
+        ?OrderDiscountLevel $activeOrderDiscountLevel = null,
+        bool $simulateRegistration = false
     ) {
         parent::__construct(
             $quantifiedProductsByIndex,
@@ -111,6 +124,9 @@ class OrderPreview extends BaseOrderPreview
         $this->promoCodesIndexedById = [];
         $this->orderGiftProduct = $orderGiftProduct;
         $this->activeOrderDiscountLevel = $activeOrderDiscountLevel;
+        $this->defaultProductsPriceWithoutDiscounts = $defaultProductsPriceWithoutDiscounts;
+        $this->productsPriceWithoutDiscounts = $productsPriceWithoutDiscounts;
+        $this->simulateRegistration = $simulateRegistration;
     }
 
     /**
@@ -252,5 +268,50 @@ class OrderPreview extends BaseOrderPreview
     public function getActiveOrderDiscountLevel(): ?OrderDiscountLevel
     {
         return $this->activeOrderDiscountLevel;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductsPriceWithoutDiscountsLessThenDefault(): bool
+    {
+        return $this->getProductsPriceVsDefaultProductsPriceDifference()->isPositive();
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    public function getDefaultProductsPriceWithoutDiscounts(): Price
+    {
+        return $this->defaultProductsPriceWithoutDiscounts;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    public function getProductsPriceWithoutDiscounts(): Price
+    {
+        return $this->productsPriceWithoutDiscounts;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    public function getProductsPriceVsDefaultProductsPriceDifference(): Money
+    {
+        $pricesDifference = $this->defaultProductsPriceWithoutDiscounts->getPriceWithVat()->subtract($this->productsPriceWithoutDiscounts->getPriceWithVat());
+        if ($pricesDifference->isNegative()) {
+            return Money::zero();
+        }
+
+        return $pricesDifference;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSimulateRegistration(): bool
+    {
+        return $this->simulateRegistration;
     }
 }

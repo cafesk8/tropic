@@ -170,6 +170,16 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $simulateRegistration
         );
         $productsPriceWithoutDiscounts = $this->getProductsPriceWithoutDiscounts($quantifiedItemsPrices);
+        $defaultProductsPriceWithoutDiscounts = $productsPriceWithoutDiscounts;
+        if ($customerUser !== null || $simulateRegistration === true) {
+            $defaultQuantifiedItemsPrices = $this->quantifiedProductPriceCalculation->calculatePrices(
+                $quantifiedProducts,
+                $domainId,
+                null,
+                false
+            );
+            $defaultProductsPriceWithoutDiscounts = $this->getProductsPriceWithoutDiscounts($defaultQuantifiedItemsPrices);
+        }
         $productsPrice = $productsPriceWithoutDiscounts;
         $quantifiedItemsDiscountsByIndex = [];
         $quantifiedItemsDiscountsIndexedByPromoCodeId = $this->quantifiedProductDiscountCalculation->getQuantifiedItemsDiscountsIndexedByPromoCodeId($quantifiedItemsPrices, $promoCodes, $currency);
@@ -239,6 +249,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $quantifiedItemsDiscountsByIndex,
             $productsPrice,
             $totalPrice,
+            $productsPriceWithoutDiscounts,
+            $defaultProductsPriceWithoutDiscounts,
             $transport,
             $transportPrice,
             $payment,
@@ -248,7 +260,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $giftsInCart,
             $quantifiedItemsDiscountsIndexedByPromoCodeId,
             $orderGiftProduct,
-            $matchingOrderDiscountLevel
+            $matchingOrderDiscountLevel,
+            $simulateRegistration
         );
         $orderPreview->setPromoCodes($promoCodes);
         $orderPreview->setTotalDiscount($totalDiscount);
