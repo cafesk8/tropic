@@ -38,6 +38,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  * @property \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
  * @property \App\Model\Product\ProductFacade $productFacade
  * @property \App\Model\Product\View\ImageViewFacade $imageViewFacade
+ * @property \App\Model\Product\TopProduct\TopProductFacade $topProductFacade
  * @method \App\Model\Product\View\ListedProductView[] createFromProducts(array $products)
  */
 class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
@@ -79,7 +80,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
-     * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductFacade
+     * @param \App\Model\Product\TopProduct\TopProductFacade $topProductFacade
      * @param \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory $listedProductViewFactory
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionViewFacade $productActionViewFacade
@@ -289,5 +290,25 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         return $this->createFromArray(
             $this->productOnCurrentDomainFacade->getSellableHitsForIds($this->blogArticleFacade->getProductIds($article))
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllTop(): array
+    {
+        $topProductPositionIndexedById = $this->topProductFacade->getProductPositionIndexedById($this->domain->getId());
+
+        $productViews = $this->createFromArray(
+            $this->productOnCurrentDomainFacade->getSellableHitsForIds(array_keys($topProductPositionIndexedById))
+        );
+
+        usort(
+            $productViews,
+            fn (ListedProductView $listedProductView1, ListedProductView $listedProductView2) =>
+                $topProductPositionIndexedById[$listedProductView1->getId()] - $topProductPositionIndexedById[$listedProductView2->getId()]
+        );
+
+        return $productViews;
     }
 }

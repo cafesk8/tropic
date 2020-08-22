@@ -732,3 +732,7 @@ services:
     Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\BestsellingProductFacade: '@App\Model\Product\BestsellingProduct\BestsellingProductFacade'
 
     App\Model\AdvancedSearchOrder\Filter\OrderExportStatusFilter: ~
+
+    Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductRepository: '@App\Model\Product\TopProduct\TopProductRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade: '@App\Model\Product\TopProduct\TopProductFacade'
