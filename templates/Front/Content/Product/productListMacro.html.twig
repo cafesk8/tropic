@@ -15,11 +15,15 @@
                                 <div class="list-products__item__image dont-print">
                                     {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
 
-                                    {% if productView.stickers|length > 0 %}
+                                    {% if productView.stickers|length > 0 or productView.warranty > 24 %}
                                         <div class="list-products__item__image__stickers">
                                             {% for sticker in productView.stickers %}
                                                 {{ image(sticker) }}
                                             {% endfor %}
+
+                                            {% if productView.warranty > 24 %}
+                                                {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
+                                            {% endif %}
                                         </div>
                                     {% endif %}
                                 </div>
@@ -117,11 +121,15 @@
                                     <div class="list-products-slider__item__image dont-print">
                                         {{ image(productView.image, { size: 'listSlider', alt: productView.name, lazy: true }) }}
 
-                                        {% if productView.stickers|length > 0 %}
+                                        {% if productView.stickers|length > 0 or productView.warranty > 24 %}
                                             <div class="list-products-slider__item__image__stickers">
                                                 {% for sticker in productView.stickers %}
                                                     {{ image(sticker) }}
                                                 {% endfor %}
+
+                                                {% if productView.warranty > 24 %}
+                                                    {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
+                                                {% endif %}
                                             </div>
                                         {% endif %}
                                     </div>
@@ -318,11 +326,15 @@
                     <div class="list-products-bomb__item__image dont-print">
                         {{ image(productView.image, { size: 'biggerThumbnail', alt: productView.name, lazy: true }) }}
 
-                        {% if productView.stickers|length > 0 %}
+                        {% if productView.stickers|length > 0 or productView.warranty > 24 %}
                             <div class="list-products__item__image__stickers">
                                 {% for sticker in productView.stickers %}
                                     {{ image(sticker) }}
                                 {% endfor %}
+
+                                {% if productView.warranty > 24 %}
+                                    {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>
