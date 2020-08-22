@@ -114,7 +114,7 @@
                     {% if orderPreview.activeOrderDiscountLevel is not null %}
                         <tr class="table-cart-preview__row">
                             <td class="table-cart-preview__cell">
-                                {{ 'Sleva %percent% (BP)'|trans({'%percent%': orderPreview.activeOrderDiscountLevel.discountPercent|formatPercent}) }}
+                                {{ 'Sleva %percent%'|trans({'%percent%': orderPreview.activeOrderDiscountLevel.discountPercent|formatPercent}) }}
                             </td>
                             <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
                                 -&nbsp;{{ orderPreview.totalDiscount.priceWithVat|price }}
@@ -128,7 +128,7 @@
                             <tr class="table-cart-preview__row">
                                 <td class="table-cart-preview__cell">
                                     {{ 'Sleva'|trans }}
-                                    <span class="next-line"></span> {{ '%code% -%percent% (SP)'|trans({ '%code%': promoCode.code, '%percent%': promoCode.percent|formatPercent }) }}
+                                    <span class="next-line"></span> {{ '%code% -%percent%'|trans({ '%code%': promoCode.code, '%percent%': promoCode.percent|formatPercent }) }}
                                 </td>
                                 <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
                                     -&nbsp;{{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
