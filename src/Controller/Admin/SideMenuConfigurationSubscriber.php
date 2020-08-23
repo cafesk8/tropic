@@ -98,6 +98,10 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
 
         $marketingMenu->addChild('articles_settings', ['route' => 'admin_articlesettings_setting', 'label' => t('Věrnostní program')]);
 
+        $marketingMenu->addChild('header_text', [
+            'route' => 'admin_headertextsetting_setting', 
+            'label' => t('Text v hlavičce')]);
+
         $priceBombProducts = $marketingMenu->addChild('price_bomb_products', [
             'route' => 'admin_pricebombproduct_list',
             'label' => t('Cenové bomby na titulní stránce'),

@@ -1300,3 +1300,6 @@
 20200814113044:
     class: App\Migrations\Version20200814113044
     skip: false
+20202108174080:
+    class: App\Migrations\Version20202108174080
+    skip: false

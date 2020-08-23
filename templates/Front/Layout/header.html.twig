@@ -6,15 +6,7 @@
     <div class="web__container web__container--transparent">
         <div class="top-bar">
             <div class="top-bar__in">
-                <ul class="top-bar__menu top-bar__menu--mobile-visible">
-                    <li class="top-bar__menu__item">
-                        <span class="top-bar__menu__item__text">
-                            <span class="top-bar__menu__item__text__title top-bar__menu__item__text__title--colored">{{ 'Bonusový program'|trans }}:</span>
-                            {{ 'Slevy pro každého až 18 %'|trans }}
-                        </span>
-                    </li>
-                </ul>
-
+                 {{ render(controller('App\\Controller\\Front\\HeaderTextController:headerTextAction')) }}
                 <ul class="top-bar__menu">
                     <li class="top-bar__menu__item">
                         <a href="{{ url(

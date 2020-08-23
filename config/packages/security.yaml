@@ -87,6 +87,7 @@ security:
         - { path: ^/admin/loyalty-club, roles: ROLE_VIEW_MARKETING }
         - { path: ^/admin/info-row, roles: ROLE_VIEW_MARKETING }
         - { path: ^/admin/blog, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/header-text, roles: ROLE_VIEW_MARKETING }
 
         # Pricing
         - { path: ^/admin/pricing, roles: ROLE_VIEW_PRICING }
