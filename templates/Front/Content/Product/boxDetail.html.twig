@@ -4,7 +4,7 @@
     {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
     {% import 'Front/Content/Product/productGalleryImagesMacro.html.twig' as productImages %}
     {% import 'Front/Inline/Common/discountExclusionNoticeMacro.html.twig' as discountExclusion %}
-    
+
     {% set domain = getDomain() %}
     {% set showGalleryMaxCount = 3 %}
     {% set showFlagsMaxCount = 3 %}
@@ -88,9 +88,9 @@
                                         <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
                                     {% endif %}
                                     <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
-                                    
+
                                     <div class="box-gallery">
-                                        {% set galleryImages = getProductGroupsImages(product.productGroups) %}
+                                        {% set galleryImages = getProductSetsImages(product.productSets) %}
                                         {% set showGallery = galleryImages|length > 0 %}
                                         {% if showGallery %}
                                             {{ productImages.loadGalleryImages(galleryImages, showGalleryMaxCount, youtubeDetails, 'productSetGallery') }}

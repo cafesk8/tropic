@@ -55,7 +55,7 @@ class ImageExtension extends BaseImageExtension
         $functions[] = new TwigFunction('getSupplierSetImagesExcludingMain', [$this, 'getSupplierSetImagesExcludingMain']);
         $functions[] = new TwigFunction('getSupplierSetItemName', [$this, 'getSupplierSetItemName']);
         $functions[] = new TwigFunction('getSupplierSetItemCount', [$this, 'getSupplierSetItemCount']);
-        $functions[] = new TwigFunction('getProductGroupsImages',[$this, 'getProductGroupsImages']);
+        $functions[] = new TwigFunction('getProductSetsImages',[$this, 'getProductSetsImages']);
 
         return $functions;
     }
@@ -124,15 +124,15 @@ class ImageExtension extends BaseImageExtension
     }
 
     /**
-     * @param array $productGroups
+     * @param \App\Model\Product\Set\ProductSet[] $productSets
      * @return \App\Component\Image\Image[]
      */
-    public function getProductGroupsImages(array $productGroups): array
+    public function getProductSetsImages(array $productSets): array
     {
         $aggregatedArray = [];
-        foreach ($productGroups as $productGroup) {
+        foreach ($productSets as $productSet) {
             try {
-                $images = $this->imageFacade->getImagesByEntityIndexedById($productGroup->getItem(), null);
+                $images = $this->imageFacade->getImagesByEntityIndexedById($productSet->getItem(), null);
                 $aggregatedArray = array_merge($aggregatedArray, $images);
             } catch (\Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException $e) {
                 continue;
