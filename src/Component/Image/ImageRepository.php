@@ -13,7 +13,6 @@ use Shopsys\FrameworkBundle\Component\Image\ImageRepository as BaseImageReposito
  * @method \App\Component\Image\Image[] getImagesByEntityIndexedById(string $entityName, int $entityId, string|null $type)
  * @method \App\Component\Image\Image[] getAllImagesByEntity(string $entityName, int $entityId)
  * @method \App\Component\Image\Image getById(int $imageId)
- * @method \App\Component\Image\Image[] getMainImagesByEntitiesIndexedByEntityId(array $entitiesOrEntityIds, string $entityName)
  */
 class ImageRepository extends BaseImageRepository
 {
@@ -138,5 +137,36 @@ class ImageRepository extends BaseImageRepository
         }
 
         return $deletedImageIds;
+    }
+
+    /**
+     * @param array $entitiesOrEntityIds
+     * @param string $entityName
+     * @param string|null $type
+     * @return \App\Component\Image\Image[]
+     */
+    public function getMainImagesByEntitiesIndexedByEntityId(array $entitiesOrEntityIds, $entityName, ?string $type = null)
+    {
+        $queryBuilder = $this->getImageRepository()
+            ->createQueryBuilder('i')
+            ->andWhere('i.entityName = :entityName')->setParameter('entityName', $entityName)
+            ->andWhere('i.entityId IN (:entities)')->setParameter('entities', $entitiesOrEntityIds)
+            ->addOrderBy('i.position', 'desc')
+            ->addOrderBy('i.id', 'desc');
+
+        if ($type === null) {
+            $queryBuilder->andWhere('i.type IS NULL');
+        } else {
+            $queryBuilder->andWhere('i.type = :type')->setParameter('type', $type);
+        }
+
+        $imagesByEntityId = [];
+
+        /** @var \App\Component\Image\Image $image */
+        foreach ($queryBuilder->getQuery()->execute() as $image) {
+            $imagesByEntityId[$image->getEntityId()] = $image;
+        }
+
+        return $imagesByEntityId;
     }
 }
