@@ -3,8 +3,10 @@
         <div class="box-gallery dont-print js-gallery">
             <div class="box-gallery__images">
                 {% for galleryImage in galleryImages %}
-                    <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
-                        <a href="{{ imageUrl(galleryImage, 'original') }}"
+                <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %}
+                    {% if loop.index == 1 %} display-none{% else %} js-gallery-item{% endif %}"
+                >
+                <a href="{{ imageUrl(galleryImage, 'original') }}"
                         class="box-gallery__item__link js-gallery-slide-link">
                             {{ image(galleryImage, {size: 'thumbnail'}) }}
                         </a>
@@ -20,7 +22,7 @@
                     </div>
                 {% endif %}
                 {% if youtubeDetails %}
-                    <div class="box-gallery__item box-gallery__item--video">
+                    <div class="box-gallery__item box-gallery__item--video{% if galleryImages|length <= 1%} box-gallery__item--without-border{% endif %}">
                         {% if product.isMainVariant %}
                             <a
                                 href="#video-variant-desktop"
@@ -44,7 +46,7 @@
                                     <div class="box-gallery__item__link__play__icon"></div>
                                 </div>
                             </a>
-                        {% else %} 
+                        {% else %}
                             <a
                                 href="#video"
                                 class="box-gallery__item__link js-anchor-link"
@@ -65,10 +67,12 @@
         <div class="box-gallery dont-print js-gallery">
             <div class="box-gallery__images">
                 {% for galleryImage in galleryImages %}
-                    <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
-                        <a href="{{ imageUrl(galleryImage, 'original') }}"
+                <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %}
+                    {% if loop.index == 1 %} display-none{% else %} js-gallery-item{% endif %}"
+                >
+                <a href="{{ imageUrl(galleryImage, 'original') }}"
                         class="box-gallery__item__link js-gallery-slide-link">
-                            {{ image(galleryImage, {size: 'thumbnail'}) }} 
+                            {{ image(galleryImage, {size: 'thumbnail'}) }}
                         </a>
                     </div>
                 {% endfor %}
@@ -81,6 +85,6 @@
                     </a>
                 </div>
             {% endif %}
-        </div> 
+        </div>
     {% endif %}
 {% endmacro %}
