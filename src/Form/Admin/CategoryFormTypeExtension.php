@@ -8,6 +8,7 @@ use App\Component\Form\FormBuilderHelper;
 use App\Component\Mall\MallFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer;
+use App\Model\Category\Category;
 use App\Model\Category\CategoryData;
 use App\Model\Product\Parameter\Parameter;
 use App\Model\Product\Parameter\ParameterFacade;
@@ -182,6 +183,7 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
             );
 
         $builder->add($this->createMallGroup($builder));
+        $builder->add($this->createCategoryBrandGroup($builder, $category));
         $builder->add($this->createParametersGroup($builder));
         $this->formBuilderHelper->disableFieldsByConfigurations($builder, self::DISABLED_FIELDS);
     }
@@ -264,5 +266,24 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
             ]);
 
         return $parametersGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \App\Model\Category\Category|null $category
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function createCategoryBrandGroup(FormBuilderInterface $builder, ?Category $category): FormBuilderInterface
+    {
+        $builderCategoryBrandGroup = $builder->create('categoryBrand', GroupType::class, [
+            'label' => t('TOP Značky'),
+        ]);
+
+        $builderCategoryBrandGroup->add('categoryBrands', CategoryBrandFormType::class, [
+            'category' => $category,
+            'label' => false,
+        ]);
+
+        return $builderCategoryBrandGroup;
     }
 }

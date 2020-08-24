@@ -108,6 +108,13 @@ class Category extends BaseCategory
     private bool $unavailableProductsShown;
 
     /**
+     * @var \App\Model\Category\CategoryBrand\CategoryBrand[]|\Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Model\Category\CategoryBrand\CategoryBrand", mappedBy="category")
+     */
+    private $categoryBrands;
+
+    /**
      * @param \App\Model\Category\CategoryData $categoryData
      */
     public function __construct(BaseCategoryData $categoryData)
@@ -427,5 +434,13 @@ class Category extends BaseCategory
     public function getTitle(Domain $domain): string
     {
         return $this->getSeoH1($domain->getId()) ?? $this->getName($domain->getLocale());
+    }
+
+    /**
+     * @return \App\Model\Category\CategoryBrand\CategoryBrand[]
+     */
+    public function getCategoryBrands(): array
+    {
+        return $this->categoryBrands->toArray();
     }
 }

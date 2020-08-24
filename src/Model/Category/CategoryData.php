@@ -88,6 +88,8 @@ class CategoryData extends BaseCategoryData
 
     public bool $unavailableProductsShown;
 
+    public array $categoryBrands;
+
     public function __construct()
     {
         parent::__construct();
@@ -101,5 +103,6 @@ class CategoryData extends BaseCategoryData
         $this->containsSaleProducts = [];
         $this->containsNewsProducts = [];
         $this->unavailableProductsShown = true;
+        $this->categoryBrands = [];
     }
 }

@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Component\Form\FormBuilderHelper;
 use App\Component\Redis\RedisFacade;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
+use App\Model\Category\CategoryBrand\CategoryBrandFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\CategoryController as BaseCategoryController;
@@ -41,6 +42,11 @@ class CategoryController extends BaseCategoryController
     private $redisFacade;
 
     /**
+     * @var \App\Model\Category\CategoryBrand\CategoryBrandFacade
+     */
+    private $categoryBrandFacade;
+
+    /**
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Category\CategoryDataFactory $categoryDataFactory
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
@@ -49,6 +55,7 @@ class CategoryController extends BaseCategoryController
      * @param \App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
      * @param \App\Component\Redis\RedisFacade $redisFacade
      * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
+     * @param \App\Model\Category\CategoryBrand\CategoryBrandFacade $categoryBrandFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,
@@ -58,13 +65,15 @@ class CategoryController extends BaseCategoryController
         BreadcrumbOverrider $breadcrumbOverrider,
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
         RedisFacade $redisFacade,
-        FormBuilderHelper $formBuilderHelper
+        FormBuilderHelper $formBuilderHelper,
+        CategoryBrandFacade $categoryBrandFacade
     ) {
         parent::__construct($categoryFacade, $categoryDataFactory, $session, $domain, $breadcrumbOverrider);
 
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
         $this->redisFacade = $redisFacade;
         $this->formBuilderHelper = $formBuilderHelper;
+        $this->categoryBrandFacade = $categoryBrandFacade;
     }
 
     /**
@@ -90,6 +99,7 @@ class CategoryController extends BaseCategoryController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->categoryFacade->edit($id, $categoryData);
             $this->categoryBlogArticleFacade->saveBlogArticlesToCategory($category, $categoryData->blogArticles);
+            $this->categoryBrandFacade->saveCategoryBrandsToCategory($category, $categoryData->categoryBrands);
 
             $this->addSuccessFlashTwig(
                 t('Category<strong><a href="{{ url }}">{{ name }}</a></strong> was modified'),
