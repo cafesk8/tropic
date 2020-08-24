@@ -49,7 +49,7 @@
                                 {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, variantsCount) }}
 
                                 {% if showGallery %}
-                                    {{ productImages.loadGalleryImages(galleryImages, showGalleryMaxCount, youtubeDetails, 'productGallery') }}
+                                    {{ productImages.loadGalleryImages(product, galleryImages, showGalleryMaxCount, youtubeDetails, 'productGallery') }}
                                 {% endif %}
 
                                 {% if product.isMainVariant %}
@@ -93,7 +93,7 @@
                                         {% set galleryImages = getProductSetsImages(product.productSets) %}
                                         {% set showGallery = galleryImages|length > 0 %}
                                         {% if showGallery %}
-                                            {{ productImages.loadGalleryImages(galleryImages, showGalleryMaxCount, youtubeDetails, 'productSetGallery') }}
+                                            {{ productImages.loadGalleryImages(product, galleryImages, showGalleryMaxCount, youtubeDetails, 'productSetGallery') }}
                                         {% endif %}
                                     </div>
                                 {% endif %}
