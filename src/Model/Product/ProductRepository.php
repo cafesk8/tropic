@@ -638,8 +638,8 @@ class ProductRepository extends BaseProductRepository
         $result = $this->getProductQueryBuilder()
             ->select('p.pohodaId')
             ->where('p.pohodaId IS NOT NULL')
-            ->andWhere('p.updatedByPohodaAt IS NULL OR p.updatedByPohodaAt > :dateTime')
-            ->setParameter(':dateTime', $dateTime === null ? new DateTime('1970-01-01') : $dateTime)
+            ->andWhere('p.updatedByPohodaAt > :dateTime')
+            ->setParameter(':dateTime', $dateTime ?? new DateTime('1970-01-01'))
             ->getQuery()
             ->execute();
 
