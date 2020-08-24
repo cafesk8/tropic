@@ -208,3 +208,5 @@ services:
     App\Model\Order\Discount\CurrentOrderDiscountLevelFacade: ~
 
     App\Component\FlashMessage\FlashMessageSender: ~
+
+    App\Model\AdvancedSearchOrder\Filter\OrderExportStatusFilter: ~

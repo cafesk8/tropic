@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Admin\AdvancedSearch;
 
+use App\Model\AdvancedSearchOrder\Filter\OrderExportStatusFilter;
 use App\Model\AdvancedSearchOrder\Filter\OrderTransportFilter;
 use Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation as BaseAdvancedSearchOrderFilterTranslation;
 
@@ -14,5 +15,6 @@ class AdvancedSearchOrderFilterTranslation extends BaseAdvancedSearchOrderFilter
         parent::__construct();
 
         $this->addFilterTranslation(OrderTransportFilter::NAME, t('Doprava objednávky'));
+        $this->addFilterTranslation(OrderExportStatusFilter::NAME, t('Stav přenosu'));
     }
 }
