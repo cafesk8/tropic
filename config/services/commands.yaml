@@ -27,3 +27,7 @@ services:
     App\Command\Migrations\ImportLegacySlovakDescriptionsFromCSVCommand:
         arguments:
             $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'
+
+    App\Command\Migrations\ImportLegacyPromoCodesFromCSVCommand:
+        arguments:
+            $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'
