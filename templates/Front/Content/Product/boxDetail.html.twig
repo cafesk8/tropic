@@ -84,9 +84,6 @@
                                     <p class="box-detail__description__code">
                                         {{ product.catnum }}
                                     </p>
-                                    {% if not typeSupplierSet %}
-                                        <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
-                                    {% endif %}
                                     <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
 
                                     <div class="box-gallery">
@@ -245,7 +242,7 @@
                             {% if typeSupplierSet %}
                                 {% include 'Front/Content/Product/supplierSetDetailItems.html.twig' with { product: product } %}
                             {% else %}
-                                <ul class="list-set list-set--{{ product.productSets|length }} js-list-set-container" data-is-supplier-set="true">
+                                <ul class="list-set list-set--{{ product.productSets|length }} js-list-set-container" data-is-supplier-set="false">
                                     {% for productSet in sortProductSetsByPrice(product.productSets) %}
                                         {% set productSellingPrice = getProductSellingPrice(productSet.item) %}
                                         <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item" data-product-set-item-id="{{ productSet.item.id }}">

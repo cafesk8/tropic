@@ -34,7 +34,9 @@
                             <i class="svg svg-triangle"></i>
                         </div>
                         <div class="in-tab__content__item in-tab__content__item--without-gap js-tabs-content active" data-tab-id="description">
-                            <p class="in-tab__content__item__text">{{ product.getShortDescription(domain.id)|raw }}</p>
+                            {% if product.supplierSet is same as(false) %}
+                                <p class="in-tab__content__item__text">{{ product.getShortDescription(domain.id)|raw }}</p>
+                            {% endif %}
                             <p class="in-tab__content__item__subtitle">
                                 <span class="in-tab__content__item__subtitle__info">{{ 'Popis'|trans }}</span>
                                 {{ product.getSeoH1(domain.id)|default(product.name) }}
