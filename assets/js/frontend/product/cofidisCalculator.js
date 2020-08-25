@@ -5,6 +5,10 @@ import Window from '../utils/Window';
 export default class CofidisCalculator {
 
     static showCalculator (event) {
+        if ($(this).data('hard-disabled')) {
+            return false;
+        }
+
         const productPrice = parseInt($(this).data('product-price'));
 
         const $window = new Window({
