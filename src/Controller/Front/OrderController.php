@@ -605,7 +605,6 @@ class OrderController extends FrontBaseController
         $paymentId = $request->get('paymentId');
         $orderStep = $request->get('orderStep');
         $simulateRegistration = filter_var($request->get('registration', false), FILTER_VALIDATE_BOOLEAN);
-        $orderStep = $simulateRegistration ? '3' : $orderStep;
 
         if ($transportId === null) {
             $transport = null;
