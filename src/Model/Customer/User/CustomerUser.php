@@ -132,6 +132,14 @@ class CustomerUser extends BaseCustomerUser
     }
 
     /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->lastName . ' ' . $this->firstName;
+    }
+
+    /**
      * @return string|null
      */
     public function getTransferId(): ?string
