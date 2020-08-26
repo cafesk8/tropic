@@ -12,7 +12,7 @@ class DataLayerPage implements JsonSerializable
     public const TYPE_ARTICLE = 'text';
     public const TYPE_BLOG = 'blog';
     public const TYPE_BLOG_ARTICLE = 'article';
-    public const TYPE_BRAND = 'manufacturer';
+    public const TYPE_BRAND = 'brands_list';
     public const TYPE_CART = 'cart';
     public const TYPE_CATEGORY = 'category';
     public const TYPE_CATEGORY_PRELIST = 'crossroad';
@@ -26,12 +26,12 @@ class DataLayerPage implements JsonSerializable
     public const TYPE_PURCHASE_FAIL = 'purchase fail';
     public const TYPE_SEARCH = 'search';
     public const TYPE_STORES = 'stores';
-    public const TYPE_ABOUT_US = 'about';
+    public const TYPE_ABOUT_US = 'contact';
+    public const TYPE_ORDERS_LIST = 'orders_list';
+    public const TYPE_ORDER_DETAIL = 'order_detail';
+    public const TYPE_PAYMENT_REPEAT = 'payment_repeat';
 
-    /**
-     * @var string|null
-     */
-    private $type;
+    private ?string $type;
 
     /**
      * @var string[]|null
@@ -72,6 +72,9 @@ class DataLayerPage implements JsonSerializable
             self::TYPE_SEARCH,
             self::TYPE_STORES,
             self::TYPE_ABOUT_US,
+            self::TYPE_ORDERS_LIST,
+            self::TYPE_ORDER_DETAIL,
+            self::TYPE_PAYMENT_REPEAT,
         ], true)) {
             throw new GtmException(sprintf('Invalid argument $type "%s"', $type));
         }

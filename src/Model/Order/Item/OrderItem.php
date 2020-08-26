@@ -223,4 +223,12 @@ class OrderItem extends BaseOrderItem
     {
         return $this->saleItem;
     }
+
+    /**
+     * @return bool
+     */
+    public function isTypeOrderDiscount(): bool
+    {
+        return $this->type === self::TYPE_ORDER_DISCOUNT_LEVEL;
+    }
 }

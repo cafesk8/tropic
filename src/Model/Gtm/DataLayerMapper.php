@@ -12,12 +12,13 @@ use App\Model\Gtm\Data\DataLayerProduct;
 use App\Model\Gtm\Data\DataLayerUser;
 use App\Model\Order\Item\OrderItem;
 use App\Model\Order\Order;
+use App\Model\Order\Preview\OrderPreview;
+use App\Model\Product\Flag\Flag;
+use App\Model\Product\Product;
 use App\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
-use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
-use Shopsys\FrameworkBundle\Model\Product\Product;
 
 class DataLayerMapper
 {
@@ -41,32 +42,23 @@ class DataLayerMapper
         'front_order_not_paid' => DataLayerPage::TYPE_PURCHASE_FAIL,
         'front_store_index' => DataLayerPage::TYPE_STORES,
         'front_about_us_info' => DataLayerPage::TYPE_ABOUT_US,
+        'front_customer_orders' => DataLayerPage::TYPE_ORDERS_LIST,
+        'front_customer_order_detail_registered' => DataLayerPage::TYPE_ORDER_DETAIL,
+        'front_customer_order_detail_unregistered' => DataLayerPage::TYPE_ORDER_DETAIL,
+        'front_order_repeat_gopay_payment' => DataLayerPage::TYPE_PAYMENT_REPEAT,
+        'front_sale_product_list' => DataLayerPage::TYPE_CATEGORY,
+        'front_news_product_list' => DataLayerPage::TYPE_CATEGORY,
     ];
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade
-     */
-    private $administratorFrontSecurityFacade;
+    private AdministratorFrontSecurityFacade $administratorFrontSecurityFacade;
 
-    /**
-     * @var \App\Model\Category\CategoryFacade
-     */
-    private $categoryFacade;
+    private CategoryFacade $categoryFacade;
 
-    /**
-     * @var \App\Model\Product\ProductCachedAttributesFacade
-     */
-    private $productCachedAttributesFacade;
+    private ProductCachedAttributesFacade $productCachedAttributesFacade;
 
-    /**
-     * @var \App\Model\Gtm\GtmHelper
-     */
-    private $gtmHelper;
+    private GtmHelper $gtmHelper;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
+    private Domain $domain;
 
     /**
      * DataLayerMapper constructor.
@@ -163,7 +155,6 @@ class DataLayerMapper
      */
     public function mapProductToDataLayerPage(Product $product, DataLayerPage $dataLayerPage, string $locale): void
     {
-        /** @var \App\Model\Category\Category $productMainCategory */
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, Domain::MAIN_ADMIN_DOMAIN_ID);
 
         $this->mapCategoryToDataLayerPageCategory($productMainCategory, $dataLayerPage, $locale);
@@ -177,15 +168,32 @@ class DataLayerMapper
     public function createDataLayerProductsFromOrderPreview(OrderPreview $orderPreview, string $locale): array
     {
         $quantifiedProducts = $orderPreview->getQuantifiedProducts();
-
         $dataLayerProducts = [];
-        foreach ($quantifiedProducts as $index => $quantifiedProduct) {
+
+        foreach ($quantifiedProducts as $quantifiedProduct) {
+            /** @var \App\Model\Product\Product $product */
             $product = $quantifiedProduct->getProduct();
             $quantity = $quantifiedProduct->getQuantity();
 
             $dataLayerProduct = new DataLayerProduct();
             $this->mapProductToDataLayerProduct($product, $dataLayerProduct, $locale);
             $dataLayerProduct->setQuantity($quantity);
+            $dataLayerProducts[] = $dataLayerProduct;
+        }
+
+        foreach ($orderPreview->getGifts() as $gift) {
+            $dataLayerProduct = new DataLayerProduct();
+            $this->mapProductToDataLayerProduct($gift->getProduct(), $dataLayerProduct, $locale, true);
+            $dataLayerProduct->setQuantity($gift->getQuantity());
+            $dataLayerProducts[] = $dataLayerProduct;
+        }
+
+        $orderGift = $orderPreview->getOrderGiftProduct();
+
+        if ($orderGift !== null) {
+            $dataLayerProduct = new DataLayerProduct();
+            $this->mapProductToDataLayerProduct($orderGift, $dataLayerProduct, $locale, true);
+            $dataLayerProduct->setQuantity(1);
             $dataLayerProducts[] = $dataLayerProduct;
         }
 
@@ -213,35 +221,47 @@ class DataLayerMapper
      * @param \App\Model\Product\Product $product
      * @param \App\Model\Gtm\Data\DataLayerProduct $dataLayerProduct
      * @param string $locale
+     * @param bool $isGift
      */
-    public function mapProductToDataLayerProduct(Product $product, DataLayerProduct $dataLayerProduct, string $locale): void
+    public function mapProductToDataLayerProduct(Product $product, DataLayerProduct $dataLayerProduct, string $locale, bool $isGift = false): void
     {
         $dataLayerProduct->setName((string)$product->getName($locale));
         $dataLayerProduct->setId((string)$product->getId());
         $dataLayerProduct->setSku((string)$product->getEan());
         $dataLayerProduct->setCatNumber((string)$product->getCatnum());
 
-        $sellingPrice = $this->productCachedAttributesFacade->getProductSellingPrice($product);
+        if ($isGift) {
+            $dataLayerProduct->setPrice('0.0');
+            $dataLayerProduct->setTax('0.0');
+            $dataLayerProduct->setPriceWithTax('0.0');
+        } else {
+            $sellingPrice = $this->productCachedAttributesFacade->getProductSellingPrice($product);
 
-        if ($sellingPrice !== null) {
-            $dataLayerProduct->setPrice($sellingPrice->getPriceWithoutVat()->getAmount());
-            $dataLayerProduct->setTax($sellingPrice->getVatAmount()->getAmount());
-            $dataLayerProduct->setPriceWithTax($sellingPrice->getPriceWithVat()->getAmount());
+            if ($sellingPrice !== null) {
+                $dataLayerProduct->setPrice($sellingPrice->getPriceWithoutVat()->getAmount());
+                $dataLayerProduct->setTax($sellingPrice->getVatAmount()->getAmount());
+                $dataLayerProduct->setPriceWithTax($sellingPrice->getPriceWithVat()->getAmount());
+            }
         }
 
         if ($product->getBrand() !== null) {
             $dataLayerProduct->setBrand($product->getBrand()->getName());
         }
 
-        /** @var \App\Model\Category\Category $productMainCategory */
+        if ($product->isVariant()) {
+            $dataLayerProduct->setVariant($product->getVariantAlias($locale) ?? '');
+        }
+
+        if ($isGift) {
+            $dataLayerProduct->setProductType('dárek');
+        } elseif ($product->isPohodaProductTypeSet() || $product->isSupplierSet()) {
+            $dataLayerProduct->setProductType('set');
+        }
+
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, Domain::MAIN_ADMIN_DOMAIN_ID);
         $dataLayerProduct->setCategory($this->categoryFacade->getCategoriesNamesInPathAsString($productMainCategory, $locale));
         $dataLayerProduct->setAvailability($product->getCalculatedAvailability()->getName($locale));
-
-        $dataLayerProduct->setLabels(array_map(function ($flag) use ($locale) {
-            /** @var $flag \App\Model\Product\Flag\Flag */
-            return $flag->getName($locale);
-        }, $product->getActiveFlags()));
+        $dataLayerProduct->setLabels(array_map(fn (Flag $flag) => $flag->getName($locale), $product->getActiveFlags()));
     }
 
     /**
@@ -251,7 +271,7 @@ class DataLayerMapper
      */
     public function createDataLayerPurchaseFromOrder(Order $order, string $locale): array
     {
-        $productItems = $order->getProductItems();
+        $productItems = [...$order->getProductItems(), ...$order->getGiftItems()];
         $productsData = [];
         foreach ($productItems as $productItem) {
             $product = $productItem->getProduct();
@@ -276,8 +296,6 @@ class DataLayerMapper
         $payment = $order->getOrderPayment()->getPriceWithoutVat();
         $paymentWithTax = $order->getOrderPayment()->getPriceWithVat();
         $paymentTax = $order->getOrderPayment()->getPriceWithVat()->subtract($order->getOrderPayment()->getPriceWithoutVat());
-
-        $paymentTax = $order->getOrderPayment()->getPriceWithVat()->subtract($order->getOrderPayment()->getPriceWithoutVat());
         $tax = $order->getTotalVatAmount()->subtract($shippingTax)->subtract($paymentTax);
 
         $orderDomainConfig = $this->domain->getDomainConfigById($order->getDomainId());
@@ -298,14 +316,22 @@ class DataLayerMapper
         ];
 
         $gtmCoupons = $order->getGtmCoupons();
+        $couponsArray = [];
+
         if ($gtmCoupons !== null) {
-            $couponsArray = [];
             foreach (explode(Order::PROMO_CODES_SEPARATOR, $gtmCoupons) as $key => $couponData) {
                 $couponNumber = $key + 1;
                 $couponsArray['coupon' . $couponNumber] = $couponData;
             }
-            $dataLayerPurchase['actionField'] = array_merge($dataLayerPurchase['actionField'], $couponsArray);
         }
+
+        foreach ($order->getItems() as $item) {
+            if ($item->isTypeOrderDiscount()) {
+                $couponsArray['coupon'] = $item->getName();
+            }
+        }
+
+        $dataLayerPurchase['actionField'] = array_merge($dataLayerPurchase['actionField'], $couponsArray);
 
         return $dataLayerPurchase;
     }
@@ -322,10 +348,9 @@ class DataLayerMapper
         $tax = $productItem->getPriceWithVat()->subtract($productItem->getPriceWithoutVat());
         $priceWithTax = $productItem->getPriceWithVat();
 
-        /** @var \App\Model\Category\Category $productMainCategory */
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, Domain::MAIN_ADMIN_DOMAIN_ID);
 
-        $productData = [
+        $orderProductData = [
             'name' => $product->getName($locale),
             'id' => $product->getId(),
             'sku' => $product->getCatnum(),
@@ -339,7 +364,17 @@ class DataLayerMapper
             'quantity' => $productItem->getQuantity(),
         ];
 
-        return $productData;
+        if ($product->isVariant()) {
+            $orderProductData['variant'] = $product->getVariantAlias($locale) ?? '';
+        }
+
+        if ($productItem->isTypeGift()) {
+            $orderProductData['product_type'] = 'dárek';
+        } elseif ($product->isPohodaProductTypeSet() || $product->isSupplierSet()) {
+            $orderProductData['product_type'] = 'set';
+        }
+
+        return $orderProductData;
     }
 
     /**
