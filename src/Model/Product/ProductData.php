@@ -171,6 +171,10 @@ class ProductData extends BaseProductData
 
     private bool $new;
 
+    public bool $foreignSupplier;
+
+    public ?float $weight;
+
     public function __construct()
     {
         parent::__construct();
@@ -195,6 +199,8 @@ class ProductData extends BaseProductData
         $this->oversized = false;
         $this->stickers = new ImageUploadData();
         $this->supplierSet = false;
+        $this->foreignSupplier = false;
+        $this->weight = null;
         $this->new = true;
     }
 

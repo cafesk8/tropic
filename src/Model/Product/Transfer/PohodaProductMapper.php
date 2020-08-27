@@ -338,6 +338,9 @@ class PohodaProductMapper
         $productData->brand = $this->getMappedBrand($pohodaProduct->brandName);
         $productData->unit = $this->getMappedUnit($pohodaProduct);
         $productData->youtubeVideoIds = $this->getMappedYoutubeVideoIds($pohodaProduct->youtubeVideos);
+        $productData->orderingPriority = $pohodaProduct->priority;
+        $productData->foreignSupplier = $pohodaProduct->foreignSupplier;
+        $productData->weight = $pohodaProduct->weight;
 
         switch ($pohodaProduct->volume) {
             case 1:

@@ -37,6 +37,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -76,6 +77,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'shown',
         'parameters',
         'supplierSet',
+        'orderingPriority',
+        'foreignSupplier',
+        'weight',
     ];
 
     /**
@@ -201,6 +205,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('warranty', IntegerType::class, [
                 'required' => false,
                 'label' => t('Záruční doba'),
+            ])
+            ->add('weight', NumberType::class, [
+                'required' => false,
+                'label' => t('Hmotnost'),
             ])
             ->add('updatedByPohodaAt', DisplayOnlyType::class, [
                 'data' => $product !== null ? $this->dateTimeFormatterExtension->formatDateTime($product->getUpdatedByPohodaAt()) : '-',
@@ -535,6 +543,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('deliveryDays', TextType::class, [
                 'required' => false,
                 'label' => t('Dodání'),
+            ])->add('foreignSupplier', YesNoType::class, [
+                'required' => false,
+                'label' => t('Zahraniční dodavatel'),
+                'position' => ['before' => 'usingStock'],
             ]);
         $usingStockItem = $displayAvailabilityGroup->get('usingStock');
         $usingStockItem->setDisabled(true);
