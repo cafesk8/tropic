@@ -331,7 +331,7 @@ class PersonalInfoFormType extends AbstractType
 
         if ($this->heurekaFacade->isHeurekaShopCertificationActivated($this->domain->getId())) {
             $builder->add('disallowHeurekaVerifiedByCustomers', CheckboxType::class, [
-                'label' => t('Nesouhlasím se zasláním objednávky do programu Heureka Ověřeno zákazníky'),
+                'label' => t('Nesouhlasím se zasláním dotazníku spokojenosti s nákupem od Heureky'),
                 'required' => false,
             ]);
         }
