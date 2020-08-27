@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\AdvancedSearch;
 
+use App\Model\AdvancedSearchOrder\Filter\OrderExportStatusFilter;
 use App\Model\AdvancedSearchOrder\Filter\OrderTransportFilter;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\OrderAdvancedSearchConfig as BaseOrderAdvancedSearchConfig;
@@ -37,6 +38,8 @@ class OrderAdvancedSearchConfig extends BaseOrderAdvancedSearchConfig
      * @param \Shopsys\FrameworkBundle\Model\AdvancedSearchOrder\Filter\OrderCityFilter $orderCityFilter
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\AdvancedSearchOrder\Filter\OrderTransportFilter $orderTransportFilter
+     * @param \App\Model\AdvancedSearchOrder\Filter\OrderExportStatusFilter $orderExportStatusFilter
+     * @throws \Shopsys\FrameworkBundle\Model\AdvancedSearch\Exception\AdvancedSearchFilterAlreadyExistsException
      */
     public function __construct(
         OrderNumberFilter $orderNumberFilter,
@@ -52,7 +55,8 @@ class OrderAdvancedSearchConfig extends BaseOrderAdvancedSearchConfig
         OrderEmailFilter $orderEmailFilter,
         OrderCityFilter $orderCityFilter,
         Domain $domain,
-        OrderTransportFilter $orderTransportFilter
+        OrderTransportFilter $orderTransportFilter,
+        OrderExportStatusFilter $orderExportStatusFilter
     ) {
         parent::__construct(
             $orderNumberFilter,
@@ -71,5 +75,6 @@ class OrderAdvancedSearchConfig extends BaseOrderAdvancedSearchConfig
         );
 
         $this->registerFilter($orderTransportFilter);
+        $this->registerFilter($orderExportStatusFilter);
     }
 }
