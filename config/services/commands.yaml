@@ -31,3 +31,7 @@ services:
     App\Command\Migrations\ImportLegacyPromoCodesFromCSVCommand:
         arguments:
             $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'
+
+    App\Command\Migrations\ImportLegacySeoAttributesFromCSVCommand:
+        arguments:
+            $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'

@@ -144,6 +144,16 @@
 				</td>
 				<td></td>
 			</tr>
+			<tr>
+				<td>SEO atributy - importujte soubor s názvem "seo.csv"</td>
+				<td>
+					SELECT G.catnum, GT.title, GT.metadescription, GT.nazev_feed_heureka, GT.language
+					FROM goods G
+					JOIN goods_translate GT ON GT.id = G.id
+					WHERE GT.title != '' OR GT.metadescription != '' OR GT.nazev_feed_heureka != ''
+					ORDER BY G.id, GT.language
+				</td>
+			</tr>
 		</tbody>
 
 	</table>
