@@ -17,6 +17,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseP
 
 /**
  * @property \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForCustomerUser
+ * @property \App\Model\Product\Parameter\ProductParameterValue[][] $parameterValuesByProductId
  */
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 {
@@ -117,7 +118,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     /**
      * @param \App\Model\Product\Product $product
      * @param string|null $locale
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[]
+     * @return \App\Model\Product\Parameter\ProductParameterValue[]
      */
     public function getProductParameterValues(BaseProduct $product, ?string $locale = null)
     {
@@ -129,7 +130,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
             $locale = $this->localization->getLocale();
         }
 
-        $productParameterValues = $this->parameterRepository->getProductParameterValuesByProductSortedByName($product, $locale);
+        $productParameterValues = $this->parameterRepository->getProductParameterValuesByProductSortedByPosition($product, $locale);
         foreach ($productParameterValues as $index => $productParameterValue) {
             $parameter = $productParameterValue->getParameter();
             if ($parameter->getName($locale) === null
