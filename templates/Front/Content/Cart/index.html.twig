@@ -127,7 +127,7 @@
                                                 <div class="table-cart__cell__price-primary">
                                                     {{ cartItemPrice.totalPrice.priceWithVat|price }}
                                                 </div>
-                                                {%  if quantifiedItemsDiscountsByIndex[index] is defined %}
+                                                {% if quantifiedItemsDiscountsByIndex[index] is defined %}
                                                     {% set quantifiedItemDiscount = quantifiedItemsDiscountsByIndex[index] %}
                                                     <div class="table-cart__cell__discount">
                                                         -{{ quantifiedItemDiscount.priceWithVat|price }}
