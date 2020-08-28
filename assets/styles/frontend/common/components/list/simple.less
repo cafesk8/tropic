@@ -1,4 +1,4 @@
-@list-simple-gap: 30px;
+@list-simple-gap: 28px;
 
 .list-simple {
     .reset-ul();
@@ -6,19 +6,19 @@
     &__item {
         position: relative;
         line-height: 24px;
-        margin-bottom: 6px;
         margin-left: @list-simple-gap;
 
         font-size: @font-size-small;
 
         &:before {
-            content: '•';
             position: absolute;
-            left: -@list-simple-gap / 2;
+            left: -@list-simple-gap;
             top: 50%;
-            transform: translateY(-50%) translateX(-50%);
+            transform: translateY(-50%) rotate(180deg);
 
             color: @color-primary;
+            font-family: 'svg';
+            font-size: 16px;
         }
 
         &:last-child {
