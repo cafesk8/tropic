@@ -81,6 +81,7 @@ class PohodaProduct
     public const COL_PARAMETER_VALUE_TYPE_NUMBER = 'parameterValueNumber';
     public const COL_PARAMETER_VALUE_TYPE_TEXT = 'parameterValueText';
     public const COL_PARAMETER_VALUE_TYPE_LIST = 'parameterValueList';
+    public const COL_PARAMETER_VALUE_POSITION = 'productParameterPosition';
 
     /**
      * @var int

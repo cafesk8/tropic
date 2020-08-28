@@ -750,3 +750,7 @@ services:
 
     Shopsys\FrameworkBundle\Controller\Admin\ShopInfoController:
         class: App\Controller\Admin\ShopInfoController
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactoryInterface: '@App\Model\Product\Parameter\ProductParameterValueDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactoryInterface: '@App\Model\Product\Parameter\ProductParameterValueFactory'

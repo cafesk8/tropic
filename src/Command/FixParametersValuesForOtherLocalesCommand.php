@@ -11,7 +11,7 @@ use App\Model\Product\Parameter\ParameterValueDataFactory;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductDataFactory;
 use App\Model\Product\ProductFacade;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
+use App\Model\Product\Parameter\ProductParameterValueDataFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -51,7 +51,7 @@ class FixParametersValuesForOtherLocalesCommand extends Command
     private $parameterValueDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory
+     * @var \App\Model\Product\Parameter\ProductParameterValueDataFactory
      */
     private $productParameterValueDataFactory;
 
@@ -64,7 +64,7 @@ class FixParametersValuesForOtherLocalesCommand extends Command
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \App\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory $productParameterValueDataFactory
+     * @param \App\Model\Product\Parameter\ProductParameterValueDataFactory $productParameterValueDataFactory
      * @param \App\Model\Product\ProductDataFactory $productDataFactory
      * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
