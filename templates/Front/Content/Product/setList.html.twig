@@ -4,14 +4,15 @@
 {% if paginationResultSets.results|length > 0 %}
     <h3 class="box-search__subtitle box-search__subtitle--big-gap-mobile">{{ 'Nalezené sety'|trans }}</h3>
     <div class="box-list__panel"></div>
-{% endif %}
-<div class="box-list__content">
-    <div class="box-list__products box-list__products--without-gap js-list-with-paginator">
-        {{ productList.list(paginationResultSets.results) }}
-        <div class="box-list__actions">
-            <div class="box-list__actions__button">
-                {{ paginator.loadMoreButton(paginationResultSets, url('front_product_search_sets', {'q': searchText}), 'pageSets') }}
+
+    <div class="box-list__content">
+        <div class="box-list__products js-list-with-paginator">
+            {{ productList.list(paginationResultSets.results) }}
+            <div class="box-list__actions">
+                <div class="box-list__actions__button">
+                    {{ paginator.loadMoreButton(paginationResultSets, url('front_product_search_sets', {'q': searchText}), 'pageSets') }}
+                </div>
             </div>
         </div>
     </div>
-</div>
+{% endif %}

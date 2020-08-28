@@ -1,105 +1,107 @@
 {% macro list(productViews, listCssClass, productHeadingTagName) %}
     {% import 'Front/Content/Product/productSetViewMacro.html.twig' as productSetMacro %}
 
-    <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
-        {% for productView in productViews %}
-            {% set productSellingPrice = productView.sellingPrice %}
+    {% if productViews|length > 0 %}
+        <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
+            {% for productView in productViews %}
+                {% set productSellingPrice = productView.sellingPrice %}
 
-            {% if productView.setItems is not empty %}
-                {{ productSetMacro.productSetView(productView) }}
-            {% else %}
-                <li class="list-products__item js-list-products-item js-maximum-amount-container">
-                    <div class="list-products__item__in">
-                        <div class="list-products__item__block">
-                            <a href="{{ productView.action.detailUrl }}" class="list-products__item__image-wrap">
-                                <div class="list-products__item__image dont-print">
-                                    {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
+                {% if productView.setItems is not empty %}
+                    {{ productSetMacro.productSetView(productView) }}
+                {% else %}
+                    <li class="list-products__item js-list-products-item js-maximum-amount-container">
+                        <div class="list-products__item__in">
+                            <div class="list-products__item__block">
+                                <a href="{{ productView.action.detailUrl }}" class="list-products__item__image-wrap">
+                                    <div class="list-products__item__image dont-print">
+                                        {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
 
-                                    {% if productView.stickers|length > 0 or productView.warranty > 24 %}
-                                        <div class="list-products__item__image__stickers">
-                                            {% for sticker in productView.stickers %}
-                                                {{ image(sticker) }}
-                                            {% endfor %}
+                                        {% if productView.stickers|length > 0 or productView.warranty > 24 %}
+                                            <div class="list-products__item__image__stickers">
+                                                {% for sticker in productView.stickers %}
+                                                    {{ image(sticker) }}
+                                                {% endfor %}
 
-                                            {% if productView.warranty > 24 %}
-                                                {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
-                                            {% endif %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-
-                                {% set productFlagIds = productView.flagIds %}
-                                {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
-                                {% if freeTransportAndPaymentFlagId is not null %}
-                                    {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
-                                {% endif %}
-                                {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice, productView.variantsCount) }}
-                            </a>
-
-                            <div class="list-products__item__info">
-                                <a class="list-products__item__info__link" href="{{ productView.action.detailUrl }}">
-                                    <{{ productHeadingTagName|default('h2') }} class="list-products__item__info__title">
-                                        {{ productView.name|striptags|raw }}
-                                    <{{ '/' ~ productHeadingTagName|default('h2') }}>
-
-                                    {% if productSellingPrice is not null %}
-                                        <div class="list-products__item__info__price">
-                                            {% if productSellingPrice.hasHigherStandardPrice %}
-                                                <div class="list-products__item__info__price__old">
-                                                    {{ productSellingPrice.standardPrice.priceWithVat|price }}
-                                                </div>
-                                            {% endif %}
-                                            <div{% if productSellingPrice.hasHigherStandardPrice %} class="list-products__item__info__price__main"{% endif %}>
-                                                {% if productSellingPrice.priceFrom %}
-                                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
-                                                {% else %}
-                                                    {{ productSellingPrice.priceWithVat|price }}
+                                                {% if productView.warranty > 24 %}
+                                                    {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
                                                 {% endif %}
                                             </div>
-                                        </div>
-                                    {% endif %}
-
-                                    <div class="in-availability">
-                                        <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                            {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
-                                        </div>
+                                        {% endif %}
                                     </div>
 
-                                    {% if productView.getGiftsCount() > 0 %}
-                                        <div class="list-products__item__info__gift">
-                                            {% set giftCount = productView.getGiftsCount() %}
-                                            {% if giftCount is same as (1) %}
-                                                <span class="list-products__item__info__gift__title">{{ 'Dárek'|trans }}</span>
-                                                {{ productView.getFirstGiftLabel() }}
-                                            {% else %}
-                                                <span class="list-products__item__info__gift__count">
-                                                    {% transchoice giftCount with {'%count%': giftCount} %}
-                                                        [2,4] %count% dárky zdarma |[5,Inf] %count% dárků zdarma
-                                                    {% endtranschoice %}
-                                                </span>
-                                            {% endif %}
-                                        </div>
+                                    {% set productFlagIds = productView.flagIds %}
+                                    {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
+                                    {% if freeTransportAndPaymentFlagId is not null %}
+                                        {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
                                     {% endif %}
+                                    {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice, productView.variantsCount) }}
                                 </a>
 
-                                {% set outOfStock = productView.stockQuantity <= 0 or productView.action.sellingDenied %}
-                                {% if outOfStock is same as (false) %}
-                                    <div class="in-message in-message--warning js-maximum-amount-warning display-none">
-                                        {{ 'Větší množství není možné nakoupit'|trans }}
+                                <div class="list-products__item__info">
+                                    <a class="list-products__item__info__link" href="{{ productView.action.detailUrl }}">
+                                        <{{ productHeadingTagName|default('h2') }} class="list-products__item__info__title">
+                                            {{ productView.name|striptags|raw }}
+                                        <{{ '/' ~ productHeadingTagName|default('h2') }}>
+
+                                        {% if productSellingPrice is not null %}
+                                            <div class="list-products__item__info__price">
+                                                {% if productSellingPrice.hasHigherStandardPrice %}
+                                                    <div class="list-products__item__info__price__old">
+                                                        {{ productSellingPrice.standardPrice.priceWithVat|price }}
+                                                    </div>
+                                                {% endif %}
+                                                <div{% if productSellingPrice.hasHigherStandardPrice %} class="list-products__item__info__price__main"{% endif %}>
+                                                    {% if productSellingPrice.priceFrom %}
+                                                        {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                                    {% else %}
+                                                        {{ productSellingPrice.priceWithVat|price }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="in-availability">
+                                            <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                                {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
+                                            </div>
+                                        </div>
+
+                                        {% if productView.getGiftsCount() > 0 %}
+                                            <div class="list-products__item__info__gift">
+                                                {% set giftCount = productView.getGiftsCount() %}
+                                                {% if giftCount is same as (1) %}
+                                                    <span class="list-products__item__info__gift__title">{{ 'Dárek'|trans }}</span>
+                                                    {{ productView.getFirstGiftLabel() }}
+                                                {% else %}
+                                                    <span class="list-products__item__info__gift__count">
+                                                        {% transchoice giftCount with {'%count%': giftCount} %}
+                                                            [2,4] %count% dárky zdarma |[5,Inf] %count% dárků zdarma
+                                                        {% endtranschoice %}
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </a>
+
+                                    {% set outOfStock = productView.stockQuantity <= 0 or productView.action.sellingDenied %}
+                                    {% if outOfStock is same as (false) %}
+                                        <div class="in-message in-message--warning js-maximum-amount-warning display-none">
+                                            {{ 'Větší množství není možné nakoupit'|trans }}
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="list-products__item__hover">
+
+                                        {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { listedProductView: productView } )) }}
                                     </div>
-                                {% endif %}
-
-                                <div class="list-products__item__hover">
-
-                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { listedProductView: productView } )) }}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endmacro %}
 
 {% macro horizontalList(productViews, listCssClass, productHeadingTagName, type, showButton = false, onlyRefresh = false, showAmountInput = false) %}

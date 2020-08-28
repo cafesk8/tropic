@@ -202,15 +202,6 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        margin-bottom: @margin-gap;
-
-        @media @query-lg {
-            flex-direction: row;
-        }
-
-        @media @query-vl {
-            flex-direction: column;
-        }
 
         @media @query-xl {
             flex-direction: row;
@@ -221,8 +212,11 @@
             flex-direction: row;
             justify-content: center;
             margin: auto;
-            margin-bottom: @margin-gap;
             flex: 1;
+
+            .btn {
+                margin-bottom: @margin-gap;
+            }
 
             &__icon {
                 opacity: 0.6;
@@ -235,17 +229,9 @@
         }
 
         &__pagination {
-            @media @query-lg {
-                position: absolute;
-                right: 0;
-            }
-
-            @media @query-vl {
-                position: static;
-            }
-
             @media @query-xl {
                 position: absolute;
+                right: 0;
             }
         }
     }
