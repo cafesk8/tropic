@@ -9,6 +9,7 @@ use App\Model\Product\Flag\Flag;
 use App\Model\Product\Product;
 use App\Model\Product\Set\ProductSetFacade;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository;
@@ -29,6 +30,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
  * @method int[] extractVariantIds(\App\Model\Product\Product $product)
  * @property \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
  * @property \App\Model\Product\ProductFacade $productFacade
+ * @method int[] extractCategories(int $domainId, \App\Model\Product\Product $product)
  */
 class ProductExportRepository extends BaseProductExportRepository
 {
@@ -143,25 +145,6 @@ class ProductExportRepository extends BaseProductExportRepository
         $parameters = array_merge($baseParameters, $parameters);
 
         return array_values(array_unique($parameters, SORT_REGULAR));
-    }
-
-    /**
-     * see https://github.com/shopsys/shopsys/pull/1719
-     * @param int $domainId
-     * @param \App\Model\Product\Product $product
-     * @return int[]
-     */
-    protected function extractCategories(int $domainId, BaseProduct $product): array
-    {
-        $categoryIds = [];
-        $categoriesIndexedByDomainId = $product->getCategoriesIndexedByDomainId();
-        if (isset($categoriesIndexedByDomainId[$domainId])) {
-            foreach ($categoriesIndexedByDomainId[$domainId] as $category) {
-                $categoryIds[] = $category->getId();
-            }
-        }
-
-        return $categoryIds;
     }
 
     /**
@@ -282,5 +265,13 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $uniqueParameters;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function createQueryBuilder(int $domainId): QueryBuilder
+    {
+        return parent::createQueryBuilder($domainId)->andWhere('p.sellingDenied = FALSE');
     }
 }

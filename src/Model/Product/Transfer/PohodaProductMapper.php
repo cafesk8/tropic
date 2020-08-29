@@ -341,6 +341,8 @@ class PohodaProductMapper
         $productData->orderingPriority = $pohodaProduct->priority;
         $productData->foreignSupplier = $pohodaProduct->foreignSupplier;
         $productData->weight = $pohodaProduct->weight;
+        $productData->supplierSet = $pohodaProduct->supplierSet;
+        $productData->sellingDenied = $pohodaProduct->sellingDenied;
 
         switch ($pohodaProduct->volume) {
             case 1:
@@ -359,7 +361,6 @@ class PohodaProductMapper
                 $productData->bulky = false;
                 $productData->oversized = false;
         }
-        $productData->supplierSet = $pohodaProduct->supplierSet;
     }
 
     /**
