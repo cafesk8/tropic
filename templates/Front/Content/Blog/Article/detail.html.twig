@@ -45,16 +45,8 @@
                         <div class="box-blog__section">
                             {{ render(controller('App\\Controller\\Front\\BlogCategoryController:listAction', {blogArticle: blogArticle})) }}
                         </div>
-                        {% if articleProducts is not empty %}
-                            <div class="box-blog__section box-blog__section--gradient">
-                                <div class="box-blog__section__in">
-                                    <h3 class="box-blog__section__title">
-                                        {{ 'V článku najdete tyto produkty'|trans }}
-                                    </h3>
-                                    {{ render(controller('App\\Controller\\Front\\BlogArticleController:productsAction', {blogArticle: blogArticle, articleProducts: articleProducts})) }}
-                                </div>
-                            </div>
-                        {% endif %}
+
+                        {{ render(controller('App\\Controller\\Front\\BlogArticleController:productsAction', {blogArticle: blogArticle})) }}
                     </div>
                 </div>
             </div>

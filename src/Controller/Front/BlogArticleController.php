@@ -7,7 +7,7 @@ namespace App\Controller\Front;
 use App\Model\Blog\Article\BlogArticle;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Category\BlogCategoryFacade;
-use App\Model\Product\Product;
+use App\Model\Product\View\ListedProductViewElasticFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,16 +28,24 @@ class BlogArticleController extends FrontBaseController
      */
     private $blogCategoryFacade;
 
+    private ListedProductViewElasticFacade $listedProductViewElasticFacade;
+
     /**
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \App\Model\Blog\Category\BlogCategoryFacade $blogCategoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewElasticFacade
      */
-    public function __construct(BlogArticleFacade $blogArticleFacade, BlogCategoryFacade $blogCategoryFacade, Domain $domain)
-    {
+    public function __construct(
+        BlogArticleFacade $blogArticleFacade,
+        BlogCategoryFacade $blogCategoryFacade,
+        Domain $domain,
+        ListedProductViewElasticFacade $listedProductViewElasticFacade
+    ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->domain = $domain;
         $this->blogCategoryFacade = $blogCategoryFacade;
+        $this->listedProductViewElasticFacade = $listedProductViewElasticFacade;
     }
 
     /**
@@ -52,13 +60,11 @@ class BlogArticleController extends FrontBaseController
         );
 
         $blogCategoryIds = $this->blogCategoryFacade->getBlogArticleBlogCategoryIdsWithDeepestLevel($blogArticle, $this->domain->getId());
-        $offeredArticleProducts = $this->filterOnlyOfferedProducts($blogArticle->getProducts());
 
         return $this->render('Front/Content/Blog/Article/detail.html.twig', [
             'blogArticle' => $blogArticle,
             'activeCategories' => $blogCategoryIds,
             'domainId' => $this->domain->getId(),
-            'articleProducts' => $offeredArticleProducts,
         ]);
     }
 
@@ -77,28 +83,12 @@ class BlogArticleController extends FrontBaseController
 
     /**
      * @param \App\Model\Blog\Article\BlogArticle $blogArticle
-     * @param \App\Model\Product\Product[] $articleProducts
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function productsAction(?BlogArticle $blogArticle, array $articleProducts): Response
+    public function productsAction(BlogArticle $blogArticle): Response
     {
         return $this->render('Front/Content/Blog/Article/blogArticleProducts.html.twig', [
-            'articleProducts' => $articleProducts,
+            'articleProducts' => $this->listedProductViewElasticFacade->getByArticle($blogArticle),
         ]);
-    }
-
-    /**
-     * @param \App\Model\Product\Product[] $products
-     * @return \App\Model\Product\Product[]
-     */
-    private function filterOnlyOfferedProducts(array $products): array
-    {
-        return array_filter($products, function (Product $product) {
-            if ($product->getCalculatedSellingDenied() || !$product->isShownOnDomain($this->domain->getId())) {
-                return false;
-            }
-
-            return true;
-        });
     }
 }

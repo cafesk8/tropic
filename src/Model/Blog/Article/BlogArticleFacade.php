@@ -252,4 +252,13 @@ class BlogArticleFacade
     {
         return $this->blogArticleRepository->getAllBlogArticlesNamesIndexedByIdByDomainId($domainId, $locale);
     }
+
+    /**
+     * @param \App\Model\Blog\Article\BlogArticle $article
+     * @return int[]
+     */
+    public function getProductIds(BlogArticle $article): array
+    {
+        return $this->blogArticleRepository->getProductIds($article->getId());
+    }
 }

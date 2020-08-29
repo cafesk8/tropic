@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
+use App\Model\Blog\Article\BlogArticle;
+use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
@@ -36,6 +38,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  * @property \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
  * @property \App\Model\Product\ProductFacade $productFacade
  * @property \App\Model\Product\View\ImageViewFacade $imageViewFacade
+ * @property \App\Model\Product\TopProduct\TopProductFacade $topProductFacade
+ * @property \App\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
  * @method \App\Model\Product\View\ListedProductView[] createFromProducts(array $products)
  */
 class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
@@ -70,12 +74,14 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      */
     private $flagFacade;
 
+    private BlogArticleFacade $blogArticleFacade;
+
     /**
      * @param \App\Model\Product\ProductFacade $productFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
+     * @param \App\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
-     * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductFacade
+     * @param \App\Model\Product\TopProduct\TopProductFacade $topProductFacade
      * @param \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory $listedProductViewFactory
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionViewFacade $productActionViewFacade
@@ -86,6 +92,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      */
     public function __construct(
         ProductFacade $productFacade,
@@ -102,7 +109,8 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         PriceBombProductFacade $priceBombProductFacade,
         PricingGroupFacade $pricingGroupFacade,
         ProductSetFacade $productSetFacade,
-        FlagFacade $flagFacade
+        FlagFacade $flagFacade,
+        BlogArticleFacade $blogArticleFacade
     ) {
         parent::__construct($productFacade, $productAccessoryFacade, $domain, $currentCustomerUser, $topProductFacade, $productOnCurrentDomainFacade, $listedProductViewFactory, $productActionViewFacade, $imageViewFacade);
         $this->cachedBestsellingProductFacade = $cachedBestsellingProductFacade;
@@ -111,6 +119,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->productSetFacade = $productSetFacade;
         $this->flagFacade = $flagFacade;
+        $this->blogArticleFacade = $blogArticleFacade;
     }
 
     /**
@@ -271,5 +280,56 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $paginationResult = $this->productOnCurrentDomainFacade->getPaginatedProductsInCategory($filterData, $orderingModeId, $page, $limit, $categoryId, $showUnavailableProducts);
 
         return $this->createPaginationResultWithArray($paginationResult);
+    }
+
+    /**
+     * @param \App\Model\Blog\Article\BlogArticle $article
+     * @return \App\Model\Product\View\ListedProductView[]
+     */
+    public function getByArticle(BlogArticle $article): array
+    {
+        return $this->createFromArray(
+            $this->productOnCurrentDomainFacade->getSellableHitsForIds($this->blogArticleFacade->getProductIds($article))
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllTop(): array
+    {
+        $topProductPositionIndexedById = $this->topProductFacade->getProductPositionIndexedById($this->domain->getId());
+
+        $productViews = $this->createFromArray(
+            $this->productOnCurrentDomainFacade->getSellableHitsForIds(array_keys($topProductPositionIndexedById))
+        );
+
+        usort(
+            $productViews,
+            fn (ListedProductView $listedProductView1, ListedProductView $listedProductView2) =>
+                $topProductPositionIndexedById[$listedProductView1->getId()] - $topProductPositionIndexedById[$listedProductView2->getId()]
+        );
+
+        return $productViews;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAccessories(int $productId, int $limit): array
+    {
+        return array_slice($this->createFromArray(
+            $this->productOnCurrentDomainFacade->getSellableHitsForIds($this->productAccessoryFacade->getProductIds($productId))
+        ), 0, $limit);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllAccessories(int $productId): array
+    {
+        return $this->createFromArray(
+            $this->productOnCurrentDomainFacade->getSellableHitsForIds($this->productAccessoryFacade->getProductIds($productId))
+        );
     }
 }
