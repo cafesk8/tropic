@@ -103,6 +103,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
         $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
         $result['parameters'] = $this->appendSetItemParameters($locale, $product, $result['parameters']);
+        $result['warranty'] = $product->getWarranty();
 
         return $result;
     }

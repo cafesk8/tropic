@@ -62,6 +62,8 @@ class ListedProductView extends BaseListedProductView
      */
     private array $stickers;
 
+    private ?int $warranty;
+
     /**
      * @param int $id
      * @param string $name
@@ -80,6 +82,7 @@ class ListedProductView extends BaseListedProductView
      * @param int $realSaleStocksQuantity
      * @param string $unitName
      * @param array $stickers
+     * @param int|null $warranty
      */
     public function __construct(
         int $id,
@@ -98,7 +101,8 @@ class ListedProductView extends BaseListedProductView
         bool $isAvailableInDays,
         int $realSaleStocksQuantity,
         string $unitName,
-        array $stickers
+        array $stickers,
+        ?int $warranty
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
@@ -111,6 +115,7 @@ class ListedProductView extends BaseListedProductView
         $this->realSaleStocksQuantity = $realSaleStocksQuantity;
         $this->unitName = $unitName;
         $this->stickers = $stickers;
+        $this->warranty = $warranty;
     }
 
     /**
@@ -203,5 +208,13 @@ class ListedProductView extends BaseListedProductView
     public function getStickers(): array
     {
         return $this->stickers;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getWarranty(): ?int
+    {
+        return $this->warranty;
     }
 }

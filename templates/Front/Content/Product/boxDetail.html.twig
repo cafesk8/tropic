@@ -33,13 +33,17 @@
                                             {{ image(product, { itemprop: 'image' }) }}
 
                                             {% set stickers = getImages(product, 'sticker') %}
-                                            {% if stickers|length > 0 %}
+                                            {% if stickers|length > 0 or product.warranty > 24 %}
                                                 <div class="box-detail__image__stickers">
                                                     {% for sticker in stickers %}
                                                         {{ image(sticker) }}
                                                     {% endfor %}
+                                                    {% if product.warranty > 24 %}
+                                                        {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
+                                                    {% endif %}
                                                 </div>
                                             {% endif %}
+
                                         </a>
                                     {% else %}
                                         {{ noimage({ alt: product.name }) }}
