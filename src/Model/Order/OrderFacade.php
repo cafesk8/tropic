@@ -90,6 +90,7 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @property \App\Model\Order\Item\OrderProductFacade $orderProductFacade
  * @method updateTransportAndPaymentNamesInOrderData(\App\Model\Order\OrderData $orderData, \App\Model\Order\Order $order)
  * @property \App\Model\Transport\TransportPriceCalculation $transportPriceCalculation
+ * @property \App\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
  */
 class OrderFacade extends BaseOrderFacade
 {
@@ -150,7 +151,7 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
+     * @param \App\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
      * @param \App\Model\Order\OrderRepository $orderRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderUrlGenerator $orderUrlGenerator
      * @param \App\Model\Order\Status\OrderStatusRepository $orderStatusRepository

@@ -742,3 +742,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade: '@App\Model\Product\Accessory\ProductAccessoryFacade'
 
     Shopsys\FrameworkBundle\Model\Sitemap\SitemapRepository: '@App\Model\Sitemap\SitemapRepository'
+
+    Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository: '@App\Model\Order\OrderNumberSequenceRepository'
