@@ -153,7 +153,7 @@ class SettingValueDataFixture extends AbstractReferenceFixture implements Depend
     protected function setContactFormMainText(int $domainId, string $locale): void
     {
         $contactFormSettingData = $this->contactFormSettingsDataFactory->createFromSettingsByDomainId($domainId);
-        $contactFormMainText = t('Do you have a question?', [], 'dataFixtures', $locale);
+        $contactFormMainText = t('Máte dotaz?', [], 'dataFixtures', $locale);
         $contactFormSettingData->mainText = $contactFormMainText;
         $this->contactFormSettingsFacade->editSettingsForDomain($contactFormSettingData, $domainId);
     }
