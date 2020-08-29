@@ -56,6 +56,7 @@ class ImageExtension extends BaseImageExtension
         $functions[] = new TwigFunction('getSupplierSetItemName', [$this, 'getSupplierSetItemName']);
         $functions[] = new TwigFunction('getSupplierSetItemCount', [$this, 'getSupplierSetItemCount']);
         $functions[] = new TwigFunction('getProductSetImages', [$this, 'getProductSetImages']);
+        $functions[] = new TwigFunction('shouldVariantImageBeDisplayed', [$this, 'shouldVariantImageBeDisplayed']);
 
         return $functions;
     }
@@ -144,5 +145,25 @@ class ImageExtension extends BaseImageExtension
         }
 
         return $setImages;
+    }
+
+    /**
+     * On FE product detail, the variant image is displayed only when it differs from the main variant image
+     *
+     * @param \App\Model\Product\Product $variant
+     * @return bool
+     */
+    public function shouldVariantImageBeDisplayed(Product $variant): bool
+    {
+        $variantImage = $this->imageFacade->findImageByEntity('product', $variant->getId(), null);
+        if ($variantImage === null) {
+            return false;
+        }
+        $mainVariantImage = $this->imageFacade->findImageByEntity('product', $variant->getMainVariant()->getId(), null);
+        if ($mainVariantImage !== null && $variantImage->getDescription() !== $mainVariantImage->getDescription() || $mainVariantImage === null) {
+            return true;
+        }
+
+        return false;
     }
 }

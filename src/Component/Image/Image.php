@@ -21,8 +21,11 @@ class Image extends BaseImage
     private $pohodaId;
 
     /**
-     * the attribute is used for proper displaying of "supplier sets", @see \App\Model\Product\Product::$supplierSet
-     * https://shopsys.atlassian.net/browse/TF-567
+     * The attribute is used for proper displaying of "supplier sets", @see \App\Model\Product\Product::$supplierSet
+     * @see https://shopsys.atlassian.net/browse/TF-567
+     *
+     * Also, we use it for detection whether the main variant's image, the variant's image, or the no-image should be displayed
+     * @see https://shopsys.atlassian.net/browse/TF-746
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      */

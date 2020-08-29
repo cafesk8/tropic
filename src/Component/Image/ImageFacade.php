@@ -191,4 +191,15 @@ class ImageFacade extends BaseImageFacade
 
         return $this->imageRepository->getMainImagesByEntitiesIndexedByEntityId($entityIds, $entityName, $type);
     }
+
+    /**
+     * @param string $entityName
+     * @param int $entityId
+     * @param string|null $type
+     * @return \App\Component\Image\Image|null
+     */
+    public function findImageByEntity(string $entityName, int $entityId, ?string $type): ?Image
+    {
+        return $this->imageRepository->findImageByEntity($entityName, $entityId, $type);
+    }
 }
