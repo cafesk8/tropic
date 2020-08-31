@@ -67,7 +67,7 @@
                 <div class="search-hint__product__item__wrap-image">
                     {% for productSet in productOrSet.productSets %}
                         <div class="search-hint__product__item__image search-hint__product__item__image--sets svg svg-plus-big">
-                            {{ image(productSet.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                            {{ image(productSet.item, {size: 'thumbnail', lazy: false}) }}
                         </div>
                     {% endfor %}
                 </div>

@@ -6,6 +6,7 @@ namespace App\Twig;
 
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Image\ImageLocator;
 use Shopsys\ReadModelBundle\Twig\ImageExtension as BaseImageExtension;
@@ -18,7 +19,6 @@ use Twig\TwigFunction;
  * @method bool imageExists(\App\Component\Image\Image|object $imageOrEntity, string|null $type)
  * @method string getImageUrl(\App\Component\Image\Image|object $imageOrEntity, string|null $sizeName, string|null $type)
  * @method \App\Component\Image\Image[] getImages(object $entity, string|null $type)
- * @method string getImageHtml(\App\Component\Image\Image|object $imageOrEntity, array $attributes)
  */
 class ImageExtension extends BaseImageExtension
 {
@@ -26,6 +26,8 @@ class ImageExtension extends BaseImageExtension
      * @var \Symfony\Component\Asset\Package
      */
     private $assetsPackage;
+
+    private ImageConfig $imageConfig;
 
     /**
      * @param mixed $frontDesignImageUrlPrefix
@@ -35,6 +37,7 @@ class ImageExtension extends BaseImageExtension
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \Twig\Environment $twigEnvironment
      * @param bool $isLazyLoadEnabled
+     * @param \Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig $imageConfig
      */
     public function __construct(
         $frontDesignImageUrlPrefix,
@@ -43,10 +46,12 @@ class ImageExtension extends BaseImageExtension
         ImageLocator $imageLocator,
         ImageFacade $imageFacade,
         Environment $twigEnvironment,
-        bool $isLazyLoadEnabled
+        bool $isLazyLoadEnabled,
+        ImageConfig $imageConfig
     ) {
         parent::__construct($frontDesignImageUrlPrefix, $domain, $imageLocator, $imageFacade, $twigEnvironment, $isLazyLoadEnabled);
         $this->assetsPackage = $assetsPackage;
+        $this->imageConfig = $imageConfig;
     }
 
     public function getFunctions()
@@ -165,5 +170,29 @@ class ImageExtension extends BaseImageExtension
         }
 
         return false;
+    }
+
+    /**
+     * @param Object|\App\Component\Image\Image|\Shopsys\ReadModelBundle\Image\ImageView|null $imageOrEntity
+     * @param array $attributes
+     * @return string
+     */
+    public function getImageHtml($imageOrEntity, array $attributes = []): string
+    {
+        if ($imageOrEntity instanceof Product && $imageOrEntity->isVariant()) {
+            $this->preventDefault($attributes);
+            $variantImage = $this->imageFacade->findImageByEntity(
+                $this->imageConfig->getEntityName($imageOrEntity),
+                $imageOrEntity->getId(),
+                $attributes['type']
+            );
+            if ($variantImage !== null) {
+                return parent::getImageHtml($variantImage, $attributes);
+            } else {
+                $mainVariant = $imageOrEntity->getMainVariant();
+                return parent::getImageHtml($mainVariant, $attributes);
+            }
+        }
+        return parent::getImageHtml($imageOrEntity, $attributes);
     }
 }

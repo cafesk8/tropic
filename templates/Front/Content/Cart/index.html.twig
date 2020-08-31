@@ -51,7 +51,7 @@
                                                         <div class="table-cart__cell__wrap-image">
                                                             {% for productSet in cartItem.product.productSets %}
                                                                 <div class="table-cart__cell__image table-cart__cell__image--sets svg svg-plus-big">
-                                                                    {{ image(productSet.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}
+                                                                    {{ image(productSet.item, {size: 'thumbnail'}) }}
                                                                 </div>
                                                             {% endfor %}
                                                         </div>
@@ -65,7 +65,7 @@
                                                         </div>
                                                     {% else %}
                                                         <div class="table-cart__cell__image">
-                                                            {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'biggerThumbnail', lazy: true }) }}
+                                                            {{ image(cartItem.product, { size: 'biggerThumbnail', lazy: true }) }}
                                                         </div>
                                                     {% endif %}
                                                 </a>
