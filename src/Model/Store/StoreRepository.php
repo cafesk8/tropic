@@ -213,4 +213,13 @@ class StoreRepository
 
         return $store;
     }
+
+    /**
+     * @param string $pohodaName
+     * @return \App\Model\Store\Store|null
+     */
+    public function findByPohodaName(string $pohodaName): ?Store
+    {
+        return $this->getStoreRepository()->findOneBy(['pohodaName' => $pohodaName]);
+    }
 }
