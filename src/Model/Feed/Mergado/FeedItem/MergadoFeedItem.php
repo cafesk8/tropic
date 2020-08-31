@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Feed\Mergado\FeedItem;
 
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Feed\FeedItemInterface;
 
 class MergadoFeedItem implements FeedItemInterface
@@ -123,6 +124,12 @@ class MergadoFeedItem implements FeedItemInterface
      */
     private $warranty;
 
+    private string $purchaseVsSellingPriceDifference;
+
+    private ?int $saleExclusionType;
+
+    private ?string $standardPrice;
+
     /**
      * @param int $id
      * @param int|null $itemGroupId
@@ -140,13 +147,16 @@ class MergadoFeedItem implements FeedItemInterface
      * @param string $currency
      * @param string $availability
      * @param int $deliveryDays
-     * @param string $image
+     * @param string|null $image
      * @param string[] $imagesAlternative
-     * @param string $video
+     * @param string|null $video
      * @param array $videosAlternative
      * @param string[] $params
      * @param \App\Model\Feed\Mergado\FeedItem\MergadoFeedDeliveryItem[] $deliveries
      * @param int|null $warranty
+     * @param string $purchaseVsSellingPriceDifference
+     * @param int|null $saleExclusionType
+     * @param string|null $standardPrice
      */
     public function __construct(
         int $id,
@@ -171,7 +181,10 @@ class MergadoFeedItem implements FeedItemInterface
         array $videosAlternative,
         array $params,
         array $deliveries,
-        ?int $warranty
+        ?int $warranty,
+        string $purchaseVsSellingPriceDifference,
+        ?int $saleExclusionType,
+        ?string $standardPrice
     ) {
         $this->id = $id;
         $this->itemGroupId = $itemGroupId;
@@ -196,6 +209,9 @@ class MergadoFeedItem implements FeedItemInterface
         $this->params = $params;
         $this->deliveries = $deliveries;
         $this->warranty = $warranty;
+        $this->purchaseVsSellingPriceDifference = $purchaseVsSellingPriceDifference;
+        $this->saleExclusionType = $saleExclusionType;
+        $this->standardPrice = $standardPrice;
     }
 
     /**
@@ -388,5 +404,29 @@ class MergadoFeedItem implements FeedItemInterface
     public function getWarranty(): ?int
     {
         return $this->warranty;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPurchaseVsSellingPriceDifference(): string
+    {
+        return $this->purchaseVsSellingPriceDifference;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSaleExclusionType(): ?int
+    {
+        return $this->saleExclusionType;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStandardPrice(): ?string
+    {
+        return $this->standardPrice;
     }
 }

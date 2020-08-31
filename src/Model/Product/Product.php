@@ -1065,6 +1065,7 @@ class Product extends BaseProduct
             $productDomain->setDescriptionHash($productData->descriptionHashes[$domainId]);
             $productDomain->setShortDescriptionHash($productData->shortDescriptionHashes[$domainId]);
             $productDomain->setShown($productData->shown[$domainId]);
+            $productDomain->setNameForMergadoFeed($productData->namesForMergadoFeed[$domainId]);
         }
     }
 
@@ -1444,5 +1445,14 @@ class Product extends BaseProduct
     public function getWeight(): ?float
     {
         return $this->weight;
+    }
+
+    /**
+     * @param int $domainId
+     * @return string|null
+     */
+    public function getNameForMergadoFeed(int $domainId): ?string
+    {
+        return $this->getProductDomain($domainId)->getNameForMergadoFeed();
     }
 }

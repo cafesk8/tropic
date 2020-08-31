@@ -268,6 +268,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             'entry_type' => YesNoType::class,
             'required' => false,
          ]);
+        $mergadoFeedGroup->add('namesForMergadoFeed', MultidomainType::class, [
+            'label' => t('Název pro feed'),
+            'entry_type' => TextType::class,
+            'required' => false,
+        ]);
 
         $builder->add($mergadoFeedGroup);
 

@@ -7,7 +7,10 @@ namespace App\Model\Feed\Mergado\FeedItem;
 use App\Component\MergadoTransportType\MergadoTransportTypeFacade;
 use App\Model\Category\CategoryFacade;
 use App\Model\Payment\PaymentFacade;
+use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\Pricing\ProductPriceCalculation;
+use App\Model\Product\Product;
 use App\Model\Transport\Transport;
 use App\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
@@ -20,7 +23,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Collection\ProductParametersBatchLoader;
 use Shopsys\FrameworkBundle\Model\Product\Collection\ProductUrlsBatchLoader;
-use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Twig\PriceExtension;
 
 class MergadoFeedItemFactory
 {
@@ -80,6 +83,10 @@ class MergadoFeedItemFactory
      */
     private $categoryFacade;
 
+    private PricingGroupFacade $pricingGroupFacade;
+
+    private PriceExtension $priceExtension;
+
     /**
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \App\Component\Image\ImageFacade $imageFacade
@@ -91,6 +98,8 @@ class MergadoFeedItemFactory
      * @param \App\Model\Payment\PaymentFacade $paymentFacade
      * @param \App\Component\MergadoTransportType\MergadoTransportTypeFacade $mergadoTransportTypeFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
      */
     public function __construct(
         CurrencyFacade $currencyFacade,
@@ -102,7 +111,9 @@ class MergadoFeedItemFactory
         TransportFacade $transportFacade,
         PaymentFacade $paymentFacade,
         MergadoTransportTypeFacade $mergadoTransportTypeFacade,
-        CategoryFacade $categoryFacade
+        CategoryFacade $categoryFacade,
+        PricingGroupFacade $pricingGroupFacade,
+        PriceExtension $priceExtension
     ) {
         $this->currencyFacade = $currencyFacade;
         $this->imageFacade = $imageFacade;
@@ -114,6 +125,8 @@ class MergadoFeedItemFactory
         $this->paymentFacade = $paymentFacade;
         $this->mergadoTransportTypeFacade = $mergadoTransportTypeFacade;
         $this->categoryFacade = $categoryFacade;
+        $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->priceExtension = $priceExtension;
     }
 
     /**
@@ -125,7 +138,9 @@ class MergadoFeedItemFactory
     {
         $productImages = $this->getAllImageUrlsByProduct($product, $domainConfig);
         $productVideos = $product->isVariant() ? $product->getMainVariant()->getYoutubeVideoIds() : $product->getYoutubeVideoIds();
-        $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainConfig->getId());
+        $domainId = $domainConfig->getId();
+        $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
+        $sellingPrice = $this->getPrice($product, $domainConfig);
 
         return new MergadoFeedItem(
             $product->getId(),
@@ -133,14 +148,14 @@ class MergadoFeedItemFactory
             $product->getCatnum(),
             $product->getEan(),
             $this->productUrlsBatchLoader->getProductUrl($product, $domainConfig),
-            $product->getName($domainConfig->getLocale()),
+            $this->getNameExact($product, $domainConfig),
             $this->categoryFacade->getCategoryFullPath($product, $domainConfig, ' / '),
-            $this->getShortDescription($product, $domainConfig->getId()),
-            $this->getDescription($product, $domainConfig->getId()),
+            $this->getShortDescription($product, $domainId),
+            $this->getDescription($product, $domainId),
             $this->getBenefits($product, $domainConfig),
             $this->getBrandName($product),
-            $this->getPrice($product, $domainConfig)->getPriceWithoutVat()->getAmount(),
-            $this->getPrice($product, $domainConfig)->getPriceWithVat()->getAmount(),
+            $sellingPrice->getPriceWithoutVat()->getAmount(),
+            $sellingPrice->getPriceWithVat()->getAmount(),
             $currency->getCode(),
             $this->getProductAvailability($product),
             $this->getProductDeliveryDays($product),
@@ -150,7 +165,10 @@ class MergadoFeedItemFactory
             array_slice($productVideos, self::FIRST_ALTERNATIVE_YOUTUBE_VIDEO_ID_INDEX),
             $this->productParametersBatchLoader->getProductParametersByName($product, $domainConfig),
             $this->getMergadoTransports($currency, $domainConfig),
-            $product->getWarranty()
+            $product->getWarranty(),
+            $this->getPurchaseVsSellingPriceDifference($product, $sellingPrice, $domainId),
+            $this->getSaleExclusionType($product),
+            $this->getStandardPrice($product, $domainId, $currency->getId(), $domainConfig->getLocale())
         );
     }
 
@@ -330,5 +348,79 @@ class MergadoFeedItemFactory
             $domainConfig->getId(),
             $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainConfig->getId())
         );
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param \App\Model\Product\Pricing\ProductPrice $sellingPrice
+     * @param int $domainId
+     * @return string
+     */
+    private function getPurchaseVsSellingPriceDifference(Product $product, ProductPrice $sellingPrice, int $domainId): string
+    {
+        $purchasePrice = $this->productPriceCalculation->calculatePrice(
+            $product,
+            $domainId,
+            $this->pricingGroupFacade->getPurchasePricePricingGroup($domainId)
+        );
+
+        $sellingPriceWithVat = $sellingPrice->getPriceWithVat();
+        $purchasePriceWithVat = $purchasePrice->getPriceWithVat();
+
+        return $sellingPriceWithVat->subtract($purchasePriceWithVat)->getAmount();
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return int|null
+     */
+    private function getSaleExclusionType(Product $product): ?int
+    {
+        $registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
+        $promoDiscountDisabled = $product->isPromoDiscountDisabled();
+        if ($registrationDiscountDisabled && $promoDiscountDisabled) {
+            return 3;
+        }
+        if ($registrationDiscountDisabled) {
+            return 1;
+        }
+        if ($promoDiscountDisabled) {
+            return 2;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return string|null
+     */
+    private function getStandardPrice(Product $product, int $domainId, int $currencyId, string $locale): ?string
+    {
+        $standardPrice = $this->productPriceCalculation->calculatePrice(
+            $product,
+            $domainId,
+            $this->pricingGroupFacade->getStandardPricePricingGroup($domainId)
+        );
+        $standardPriceWithVat = $standardPrice->getPriceWithVat();
+        if ($standardPriceWithVat->isZero()) {
+            return null;
+        }
+
+        return $this->priceExtension->priceTextWithCurrencyByCurrencyIdAndLocaleFilter($standardPriceWithVat, $currencyId, $locale);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @return string|null
+     */
+    private function getNameExact(Product $product, DomainConfig $domainConfig): ?string
+    {
+        $nameForMergadoFeed = $product->getNameForMergadoFeed($domainConfig->getId());
+        $name = $product->getName($domainConfig->getLocale());
+
+        return $nameForMergadoFeed ?? $name;
     }
 }

@@ -175,6 +175,11 @@ class ProductData extends BaseProductData
 
     public ?float $weight;
 
+    /**
+     * @var string[]|null[]
+     */
+    public array $namesForMergadoFeed;
+
     public function __construct()
     {
         parent::__construct();
