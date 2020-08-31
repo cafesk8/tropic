@@ -22,6 +22,7 @@ import Register from 'framework/common/utils/Register';
             $parentRow.insertBefore($firstRow);
 
             const $rows = $promoCodeGroup.closest('.js-grid-row');
+            $parentRow.after($rows);
             $rows.addClass('display-none');
 
             $rows.each(function () {
