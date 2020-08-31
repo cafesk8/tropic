@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use Shopsys\FrameworkBundle\Model\Category\Category;
 use App\Model\Product\BestsellingProduct\BestsellingProductFacade;
+use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 
 class BestsellingProductController extends FrontBaseController

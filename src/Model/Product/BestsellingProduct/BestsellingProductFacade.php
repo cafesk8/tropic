@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Model\Product\BestsellingProduct;
 
@@ -12,8 +14,6 @@ use Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\BestsellingProductF
  */
 class BestsellingProductFacade extends BaseBestsellingProductFacade
 {
-
     protected const MAX_RESULTS = 6;
     public const MAX_SHOW_RESULTS = 6;
-
 }

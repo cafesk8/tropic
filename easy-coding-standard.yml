@@ -10,6 +10,8 @@ services:
     SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff: ~
 
 parameters:
+    sets:
+        - 'psr12'
     exclude_files:
         - '*/tests/App/Test/Codeception/_generated/AcceptanceTesterActions.php'
         - '*/var/cache/*'
