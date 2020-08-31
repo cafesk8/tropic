@@ -15,7 +15,6 @@ use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
-use Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade as BaseCategoryFacade;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFactoryInterface;
@@ -78,11 +77,6 @@ class CategoryFacade extends BaseCategoryFacade
     private $productRepository;
 
     /**
-     * @var \App\Component\Router\DomainRouterFactory
-     */
-    private $domainRouterFactory;
-
-    /**
      * @var \App\Component\Redis\RedisFacade
      */
     private $redisFacade;
@@ -101,7 +95,6 @@ class CategoryFacade extends BaseCategoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
      * @param \App\Model\Category\CategoryDataFactory $categoryDataFactory
      * @param \App\Model\Product\ProductRepository $productRepository
-     * @param \App\Component\Router\DomainRouterFactory $domainRouterFactory
      * @param \App\Component\Redis\RedisFacade $redisFacade
      */
     public function __construct(
@@ -118,14 +111,12 @@ class CategoryFacade extends BaseCategoryFacade
         ProductVisibilityFacade $productVisibilityFacade,
         CategoryDataFactory $categoryDataFactory,
         ProductRepository $productRepository,
-        DomainRouterFactory $domainRouterFactory,
         RedisFacade $redisFacade
     ) {
         parent::__construct($em, $categoryRepository, $domain, $categoryVisibilityRecalculationScheduler, $friendlyUrlFacade, $imageFacade, $pluginCrudExtensionFacade, $categoryWithPreloadedChildrenFactory, $categoryWithLazyLoadedVisibleChildrenFactory, $categoryFactory);
         $this->productVisibilityFacade = $productVisibilityFacade;
         $this->categoryDataFactory = $categoryDataFactory;
         $this->productRepository = $productRepository;
-        $this->domainRouterFactory = $domainRouterFactory;
         $this->redisFacade = $redisFacade;
     }
 

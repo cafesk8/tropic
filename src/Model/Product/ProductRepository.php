@@ -6,20 +6,15 @@ namespace App\Model\Product;
 
 use App\Model\Category\Category;
 use App\Model\Pricing\Group\PricingGroup;
-use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Set\ProductSet;
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
-use Shopsys\FrameworkBundle\Component\Doctrine\QueryBuilderExtender;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
-use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Flag\Flag;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
@@ -27,7 +22,6 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
-use Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository;
 
 /**
  * @method \App\Model\Product\Product|null findById(int $id)
@@ -69,35 +63,6 @@ use Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository;
  */
 class ProductRepository extends BaseProductRepository
 {
-    private FlagFacade $flagFacade;
-
-    /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterRepository $productFilterRepository
-     * @param \Shopsys\FrameworkBundle\Component\Doctrine\QueryBuilderExtender $queryBuilderExtender
-     * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
-     * @param \Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository $productElasticsearchRepository
-     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
-     */
-    public function __construct(
-        EntityManagerInterface $em,
-        ProductFilterRepository $productFilterRepository,
-        QueryBuilderExtender $queryBuilderExtender,
-        Localization $localization,
-        ProductElasticsearchRepository $productElasticsearchRepository,
-        FlagFacade $flagFacade
-    ) {
-        parent::__construct(
-            $em,
-            $productFilterRepository,
-            $queryBuilderExtender,
-            $localization,
-            $productElasticsearchRepository
-        );
-
-        $this->flagFacade = $flagFacade;
-    }
-
     /**
      * @param int $domainId
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup

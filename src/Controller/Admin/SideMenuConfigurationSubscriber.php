@@ -98,7 +98,8 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
 
         $marketingMenu->addChild('header_text', [
             'route' => 'admin_headertextsetting_setting',
-            'label' => t('Text v hlavičce')]);
+            'label' => t('Text v hlavičce'),
+        ]);
 
         $priceBombProducts = $marketingMenu->addChild('price_bomb_products', [
             'route' => 'admin_pricebombproduct_list',
@@ -129,7 +130,7 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         $blogMenu->addChild('blog_article', ['route' => 'admin_blogarticle_list', 'label' => t('Blog articles')]);
         $blogMenu->addChild('blog_article_new', ['route' => 'admin_blogarticle_new', 'label' => t('New blog article'), 'display' => false]);
         $blogMenu->addChild('blog_article_edit', ['route' => 'admin_blogarticle_edit', 'label' => t('Editing blog article'), 'display' => false]);
-    
+
         $menuManipulator = new MenuManipulator();
         $menuManipulator->moveToPosition($adverts, 1);
         $menuManipulator->moveToPosition($priceBombProducts, 4);

@@ -394,6 +394,8 @@ class MergadoFeedItemFactory
     /**
      * @param \App\Model\Product\Product $product
      * @param int $domainId
+     * @param int $currencyId
+     * @param string $locale
      * @return string|null
      */
     private function getStandardPrice(Product $product, int $domainId, int $currencyId, string $locale): ?string

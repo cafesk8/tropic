@@ -7,7 +7,6 @@ namespace App\Controller\Front;
 use App\Model\Category\CategoryFacade;
 use App\Model\Category\HorizontalCategoryFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends FrontBaseController
@@ -23,11 +22,6 @@ class CategoryController extends FrontBaseController
     private $domain;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade
-     */
-    private $topCategoryFacade;
-
-    /**
      * @var \App\Model\Category\HorizontalCategoryFacade
      */
     private $horizontalCategoryFacade;
@@ -40,18 +34,15 @@ class CategoryController extends FrontBaseController
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Category\CategoryFacade $categoryFacade
-     * @param \Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade $topCategoryFacade
      * @param \App\Model\Category\HorizontalCategoryFacade $horizontalCategoryFacade
      */
     public function __construct(
         Domain $domain,
         CategoryFacade $categoryFacade,
-        TopCategoryFacade $topCategoryFacade,
         HorizontalCategoryFacade $horizontalCategoryFacade
     ) {
         $this->domain = $domain;
         $this->categoryFacade = $categoryFacade;
-        $this->topCategoryFacade = $topCategoryFacade;
         $this->horizontalCategoryFacade = $horizontalCategoryFacade;
     }
 

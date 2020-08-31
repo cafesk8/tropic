@@ -1,5 +1,5 @@
 imports:
-    - { resource: '%vendor_dir%/shopsys/coding-standards/easy-coding-standard.yml', ignore_errors: true  }
+    - { resource: 'vendor/shopsys/coding-standards/easy-coding-standard.yml', ignore_errors: true }
 
 services:
     PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
@@ -8,11 +8,8 @@ services:
     PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer: ~
     SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff: ~
     SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff: ~
-    PhpCsFixer\Fixer\Import\NoUnusedImportsFixer: ~
 
 parameters:
-    sets:
-        - 'psr12'
     exclude_files:
         - '*/tests/App/Test/Codeception/_generated/AcceptanceTesterActions.php'
         - '*/var/cache/*'

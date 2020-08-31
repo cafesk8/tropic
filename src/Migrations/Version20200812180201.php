@@ -24,14 +24,14 @@ class Version20200812180201 extends AbstractMigration
         }
         foreach ($productParameterValuesIndexedByMainVariantId as $mainVariantId => $parameterValues) {
             $variantIds = $this->sql('SELECT id from products WHERE main_variant_id = :mainVariantId', [
-                'mainVariantId' => $mainVariantId
+                'mainVariantId' => $mainVariantId,
             ])->fetchAll();
             foreach (array_column($variantIds, 'id') as $variantId) {
                 $variantParameterIds = $this->sql('SElECT ppv.parameter_id as parameter_id FROM product_parameter_values ppv JOIN products p ON ppv.product_id = p.id AND p.id = :id', [
-                    'id' => $variantId
+                    'id' => $variantId,
                 ])->fetchAll();
                 foreach ($parameterValues as $mainVariantParameterValue) {
-                    if (in_array($mainVariantParameterValue['parameter_id'], array_column($variantParameterIds, 'parameter_id')) === false) {
+                    if (in_array($mainVariantParameterValue['parameter_id'], array_column($variantParameterIds, 'parameter_id'), true) === false) {
                         $this->sql('INSERT INTO product_parameter_values(product_id, parameter_id, value_id) VALUES (:productId, :parameterId, :valueId)', [
                             'productId' => $variantId,
                             'parameterId' => $mainVariantParameterValue['parameter_id'],

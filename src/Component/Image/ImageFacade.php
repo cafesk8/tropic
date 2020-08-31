@@ -182,7 +182,7 @@ class ImageFacade extends BaseImageFacade
      * @param array $entityIds
      * @param string $entityClass
      * @param string|null $type
-     * @return Image[]
+     * @return \App\Component\Image\Image[]
      */
     public function getImagesByEntitiesIndexedByEntityId(array $entityIds, string $entityClass, ?string $type = null): array
     {

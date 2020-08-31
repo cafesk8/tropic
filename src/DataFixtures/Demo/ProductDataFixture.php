@@ -81,6 +81,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     private FileUpload $fileUpload;
 
     private UploadedFileDataFactoryInterface $uploadedFileDataFactory;
+
     private EntityManagerInterface $em;
 
     /**

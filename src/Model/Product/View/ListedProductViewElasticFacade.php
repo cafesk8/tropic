@@ -306,8 +306,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
         usort(
             $productViews,
-            fn (ListedProductView $listedProductView1, ListedProductView $listedProductView2) =>
-                $topProductPositionIndexedById[$listedProductView1->getId()] - $topProductPositionIndexedById[$listedProductView2->getId()]
+            fn (ListedProductView $listedProductView1, ListedProductView $listedProductView2) => $topProductPositionIndexedById[$listedProductView1->getId()] - $topProductPositionIndexedById[$listedProductView2->getId()]
         );
 
         return $productViews;

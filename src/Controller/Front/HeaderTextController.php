@@ -42,7 +42,7 @@ class HeaderTextController extends FrontBaseController
         return $this->render('Front/Content/Advert/headerText.html.twig', [
             'headerTitle' => $headerTitle,
             'headerText' => $headerText,
-            'headerLink' => $headerLink
+            'headerLink' => $headerLink,
         ]);
     }
 }

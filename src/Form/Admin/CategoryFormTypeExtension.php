@@ -251,7 +251,7 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
                 'choice_attr' => function (Parameter $parameter) {
                     return [
                         'class' => 'js-filter-checkbox',
-                        'disabled' => !$parameter->isVisible()
+                        'disabled' => !$parameter->isVisible(),
                     ];
                 },
                 'choice_label' => 'name',
