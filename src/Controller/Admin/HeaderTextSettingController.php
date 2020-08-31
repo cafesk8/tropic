@@ -1,14 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
-use App\Model\HeaderText\HeaderTextSettingFacade;
 use App\Form\Admin\HeaderTextSettingFormType;
+use App\Model\HeaderText\HeaderTextSettingFacade;
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 
 class HeaderTextSettingController extends AdminBaseController
 {

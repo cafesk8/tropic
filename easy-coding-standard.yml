@@ -8,8 +8,11 @@ services:
     PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer: ~
     SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff: ~
     SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff: ~
+    PhpCsFixer\Fixer\Import\NoUnusedImportsFixer: ~
 
 parameters:
+    sets:
+        - 'psr12'
     exclude_files:
         - '*/tests/App/Test/Codeception/_generated/AcceptanceTesterActions.php'
         - '*/var/cache/*'

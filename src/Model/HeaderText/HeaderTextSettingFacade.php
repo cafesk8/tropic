@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Model\HeaderText;
 
@@ -6,7 +8,7 @@ use Shopsys\FrameworkBundle\Component\Setting\Setting;
 
 class HeaderTextSettingFacade
 {
-    public const  HEADER_TITLE= 'headerTitle';
+    public const  HEADER_TITLE = 'headerTitle';
     public const HEADER_TEXT = 'headerText';
     public const HEADER_LINK = 'headerLink';
 

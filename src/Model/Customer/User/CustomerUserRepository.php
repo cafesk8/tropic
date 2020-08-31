@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\User;
 
-use App\Model\Order\Order;
 use DateTime;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository as BaseCustomerUserRepository;
-use Shopsys\FrameworkBundle\Component\String\DatabaseSearching;
-use Shopsys\FrameworkBundle\Model\Customer\BillingAddress;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 
 /**
  * @method \App\Model\Customer\User\CustomerUser|null findCustomerUserByEmailAndDomain(string $email, int $domainId)
@@ -90,7 +86,8 @@ class CustomerUserRepository extends BaseCustomerUserRepository
         QuickSearchFormData $quickSearchData
     ) {
         $queryBuilder = parent::getCustomerUserListQueryBuilderByQuickSearchData($domainId, $quickSearchData)
-        ->select('u.id,
+        ->select(
+            'u.id,
                 u.email,
                 u.telephone,
                 MAX(pg.name) AS pricingGroup,
@@ -99,7 +96,8 @@ class CustomerUserRepository extends BaseCustomerUserRepository
                 COUNT(o.id) ordersCount,
                 SUM(o.totalPriceWithVat) ordersSumPrice,
                 MAX(o.createdAt) lastOrderAt',
-                'u.exportStatus');
+            'u.exportStatus'
+        );
 
         return $queryBuilder;
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product\TopProduct;
 
-
 use Doctrine\ORM\Query\ResultSetMapping;
 use Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductRepository as BaseTopProductRepository;
 

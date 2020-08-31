@@ -97,7 +97,7 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         $marketingMenu = $event->getMenu();
 
         $marketingMenu->addChild('header_text', [
-            'route' => 'admin_headertextsetting_setting', 
+            'route' => 'admin_headertextsetting_setting',
             'label' => t('Text v hlavičce')]);
 
         $priceBombProducts = $marketingMenu->addChild('price_bomb_products', [
@@ -113,7 +113,7 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         $marketingMenu->addChild('top_products', ['route' => 'admin_topproduct_list', 'label' => t('Akce na titulní stránce')]);
 
         $marketingMenu->removeChild('top_categories');
-        $marketingMenu->removeChild('slider' );
+        $marketingMenu->removeChild('slider');
 
         $adverts = $marketingMenu->getChild('adverts');
         $adverts->setLabel(t('Bannery'));

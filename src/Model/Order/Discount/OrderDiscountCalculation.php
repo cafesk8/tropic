@@ -90,7 +90,8 @@ class OrderDiscountCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[] $quantifiedItemsDiscountsByIndex
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    public function calculateOrderDiscountLevelTotalDiscount(array $quantifiedItemsDiscountsByIndex): Price {
+    public function calculateOrderDiscountLevelTotalDiscount(array $quantifiedItemsDiscountsByIndex): Price
+    {
         $totalDiscount = Price::zero();
         foreach ($quantifiedItemsDiscountsByIndex as $quantifiedItemDiscount) {
             $totalDiscount = $totalDiscount->add($quantifiedItemDiscount);

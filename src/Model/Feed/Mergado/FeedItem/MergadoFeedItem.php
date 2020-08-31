@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Feed\Mergado\FeedItem;
 
-use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Feed\FeedItemInterface;
 
 class MergadoFeedItem implements FeedItemInterface

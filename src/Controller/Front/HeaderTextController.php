@@ -9,7 +9,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\HttpFoundation\Response;
 
 class HeaderTextController extends FrontBaseController
-{ 
+{
     /**
      * @var \App\Model\HeaderText\HeaderTextSettingFacade
      */

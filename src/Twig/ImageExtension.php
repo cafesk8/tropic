@@ -55,7 +55,7 @@ class ImageExtension extends BaseImageExtension
         $functions[] = new TwigFunction('getSupplierSetImagesExcludingMain', [$this, 'getSupplierSetImagesExcludingMain']);
         $functions[] = new TwigFunction('getSupplierSetItemName', [$this, 'getSupplierSetItemName']);
         $functions[] = new TwigFunction('getSupplierSetItemCount', [$this, 'getSupplierSetItemCount']);
-        $functions[] = new TwigFunction('getProductSetsImages',[$this, 'getProductSetsImages']);
+        $functions[] = new TwigFunction('getProductSetsImages', [$this, 'getProductSetsImages']);
 
         return $functions;
     }
@@ -120,7 +120,6 @@ class ImageExtension extends BaseImageExtension
     public function getSupplierSetItemCount(?string $imageDescription): int
     {
         return $this->imageFacade->getSupplierSetItemCount($imageDescription);
-
     }
 
     /**

@@ -1,10 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Model\Product\BestsellingProduct;
 
-use DateTime;
-use Shopsys\FrameworkBundle\Model\Category\Category;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\BestsellingProductFacade as BaseBestsellingProductFacade;
 
 /**
@@ -12,8 +11,6 @@ use Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\BestsellingProductF
  */
 class BestsellingProductFacade extends BaseBestsellingProductFacade
 {
-
     protected const MAX_RESULTS = 6;
     public const MAX_SHOW_RESULTS = 6;
-
 }

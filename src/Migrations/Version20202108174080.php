@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Shopsys\MigrationBundle\Component\Doctrine\Migrations\AbstractMigration;
 use Shopsys\FrameworkBundle\Migrations\MultidomainMigrationTrait;
+use Shopsys\MigrationBundle\Component\Doctrine\Migrations\AbstractMigration;
 
 class Version20202108174080 extends AbstractMigration
 {
@@ -16,7 +18,6 @@ class Version20202108174080 extends AbstractMigration
     public function up(Schema $schema)
     {
         foreach ($this->getAllDomainIds() as $domainId) {
-           
             $headerTitle = $this->sql('SELECT COUNT(*) FROM setting_values WHERE name = \'headerTitle\' AND domain_id = :domainId;
             ', ['domainId' => $domainId])->fetchColumn(0);
 
