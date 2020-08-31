@@ -89,23 +89,35 @@
 
             <table id="js-order-preview-fees" class="table-cart-preview">
                 <tbody>
-                    {% if orderStep == "1" %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Za zboží bez slevy'|trans }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {% if (orderPreview.simulateRegistration is same as (true) or app.user is not null) and orderPreview.isProductsPriceWithoutDiscountsLessThenDefault %}
+                                {{ orderPreview.defaultProductsPriceWithoutDiscounts.priceWithVat|price }}
+                            {% else %}
+                                {{ orderPreview.productsPriceWithoutDiscounts.priceWithVat|price }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% if (orderPreview.simulateRegistration is same as (true) or app.user is not null) and orderPreview.isProductsPriceWithoutDiscountsLessThenDefault %}
                         <tr class="table-cart-preview__row">
                             <td class="table-cart-preview__cell">
-                                {{ 'Za zboží bez slevy'|trans }}
+                                {{ 'Sleva za registraci'|trans }}
                             </td>
-                            <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                                {{ orderPreview.totalPrice.priceWithVat|price }}
+                            <td class="table-cart-preview__cell table-cart-preview__cell--price table-cart-preview__cell--important">
+                                - {{ orderPreview.productsPriceVsDefaultProductsPriceDifference|price }}
                             </td>
                         </tr>
                     {% endif %}
                     {% if orderPreview.activeOrderDiscountLevel is not null %}
                         <tr class="table-cart-preview__row">
                             <td class="table-cart-preview__cell">
-                                {{ 'Sleva %percent% (BP)'|trans({'%percent%': orderPreview.activeOrderDiscountLevel.discountPercent|formatPercent}) }}
+                                {{ 'Sleva %percent%'|trans({'%percent%': orderPreview.activeOrderDiscountLevel.discountPercent|formatPercent}) }}
                             </td>
                             <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
-                                -&nbsp;{{ orderPreview.totalDiscount.priceWithVat|price }}
+                                    -&nbsp;{{ orderPreview.orderDiscountLevelTotalDiscount.priceWithVat|price }}
                             </td>
                         </tr>
                     {% endif %}
@@ -116,7 +128,12 @@
                             <tr class="table-cart-preview__row">
                                 <td class="table-cart-preview__cell">
                                     {{ 'Sleva'|trans }}
-                                    <span class="next-line"></span> {{ '%code% -%percent% (SP)'|trans({ '%code%': promoCode.code, '%percent%': promoCode.percent|formatPercent }) }}
+                                    <span class="next-line"></span>
+                                    {% if promoCode.isUseNominalDiscount is same as (true) or promoCode.isTypeGiftCertificate %}
+                                        {{ '%code%'|trans({ '%code%': promoCode.code }) }}
+                                    {% else %}
+                                        {{ '%code% -%percent%'|trans({ '%code%': promoCode.code, '%percent%': promoCode.percent|formatPercent }) }}
+                                    {% endif %}
                                 </td>
                                 <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
                                     -&nbsp;{{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
@@ -163,7 +180,9 @@
             <div id="js-order-preview-total-price" class="table-cart-preview table-cart-preview--without-gap">
                 <div class="table-cart-preview__total">
                     {% if orderPreview.activeOrderDiscountLevel is not null or promocodeActive %}
-                        <span class="table-cart-preview__total__discount js-not-implemented-yet">Ušetříte 3 175 Kč</span>
+                        <span class="table-cart-preview__total__discount ">
+                            {{ 'Ušetříte %price%'|trans({ '%price%': orderPreview.totalDiscount|price }) }}
+                        </span>
                     {% endif %}
                     <span class="table-cart-preview__total__price-primary {% if orderPreview.activeOrderDiscountLevel is not null or promocodeActive %}table-cart-preview__total__price-primary--colored{% endif %}">
                         {{ orderPreview.totalPrice.priceWithVat|price }}

@@ -720,7 +720,7 @@ class OrderFacade extends BaseOrderFacade
     ): void {
         $locale = $this->domain->getCurrentDomainConfig()->getLocale();
         $name = sprintf(
-            '%s %s %s',
+            '%s %s %s (DP)',
             t('Dárkový certifikát ', [], 'messages', $locale),
             $promoCode->getCode(),
             $this->numberFormatterExtension->formatNumber($promoCode->getCertificateValue()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($order->getDomainId(), $locale)

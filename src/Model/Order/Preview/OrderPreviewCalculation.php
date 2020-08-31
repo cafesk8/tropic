@@ -170,6 +170,16 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $simulateRegistration
         );
         $productsPriceWithoutDiscounts = $this->getProductsPriceWithoutDiscounts($quantifiedItemsPrices);
+        $defaultProductsPriceWithoutDiscounts = $productsPriceWithoutDiscounts;
+        if ($customerUser !== null || $simulateRegistration === true) {
+            $defaultQuantifiedItemsPrices = $this->quantifiedProductPriceCalculation->calculatePrices(
+                $quantifiedProducts,
+                $domainId,
+                null,
+                false
+            );
+            $defaultProductsPriceWithoutDiscounts = $this->getProductsPriceWithoutDiscounts($defaultQuantifiedItemsPrices);
+        }
         $productsPrice = $productsPriceWithoutDiscounts;
         $quantifiedItemsDiscountsByIndex = [];
         $quantifiedItemsDiscountsIndexedByPromoCodeId = $this->quantifiedProductDiscountCalculation->getQuantifiedItemsDiscountsIndexedByPromoCodeId($quantifiedItemsPrices, $promoCodes, $currency);
@@ -228,7 +238,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         $transportPrice = $this->getTransportPrice($transport, $currency, $productsPrice, $domainId);
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
         $roundingPrice = $this->getRoundingPrice($payment, $currency, $productsPrice, $paymentPrice, $transportPrice);
-        $totalDiscount = $this->orderDiscountCalculation->calculateTotalDiscount($promoCodes, $quantifiedItemsDiscountsByIndex, $quantifiedItemsDiscountsIndexedByPromoCodeId);
+        $orderDiscountLevelTotalDiscount = $this->orderDiscountCalculation->calculateOrderDiscountLevelTotalDiscount($quantifiedItemsDiscountsByIndex);
         $totalPriceWithoutGiftCertificate = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
 
         $totalPrice = $this->getTotalPriceAffectedByGiftCertificates($totalPriceWithoutGiftCertificate, $promoCodes);
@@ -239,6 +249,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $quantifiedItemsDiscountsByIndex,
             $productsPrice,
             $totalPrice,
+            $productsPriceWithoutDiscounts,
+            $defaultProductsPriceWithoutDiscounts,
             $transport,
             $transportPrice,
             $payment,
@@ -248,10 +260,11 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $giftsInCart,
             $quantifiedItemsDiscountsIndexedByPromoCodeId,
             $orderGiftProduct,
-            $matchingOrderDiscountLevel
+            $matchingOrderDiscountLevel,
+            $simulateRegistration
         );
         $orderPreview->setPromoCodes($promoCodes);
-        $orderPreview->setTotalDiscount($totalDiscount);
+        $orderPreview->setOrderDiscountLevelTotalDiscount($orderDiscountLevelTotalDiscount);
 
         return $orderPreview;
     }
