@@ -191,6 +191,18 @@ export default class PaymentTransportRelations {
         });
     };
 
+    doubleSubmitProtection (event) {
+        const $orderSubmitButton = $('.js-order-submit-button');
+
+        if ($orderSubmitButton.attr('submit-protection') === 'true') {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            return;
+        }
+
+        $orderSubmitButton.attr('submit-protection', true);
+    }
+
     static copyEmail () {
         const email = $('.js-order-personal-info-form-email').val();
         if (email) {
@@ -211,6 +223,11 @@ export default class PaymentTransportRelations {
         const paymentTransportRelations = new PaymentTransportRelations();
         const $emailField = $('.js-order-personal-info-form-email');
         const isLoggedCustomer = $emailField.data('is-logged-customer');
+        const $orderSubmitButton = $container.filterAllNodes('.js-order-submit-button');
+
+        if ($orderSubmitButton !== undefined) {
+            $orderSubmitButton.click(paymentTransportRelations.doubleSubmitProtection);
+        }
 
         if (!isLoggedCustomer) {
             $emailField.unbind('focusout', paymentTransportRelations.checkLoginNotice);
