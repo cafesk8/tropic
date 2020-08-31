@@ -1,30 +1,46 @@
 @list-products-line-item-gap: 5px;
 
-@list-products-line-item-postion-width: 20px;
-@list-products-line-item-image-width: 50px;
-@list-products-line-item-price-width: 150px;
-@list-products-line-item-title-width: ~"calc(100% - @{list-products-line-item-postion-width} - @{list-products-line-item-image-width} - @{list-products-line-item-price-width})";
-@list-products-line-item-title-width-mobile: ~"calc(100% - @{list-products-line-item-postion-width} - @{list-products-line-item-image-width})";
+@list-products-line-item-postion-width: 45px;
+@list-products-line-item-image-size: 70px;
+@list-products-line-item-border-size: 1px;
 
 .list-products-line {
-    margin-bottom: @margin-gap;
+    margin-bottom: 35px;
+
+    &__title {
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    &__wrap {
+        border: 3px solid @color-border;
+        border-radius: @radius;
+    }
 
     &__list {
         .reset-ul();
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 0 -@list-products-line-item-border-size -@list-products-line-item-border-size 0;
     }
 
     &__item {
         display: block;
-        margin-bottom: @list-products-line-item-gap;
+        width: 100%;
 
-        border: 1px solid @color-border;
+        border-bottom: @list-products-line-item-border-size solid @color-border;
+        border-right: @list-products-line-item-border-size solid @color-border;
+
+        @media @query-lg {
+            width: 100%/2;
+        }
 
         &__block {
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
             width: 100%;
-            padding: @list-products-line-item-gap;
+            padding: 10px;
 
             text-decoration: none;
             color: @color-base;
@@ -32,49 +48,79 @@
             &:hover {
                 color: @color-base;
             }
+
+            @media @query-md {
+                padding: 10px 20px;
+            }
         }
 
         &__position {
-            width: @list-products-line-item-postion-width;
+            display: flex;
+            align-items: center;
+            padding-right: 10px;
+            line-height: 42px;
 
-            font-size: 14px;
+            font-size: 36px;
+            font-weight: 700;
+            color: @color-blue-light;
+
+            @media @query-md {
+                width: @list-products-line-item-postion-width;
+                padding-right: 0;
+            }
         }
 
         &__image {
-            width: @list-products-line-item-image-width;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: @list-products-line-item-image-size;
+            height: @list-products-line-item-image-size;
+            padding: 5px;
             padding-right: @list-products-line-item-gap;
             text-align: center;
+        }
 
-            img {
-                display: block;
+        &__content {
+            flex: 1;
+            padding-left: 5px;
+
+            @media @query-md {
+                padding-left: 20px;
+            }
+
+            &__bottom {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
             }
         }
 
         &__title {
-            flex: 1;
-            margin-bottom: 0;
-            padding-left: @list-products-line-item-gap;
+            width: 100%;
+            margin-bottom: 6px;
+            line-height: 18px;
 
-            font-size: 14px;
-            font-weight: bold;
+            font-size: @font-size-extra-small;
+            font-weight: 400;
         }
 
         &__price {
-            width: 100%;
+            display: flex;
+            flex-direction: row;
+            line-height: 18px;
+            margin-right: 10px;
 
-            @media @query-md {
-                width: @list-products-line-item-price-width;
-            }
+            font-weight: 700;
+            font-size: @font-size-small;
 
-            &__item {
-                font-size: 12px;
-                color: @color-price;
-                text-align: right;
-
-                &--main {
-                    font-weight: bold;
-                    color: @color-price-main;
-                }
+            &__old {
+                opacity: 0.5;
+                margin-left: 5px;
+                
+                font-size: @font-size-extra-small;
+                font-weight: 400;
+                text-decoration: line-through;
             }
         }
     }

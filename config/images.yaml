@@ -82,11 +82,6 @@
             height: 128
             crop: false
             occurrence: 'Front-end: Listing of products in sets'
-        -   name: listDetailArticle
-            width: 70
-            height: 70
-            crop: false
-            occurrence: 'Front-end: Listing of products in article detail'
         -   name: listSlider
             width: 240
             height: 240
@@ -111,7 +106,7 @@
             width: 70
             height: 70
             crop: false
-            occurrence: 'Front-end: next gift in cart'
+            occurrence: 'Front-end: next gift in cart, best selling products, products in article detail'
     types:
         -   name: sticker
             multiple: true
