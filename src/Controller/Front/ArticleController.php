@@ -56,10 +56,13 @@ class ArticleController extends FrontBaseController
     public function footerMenuAction(string $placement): Response
     {
         $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain($placement);
+        $customLinks = ['front_brand_list' => t('Výrobci')];
 
         return $this->render('Front/Content/Article/footerMenu.html.twig', [
             'articles' => $articles,
+            'customLinks' => $customLinks,
             'isPlacementServices' => $placement === Article::PLACEMENT_SERVICES,
+            'isPlacementShopping' => $placement === Article::PLACEMENT_SHOPPING,
         ]);
     }
 
