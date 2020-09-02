@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Store;
 
-use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Store\Exception\StoreNotFoundException;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
@@ -125,8 +124,8 @@ class StoreRepository
     {
         $queryBuilder = $this->getAllQueryBuilder();
         $queryBuilder
-            ->andWhere('s.externalNumber in (:saleExternalNumbers)')
-            ->setParameter('saleExternalNumbers', PohodaProductExportRepository::SALE_STOCK_IDS_ORDERED_BY_PRIORITY);
+            ->andWhere('s.pohodaName in (:salePohodaNames)')
+            ->setParameter('salePohodaNames', Store::SALE_STOCK_NAMES_ORDERED_BY_PRIORITY);
 
         return $queryBuilder->getQuery()->getResult();
     }
@@ -199,5 +198,19 @@ class StoreRepository
     public function findCentralStore(): ?Store
     {
         return $this->getStoreRepository()->findOneBy(['centralStore' => true]);
+    }
+
+    /**
+     * @param string $pohodaName
+     * @return \App\Model\Store\Store
+     */
+    public function getByPohodaName(string $pohodaName): Store
+    {
+        $store = $this->getStoreRepository()->findOneBy(['pohodaName' => $pohodaName]);
+        if ($store === null) {
+            throw new StoreNotFoundException(sprintf('Store with name "%s" not found', $pohodaName));
+        }
+
+        return $store;
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Store;
 
-use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Transport\PickupPlace\PickupPlaceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,6 +15,21 @@ use Shopsys\FrameworkBundle\Model\Country\Country;
  */
 class Store implements PickupPlaceInterface
 {
+    public const POHODA_STOCK_SALE_NAME = 'VÝPRODEJ';
+
+    public const POHODA_STOCK_STORE_NAME = 'PRODEJNA';
+
+    public const POHODA_STOCK_TROPIC_NAME = 'TROPIC';
+
+    public const POHODA_STOCK_EXTERNAL_NAME = 'EXTERNÍ';
+
+    public const POHODA_STOCK_STORE_SALE_NAME = 'PRODEJNA-V';
+
+    public const SALE_STOCK_NAMES_ORDERED_BY_PRIORITY = [
+        self::POHODA_STOCK_SALE_NAME,
+        self::POHODA_STOCK_STORE_SALE_NAME,
+    ];
+
     /**
      * @var int
      *
@@ -359,7 +373,7 @@ class Store implements PickupPlaceInterface
      */
     public function isExternalStock(): bool
     {
-        return (int)$this->externalNumber === PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID;
+        return $this->pohodaName === self::POHODA_STOCK_EXTERNAL_NAME;
     }
 
     /**
@@ -367,8 +381,7 @@ class Store implements PickupPlaceInterface
      */
     public function isSaleStock(): bool
     {
-        return (int)$this->externalNumber === PohodaProductExportRepository::POHODA_STOCK_SALE_ID
-            || (int)$this->externalNumber === PohodaProductExportRepository::POHODA_STOCK_STORE_SALE_ID;
+        return in_array($this->pohodaName, self::SALE_STOCK_NAMES_ORDERED_BY_PRIORITY, true);
     }
 
     /**

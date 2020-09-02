@@ -180,4 +180,85 @@ class StoreFacade
     {
         return $this->storeRepository->getAllSaleStocks();
     }
+
+    /**
+     * @param string $pohodaName
+     * @return \App\Model\Store\Store
+     */
+    public function getByPohodaName(string $pohodaName): Store
+    {
+        return $this->storeRepository->getByPohodaName($pohodaName);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getSaleStockExternalNumbersOrderedByPriority(): array
+    {
+        return [
+            (int)$this->getByPohodaName(Store::POHODA_STOCK_SALE_NAME)->getExternalNumber(),
+            (int)$this->getByPohodaName(Store::POHODA_STOCK_STORE_SALE_NAME)->getExternalNumber(),
+        ];
+    }
+
+    /**
+     * @return int
+     */
+    public function getPohodaStockSaleExternalNumber(): int
+    {
+        return (int)$this->getByPohodaName(Store::POHODA_STOCK_SALE_NAME)->getExternalNumber();
+    }
+
+    /**
+     * @return int
+     */
+    public function getPohodaStockStoreExternalNumber(): int
+    {
+        return (int)$this->getByPohodaName(Store::POHODA_STOCK_STORE_NAME)->getExternalNumber();
+    }
+
+    /**
+     * @return int
+     */
+    public function getPohodaStockTropicExternalNumber(): int
+    {
+        return (int)$this->getByPohodaName(Store::POHODA_STOCK_TROPIC_NAME)->getExternalNumber();
+    }
+
+    /**
+     * @return int
+     */
+    public function getPohodaStockStoreSaleExternalNumber(): int
+    {
+        return (int)$this->getByPohodaName(Store::POHODA_STOCK_STORE_SALE_NAME)->getExternalNumber();
+    }
+
+    /**
+     * @return int
+     */
+    public function getPohodaStockExternalExternalNumber(): int
+    {
+        return (int)$this->getByPohodaName(Store::POHODA_STOCK_EXTERNAL_NAME)->getExternalNumber();
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultPohodaStockExternalNumber(): int
+    {
+        return $this->getPohodaStockTropicExternalNumber();
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getProductStockExternalNumbers(): array
+    {
+        return [
+            $this->getPohodaStockSaleExternalNumber(),
+            $this->getPohodaStockStoreExternalNumber(),
+            $this->getPohodaStockTropicExternalNumber(),
+            $this->getPohodaStockStoreSaleExternalNumber(),
+        ];
+    }
 }
