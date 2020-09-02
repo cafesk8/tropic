@@ -8,6 +8,7 @@ use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
 use App\Model\Product\Transfer\ProductImportCronModule;
+use App\Model\Store\StoreFacade;
 use DateTime;
 
 class PohodaProductExportFacade
@@ -27,19 +28,24 @@ class PohodaProductExportFacade
      */
     private $logger;
 
+    private StoreFacade $storeFacade;
+
     /**
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository $pohodaProductExportRepository
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProductDataValidator $pohodaProductDataValidator
+     * @param \App\Model\Store\StoreFacade $storeFacade
      */
     public function __construct(
         TransferLoggerFactory $transferLoggerFactory,
         PohodaProductExportRepository $pohodaProductExportRepository,
-        PohodaProductDataValidator $pohodaProductDataValidator
+        PohodaProductDataValidator $pohodaProductDataValidator,
+        StoreFacade $storeFacade
     ) {
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
         $this->pohodaProductExportRepository = $pohodaProductExportRepository;
         $this->pohodaProductDataValidator = $pohodaProductDataValidator;
+        $this->storeFacade = $storeFacade;
     }
 
     /**
@@ -105,13 +111,15 @@ class PohodaProductExportFacade
     private function addStocksInformationToPohodaProductsResult(array &$pohodaProductsResult): void
     {
         $stocksInformation = $this->pohodaProductExportRepository->getStockInformationByCatnums(array_column($pohodaProductsResult, PohodaProduct::COL_CATNUM));
+        $defaultPohodaStockExternalNumber = $this->storeFacade->getDefaultPohodaStockExternalNumber();
+        $externalPohodaStockExternalNumber = $this->storeFacade->getPohodaStockExternalExternalNumber();
         foreach ($stocksInformation as $information) {
             if (isset($pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]])) {
                 $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION][$information[PohodaProduct::COL_STOCK_ID]] = (int)$information[PohodaProduct::COL_STOCK_TOTAL];
 
                 // External stock is on product on default stock TROPIC
-                if ((int)$information[PohodaProduct::COL_STOCK_ID] === PohodaProductExportRepository::DEFAULT_POHODA_STOCK_ID && $information[PohodaProduct::COL_EXTERNAL_STOCK] !== null) {
-                    $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION][PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID] = (int)$information[PohodaProduct::COL_EXTERNAL_STOCK];
+                if ((int)$information[PohodaProduct::COL_STOCK_ID] === $defaultPohodaStockExternalNumber && $information[PohodaProduct::COL_EXTERNAL_STOCK] !== null) {
+                    $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION][$externalPohodaStockExternalNumber] = (int)$information[PohodaProduct::COL_EXTERNAL_STOCK];
                 }
             }
         }
@@ -143,11 +151,11 @@ class PohodaProductExportFacade
             $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]] = $pohodaProductResult;
             $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_SALE_INFORMATION] = [];
             $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION] = [
-                PohodaProductExportRepository::POHODA_STOCK_SALE_ID => 0,
-                PohodaProductExportRepository::POHODA_STOCK_STORE_ID => 0,
-                PohodaProductExportRepository::POHODA_STOCK_TROPIC_ID => 0,
-                PohodaProductExportRepository::POHODA_STOCK_STORE_SALE_ID => 0,
-                PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID => 0,
+                $this->storeFacade->getPohodaStockSaleExternalNumber() => 0,
+                $this->storeFacade->getPohodaStockStoreExternalNumber() => 0,
+                $this->storeFacade->getPohodaStockTropicExternalNumber() => 0,
+                $this->storeFacade->getPohodaStockStoreSaleExternalNumber() => 0,
+                $this->storeFacade->getPohodaStockExternalExternalNumber() => 0,
             ];
         }
 

@@ -8,7 +8,6 @@ use App\Component\Domain\DomainHelper;
 use App\Component\GoogleApi\GoogleClient;
 use App\Component\GoogleApi\Youtube\YoutubeView;
 use App\Component\Setting\Setting;
-use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
@@ -19,6 +18,7 @@ use App\Model\Product\Flag\ProductFlagFacade;
 use App\Model\Product\Set\ProductSetFacade;
 use App\Model\Product\Set\ProductSetFactory;
 use App\Model\Product\StoreStock\ProductStoreStockFactory;
+use App\Model\Store\Store;
 use App\Model\Store\StoreFacade;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -448,7 +448,7 @@ class ProductFacade extends BaseProductFacade
         }
 
         if ($product->isPohodaProductTypeSet()) {
-            $internalStockId = $this->storeFacade->findByExternalNumber((string)PohodaProductExportRepository::POHODA_STOCK_TROPIC_ID)->getId();
+            $internalStockId = $this->storeFacade->getByPohodaName(Store::POHODA_STOCK_TROPIC_NAME)->getId();
             $stockQuantities = [$internalStockId => $this->getTheLowestStockQuantityFromProductSets($product)];
         } else {
             $stockQuantities = $productData->stockQuantityByStoreId;

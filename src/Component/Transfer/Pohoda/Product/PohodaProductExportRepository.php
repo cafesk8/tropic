@@ -6,36 +6,13 @@ namespace App\Component\Transfer\Pohoda\Product;
 
 use App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager;
 use App\Component\Transfer\Pohoda\Helpers\PohodaDateTimeHelper;
+use App\Model\Store\StoreFacade;
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 class PohodaProductExportRepository
 {
-    public const DEFAULT_POHODA_STOCK_ID = self::POHODA_STOCK_TROPIC_ID;
-
-    public const POHODA_STOCK_SALE_ID = 2;
-
-    public const POHODA_STOCK_STORE_ID = 4;
-
-    public const POHODA_STOCK_TROPIC_ID = 10;
-
-    public const POHODA_STOCK_EXTERNAL_ID = 11;
-
-    public const POHODA_STOCK_STORE_SALE_ID = 13;
-
-    public const SALE_STOCK_IDS_ORDERED_BY_PRIORITY = [
-        self::POHODA_STOCK_SALE_ID,
-        self::POHODA_STOCK_STORE_SALE_ID,
-    ];
-
-    public const PRODUCT_STOCK_IDS = [
-        self::POHODA_STOCK_SALE_ID,
-        self::POHODA_STOCK_STORE_ID,
-        self::POHODA_STOCK_TROPIC_ID,
-        self::POHODA_STOCK_STORE_SALE_ID,
-    ];
-
     private const PRODUCT_TYPE_SET_ID = 5;
 
     private const SELLING_EUR_PRICE_ID = 4;
@@ -92,12 +69,16 @@ class PohodaProductExportRepository
      */
     private $pohodaEntityManager;
 
+    private StoreFacade $storeFacade;
+
     /**
      * @param \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager $pohodaEntityManager
+     * @param \App\Model\Store\StoreFacade $storeFacade
      */
-    public function __construct(PohodaEntityManager $pohodaEntityManager)
+    public function __construct(PohodaEntityManager $pohodaEntityManager, StoreFacade $storeFacade)
     {
         $this->pohodaEntityManager = $pohodaEntityManager;
+        $this->storeFacade = $storeFacade;
     }
 
     /**
@@ -174,7 +155,7 @@ class PohodaProductExportRepository
             $resultSetMapping
         )
             ->setParameters([
-                'defaultStockId' => self::DEFAULT_POHODA_STOCK_ID,
+                'defaultStockId' => $this->storeFacade->getDefaultPohodaStockExternalNumber(),
                 'lastUpdateDateTime' => $lastUpdateTime === null ? PohodaDateTimeHelper::FIRST_UPDATE_TIME : $lastUpdateTime->format(PohodaDateTimeHelper::DATE_TIME_FORMAT),
             ]);
 
@@ -208,7 +189,7 @@ class PohodaProductExportRepository
         )
             ->setParameters([
                 'catnums' => $catnums,
-                'stocks' => self::SALE_STOCK_IDS_ORDERED_BY_PRIORITY,
+                'stocks' => $this->storeFacade->getSaleStockExternalNumbersOrderedByPriority(),
             ]);
 
         return $query->getResult();
@@ -241,7 +222,7 @@ class PohodaProductExportRepository
         )
             ->setParameters([
                 'catnums' => $catnums,
-                'stocks' => self::PRODUCT_STOCK_IDS,
+                'stocks' => $this->storeFacade->getProductStockExternalNumbers(),
             ]);
 
         return $query->getResult();
@@ -295,7 +276,7 @@ class PohodaProductExportRepository
             $resultSetMapping
         )
             ->setParameters([
-                'defaultStockId' => self::DEFAULT_POHODA_STOCK_ID,
+                'defaultStockId' => $this->storeFacade->getDefaultPohodaStockExternalNumber(),
                 'pohodaProductIds' => $pohodaProductIds,
             ]);
 
@@ -319,7 +300,7 @@ class PohodaProductExportRepository
             JOIN Skz AS ProductSetItem ON ProductSetItem.ID = ProductSet.RefSKz
             JOIN Skz AS MainProduct ON MainProduct.ID = ProductSet.RefAg
             WHERE ProductSet.RefAg IN(:pohodaProductIds)
-                AND ProductSetItem.RefSklad = :defaultStock
+                AND ProductSetItem.RefSklad = :defaultStockId
                 AND ProductSetItem.IObchod = 1
                 AND MainProduct.RelSkTyp = :productTypeSet
             ORDER BY ProductSet.OrderFld',
@@ -327,7 +308,7 @@ class PohodaProductExportRepository
         )
             ->setParameters([
                 'pohodaProductIds' => $pohodaProductIds,
-                'defaultStock' => self::DEFAULT_POHODA_STOCK_ID,
+                'defaultStockId' => $this->storeFacade->getDefaultPohodaStockExternalNumber(),
                 'productTypeSet' => self::PRODUCT_TYPE_SET_ID,
             ]);
 
@@ -424,7 +405,7 @@ class PohodaProductExportRepository
             $resultSetMapping
         )
             ->setParameters([
-                'defaultStockId' => self::DEFAULT_POHODA_STOCK_ID,
+                'defaultStockId' => $this->storeFacade->getDefaultPohodaStockExternalNumber(),
                 'variantId' => $mainVariantId . '*%',
             ]);
 

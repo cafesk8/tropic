@@ -8,7 +8,6 @@ use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Component\Transfer\Pohoda\Product\PohodaProduct;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade;
-use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Category\CategoryFacade;
 use App\Model\Pricing\Currency\Currency;
 use App\Model\Pricing\Currency\CurrencyFacade;
@@ -497,7 +496,7 @@ class PohodaProductMapper
 
         $productData->manualInputPricesByPricingGroupId[$salePricingGroupId] = null;
 
-        foreach (PohodaProductExportRepository::SALE_STOCK_IDS_ORDERED_BY_PRIORITY as $stockId) {
+        foreach ($this->storeFacade->getSaleStockExternalNumbersOrderedByPriority() as $stockId) {
             if (isset($pohodaProduct->saleInformation[$stockId])) {
                 $productData->manualInputPricesByPricingGroupId[$salePricingGroupId] =
                     $this->getPriceFromString($pohodaProduct->saleInformation[$stockId], $currencyMultiplier);

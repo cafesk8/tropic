@@ -20,7 +20,7 @@ services:
 
     App\Model\Product\Transfer\ProductImageImportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import obrázků k produktům z Pohoda IS' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import obrázků k produktům z Pohoda IS', instanceName: products }
 
     Shopsys\FrameworkBundle\Model\Product\ProductVisibilityImmediateCronModule:
         tags:

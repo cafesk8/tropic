@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Model\Product\Set;
 
 use App\Component\Image\ImageFacade;
-use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Product;
+use App\Model\Store\Store;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 
 class ProductSetFacade
@@ -99,9 +99,9 @@ class ProductSetFacade
         $quantity = 0;
 
         foreach ($productSet->getItem()->getStoreStocks() as $storeStock) {
-            if (!in_array((int)$storeStock->getStore()->getExternalNumber(), [
-                PohodaProductExportRepository::POHODA_STOCK_TROPIC_ID,
-                PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID,
+            if (!in_array($storeStock->getStore()->getPohodaName(), [
+                Store::POHODA_STOCK_TROPIC_NAME,
+                Store::POHODA_STOCK_EXTERNAL_NAME,
             ], true)) {
                 continue;
             }
