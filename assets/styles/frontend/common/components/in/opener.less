@@ -1,0 +1,49 @@
+.in-opener {
+    position: relative;
+
+    &__wrap {
+        position: relative;
+        overflow: hidden;
+        transition: @transition;
+    }
+
+    &__gradient {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        background: linear-gradient(180deg, rgba(255,255,255,0.5) 0, #fff 100%);
+    }
+
+    &__button {
+        text-align: center;
+
+        &__btn {
+            display: inline-block;
+            padding: 5px 10px;
+            cursor: pointer;
+
+            background-color: @color-box;
+            transition: @transition;
+
+            &:hover {
+                background-color: darken(@color-box, 10%);
+            }
+            
+            .less {
+                display: none;
+            }
+
+            &.open {
+                .more {
+                    display: none;
+                }
+
+                .less {
+                    display: inline;
+                }
+            }
+        }
+    }
+}
