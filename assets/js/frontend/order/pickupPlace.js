@@ -48,10 +48,15 @@ import windowClose from '../utils/windowFunctions';
 
         configurations.forEach(function (config) {
             const isPickUpPlaceTransportType = $selectedTransportInput.data(config.dataIsPickupPlaceAttribute);
+            const transportType = $selectedTransportInput.data('type');
 
             if (isPickUpPlaceTransportType && $selectedTransportInput.prop('checked') && ($transportInput === undefined || $transportInput[0] !== $selectedTransportInput[0])) {
-                Shopsys.pickupPlaceSelection.showSearchWindow($selectedTransportInput, config.pickupPlaceInput);
-                $selectedTransportInput.prop('checked', false);
+                if (transportType === 'zasilkovnaCZ' || transportType === 'zasilkovnaSK') {
+                    Shopsys.pickupPlaceSelection.pickPacketa($selectedTransportInput);
+                } else {
+                    Shopsys.pickupPlaceSelection.showSearchWindow($selectedTransportInput, config.pickupPlaceInput);
+                    $selectedTransportInput.prop('checked', false);
+                }
             }
         });
 
@@ -140,10 +145,35 @@ import windowClose from '../utils/windowFunctions';
         const $button = $(event.currentTarget);
         const $transportContainer = $button.closest('.js-order-transport');
         const $selectedTransportInput = $transportContainer.find('.js-order-transport-input[data-id=' + $button.data('id') + ']');
+        const transportType = $button.data('type');
 
-        Shopsys.pickupPlaceSelection.showSearchWindow($selectedTransportInput, $button.data('form-field-class'));
+        if (transportType === 'zasilkovnaCZ' || transportType === 'zasilkovnaSK') {
+            Shopsys.pickupPlaceSelection.pickPacketa($button);
+        } else {
+            Shopsys.pickupPlaceSelection.showSearchWindow($selectedTransportInput, $button.data('form-field-class'));
+        }
+    };
+
+    Shopsys.pickupPlaceSelection.pickPacketa = function ($button) {
+        const language = $button.data('language');
+        let options = { language: language };
+
+        if (language === 'cs') {
+            options.country = 'cz';
+        } else if (language === 'sk') {
+            options.country = 'sk';
+        }
+
+        Packeta.Widget.pick('de4e7603bb838a8e', function (place) {
+            $('#transport_and_payment_form_packetaId').val(place.id);
+            $('#transport_and_payment_form_packetaName').val(place.name);
+            $('#transport_and_payment_form_packetaStreet').val(place.street);
+            $('#transport_and_payment_form_packetaCity').val(place.city);
+            $('#transport_and_payment_form_packetaZip').val(place.zip);
+            $('#transport_and_payment_form_packetaCountry').val(place.country);
+            $button.parents('.js-order-transport').find('.js-pickup-place-detail-name').text(place.name);
+        }, options);
     };
 
     new Register().registerCallback(Shopsys.pickupPlaceSelection.init);
-
 })(jQuery);

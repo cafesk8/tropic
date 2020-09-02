@@ -7,8 +7,8 @@ namespace App\DataFixtures\Demo;
 use App\Component\MergadoTransportType\MergadoTransportTypeFacade;
 use App\Model\Transport\Transport;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -25,6 +25,8 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
     public const TRANSPORT_PERSONAL = 'transport_personal';
     public const TRANSPORT_PPL_DE = 'transport_ppl_de';
     public const TRANSPORT_PPL_FR = 'transport_ppl_fr';
+    public const TRANSPORT_ZASILKOVNA_CZ = 'transport_zasilkovna_cz';
+    public const TRANSPORT_ZASILKOVNA_SK = 'transport_zasilkovna_sk';
 
     /** @var \App\Model\Transport\TransportFacade */
     protected $transportFacade;
@@ -152,6 +154,30 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $this->setPriceForAllDomains($transportData, Money::create('499.90'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_FRANCE);
         $this->createTransport(self::TRANSPORT_PPL_FR, $transportData);
+
+        $transportData = $this->transportDataFactory->create();
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $transportData->name[$locale] = t('Zásilkovna CZ', [], 'dataFixtures', $locale);
+        }
+        $transportData->transportType = Transport::TYPE_ZASILKOVNA_CZ;
+        $transportData->initialDownload = false;
+
+        $this->setPriceForAllDomains($transportData, Money::create('68'));
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $this->createTransport(self::TRANSPORT_ZASILKOVNA_CZ, $transportData);
+
+        $transportData = $this->transportDataFactory->create();
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $transportData->name[$locale] = t('Zásilkovna SK', [], 'dataFixtures', $locale);
+        }
+        $transportData->transportType = Transport::TYPE_ZASILKOVNA_SK;
+        $transportData->initialDownload = false;
+
+        $this->setPriceForAllDomains($transportData, Money::create('3'));
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
+        $this->createTransport(self::TRANSPORT_ZASILKOVNA_SK, $transportData);
     }
 
     /**

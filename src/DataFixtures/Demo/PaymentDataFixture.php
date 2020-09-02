@@ -7,7 +7,7 @@ namespace App\DataFixtures\Demo;
 use App\Component\Domain\DomainHelper;
 use App\Model\Payment\Payment;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -87,6 +87,8 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             TransportDataFixture::TRANSPORT_PPL,
             TransportDataFixture::TRANSPORT_PPL_DE,
             TransportDataFixture::TRANSPORT_PPL_FR,
+            TransportDataFixture::TRANSPORT_ZASILKOVNA_CZ,
+            TransportDataFixture::TRANSPORT_ZASILKOVNA_SK,
         ]);
 
         $paymentData = $this->paymentDataFactory->create();

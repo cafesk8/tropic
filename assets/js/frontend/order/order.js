@@ -213,10 +213,10 @@ export default class PaymentTransportRelations {
     static init ($container) {
         const $transportInputs = $container.filterAllNodes('.js-order-transport-input');
         const $paymentInputs = $container.filterAllNodes('.js-order-payment-input');
-        var $toggleAdditionalTransportsButton = $container.filterAllNodes('.js-toggle-additional-transports');
-        var $toggleAdditionalPaymentsButton = $container.filterAllNodes('.js-toggle-additional-payments');
-        var $additionalTransports = $container.filterAllNodes('.js-additional-transport');
-        var $additionalPayments = $container.filterAllNodes('.js-additional-payment');
+        let $toggleAdditionalTransportsButton = $container.filterAllNodes('.js-toggle-additional-transports');
+        let $toggleAdditionalPaymentsButton = $container.filterAllNodes('.js-toggle-additional-payments');
+        let $additionalTransports = $container.filterAllNodes('.js-additional-transport');
+        let $additionalPayments = $container.filterAllNodes('.js-additional-payment');
         const $registrationCheckbox = $container.filterAllNodes('#order_personal_info_form_registration');
         const $registrationFields = $container.filterAllNodes('.js-order-registration-fields');
         const $passwordInputs = $container.filterAllNodes('#order_personal_info_form_password_first, #order_personal_info_form_password_second');

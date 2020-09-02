@@ -51,6 +51,18 @@ class FrontOrderData extends BaseFrontOrderData
      */
     public $country;
 
+    public ?int $packetaId;
+
+    public ?string $packetaName;
+
+    public ?string $packetaStreet;
+
+    public ?string $packetaCity;
+
+    public ?string $packetaZip;
+
+    public ?string $packetaCountry;
+
     public function __construct()
     {
         parent::__construct();
