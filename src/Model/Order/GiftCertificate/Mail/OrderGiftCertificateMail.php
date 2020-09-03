@@ -7,6 +7,9 @@ namespace App\Model\Order\GiftCertificate\Mail;
 use App\Component\Setting\Setting;
 use App\Model\Order\GiftCertificate\OrderGiftCertificate;
 use App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade;
+use IntlDateFormatter;
+use Shopsys\FrameworkBundle\Component\Localization\DateTimeFormatter;
+use Shopsys\FrameworkBundle\Component\Localization\DateTimeFormatterInterface;
 use Shopsys\FrameworkBundle\Model\Mail\MailTemplate;
 use Shopsys\FrameworkBundle\Model\Mail\MessageData;
 use Shopsys\FrameworkBundle\Model\Mail\MessageFactoryInterface;
@@ -23,24 +26,22 @@ class OrderGiftCertificateMail implements MessageFactoryInterface
     public const VARIABLE_GIFT_CERTIFICATE_VALUE = '{gift_certificate_value}';
     public const VARIABLE_ORDER_NUMBER = '{order_number}';
 
-    /**
-     * @var \App\Component\Setting\Setting
-     */
-    private $setting;
+    private Setting $setting;
 
-    /**
-     * @var \App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade
-     */
-    private $orderGiftCertificatePdfFacade;
+    private OrderGiftCertificatePdfFacade $orderGiftCertificatePdfFacade;
+
+    private DateTimeFormatter $dateTimeFormatter;
 
     /**
      * @param \App\Component\Setting\Setting $setting
      * @param \App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade $orderGiftCertificatePdfFacade
+     * @param \Shopsys\FrameworkBundle\Component\Localization\DateTimeFormatter $dateTimeFormatter
      */
-    public function __construct(Setting $setting, OrderGiftCertificatePdfFacade $orderGiftCertificatePdfFacade)
+    public function __construct(Setting $setting, OrderGiftCertificatePdfFacade $orderGiftCertificatePdfFacade, DateTimeFormatterInterface $dateTimeFormatter)
     {
         $this->setting = $setting;
         $this->orderGiftCertificatePdfFacade = $orderGiftCertificatePdfFacade;
+        $this->dateTimeFormatter = $dateTimeFormatter;
     }
 
     /**
@@ -74,7 +75,12 @@ class OrderGiftCertificateMail implements MessageFactoryInterface
         return [
             self::VARIABLE_GIFT_CERTIFICATE_CODE => $orderGiftCertificate->getGiftCertificate()->getCode(),
             self::VARIABLE_GIFT_CERTIFICATE_CURRENCY => $orderGiftCertificate->getOrder()->getCurrency()->getCode(),
-            self::VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL => $orderGiftCertificate->getGiftCertificate()->getValidTo()->format('d.m.Y H:i:s'),
+            self::VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL => $this->dateTimeFormatter->format(
+                $orderGiftCertificate->getGiftCertificate()->getValidTo(),
+                IntlDateFormatter::MEDIUM,
+                IntlDateFormatter::MEDIUM,
+                'cs'
+            ),
             self::VARIABLE_GIFT_CERTIFICATE_VALUE => (string)round((float)$orderGiftCertificate->getGiftCertificate()->getCertificateValue()->getAmount(), 2),
             self::VARIABLE_ORDER_NUMBER => $orderGiftCertificate->getOrder()->getNumber(),
         ];
