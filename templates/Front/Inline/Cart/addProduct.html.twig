@@ -36,63 +36,45 @@
         </div>
     {% endif %}
 
-    {% if type == 'detailArticle' %}
+    <div class="box-detail-add__buttons{% if type == 'detailVariant' %} box-detail-add__buttons--small-gap{% endif %}">
         {% if not product.isMainVariant %}
-            {{ form_widget(form.quantity, { attr: {
-                class: 'form-input-spinbox__input input-no-style js-spinbox-input display-none',
-                'data-spinbox-min': product.realMinimumAmount,
-                'data-spinbox-step': product.amountMultiplier,
-                'data-spinbox-max': product.realStockQuantity
-            } }) }}
-            {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'btn btn--success list-article-product__item__button-add', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
-        {% elseif displayVariantSelectButton is same as (true) %}
-            <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="btn btn--success list-article-product__item__button-add">
-                {{- 'Choose variant'|trans -}}
-            </a>
-            {% do form.add.setRendered %}
-            {% do form.quantity.setRendered %}
-        {% endif %}
-    {% else %}
-        <div class="box-detail-add__buttons{% if type == 'detailVariant' %} box-detail-add__buttons--small-gap{% endif %}">
-            {% if not product.isMainVariant %}
-                {% if type == 'detailVariant' %}
-                    <div class="box-detail-add__buttons__item-variant">
-                        <div class="in-add-to-cart in-add-to-cart--mobile-centered">
-                            <div class="in-add-to-cart__spinbox {% if product.realStockQuantity < 1 or product.calculatedSellingDenied or not showAmountInput %} display-none{% endif %}">
-                                <div class="in-message in-message--warning js-maximum-amount-warning display-none">
-                                    {{ 'Větší množství není možné nakoupit'|trans }}
-                                </div>
-                                <span class="form-input-spinbox js-spinbox">
-                                    {{ form_widget(form.quantity, { attr: {
-                                        class: 'form-input-spinbox__input input-no-style js-spinbox-input',
-                                        'data-spinbox-min': product.realMinimumAmount,
-                                        'data-spinbox-step': product.amountMultiplier,
-                                        'data-spinbox-max': product.realStockQuantity
-                                    } }) }}
-                                    <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
-                                    <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
-                                </span>
+            {% if type == 'detailVariant' %}
+                <div class="box-detail-add__buttons__item-variant">
+                    <div class="in-add-to-cart in-add-to-cart--mobile-centered">
+                        <div class="in-add-to-cart__spinbox {% if product.realStockQuantity < 1 or product.calculatedSellingDenied or not showAmountInput %} display-none{% endif %}">
+                            <div class="in-message in-message--warning js-maximum-amount-warning display-none">
+                                {{ 'Větší množství není možné nakoupit'|trans }}
                             </div>
-                            {{ form_widget(form.add, {label: 'Do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn-no-style ', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
+                            <span class="form-input-spinbox js-spinbox">
+                                {{ form_widget(form.quantity, { attr: {
+                                    class: 'form-input-spinbox__input input-no-style js-spinbox-input',
+                                    'data-spinbox-min': product.realMinimumAmount,
+                                    'data-spinbox-step': product.amountMultiplier,
+                                    'data-spinbox-max': product.realStockQuantity
+                                } }) }}
+                                <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
+                                <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
+                            </span>
                         </div>
+                        {{ form_widget(form.add, {label: 'Do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn-no-style ', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
                     </div>
-                    {% if showCofidisBanner %}
-                        <div class="box-detail-add__buttons__item-variant box-detail-add__buttons__item-variant--payments btn btn--big js-cofidis-calculator" {% if disabled %}disabled="disabled"{% endif %} data-product-price="{{ sellingPrice.priceWithVat.amount }}" data-hard-disabled="{{ hardDisabled }}">{{ 'Spočítat splátky'|trans }}</div>
-                    {% endif %}
-                {% else %}
-                    {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__buttons__item btn btn--success btn--large', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
-                    {% if showCofidisBanner %}
-                        <div class="box-detail-add__buttons__item btn btn--large js-cofidis-calculator" {% if disabled %}disabled="disabled"{% endif %} data-product-price="{{ sellingPrice.priceWithVat.amount }}" data-hard-disabled="{{ hardDisabled }}">{{ 'Spočítat splátky'|trans }}</div>
-                    {% endif %}
+                </div>
+                {% if showCofidisBanner %}
+                    <div class="box-detail-add__buttons__item-variant box-detail-add__buttons__item-variant--payments btn btn--big js-cofidis-calculator" {% if disabled %}disabled="disabled"{% endif %} data-product-price="{{ sellingPrice.priceWithVat.amount }}" data-hard-disabled="{{ hardDisabled }}">{{ 'Spočítat splátky'|trans }}</div>
+                {% endif %}
+            {% else %}
+                {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__buttons__item btn btn--success btn--large', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
+                {% if showCofidisBanner %}
+                    <div class="box-detail-add__buttons__item btn btn--large js-cofidis-calculator" {% if disabled %}disabled="disabled"{% endif %} data-product-price="{{ sellingPrice.priceWithVat.amount }}" data-hard-disabled="{{ hardDisabled }}">{{ 'Spočítat splátky'|trans }}</div>
                 {% endif %}
             {% endif %}
-        </div>
-
-        {% if showCofidisBanner %}
-            <div class="box-detail-add__payments{% if type == 'detailVariant' %} box-detail-add__payments--variant{% endif %}">
-                <img class="box-detail-add__payments__image" src="{{ asset('public/frontend/images/cofidis-logo.png')}}" alt="{{ 'Cofidis'|trans }}">
-                Na splátky ještě dnes již od {{ sellingPrice.monthlyCofidisBasePayment|price }} měsíčně
-            </div>
         {% endif %}
+    </div>
+
+    {% if showCofidisBanner %}
+        <div class="box-detail-add__payments{% if type == 'detailVariant' %} box-detail-add__payments--variant{% endif %}">
+            <img class="box-detail-add__payments__image" src="{{ asset('public/frontend/images/cofidis-logo.png')}}" alt="{{ 'Cofidis'|trans }}">
+            Na splátky ještě dnes již od {{ sellingPrice.monthlyCofidisBasePayment|price }} měsíčně
+        </div>
     {% endif %}
 {{ form_end(form) }}
