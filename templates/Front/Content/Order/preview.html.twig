@@ -260,7 +260,7 @@
                 {% else %}
                     {% set continueButtonText = 'Odeslat objednávku'|trans %}
                 {% endif %}
-                <button type="submit" id="{{ formSubmit.vars.id }}" name="{{ formSubmit.vars.full_name }}" class="in-action__btn btn btn--success btn--large">
+                <button type="submit" id="{{ formSubmit.vars.id }}" name="{{ formSubmit.vars.full_name }}" class="in-action__btn btn btn--success btn--large{% if orderStep == 3 %} js-order-submit-button{% endif %}">
                     {% if orderStep == 3 %}<i class="in-action__btn__icon svg svg-checked"></i>{% endif %}
                     {{ continueButtonText }}
                 </button>

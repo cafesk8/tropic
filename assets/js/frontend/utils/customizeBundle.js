@@ -26,14 +26,22 @@ export function showFormErrorsWindow (container) {
         + $formattedFormErrors[0].outerHTML
         + '</div>';
 
+    const removeSubmitProtection = function () {
+        $('.js-order-submit-button').removeAttr('submit-protection');
+    };
+
     if ($window.length === 0) {
         // eslint-disable-next-line no-new
         new Window({
-            content: $errorListHtml
+            content: $errorListHtml,
+            eventClose: removeSubmitProtection
         });
     } else {
         $window.filterAllNodes('.js-window-validation-errors')
             .html($errorListHtml)
             .removeClass('display-none');
+        $window.eventClose = removeSubmitProtection;
+
     }
+
 }
