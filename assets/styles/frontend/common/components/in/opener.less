@@ -13,29 +13,41 @@
         left: 0;
         right: 0;
 
-        background: linear-gradient(180deg, rgba(255,255,255,0.5) 0, #fff 100%);
+        background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 75%, rgba(255,255,255,0) 100%);
     }
 
     &__button {
-        text-align: center;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: -15px 0 10px;
+        cursor: pointer;
 
-        &__btn {
-            display: inline-block;
-            padding: 5px 10px;
-            cursor: pointer;
+        border-radius: @radius;
+        transition: @transition;
 
-            background-color: @color-box;
-            transition: @transition;
+        &__text {
+            margin: 0 10px 0 0;
 
-            &:hover {
-                background-color: darken(@color-box, 10%);
-            }
+            text-decoration: underline;
+            font-size: @font-size-small;
+            font-family: @font-alt;
             
             .less {
                 display: none;
             }
+        }
 
-            &.open {
+        .svg {
+            transition: @transition;
+            font-size: 8px;
+            color: @color-turquoise;
+        }
+
+        &.open {
+            .in-opener__button__text {
                 .more {
                     display: none;
                 }
@@ -43,6 +55,10 @@
                 .less {
                     display: inline;
                 }
+            }
+
+            .svg {
+                transform: rotate(180deg);
             }
         }
     }
