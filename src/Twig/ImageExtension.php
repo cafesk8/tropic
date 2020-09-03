@@ -52,7 +52,7 @@ class ImageExtension extends BaseImageExtension
     public function getFunctions()
     {
         $functions = parent::getFunctions();
-        $functions[] = new TwigFunction('getSupplierSetImagesExcludingMain', [$this, 'getSupplierSetImagesExcludingMain']);
+        $functions[] = new TwigFunction('getSupplierSetItemsImages', [$this, 'getSupplierSetItemsImages']);
         $functions[] = new TwigFunction('getSupplierSetItemName', [$this, 'getSupplierSetItemName']);
         $functions[] = new TwigFunction('getSupplierSetItemCount', [$this, 'getSupplierSetItemCount']);
         $functions[] = new TwigFunction('getProductSetsImages', [$this, 'getProductSetsImages']);
@@ -99,9 +99,9 @@ class ImageExtension extends BaseImageExtension
      * @param \App\Model\Product\Product $product
      * @return \App\Component\Image\Image[]
      */
-    public function getSupplierSetImagesExcludingMain(Product $product)
+    public function getSupplierSetItemsImages(Product $product)
     {
-        return $this->imageFacade->getImagesExcludingMain($product);
+        return $this->imageFacade->getSupplierSetItemsImages($product);
     }
 
     /**

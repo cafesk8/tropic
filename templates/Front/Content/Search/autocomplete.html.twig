@@ -73,7 +73,7 @@
                 </div>
             {% elseif productOrSet.isSupplierSet %}
                 <div class="search-hint__product__item__wrap-image">
-                    {% for image in getSupplierSetImagesExcludingMain(productOrSet) %}
+                    {% for image in getSupplierSetItemsImages(productOrSet) %}
                         <div class="search-hint__product__item__image search-hint__product__item__image--sets svg svg-plus-big">
                             {{ image(image, {size: 'thumbnail', lazy: false}) }}
                         </div>

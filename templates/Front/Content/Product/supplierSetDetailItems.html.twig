@@ -1,4 +1,4 @@
-{% set images = getSupplierSetImagesExcludingMain(product) %}
+{% set images = getSupplierSetItemsImages(product) %}
 
 <ul class="list-set list-set--{{ images|length }} js-list-set-container" data-is-supplier-set="true">
     {% for image in images %}

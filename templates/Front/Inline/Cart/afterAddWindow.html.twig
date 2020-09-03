@@ -22,7 +22,7 @@
                     </div>
                 {% elseif cartItem.product.isSupplierSet %}
                     <div class="box-popup-add__content__product__wrap-image">
-                        {% for image in getSupplierSetImagesExcludingMain(cartItem.product) %}
+                        {% for image in getSupplierSetItemsImages(cartItem.product) %}
                             <div class="box-popup-add__content__product__image box-popup-add__content__product__image--sets svg svg-plus-big">
                                 {{ image(image, {size: 'thumbnail', lazy: false}) }}
                             </div>

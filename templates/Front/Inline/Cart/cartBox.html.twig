@@ -54,7 +54,7 @@
                                             </div>
                                          {% elseif cartItem.product.isSupplierSet %}
                                              <div class="cart-detail__item__wrap-image">
-                                                 {% for image in getSupplierSetImagesExcludingMain(cartItem.product) %}
+                                                 {% for image in getSupplierSetItemsImages(cartItem.product) %}
                                                      <div class="cart-detail__item__image cart-detail__item__image--sets svg svg-plus-big">
                                                          {{ image(image, {size: 'thumbnail'}) }}
                                                      </div>

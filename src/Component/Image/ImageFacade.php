@@ -133,15 +133,19 @@ class ImageFacade extends BaseImageFacade
     }
 
     /**
+     * Supplier set items are created from all images (excluding main) whose description contains Product::SUPPLIER_SET_ITEM_NAME_COUNT_SEPARATOR
+     *
      * @param \App\Model\Product\Product $product
      * @return \App\Component\Image\Image[]
      */
-    public function getImagesExcludingMain(Product $product): array
+    public function getSupplierSetItemsImages(Product $product): array
     {
         $images = $this->getImagesByEntityIndexedById($product, null);
         array_shift($images);
 
-        return $images;
+        return array_filter($images, function ($image) {
+            return $image->getDescription() !== null && strpos($image->getDescription(), Product::SUPPLIER_SET_ITEM_NAME_COUNT_SEPARATOR) !== false;
+        });
     }
 
     /**
