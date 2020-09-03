@@ -5,6 +5,7 @@ import Register from 'framework/common/utils/Register';
 
 const defaults = {
     content: '',
+    errors: '',
     buttonClose: true,
     buttonCancel: false,
     buttonContinue: false,
@@ -29,6 +30,7 @@ export default class Window {
 
     /**
      * content (string)
+     * errors (string)
      * buttonClose (bool)
      * buttonContinue (bool)
      * textContinue (string)
@@ -56,8 +58,11 @@ export default class Window {
             $windowContent.append('<h2 class="' + this.options.cssClassHeading + '">' + this.options.textHeading + '</h2>');
         }
 
+        const displayClass = this.options.errors === '' ? 'display-none' : '';
         $windowContent.append(
-            '<div class="display-none in-message in-message--alert js-window-validation-errors"></div>'
+            '<div class="' + displayClass + ' in-message in-message--alert js-window-validation-errors">'
+            + this.options.errors
+            + '</div>'
             + this.options.content
         );
 

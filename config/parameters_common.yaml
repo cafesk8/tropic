@@ -22,8 +22,9 @@ parameters:
     shopsys.performance_test.feed.min_duration_seconds: 5
     container.autowiring.strict_mode: true
     shopsys.image.enable_lazy_load: true
-    build-version: '0000000000000000'
+    build-version: '0000000000000000_%kernel.environment%'
     securityBcryptCost: 12
     # All time values are displayed in this timezone (default is PHP timezone)
     shopsys.display_timezone: Europe/Prague
+    shopsys.cron_timezone: Europe/Prague
     shopsys.display_cron_overview_for_superadmin_only: false

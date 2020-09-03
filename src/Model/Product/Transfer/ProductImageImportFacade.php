@@ -115,7 +115,7 @@ class ProductImageImportFacade
             $product = $productsIndexedByPohodaId[$productPohodaId];
             $this->processImage($pohodaImage, $imagesTargetPath, $nextImageId, $product);
             $nextImageId++;
-            $this->imageFacade->restartImagesIdsDbSequence($nextImageId);
+            $this->imageFacade->restartImagesIdsDbSequence();
             $pohodaImageIdsIndexedByProductId[$product->getId()][] = $pohodaImage->id;
         }
 

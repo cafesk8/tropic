@@ -63,12 +63,9 @@ class ImageRepository extends BaseImageRepository
         ]);
     }
 
-    /**
-     * @param int $startWithId
-     */
-    public function restartImagesIdsDbSequence(int $startWithId): void
+    public function restartImagesIdsDbSequence(): void
     {
-        $this->em->createNativeQuery(sprintf('ALTER SEQUENCE images_id_seq RESTART WITH %d', $startWithId), new ResultSetMapping())->execute();
+        $this->em->createNativeQuery('SELECT SETVAL(pg_get_serial_sequence(\'images\', \'id\'), COALESCE((SELECT MAX(id) FROM images) + 1, 1), false)', new ResultSetMapping())->execute();
     }
 
     /**

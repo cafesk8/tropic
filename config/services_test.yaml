@@ -183,6 +183,11 @@ services:
 
     Shopsys\FrameworkBundle\Model\Transport\TransportFacade: '@App\Model\Transport\TransportFacade'
 
+    Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig:
+        factory: ['@Shopsys\FrameworkBundle\Component\Image\Config\ImageConfigLoader', loadFromYaml]
+        arguments:
+            - '%shopsys.image_config_filepath%'
+
     Shopsys\FrameworkBundle\Component\Image\ImageFacade: '@App\Component\Image\ImageFacade'
 
     App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser: ~

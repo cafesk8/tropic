@@ -82,6 +82,8 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
  * @property \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
  * @property \App\Model\Product\Accessory\ProductAccessoryRepository $productAccessoryRepository
  * @property \App\Model\Product\Parameter\ProductParameterValueFactory $productParameterValueFactory
+ * @method createFriendlyUrlsWhenRenamed(\App\Model\Product\Product $product, array $originalNames)
+ * @method array getChangedNamesByLocale(\App\Model\Product\Product $product, array $originalNames)
  */
 class ProductFacade extends BaseProductFacade
 {

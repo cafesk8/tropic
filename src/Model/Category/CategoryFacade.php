@@ -50,6 +50,10 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
  * @method \App\Model\Category\Category getVisibleOnDomainById(int $domainId, int $categoryId)
  * @method int[] getListableProductCountsIndexedByCategoryId(\App\Model\Category\Category[] $categories, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int $domainId)
  * @method \App\Model\Category\Category getByUuid(string $categoryUuid)
+ * @method \App\Model\Category\Category[] getAllTranslated(string $locale)
+ * @method \App\Model\Category\Category[] getAllTranslatedWithoutBranch(\App\Model\Category\Category $category, string $locale)
+ * @method createFriendlyUrlsWhenRenamed(\App\Model\Category\Category $category, array $originalNames)
+ * @method array getChangedNamesByLocale(\App\Model\Category\Category $category, array $originalNames)
  */
 class CategoryFacade extends BaseCategoryFacade
 {

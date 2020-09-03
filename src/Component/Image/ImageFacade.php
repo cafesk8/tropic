@@ -77,12 +77,9 @@ class ImageFacade extends BaseImageFacade
         $this->imageRepository->saveImageIntoDb($entityId, $entityName, $imageId, $extension, $position, $type, $pohodaId, $description);
     }
 
-    /**
-     * @param int $startWithId
-     */
-    public function restartImagesIdsDbSequence(int $startWithId): void
+    public function restartImagesIdsDbSequence(): void
     {
-        $this->imageRepository->restartImagesIdsDbSequence($startWithId);
+        $this->imageRepository->restartImagesIdsDbSequence();
     }
 
     /**

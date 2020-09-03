@@ -67,6 +67,10 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Smazání starých sazeb DPH' }
 
+    Shopsys\FrameworkBundle\Component\FileUpload\DeleteOldUploadedFilesCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '5', minutes: '0', readableName: 'Delete old temporary uploaded files' }
+
     # ERROR PAGES ------------------------------------------------------------------------------------
     # This module should run as last because it creates multiple kernels and fake requests.
     Shopsys\FrameworkBundle\Component\Error\ErrorPageCronModule:

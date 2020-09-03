@@ -23,9 +23,16 @@ class ProductPickerController extends BaseProductPickerController
      * @Route("/product-picker/pick-multiple/{jsInstanceId}/")
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param string $jsInstanceId
+     * @param bool $allowMainVariants
+     * @param bool $allowVariants
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function pickMultipleAction(Request $request, $jsInstanceId): Response
+    public function pickMultipleAction(
+        Request $request,
+        $jsInstanceId,
+        bool $allowMainVariants = true,
+        bool $allowVariants = true
+    ): Response
     {
         return $this->getPickerResponse(
             $request,

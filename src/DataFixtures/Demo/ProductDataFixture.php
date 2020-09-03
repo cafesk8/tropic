@@ -22,6 +22,7 @@ use DateTime;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
+use League\Flysystem\FilesystemInterface;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -84,6 +85,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
     private EntityManagerInterface $em;
 
+    private FilesystemInterface $filesystem;
+
     /**
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -98,6 +101,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      * @param \App\Component\FileUpload\FileUpload $fileUpload
      * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface $uploadedFileDataFactory
      * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \League\Flysystem\FilesystemInterface $filesystem
      */
     public function __construct(
         ProductFacade $productFacade,
@@ -112,7 +116,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         ProductFlagDataFactory $productFlagDataFactory,
         FileUpload $fileUpload,
         UploadedFileDataFactoryInterface $uploadedFileDataFactory,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        FilesystemInterface $filesystem
     ) {
         $this->productFacade = $productFacade;
         $this->domain = $domain;
@@ -127,6 +132,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->fileUpload = $fileUpload;
         $this->uploadedFileDataFactory = $uploadedFileDataFactory;
         $this->em = $em;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -5751,7 +5757,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
     protected function createVariants(): void
     {
-        $variantCatnumsByMainVariantCatnum = $this->getVariantCatnumsByMainVariantCatnum();
+        $variantCatnumsByMainVariantCatnum = self::getVariantCatnumsByMainVariantCatnum();
 
         foreach ($variantCatnumsByMainVariantCatnum as $mainVariantCatnum => $variantsCatnums) {
             $mainVariant = $this->getProductFromCacheByCatnum($mainVariantCatnum);
@@ -6050,7 +6056,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
             // \xEF\xBB\xBF is BOM that defines that content is in UTF-8 encoding more info https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8
             $dummyText = "\xEF\xBB\xBF" . t('Testovací soubor', [], 'dataFixtures', $domain->getLocale());
 
-            file_put_contents($this->fileUpload->getTemporaryDirectory() . '/' . self::TMP_PRODUCT_DUMMY_FILENAME, $dummyText);
+            $this->filesystem->put($this->fileUpload->getTemporaryDirectory() . '/' . self::TMP_PRODUCT_DUMMY_FILENAME, $dummyText);
 
             $uploadedFileData = $this->uploadedFileDataFactory->create();
             $uploadedFileData->uploadedFiles = [self::TMP_PRODUCT_DUMMY_FILENAME];

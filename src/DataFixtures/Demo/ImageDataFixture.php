@@ -121,7 +121,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         $this->processProductsImages();
         $this->processStickersImages();
         $this->processSliderItemsImages();
-        $this->imageFacade->restartImagesIdsDbSequence(113);
+        $this->imageFacade->restartImagesIdsDbSequence();
     }
 
     private function processAdvertImages()
