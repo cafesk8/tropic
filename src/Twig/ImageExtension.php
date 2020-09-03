@@ -55,7 +55,7 @@ class ImageExtension extends BaseImageExtension
         $functions[] = new TwigFunction('getSupplierSetItemsImages', [$this, 'getSupplierSetItemsImages']);
         $functions[] = new TwigFunction('getSupplierSetItemName', [$this, 'getSupplierSetItemName']);
         $functions[] = new TwigFunction('getSupplierSetItemCount', [$this, 'getSupplierSetItemCount']);
-        $functions[] = new TwigFunction('getProductSetsImages', [$this, 'getProductSetsImages']);
+        $functions[] = new TwigFunction('getProductSetImages', [$this, 'getProductSetImages']);
 
         return $functions;
     }
@@ -123,21 +123,26 @@ class ImageExtension extends BaseImageExtension
     }
 
     /**
-     * @param \App\Model\Product\Set\ProductSet[] $productSets
+     * @param \App\Model\Product\Product $product
      * @return \App\Component\Image\Image[]
      */
-    public function getProductSetsImages(array $productSets): array
+    public function getProductSetImages(Product $product): array
     {
-        $aggregatedArray = [];
-        foreach ($productSets as $productSet) {
-            try {
-                $images = $this->imageFacade->getImagesByEntityIndexedById($productSet->getItem(), null);
-                $aggregatedArray = array_merge($aggregatedArray, $images);
-            } catch (\Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException $e) {
-                continue;
+        $setImages = [];
+        if ($product->isPohodaProductTypeSet()) {
+            foreach ($product->getProductSets() as $productSet) {
+                try {
+                    $images = $this->imageFacade->getImagesByEntityIndexedById($productSet->getItem(), null);
+                    $setImages = array_merge($setImages, $images);
+                } catch (\Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException $e) {
+                    continue;
+                }
             }
+        } elseif ($product->isSupplierSet()) {
+            $setImages = $this->getImages($product, null);
+            array_shift($setImages);
         }
 
-        return $aggregatedArray;
+        return $setImages;
     }
 }
