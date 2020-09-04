@@ -37,7 +37,7 @@ class ImageFacade extends BaseImageFacade
     public function getAllImagesUrlsByEntity($entity, DomainConfig $domainConfig): array
     {
         $allImagesUrls = [];
-        $allImages = $this->getAllImagesByEntity($entity);
+        $allImages = $this->getImagesByEntityIndexedById($entity, null);
 
         foreach ($allImages as $image) {
             $allImagesUrls[] = $this->getImageUrl($domainConfig, $image, null, null);
