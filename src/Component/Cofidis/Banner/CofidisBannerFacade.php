@@ -37,11 +37,14 @@ class CofidisBannerFacade
      */
     public function isAllowedToShowCofidisBanner(ProductPrice $productPrice): bool
     {
+        if (!DomainHelper::isCzechDomain($this->domain)) {
+            return false;
+        }
+
         $minimumBannerShowProductPrice = $this->setting->getForDomain(Setting::COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID, $this->domain->getId());
         $cofidisPayment = $this->paymentFacade->getFirstPaymentByType(Payment::TYPE_COFIDIS);
 
-        return DomainHelper::isCzechDomain($this->domain)
-            && $cofidisPayment !== null
+        return $cofidisPayment !== null
             && $minimumBannerShowProductPrice !== null
             && $cofidisPayment->isEnabled($this->domain->getId())
             && $productPrice->getPriceWithVat()->isGreaterThanOrEqualTo($minimumBannerShowProductPrice);
