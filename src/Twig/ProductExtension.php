@@ -186,6 +186,14 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function getProductFlagsWithFreeTransportAndPaymentFlag(ProductPrice $productPrice, Product $product, int $limit): array
     {
         $productFlagsIndexedByPosition = $product->getFlagsIndexedByPosition($limit);
+        $saleFlag = $this->flagFacade->getSaleFlag();
+        // On FE, we do not want to display "clearance" flag at all, "sale" flag is used instead
+        foreach ($productFlagsIndexedByPosition as $position => $flag) {
+            if ($flag->isClearance()) {
+                unset($productFlagsIndexedByPosition[$position]);
+                $productFlagsIndexedByPosition[$saleFlag->getPosition()] = $saleFlag;
+            }
+        }
         $freeTransportFlag = $this->getDefaultFreeTransportFlag();
         if ($freeTransportFlag !== null && $this->freeTransportAndPaymentFacade->isFree($productPrice->getPriceWithVat(), $this->domain->getId())) {
             $productFlagsIndexedByPosition[$freeTransportFlag->getPosition()] = $freeTransportFlag;

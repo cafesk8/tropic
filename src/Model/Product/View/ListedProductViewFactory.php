@@ -6,6 +6,7 @@ namespace App\Model\Product\View;
 
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Flag\Flag;
+use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -31,24 +32,29 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
 
     private ImageViewFacade $imageViewFacade;
 
+    private FlagFacade $flagFacade;
+
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\View\ListedSetItemFactory $listedSetItemFactory
      * @param \App\Model\Product\View\ImageViewFacade $imageViewFacade
+     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
         ProductFacade $productFacade,
         ListedSetItemFactory $listedSetItemFactory,
-        ImageViewFacade $imageViewFacade
+        ImageViewFacade $imageViewFacade,
+        FlagFacade $flagFacade
     ) {
         parent::__construct($domain, $productCachedAttributesFacade);
         $this->productFacade = $productFacade;
         $this->listedSetItemFactory = $listedSetItemFactory;
         $this->imageViewFacade = $imageViewFacade;
+        $this->flagFacade = $flagFacade;
     }
 
     /**
@@ -200,13 +206,19 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     }
 
     /**
+     * On FE, we do not want to display "clearance" flag at all, "sale" flag is used instead
+     *
      * @param \App\Model\Product\Product $product
      * @return int[]
      */
     protected function getFlagIdsForProduct(BaseProduct $product): array
     {
-        return array_map(function (Flag $flag) {
+        $saleFlag = $this->flagFacade->getSaleFlag();
+        return array_unique(array_map(function (Flag $flag) use ($saleFlag) {
+            if ($flag->isClearance()) {
+                return $saleFlag->getId();
+            }
             return $flag->getId();
-        }, $product->getActiveFlags());
+        }, $product->getActiveFlags()));
     }
 }

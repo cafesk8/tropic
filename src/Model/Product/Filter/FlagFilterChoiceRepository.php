@@ -4,19 +4,34 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Filter;
 
+use App\Model\Product\Flag\Flag;
+use App\Model\Product\Flag\FlagRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Product\Filter\FlagFilterChoiceRepository as BaseFlagFilterChoiceRepository;
-use Shopsys\FrameworkBundle\Model\Product\Flag\Flag;
+use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 
 /**
  * @property \App\Model\Product\ProductRepository $productRepository
- * @method __construct(\App\Model\Product\ProductRepository $productRepository)
  * @method \App\Model\Product\Flag\Flag[] getFlagFilterChoicesInCategory(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, string $locale, \App\Model\Category\Category $category)
  * @method \App\Model\Product\Flag\Flag[] getFlagFilterChoicesForSearch(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, string $locale, string|null $searchText)
  */
 class FlagFilterChoiceRepository extends BaseFlagFilterChoiceRepository
 {
+    private FlagRepository $flagRepository;
+
+    private ?Flag $saleFlag = null;
+
+    /**
+     * @param \App\Model\Product\ProductRepository $productRepository
+     * @param \App\Model\Product\Flag\FlagRepository $flagRepository
+     */
+    public function __construct(ProductRepository $productRepository, FlagRepository $flagRepository)
+    {
+        parent::__construct($productRepository);
+        $this->flagRepository = $flagRepository;
+    }
+
     /**
      * @param \Doctrine\ORM\QueryBuilder $productsQueryBuilder
      * @param string $locale
@@ -48,6 +63,27 @@ class FlagFilterChoiceRepository extends BaseFlagFilterChoiceRepository
             $flagsQueryBuilder->setParameter($parameter->getName(), $parameter->getValue());
         }
 
-        return $flagsQueryBuilder->getQuery()->execute();
+        /** @var \App\Model\Product\Flag\Flag[] $flags */
+        $flags = $flagsQueryBuilder->getQuery()->execute();
+
+        foreach ($flags as $key => $flag) {
+            if ($flag->isClearance()) {
+                $flags[$key] = $this->getSaleFlag();
+            }
+        }
+
+        return array_unique($flags, SORT_REGULAR);
+    }
+
+    /**
+     * @return \App\Model\Product\Flag\Flag|null
+     */
+    private function getSaleFlag(): ?Flag
+    {
+        if ($this->saleFlag === null) {
+            $this->saleFlag = $this->flagRepository->findSaleFlag();
+        }
+
+        return $this->saleFlag;
     }
 }
