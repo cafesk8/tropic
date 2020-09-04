@@ -33,18 +33,18 @@ class FlagRepository extends BaseFlagRepository
     }
 
     /**
-     * @return \App\Model\Product\Flag\Flag[]
+     * @return \App\Model\Product\Flag\Flag|null
      */
-    public function getSaleFlags(): array
+    public function findSaleFlag(): ?Flag
     {
-        return $this->getFlagRepository()->findBy(['sale' => true]);
+        return $this->getFlagRepository()->findOneBy(['pohodaId' => Flag::POHODA_ID_DISCOUNT]);
     }
 
     /**
-     * @return \App\Model\Product\Flag\Flag[]
+     * @return \App\Model\Product\Flag\Flag|null
      */
-    public function getNewsFlags(): array
+    public function findNewsFlag(): ?Flag
     {
-        return $this->getFlagRepository()->findBy(['news' => true]);
+        return $this->getFlagRepository()->findOneBy(['pohodaId' => Flag::POHODA_ID_NEW]);
     }
 }

@@ -9,7 +9,6 @@ use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
-use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade;
 use App\Model\Product\Listing\ProductListOrderingConfig;
@@ -199,12 +198,9 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      */
     public function getProductsWithNewsFlags(int $limit): array
     {
-        $newsFlags = $this->flagFacade->getNewsFlags();
-        $newsFlagsIds = array_map(function (Flag $flag) {
-            return $flag->getId();
-        }, $newsFlags);
+        $newsFlag = $this->flagFacade->getNewsFlag();
 
-        return $this->getPaginatedForFlags($newsFlagsIds, ProductListOrderingConfig::ORDER_BY_PRIORITY, 1, $limit)->getResults();
+        return $this->getPaginatedForFlags([$newsFlag->getId()], ProductListOrderingConfig::ORDER_BY_PRIORITY, 1, $limit)->getResults();
     }
 
     /**

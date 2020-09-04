@@ -1278,13 +1278,15 @@ class ProductFacade extends BaseProductFacade
                 return !$productFlagData->flag->isSale();
             });
         } else {
-            foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
-                foreach ($productFlagsData as $productFlagData) {
-                    if ($productFlagData->flag->getId() === $saleFlag->getId()) {
-                        continue 2;
-                    }
+            $saleFlag = $this->flagFacade->getSaleFlag();
+            $saleFlagAlreadyAssigned = false;
+            foreach ($productFlagsData as $productFlagData) {
+                if ($productFlagData->flag->getId() === $saleFlag->getId()) {
+                    $saleFlagAlreadyAssigned = true;
+                    break;
                 }
-
+            }
+            if ($saleFlagAlreadyAssigned === false) {
                 $productFlagsData[] = $this->productFlagDataFactory->create($saleFlag);
             }
         }

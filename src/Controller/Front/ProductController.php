@@ -358,9 +358,8 @@ class ProductController extends FrontBaseController
         $params = $request->query->get('product_filter_form');
         $tmpParams = $params;
 
-        foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
-            $tmpParams['flags'][] = $saleFlag->getId();
-        }
+        $saleFlag = $this->flagFacade->getSaleFlag();
+        $tmpParams['flags'][] = $saleFlag->getId();
         $request->query->set('product_filter_form', $tmpParams);
 
         $category = $this->categoryFacade->getById($id);
@@ -374,13 +373,10 @@ class ProductController extends FrontBaseController
         $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest($request);
 
         $productFilterData = new ProductFilterData();
-        $saleFlags = $this->flagFacade->getSaleFlags();
 
-        foreach ($saleFlags as $saleFlag) {
-            $productFilterData->flags[] = $saleFlag;
-        }
+        $productFilterData->flags[] = $saleFlag;
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, $saleFlags);
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, [$saleFlag]);
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -445,9 +441,8 @@ class ProductController extends FrontBaseController
         $params = $request->query->get('product_filter_form');
         $tmpParams = $params;
 
-        foreach ($this->flagFacade->getSaleFlags() as $newsFlag) {
-            $tmpParams['flags'][] = $newsFlag->getId();
-        }
+        $newsFlag = $this->flagFacade->getNewsFlag();
+        $tmpParams['flags'][] = $newsFlag->getId();
         $request->query->set('product_filter_form', $tmpParams);
 
         $category = $this->categoryFacade->getById($id);
@@ -461,13 +456,10 @@ class ProductController extends FrontBaseController
         $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest($request);
 
         $productFilterData = new ProductFilterData();
-        $newsFlags = $this->flagFacade->getNewsFlags();
 
-        foreach ($newsFlags as $newsFlag) {
-            $productFilterData->flags[] = $newsFlag;
-        }
+        $productFilterData->flags[] = $newsFlag;
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, $newsFlags);
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, [$newsFlag]);
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);

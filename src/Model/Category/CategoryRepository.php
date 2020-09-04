@@ -6,6 +6,7 @@ namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
 use App\Model\Product\Brand\Brand;
+use App\Model\Product\Flag\Flag;
 use DateTime;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
@@ -414,7 +415,7 @@ class CategoryRepository extends BaseCategoryRepository
                             INNER JOIN flags f ON pf.flag_id = f.id
                             INNER JOIN product_visibilities pv ON pv.product_id = pcd.product_id AND pv.domain_id = pcd.domain_id
                             INNER JOIN pricing_groups pg ON pg.id = pv.pricing_group_id AND pg.domain_id = pcd.domain_id
-                            WHERE f.sale = true
+                            WHERE f.pohoda_id = :saleFlagPohodaId
                                 AND (pf.active_from IS NULL OR pf.active_from <= :now)
                                 AND (pf.active_to IS NULL OR pf.active_to >= :now)
                                 AND pv.visible = true
@@ -432,6 +433,7 @@ class CategoryRepository extends BaseCategoryRepository
 
         $query->execute([
             'now' => $now,
+            'saleFlagPohodaId' => Flag::POHODA_ID_DISCOUNT,
         ]);
     }
 
@@ -474,7 +476,7 @@ class CategoryRepository extends BaseCategoryRepository
                             INNER JOIN flags f ON pf.flag_id = f.id
                             INNER JOIN product_visibilities pv ON pv.product_id = pcd.product_id AND pv.domain_id = pcd.domain_id
                             INNER JOIN pricing_groups pg ON pg.id = pv.pricing_group_id AND pg.domain_id = pcd.domain_id
-                            WHERE f.news = true
+                            WHERE f.pohoda_id = :newsFlagPohodaId
                                 AND (pf.active_from IS NULL OR pf.active_from <= :now)
                                 AND (pf.active_to IS NULL OR pf.active_to >= :now)
                                 AND pv.visible = true
@@ -492,6 +494,7 @@ class CategoryRepository extends BaseCategoryRepository
 
         $query->execute([
             'now' => $now,
+            'newsFlagPohodaId' => Flag::POHODA_ID_NEW,
         ]);
     }
 
