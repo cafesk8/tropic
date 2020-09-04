@@ -1182,7 +1182,7 @@ class ProductFacade extends BaseProductFacade
         $hasNewsFlag = false;
 
         foreach ($this->getSpecialCategoryFlags($productData) as $specialCategoryFlag) {
-            $hasSaleFlag = $hasSaleFlag || $specialCategoryFlag->isSale();
+            $hasSaleFlag = $hasSaleFlag || $specialCategoryFlag->isSale() || $specialCategoryFlag->isClearance();
             $hasNewsFlag = $hasNewsFlag || $specialCategoryFlag->isNews();
         }
 

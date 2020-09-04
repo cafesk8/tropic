@@ -94,6 +94,14 @@ class Flag extends BaseFlag implements OrderableEntityInterface
     /**
      * @return bool
      */
+    public function isClearance(): bool
+    {
+        return $this->pohodaId === self::POHODA_ID_CLEARANCE;
+    }
+
+    /**
+     * @return bool
+     */
     public function isNews(): bool
     {
         return $this->pohodaId === self::POHODA_ID_NEW;
@@ -104,7 +112,7 @@ class Flag extends BaseFlag implements OrderableEntityInterface
      */
     public function isSpecial(): bool
     {
-        return $this->isSale() || $this->isNews();
+        return $this->isSale() || $this->isNews() || $this->isClearance();
     }
 
     /**
