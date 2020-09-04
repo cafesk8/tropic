@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\Transfer;
 
 use App\Component\Image\ImageFacade;
+use App\Component\Transfer\Logger\TransferLogger;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Component\Transfer\Pohoda\Exception\PohodaMServerException;
 use App\Component\Transfer\Pohoda\MServer\MServerClient;
@@ -19,46 +20,25 @@ use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler;
 class ProductImageImportFacade
 {
     private const PRODUCT_IMAGES_SUBDIR = 'product/original/';
+    private const BATCH_LIMIT = 1000;
 
-    /**
-     * @var \League\Flysystem\FilesystemInterface
-     */
-    private $filesystem;
+    private FilesystemInterface $filesystem;
 
-    /**
-     * @var \App\Component\Transfer\Pohoda\MServer\MServerClient
-     */
-    private $mServerClient;
+    private MServerClient $mServerClient;
 
-    /**
-     * @var \App\Component\Transfer\Logger\TransferLogger
-     */
-    private $logger;
+    private TransferLogger $logger;
 
-    /**
-     * @var string
-     */
-    private $imagesDirectory;
+    private string $imagesDirectory;
 
-    /**
-     * @var \App\Component\Image\ImageFacade
-     */
-    private $imageFacade;
+    private ImageFacade $imageFacade;
 
-    /**
-     * @var \App\Model\Product\ProductFacade
-     */
-    private $productFacade;
+    private ProductFacade $productFacade;
 
-    /**
-     * @var \App\Component\Transfer\Pohoda\Product\Image\PohodaImageExportFacade
-     */
-    private $pohodaImageExportFacade;
+    private PohodaImageExportFacade $pohodaImageExportFacade;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler
-     */
-    private $productExportScheduler;
+    private ProductExportScheduler $productExportScheduler;
+
+    private ImageImportQueueFacade $imageInfoQueueFacade;
 
     /**
      * @param string $imagesDirectory
@@ -69,6 +49,7 @@ class ProductImageImportFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Component\Transfer\Pohoda\Product\Image\PohodaImageExportFacade $pohodaImageExportFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler $productExportScheduler
+     * @param \App\Model\Product\Transfer\ImageImportQueueFacade $imageInfoQueueFacade
      */
     public function __construct(
         string $imagesDirectory,
@@ -78,7 +59,8 @@ class ProductImageImportFacade
         ImageFacade $imageFacade,
         ProductFacade $productFacade,
         PohodaImageExportFacade $pohodaImageExportFacade,
-        ProductExportScheduler $productExportScheduler
+        ProductExportScheduler $productExportScheduler,
+        ImageImportQueueFacade $imageInfoQueueFacade
     ) {
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImageImportCronModule::TRANSFER_IDENTIFIER);
         $this->mServerClient = $mServerClient;
@@ -88,6 +70,7 @@ class ProductImageImportFacade
         $this->productFacade = $productFacade;
         $this->pohodaImageExportFacade = $pohodaImageExportFacade;
         $this->productExportScheduler = $productExportScheduler;
+        $this->imageInfoQueueFacade = $imageInfoQueueFacade;
     }
 
     /**
@@ -97,7 +80,8 @@ class ProductImageImportFacade
     {
         $imagesTargetPath = $this->getImagesTargetPath();
         $nextImageId = $this->imageFacade->getHighestImageId() + 1;
-        $productPohodaIds = $this->productFacade->getPohodaIdsForProductsUpdatedSince($lastFinishAt);
+        $this->imageInfoQueueFacade->updateQueue($lastFinishAt);
+        $productPohodaIds = $this->imageInfoQueueFacade->getIdsForImport(self::BATCH_LIMIT);
 
         $pohodaImages = $this->pohodaImageExportFacade->getPohodaImages($productPohodaIds);
         $pohodaImagesCount = count($pohodaImages);
@@ -139,6 +123,7 @@ class ProductImageImportFacade
         foreach (array_keys($pohodaImageIdsIndexedByProductId) as $productId) {
             $this->productExportScheduler->scheduleRowIdForImmediateExport($productId);
         }
+        $this->imageInfoQueueFacade->removeProductsFromQueue(array_keys($productsIndexedByPohodaId));
         $this->logger->persistTransferIssues();
     }
 
