@@ -730,9 +730,10 @@ class ProductRepository extends BaseProductRepository
         parent::filterByCategory($queryBuilder, $category, $domainId);
 
         if (!empty($onlyFlags)) {
-            $queryBuilder->leftJoin('p.flags', 'f');
-            $queryBuilder->andWhere('f.flag IN (:flags)');
+            $queryBuilder->leftJoin('p.flags', 'pf');
+            $queryBuilder->andWhere('pf.flag IN (:flags) AND (pf.activeFrom IS NULL OR pf.activeFrom <= :now) AND (pf.activeTo IS NULL OR pf.activeTo >= :now)');
             $queryBuilder->setParameter('flags', $onlyFlags);
+            $queryBuilder->setParameter('now', new DateTime());
         }
     }
 
