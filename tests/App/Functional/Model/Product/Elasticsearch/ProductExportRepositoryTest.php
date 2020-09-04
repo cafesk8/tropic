@@ -91,6 +91,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'external_stocks_quantity',
             'warranty',
             'variant_type',
+            'recommended',
         ];
     }
 }

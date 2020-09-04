@@ -6,6 +6,7 @@ namespace App\Model\Product;
 
 use App\Component\Domain\DomainHelper;
 use App\Model\Product\Exception\ProductIsNotMainVariantException;
+use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\ProductFlag;
 use App\Model\Product\Mall\ProductMallExportMapper;
 use App\Model\Product\Set\ProductSet;
@@ -1442,5 +1443,13 @@ class Product extends BaseProduct
     public function getNameForMergadoFeed(int $domainId): ?string
     {
         return $this->getProductDomain($domainId)->getNameForMergadoFeed();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRecommended(): bool
+    {
+        return count(array_filter($this->getActiveFlags(), fn (Flag $flag) => $flag->isRecommended())) > 0;
     }
 }

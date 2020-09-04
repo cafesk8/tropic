@@ -88,7 +88,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productArray['real_sale_stocks_quantity'],
             $productArray['unit'],
             $this->imageViewFacade->getStickerViewsByProductId($productArray['id']),
-            $productArray['warranty']
+            $productArray['warranty'],
+            $productArray['recommended']
         );
     }
 
@@ -121,7 +122,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity(),
             $product->getUnit()->getName($this->domain->getLocale()),
             $this->imageViewFacade->getStickerViewsByProductId($product->getId()),
-            $product->getWarranty()
+            $product->getWarranty(),
+            $product->isRecommended()
         );
     }
 

@@ -109,7 +109,7 @@ class FlagDataFixture extends AbstractReferenceFixture
         $this->createFlag($flagData, self::FLAG_PREPARATION_PRODUCT);
 
         foreach ($this->domain->getAllLocales() as $locale) {
-            $flagData->name[$locale] = t('Doporučujeme', [], 'dataFixtures', $locale);
+            $flagData->name[$locale] = t('Tropic doporučuje', [], 'dataFixtures', $locale);
         }
 
         $flagData->rgbColor = '#000000';
