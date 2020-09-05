@@ -1,21 +1,21 @@
 {% macro list(productFlags, classAddition, onlyFirst, sellingPrice, variantsCount) %}
     {% if productFlags|length > 0 or (sellingPrice is not null and sellingPrice.hasHigherStandardPrice) or variantsCount > 0 %}
         <div class="in-flag dont-print {{ classAddition }}">
-            {% if not onlyFirst %}
-                {% if sellingPrice.hasHigherStandardPrice %}
-                    {{ _self.detail('%discountValue%% sleva'|trans({'%discountValue%': sellingPrice.pricePercentageDifference}), '#d53030') }}
-                {% endif %}
-
-                {% if variantsCount > 0 %}
-                    {{ _self.detail('Počet variant'|transchoice(variantsCount, {'%variantsCount%': variantsCount}), '#00aed8') }}
-                {% endif %}
-            {% endif %}
-
             {% for productFlag in productFlags %}
                 {% if (onlyFirst and loop.first) or not onlyFirst %}
                     {{ _self.detail(productFlag.name, productFlag.rgbColor) }}
                 {% endif %}
             {% endfor %}
+            
+            {% if not onlyFirst %}
+                {% if variantsCount > 0 %}
+                    {{ _self.detail('Počet variant'|transchoice(variantsCount, {'%variantsCount%': variantsCount}), '#00aed8') }}
+                {% endif %}
+                
+                {% if sellingPrice.hasHigherStandardPrice %}
+                    {{ _self.detail('%discountValue%% sleva'|trans({'%discountValue%': sellingPrice.pricePercentageDifference}), '#d53030') }}
+                {% endif %}
+            {% endif %}
         </div>
     {% endif %}
 {% endmacro %}
