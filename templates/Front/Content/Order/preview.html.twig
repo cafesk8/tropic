@@ -81,13 +81,15 @@
                                  <i class="svg svg-triangle"></i>
                             </div>
                         </div>
+
+                        {% set orderGiftProduct = orderPreview.orderGiftProduct %}
+                        {% if orderGiftProduct is not null or orderPreview.gifts is not empty %}
+                            <p class="box-preview__item__title">{{ 'Dárek k vaší objednávce:'|trans }}</p>
+                        {% endif %}
+
                         <div class="in-opener js-opener-container">
                             <div class="in-opener__wrap js-opener-wrap" data-opened-items="3">
-                                <ul class="list-cart-preview{% if orderPreview.gifts|length <= 3 %} list-cart-preview--without-opener{% endif %}">
-                                    {% set orderGiftProduct = orderPreview.orderGiftProduct %}
-                                    {% if orderGiftProduct is not null or orderPreview.gifts is not empty %}
-                                        <li class="list-cart-preview__title">{{ 'Dárek k vaší objednávce:'|trans }}</li>
-                                    {% endif %}
+                                <ul class="list-cart-preview{% if orderPreview.gifts|length + orderGiftProduct|length <= 3 %} list-cart-preview--without-opener{% endif %}">
                                     {% if orderGiftProduct is not null %}
                                         {{ _self.productPreviewItem(orderGiftProduct, 1, orderGiftProductPrice, false, false) }}
                                     {% endif %}
