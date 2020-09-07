@@ -260,7 +260,8 @@ class PohodaProductExportFacade
                 $pohodaParameter = new PohodaParameter(
                     trim($productParameter[PohodaProduct::COL_PARAMETER_NAME]),
                     $pohodaParameterValues,
-                    (int)$productParameter[PohodaProduct::COL_PARAMETER_TYPE]
+                    (int)$productParameter[PohodaProduct::COL_PARAMETER_TYPE],
+                    (int)$productParameter[PohodaProduct::COL_PARAMETER_VALUE_POSITION]
                 );
 
                 if (!$this->isParamDuplicate($pohodaProductsResult[$productPohodaId][PohodaProduct::COL_PARAMETERS], $pohodaParameter)) {

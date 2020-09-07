@@ -6,6 +6,7 @@ namespace App\Model\Product;
 
 use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Flag\ProductFlagDataFactory;
+use App\Model\Product\Parameter\ProductParameterValueDataFactory;
 use App\Model\Product\Set\ProductSetFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
@@ -16,7 +17,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductInputPriceFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
@@ -46,7 +46,7 @@ class ProductDataFactory extends BaseProductDataFactory
      * @param \App\Model\Product\Accessory\ProductAccessoryRepository $productAccessoryRepository
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade $pluginDataFormExtensionFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactoryInterface $productParameterValueDataFactory
+     * @param \App\Model\Product\Parameter\ProductParameterValueDataFactory $productParameterValueDataFactory
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
@@ -64,7 +64,7 @@ class ProductDataFactory extends BaseProductDataFactory
         ProductAccessoryRepository $productAccessoryRepository,
         ImageFacade $imageFacade,
         PluginCrudExtensionFacade $pluginDataFormExtensionFacade,
-        ProductParameterValueDataFactoryInterface $productParameterValueDataFactory,
+        ProductParameterValueDataFactory $productParameterValueDataFactory,
         PricingGroupFacade $pricingGroupFacade,
         ProductSetFacade $productSetFacade,
         AvailabilityFacade $availabilityFacade,

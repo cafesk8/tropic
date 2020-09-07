@@ -31,16 +31,20 @@ class PohodaParameter
      */
     public $type;
 
+    public int $position;
+
     /**
      * @param string $name
      * @param array $values
      * @param int $type
+     * @param int $position
      */
-    public function __construct(string $name, array $values, int $type)
+    public function __construct(string $name, array $values, int $type, int $position)
     {
         $this->name = $name;
         $this->values = $values;
         $this->type = $type;
+        $this->position = $position;
     }
 
     /**

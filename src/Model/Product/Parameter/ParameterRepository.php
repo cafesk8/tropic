@@ -6,9 +6,9 @@ namespace App\Model\Product\Parameter;
 
 use App\Model\Product\Parameter\Exception\ParameterValueNotFoundException;
 use App\Model\Product\Product;
+use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository as BaseParameterRepository;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 
 /**
@@ -17,19 +17,19 @@ use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
  * @method \App\Model\Product\Parameter\Parameter[] getAll()
  * @method \App\Model\Product\Parameter\ParameterValue findOrCreateParameterValueByValueTextAndLocale(string $valueText, string $locale)
  * @method \App\Model\Product\Parameter\ParameterValue getParameterValueByValueTextAndLocale(string $valueText, string $locale)
- * @method \Doctrine\ORM\QueryBuilder getProductParameterValuesByProductQueryBuilder(\App\Model\Product\Product $product)
- * @method \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[] getProductParameterValuesByProduct(\App\Model\Product\Product $product)
- * @method \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[] getProductParameterValuesByProductSortedByName(\App\Model\Product\Product $product, string $locale)
+ * @method \App\Model\Product\Parameter\ProductParameterValue[] getProductParameterValuesByProduct(\App\Model\Product\Product $product)
+ * @method \App\Model\Product\Parameter\ProductParameterValue[] getProductParameterValuesByProductSortedByName(\App\Model\Product\Product $product, string $locale)
  * @method string[][] getParameterValuesIndexedByProductIdAndParameterNameForProducts(\App\Model\Product\Product[] $products, string $locale)
- * @method \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[] getProductParameterValuesByParameter(\App\Model\Product\Parameter\Parameter $parameter)
+ * @method \App\Model\Product\Parameter\ProductParameterValue[] getProductParameterValuesByParameter(\App\Model\Product\Parameter\Parameter $parameter)
  * @method \App\Model\Product\Parameter\Parameter|null findParameterByNames(string[] $namesByLocale)
+ * @method \Doctrine\ORM\QueryBuilder getProductParameterValuesByProductQueryBuilder(\App\Model\Product\Product $product)
  */
 class ParameterRepository extends BaseParameterRepository
 {
     /**
      * @param \App\Model\Product\Parameter\Parameter $parameter
      * @param \App\Model\Product\Product $product
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
+     * @return \App\Model\Product\Parameter\ProductParameterValue|null
      */
     public function findProductParameterValueByParameterAndProduct(Parameter $parameter, Product $product): ?ProductParameterValue
     {
@@ -53,7 +53,7 @@ class ParameterRepository extends BaseParameterRepository
     /**
      * @param \App\Model\Product\Product $product
      * @param string $locale
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[]
+     * @return \App\Model\Product\Parameter\ProductParameterValue[]
      */
     public function getAllProductParameterValuesByProductSortedByName(BaseProduct $product, $locale): array
     {
@@ -89,5 +89,40 @@ class ParameterRepository extends BaseParameterRepository
         }
 
         return $parameterValue;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param string $locale
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getProductParameterValuesByProductSortedByPositionQueryBuilder(Product $product, $locale): QueryBuilder
+    {
+        $queryBuilder = $this->em->createQueryBuilder()
+            ->select('ppv')
+            ->from(ProductParameterValue::class, 'ppv')
+            ->join('ppv.parameter', 'p')
+            ->join('p.translations', 'pt')
+            ->where('ppv.product = :product_id')
+            ->andWhere('pt.locale = :locale')
+            ->setParameters([
+                'product_id' => $product->getId(),
+                'locale' => $locale,
+            ])
+            ->orderBy('ppv.position');
+
+        return $queryBuilder;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param string $locale
+     * @return \App\Model\Product\Parameter\ProductParameterValue[]
+     */
+    public function getProductParameterValuesByProductSortedByPosition(Product $product, $locale): array
+    {
+        $queryBuilder = $this->getProductParameterValuesByProductSortedByPositionQueryBuilder($product, $locale);
+
+        return $queryBuilder->getQuery()->execute();
     }
 }

@@ -352,10 +352,13 @@ class PohodaProductExportRepository
             ->addScalarResult('RelTyp', PohodaProduct::COL_PARAMETER_TYPE)
             ->addScalarResult('ValLong', PohodaProduct::COL_PARAMETER_VALUE_TYPE_NUMBER)
             ->addScalarResult('ValText', PohodaProduct::COL_PARAMETER_VALUE_TYPE_TEXT)
-            ->addScalarResult('ValList', PohodaProduct::COL_PARAMETER_VALUE_TYPE_LIST);
+            ->addScalarResult('ValList', PohodaProduct::COL_PARAMETER_VALUE_TYPE_LIST)
+            ->addScalarResult('productParameterPosition', PohodaProduct::COL_PARAMETER_VALUE_POSITION);
 
         $query = $this->pohodaEntityManager->createNativeQuery(
-            'SELECT ProductParameters.ID, Parameters.ID AS "parameterId", Parameters.IDS, ProductParameters.RefAg, Parameters.RelTyp, ProductParameters.ValText, ProductParameters.ValLong, ParametersList.IDS AS ValList
+            'SELECT ProductParameters.ID, Parameters.ID AS "parameterId", Parameters.IDS, ProductParameters.RefAg, 
+                Parameters.RelTyp, ProductParameters.ValText, ProductParameters.ValLong, ParametersList.IDS AS ValList,
+                ProductParameters.OrderFld AS "productParameterPosition"
             FROM SkRefParam ProductParameters
             JOIN SkParam Parameters ON Parameters.ID = ProductParameters.RefParam
             LEFT JOIN SkRefParamList ProductParametersList ON ProductParametersList.RefAg = ProductParameters.RefAg

@@ -17,6 +17,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @property \App\Model\Product\Availability\Availability|null $availability
  * @property \App\Model\Product\Availability\Availability|null $outOfStockAvailability
  * @property \App\Model\Product\Unit\Unit|null $unit
+ * @property \App\Model\Product\Parameter\ProductParameterValueData[] $parameters
  */
 class ProductData extends BaseProductData
 {

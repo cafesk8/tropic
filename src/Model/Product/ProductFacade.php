@@ -81,6 +81,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
  * @property \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
  * @property \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
  * @property \App\Model\Product\Accessory\ProductAccessoryRepository $productAccessoryRepository
+ * @property \App\Model\Product\Parameter\ProductParameterValueFactory $productParameterValueFactory
  */
 class ProductFacade extends BaseProductFacade
 {
@@ -189,7 +190,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface $productFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFactoryInterface $productAccessoryFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactoryInterface $productParameterValueFactory
+     * @param \App\Model\Product\Parameter\ProductParameterValueFactory $productParameterValueFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface $productVisibilityFactory
      * @param \App\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler $productExportScheduler
@@ -757,11 +758,40 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @inheritDoc
+     * @param \App\Model\Product\Product $product
+     * @param \App\Model\Product\Parameter\ProductParameterValueData[] $productParameterValuesData
      */
     protected function saveParameters(BaseProduct $product, array $productParameterValuesData)
     {
-        parent::saveParameters($product, $productParameterValuesData);
+        // Doctrine runs INSERTs before DELETEs in UnitOfWork. In case of UNIQUE constraint
+        // in database, this leads in trying to insert duplicate entry.
+        // That's why it's necessary to do remove and flush first.
+
+        $oldProductParameterValues = $this->parameterRepository->getProductParameterValuesByProduct($product);
+        foreach ($oldProductParameterValues as $oldProductParameterValue) {
+            $this->em->remove($oldProductParameterValue);
+        }
+        $this->em->flush($oldProductParameterValues);
+
+        $toFlush = [];
+        foreach ($productParameterValuesData as $productParameterValueData) {
+            $productParameterValue = $this->productParameterValueFactory->create(
+                $product,
+                $productParameterValueData->parameter,
+                $this->parameterRepository->findOrCreateParameterValueByValueTextAndLocale(
+                    $productParameterValueData->parameterValueData->text,
+                    $productParameterValueData->parameterValueData->locale
+                ),
+                $productParameterValueData->position
+            );
+            $this->em->persist($productParameterValue);
+            $toFlush[] = $productParameterValue;
+        }
+
+        if (count($toFlush) > 0) {
+            $this->em->flush($toFlush);
+        }
+
         if ($product->isMainVariant()) {
             foreach ($product->getVariants() as $variant) {
                 $mergedProductParameterValuesData = $this->mergeMainVariantAndVariantProductParameterValuesData($productParameterValuesData, $variant);
@@ -771,9 +801,9 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[] $mainVariantProductParameterValuesData
+     * @param \App\Model\Product\Parameter\ProductParameterValueData[] $mainVariantProductParameterValuesData
      * @param \App\Model\Product\Product $variant
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
+     * @return \App\Model\Product\Parameter\ProductParameterValueData[]
      */
     private function mergeMainVariantAndVariantProductParameterValuesData(
         array $mainVariantProductParameterValuesData,
