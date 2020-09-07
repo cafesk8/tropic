@@ -11,7 +11,7 @@
             </div>
         {% elseif product.isSupplierSet %}
             <div class="list-cart-preview__item__wrap-image">
-                {% for image in getSupplierSetImagesExcludingMain(product) %}
+                {% for image in getSupplierSetItemsImages(product) %}
                     <div class="list-cart-preview__item__image list-cart-preview__item__image--sets svg svg-plus-big">
                         {{ image(image, {size: 'thumbnail'}) }}
                     </div>

@@ -120,7 +120,7 @@ class ProductSetFacade
     {
         $productId = $product->getId();
         $supplierSetItemsData = [];
-        $images = $this->imageFacade->getImagesExcludingMain($product);
+        $images = $this->imageFacade->getSupplierSetItemsImages($product);
         foreach ($images as $image) {
             $imageDescription = $image->getDescription();
             $supplierSetItemsData[] = [

@@ -22,9 +22,10 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
     public const IMAGES_TABLE_NAME = 'images';
 
     public const IMAGE_TYPE = 'jpg';
-    public const SUPPLIER_SET_THIRD_IMAGE_ID = 111;
-    public const SUPPLIER_SET_SECOND_IMAGE_ID = 110;
     public const SUPPLIER_SET_FIRST_IMAGE_ID = 109;
+    public const SUPPLIER_SET_SECOND_IMAGE_ID = 110;
+    public const SUPPLIER_SET_THIRD_IMAGE_ID = 111;
+    public const SUPPLIER_SET_FOURTH_IMAGE_ID = 112;
 
     /**
      * @var string
@@ -120,7 +121,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         $this->processProductsImages();
         $this->processStickersImages();
         $this->processSliderItemsImages();
-        $this->imageFacade->restartImagesIdsDbSequence(112);
+        $this->imageFacade->restartImagesIdsDbSequence(113);
     }
 
     private function processAdvertImages()
@@ -248,6 +249,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
             self::SUPPLIER_SET_FIRST_IMAGE_ID => 150,
             self::SUPPLIER_SET_SECOND_IMAGE_ID => 150,
             self::SUPPLIER_SET_THIRD_IMAGE_ID => 150,
+            self::SUPPLIER_SET_FOURTH_IMAGE_ID => 150,
         ];
 
         foreach ($productsIdsWithImageIdSameAsProductId as $productId) {
@@ -259,7 +261,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
             if ($imageId === self::SUPPLIER_SET_SECOND_IMAGE_ID) {
                 $description = 'Prut Zfish Kingstone*2';
             } elseif ($imageId === self::SUPPLIER_SET_THIRD_IMAGE_ID) {
-                $description = 'Pouzdro pro prut Zfish';
+                $description = 'Pouzdro pro prut Zfish*1';
             }
             $this->saveImageIntoDb($productId, 'product', $imageId, $description);
         }
