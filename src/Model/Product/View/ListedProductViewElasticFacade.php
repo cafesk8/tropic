@@ -176,7 +176,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
     {
         return $this->createFromProducts(array_map(function (ProductSet $productSet) {
             return $productSet->getMainProduct();
-        }, $this->productSetFacade->getVisibleByItem($product, $domainId, $pricingGroup)));
+        }, $this->productSetFacade->getOfferedByItem($product, $domainId, $pricingGroup)));
     }
 
     /**

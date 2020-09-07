@@ -50,9 +50,9 @@ class ProductSetFacade
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \App\Model\Product\Set\ProductSet[]
      */
-    public function getVisibleByItem(Product $item, int $domainId, PricingGroup $pricingGroup): array
+    public function getOfferedByItem(Product $item, int $domainId, PricingGroup $pricingGroup): array
     {
-        return $this->productSetRepository->getVisibleByItem($item, $domainId, $pricingGroup);
+        return $this->productSetRepository->getOfferedByItem($item, $domainId, $pricingGroup);
     }
 
     /**
