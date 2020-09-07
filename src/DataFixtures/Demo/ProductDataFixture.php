@@ -12,6 +12,7 @@ use App\Model\Product\Parameter\Parameter;
 use App\Model\Product\Parameter\ParameterDataFactory;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Parameter\ParameterValueDataFactory;
+use App\Model\Product\Parameter\ProductParameterValueDataFactory;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductDataFactory;
@@ -27,7 +28,6 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface;
-use App\Model\Product\Parameter\ProductParameterValueDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 
 class ProductDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
