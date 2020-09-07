@@ -89,7 +89,7 @@
 {% endmacro %}
 
 {% macro loadMoreButton(paginationResult, url = '', pageQueryParameter = 'page') %}
-    <button class="btn btn--big js-load-more-button"
+    <a class="btn btn--big js-load-more-button"
            data-page="{{ paginationResult.page }}"
            data-page-size="{{ paginationResult.pageSize }}"
            data-pagination-to-item="{{ paginationResult.toItem }}"
@@ -97,5 +97,5 @@
            data-url="{{ url }}"
            data-page-query-parameter="{{ pageQueryParameter }}"
     />
-    </button>
+    </a>
 {% endmacro %}
