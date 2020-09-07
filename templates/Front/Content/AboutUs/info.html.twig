@@ -8,88 +8,120 @@
     {% set domainId = getDomain().id %}
     <div class="web__line">
         <div class="web__container">
-            <h1 class="in-title in-title--big in-title--center">
-                {{ 'Kontakt'|trans }}
-            </h1>
             <div class="box-contact">
-                <div class="box-contact__left">
-                    <div class="box-contact__block">
-                        {% if getShopInfoPhoneNumber() is not null %}
-                            <a href="tel:{{ getShopInfoPhoneNumber() }}" class="box-contact__block__text">
-                                {% include 'Front/Svg/phone.svg' %}
-                                {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
+                <div class="box-contact__info">
+                    <div class="box-contact__info__wrap">
+                        <div class="box-contact__info__item">
+                            {% if getShopInfoPhoneNumber() is not null %}
+                                <a class="box-contact__info__link" href="tel:{{ getShopInfoPhoneNumber() }}">
+                                    <span class="box-contact__info__link__icon box-contact__info__link__icon--phone">{% include 'Front/Svg/phone.svg' %}</span>
+                                    <span class="box-contact__info__link__text">
+                                        {{ getShopInfoPhoneNumber() }}
+                                    </span>
+                                </a>
+                            {% endif %}
+                            <span class="box-contact__info__text"> 
+                                {{ getShopInfoPhoneHours() }}
+                            </span>
+                        </div>
+                        <div class="box-contact__info__item">
+                            <a class="box-contact__info__link" href="mailto:{{ getShopInfoEmail() }}">
+                                <span class="box-contact__info__link__icon box-contact__info__link__icon--info">{% include 'Front/Svg/info.svg' %}</span>
+                                <span class="box-contact__info__link__text">
+                                    {{ getShopInfoEmail() }}
+                                </span>
                             </a>
-                        {% endif %}
-                        <div class="box-contact__block__info">
-                            {{ getShopInfoPhoneHours() }}
                         </div>
-                    </div>
-                    <div class="box-contact__block box-contact__block--no-bottom-gap">
-                        <div class="box-contact__block__text">
-                            <i class="svg svg-mail"></i>
-                            <a href="mailto:{{ getShopInfoEmail() }}">{{ getShopInfoEmail() }}</a>
-                        </div>
-                        <div class="box-contact__block__info">
-                            {{ 'Odpovíme Vám v nejkratším možném termínu.'|trans }}
-                        </div>
-                    </div>
-                </div>
-                <div class="box-contact__right">
-                    <div class="box-contact__right__title">
-                        {{ 'S čím potřebujete pomoct?'|trans }}
-                    </div>
-                </div>
-            </div>
-            <div class="wrap-article">
-                <div class="wrap-article__row">
-                    <div class="wrap-article__row__half padding-right-20">
-                        <img src="{{ asset('public/frontend/images/design/contact.png')}}" alt="{{ 'Sídlo'|trans }}">
-                    </div>
-                    <div class="wrap-article__row__half">
-                            <div class="wrap-article__row">
-                                <div class="wrap-article__row__full">
-                                    <h4>{{ 'Provozovna'|trans }}</h4>
-                                </div>
-                            </div>
-                            <div class="wrap-article__row padding-bottom-20">
-                                <div class="wrap-article__row__half">
-                                    {{ 'Shopsys s.r.o.'|trans }}<br>
-                                    {{ 'Koksární 1096/10'|trans }}<br>
-                                    {{ '702 00 Ostrava'|trans }}<br>
-                                </div>
-                                <div class="wrap-article__row__half">
-                                    {{ infoOpeningHours|raw }}<br>
-                                    {{ 'tel.: +420 595 177 177'|trans }}<br>
-                                    {{ 'info@shopsys.com'|trans }}<br>
-                                </div>
-                            </div>
-                        <div class="wrap-article__row">
-                            <div class="wrap-article__row__full">
-                                <h4>{{ 'Sídlo'|trans }}</h4>
-                            </div>
-                        </div>
-                        <div class="wrap-article__row padding-bottom-20">
-                            <div class="wrap-article__row__half">
-                                {{ 'Shopsys s.r.o.'|trans }}<br>
-                                {{ 'Koksární 1096/10, 702 00 Ostrava'|trans }}<br>
-                                {{ 'IČO: 27790487, DIČ: CZ27790487'|trans }}<br>
-                            </div>
-                            <div class="wrap-article__row__half">
-                                {{ 'Spisová značka C 51890 vedená u rejstříkového soudu v Ostravě.'|trans }}
-                            </div>
+                        <div class="box-contact__info__item box-contact__info__item--big">
+                            <p class="box-contact__info__item__title">
+                                {{ 'S čím potřebujete pomoct?'|trans }}
+                            </p>
+
+                            <ul class="list-simple js-not-implemented-yet">
+                                <li class="list-simple__item svg-fish">
+                                    <a href="#">Vrácení zboží ve 14 denní lhůtě (odstoupení od smlouvy)</a>
+                                </li>
+                                <li class="list-simple__item svg-fish">
+                                    <a href="#">Změna nebo storno objednávky</a>
+                                </li>
+                                <li class="list-simple__item svg-fish">
+                                    <a href="#">Chci reklamovat zboží</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="wrap-article">
-                <div class="wrap-article__row">
-                    <div class="wrap-article__row__full">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2572.1994196953005!2d18.27169985142554!3d49.85749853769071!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4713e3435efe398b%3A0xee211417a7b2e7ea!2sShopsys!5e0!3m2!1scs!2scz!4v1579251202357!5m2!1scs!2scz" width="100%" height="450" style="border:0" allowfullscreen></iframe>
+
+                <h1 class="box-contact__title">
+                    {{ 'Kamenná prodejna'|trans }}
+                </h1>
+
+                <div class="box-contact__store">
+                    <div class="box-contact__store__left">
+                        <div class="box-contact__store__gallery">
+                            <div class="box-contact__store__gallery__main">
+                                <img src="{{ asset('public/frontend/images/contact1.png') }}" alt="{{ 'store1'|trans }}">
+                            </div>
+                            <div class="box-contact__store__gallery__alt">
+                                <img src="{{ asset('public/frontend/images/contact2.png') }}" alt="{{ 'store2'|trans }}">
+                                <img src="{{ asset('public/frontend/images/contact3.png') }}" alt="{{ 'store3'|trans }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-contact__store__right">
+                        <div class="box-contact__store__row">
+                            <div class="box-contact__store__row__left">
+                                {{ 'Dr. M. Horákové 76, <br>460 07 Liberec'|trans|raw }}
+                            </div>
+                            <div class="box-contact__store__row__right">
+                                {{ '200m od prodejny Kaufland směr centrum, v prostorech budovy označené nyní Urban Sport'|trans }}
+                            </div>
+                        </div>
+                        <div class="box-contact__store__row">
+                            <div class="box-contact__store__row__left">
+                                <strong>{{ 'Otevírací doba'|trans }}<br></strong>
+                                {{ infoOpeningHours|raw }}<br>
+                            </div>
+                            <div class="box-contact__store__row__right">
+                                <strong>{{ 'Osobni odběr'|trans }}<br></strong>
+                                {{ 'Vždy vyčkejte, až vás budeme informovat, že zboží je připravené k odběru.'|trans }}
+                            </div>
+                        </div>
+                        <div class="box-contact__store__row">
+                            <div class="box-contact__store__row__left box-contact__store__row__left--bottom">
+                                {{ 'V případě jakýchkoliv dotazů volejte na číslo'|trans }}
+                                <a href="tel:483 10 44 44">{{ '483 10 44 44'|trans }}</a>. 
+                                <a href="mailto:prodejna@tropicfishing.cz">{{ 'prodejna@tropicfishing.cz'|trans }}</a>
+                                {{ 'a telefon'|trans }}
+                                <a href="tel:+420 777 862 119">{{ '+420 777 862 119'|trans }}</a>.
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="wrap-well wrap-well--big-padding" id="js-contact-form-container">
-                {{ render(controller('App\\Controller\\Front\\ContactFormController:indexAction')) }}
+
+                <div class="box-contact__map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2524.1551171401034!2d15.052732216120594!3d50.75415737951836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470936993e9bf7e1%3A0x1bdf572ee2cd0366!2sTropic%20Liberec%20Ltd.!5e0!3m2!1ssk!2ssk!4v1598701456492!5m2!1ssk!2ssk" width="100%" height="323" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                </div>
+
+                <div class="wrap-well wrap-well--big-gap wrap-well--big-padding" id="js-contact-form-container">
+                    {{ render(controller('App\\Controller\\Front\\ContactFormController:indexAction')) }}
+                </div>
+
+                <h1 class="box-contact__title box-contact__title--big-gap">
+                    {{ 'Fakturační údaje'|trans }}
+                </h1>
+
+                <div class="box-contact__payment">
+                    <div class="box-contact__payment__item box-contact__payment__item--small">
+                        <p class="box-contact__payment__item__text-big">TROPIC LIBEREC s.r.o.</p>
+                        {{ 'Vyhlídková 655, 463 12 Liberec 25<br>Vedené u Krajského soudu v Ústí nad Labem oddíl C,<br> vložka 16777.'|trans|raw }}
+                    </div>
+                    <div class="box-contact__payment__item">
+                        <p class="box-contact__payment__item__text-big">{{ 'IČO: 25415981'|trans }}</p>
+                        <p class="box-contact__payment__item__text-big">{{ 'DIČ: CZ 25415981'|trans }}</p>
+                        <p class="box-contact__payment__item__text-big">{{ 'Č. ú.: 115-7477930207/0100'|trans }}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
