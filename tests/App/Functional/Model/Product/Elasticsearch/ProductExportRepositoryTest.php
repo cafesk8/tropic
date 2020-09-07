@@ -90,6 +90,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'internal_stocks_quantity',
             'external_stocks_quantity',
             'warranty',
+            'variant_type',
         ];
     }
 }

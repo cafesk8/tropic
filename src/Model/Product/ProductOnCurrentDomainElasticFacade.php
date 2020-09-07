@@ -53,7 +53,8 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         ?int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
     ): BaseFilterQuery {
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
-            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup());
+            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
+            ->filterOnlyListable();
 
         if ($pohodaProductType !== null) {
             $filterQuery = $filterQuery->filterByPohodaProductType($pohodaProductType);

@@ -381,6 +381,9 @@
       "warranty": {
         "type": "integer",
         "null_value": -1
+      },
+      "variant_type": {
+        "type": "text"
       }
     }
   }
