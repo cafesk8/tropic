@@ -293,6 +293,9 @@ class BlogArticleFormType extends AbstractType
             ->add('mainPhotoTitles', LocalizedType::class, [
                 'entry_options' => [
                     'required' => false,
+                    'constraints' => [
+                        new Constraints\Length(['max' => 255, 'maxMessage' => 'Description cannot be longer than {{ limit }} characters']),
+                    ],
                 ],
                 'entry_type' => TextareaType::class,
                 'required' => false,
