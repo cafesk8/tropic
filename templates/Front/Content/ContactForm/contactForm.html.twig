@@ -1,5 +1,5 @@
-{{ form_start(form, {attr: {'data-on-submit': 'contactFormAjaxSubmit'}}) }}
-<h2 class="in-title in-title--center in-title--with-gap">{{ mainText|raw }}</h2>
+{{ form_start(form, {attr: {'data-on-submit': 'AjaxSubmit'}}) }}
+<div class="in-title in-title--center in-title--big">{{ mainText|raw }}</div>
 
 {{ form_errors(form) }}
 <div class="wrap-article__row">
@@ -54,6 +54,11 @@
                 }
             )}}
         {% endif %}
+        <div class="display-none">
+                <span class="js-validation-errors-list js-validation-error-list-{{ form.privacyPolicy.vars.id }} form-error form-error--choice display-none">
+                    <ul class="form-error__list"></ul>
+                </span>
+        </div>
         <div class="text-center">
             {{ form_widget(form.send, { label: 'Odeslat zprávu'|trans, attr: {class: 'btn--success'}}) }}
         </div>

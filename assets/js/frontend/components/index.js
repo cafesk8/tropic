@@ -34,4 +34,5 @@ import './searchAutocomplete';
 import './selectric';
 import './opener';
 import './spinbox';
+import './contactForm';
 import './todo';
