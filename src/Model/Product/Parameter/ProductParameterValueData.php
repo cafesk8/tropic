@@ -9,10 +9,10 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData as
 /**
  * @property \App\Model\Product\Parameter\Parameter|null $parameter
  * @property \App\Model\Product\Parameter\ParameterValueData|null $parameterValueData
- * @property \App\Model\Product\Parameter\Parameter|null $parameter
- * @property \App\Model\Product\Parameter\ParameterValueData|null $parameterValueData
  */
 class ProductParameterValueData extends BaseProductParameterValueData
 {
     public ?int $position = null;
+
+    public bool $takenFromMainVariant = false;
 }
