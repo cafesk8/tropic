@@ -14,7 +14,7 @@
         width: 100%;
         overflow: hidden;
 
-        &--full {
+        &--empty {
             position: static;
         }
 
@@ -25,12 +25,20 @@
         &__item {
             margin-left: @in-rating-item-gap;
             line-height: 0;
+            
+            .svg-icon {
+                height: 16px;
+                width: auto;
+                
+                &__item-1 {
+                    .in-rating__list--empty & {
+                        stroke: @color-f;
+                    }
 
-            font-size: 16px;
-            color: @color-gray;
-
-            .in-rating__list--value & {
-                color: @color-f;
+                    .in-rating__list--value & {
+                        fill: @color-f;
+                    }
+                }
             }
         }
     }

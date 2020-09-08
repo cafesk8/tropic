@@ -73,6 +73,30 @@
         &__content {
             padding: 20px 40px;
             width: calc(~"100% - @{box-reviews-item-rating-width}");
+
+            &__top {
+                display: flex;
+                margin-bottom: 7px;
+            }
+
+            &__name {
+                margin: 0 33px 0 0;
+
+                font-weight: 700;
+                font-size: 16px;
+            }
+
+            &__date {
+                font-size: 16px;
+            }
+        }
+
+        &__pros-cons {
+            &__lists {
+                display: flex;
+                flex-direction: row;
+                margin-left: -20px;
+            }
         }
     }
 }

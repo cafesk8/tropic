@@ -1,0 +1,36 @@
+.list-pros-cons {
+    .reset-ul();
+    width: 100%;
+    padding-left: 20px;
+
+    @media @query-md {
+        width: 100% / 2;
+    }
+
+    &__item {
+        position: relative;
+        display: flex;
+        line-height: 24px;
+        padding-left: 20px;
+        
+        font-size: @font-size-small;
+
+        &:before {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+
+            font-family: 'svg';
+            font-size: 8px;
+
+            .list-pros-cons--pros & {
+                color: @color-green;
+            }
+
+            .list-pros-cons--cons & {
+                color: @color-red;
+            }
+        }
+    }
+}
