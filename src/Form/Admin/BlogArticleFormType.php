@@ -294,7 +294,7 @@ class BlogArticleFormType extends AbstractType
                 'entry_options' => [
                     'required' => false,
                     'constraints' => [
-                        new Constraints\Length(['max' => 255, 'maxMessage' => ' Popis nemůže mít více než {{ limit }} znaků']),
+                        new Constraints\Length(['max' => 255, 'maxMessage' => 'Popis nemůže mít více než {{ limit }} znaků']),
                     ],
                 ],
                 'entry_type' => TextareaType::class,
