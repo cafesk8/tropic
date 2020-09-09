@@ -5,7 +5,6 @@ export default function opener () {
 
     opener.each(function () {
         const items = $(this).find('.js-opener-item');
-        const gradientBlock = $(this).find('.js-opener-gradient');
         const itemsWrapper = $(this).find('.js-opener-wrap');
         const openedItems = itemsWrapper.data("opened-items");
         const wrapperFullHeight = itemsWrapper.height();
@@ -14,7 +13,6 @@ export default function opener () {
 
         // Check if is adequate counf od products
         if (items.length <= openedItems) {
-            gradientBlock.hide();
             openerButton.hide();
         } else {
             items.each(function () {
@@ -33,7 +31,6 @@ export default function opener () {
                 return finalHeight;
             }
 
-            gradientBlock.css('height', itemsHeight[openedItems - 1]);
             itemsWrapper.css('height', wrapperHeight());
 
             openerButton.click(function () {
@@ -45,13 +42,11 @@ export default function opener () {
             })
 
             function hideItems (item) {
-                gradientBlock.show()
                 itemsWrapper.css('height', wrapperHeight());
                 item.removeClass('open');
             }
 
             function showItems (item) {
-                gradientBlock.hide()
                 itemsWrapper.css('height', wrapperFullHeight);
                 item.addClass('open');
             }
