@@ -249,7 +249,11 @@
 
                 <div class="{{ listCssClass }}__item__info">
                     <div class="{{ listCssClass }}__item__info__left">
-                        {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
+                        <div class="in-availability">
+                            <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
+                            </div>
+                        </div>
                     </div>
 
                     <div class="{{ listCssClass }}__item__info__right">
