@@ -84,7 +84,7 @@
             occurrence: 'Front-end: Listing of products in sets'
         -   name: listSlider
             width: 240
-            height: 240
+            height: 160
             crop: false
             occurrence: 'Front-end: Listing of products in sliders'
         -   name: gift
@@ -98,7 +98,7 @@
             crop: false
             occurrence: 'Front-end: hover image for variant products on the product detail'
         -   name: biggerThumbnail
-            width: 90
+            width: 200
             height: 90
             crop: false
             occurrence: 'Front-end: gift on product detail and list in products bomb'
