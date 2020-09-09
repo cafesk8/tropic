@@ -46,6 +46,7 @@ class ProductManualInputPriceRepository extends BaseProductManualInputPriceRepos
             }
 
             $queryBuilder
+                ->andWhere('pmip.inputPrice > 0')
                 ->andWhere('pv.visible = true')
                 ->setParameter('mainVariantId', $product);
         } else {
