@@ -130,20 +130,22 @@
                                             </span>
                                         </li>
                                     {% endif %}
-                                    {% if product.warranty %}
-                                        <li class="list-params__item">
-                                            <span class="list-params__item__text">
-                                                <span class="list-params__item__text__name">
-                                                    {{ 'Záruka'|trans }}
-                                                </span>
-                                                <span class="list-params__item__text__value">
+                                    <li class="list-params__item">
+                                        <span class="list-params__item__text">
+                                            <span class="list-params__item__text__name">
+                                                {{ 'Záruka'|trans }}
+                                            </span>
+                                            <span class="list-params__item__text__value">
+                                                {% if product.warranty and product.supplierSet is same as (false) %}
                                                     {% transchoice product.warranty with {'%count%': product.warranty} %}
                                                         {1} %count% měsíc  | [2,4] %count% měsíce | [5,Inf] %count% měsíců
                                                     {% endtranschoice %}
-                                                </span>
+                                                {% else %}
+                                                    {{ '24 měsíců'|trans }}
+                                                {% endif %}
                                             </span>
-                                        </li>
-                                    {% endif %}
+                                        </span>
+                                    </li>
                                 </ul>
                             </div>
 
