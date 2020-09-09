@@ -81,7 +81,6 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @method \App\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method setOrderDataAdministrator(\App\Model\Order\OrderData $orderData)
  * @method calculateOrderItemDataPrices(\App\Model\Order\Item\OrderItemData $orderItemData, int $domainId)
- * @method sendHeurekaOrderInfo(\App\Model\Order\Order $order, bool $disallowHeurekaVerifiedByCustomers)
  * @method fillOrderPayment(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method fillOrderTransport(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method fillOrderRounding(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
@@ -850,5 +849,20 @@ class OrderFacade extends BaseOrderFacade
     public function findByPohodaId(int $pohodaId): ?Order
     {
         return $this->orderRepository->findByPohodaId($pohodaId);
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param bool $disallowHeurekaVerifiedByCustomers
+     */
+    public function sendHeurekaOrderInfo(BaseOrder $order, $disallowHeurekaVerifiedByCustomers)
+    {
+        foreach ($order->getItems() as $item) {
+            if ($item->isTypeProduct() && $item->getProduct()->isForeignSupplier()) {
+                return;
+            }
+        }
+
+        parent::sendHeurekaOrderInfo($order, $disallowHeurekaVerifiedByCustomers);
     }
 }

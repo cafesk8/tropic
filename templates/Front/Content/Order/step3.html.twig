@@ -188,14 +188,18 @@
                             {% do form.note.setRendered %}
 
                             {% if form.disallowHeurekaVerifiedByCustomers is defined %}
-                                <div class="margin-top-10">
-                                    {{ form_widget(form.disallowHeurekaVerifiedByCustomers, {
-                                        attr: { class: 'css-checkbox' }})
-                                    }}
-                                    <label for="{{ form.disallowHeurekaVerifiedByCustomers.vars.id }}" class="css-checkbox__image">
-                                        {{ 'Nesouhlasím se zasláním objednávky do programu Heureka Ověřeno zákazníky'|trans }}
-                                    </label>
-                                </div>
+                                {% if not containsForeignSupplierProducts %}
+                                    <div class="margin-top-10">
+                                        {{ form_widget(form.disallowHeurekaVerifiedByCustomers, {
+                                            attr: { class: 'css-checkbox' }})
+                                        }}
+                                        <label for="{{ form.disallowHeurekaVerifiedByCustomers.vars.id }}" class="css-checkbox__image">
+                                            {{ form.disallowHeurekaVerifiedByCustomers.vars.label }}
+                                        </label>
+                                    </div>
+                                {% else %}
+                                    {% do form.disallowHeurekaVerifiedByCustomers.setRendered %}
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>

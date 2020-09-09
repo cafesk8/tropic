@@ -578,4 +578,24 @@ class CartFacade extends BaseCartFacade
 
         return false;
     }
+
+    /**
+     * @return bool
+     */
+    public function containsForeignSupplierProducts(): bool
+    {
+        $cart = $this->findCartOfCurrentCustomerUser();
+
+        if ($cart === null) {
+            return false;
+        }
+
+        foreach ($cart->getItems() as $item) {
+            if ($item->getProduct()->isForeignSupplier()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

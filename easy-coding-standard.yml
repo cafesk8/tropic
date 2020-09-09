@@ -72,6 +72,7 @@ parameters:
             - '*/src/Model/Product/ProductRepository.php'
             - '*/src/Model/Product/Transfer/PohodaProductMapper.php'
             - '*/src/Controller/Front/ProductController.php'
+            - '*/src/Model/Cart/CartFacade.php'
 
         ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
             - '*/src/Model/Order/Order.php'

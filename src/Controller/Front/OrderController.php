@@ -483,6 +483,7 @@ class OrderController extends FrontBaseController
             'paymentTransportRelations' => $this->getPaymentTransportRelations($payments),
             'bulkyTransportRequired' => $this->cartFacade->isBulkyTransportRequired(),
             'oversizedTransportRequired' => $this->cartFacade->isOversizedTransportRequired(),
+            'containsForeignSupplierProducts' => $this->cartFacade->containsForeignSupplierProducts(),
         ]);
     }
 
