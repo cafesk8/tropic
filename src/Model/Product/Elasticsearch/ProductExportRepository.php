@@ -9,6 +9,7 @@ use App\Model\Product\Flag\Flag;
 use App\Model\Product\Product;
 use App\Model\Product\Set\ProductSetFacade;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
@@ -18,6 +19,7 @@ use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportRepository 
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
 
 /**
@@ -104,6 +106,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
         $result['parameters'] = $this->appendSetItemParameters($locale, $product, $result['parameters']);
         $result['warranty'] = $product->getWarranty();
+        $result['variant_type'] = $product->getVariantType();
 
         return $result;
     }
@@ -273,6 +276,15 @@ class ProductExportRepository extends BaseProductExportRepository
      */
     protected function createQueryBuilder(int $domainId): QueryBuilder
     {
-        return parent::createQueryBuilder($domainId)->andWhere('p.sellingDenied = FALSE');
+        return $this->em->createQueryBuilder()
+            ->select('p')
+            ->from(Product::class, 'p')
+            ->join(ProductVisibility::class, 'prv', Join::WITH, 'prv.product = p.id')
+            ->andWhere('prv.domainId = :domainId')
+            ->andWhere('prv.visible = TRUE')
+            ->andWhere('p.sellingDenied = FALSE')
+            ->groupBy('p.id')
+            ->orderBy('p.id')
+            ->setParameter('domainId', $domainId);
     }
 }

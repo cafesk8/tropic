@@ -40,7 +40,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  * @property \App\Model\Product\View\ImageViewFacade $imageViewFacade
  * @property \App\Model\Product\TopProduct\TopProductFacade $topProductFacade
  * @property \App\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
- * @method \App\Model\Product\View\ListedProductView[] createFromProducts(array $products)
  */
 class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 {
@@ -209,6 +208,37 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
     }
 
     /**
+     * Main variant image view is used as a fallback when variant image does not exist
+     *
+     * @param \App\Model\Product\Product[] $products
+     * @return \App\Model\Product\View\ListedProductView[]
+     */
+    protected function createFromProducts(array $products): array
+    {
+        $productsForImageViewsCreation = $products;
+        foreach ($products as $product) {
+            if ($product->isVariant()) {
+                $productsForImageViewsCreation[] = $product->getMainVariant();
+            }
+        }
+        $imageViews = $this->imageViewFacade->getForEntityIds(BaseProduct::class, $this->getIdsForProducts($productsForImageViewsCreation));
+        $productActionViews = $this->productActionViewFacade->getForProducts($products);
+
+        $listedProductViews = [];
+        foreach ($products as $product) {
+            $productId = $product->getId();
+            if ($product->isVariant() && $imageViews[$productId] === null) {
+                $imageViews[$productId] = $imageViews[$product->getMainVariant()->getId()];
+            }
+            $listedProductViews[$productId] = $this->listedProductViewFactory->createFromProduct($product, $imageViews[$productId], $productActionViews[$productId]);
+        }
+
+        return $listedProductViews;
+    }
+
+    /**
+     * Main variant image view is used as a fallback when variant image does not exist
+     *
      * @param array $productsArray
      * @return \App\Model\Product\View\ListedProductView[]
      */
@@ -218,6 +248,9 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
         foreach ($productsArray as $productArray) {
             $productIds[] = $productArray['id'];
+            if ($productArray['main_variant_id'] !== null) {
+                $productIds[] = $productArray['main_variant_id'];
+            }
         }
 
         $imageViews = $this->imageViewFacade->getForEntityIds(BaseProduct::class, $productIds, null);
@@ -226,6 +259,9 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $listedProductViews = [];
         foreach ($productsArray as $productArray) {
             $productId = $productArray['id'];
+            if ($productArray['main_variant_id'] !== null && $imageViews[$productId] === null) {
+                $imageViews[$productId] = $imageViews[$productArray['main_variant_id']];
+            }
 
             $listedProductViews[$productId] = $this->listedProductViewFactory->createFromArray(
                 $productArray,

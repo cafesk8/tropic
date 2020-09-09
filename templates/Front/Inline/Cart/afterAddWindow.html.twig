@@ -16,7 +16,7 @@
                     <div class="box-popup-add__content__product__wrap-image">
                         {% for productSet in cartItem.product.productSets %}
                             <div class="box-popup-add__content__product__image box-popup-add__content__product__image--sets svg svg-plus-big">
-                                {{ image(productSet.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                                {{ image(productSet.item, {size: 'thumbnail', lazy: false}) }}
                             </div>
                         {% endfor %}
                     </div>
@@ -30,7 +30,7 @@
                     </div>
                 {% else %}
                     <div class="box-popup-add__content__product__image">
-                        {{ image(cartItem.product.productForCreatingImageAccordingToVariant, {size: 'thumbnail', lazy: false}) }}
+                        {{ image(cartItem.product, {size: 'thumbnail', lazy: false}) }}
                     </div>
                 {% endif %}
                 <div class="box-popup-add__content__product__name">

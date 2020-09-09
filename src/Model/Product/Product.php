@@ -487,18 +487,6 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return \App\Model\Product\Product
-     */
-    public function getProductForCreatingImageAccordingToVariant(): self
-    {
-        if ($this->isVariant() === true) {
-            return $this->getMainVariant();
-        }
-
-        return $this;
-    }
-
-    /**
      * @return \App\Model\Product\Flag\ProductFlag[]
      */
     public function getProductFlags(): array

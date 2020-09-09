@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\Search;
 
 use App\Model\Product\Listing\ProductListOrderingConfig;
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
@@ -227,6 +228,22 @@ class FilterQuery extends BaseFilterQuery
         $clone->filters[] = [
             'term' => [
                 'pohoda_product_type' => $pohodaProductType,
+            ],
+        ];
+
+        return $clone;
+    }
+
+    /**
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    public function filterOnlyListable(): self
+    {
+        $clone = clone $this;
+
+        $clone->filters[] = [
+            'terms' => [
+                'variant_type' => [Product::VARIANT_TYPE_NONE, Product::VARIANT_TYPE_MAIN],
             ],
         ];
 

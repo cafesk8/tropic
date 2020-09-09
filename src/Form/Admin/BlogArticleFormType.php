@@ -385,7 +385,7 @@ class BlogArticleFormType extends AbstractType
             ->add('products', ProductsType::class, [
                 'required' => false,
                 'allow_main_variants' => true,
-                'allow_variants' => false,
+                'allow_variants' => true,
             ])
             ->addViewTransformer($this->removeDuplicatesTransformer);
 

@@ -137,11 +137,17 @@ class MergadoFeedItemFactory
     public function create(Product $product, DomainConfig $domainConfig): MergadoFeedItem
     {
         $productImages = $this->getAllImageUrlsByProduct($product, $domainConfig);
+        if (count($productImages) === 0 && $product->isVariant()) {
+            $productImages = $this->getAllImageUrlsByProduct($product->getMainVariant(), $domainConfig);
+        }
         $productVideos = $product->isVariant() ? $product->getMainVariant()->getYoutubeVideoIds() : $product->getYoutubeVideoIds();
         $domainId = $domainConfig->getId();
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
         $sellingPrice = $this->getPrice($product, $domainConfig);
-
+        $mainImageUrl = null;
+        if (count($productImages) > 0) {
+            $mainImageUrl = reset($productImages);
+        }
         return new MergadoFeedItem(
             $product->getId(),
             $product->isVariant() ? $product->getMainVariant()->getId() : null,
@@ -159,7 +165,7 @@ class MergadoFeedItemFactory
             $currency->getCode(),
             $this->getProductAvailability($product),
             $this->getProductDeliveryDays($product),
-            $this->productUrlsBatchLoader->getProductImageUrl($product, $domainConfig),
+            $mainImageUrl,
             $productImages,
             $productVideos[self::FIRST_YOUTUBE_VIDEO_ID_INDEX] ?? null,
             array_slice($productVideos, self::FIRST_ALTERNATIVE_YOUTUBE_VIDEO_ID_INDEX),

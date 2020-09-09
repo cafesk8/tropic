@@ -37,7 +37,7 @@ class ImageFacade extends BaseImageFacade
     public function getAllImagesUrlsByEntity($entity, DomainConfig $domainConfig): array
     {
         $allImagesUrls = [];
-        $allImages = $this->getAllImagesByEntity($entity);
+        $allImages = $this->getImagesByEntityIndexedById($entity, null);
 
         foreach ($allImages as $image) {
             $allImagesUrls[] = $this->getImageUrl($domainConfig, $image, null, null);
@@ -190,5 +190,16 @@ class ImageFacade extends BaseImageFacade
         $entityName = $this->imageConfig->getImageEntityConfigByClass($entityClass)->getEntityName();
 
         return $this->imageRepository->getMainImagesByEntitiesIndexedByEntityId($entityIds, $entityName, $type);
+    }
+
+    /**
+     * @param string $entityName
+     * @param int $entityId
+     * @param string|null $type
+     * @return \App\Component\Image\Image|null
+     */
+    public function findImageByEntity(string $entityName, int $entityId, ?string $type): ?Image
+    {
+        return $this->imageRepository->findImageByEntity($entityName, $entityId, $type);
     }
 }

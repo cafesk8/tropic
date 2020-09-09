@@ -5,7 +5,7 @@
             <div class="list-cart-preview__item__wrap-image">
                 {% for productSet in product.productSets %}
                     <div class="list-cart-preview__item__image list-cart-preview__item__image--sets svg svg-plus-big">
-                        {{ image(productSet.item.productForCreatingImageAccordingToVariant, {size: 'thumbnail'}) }}
+                        {{ image(productSet.item, {size: 'thumbnail'}) }}
                     </div>
                 {% endfor %}
             </div>
@@ -19,7 +19,7 @@
             </div>
         {% else %}
             <div class="list-cart-preview__item__image">
-                {{ image(product.productForCreatingImageAccordingToVariant, { size: 'mediumThumbnail' }) }}
+                {{ image(product, { size: 'mediumThumbnail' }) }}
             </div>
         {% endif %}
 

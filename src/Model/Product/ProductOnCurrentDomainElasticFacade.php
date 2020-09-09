@@ -32,7 +32,9 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
             ->filterIds(array_values($ids));
 
-        return $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery)->getHits();
+        $hits = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery)->getHits();
+
+        return $this->sortByOriginalArray($hits, $ids);
     }
 
     /**
@@ -51,7 +53,8 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         ?int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
     ): BaseFilterQuery {
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
-            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup());
+            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
+            ->filterOnlyListable();
 
         if ($pohodaProductType !== null) {
             $filterQuery = $filterQuery->filterByPohodaProductType($pohodaProductType);
@@ -295,15 +298,25 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 
         $hits = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery)->getHits();
 
-        $hitsSortedByOriginalArray = [];
-        foreach ($hits as $hit) {
-            $originalIndex = array_search($hit['id'], $ids, true);
+        return $this->sortByOriginalArray($hits, $ids);
+    }
+
+    /**
+     * @param array $arrayForSorting
+     * @param array $originalArray
+     * @return array
+     */
+    private function sortByOriginalArray(array $arrayForSorting, array $originalArray): array
+    {
+        $result = [];
+        foreach ($arrayForSorting as $item) {
+            $originalIndex = array_search($item['id'], $originalArray, true);
             if ($originalIndex !== false) {
-                $hitsSortedByOriginalArray[$originalIndex] = $hit;
+                $result[$originalIndex] = $item;
             }
         }
-        ksort($hitsSortedByOriginalArray);
+        ksort($result);
 
-        return $hitsSortedByOriginalArray;
+        return $result;
     }
 }
