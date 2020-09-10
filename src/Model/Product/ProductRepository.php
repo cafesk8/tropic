@@ -8,6 +8,7 @@ use App\Model\Category\Category;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Set\ProductSet;
 use DateTime;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -760,5 +761,27 @@ class ProductRepository extends BaseProductRepository
         $query->useQueryCache(false);
 
         return $query->execute();
+    }
+
+    /**
+     * @return \Doctrine\ORM\Internal\Hydration\IterableResult|\App\Model\Product\Product[][]
+     */
+    public function getProductIteratorForReplaceVat()
+    {
+        $ids = $this->em->createQuery('
+            SELECT DISTINCT p.id
+            FROM ' . Product::class . ' p
+            JOIN ' . ProductDomain::class . ' pd WITH pd.product = p
+            JOIN pd.vat v
+            WHERE v.replaceWith IS NOT NULL
+        ')->getResult(AbstractQuery::HYDRATE_ARRAY);
+
+        $query = $this->em->createQuery('
+            SELECT p
+            FROM ' . Product::class . ' p
+            WHERE p.id IN (:ids)
+        ')->setParameter('ids', array_column($ids, 'id'));
+
+        return $query->iterate();
     }
 }
