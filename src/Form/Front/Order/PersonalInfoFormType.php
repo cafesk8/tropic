@@ -374,7 +374,7 @@ class PersonalInfoFormType extends AbstractType
                     if (!$orderData->deliveryAddressSameAsBillingAddress) {
                         $validationGroups[] = self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED;
                     }
-                    if ($this->isPickupPlaceAndStoreNull($orderData) === true && $orderData->deliveryAddress === null) {
+                    if ($this->isPickupPlaceAndStoreNull($orderData) && !$this->isPacketaTransport($orderData) && $orderData->deliveryAddress === null) {
                         $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED;
                     }
 
@@ -394,5 +394,14 @@ class PersonalInfoFormType extends AbstractType
         }
 
         return $orderData->pickupPlace === null && $orderData->store === null;
+    }
+
+    /**
+     * @param \App\Model\Order\FrontOrderData $orderData
+     * @return bool
+     */
+    private function isPacketaTransport(FrontOrderData $orderData): bool
+    {
+        return $orderData->transport !== null && $orderData->transport->isPacketaType();
     }
 }

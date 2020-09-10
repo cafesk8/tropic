@@ -40,14 +40,16 @@ class OrderDataMapper extends BaseOrderDataMapper
         /** @var \App\Model\Order\OrderData $orderData */
         $orderData = parent::getOrderDataFromFrontOrderData($frontOrderData);
 
-        if ($orderData->transport !== null && $orderData->transport->isPickupPlace() && $frontOrderData->pickupPlace !== null) {
-            $orderData->pickupPlace = $frontOrderData->pickupPlace;
-            $this->setOrderDeliveryAddressDataByPickUpPlace($orderData, $frontOrderData, $orderData->pickupPlace);
-        }
-
-        if ($orderData->transport !== null && $orderData->transport->isChooseStore() && $frontOrderData->store !== null) {
-            $orderData->store = $frontOrderData->store;
-            $this->setOrderDeliveryAddressDataByStore($orderData, $frontOrderData, $orderData->store);
+        if ($orderData->transport !== null) {
+            if ($orderData->transport->isPacketaType() && isset($frontOrderData->packetaId)) {
+                $this->setOrderDeliveryAddressDataByPacketa($orderData, $frontOrderData);
+            } elseif ($orderData->transport->isPickupPlace() && $frontOrderData->pickupPlace !== null) {
+                $orderData->pickupPlace = $frontOrderData->pickupPlace;
+                $this->setOrderDeliveryAddressDataByPickUpPlace($orderData, $frontOrderData, $orderData->pickupPlace);
+            } elseif ($orderData->transport->isChooseStore() && $frontOrderData->store !== null) {
+                $orderData->store = $frontOrderData->store;
+                $this->setOrderDeliveryAddressDataByStore($orderData, $frontOrderData, $orderData->store);
+            }
         }
 
         $orderData->deliveryCountry = $frontOrderData->country;
@@ -110,6 +112,33 @@ class OrderDataMapper extends BaseOrderDataMapper
         $orderData->deliveryPostcode = $frontOrderData->deliveryPostcode;
 
         $frontOrderData->deliveryCountry = $store->getCountry();
+        $orderData->deliveryCountry = $frontOrderData->deliveryCountry;
+    }
+
+    /**
+     * @param \App\Model\Order\OrderData $orderData
+     * @param \App\Model\Order\FrontOrderData $frontOrderData
+     */
+    private function setOrderDeliveryAddressDataByPacketa(OrderData $orderData, FrontOrderData $frontOrderData): void
+    {
+        $orderData->deliveryFirstName = $frontOrderData->deliveryFirstName;
+        $orderData->deliveryLastName = $frontOrderData->deliveryLastName;
+
+        $frontOrderData->deliveryCompanyName = 'Zásilkovna #' . $frontOrderData->packetaId;
+        $orderData->deliveryCompanyName = $frontOrderData->deliveryCompanyName;
+
+        $orderData->deliveryTelephone = $frontOrderData->deliveryTelephone;
+
+        $frontOrderData->deliveryStreet = $frontOrderData->packetaStreet;
+        $orderData->deliveryStreet = $frontOrderData->deliveryStreet;
+
+        $frontOrderData->deliveryCity = $frontOrderData->packetaCity;
+        $orderData->deliveryCity = $frontOrderData->deliveryCity;
+
+        $frontOrderData->deliveryPostcode = $frontOrderData->packetaZip;
+        $orderData->deliveryPostcode = $frontOrderData->deliveryPostcode;
+
+        $frontOrderData->deliveryCountry = $this->countryFacade->getByCode($frontOrderData->packetaCountry);
         $orderData->deliveryCountry = $frontOrderData->deliveryCountry;
     }
 }

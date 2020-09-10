@@ -30,30 +30,15 @@ class TransportFormTypeExtension extends AbstractTypeExtension
     public const VALIDATION_GROUP_BALIKOBOT = 'balikobot';
     public const VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE = 'balikobot_shipper_service';
 
-    /**
-     * @var \App\Component\Balikobot\Shipper\ShipperFacade
-     */
-    private $shipperFacade;
+    private ShipperFacade $shipperFacade;
 
-    /**
-     * @var \App\Component\Balikobot\Shipper\ShipperServiceFacade
-     */
-    private $shipperServiceFacade;
+    private ShipperServiceFacade $shipperServiceFacade;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter
-     */
-    private $currentDomainRouter;
+    private CurrentDomainRouter $currentDomainRouter;
 
-    /**
-     * @var \App\Model\Country\CountryFacade
-     */
-    private $countryFacade;
+    private CountryFacade $countryFacade;
 
-    /**
-     * @var \App\Component\MergadoTransportType\MergadoTransportTypeFacade
-     */
-    private $mergadoTransportTypeFacade;
+    private MergadoTransportTypeFacade $mergadoTransportTypeFacade;
 
     private TransportFacade $transportFacade;
 
@@ -192,6 +177,8 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             'choices' => [
                 t('Bez osobního převzetí') => Transport::TYPE_NONE,
                 t('Balíkobot') => Transport::TYPE_PERSONAL_TAKE_BALIKOBOT,
+                t('Zásilkovna CZ') => Transport::TYPE_ZASILKOVNA_CZ,
+                t('Zásilkovna SK') => Transport::TYPE_ZASILKOVNA_SK,
                 t('Prodejny') => Transport::TYPE_PERSONAL_TAKE_STORE,
                 t('E-mailem') => Transport::TYPE_EMAIL,
             ],

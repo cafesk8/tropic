@@ -98,11 +98,15 @@ class TransportFacade extends BaseTransportFacade
     public function create(BaseTransportData $transportData): Transport
     {
         $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
+        $transportData->pickupPlace = false;
+
         if ($transportData->transportType === Transport::TYPE_PERSONAL_TAKE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
             $transportData->pickupPlace = true;
             $transportData->initialDownload = true;
-        } else {
-            $transportData->pickupPlace = false;
+        }
+
+        if (in_array($transportData->transportType, [Transport::TYPE_ZASILKOVNA_CZ, Transport::TYPE_ZASILKOVNA_SK], true)) {
+            $transportData->pickupPlace = true;
         }
 
         /** @var \App\Model\Transport\Transport $transport */
@@ -130,14 +134,18 @@ class TransportFacade extends BaseTransportFacade
     public function edit(BaseTransport $transport, BaseTransportData $transportData): void
     {
         $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
+        $transportData->pickupPlace = false;
+
         if ($transportData->transportType === Transport::TYPE_PERSONAL_TAKE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
             $transportData->pickupPlace = true;
 
             if ($transport->isBalikobotChanged($transportData) === true) {
                 $transportData->initialDownload = true;
             }
-        } else {
-            $transportData->pickupPlace = false;
+        }
+
+        if (in_array($transportData->transportType, [Transport::TYPE_ZASILKOVNA_CZ, Transport::TYPE_ZASILKOVNA_SK], true)) {
+            $transportData->pickupPlace = true;
         }
 
         parent::edit($transport, $transportData);

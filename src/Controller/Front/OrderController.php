@@ -32,6 +32,7 @@ use App\Model\Order\OrderDataMapper;
 use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\PayPal\PayPalFacade;
 use App\Model\Security\CustomerLoginHandler;
+use App\Model\Transport\PickupPlace\PacketaPickupPlaceData;
 use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Exception;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -458,6 +459,15 @@ class OrderController extends FrontBaseController
 
         $this->setGtmDataLayer($orderFlow, $orderPreview);
 
+        $pickupPlace = $transport !== null && $transport->isPacketaType() && isset($frontOrderFormData->packetaId) ? new PacketaPickupPlaceData(
+            $frontOrderFormData->packetaId,
+            $frontOrderFormData->packetaName,
+            $frontOrderFormData->packetaCity,
+            $frontOrderFormData->packetaStreet,
+            $frontOrderFormData->packetaZip,
+            $frontOrderFormData->packetaCountry
+        ) : $orderData->pickupPlace;
+
         return $this->render('Front/Content/Order/index.html.twig', [
             'form' => $form->createView(),
             'flow' => $orderFlow,
@@ -478,7 +488,7 @@ class OrderController extends FrontBaseController
             ),
             'goPayBankSwifts' => $goPayBankSwifts,
             'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
-            'pickupPlace' => $orderData->pickupPlace,
+            'pickupPlace' => $pickupPlace,
             'store' => $orderData->store,
             'paymentTransportRelations' => $this->getPaymentTransportRelations($payments),
             'bulkyTransportRequired' => $this->cartFacade->isBulkyTransportRequired(),

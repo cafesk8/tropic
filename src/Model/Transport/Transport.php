@@ -32,6 +32,8 @@ class Transport extends BaseTransport
     public const TYPE_PERSONAL_TAKE_BALIKOBOT = 'balikobot';
     public const TYPE_PERSONAL_TAKE_STORE = 'store';
     public const TYPE_EMAIL = 'e-mail';
+    public const TYPE_ZASILKOVNA_CZ = 'zasilkovnaCZ';
+    public const TYPE_ZASILKOVNA_SK = 'zasilkovnaSK';
 
     /**
      * @var bool
@@ -249,6 +251,14 @@ class Transport extends BaseTransport
     }
 
     /**
+     * @return bool
+     */
+    public function isPacketaType(): bool
+    {
+        return $this->transportType === self::TYPE_ZASILKOVNA_CZ || $this->transportType === self::TYPE_ZASILKOVNA_SK;
+    }
+
+    /**
      * @return \App\Model\Country\Country[]
      */
     public function getCountries(): array
@@ -295,11 +305,13 @@ class Transport extends BaseTransport
     private function setTransportType(string $type): void
     {
         if (in_array($type, [
-            self::TYPE_NONE,
-            self::TYPE_PERSONAL_TAKE_BALIKOBOT,
-            self::TYPE_PERSONAL_TAKE_STORE,
-            self::TYPE_EMAIL,
-        ], true) === false) {
+                self::TYPE_NONE,
+                self::TYPE_PERSONAL_TAKE_BALIKOBOT,
+                self::TYPE_PERSONAL_TAKE_STORE,
+                self::TYPE_EMAIL,
+                self::TYPE_ZASILKOVNA_CZ,
+                self::TYPE_ZASILKOVNA_SK,
+            ], true) === false) {
             throw new InvalidPersonalTakeTypeException('Invalid transport type `%s`', $type);
         }
         $this->transportType = $type;

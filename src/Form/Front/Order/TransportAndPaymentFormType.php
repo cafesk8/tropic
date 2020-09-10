@@ -27,12 +27,15 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class TransportAndPaymentFormType extends AbstractType
 {
+    private const VALIDATION_GROUP_PACKETA = 'packetaRequired';
+
     /**
      * @var \App\Model\Transport\TransportFacade
      */
@@ -196,6 +199,19 @@ class TransportAndPaymentFormType extends AbstractType
                     ->create('store', HiddenType::class)
                     ->addModelTransformer($this->storeIdToEntityTransformer)
             )
+            ->add('packetaId', HiddenType::class, [
+                'constraints' => [
+                    new Constraints\NotBlank([
+                        'message' => 'Vyplňte pobočku, prosím',
+                        'groups' => [self::VALIDATION_GROUP_PACKETA],
+                    ]),
+                ],
+            ])
+            ->add('packetaName', HiddenType::class)
+            ->add('packetaStreet', HiddenType::class)
+            ->add('packetaCity', HiddenType::class)
+            ->add('packetaZip', HiddenType::class)
+            ->add('packetaCountry', HiddenType::class)
             ->add('save', SubmitType::class);
     }
 
@@ -216,6 +232,18 @@ class TransportAndPaymentFormType extends AbstractType
                 'constraints' => [
                     new Constraints\Callback([$this, 'validateTransportPaymentRelation']),
                 ],
+                'validation_groups' => function (FormInterface $form) {
+                    $validationGroups = [];
+
+                    /** @var \App\Model\Order\FrontOrderData $orderData */
+                    $orderData = $form->getData();
+
+                    if ($orderData->transport instanceof BaseTransport && $orderData->transport->isPacketaType()) {
+                        $validationGroups[] = self::VALIDATION_GROUP_PACKETA;
+                    }
+
+                    return $validationGroups;
+                },
             ]);
     }
 
@@ -239,8 +267,10 @@ class TransportAndPaymentFormType extends AbstractType
             $context->addViolation('Please choose a valid combination of transport and payment');
         }
 
-        if ($transport instanceof BaseTransport && $transport->isPickupPlaceType() && $this->isPickupPlaceAndStoreNull($orderData)) {
-            $context->addViolation('Vyberte prosím pobočku');
+        if ($transport instanceof BaseTransport) {
+            if ($transport->isPickupPlaceType() && !$transport->isPacketaType() && $this->isPickupPlaceAndStoreNull($orderData)) {
+                $context->addViolation('Vyberte prosím pobočku');
+            }
         }
     }
 
