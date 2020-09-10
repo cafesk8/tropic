@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
+use App\Model\Product\Brand\Brand;
 use DateTime;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
@@ -483,5 +484,39 @@ class CategoryRepository extends BaseCategoryRepository
         $query->execute([
             'now' => $now,
         ]);
+    }
+
+    /**
+     * @param \App\Model\Product\Brand\Brand $brand
+     * @param int $level
+     * @param int $domainId
+     * @return \App\Model\Category\Category[]
+     */
+    public function getAllVisibleCategoriesByBrandLevelAndDomain(Brand $brand, int $level, int $domainId): array
+    {
+        $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainId)
+            ->join(
+                ProductCategoryDomain::class,
+                'pcd',
+                Join::WITH,
+                'pcd.category = c
+                    AND pcd.domainId = :domainId'
+            )
+            ->join(
+                Product::class,
+                'pr',
+                Join::WITH,
+                'pr.brand = :brand
+                    AND pr = pcd.product'
+            )
+            ->select('c')
+            ->andWhere('c.listable = true')
+            ->andWhere('c.level = :categoryLevel')
+            ->setParameter('domainId', $domainId)
+            ->setParameter('brand', $brand)
+            ->setParameter('categoryLevel', $level)
+            ->orderBy('c.lft');
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

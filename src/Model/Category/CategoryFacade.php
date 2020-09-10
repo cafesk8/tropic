@@ -8,6 +8,7 @@ use App\Component\Redis\RedisFacade;
 use App\Model\Advert\Advert;
 use App\Model\Category\Transfer\CategoryRemoveFacade;
 use App\Model\Category\Transfer\Exception\MaximumPercentageOfCategoriesToRemoveLimitExceeded;
+use App\Model\Product\Brand\Brand;
 use App\Model\Product\Parameter\Parameter;
 use App\Model\Product\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -140,6 +141,17 @@ class CategoryFacade extends BaseCategoryFacade
     public function getAllVisibleAndListableChildrenByCategoryAndDomainId(Category $category, int $domainId): array
     {
         return $this->categoryRepository->getAllVisibleAndListableChildrenByCategoryAndDomainId($category, $domainId);
+    }
+
+    /**
+     * @param \App\Model\Product\Brand\Brand $brand
+     * @param int $level
+     * @param int $domainId
+     * @return \App\Model\Category\Category[]
+     */
+    public function getAllVisibleCategoriesByBrandLevelAndDomain(Brand $brand, int $level, int $domainId): array
+    {
+        return $this->categoryRepository->getAllVisibleCategoriesByBrandLevelAndDomain($brand, $level, $domainId);
     }
 
     /**

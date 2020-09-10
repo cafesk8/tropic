@@ -42,6 +42,7 @@ class ProductController extends FrontBaseController
     public const PAGE_SETS_QUERY_PARAMETER = 'pageSets';
     public const PRODUCTS_PER_PAGE = 24;
     public const VISIBLE_FILTER_CHOICES_LIMIT = 4;
+    public const BRAND_CATEGORIES_LEVEL = 2;
     private const PRODUCT_BLOG_ARTICLES_LIMIT = 2;
     private const LIST_BLOG_ARTICLES_LIMIT = 1;
     private const PRE_LIST_BLOG_ARTICLES_LIMIT = 2;
@@ -764,10 +765,12 @@ class ProductController extends FrontBaseController
         );
 
         $brand = $this->brandFacade->getById($id);
+        $visibleCategories = $this->categoryFacade->getAllVisibleCategoriesByBrandLevelAndDomain($brand, self::BRAND_CATEGORIES_LEVEL, $this->domain->getId());
 
         $viewParameters = [
             'paginationResult' => $paginationResult,
             'brand' => $brand,
+            'visibleCategories' => $visibleCategories,
         ];
 
         if ($request->isXmlHttpRequest()) {

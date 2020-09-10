@@ -44,6 +44,9 @@
                 {% else %}
                     {% set categoryUrl = url('front_product_list', { id: category.id }) %}
                 {% endif %}
+                {% if brand is defined %}
+                    {% set categoryUrl = categoryUrl ~ '?vyrobce=' ~ brand.name|lower %}
+                {% endif %}
                 <li class="list-categories__item">
                     <a href="{{ categoryUrl }}"
                     class="list-categories__item__link">
