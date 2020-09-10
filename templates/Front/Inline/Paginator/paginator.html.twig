@@ -116,3 +116,9 @@
     />
     </a>
 {% endmacro %}
+
+{% macro titleAddon(paginationResult) %}
+    {% if paginationResult.page > 1 %}
+        {{ 'strana %page% z %pageCount%'|trans({'%page%': paginationResult.page, '%pageCount%': paginationResult.pageCount}) }}
+    {% endif %}
+{% endmacro %}

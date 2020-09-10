@@ -5,6 +5,7 @@
 
 {% block title %}
     {{ 'Search results for "%searchText%"'|trans({ '%searchText%': searchText }) }}
+    {{ paginator.titleAddon(paginationResultProducts) }}
 {% endblock %}
 
 {% block meta_robots %}
@@ -18,7 +19,10 @@
     <div class="box-search">
         <div class="web__line">
             <div class="web__container">
-                <h1 class="box-search__title">{{ 'Vyhledávání výrazu'|trans }} <strong>„{{ searchText }}“</strong></h1>
+                <h1 class="box-search__title">
+                    {{ 'Vyhledávání výrazu'|trans }} <strong>„{{ searchText }}“</strong>
+                    {{ paginator.titleAddon(paginationResultProducts) }}
+                </h1>
             </div>
         </div>
 

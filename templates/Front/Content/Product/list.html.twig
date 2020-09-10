@@ -18,6 +18,7 @@
 
 {% block title %}
     {{ categoryTitle }}
+    {{ paginator.titleAddon(paginationResult) }}
 {% endblock %}
 
 {% block main_content %}
@@ -26,6 +27,7 @@
             <div class="web__container">
                 <h1 class="box-list__title js-category-title">
                     {{ categoryTitle }}
+                    {{ paginator.titleAddon(paginationResult) }}
                 </h1>
 
                 {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert' : category.getAdvert()})) }}
