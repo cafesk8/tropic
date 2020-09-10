@@ -150,6 +150,11 @@
                                             <div class="table-cart__messages__item in-message in-message--without-gap in-message--warning js-maximum-amount-warning display-none">
                                                 {{ 'Větší množství není možné nakoupit'|trans }}
                                             </div>
+                                            {% if cartItem.product.isAvailableInDays(true) and not cartItem.saleItem %}
+                                                <div class="table-cart__messages__item in-message in-message--without-gap in-message--warning">
+                                                    {{ 'Tento produkt prodlouží dodání celé objednávky'|trans }}
+                                                </div>
+                                            {% endif %}
                                             {{ discountExclusion.discountExclusionNotice(cartItem.product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, 'in-discount-message--cart') }}
                                         </div>
                                     </div>
