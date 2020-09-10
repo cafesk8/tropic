@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class OrderExportStatusFilter implements AdvancedSearchFilterInterface
 {
     public const NAME = 'exportStatus';
+    private const EXPORT_NOT_SUCCESS = 'notSuccess';
 
     /**
      * @inheritDoc
@@ -51,6 +52,7 @@ class OrderExportStatusFilter implements AdvancedSearchFilterInterface
                 t('Přeneseno') => Order::EXPORT_SUCCESS,
                 t('Zatím nepřeneseno') => Order::EXPORT_NOT_YET,
                 t('Chyba při přenosu') => Order::EXPORT_ERROR,
+                t('Zatím nepřeneseno nebo chyba při přenosu') => self::EXPORT_NOT_SUCCESS,
             ],
         ];
     }
@@ -62,10 +64,17 @@ class OrderExportStatusFilter implements AdvancedSearchFilterInterface
     {
         foreach ($rulesData as $index => $ruleData) {
             if ($ruleData->operator === self::OPERATOR_IS || $ruleData->operator === self::OPERATOR_IS_NOT) {
-                $dqlOperator = $this->getContainsDqlOperator($ruleData->operator);
-                $parameterName = 'orderExportStatus_' . $index;
-                $queryBuilder->andWhere('o.exportStatus ' . $dqlOperator . ' :' . $parameterName);
-                $queryBuilder->setParameter($parameterName, $ruleData->value);
+                if ($ruleData->value === self::EXPORT_NOT_SUCCESS) {
+                    $parameterName = 'orderExportStatus_' . $index;
+                    $operator = $ruleData->operator === self::OPERATOR_IS ? 'IN' : 'NOT IN';
+                    $queryBuilder->andWhere('o.exportStatus ' . $operator . ' (:' . $parameterName . ')');
+                    $queryBuilder->setParameter($parameterName, [Order::EXPORT_NOT_YET, Order::EXPORT_ERROR]);
+                } else {
+                    $dqlOperator = $this->getContainsDqlOperator($ruleData->operator);
+                    $parameterName = 'orderExportStatus_' . $index;
+                    $queryBuilder->andWhere('o.exportStatus ' . $dqlOperator . ' :' . $parameterName);
+                    $queryBuilder->setParameter($parameterName, $ruleData->value);
+                }
             }
         }
     }
