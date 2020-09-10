@@ -88,6 +88,23 @@
     {% endif %}
 {% endmacro %}
 
+{% macro relLinks(paginationResult, pageQueryParameter = 'page') -%}
+    {% if paginationResult.pageCount > 1 -%}
+        {% set route = getRoute() -%}
+        {% set routeParams = getAllRequestParams() -%}
+        {% if not paginationResult.firstPage -%}
+            {% set page = paginationResult.previousPage -%}
+            {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
+            <link rel="prev" href="{{ path(route, routeParams) }}">
+        {% endif %}
+        {% if not paginationResult.lastPage -%}
+            {% set page = paginationResult.nextPage -%}
+            {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
+            <link rel="next" href="{{ path(route, routeParams) }}">
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
 {% macro loadMoreButton(paginationResult, url = '', pageQueryParameter = 'page') %}
     <a class="btn btn--big js-load-more-button"
            data-page="{{ paginationResult.page }}"

@@ -7,6 +7,9 @@
 {% block meta_robots %}
     {{ paginator.metaRobots(paginationResult) }}
 {% endblock %}
+{% block meta_rel_links %}
+    {{ paginator.relLinks(paginationResult) }}
+{% endblock %}
 
 {% block title %}
     {{ brand.getSeoTitle(domain.id)|default(brand.name) }}
