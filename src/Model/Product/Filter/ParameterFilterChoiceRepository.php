@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Filter;
 
+use App\Model\Product\Parameter\ParameterValue;
 use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Component\Doctrine\GroupedScalarHydrator;
 use Shopsys\FrameworkBundle\Model\Category\Category;
@@ -11,7 +12,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoice;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository as BaseParameterFilterChoiceRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 
 /**
@@ -19,7 +19,6 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
  * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Product\ProductRepository $productRepository)
  * @method \App\Model\Product\Parameter\Parameter[] getVisibleParametersIndexedByIdOrderedByName(array $rows, string $locale)
  * @method \App\Model\Product\Parameter\ParameterValue[][] getParameterValuesIndexedByParameterIdOrderedByValueText(array $rows, string $locale)
- * @method \App\Model\Product\Parameter\ParameterValue[] getParameterValuesIndexedByIdOrderedByText(array $rows, string $locale)
  */
 class ParameterFilterChoiceRepository extends BaseParameterFilterChoiceRepository
 {
@@ -93,5 +92,43 @@ class ParameterFilterChoiceRepository extends BaseParameterFilterChoiceRepositor
         }
 
         return $parameterFilterChoices;
+    }
+
+    /**
+     * Override removes original sorting and adds natural sorting (sorts numbers by their value instead of alphabetically)
+     *
+     * @param array $rows
+     * @param string $locale
+     * @return \App\Model\Product\Parameter\ParameterValue[]
+     */
+    protected function getParameterValuesIndexedByIdOrderedByText(array $rows, $locale)
+    {
+        $valueIds = [];
+        foreach ($rows as $row) {
+            $valueId = $row['pv']['id'];
+            $valueIds[$valueId] = $valueId;
+        }
+
+        $valuesQueryBuilder = $this->em->createQueryBuilder()
+            ->select('pv')
+            ->from(ParameterValue::class, 'pv')
+            ->where('pv.id IN (:valueIds)')
+            ->andWhere('pv.locale = :locale');
+        $valuesQueryBuilder->setParameter('valueIds', $valueIds);
+        $valuesQueryBuilder->setParameter('locale', $locale);
+        /** @var \App\Model\Product\Parameter\ParameterValue[] $values */
+        $values = $valuesQueryBuilder->getQuery()->execute();
+
+        $valuesIndexedById = [];
+        foreach ($values as $value) {
+            $valuesIndexedById[$value->getId()] = $value;
+        }
+
+        uasort($valuesIndexedById, function(ParameterValue $first, ParameterValue $second)
+        {
+            return strnatcmp($first->getText(), $second->getText());
+        });
+
+        return $valuesIndexedById;
     }
 }
