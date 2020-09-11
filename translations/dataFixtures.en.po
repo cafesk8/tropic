@@ -664,9 +664,6 @@ msgstr ""
 msgid "Display type"
 msgstr ""
 
-msgid "Do you have a question?"
-msgstr ""
-
 msgid "Dobrý den,<br /><br /> produkt <a href=\"{product_url}\">{product_name}</a>, který jste se rozhodli sledovat, je nyní k dispozici za vámi požadovanou cenu.<br /><br /> S pozdravem<br /> tým Tropic Fishing"
 msgstr ""
 
@@ -698,6 +695,21 @@ msgid "Doporučujeme"
 msgstr ""
 
 msgid "Doprodej"
+msgstr ""
+
+msgid "Dárkový kupón 1000 Kč"
+msgstr ""
+
+msgid "Dárkový kupón 500 Kč"
+msgstr ""
+
+msgid "Dárkový kupón v hodnotě 1000 Kč"
+msgstr ""
+
+msgid "Dárkový kupón v hodnotě 500 Kč"
+msgstr ""
+
+msgid "Dárkový kupón, který lze uplatnit na většinu neslevněných produktů v našem obchodu. Ideální dárek pro vaše rybářské kamarády."
 msgstr ""
 
 msgid "Dárkový poukaz"
@@ -1024,6 +1036,9 @@ msgstr ""
 msgid "Multimedia"
 msgstr ""
 
+msgid "Máte dotaz?"
+msgstr ""
+
 msgid "NFC"
 msgstr ""
 
@@ -1141,6 +1156,9 @@ msgstr ""
 msgid "OKI MC861cdxn+ (01318206)"
 msgstr ""
 
+msgid "OLED"
+msgstr ""
+
 msgid "OLYMPUS ME-34 Compact directional microphone suitable for recording lectures"
 msgstr ""
 
@@ -1223,6 +1241,9 @@ msgid "PayPal"
 msgstr ""
 
 msgid "Perfectly cleans, treats and protects stainless steel surfaces in one step.<ul> <li> <strong> remove </strong> without smudges dust, dirt, fingerprints and grease </li><li> long-lasting protective film <strong> repellent </strong> water and prevents new settling of dirt </li><li> <strong> acts </strong> antistatically </li></ul>"
+msgstr ""
+
+msgid "Perfektní kaprový prut a dvoukomorové pouzdro"
 msgstr ""
 
 msgid "Philips 32PFL4308"
@@ -1714,6 +1735,9 @@ msgstr ""
 msgid "Výhodná sada příslušenství k vašemu počítači"
 msgstr ""
 
+msgid "Výhodný set prut + pouzdro"
+msgstr ""
+
 msgid "Výprodej"
 msgstr ""
 
@@ -1790,6 +1814,12 @@ msgid "Zaplaceno"
 msgstr "Paid"
 
 msgid "Zásady ochrany osobních údajů"
+msgstr ""
+
+msgid "Zásilkovna CZ"
+msgstr ""
+
+msgid "Zásilkovna SK"
 msgstr ""
 
 msgid "battery"

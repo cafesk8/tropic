@@ -169,6 +169,9 @@ msgstr "Please select country"
 msgid "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
 msgstr "Fill out the information bar to display it to users"
 
+msgid "Popis nemůže mít více než {{ limit }} znaků"
+msgstr ""
+
 msgid "Position in list cannot be longer than {{ limit }} characters"
 msgstr "Position in list cannot be longer than {{ limit }} characters"
 
@@ -234,6 +237,9 @@ msgstr ""
 
 msgid "Vyberte prosím pobočku"
 msgstr "Select a store"
+
+msgid "Vyplňte pobočku, prosím"
+msgstr ""
 
 msgid "Vyplňte prosím SKU dárkového certifikátu."
 msgstr "Fill in SKU of gift certificate"
