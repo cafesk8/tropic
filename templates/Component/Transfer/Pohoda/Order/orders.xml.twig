@@ -145,12 +145,20 @@
                                 </typ:store>
                             </ord:stockItem>
                         {% endif -%}
-                        {% if pohodaOrderItem.pohodaStockName is not null -%}
+                        {% if pohodaOrderItem.pohodaStockName is not null or pohodaOrderItem.isFromExternalStock -%}
                             <ord:parameters>
-                                <typ:parameter>
-                                    <typ:name>VPrSklad</typ:name>
-                                    <typ:textValue>{{ pohodaOrderItem.pohodaStockName }}</typ:textValue>
-                                </typ:parameter>
+                                {% if pohodaOrderItem.pohodaStockName is not null -%}
+                                    <typ:parameter>
+                                        <typ:name>VPrSklad</typ:name>
+                                        <typ:textValue>{{ pohodaOrderItem.pohodaStockName }}</typ:textValue>
+                                    </typ:parameter>
+                                {% endif -%}
+                                {% if pohodaOrderItem.isFromExternalStock -%}
+                                    <typ:parameter>
+                                        <typ:name>VPrKdodaniES</typ:name>
+                                        <typ:numberValue>{{ pohodaOrderItem.quantity }}</typ:numberValue>
+                                    </typ:parameter>
+                                {% endif -%}
                             </ord:parameters>
                         {% endif -%}
                     </ord:orderItem>

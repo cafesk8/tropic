@@ -53,10 +53,13 @@ class PohodaOrderItem
      */
     public ?string $pohodaStockName;
 
+    public bool $isFromExternalStock;
+
     public function __construct()
     {
         $this->pohodaStockId = null;
         $this->pohodaStockName = null;
+        $this->isFromExternalStock = false;
     }
 
     /**
