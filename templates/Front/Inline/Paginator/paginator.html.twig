@@ -83,8 +83,10 @@
 {% endmacro %}
 
 {% macro metaRobots(paginationResult, disableIndexing) %}
-    {% if paginationResult.page != 1 or disableIndexing %}
+    {% if (paginationResult.page != 1 and isUserAgentSeznamBot()) or disableIndexing %}
         <meta name="robots" content="noindex, follow">
+    {% else %}
+        <meta name="robots" content="index, follow">
     {% endif %}
 {% endmacro %}
 
