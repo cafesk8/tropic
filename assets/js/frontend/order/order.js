@@ -194,13 +194,13 @@ export default class PaymentTransportRelations {
     doubleSubmitProtection (event) {
         const $orderSubmitButton = $('.js-order-submit-button');
 
-        if ($orderSubmitButton.attr('submit-protection') === 'true') {
+        if ($orderSubmitButton.attr('additional-submit-protection') === 'true') {
             event.stopImmediatePropagation();
             event.preventDefault();
             return;
         }
 
-        $orderSubmitButton.attr('submit-protection', true);
+        $orderSubmitButton.attr('additional-submit-protection', true);
     }
 
     static copyEmail () {
@@ -224,10 +224,6 @@ export default class PaymentTransportRelations {
         const $emailField = $('.js-order-personal-info-form-email');
         const isLoggedCustomer = $emailField.data('is-logged-customer');
         const $orderSubmitButton = $container.filterAllNodes('.js-order-submit-button');
-
-        if ($orderSubmitButton !== undefined) {
-            $orderSubmitButton.click(paymentTransportRelations.doubleSubmitProtection);
-        }
 
         if (!isLoggedCustomer) {
             $emailField.unbind('focusout', paymentTransportRelations.checkLoginNotice);
@@ -266,6 +262,11 @@ export default class PaymentTransportRelations {
 
         if ($registrationCheckbox.is(':checked')) {
             $registrationFields.show();
+        }
+
+        if ($orderSubmitButton !== undefined) {
+            $orderSubmitButton.unbind('click', paymentTransportRelations.doubleSubmitProtection);
+            $orderSubmitButton.click(paymentTransportRelations.doubleSubmitProtection);
         }
     }
 }

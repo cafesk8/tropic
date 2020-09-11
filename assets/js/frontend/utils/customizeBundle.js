@@ -27,7 +27,7 @@ export function showFormErrorsWindow (container) {
         + '</div>';
 
     const removeSubmitProtection = function () {
-        $('.js-order-submit-button').removeAttr('submit-protection');
+        $('.js-order-submit-button').removeAttr('additional-submit-protection');
     };
 
     if ($window.length === 0) {
