@@ -65,25 +65,25 @@
                     </div>
                     <div class="box-reviews__heureka__pros-cons">
                         {% if review.summary %}
-                            {{ review.summary|raw }}
+                            <div class="box-reviews__heureka__pros-cons__text">
+                                {{ review.summary|raw }}
+                            </div>
                         {% endif %}
 
-                        <div class="box-reviews__heureka__pros-cons__lists">
-                            {% if review.pros %}
-                                <ul class="list-pros-cons list-pros-cons--pros">
-                                    <li class="list-pros-cons__item svg-plus">
-                                        {{ review.pros|raw }}
-                                    </li>
-                                </ul>
-                            {% endif %}
-                            {% if review.cons %}
-                                <ul class="list-pros-cons list-pros-cons--cons">
-                                    <li class="list-pros-cons__item svg-minus">
-                                        {{ review.cons|raw }}
-                                    </li>
-                                </ul>
-                            {% endif %}
-                        </div>
+                        {% if review.pros %}
+                            <ul class="list-pros-cons list-pros-cons--pros">
+                                <li class="list-pros-cons__item svg-plus">
+                                    {{ review.pros|raw }}
+                                </li>
+                            </ul>
+                        {% endif %}
+                        {% if review.cons %}
+                            <ul class="list-pros-cons list-pros-cons--cons">
+                                <li class="list-pros-cons__item svg-minus">
+                                    {{ review.cons|raw }}
+                                </li>
+                            </ul>
+                        {% endif %}
                     </div>
                 </div>
             </div>
