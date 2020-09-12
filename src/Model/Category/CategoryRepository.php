@@ -61,15 +61,18 @@ class CategoryRepository extends BaseCategoryRepository
 
     /**
      * @param \App\Model\Product\Product $product
-     * @param int $domainId
+     * @param Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \Doctrine\ORM\QueryBuilder
      */
-    private function getProductVisibleAndListableProductCategoryDomainsQueryBuilder(Product $product, int $domainId)
+    private function getProductVisibleAndListableProductCategoryDomainsQueryBuilder(Product $product, DomainConfig $domainConfig)
     {
         return $this->getProductCategoryDomainRepository()->createQueryBuilder('pcd')
             ->select('pcd')
-            ->innerJoin('pcd.category', 'c')
-            ->innerJoin('c.domains', 'cd')
+            ->addSelect('c')
+            ->addSelect('ct')
+            ->join('pcd.category', 'c')
+            ->join('c.translations', 'ct', Join::WITH, 'ct.locale = :locale')
+            ->join('c.domains', 'cd')
             ->andWhere('pcd.product = :product')
             ->andWhere('pcd.domainId = :domainId')
             ->andWhere('cd.domainId = :domainId')
@@ -78,7 +81,8 @@ class CategoryRepository extends BaseCategoryRepository
             ->andWhere('c.parent IS NOT NULL')
             ->andWhere('cd.enabled = true')
             ->setParameter('product', $product)
-            ->setParameter('domainId', $domainId);
+            ->setParameter('domainId', $domainConfig->getId())
+            ->setParameter('locale', $domainConfig->getLocale());
     }
 
     /**
@@ -141,12 +145,12 @@ class CategoryRepository extends BaseCategoryRepository
 
     /**
      * @param \App\Model\Product\Product $product
-     * @param int $domainId
+     * @param Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
      */
-    public function getProductVisibleAndListableProductCategoryDomains(Product $product, int $domainId): array
+    public function getProductVisibleAndListableProductCategoryDomains(Product $product, DomainConfig $domainConfig): array
     {
-        return $this->getProductVisibleAndListableProductCategoryDomainsQueryBuilder($product, $domainId)
+        return $this->getProductVisibleAndListableProductCategoryDomainsQueryBuilder($product, $domainConfig)
             ->getQuery()
             ->getResult();
     }

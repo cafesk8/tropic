@@ -176,12 +176,12 @@ class CategoryFacade extends BaseCategoryFacade
 
     /**
      * @param \App\Model\Product\Product $product
-     * @param int $domainId
+     * @param Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domain
      * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
      */
-    public function getProductVisibleAndListableProductCategoryDomains(Product $product, int $domainId): array
+    public function getProductVisibleAndListableProductCategoryDomains(Product $product, DomainConfig $domainConfig): array
     {
-        return $this->categoryRepository->getProductVisibleAndListableProductCategoryDomains($product, $domainId);
+        return $this->categoryRepository->getProductVisibleAndListableProductCategoryDomains($product, $domainConfig);
     }
 
     /**

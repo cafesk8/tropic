@@ -234,7 +234,7 @@ class ProductController extends FrontBaseController
         return $this->render('Front/Content/Product/detail.html.twig', [
             'product' => $product,
             'accessories' => $accessories,
-            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $domainId),
+            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $this->domain->getCurrentDomainConfig()),
             'domainId' => $domainId,
             'productBlogArticles' => $this->blogArticleFacade->getVisibleByProduct(
                 $product,
@@ -265,7 +265,7 @@ class ProductController extends FrontBaseController
             'product' => $product,
             'productMainCategory' => $productMainCategory,
             'youtubeDetails' => $this->productFacade->getYoutubeViews($product),
-            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $domainId),
+            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $this->domain->getCurrentDomainConfig()),
         ]);
     }
 

@@ -79,6 +79,7 @@ class ParameterRepository extends BaseParameterRepository
             ->select('ppv')
             ->from(ProductParameterValue::class, 'ppv')
             ->join('ppv.parameter', 'p')
+            ->join('ppv.value', 'v')
             ->join('p.translations', 'pt')
             ->where('ppv.product = :product_id')
             ->andWhere('pt.locale = :locale')
@@ -98,7 +99,10 @@ class ParameterRepository extends BaseParameterRepository
      */
     public function getProductParameterValuesByProductSortedByPosition(Product $product, $locale): array
     {
-        $queryBuilder = $this->getProductParameterValuesByProductSortedByPositionQueryBuilder($product, $locale);
+        $queryBuilder = $this->getProductParameterValuesByProductSortedByPositionQueryBuilder($product, $locale)
+            ->addSelect('p')
+            ->addSelect('pt')
+            ->addSelect('v');
 
         return $queryBuilder->getQuery()->execute();
     }
