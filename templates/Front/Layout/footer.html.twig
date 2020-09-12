@@ -86,7 +86,9 @@
                             </div>
                             <div class="footer-middle__right">
                                 {% block newsletter_subscription %}
-                                    {{ render(controller('App\\Controller\\Front\\NewsletterController:subscriptionAction')) }}
+                                    {% cache "newsletter_form" {time:60*60*24, domainId: domainId} %}
+                                        {{ render(controller('App\\Controller\\Front\\NewsletterController:subscriptionAction')) }}
+                                    {% endcache %}
                                 {% endblock %}
                             </div>
                         </div>
