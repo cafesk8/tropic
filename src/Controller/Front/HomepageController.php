@@ -98,8 +98,6 @@ class HomepageController extends FrontBaseController
         return $this->render('Front/Content/Default/index.html.twig', [
             'sliderItems' => $sliderItems,
             'priceBombProducts' => $priceBombProducts,
-            'newProducts' => $this->listedProductViewFacade->getProductsWithNewsFlags(self::NEW_PRODUCTS_LIMIT),
-            'newsCategory' => $this->categoryFacade->findNewsCategory(),
             'title' => $this->seoSettingFacade->getTitleMainPage($this->domain->getId()),
             'metaDescription' => $this->seoSettingFacade->getDescriptionMainPage($this->domain->getId()),
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
@@ -110,6 +108,14 @@ class HomepageController extends FrontBaseController
             'domainId' => $this->domain->getId(),
             'loyaltyProgramArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $this->domain->getId()),
             'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+        ]);
+    }
+
+    public function newProductsAction()
+    {
+        return $this->render('Front/Content/Default/newProducts.html.twig', [
+            'newsCategory' => $this->categoryFacade->findNewsCategory(),
+            'newProducts' => $this->listedProductViewFacade->getProductsWithNewsFlags(self::NEW_PRODUCTS_LIMIT),
         ]);
     }
 }
