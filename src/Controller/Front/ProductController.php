@@ -242,7 +242,7 @@ class ProductController extends FrontBaseController
                 $this->domain->getLocale(),
                 self::PRODUCT_BLOG_ARTICLES_LIMIT
             ),
-            'youtubeDetails' => $this->productFacade->getYoutubeViews($product),
+            'youtubeVideoIds' => $product->getYoutubeVideoIds(),
             'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
@@ -264,7 +264,7 @@ class ProductController extends FrontBaseController
         return $this->render('Front/Content/Product/boxTabs.html.twig', [
             'product' => $product,
             'productMainCategory' => $productMainCategory,
-            'youtubeDetails' => $this->productFacade->getYoutubeViews($product),
+            'youtubeVideoIds' => $product->getYoutubeVideoIds(),
             'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $this->domain->getCurrentDomainConfig()),
         ]);
     }

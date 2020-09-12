@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Product;
 
 use App\Component\Domain\DomainHelper;
-use App\Component\GoogleApi\GoogleClient;
-use App\Component\GoogleApi\Youtube\YoutubeView;
 use App\Component\Setting\Setting;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
@@ -24,7 +22,6 @@ use App\Model\Store\StoreFacade;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Google_Service_Exception;
 use Psr\Log\LoggerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Domain\Exception\NoDomainSelectedException;
@@ -120,11 +117,6 @@ class ProductFacade extends BaseProductFacade
     private $storeFacade;
 
     /**
-     * @var \App\Component\GoogleApi\GoogleClient
-     */
-    private $googleClient;
-
-    /**
      * @var \App\Model\Pricing\Group\PricingGroupFacade
      */
     private $pricingGroupFacade;
@@ -203,7 +195,6 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Product\StoreStock\ProductStoreStockFactory $productStoreStockFactory
      * @param \App\Model\Store\StoreFacade $storeFacade
-     * @param \App\Component\GoogleApi\GoogleClient $googleClient
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Component\Setting\Setting $setting
      * @param \Psr\Log\LoggerInterface $logger
@@ -245,7 +236,6 @@ class ProductFacade extends BaseProductFacade
         CurrentCustomerUser $currentCustomerUser,
         ProductStoreStockFactory $productStoreStockFactory,
         StoreFacade $storeFacade,
-        GoogleClient $googleClient,
         PricingGroupFacade $pricingGroupFacade,
         Setting $setting,
         LoggerInterface $logger,
@@ -289,7 +279,6 @@ class ProductFacade extends BaseProductFacade
         $this->currentCustomerUser = $currentCustomerUser;
         $this->productStoreStockFactory = $productStoreStockFactory;
         $this->storeFacade = $storeFacade;
-        $this->googleClient = $googleClient;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->setting = $setting;
         $this->logger = $logger;
@@ -648,44 +637,6 @@ class ProductFacade extends BaseProductFacade
                 $manualInputPrices[$pricingGroup->getId()] ?? null
             );
         }
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @return \App\Component\GoogleApi\Youtube\YoutubeView[]
-     */
-    public function getYoutubeViews(Product $product): array
-    {
-        $youtubeDetails = [];
-        $youtubeVideoIds = $product->getYoutubeVideoIds();
-        if (!empty($youtubeVideoIds)) {
-            foreach ($youtubeVideoIds as $youtubeVideoId) {
-                try {
-                    $youtubeResponse = $this->googleClient->getVideoList($youtubeVideoId);
-                    if ($youtubeResponse->getPageInfo()->getTotalResults() > 0) {
-                        /** @var \Google_Service_YouTube_Video $youtubeVideoItem */
-                        $youtubeVideoItem = $youtubeResponse->getItems()[0];
-                        $youtubeDetail = new YoutubeView(
-                            $youtubeVideoId,
-                            $youtubeVideoItem->getSnippet()->getThumbnails()->getDefault()->url,
-                            $youtubeVideoItem->getSnippet()->getTitle()
-                        );
-
-                        $youtubeDetails[] = $youtubeDetail;
-                    }
-                } catch (Google_Service_Exception $googleServiceException) {
-                    $this->logger->warning(
-                        'Not showing Youtube video on product detail due to Google_Service_Exception',
-                        [
-                            'exception message' => $googleServiceException->getMessage(),
-                            'productId' => $product->getId(),
-                        ]
-                    );
-                }
-            }
-        }
-
-        return $youtubeDetails;
     }
 
     /**

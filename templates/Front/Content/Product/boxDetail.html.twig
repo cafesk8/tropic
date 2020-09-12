@@ -1,4 +1,4 @@
-{% macro productBox(product, youtubeDetails, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews) %}
+{% macro productBox(product, youtubeVideoIds, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews) %}
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
@@ -26,7 +26,7 @@
                         {% if not typeSetOrSupplierSet %}
                             <div class="box-detail__image">
                                 {% set galleryImages = getImages(product) %}
-                                {% set showGallery = galleryImages|length > 1 or youtubeDetails %}
+                                {% set showGallery = galleryImages|length > 1 or youtubeVideoIds %}
 
                                 <div class="box-detail__image__main{% if not imageExists(product) %} box-detail__image__main--no-image{% endif %}">
                                     {% if imageExists(product) %}
@@ -44,7 +44,7 @@
                                 {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, variantsCount) }}
 
                                 {% if showGallery %}
-                                    {{ productImages.loadGalleryImages(product, galleryImages, showGalleryMaxCount, youtubeDetails, typeSetOrSupplierSet) }}
+                                    {{ productImages.loadGalleryImages(product, galleryImages, showGalleryMaxCount, youtubeVideoIds, typeSetOrSupplierSet) }}
                                 {% endif %}
 
                                 {% if product.isMainVariant %}
@@ -85,7 +85,7 @@
                                     {% set galleryImages = getProductSetImages(product) %}
                                     {% set showGallery = galleryImages|length > 0 %}
                                     {% if showGallery %}
-                                        {{ productImages.loadGalleryImages(product, galleryImages, showGalleryMaxCount, youtubeDetails, typeSetOrSupplierSet) }}
+                                        {{ productImages.loadGalleryImages(product, galleryImages, showGalleryMaxCount, youtubeVideoIds, typeSetOrSupplierSet) }}
                                     {% endif %}
                                 </div>
                             </div>
@@ -264,7 +264,7 @@
 
                 {% if product.isMainVariant %}
                     <div class="box-detail__videos" id="video-variant-desktop">
-                        {{ self.productYoutubeVideo(youtubeDetails) }}
+                        {{ self.productYoutubeVideo(youtubeVideoIds) }}
                     </div>
                 {% endif %}
             </div>
@@ -451,20 +451,20 @@
     {% endif %}
 {% endmacro %}
 
-{% macro productYoutubeVideo(youtubeDetails) %}
-    {% if youtubeDetails %}
+{% macro productYoutubeVideo(youtubeVideoIds) %}
+    {% if youtubeVideoIds %}
         <div class="in-user-text" itemprop="videos">
             <h3 class="in-user-text__title">
                 {{ 'Videa'|trans }}
             </h3>
-            
+
             <div class="in-user-text__videos">
-                {% for youtubeDetail in youtubeDetails %}
+                {% for youtubeVideoId in youtubeVideoIds %}
                     <div class="in-user-text__videos__item">
                         <iframe
                                 width="100%"
                                 height="315"
-                                src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
+                                src="https://www.youtube.com/embed/{{ youtubeVideoId }}"
                                 frameborder="0"
                                 allowfullscreen
                         ></iframe>

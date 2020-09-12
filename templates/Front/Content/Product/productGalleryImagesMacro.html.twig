@@ -1,4 +1,4 @@
-{% macro loadGalleryImages(product, galleryImages, showGalleryMaxCount, youtubeDetails, typeSetOrSupplierSet) %}
+{% macro loadGalleryImages(product, galleryImages, showGalleryMaxCount, youtubeVideoIds, typeSetOrSupplierSet) %}
     <div class="box-gallery dont-print js-gallery">
         <div class="box-gallery__images">
             {% for galleryImage in galleryImages %}
@@ -20,16 +20,16 @@
                     </a>
                 </div>
             {% endif %}
-            {% if youtubeDetails %}
+            {% if youtubeVideoIds %}
                 <div class="box-gallery__item box-gallery__item--video{% if galleryImages|length <= 1%} box-gallery__item--without-border{% endif %}">
                     {% if product.isMainVariant %}
                         <a
                             href="#video-variant-desktop"
                             class="box-gallery__item__link box-gallery__item__link--desktop js-anchor-link"
                         >
-                            <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
-                                alt="{{ youtubeDetails|first.getVideoTitle() }}"
-                                title="{{ youtubeDetails|first.getVideoTitle() }}">
+                            <img src="https://img.youtube.com/vi/{{ youtubeVideoIds|first }}/0.jpg"
+                                alt="Youtube Video"
+                                title="Youtube Video">
                             <div class="box-gallery__item__link__play">
                                 <div class="box-gallery__item__link__play__icon"></div>
                             </div>
@@ -38,9 +38,9 @@
                             href="#video"
                             class="box-gallery__item__link box-gallery__item__link--mobile js-anchor-link"
                         >
-                            <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
-                                alt="{{ youtubeDetails|first.getVideoTitle() }}"
-                                title="{{ youtubeDetails|first.getVideoTitle() }}">
+                            <img src="https://img.youtube.com/vi/{{ youtubeVideoIds|first }}/0.jpg"
+                                alt="Youtube Video"
+                                title="Youtube Video">
                             <div class="box-gallery__item__link__play">
                                 <div class="box-gallery__item__link__play__icon"></div>
                             </div>
@@ -50,9 +50,9 @@
                             href="#video"
                             class="box-gallery__item__link js-anchor-link"
                         >
-                            <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
-                                alt="{{ youtubeDetails|first.getVideoTitle() }}"
-                                title="{{ youtubeDetails|first.getVideoTitle() }}">
+                            <img src="https://img.youtube.com/vi/{{ youtubeVideoIds|first }}/0.jpg"
+                                alt="Youtube Video"
+                                title="Youtube Video">
                             <div class="box-gallery__item__link__play">
                                 <div class="box-gallery__item__link__play__icon"></div>
                             </div>
