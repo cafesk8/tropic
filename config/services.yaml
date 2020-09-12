@@ -765,3 +765,13 @@ services:
     App\Component\Transfer\Pohoda\Backup\PohodaTransferBackup:
         arguments:
             $transferXmlBackupPath: '%transfer_xml_backup_path%'
+
+    shopsys.shop.twig.cache_strategy:
+        class: App\Twig\Cache\CurrentDomainLifetimeCacheStrategy
+        arguments:
+            - '@shopsys.shop.twig.cache_provider'
+
+    App\Twig\Cache\TwigCacheFacade:
+        arguments:
+            - '@shopsys.shop.twig.cache_provider'
+            - '@shopsys.shop.twig.cache_strategy'

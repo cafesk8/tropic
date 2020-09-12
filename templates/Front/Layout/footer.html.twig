@@ -23,7 +23,9 @@
                                             <i class="svg svg-triangle"></i>
                                         </div>
                                     </div>
-                                    {{ render(controller('App\\Controller\\Front\\ArticleController:footerMenuAction', { placement: constant('App\\Model\\Article\\Article::PLACEMENT_SERVICES') } )) }}
+                                    {% cache constant('App\\Model\\Article\\Article::PLACEMENT_SERVICES') {lifetime:60*60*24, domainId: domainId} %}
+                                        {{ render(controller('App\\Controller\\Front\\ArticleController:footerMenuAction', { placement: constant('App\\Model\\Article\\Article::PLACEMENT_SERVICES') } )) }}
+                                    {% endcache %}
                                 </div>
                                 <div class="footer-top__links__column js-footer-link-wrapper">
                                     <div class="footer-top__links__title js-footer-link-title">
@@ -32,7 +34,9 @@
                                             <i class="svg svg-triangle"></i>
                                         </div>
                                     </div>
-                                    {{ render(controller('App\\Controller\\Front\\ArticleController:footerMenuAction', { placement: constant('App\\Model\\Article\\Article::PLACEMENT_SHOPPING') } )) }}
+                                    {% cache constant('App\\Model\\Article\\Article::PLACEMENT_SHOPPING') {lifetime:60*60*24, domainId: domainId} %}
+                                        {{ render(controller('App\\Controller\\Front\\ArticleController:footerMenuAction', { placement: constant('App\\Model\\Article\\Article::PLACEMENT_SHOPPING') } )) }}
+                                    {% endcache %}
                                 </div>
                             </div>
 
@@ -86,7 +90,7 @@
                             </div>
                             <div class="footer-middle__right">
                                 {% block newsletter_subscription %}
-                                    {% cache "newsletter_form" {time:60*60*24, domainId: domainId} %}
+                                    {% cache "newsletter_form" {lifetime:60*60*24, domainId: domainId} %}
                                         {{ render(controller('App\\Controller\\Front\\NewsletterController:subscriptionAction')) }}
                                     {% endcache %}
                                 {% endblock %}

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Model\Article;
 
 use App\Component\Setting\Setting;
+use App\Twig\Cache\TwigCacheFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
+use Shopsys\FrameworkBundle\Model\Article\ArticleData as BaseArticleData;
 use Shopsys\FrameworkBundle\Model\Article\ArticleFacade as BaseArticleFacade;
 use Shopsys\FrameworkBundle\Model\Article\ArticleFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Article\ArticleRepository;
@@ -18,8 +20,6 @@ use Shopsys\FrameworkBundle\Model\Article\ArticleRepository;
  * @method \App\Model\Article\Article getById(int $articleId)
  * @method \App\Model\Article\Article getVisibleById(int $articleId)
  * @method \App\Model\Article\Article[] getVisibleArticlesForPlacementOnCurrentDomain(string $placement)
- * @method \App\Model\Article\Article create(\App\Model\Article\ArticleData $articleData)
- * @method \App\Model\Article\Article edit(int $articleId, \App\Model\Article\ArticleData $articleData)
  * @method \App\Model\Article\Article[] getAllByDomainId(int $domainId)
  */
 class ArticleFacade extends BaseArticleFacade
@@ -33,6 +33,8 @@ class ArticleFacade extends BaseArticleFacade
      * @var \App\Component\Setting\Setting
      */
     private $setting;
+
+    private TwigCacheFacade $twigCacheFacade;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -48,11 +50,13 @@ class ArticleFacade extends BaseArticleFacade
         Domain $domain,
         FriendlyUrlFacade $friendlyUrlFacade,
         ArticleFactoryInterface $articleFactory,
-        Setting $setting
+        Setting $setting,
+        TwigCacheFacade $twigCacheFacade
     ) {
         parent::__construct($em, $articleRepository, $domain, $friendlyUrlFacade, $articleFactory);
 
         $this->setting = $setting;
+        $this->twigCacheFacade = $twigCacheFacade;
     }
 
     /**
@@ -113,4 +117,65 @@ class ArticleFacade extends BaseArticleFacade
 
         return false;
     }
+
+    /**
+     * @param \App\Model\Article\ArticleData $articleData
+     * @return \App\Model\Article\Article
+     */
+    public function create(BaseArticleData $articleData): Article
+    {
+        /** @var \App\Model\Article\Article $article */
+        $article = parent::create($articleData);
+
+        if (in_array($article->getPlacement(), $this->getCachedPlacements(), true)) {
+            $this->twigCacheFacade->invalidateByKey($article->getPlacement(), $article->getDomainId());
+        }
+
+        return $article;
+    }
+
+    /**
+     * @param int $articleId
+     * @param \App\Model\Article\ArticleData $articleData
+     * @return \App\Model\Article\Article
+     */
+    public function edit($articleId, BaseArticleData $articleData): Article
+    {
+        /** @var \App\Model\Article\Article $article */
+        $article = parent::edit($articleId, $articleData);
+
+        if (in_array($article->getPlacement(), $this->getCachedPlacements(), true)) {
+            $this->twigCacheFacade->invalidateByKey($article->getPlacement(), $article->getDomainId());
+        }
+
+        return $article;
+    }
+
+    /**
+     * @param int $articleId
+     */
+    public function delete($articleId): void
+    {
+        $article = $this->articleRepository->getById($articleId);
+
+        $this->em->remove($article);
+        $this->em->flush();
+
+        if (in_array($article->getPlacement(), $this->getCachedPlacements(), true)) {
+            $this->twigCacheFacade->invalidateByKey($article->getPlacement(), $article->getDomainId());
+        }
+    }
+
+    /**
+     * @return array
+     */
+    private function getCachedPlacements(): array
+    {
+        return [
+            Article::PLACEMENT_SERVICES,
+            Article::PLACEMENT_SERVICES,
+            Article::PLACEMENT_TOP_MENU,
+        ];
+    }
+
 }
