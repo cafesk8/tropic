@@ -25,7 +25,9 @@
         </div>
     </div>
 
-    {{ render(controller('App\\Controller\\Front\\AdvertController:bannerAction')) }}
+    {% cache 'bannersOnHomepage' {lifetime:60*60*4, domainId: domainId} %}
+        {{ render(controller('App\\Controller\\Front\\AdvertController:bannerAction')) }}
+    {% endcache %}
 
     {{ render(controller('App\\Controller\\Front\\TopProductController:listAction')) }}
 
