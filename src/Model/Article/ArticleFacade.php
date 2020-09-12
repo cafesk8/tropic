@@ -43,6 +43,7 @@ class ArticleFacade extends BaseArticleFacade
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\FrameworkBundle\Model\Article\ArticleFactoryInterface $articleFactory
      * @param \App\Component\Setting\Setting $setting
+     * @param \App\Twig\Cache\TwigCacheFacade $twigCacheFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -177,5 +178,4 @@ class ArticleFacade extends BaseArticleFacade
             Article::PLACEMENT_TOP_MENU,
         ];
     }
-
 }

@@ -22,7 +22,6 @@ use App\Model\Store\StoreFacade;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Psr\Log\LoggerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Domain\Exception\NoDomainSelectedException;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
@@ -127,11 +126,6 @@ class ProductFacade extends BaseProductFacade
     private $setting;
 
     /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    /**
      * @var \App\Model\Product\Set\ProductSetFacade
      */
     private $productSetFacade;
@@ -197,7 +191,6 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Store\StoreFacade $storeFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Component\Setting\Setting $setting
-     * @param \Psr\Log\LoggerInterface $logger
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
      * @param \App\Model\Product\ProductDataFactory $productDataFactory
      * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
@@ -238,7 +231,6 @@ class ProductFacade extends BaseProductFacade
         StoreFacade $storeFacade,
         PricingGroupFacade $pricingGroupFacade,
         Setting $setting,
-        LoggerInterface $logger,
         ProductVariantTropicFacade $productVariantTropicFacade,
         ProductDataFactory $productDataFactory,
         ProductSetFacade $productSetFacade,
@@ -281,7 +273,6 @@ class ProductFacade extends BaseProductFacade
         $this->storeFacade = $storeFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->setting = $setting;
-        $this->logger = $logger;
         $this->productVariantTropicFacade = $productVariantTropicFacade;
         $this->productDataFactory = $productDataFactory;
         $this->productSetFacade = $productSetFacade;

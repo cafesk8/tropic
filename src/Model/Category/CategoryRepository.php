@@ -60,7 +60,7 @@ class CategoryRepository extends BaseCategoryRepository
 
     /**
      * @param \App\Model\Product\Product $product
-     * @param Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \Doctrine\ORM\QueryBuilder
      */
     private function getProductVisibleAndListableProductCategoryDomainsQueryBuilder(Product $product, DomainConfig $domainConfig)
@@ -144,7 +144,7 @@ class CategoryRepository extends BaseCategoryRepository
 
     /**
      * @param \App\Model\Product\Product $product
-     * @param Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
      */
     public function getProductVisibleAndListableProductCategoryDomains(Product $product, DomainConfig $domainConfig): array
@@ -185,7 +185,7 @@ class CategoryRepository extends BaseCategoryRepository
 
     /**
      * @param \App\Model\Category\Category $category
-     * @param Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return array
      */
     public function getAllVisibleAndListableChildrenByCategoryAndDomain(BaseCategory $category, DomainConfig $domainConfig): array

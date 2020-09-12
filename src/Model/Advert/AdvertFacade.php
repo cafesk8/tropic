@@ -61,6 +61,7 @@ class AdvertFacade extends BaseAdvertFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \App\Model\Category\CategoryFacade $categoryFacade
+     * @param \App\Twig\Cache\TwigCacheFacade $twigCacheFacade
      */
     public function __construct(
         EntityManagerInterface $em,

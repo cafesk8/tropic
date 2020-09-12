@@ -15,7 +15,6 @@ use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Brand\Brand;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
-use App\Model\Product\ProductFacade;
 use App\Model\Product\View\ListedProductViewElasticFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
@@ -108,11 +107,6 @@ class ProductController extends FrontBaseController
     private $categoryBlogArticleFacade;
 
     /**
-     * @var \App\Model\Product\ProductFacade
-     */
-    private $productFacade;
-
-    /**
      * @var \App\Model\Gtm\GtmFacade
      */
     private $gtmFacade;
@@ -159,7 +153,6 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
-     * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewFacade
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
@@ -181,7 +174,6 @@ class ProductController extends FrontBaseController
         ModuleFacade $moduleFacade,
         BlogArticleFacade $blogArticleFacade,
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
-        ProductFacade $productFacade,
         GtmFacade $gtmFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
         BrandFacade $brandFacade,
@@ -202,7 +194,6 @@ class ProductController extends FrontBaseController
         $this->moduleFacade = $moduleFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
-        $this->productFacade = $productFacade;
         $this->gtmFacade = $gtmFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->brandFacade = $brandFacade;
