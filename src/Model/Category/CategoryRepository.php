@@ -13,7 +13,6 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Component\Paginator\QueryPaginator;
 use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;

@@ -62,6 +62,11 @@ class CategoryFacade extends BaseCategoryFacade
     public const NEWS_CATEGORIES_LEVEL = 2;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
+     */
+    private array $listableProductCategoryDomainsIndexedById = [];
+
+    /**
      * @var \App\Model\Category\CategoryRepository
      */
     protected $categoryRepository;
@@ -181,7 +186,11 @@ class CategoryFacade extends BaseCategoryFacade
      */
     public function getProductVisibleAndListableProductCategoryDomains(Product $product, DomainConfig $domainConfig): array
     {
-        return $this->categoryRepository->getProductVisibleAndListableProductCategoryDomains($product, $domainConfig);
+        if (array_key_exists($product->getId(), $this->listableProductCategoryDomainsIndexedById) === false) {
+            $this->listableProductCategoryDomainsIndexedById[$product->getId()] = $this->categoryRepository->getProductVisibleAndListableProductCategoryDomains($product, $domainConfig);
+        }
+
+        return $this->listableProductCategoryDomainsIndexedById[$product->getId()];
     }
 
     /**
