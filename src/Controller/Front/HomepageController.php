@@ -93,11 +93,9 @@ class HomepageController extends FrontBaseController
     public function indexAction()
     {
         $sliderItems = $this->sliderItemFacade->getAllVisibleOnCurrentDomain();
-        $priceBombProducts = $this->listedProductViewFacade->getPriceBombProducts(self::PRICE_BOMB_PRODUCTS_LIMIT);
 
         return $this->render('Front/Content/Default/index.html.twig', [
             'sliderItems' => $sliderItems,
-            'priceBombProducts' => $priceBombProducts,
             'title' => $this->seoSettingFacade->getTitleMainPage($this->domain->getId()),
             'metaDescription' => $this->seoSettingFacade->getDescriptionMainPage($this->domain->getId()),
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
@@ -116,6 +114,13 @@ class HomepageController extends FrontBaseController
         return $this->render('Front/Content/Default/newProducts.html.twig', [
             'newsCategory' => $this->categoryFacade->findNewsCategory(),
             'newProducts' => $this->listedProductViewFacade->getProductsWithNewsFlags(self::NEW_PRODUCTS_LIMIT),
+        ]);
+    }
+
+    public function priceBombProductsAction()
+    {
+        return $this->render('Front/Content/Default/priceBombProducts.html.twig', [
+            'priceBombProducts' => $this->listedProductViewFacade->getPriceBombProducts(self::PRICE_BOMB_PRODUCTS_LIMIT),
         ]);
     }
 }
