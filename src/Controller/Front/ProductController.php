@@ -280,7 +280,7 @@ class ProductController extends FrontBaseController
 
         $this->gtmFacade->onProductListByCategoryPage($category);
 
-        $visibleChildren = $this->categoryFacade->getAllVisibleAndListableChildrenByCategoryAndDomainId($category, $this->domain->getId());
+        $visibleChildren = $this->categoryFacade->getAllVisibleAndListableChildrenByCategoryAndDomain($category, $this->domain->getCurrentDomainConfig());
 
         if ($category->isPreListingCategory()) {
             return $this->render('Front/Content/Product/preListingCategoryList.html.twig', [

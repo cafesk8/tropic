@@ -13,6 +13,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Component\Paginator\QueryPaginator;
 use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
@@ -181,12 +182,17 @@ class CategoryRepository extends BaseCategoryRepository
 
     /**
      * @param \App\Model\Category\Category $category
-     * @param int $domainId
+     * @param Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return array
      */
-    public function getAllVisibleAndListableChildrenByCategoryAndDomainId(BaseCategory $category, int $domainId): array
+    public function getAllVisibleAndListableChildrenByCategoryAndDomain(BaseCategory $category, DomainConfig $domainConfig): array
     {
-        $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainId);
+        $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainConfig->getId());
+
+        $queryBuilder
+            ->addSelect('ct')
+            ->join('c.translations', 'ct', Join::WITH,'ct.locale = :locale')
+            ->setParameter('locale', $domainConfig->getLocale());
 
         if ($category->isSaleType()) {
             $queryBuilder->andWhere('c.level = :level')
