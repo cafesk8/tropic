@@ -107,6 +107,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['parameters'] = $this->appendSetItemParameters($locale, $product, $result['parameters']);
         $result['warranty'] = $product->getWarranty();
         $result['variant_type'] = $product->getVariantType();
+        $result['recommended'] = $product->isRecommended();
 
         return $result;
     }

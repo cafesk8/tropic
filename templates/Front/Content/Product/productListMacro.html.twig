@@ -1,5 +1,6 @@
 {% macro list(productViews, listCssClass, productHeadingTagName) %}
     {% import 'Front/Content/Product/productSetViewMacro.html.twig' as productSetMacro %}
+    {% import 'Front/Inline/Product/productStickersMacro.html.twig' as productStickersMacro %}
 
     {% if productViews|length > 0 %}
         <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
@@ -15,18 +16,7 @@
                                 <a href="{{ productView.action.detailUrl }}" class="list-products__item__image-wrap">
                                     <div class="list-products__item__image dont-print">
                                         {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
-
-                                        {% if productView.stickers|length > 0 or productView.warranty > 24 %}
-                                            <div class="list-products__item__image__stickers">
-                                                {% for sticker in productView.stickers %}
-                                                    {{ image(sticker) }}
-                                                {% endfor %}
-
-                                                {% if productView.warranty > 24 %}
-                                                    {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
+                                        {{ productStickersMacro.list(productView) }}
                                     </div>
 
                                     {% set productFlagIds = productView.flagIds %}
@@ -105,6 +95,8 @@
 {% endmacro %}
 
 {% macro horizontalList(productViews, listCssClass, productHeadingTagName, type, showButton = false, onlyRefresh = false, showAmountInput = false) %}
+    {% import 'Front/Inline/Product/productStickersMacro.html.twig' as productStickersMacro %}
+
     <div class="list-products-slider {% if showButton %}list-products-slider--with-button{% endif %} {{ listCssClass|default('') }} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
         <span class="list-products-slider__arrow list-products-slider__arrow--prev js-horizontal-list-action-prev">
@@ -122,18 +114,7 @@
                                 <a class="list-products-slider__item__image-wrap" href="{{ productView.action.detailUrl }}">
                                     <div class="list-products-slider__item__image dont-print">
                                         {{ image(productView.image, { size: 'listSlider', alt: productView.name, lazy: true }) }}
-
-                                        {% if productView.stickers|length > 0 or productView.warranty > 24 %}
-                                            <div class="list-products-slider__item__image__stickers">
-                                                {% for sticker in productView.stickers %}
-                                                    {{ image(sticker) }}
-                                                {% endfor %}
-
-                                                {% if productView.warranty > 24 %}
-                                                    {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
+                                        {{ productStickersMacro.list(productView) }}
                                     </div>
 
                                     {% set productFlagIds = productView.flagIds %}
@@ -307,6 +288,8 @@
 {% endmacro %}
 
 {% macro productsBomb(productViews, productHeadingTagName) %}
+    {% import 'Front/Inline/Product/productStickersMacro.html.twig' as productStickersMacro %}
+
     <ul class="list-products-bomb">
         {% for productView in productViews %}
             {% set productSellingPrice = productView.sellingPrice %}
@@ -327,18 +310,7 @@
 
                     <div class="list-products-bomb__item__image dont-print">
                         {{ image(productView.image, { size: 'biggerThumbnail', alt: productView.name, lazy: true }) }}
-
-                        {% if productView.stickers|length > 0 or productView.warranty > 24 %}
-                            <div class="list-products__item__image__stickers">
-                                {% for sticker in productView.stickers %}
-                                    {{ image(sticker) }}
-                                {% endfor %}
-
-                                {% if productView.warranty > 24 %}
-                                    {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
-                                {% endif %}
-                            </div>
-                        {% endif %}
+                        {{ productStickersMacro.list(productView) }}
                     </div>
 
                     {% if productSellingPrice is not null %}

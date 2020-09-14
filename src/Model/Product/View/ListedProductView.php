@@ -64,6 +64,8 @@ class ListedProductView extends BaseListedProductView
 
     private ?int $warranty;
 
+    private bool $recommended;
+
     /**
      * @param int $id
      * @param string $name
@@ -83,6 +85,7 @@ class ListedProductView extends BaseListedProductView
      * @param string $unitName
      * @param array $stickers
      * @param int|null $warranty
+     * @param bool $recommended
      */
     public function __construct(
         int $id,
@@ -102,7 +105,8 @@ class ListedProductView extends BaseListedProductView
         int $realSaleStocksQuantity,
         string $unitName,
         array $stickers,
-        ?int $warranty
+        ?int $warranty,
+        bool $recommended
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
@@ -116,6 +120,7 @@ class ListedProductView extends BaseListedProductView
         $this->unitName = $unitName;
         $this->stickers = $stickers;
         $this->warranty = $warranty;
+        $this->recommended = $recommended;
     }
 
     /**
@@ -216,5 +221,13 @@ class ListedProductView extends BaseListedProductView
     public function getWarranty(): ?int
     {
         return $this->warranty;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRecommended(): bool
+    {
+        return $this->recommended;
     }
 }

@@ -130,4 +130,12 @@ class Flag extends BaseFlag implements OrderableEntityInterface
     {
         return $this->pohodaId;
     }
+
+    /**
+     * @return bool
+     */
+    public function isRecommended(): bool
+    {
+        return $this->pohodaId === self::POHODA_ID_RECOMMENDED;
+    }
 }

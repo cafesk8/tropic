@@ -376,6 +376,9 @@
       },
       "variant_type": {
         "type": "text"
+      },
+      "recommended": {
+        "type": "boolean"
       }
     }
   }
