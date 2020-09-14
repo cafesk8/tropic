@@ -2,3 +2,6 @@
 
 User-agent: *
 Disallow: /*/*/?*product_filter_form*
+{% for path in disallowedPaths -%}
+    Disallow: {{ path }}
+{% endfor %}
