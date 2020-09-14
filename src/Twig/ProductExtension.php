@@ -80,6 +80,8 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      */
     private $availabilityColorsIndexedByName;
 
+    private ?Flag $saleFlag = null;
+
     /**
      * ProductExtension constructor.
      *
@@ -186,7 +188,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function getProductFlagsWithFreeTransportAndPaymentFlag(ProductPrice $productPrice, Product $product, int $limit): array
     {
         $productFlagsIndexedByPosition = $product->getFlagsIndexedByPosition($limit);
-        $saleFlag = $this->flagFacade->getSaleFlag();
+        $saleFlag = $this->getSaleFlag();
         // On FE, we do not want to display "clearance" flag at all, "sale" flag is used instead
         foreach ($productFlagsIndexedByPosition as $position => $flag) {
             if ($flag->isClearance()) {
@@ -234,8 +236,8 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      */
     private function getDefaultFreeTransportFlag(): ?Flag
     {
-        if ($this->freeTransportFlag !== null) {
-            return $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
+        if ($this->freeTransportFlag === null) {
+            $this->freeTransportFlag = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
         }
 
         return $this->freeTransportFlag;
@@ -285,5 +287,17 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         });
 
         return $productSets;
+    }
+
+    /**
+     * @return \App\Model\Product\Flag\Flag
+     */
+    private function getSaleFlag(): Flag
+    {
+        if ($this->saleFlag === null) {
+            $this->saleFlag = $this->flagFacade->getSaleFlag();
+        }
+
+        return $this->saleFlag;
     }
 }
