@@ -285,6 +285,7 @@ class ProductController extends FrontBaseController
             return $this->render('Front/Content/Product/preListingCategoryList.html.twig', [
                 'category' => $category,
                 'visibleChildren' => $visibleChildren,
+                'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
                 'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
                     $category,
                     $this->domain->getId(),

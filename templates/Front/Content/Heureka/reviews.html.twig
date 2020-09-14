@@ -1,39 +1,88 @@
 <div class="box-reviews">
-    <h3 class="box-reviews__title">
-        {{ 'Hodnocení našich zákazníků'|trans }}
-        <a href="https://obchody.heureka.cz/tropicliberec-cz/recenze/">
+    <div class="box-reviews__top">
+        <h3 class="box-reviews__title">
+            {{ 'Hodnocení našich zákazníků'|trans }}
+        </h3>
+        <a class="box-reviews__subtitle" href="https://obchody.heureka.cz/tropicliberec-cz/recenze/">
             {{ 'Další hodnocení zákazníků'|trans }}
         </a>
-    </h3>
+    </div>
     <div class="box-reviews__heureka">
         {% for review in reviews %}
             {% set ratingValue = (review.totalRating / 0.5) * 10 %}
             <div class="box-reviews__heureka__item">
                 <div class="box-reviews__heureka__rating">
-                    <div class="box-reviews__heureka__rating__value">
-                        {{ ratingValue }}%
-                    {% for star in range(1, review.totalRating|round) %}
-                        <i class="svg svg-star"></i>
-                    {% endfor %}
+                    <p class="box-reviews__heureka__rating__value">{{ ratingValue }}%</p>
+                    <div class="in-rating">
+                        <ul class="in-rating__list in-rating__list--empty">
+                            <li class="in-rating__list__item">
+                                {% include 'Front/Svg/star-empty.svg' %}
+                            </li>
+                            <li class="in-rating__list__item">
+                                {% include 'Front/Svg/star-empty.svg' %}
+                            </li>
+                            <li class="in-rating__list__item">
+                                {% include 'Front/Svg/star-empty.svg' %}
+                            </li>
+                            <li class="in-rating__list__item">
+                                {% include 'Front/Svg/star-empty.svg' %}
+                            </li>
+                            <li class="in-rating__list__item">
+                                {% include 'Front/Svg/star-empty.svg' %}
+                            </li>
+                        </ul>
+                        <ul class="in-rating__list in-rating__list--value" style="width: {{ ratingValue }}%">
+                            <li class="in-rating__list__item">
+                                {% include 'Front/Svg/star.svg' %}
+                            </li>
+                            <li class="in-rating__list__item">
+                                {% include 'Front/Svg/star.svg' %}
+                            </li>
+                            <li class="in-rating__list__item">
+                                {% include 'Front/Svg/star.svg' %}
+                            </li>
+                            <li class="in-rating__list__item">
+                                {% include 'Front/Svg/star.svg' %}
+                            </li>
+                            <li class="in-rating__list__item">
+                                {% include 'Front/Svg/star.svg' %}
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="box-reviews__heureka__content">
                     <div class="box-reviews__heureka__content__top">
-                        {% if review.name is empty %}
-                            {{ 'Ověřený zákazník'|trans }}
-                        {% else %}
-                            {{ review.name|raw }}
-                        {% endif %} {{ review.addedAt|formatDate }}
+                        <p class="box-reviews__heureka__content__name">
+                            {% if review.name is empty %}
+                                {{ 'Ověřený zákazník'|trans }}
+                            {% else %}
+                                {{ review.name|raw }}
+                            {% endif %}
+                        </p>
+                        <span class="box-reviews__heureka__content__date">
+                            {{ review.addedAt|formatDate }}
+                        </span>
                     </div>
-                    <div class="review__content__bottom">
+                    <div class="box-reviews__heureka__pros-cons">
                         {% if review.summary %}
-                            {{ review.summary|raw }}
+                            <div class="box-reviews__heureka__pros-cons__text">
+                                {{ review.summary|raw }}
+                            </div>
                         {% endif %}
+
                         {% if review.pros %}
-                            <i class="svg svg-plus"></i> {{ review.pros|raw }}
+                            <ul class="list-pros-cons list-pros-cons--pros">
+                                <li class="list-pros-cons__item svg-plus">
+                                    {{ review.pros|raw }}
+                                </li>
+                            </ul>
                         {% endif %}
                         {% if review.cons %}
-                            <i class="svg svg-minus"></i> {{ review.cons|raw }}
+                            <ul class="list-pros-cons list-pros-cons--cons">
+                                <li class="list-pros-cons__item svg-minus">
+                                    {{ review.cons|raw }}
+                                </li>
+                            </ul>
                         {% endif %}
                     </div>
                 </div>
