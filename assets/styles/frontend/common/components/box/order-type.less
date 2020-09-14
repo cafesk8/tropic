@@ -1,17 +1,8 @@
-@box-order-type-font-size: 16px;
-@box-order-type-font-size-mobile: 14px;
 @box-order-type-item-gap: 38px;
-@box-order-type-item-gap-small: 28px;
 
 .box-order-type {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-wrap: wrap;
-
-    @media @query-md {
-        flex-direction: row;
-    }
+    flex-direction: row;
 
     @media @query-vl {
         margin-bottom: 25px;
@@ -19,49 +10,29 @@
 
     &__list {
         .clearfix();
-        width: 100%;
         display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-
-        @media @query-md {
-            width: auto;
-            flex-direction: row;
-            justify-content: flex-end;
-            align-items: center;
-        }
+        flex-direction: row;
     
         &__item {
-            padding: 10px 20px;
+            padding: 5px 10px;
     
             color: @color-primary;
             font-weight: 600;
             text-decoration: underline;
-            font-size: @box-order-type-font-size-mobile;
+            font-size: @font-size-small;
     
             @media @query-md {
-                padding: 0;
-                margin-right: @box-order-type-item-gap-small;
-            }
-    
-            @media @query-lg {
-                margin-right: @box-order-type-item-gap;
+                padding: 5px 15px;
 
-                font-size: @box-order-type-font-size;
+                font-size: 16px;
             }
     
             &.active {
                 margin-top: 0;
-    
-                border-top: 2px solid @color-primary;
                 color: @color-base;
                 background-color: @color-box;
                 text-decoration: none;
-    
-                @media @query-md {
-                    border-top: 0;
-                    background-color: transparent;
-                }
+                border-radius: @radius;
             }
         }
     }
