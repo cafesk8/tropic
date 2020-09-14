@@ -166,11 +166,13 @@ class PromoCodeFacade extends BasePromoCodeFacade
     /**
      * @param \Shopsys\FrameworkBundle\Component\Money\Money $value
      * @param int $quantity
+     * @param int $domainId
      * @return \App\Model\Order\PromoCode\PromoCode[]
      */
-    public function createRandomCertificates(Money $value, int $quantity): array
+    public function createRandomCertificates(Money $value, int $quantity, int $domainId): array
     {
         $promoCodeData = $this->promoCodeDataFactory->create();
+        $promoCodeData->domainId = $domainId;
         $promoCodeData->certificateValue = $value;
         $promoCodeData->massGenerate = true;
         $promoCodeData->usageLimit = 0;

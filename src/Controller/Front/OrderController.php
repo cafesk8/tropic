@@ -848,6 +848,7 @@ class OrderController extends FrontBaseController
                 $this->domain->getLocale(),
                 self::HOMEPAGE_ARTICLES_LIMIT
             ),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ]);
     }
 

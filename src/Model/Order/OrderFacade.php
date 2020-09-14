@@ -791,7 +791,7 @@ class OrderFacade extends BaseOrderFacade
     {
         foreach ($order->getItems() as $orderItem) {
             if ($orderItem->isTypeProduct() && $orderItem->getProduct() instanceof Product && $orderItem->getProduct()->isGiftCertificate()) {
-                $giftCertificates = $this->promoCodeFacade->createRandomCertificates($orderItem->getPriceWithVat(), $orderItem->getQuantity());
+                $giftCertificates = $this->promoCodeFacade->createRandomCertificates($orderItem->getPriceWithVat(), $orderItem->getQuantity(), $order->getDomainId());
 
                 foreach ($giftCertificates as $giftCertificate) {
                     $orderGiftCertificate = $this->orderGiftCertificateFacade->create($order, $giftCertificate);
