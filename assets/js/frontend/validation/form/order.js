@@ -15,6 +15,17 @@ export default function orderValidator ($container) {
         }
     });
 
+    window.$('#transport_and_payment_form_transport').jsFormValidator({
+        callbacks: {
+            validateBulkyTransportRequirement: function () {
+
+            },
+            validateOversizedTransportRequirement: function () {
+
+            }
+        }
+    });
+
     const $orderPersonalInfoForm = window.$('form[name="order_personal_info_form"]');
     $orderPersonalInfoForm.jsFormValidator({
         'groups': function () {

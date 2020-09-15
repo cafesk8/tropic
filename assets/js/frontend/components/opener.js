@@ -1,57 +1,49 @@
 import Register from 'framework/common/utils/Register';
 
 export default function opener () {
-    const opener = $('.js-opener-container');
+    let opener = $('.js-opener-container');
 
     opener.each(function () {
-        const items = $(this).find('.js-opener-item');
-        const itemsWrapper = $(this).find('.js-opener-wrap');
-        const openedItems = itemsWrapper.data("opened-items");
-        const wrapperFullHeight = itemsWrapper.height();
-        const openerButton = $(this).find('.js-opener-show-more-button');
-        const itemsHeight = [];
+        let items = $(this).find('.js-opener-item');
+        let itemsWrapper = $(this).find('.js-opener-wrap');
+        let openedItems = itemsWrapper.data('opened-items');
+        let wrapperFullHeight = itemsWrapper.height();
+        let wrapperWrappedHeight = 0;
+        let openerButton = $(this).find('.js-opener-show-more-button');
+        let itemsHeight = [];
 
-        // Check if is adequate counf od products
         if (items.length <= openedItems) {
             openerButton.hide();
         } else {
             items.each(function () {
-                const height = $(this).outerHeight();
-                const marginOfItem = parseFloat($(this).css('margin-bottom'), 10);
-                const finalHeight = height + marginOfItem;
+                let height = $(this).outerHeight();
+                let marginOfItem = parseFloat($(this).css('margin-bottom'));
+                let finalHeight = height + marginOfItem;
                 itemsHeight.push(finalHeight);
-            })
+            });
 
-            function wrapperHeight () {
-                const cuttedItems = itemsHeight.slice(0, openedItems);
-                const finalHeight = cuttedItems.reduce(function(accumulator, currentValue){
-                    return accumulator + currentValue;
-                });
+            wrapperFullHeight = itemsHeight.reduce(function (total, current) {
+                return total + current;
+            });
 
-                return finalHeight;
-            }
+            wrapperWrappedHeight = itemsHeight.slice(0, openedItems).reduce(function (accumulator, currentValue) {
+                return accumulator + currentValue;
+            });
 
-            itemsWrapper.css('height', wrapperHeight());
+            itemsWrapper.css('height', openerButton.hasClass('open') ? wrapperFullHeight : wrapperWrappedHeight);
 
-            openerButton.click(function () {
-                if($(this).hasClass('open')){
-                    hideItems($(this))
+            openerButton.unbind('click');
+            openerButton.bind('click', function () {
+                if ($(this).hasClass('open')) {
+                    itemsWrapper.css('height', wrapperWrappedHeight);
+                    $(this).removeClass('open');
                 } else {
-                    showItems($(this))
+                    itemsWrapper.css('height', wrapperFullHeight);
+                    $(this).addClass('open');
                 }
-            })
-
-            function hideItems (item) {
-                itemsWrapper.css('height', wrapperHeight());
-                item.removeClass('open');
-            }
-
-            function showItems (item) {
-                itemsWrapper.css('height', wrapperFullHeight);
-                item.addClass('open');
-            }
+            });
         }
-    })
-};
+    });
+}
 
 (new Register()).registerCallback(opener);
