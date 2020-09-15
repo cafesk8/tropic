@@ -41,6 +41,7 @@
             align-items: center;
 
             &__image {
+                position: relative;
                 display: inline-block;
                 text-align: center;
                 width: @list-variants-image-size - 20px;
@@ -51,11 +52,8 @@
                     width: @list-variants-image-size;
                 }
 
-                &__wrap {
-                    display: inline-block;
-                    position: relative;
-                    line-height: 0;
-                    vertical-align: middle;
+                img {
+                    .center-image();
                 }
             }
 
