@@ -51,7 +51,9 @@
 
     <target name="build-deploy-part-2-db-dependent" depends="elasticsearch-index-migrate,redis-check,db-migrations-count-with-maintenance,db-migrations,domains-data-create,friendly-urls-generate,domains-urls-replace,error-pages-generate,warmup" description="Second part of application build for production preserving your DB (must be run with maintenance page when containing DB migrations)."/>
 
-    <target name="clean-all" depends="clean, clean-redis" description="Second part of application build for production preserving your DB (must be run with maintenance page when containing DB migrations)."/>
+    <target name="clean-all" description="An alias for clean-cache">
+        <phingcall target="clean-cache"/>
+    </target>
 
 <!-- phpstan target is overridden to setup higher memory limit. see https://github.com/shopsys/shopsys/issues/1614 -->
     <target name="phpstan" depends="tests-acceptance-build" description="Performs static analysis of PHP files using PHPStan." hidden="true">
