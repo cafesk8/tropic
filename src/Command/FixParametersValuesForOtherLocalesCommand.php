@@ -115,12 +115,12 @@ class FixParametersValuesForOtherLocalesCommand extends Command
             $productData = $this->productDataFactory->createFromProduct($mainVariantProduct);
 
             foreach ([DomainHelper::SLOVAK_LOCALE, DomainHelper::ENGLISH_LOCALE] as $locale) {
-                $productParametersByLocale = $this->parameterRepository->getAllProductParameterValuesByProductSortedByName($mainVariantProduct, $locale);
+                $productParametersByLocale = $this->parameterRepository->getProductParameterValuesByProductSortedByName($mainVariantProduct, $locale);
                 $this->updateProductByParameterIdAndLocale($output, $productParametersByLocale, $productData, $parameterSize->getId(), $locale);
                 $this->updateProductByParameterIdAndLocale($output, $productParametersByLocale, $productData, $parameterColor->getId(), $locale);
             }
 
-            $this->productFacade->edit($mainVariantProduct, $productData);
+            $this->productFacade->edit($mainVariantProduct->getId(), $productData);
         }
 
         return 0;

@@ -9,7 +9,6 @@ use App\Model\Product\Product;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository as BaseParameterRepository;
-use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 
 /**
  * @method \App\Model\Product\Parameter\Parameter|null findById(int $parameterId)
@@ -23,6 +22,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
  * @method \App\Model\Product\Parameter\ProductParameterValue[] getProductParameterValuesByParameter(\App\Model\Product\Parameter\Parameter $parameter)
  * @method \App\Model\Product\Parameter\Parameter|null findParameterByNames(string[] $namesByLocale)
  * @method \Doctrine\ORM\QueryBuilder getProductParameterValuesByProductQueryBuilder(\App\Model\Product\Product $product)
+ * @method \Doctrine\ORM\QueryBuilder getProductParameterValuesByProductSortedByNameQueryBuilder(\App\Model\Product\Product $product, string $locale)
  */
 class ParameterRepository extends BaseParameterRepository
 {
@@ -37,29 +37,6 @@ class ParameterRepository extends BaseParameterRepository
             'parameter' => $parameter,
             'product' => $product,
         ]);
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param string $locale
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getProductParameterValuesByProductSortedByNameQueryBuilder(BaseProduct $product, $locale)
-    {
-        return parent::getProductParameterValuesByProductSortedByNameQueryBuilder($product, $locale)
-            ->andWhere('p.visibleOnFrontend = true');
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param string $locale
-     * @return \App\Model\Product\Parameter\ProductParameterValue[]
-     */
-    public function getAllProductParameterValuesByProductSortedByName(BaseProduct $product, $locale): array
-    {
-        return parent::getProductParameterValuesByProductSortedByNameQueryBuilder($product, $locale)
-            ->getQuery()
-            ->execute();
     }
 
     /**
