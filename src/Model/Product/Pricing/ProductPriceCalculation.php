@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Model\Product\Pricing;
 
 use App\Component\Domain\DomainHelper;
+use App\Component\Setting\Setting;
+use App\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation as BaseProductPriceCalculation;
@@ -26,15 +26,9 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
  */
 class ProductPriceCalculation extends BaseProductPriceCalculation
 {
-    /**
-     * @var \App\Component\Setting\Setting
-     */
-    private $setting;
+    private Setting $setting;
 
-    /**
-     * @var \App\Model\Pricing\Group\PricingGroupFacade
-     */
-    private $pricingGroupFacade;
+    private PricingGroupFacade $pricingGroupFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation $basePriceCalculation
@@ -78,7 +72,6 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
     protected function calculateProductPriceForPricingGroup(Product $product, BasePricingGroup $pricingGroup)
     {
         $domainId = $pricingGroup->getDomainId();
-        $defaultCurrency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
 
         $defaultPricingGroup = $this->pricingGroupFacade->getById(
             $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
@@ -123,12 +116,6 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
                     }
                 } elseif ($manualInputPrice['pricingGroupId'] === $standardPricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
                     $standardPriceInput = Money::create($manualInputPrice['inputPrice']);
-                } elseif ($matchingPricingGroupOnFirstDomain !== null &&
-                    $manualInputPrice['pricingGroupId'] === $matchingPricingGroupOnFirstDomain->getId() &&
-                    $manualInputPrice['inputPrice'] !== null
-                ) {
-                    $defaultCurrencyPriceInput = Money::create($manualInputPrice['inputPrice']);
-                    $maxDefaultCurrencyPriceInput = Money::create($manualInputPrice['maxInputPrice']);
                 }
             }
         }
