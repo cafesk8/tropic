@@ -9,6 +9,7 @@ use App\Model\Product\Exception\ProductIsNotMainVariantException;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\ProductFlag;
 use App\Model\Product\Mall\ProductMallExportMapper;
+use App\Model\Product\ProductGift\ProductGift;
 use App\Model\Product\Set\ProductSet;
 use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
@@ -790,6 +791,19 @@ class Product extends BaseProduct
         }
 
         return $productGifts;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Product\ProductGift\ProductGift|null
+     */
+    public function getFirstActiveInStockProductGiftByDomainId(int $domainId): ?ProductGift
+    {
+        $productGifts = $this->getActiveProductGiftsByDomainId($domainId);
+        $productGiftsInStock = array_filter($productGifts, fn (ProductGift $productGift) => !$productGift->getGift()->isCurrentlyOutOfStock());
+        usort($productGiftsInStock, fn (ProductGift $productGift1, ProductGift $productGift2) => $productGift2->getId() - $productGift1->getId());
+
+        return array_shift($productGiftsInStock);
     }
 
     /**

@@ -1029,13 +1029,13 @@ class ProductFacade extends BaseProductFacade
      * @param string $locale
      * @return string[][]
      */
-    public function getProductGiftNames(Product $product, int $domainId, string $locale): array
+    public function getProductGiftName(Product $product, int $domainId, string $locale): array
     {
-        $gifts = $product->getGifts($domainId);
+        $gift = $product->getFirstActiveInStockProductGiftByDomainId($domainId);
         $giftNames = [];
-        foreach ($gifts as $gift) {
+        if ($gift !== null) {
             $giftNames[] = [
-                'name' => $gift->getName($locale),
+                'name' => $gift->getGift()->getName($locale),
             ];
         }
 

@@ -113,7 +113,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $this->getFlagIdsForProduct($product),
             $productActionView,
             $imageView,
-            $this->productFacade->getProductGiftNames($product, $this->domain->getId(), $this->domain->getLocale()),
+            $this->productFacade->getProductGiftName($product, $this->domain->getId(), $this->domain->getLocale()),
             $product->getStockQuantity(),
             $product->getVariantsCount($this->domain->getId()),
             $this->listedSetItemFactory->createFromProduct($product, $this->domain->getLocale()),

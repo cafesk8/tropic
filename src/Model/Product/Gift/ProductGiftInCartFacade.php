@@ -46,16 +46,14 @@ class ProductGiftInCartFacade
     {
         $giftsVariantsByProductId = [];
 
-        /** @var \App\Model\Cart\Item\CartItem $cartItem */
         foreach ($cartItems as $cartItem) {
             if ($cartItem->getProduct()->isVariant() === true) {
-                $productGifts = $cartItem->getProduct()->getMainVariant()->getActiveProductGiftsByDomainId($this->domain->getId());
+                $productGift = $cartItem->getProduct()->getMainVariant()->getFirstActiveInStockProductGiftByDomainId($this->domain->getId());
             } else {
-                $productGifts = $cartItem->getProduct()->getActiveProductGiftsByDomainId($this->domain->getId());
+                $productGift = $cartItem->getProduct()->getFirstActiveInStockProductGiftByDomainId($this->domain->getId());
             }
 
-            foreach ($productGifts as $productGift) {
-                /** @var \App\Model\Product\Product $gift */
+            if ($productGift !== null) {
                 $gift = $productGift->getGift();
 
                 if ($this->productFacade->isProductMarketable($gift, $this->domain->getId())) {

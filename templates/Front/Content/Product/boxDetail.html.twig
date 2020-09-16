@@ -99,14 +99,16 @@
                             </h2>
                         {% endif %}
 
-                        {% for gift in product.gifts(domain.id) %}
+                        {% set productGift = product.firstActiveInStockProductGiftByDomainId(domain.id) %}
+                        {% if productGift is not empty %}
+                            {% set gift = productGift.gift %}
                             {% if gift.shownOnDomain(domain.id) is same as (true)
                                 and gift.calculatedSellingDenied is same as (false) and gift.sellingDenied is same as (false) %}
                                 <a class="box-detail__gift" href="{{ url('front_product_detail', { id: gift.id }) }}">
                                     <strong>{{ 'DÁREK'|trans }}</strong> {{ gift.name }}
                                 </a>
                             {% endif %}
-                        {% endfor %}
+                        {% endif %}
 
                         <div class="box-detail__add-basket{% if product.isMainVariant %} box-detail__add-basket--variant{% endif %}">
                             <div class="box-detail-add">
