@@ -239,13 +239,29 @@ class FilterQuery extends BaseFilterQuery
     /**
      * @return \App\Model\Product\Search\FilterQuery
      */
-    public function filterOnlyListable(): self
+    public function excludeVariants(): self
     {
         $clone = clone $this;
 
         $clone->filters[] = [
             'terms' => [
                 'variant_type' => [Product::VARIANT_TYPE_NONE, Product::VARIANT_TYPE_MAIN],
+            ],
+        ];
+
+        return $clone;
+    }
+
+    /**
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    public function excludeMainVariants(): self
+    {
+        $clone = clone $this;
+
+        $clone->filters[] = [
+            'terms' => [
+                'variant_type' => [Product::VARIANT_TYPE_NONE, Product::VARIANT_TYPE_VARIANT],
             ],
         ];
 
