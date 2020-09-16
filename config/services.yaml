@@ -95,7 +95,7 @@ services:
                 - '@snc_redis.session'
 
     App\Component\FileUpload\FileUpload:
-        arguments: ['%kernel.cache_dir%', '%shopsys.uploaded_file_dir%', '%shopsys.image_dir%']
+        arguments: ['%shopsys.var_dir%', '%shopsys.uploaded_file_dir%', '%shopsys.image_dir%']
 
     Shopsys\FrameworkBundle\Component\FileUpload\FileUpload: '@App\Component\FileUpload\FileUpload'
 

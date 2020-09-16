@@ -6068,8 +6068,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
     protected function createTemporaryDirectoryIfDoesNotExist(): void
     {
-        if (!is_dir($this->fileUpload->getTemporaryDirectory())) {
-            mkdir($this->fileUpload->getTemporaryDirectory());
+        if ($this->filesystem->has($this->fileUpload->getTemporaryDirectory())) {
+            $this->filesystem->createDir($this->fileUpload->getTemporaryDirectory());
         }
     }
 
