@@ -83,8 +83,27 @@
 {% endmacro %}
 
 {% macro metaRobots(paginationResult, disableIndexing) %}
-    {% if paginationResult.page != 1 or disableIndexing %}
+    {% if (paginationResult.page != 1 and isUserAgentSeznamBot()) or disableIndexing %}
         <meta name="robots" content="noindex, follow">
+    {% else %}
+        <meta name="robots" content="index, follow">
+    {% endif %}
+{% endmacro %}
+
+{% macro relLinks(paginationResult, pageQueryParameter = 'page') -%}
+    {% if paginationResult.pageCount > 1 -%}
+        {% set route = getRoute() -%}
+        {% set routeParams = getAllRequestParams() -%}
+        {% if not paginationResult.firstPage -%}
+            {% set page = paginationResult.previousPage -%}
+            {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
+            <link rel="prev" href="{{ path(route, routeParams) }}">
+        {% endif %}
+        {% if not paginationResult.lastPage -%}
+            {% set page = paginationResult.nextPage -%}
+            {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
+            <link rel="next" href="{{ path(route, routeParams) }}">
+        {% endif %}
     {% endif %}
 {% endmacro %}
 
@@ -98,4 +117,10 @@
            data-page-query-parameter="{{ pageQueryParameter }}"
     />
     </a>
+{% endmacro %}
+
+{% macro titleAddon(paginationResult) %}
+    {% if paginationResult.page > 1 %}
+        {{ 'strana %page% z %pageCount%'|trans({'%page%': paginationResult.page, '%pageCount%': paginationResult.pageCount}) }}
+    {% endif %}
 {% endmacro %}

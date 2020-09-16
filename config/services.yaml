@@ -754,3 +754,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactoryInterface: '@App\Model\Product\Parameter\ProductParameterValueDataFactory'
 
     Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactoryInterface: '@App\Model\Product\Parameter\ProductParameterValueFactory'
+
+    Shopsys\FrameworkBundle\Twig\SeoExtension: '@App\Twig\SeoExtension'

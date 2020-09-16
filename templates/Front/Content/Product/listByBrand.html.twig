@@ -7,9 +7,13 @@
 {% block meta_robots %}
     {{ paginator.metaRobots(paginationResult) }}
 {% endblock %}
+{% block meta_rel_links %}
+    {{ paginator.relLinks(paginationResult) }}
+{% endblock %}
 
 {% block title %}
     {{ brand.getSeoTitle(domain.id)|default(brand.name) }}
+    {{ paginator.titleAddon(paginationResult) }}
 {% endblock %}
 
 {% block meta_description %}
@@ -22,6 +26,7 @@
         <div class="box-list">
             <h1 class="in-title in-title--big in-title--center">
                 {{ brand.getSeoH1(domain.id)|default(brand.name) }}
+                {{ paginator.titleAddon(paginationResult) }}
             </h1>
 
             <div class="box-list__producer">
