@@ -30,6 +30,7 @@ parameters:
     pohoda_database_user: chmandokt
     pohoda_database_password: tK.7496321
     pohoda_database_charset: UTF8
+    transfer_xml_backup_path: /var/transfer-xml/
 
     gopay_config:
         cs:
