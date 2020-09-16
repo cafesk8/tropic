@@ -34,6 +34,14 @@ services:
         tags:
             - { name: shopsys.cron, hours: '0', minutes: '0', readableName: 'Stahování recenzí e-shopu z Heureky' }
 
+    App\Component\Transfer\Pohoda\Backup\DeleteOldTransferBackupsCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '4', minutes: '0', readableName: 'Delete old transfer backup files' }
+
+    Shopsys\FrameworkBundle\Component\FileUpload\DeleteOldUploadedFilesCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '5', minutes: '0', readableName: 'Delete old temporary uploaded files' }
+
     # TWICE PER DAY ----------------------------------------------------------------------------------
     Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule: ~
 
@@ -70,10 +78,6 @@ services:
     Shopsys\FrameworkBundle\Model\Pricing\Vat\VatDeletionCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Smazání starých sazeb DPH' }
-
-    Shopsys\FrameworkBundle\Component\FileUpload\DeleteOldUploadedFilesCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '5', minutes: '0', readableName: 'Delete old temporary uploaded files' }
 
     # ERROR PAGES ------------------------------------------------------------------------------------
     # This module should run as last because it creates multiple kernels and fake requests.

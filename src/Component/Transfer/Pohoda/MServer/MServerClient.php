@@ -11,7 +11,6 @@ use App\Component\Transfer\Pohoda\Exception\PohodaMServerException;
 use App\Component\Transfer\Pohoda\Order\PohodaOrderValidator;
 use App\Component\Transfer\Pohoda\Xml\PohodaXmlGenerator;
 use App\Component\Transfer\Pohoda\Xml\PohodaXmlResponseParser;
-use League\Flysystem\FilesystemInterface;
 
 class MServerClient
 {

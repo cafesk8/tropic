@@ -36,4 +36,23 @@ class PohodaTransferBackup
             $this->filesystem->put($backupXmlFilePath, $xmlData);
         }
     }
+
+    /**
+     * @param int $deleteOldBackupFilesSeconds
+     * @return int
+     */
+    public function deleteOldBackupFiles(int $deleteOldBackupFilesSeconds): int
+    {
+        $deletedCounter = 0;
+        $currentTimestamp = time();
+        $backupFiles = $this->filesystem->listContents($this->transferXmlBackupPath, true);
+        foreach ($backupFiles as $backupFile) {
+            if ($backupFile['type'] === 'file' && $currentTimestamp - $backupFile['timestamp'] >= $deleteOldBackupFilesSeconds) {
+                $this->filesystem->delete($backupFile['path']);
+                $deletedCounter++;
+            }
+        }
+
+        return $deletedCounter;
+    }
 }
