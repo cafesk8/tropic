@@ -133,7 +133,7 @@ class ProductImportFacade
             $this->logger->persistTransferIssues();
         }
 
-        return $changedPohodaProductIds;
+        return $this->updatedPohodaProductIds;
     }
 
     /**
