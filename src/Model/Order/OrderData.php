@@ -119,6 +119,8 @@ class OrderData extends BaseOrderData
 
     public ?int $pohodaId;
 
+    public ?int $legacyId;
+
     public function __construct()
     {
         parent::__construct();
@@ -129,5 +131,6 @@ class OrderData extends BaseOrderData
         $this->registration = false;
         $this->giftCertificates = [];
         $this->pohodaId = null;
+        $this->legacyId = null;
     }
 }

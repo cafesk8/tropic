@@ -17,6 +17,9 @@ use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusData;
  */
 class OrderStatus extends BaseOrderStatus
 {
+    public const TYPE_CUSTOMER_DID_NOT_PICK_UP = 5;
+    public const TYPE_PAID = 6;
+
     public const SMS_ALERT_5_DAY_BEFORE = 'smsAlert5dayBefore';
     public const SMS_ALERT_2_DAY_BEFORE = 'smsAlert2dayBefore';
 

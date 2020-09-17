@@ -994,6 +994,9 @@ msgstr ""
 msgid "NS-9710 Prominent replacement paper bags for VP-9711/12/13"
 msgstr ""
 
+msgid "Nepřevzato zákazníkem"
+msgstr "Not picked up by the customer"
+
 msgid "New [adjective]"
 msgstr "New"
 
@@ -1638,6 +1641,9 @@ msgstr ""
 
 msgid "white"
 msgstr ""
+
+msgid "Zaplaceno"
+msgstr "Paid"
 
 msgid "| Demo eshop"
 msgstr ""

@@ -16,6 +16,8 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
     public const ORDER_STATUS_IN_PROGRESS = 'order_status_in_progress';
     public const ORDER_STATUS_DONE = 'order_status_done';
     public const ORDER_STATUS_CANCELED = 'order_status_canceled';
+    public const ORDER_STATUS_CUSTOMER_DID_NOT_PICK_UP = 'order_status_customer_did_not_pick_up';
+    public const ORDER_STATUS_PAID = 'order_status_paid';
 
     /**
      * @var \App\Model\Order\Status\OrderStatusFacade
@@ -56,6 +58,8 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
         $this->createOrderStatusReference(2, self::ORDER_STATUS_IN_PROGRESS);
         $this->createOrderStatusReference(3, self::ORDER_STATUS_DONE);
         $this->createOrderStatusReference(4, self::ORDER_STATUS_CANCELED);
+        $this->createOrderStatusReference(10, self::ORDER_STATUS_CUSTOMER_DID_NOT_PICK_UP);
+        $this->createOrderStatusReference(11, self::ORDER_STATUS_PAID);
     }
 
     /**
@@ -85,10 +89,17 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
                 case self::ORDER_STATUS_CANCELED:
                     $orderStatusData->name[$locale] = t('Stornována', [], 'dataFixtures', $locale);
                     break;
+                case self::ORDER_STATUS_CUSTOMER_DID_NOT_PICK_UP:
+                    $orderStatusData->name[$locale] = t('Nepřevzato zákazníkem', [], 'dataFixtures', $locale);
+                    break;
+                case self::ORDER_STATUS_PAID:
+                    $orderStatusData->name[$locale] = t('Zaplaceno', [], 'dataFixtures', $locale);
+                    break;
                 default:
                     throw new \Shopsys\FrameworkBundle\Component\DataFixture\Exception\UnknownNameTranslationForOrderStatusReferenceNameException($referenceName);
             }
         }
+        $this->orderStatusFacade->edit($orderStatusId, $orderStatusData);
         $this->addReference($referenceName, $orderStatus);
     }
 }

@@ -349,4 +349,14 @@ class TransportFacade extends BaseTransportFacade
     {
         return $this->transportRepository->getMinOrderPriceForFreeTransport($domainId);
     }
+
+    /**
+     * @param string $transportName
+     * @param string $locale
+     * @return \App\Model\Transport\Transport|null
+     */
+    public function findByName(string $transportName, string $locale): ?Transport
+    {
+        return $this->transportRepository->findByName($transportName, $locale);
+    }
 }

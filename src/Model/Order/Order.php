@@ -287,6 +287,11 @@ class Order extends BaseOrder
     private ?int $pohodaId;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $legacyId;
+
+    /**
      * @param \App\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -343,6 +348,7 @@ class Order extends BaseOrder
         $this->trackingNumber = $orderData->trackingNumber;
         $this->giftCertificates = new ArrayCollection();
         $this->pohodaId = $orderData->pohodaId;
+        $this->legacyId = $orderData->legacyId;
     }
 
     /**
@@ -369,6 +375,7 @@ class Order extends BaseOrder
         $this->trackingNumber = $orderData->trackingNumber;
         $this->giftCertificates = new ArrayCollection($orderData->giftCertificates);
         $this->pohodaId = $orderData->pohodaId;
+        $this->legacyId = $orderData->legacyId;
 
         return $orderEditResult;
     }
@@ -867,5 +874,13 @@ class Order extends BaseOrder
     public function getPohodaId(): ?int
     {
         return $this->pohodaId;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLegacyId(): ?int
+    {
+        return $this->legacyId;
     }
 }

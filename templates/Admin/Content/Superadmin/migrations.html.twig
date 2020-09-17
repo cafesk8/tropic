@@ -19,6 +19,7 @@
 			<tr>
 				<td>Typ migrace</td>
 				<td>Sql dotaz pro SS5 databázi</td>
+				<td>Důležité informace</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -39,6 +40,81 @@
 					WHERE C.`regtime` > 1531472936 OR O.`id` IS NOT NULL
 					GROUP BY C.`id`
 				</td>
+                <td></td>
+			</tr>
+			<tr>
+				<td>Objednávky - importujte soubor s názvem "orders.csv" a "ordersgoods.csv"</td>
+				<td>
+                    <h4>Objednávky</h4>
+                    SELECT
+                    o.`id` AS oId,
+                    o.`status`,
+                    o.`client`,
+                    o.`clientComment`,
+                    o.`objednano`,
+                    o.`hash`,
+                    o.`varsymbol`,
+                    o.domain,
+                    ad.id AS adId,
+                    ad.jmeno AS adJmeno,
+                    ad.prijmeni AS adPrijmeni,
+                    ad.firma AS adFirma,
+                    ad.telefon AS adTelefon,
+                    ad.ulice AS adUlice,
+                    ad.mesto AS adMesto,
+                    ad.psc AS adPsc,
+                    ad.stat AS adStat,
+                    af.id AS afId,
+                    af.jmeno AS afJmeno,
+                    af.prijmeni AS afPrijmeni,
+                    af.email AS afEmail,
+                    af.telefon AS afTelefon,
+                    af.ulice AS afUlice,
+                    af.mesto AS afMesto,
+                    af.psc AS afPsc,
+                    af.firma AS afFirma,
+                    af.firma_ic AS afFirmaIc,
+                    af.firma_dic AS afFirmaDic,
+                    af.stat AS afStat,
+                    af.vat_payer AS afVatPayer,
+                    t.nazev AS nazevDopravy,
+                    pt.name AS nazevPlatby,
+                    adc.code AS adKodStatu,
+                    afc.code AS afKodStatu,
+                    p.type AS typPlatby,
+                    o.price_info_rounding_wo_vat,
+                    o.price_info_rounding_w_vat,
+                    o.price_info_total_wo_vat,
+                    o.price_info_total_w_vat
+                    FROM
+                    `orders` o
+                    JOIN domains d ON d.id = o.domain
+                    JOIN languages l ON l.id = d.language
+                    LEFT JOIN `orders_address_dod` ad ON ad.id = o.address_dod
+                    LEFT JOIN `setting_country` adc ON adc.id = ad.stat
+                    LEFT JOIN `orders_address_fak` af ON af.id = o.address_fak
+                    LEFT JOIN `setting_country` afc ON afc.id = af.stat
+                    LEFT JOIN `setting_trans` t ON t.id = o.transporter
+                    LEFT JOIN `setting_paym` p ON p.id = o.paymant
+                    LEFT JOIN `setting_paym_translate` pt ON pt.id = p.id
+                    AND pt.language = l.id
+                    WHERE (o.`client` = 0 AND o.`objednano` > 1483225201) OR o.`client` <> 0
+                    ORDER BY objednano
+					<br><br>
+
+                    <h4>Položky objednávek</h4>
+                    SELECT og.*
+                    FROM `ordersgoods` og
+                    JOIN `orders`o ON og.order = o.id
+                    WHERE (o.`client` = 0 AND o.`objednano` > 1483225201) OR o.`client` <> 0
+                    ORDER BY `order`
+				</td>
+                <td>
+                    Objednávkám se nastaví, že byly již exportovány do Pohody - <strong>Je tedy třeba objednávky nejprve exportovat do Pohody</strong>
+                    <br>
+                    <br>
+                    Po dokončení migrace je potřeba spustit <pre>php bin/console shopsys:import:legacy-orders-pohoda-id</pre> pro provázání objednávek z posledních 30 dnů s Pohodou.
+                </td>
 			</tr>
 			<tr>
 				<td>Slovenské popisy - importujte soubor s názvem "descriptions.csv"</td>

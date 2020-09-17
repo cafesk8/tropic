@@ -6,10 +6,22 @@ namespace App\Controller\Admin;
 
 use Knp\Menu\Util\MenuManipulator;
 use Shopsys\FrameworkBundle\Model\AdminNavigation\ConfigureMenuEvent;
+use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SideMenuConfigurationSubscriber implements EventSubscriberInterface
 {
+    private AuthorizationCheckerInterface $authorizationChecker;
+
+    /**
+     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker
+     */
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    {
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
     /**
      * @return array
      */
@@ -83,6 +95,11 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
             'label' => t('Hodnoty parametra'),
             'display' => false,
         ]);
+
+        $superadminMenu = $settingMenu->getChild('superadmin');
+        if ($superadminMenu !== null && $this->authorizationChecker->isGranted(Roles::ROLE_SUPER_ADMIN)) {
+            $superadminMenu->addChild('migrations', ['route' => 'admin_superadmin_migrations', 'label' => t('Migrace')]);
+        }
 
         $otherSettingMenu = $settingMenu->addChild('other', ['label' => t('Ostatní')]);
         $otherSettingMenu->addChild('deliverydate_setting', ['route' => 'admin_deliverydate_setting', 'label' => t('Výpočet termínu dodání')]);

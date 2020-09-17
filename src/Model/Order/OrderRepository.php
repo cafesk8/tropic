@@ -301,4 +301,28 @@ class OrderRepository extends BaseOrderRepository
     {
         return $this->getOrderRepository()->findOneBy(['pohodaId' => $pohodaId]);
     }
+
+    /**
+     * @param int $legacyId
+     * @return \App\Model\Order\Order|null
+     */
+    public function findByLegacyId(int $legacyId): ?Order
+    {
+        return $this->getOrderRepository()->findOneBy(['legacyId' => $legacyId]);
+    }
+
+    /**
+     * @param \DateTime $fromDate
+     * @return \App\Model\Order\Order[]
+     */
+    public function getOrdersWithLegacyIdAndWithoutPohodaIdFromDate(DateTime $fromDate): array
+    {
+        $queryBuilder = $this->createOrderQueryBuilder()
+            ->where('o.pohodaId IS NULL')
+            ->andWhere('o.legacyId IS NOT NULL')
+            ->andWhere('o.createdAt >= :fromDate')
+            ->setParameter('fromDate', $fromDate);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

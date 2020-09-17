@@ -52,6 +52,8 @@ parameters:
             - '*/src/Form/Admin/OrderFormTypeExtension.php'
             - '*/src/Form/Admin/PaymentFormTypeExtension.php'
             - '*/src/Command/Migrations/ImportLegacyCustomersFromCSVCommand.php'
+            - '*/src/Command/Migrations/ImportLegacyOrdersFromCSVCommand.php'
+            - '*/src/Model/Order/Migration/LegacyOrderValidator.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/App/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
@@ -73,6 +75,7 @@ parameters:
             - '*/src/Model/Product/Transfer/PohodaProductMapper.php'
             - '*/src/Controller/Front/ProductController.php'
             - '*/src/Model/Cart/CartFacade.php'
+            - '*/src/Command/Migrations/ImportLegacyOrdersFromCSVCommand.php'
 
         ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
             - '*/src/Model/Order/Order.php'

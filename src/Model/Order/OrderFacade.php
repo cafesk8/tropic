@@ -865,4 +865,22 @@ class OrderFacade extends BaseOrderFacade
 
         parent::sendHeurekaOrderInfo($order, $disallowHeurekaVerifiedByCustomers);
     }
+
+    /**
+     * @param int $legacyId
+     * @return \App\Model\Order\Order|null
+     */
+    public function findByLegacyId(int $legacyId): ?Order
+    {
+        return $this->orderRepository->findByLegacyId($legacyId);
+    }
+
+    /**
+     * @param \DateTime $fromDate
+     * @return \App\Model\Order\Order[]
+     */
+    public function getOrdersWithLegacyIdAndWithoutPohodaIdFromDate(DateTime $fromDate): array
+    {
+        return $this->orderRepository->getOrdersWithLegacyIdAndWithoutPohodaIdFromDate($fromDate);
+    }
 }
