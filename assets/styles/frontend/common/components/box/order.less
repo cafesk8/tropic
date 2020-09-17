@@ -162,37 +162,6 @@
         }
     }
 
-    &__additional {
-        width: 100%;
-        padding: 20px 15px 10px 15px;
-
-        margin-bottom: 20px;
-
-        @media @query-md {
-            padding: 67px @box-order-additional-gap 38px @box-order-additional-gap;
-        }
-
-        @media @query-vl {
-            width: calc(~"100% - @{box-order-cart-width-small}")
-        }
-
-        @media @query-xl {
-            width: calc(~"100% - @{box-order-cart-width}")
-        }
-
-        &__title {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px; 
-
-            color: @color-base;
-            font-family: @font-alt;
-            font-size: 24px + 1px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-    }
-
     &__cart {
         margin-top: 40px;
 
