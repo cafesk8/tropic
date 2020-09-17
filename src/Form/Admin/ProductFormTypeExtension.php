@@ -620,7 +620,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'data' => t('Minimální množství můžete nastavit na kartě hlavní varianty.'),
                 'attr' => [
-                    'class' => 'form-input-disabled form-line--disabled position__actual font-size-13',
+                    'class' => 'form-input-disabled form-line--disabled position__actual',
                 ],
             ]);
 
@@ -629,7 +629,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'data' => t('Násobky pro nákup můžete nastavit na kartě hlavní varianty.'),
                 'attr' => [
-                    'class' => 'form-input-disabled form-line--disabled position__actual font-size-13',
+                    'class' => 'form-input-disabled form-line--disabled position__actual',
                 ],
             ]);
         } else {
