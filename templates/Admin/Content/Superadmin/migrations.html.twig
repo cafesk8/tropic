@@ -125,6 +125,24 @@
 					WHERE GT.language = 2
 					AND GT.long_desc NOT LIKE "%--sk--%"
 				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Slevové kupony - importujte soubor s názvem "promo_codes.csv" a "gift_certificates.csv"</td>
+				<td>
+					SELECT C.code, C.value, C.uses_remain, C.uses_total, C.valid_from, C.expire, C.domain, C.min_order_price, C.client, C.type
+					FROM `coupone` C
+					WHERE C.used = 'n'
+					AND C.expire >= UNIX_TIMESTAMP()
+					ORDER BY C.id
+					<br><br>
+					SELECT code, value, validity_days, currency, created, activated, used, name
+					FROM `gift_certificates`
+					WHERE used IS NULL
+					AND (created + validity_days * 24 * 60 * 60) >= UNIX_TIMESTAMP()
+					ORDER BY id
+				</td>
+				<td></td>
 			</tr>
 		</tbody>
 
