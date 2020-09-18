@@ -15,6 +15,11 @@
     {{ paginator.relLinks(paginationResultProducts) }}
 {% endblock %}
 
+{% block pageStyles %}
+    {% set entryDirectory2 = 'frontend-style-category-' ~ getDomain().currentDomainConfig.stylesDirectory %}
+    {{ encore_entry_link_tags( entryDirectory2 ) }}
+{% endblock %}
+
 {% block main_content %}
     <div class="box-search">
         <div class="web__line">

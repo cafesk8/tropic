@@ -20,6 +20,11 @@
 {% block infoRow %}
 {% endblock %}
 
+{% block pageStyles %}
+    {% set entryDirectory2 = 'frontend-style-cart-' ~ getDomain().currentDomainConfig.stylesDirectory %}
+    {{ encore_entry_link_tags( entryDirectory2 ) }}
+{% endblock %}
+
 {% block main_content %}
     {% import 'Front/Inline/Common/discountExclusionNoticeMacro.html.twig' as discountExclusion %}
     {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as productAvailability %}

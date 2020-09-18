@@ -90,9 +90,17 @@ const domainStylesDirectories = new Set(domains.domains.map(domain => {
 
 domainStylesDirectories.forEach(stylesDirectory => {
     Encore
-        .addEntry('frontend-style-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/main.less')
+        .addEntry('frontend-style-base-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/main-base.less')
+        .addEntry('frontend-style-other-pages-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/main-other-pages.less')
+        .addEntry('frontend-style-homepage-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/main-homepage.less')
+        .addEntry('frontend-style-category-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/main-category.less')
+        .addEntry('frontend-style-product-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/main-product.less')
+        .addEntry('frontend-style-prelist-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/main-prelist.less')
+        .addEntry('frontend-style-cart-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/main-cart.less')
+        .addEntry('frontend-style-order-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/main-order.less')
         .addEntry('frontend-print-style-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/print/main.less')
-        .addEntry('frontend-wysiwyg-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/wysiwyg.less');
+        .addEntry('frontend-wysiwyg-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/wysiwyg.less')
+        .addEntry('frontend-style-helpers-' + stylesDirectory, './assets/styles/frontend/' + stylesDirectory + '/helpers.less');
 });
 
 Encore

@@ -47,6 +47,11 @@
     </div>
 {% endblock %}
 
+{% block pageStyles %}
+    {% set entryDirectory2 = 'frontend-style-order-' ~ getDomain().currentDomainConfig.stylesDirectory %}
+    {{ encore_entry_link_tags( entryDirectory2 ) }}
+{% endblock %}
+
 {% block main_content %}
     {{ form_start(form, { attr: { id: "js-order-form", 'data-ajax-save-url': url('front_order_save_form') }}) }}
         {% include 'Front/Content/Order/step' ~ orderStep ~ '.html.twig' %}

@@ -12,6 +12,11 @@
     {{- title -}}
 {% endblock %}
 
+{% block pageStyles %}
+    {% set entryDirectory2 = 'frontend-style-homepage-' ~ getDomain().currentDomainConfig.stylesDirectory %}
+    {{ encore_entry_link_tags( entryDirectory2 ) }}
+{% endblock %}
+
 {% block main_content %}
 
     <div class="web__line">
