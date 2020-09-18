@@ -31,7 +31,8 @@ services:
         tags:
             - { name: doctrine.event_subscriber, priority: -10 }
 
-    App\Component\EntityExtension\EntityManagerDecorator:
+    Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator:
+        class: App\Component\EntityExtension\EntityManagerDecorator
         decorates: 'doctrine.orm.default_entity_manager'
         decoration_inner_name: 'App\Component\EntityExtension\EntityManagerDecorator.inner'
         arguments:
