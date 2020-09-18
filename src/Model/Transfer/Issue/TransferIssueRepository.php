@@ -11,7 +11,7 @@ use Doctrine\ORM\QueryBuilder;
 
 class TransferIssueRepository
 {
-    public const LIMIT_TRANSFER_ISSUES_COUNT = 30000;
+    public const LIMIT_TRANSFER_ISSUES_COUNT = 100000;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
