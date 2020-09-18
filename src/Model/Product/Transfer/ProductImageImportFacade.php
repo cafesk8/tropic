@@ -14,6 +14,7 @@ use App\Component\Transfer\Pohoda\Product\Image\PohodaImageExportFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use DateTime;
+use Exception;
 use League\Flysystem\FilesystemInterface;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler;
 
@@ -95,6 +96,9 @@ class ProductImageImportFacade
 
         $pohodaImageIdsIndexedByProductId = [];
         $productsIndexedByPohodaId = [];
+        $processedProductPohodaIds = [];
+        $couldConnectToMserver = true;
+
         foreach ($productPohodaIds as $productPohodaId) {
             $product = $this->productFacade->findByPohodaId($productPohodaId);
             if ($product !== null) {
@@ -102,6 +106,7 @@ class ProductImageImportFacade
                 $productsIndexedByPohodaId[$productPohodaId] = $product;
             }
         }
+
         foreach ($pohodaImages as $pohodaImage) {
             $productPohodaId = $pohodaImage->productPohodaId;
             if (!isset($productsIndexedByPohodaId[$productPohodaId])) {
@@ -113,17 +118,41 @@ class ProductImageImportFacade
             }
 
             $product = $productsIndexedByPohodaId[$productPohodaId];
-            $this->processImage($pohodaImage, $imagesTargetPath, $nextImageId, $product);
+
+            try {
+                $this->processImage($pohodaImage, $imagesTargetPath, $nextImageId, $product);
+            } catch (PohodaMServerException $ex) {
+                $this->logger->addError('Problém s připojením na mServer', [
+                    'message' => $ex->getMessage(),
+                    'pohodaImage' => $pohodaImage,
+                    'productId' => $product->getId(),
+                    'catnum' => $product->getCatnum(),
+                ]);
+                $couldConnectToMserver = false;
+                break;
+            } catch (Exception $ex) {
+                $this->logger->addError('Při importu došlo k chybě', [
+                    'message' => $ex->getMessage(),
+                    'pohodaImage' => $pohodaImage,
+                    'productId' => $product->getId(),
+                    'catnum' => $product->getCatnum(),
+                ]);
+            }
+
             $nextImageId++;
             $this->imageFacade->restartImagesIdsDbSequence();
             $pohodaImageIdsIndexedByProductId[$product->getId()][] = $pohodaImage->id;
+            $processedProductPohodaIds[] = $product->getPohodaId();
         }
 
-        $this->deleteOrphanImages($pohodaImageIdsIndexedByProductId);
-        foreach (array_keys($pohodaImageIdsIndexedByProductId) as $productId) {
-            $this->productExportScheduler->scheduleRowIdForImmediateExport($productId);
+        if ($couldConnectToMserver) {
+            $this->deleteOrphanImages($pohodaImageIdsIndexedByProductId);
+            foreach (array_keys($pohodaImageIdsIndexedByProductId) as $productId) {
+                $this->productExportScheduler->scheduleRowIdForImmediateExport($productId);
+            }
+            $this->imageInfoQueueFacade->removeProductsFromQueue($processedProductPohodaIds);
         }
-        $this->imageInfoQueueFacade->removeProductsFromQueue(array_keys($productsIndexedByPohodaId));
+
         $this->logger->persistTransferIssues();
     }
 
@@ -135,59 +164,43 @@ class ProductImageImportFacade
      */
     public function processImage(PohodaImage $pohodaImage, string $imagesTargetPath, int $nextImageId, Product $product): void
     {
-        try {
-            $imageByPohodaId = $this->imageFacade->findByPohodaId($pohodaImage->id);
-            if ($imageByPohodaId !== null) {
-                if ($imageByPohodaId->getPosition() !== $pohodaImage->position) {
-                    $this->imageFacade->updateImagePosition($imageByPohodaId->getId(), $pohodaImage->position);
-                    $this->logger->addInfo('Aktualizována pozice obrázku', [
-                        'pohodaImage' => $pohodaImage,
-                        'productId' => $product->getId(),
-                        'catnum' => $product->getCatnum(),
-                    ]);
-                }
-                if ($imageByPohodaId->getDescription() !== $pohodaImage->description) {
-                    $this->imageFacade->updateImageDescription($imageByPohodaId->getId(), $pohodaImage->description);
-                    $this->logger->addInfo('Aktualizován popis obrázku', [
-                        'pohodaImage' => $pohodaImage,
-                        'productId' => $product->getId(),
-                    ]);
-                }
-                return;
+        $imageByPohodaId = $this->imageFacade->findByPohodaId($pohodaImage->id);
+        if ($imageByPohodaId !== null) {
+            if ($imageByPohodaId->getPosition() !== $pohodaImage->position) {
+                $this->imageFacade->updateImagePosition($imageByPohodaId->getId(), $pohodaImage->position);
+                $this->logger->addInfo('Aktualizována pozice obrázku', [
+                    'pohodaImage' => $pohodaImage,
+                    'productId' => $product->getId(),
+                    'catnum' => $product->getCatnum(),
+                ]);
             }
-            $image = $this->mServerClient->getImage('/documents/Obrázky/' . rawurlencode($pohodaImage->file));
-            $imageTargetPath = $imagesTargetPath . $nextImageId . '.' . $pohodaImage->extension;
-            $this->filesystem->put($imageTargetPath, $image);
-            $this->imageFacade->saveImageIntoDb(
-                $product->getId(),
-                'product',
-                $nextImageId,
-                $pohodaImage->extension,
-                $pohodaImage->position,
-                null,
-                $pohodaImage->id,
-                $pohodaImage->description
-            );
-            $this->logger->addInfo('Obrázek uložen', [
-                'pohodaImage' => $pohodaImage,
-                'productId' => $product->getId(),
-                'catnum' => $product->getCatnum(),
-            ]);
-        } catch (PohodaMServerException $ex) {
-            $this->logger->addError('Problém s připojením na mServer', [
-                'message' => $ex->getMessage(),
-                'pohodaImage' => $pohodaImage,
-                'productId' => $product->getId(),
-                'catnum' => $product->getCatnum(),
-            ]);
-        } catch (\Exception $ex) {
-            $this->logger->addError('Při importu došlo k chybě', [
-                'message' => $ex->getMessage(),
-                'pohodaImage' => $pohodaImage,
-                'productId' => $product->getId(),
-                'catnum' => $product->getCatnum(),
-            ]);
+            if ($imageByPohodaId->getDescription() !== $pohodaImage->description) {
+                $this->imageFacade->updateImageDescription($imageByPohodaId->getId(), $pohodaImage->description);
+                $this->logger->addInfo('Aktualizován popis obrázku', [
+                    'pohodaImage' => $pohodaImage,
+                    'productId' => $product->getId(),
+                ]);
+            }
+            return;
         }
+        $image = $this->mServerClient->getImage('/documents/Obrázky/' . rawurlencode($pohodaImage->file));
+        $imageTargetPath = $imagesTargetPath . $nextImageId . '.' . $pohodaImage->extension;
+        $this->filesystem->put($imageTargetPath, $image);
+        $this->imageFacade->saveImageIntoDb(
+            $product->getId(),
+            'product',
+            $nextImageId,
+            $pohodaImage->extension,
+            $pohodaImage->position,
+            null,
+            $pohodaImage->id,
+            $pohodaImage->description
+        );
+        $this->logger->addInfo('Obrázek uložen', [
+            'pohodaImage' => $pohodaImage,
+            'productId' => $product->getId(),
+            'catnum' => $product->getCatnum(),
+        ]);
     }
 
     /**

@@ -140,6 +140,7 @@ class MServerClient
             curl_setopt($mServerConnection, CURLOPT_POSTFIELDS, "$postXmlData");
         } else {
             curl_setopt($mServerConnection, CURLOPT_HTTPGET, 1);
+            curl_setopt($mServerConnection, CURLOPT_TIMEOUT, 20);
         }
         curl_setopt($mServerConnection, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($mServerConnection, CURLOPT_USERPWD, $this->pohodaMServerLogin . ':' . $this->pohodaMServerPassword);
