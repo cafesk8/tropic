@@ -429,7 +429,7 @@ class CategoryFacade extends BaseCategoryFacade
 
             foreach ($this->domain->getAllIds() as $domainId) {
                 $previousStateOfEnabled = $categoryData->enabled[$domainId];
-                if (count($this->productRepository->getListableInCategoryIndependentOfPricingGroup($domainId, $specialCategory)) > 0) {
+                if ($this->productRepository->isAnyListableProductInCategoryIndependentOfPricingGroup($domainId, $specialCategory)) {
                     $categoryData->enabled[$domainId] = true;
                 } else {
                     $categoryData->enabled[$domainId] = false;

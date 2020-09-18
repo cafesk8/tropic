@@ -9,6 +9,7 @@ use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Set\ProductSet;
 use DateTime;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -538,12 +539,12 @@ class ProductRepository extends BaseProductRepository
     /**
      * @param int $domainId
      * @param \App\Model\Category\Category $category
-     * @return \App\Model\Product\Product[]
+     * @return bool
      */
-    public function getListableInCategoryIndependentOfPricingGroup(int $domainId, Category $category): array
+    public function isAnyListableProductInCategoryIndependentOfPricingGroup(int $domainId, Category $category): bool
     {
         $queryBuilder = $this->em->createQueryBuilder()
-            ->select('p')
+            ->select('p.id')
             ->from(Product::class, 'p')
             ->join(ProductVisibility::class, 'prv', Join::WITH, 'prv.product = p.id')
             ->where('prv.domainId = :domainId')
@@ -552,10 +553,16 @@ class ProductRepository extends BaseProductRepository
             ->andWhere('p.variantType != :variantTypeVariant')
             ->setParameter('domainId', $domainId)
             ->setParameter('variantTypeVariant', Product::VARIANT_TYPE_VARIANT)
-            ->orderBy('p.id');
+            ->orderBy('p.id')
+            ->setMaxResults(1);
         $this->filterByCategory($queryBuilder, $category, $domainId);
 
-        return $queryBuilder->getQuery()->execute();
+        try {
+            $queryBuilder->getQuery()->getSingleScalarResult();
+            return true;
+        } catch (NoResultException $exception) {
+            return false;
+        }
     }
 
     /**
