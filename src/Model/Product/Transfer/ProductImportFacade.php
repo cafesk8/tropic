@@ -22,7 +22,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 
 class ProductImportFacade
 {
-    public const PRODUCT_EXPORT_MAX_BATCH_LIMIT = 100;
+    public const PRODUCT_EXPORT_MAX_BATCH_LIMIT = 250;
 
     /**
      * @var \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade
