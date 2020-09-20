@@ -171,6 +171,7 @@ class ProductImportFacade
         }
 
         try {
+            $productData->markForDelayedPriceRecalculation = true;
             $createdProduct = $this->productFacade->create($productData);
         } catch (Exception $exc) {
             $this->logError('Import položky při vytvoření selhal', $exc, $pohodaProduct);
@@ -201,6 +202,7 @@ class ProductImportFacade
         }
 
         try {
+            $productData->markForDelayedPriceRecalculation = true;
             $editedProduct = $this->productFacade->edit($product->getId(), $productData);
         } catch (Exception $exc) {
             $this->logError('Import položky při úpravě selhal', $exc, $pohodaProduct);

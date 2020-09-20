@@ -345,6 +345,7 @@ class Product extends BaseProduct
         $this->supplierSet = $productData->supplierSet;
         $this->foreignSupplier = $productData->foreignSupplier;
         $this->weight = $productData->weight;
+        $this->recalculatePrice = $productData->markForDelayedPriceRecalculation;
     }
 
     /**

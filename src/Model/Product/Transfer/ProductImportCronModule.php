@@ -9,7 +9,6 @@ use App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager;
 use App\Component\Transfer\TransferCronModuleDependency;
 use App\Model\Product\ProductVisibilityRepository;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator;
 
 class ProductImportCronModule extends AbstractTransferCronModule
 {
@@ -41,17 +40,11 @@ class ProductImportCronModule extends AbstractTransferCronModule
     private $productVisibilityRepository;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator
-     */
-    private $productPriceRecalculator;
-
-    /**
      * @param \App\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \App\Model\Product\Transfer\ProductImportFacade $productImportFacade
      * @param \App\Model\Product\Transfer\ProductInfoQueueImportFacade $productInfoQueueImportFacade
      * @param \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager $pohodaEntityManager
      * @param \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber $productExportSubscriber
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator
      * @param \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
      */
     public function __construct(
@@ -60,7 +53,6 @@ class ProductImportCronModule extends AbstractTransferCronModule
         ProductInfoQueueImportFacade $productInfoQueueImportFacade,
         PohodaEntityManager $pohodaEntityManager,
         ProductExportSubscriber $productExportSubscriber,
-        ProductPriceRecalculator $productPriceRecalculator,
         ProductVisibilityRepository $productVisibilityRepository
     ) {
         parent::__construct($transferCronModuleDependency);
@@ -69,7 +61,6 @@ class ProductImportCronModule extends AbstractTransferCronModule
         $this->pohodaEntityManager = $pohodaEntityManager;
         $this->productExportSubscriber = $productExportSubscriber;
         $this->productVisibilityRepository = $productVisibilityRepository;
-        $this->productPriceRecalculator = $productPriceRecalculator;
     }
 
     /**
@@ -90,12 +81,19 @@ class ProductImportCronModule extends AbstractTransferCronModule
         $this->productInfoQueueImportFacade->importDataToQueue($dateTimeBeforeTransferFromPohodaServer, $transfer->getLastStartAt());
 
         $changedPohodaProductIds = $this->productImportFacade->processImport();
+        $this->runRecalculations($changedPohodaProductIds);
+
+        return false;
+    }
+
+    /**
+     * @param array $changedPohodaProductIds
+     */
+    protected function runRecalculations(array $changedPohodaProductIds): void
+    {
         if (count($changedPohodaProductIds) > 0) {
-            $this->productPriceRecalculator->runImmediateRecalculations();
             $this->productVisibilityRepository->refreshProductsVisibility(true);
             $this->productExportSubscriber->exportScheduledRows();
         }
-
-        return false;
     }
 }

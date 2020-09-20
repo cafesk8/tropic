@@ -319,7 +319,7 @@ class ProductFacade extends BaseProductFacade
         $this->categoryFacade->refreshSpecialCategoriesVisibility();
 
         if ($product->isVariant()) {
-            $this->refreshMainVariant($product->getMainVariant());
+            $this->refreshMainVariant($product->getMainVariant(), $productData->markForDelayedPriceRecalculation);
         }
 
         return $product;
@@ -431,7 +431,7 @@ class ProductFacade extends BaseProductFacade
         $this->categoryFacade->refreshSpecialCategoriesVisibility();
 
         if ($product->isVariant()) {
-            $this->refreshMainVariant($product->getMainVariant());
+            $this->refreshMainVariant($product->getMainVariant(), $productData->markForDelayedPriceRecalculation);
         }
 
         return $product;
@@ -1287,10 +1287,14 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \App\Model\Product\Product $mainVariant
+     * @param bool $markForDelayedPriceRecalculation
      */
-    private function refreshMainVariant(Product $mainVariant): void
+    private function refreshMainVariant(Product $mainVariant, bool $markForDelayedPriceRecalculation = false): void
     {
         $mainVariantData = $this->productDataFactory->createFromProduct($mainVariant);
+        if ($markForDelayedPriceRecalculation) {
+            $mainVariantData->markForDelayedPriceRecalculation = true;
+        }
         $this->edit($mainVariant->getId(), $mainVariantData);
     }
 
