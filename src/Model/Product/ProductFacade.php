@@ -445,7 +445,7 @@ class ProductFacade extends BaseProductFacade
     private function updateProductStoreStocks(BaseProductData $productData, Product $product): void
     {
         $product->clearStoreStocks();
-        $this->em->flush();
+        $this->em->flush($product);
 
         if ($product->isMainVariant()) {
             return;
@@ -468,7 +468,7 @@ class ProductFacade extends BaseProductFacade
             $product->addStoreStock($storeStock);
         }
 
-        $this->em->flush();
+        $this->em->flush($product);
 
         $this->updateTotalProductStockQuantity($product);
     }
