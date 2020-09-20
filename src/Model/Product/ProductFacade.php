@@ -22,6 +22,7 @@ use App\Model\Store\Store;
 use App\Model\Store\StoreFacade;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Google_Service_Exception;
 use Psr\Log\LoggerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -795,38 +796,47 @@ class ProductFacade extends BaseProductFacade
         }
 
         if ($product->isMainVariant()) {
-            foreach ($product->getVariants() as $variant) {
-                $mergedProductParameterValuesData = $this->mergeMainVariantAndVariantProductParameterValuesData($productParameterValuesData, $variant);
-                $this->saveParameters($variant, $mergedProductParameterValuesData);
-            }
+            $this->propagateMainVariantParametersToVariants($product->getId());
         }
     }
 
     /**
-     * @param \App\Model\Product\Parameter\ProductParameterValueData[] $mainVariantProductParameterValuesData
-     * @param \App\Model\Product\Product $variant
-     * @return \App\Model\Product\Parameter\ProductParameterValueData[]
+     * @param int $mainVariantId
      */
-    private function mergeMainVariantAndVariantProductParameterValuesData(
-        array $mainVariantProductParameterValuesData,
-        Product $variant
-    ): array {
-        $variantData = $this->productDataFactory->createFromProduct($variant);
-        $mergedProductParameterValuesData = $variantData->parameters;
-        foreach ($mainVariantProductParameterValuesData as $mainVariantProductParameterValueData) {
-            $variantAlreadyHasGivenParameter = false;
-            foreach ($variantData->parameters as $variantProductParameterData) {
-                if ($mainVariantProductParameterValueData->parameter === $variantProductParameterData->parameter) {
-                    $variantAlreadyHasGivenParameter = true;
-                    break;
+    private function propagateMainVariantParametersToVariants(int $mainVariantId): void
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping
+            ->addScalarResult('product_id', 'product_id')
+            ->addScalarResult('parameter_id', 'parameter_id')
+            ->addScalarResult('value_id', 'value_id');
+        $mainVariantProductParameterValues = $this->em->createNativeQuery('SElECT product_id, parameter_id, value_id FROM product_parameter_values WHERE product_id = :mainVariantId', $resultSetMapping)
+            ->setParameter('mainVariantId', $mainVariantId)
+            ->getScalarResult();
+
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('id', 'id');
+        $variantIds = $this->em->createNativeQuery('SELECT id from products WHERE main_variant_id = :mainVariantId', $resultSetMapping)
+            ->setParameter('mainVariantId', $mainVariantId)
+            ->getScalarResult();
+
+        foreach (array_column($variantIds, 'id') as $variantId) {
+            $resultSetMapping = new ResultSetMapping();
+            $resultSetMapping->addScalarResult('parameter_id', 'parameter_id');
+            $variantParameterIds = $this->em->createNativeQuery('SElECT parameter_id FROM product_parameter_values WHERE product_id = :variantId', $resultSetMapping)
+                ->setParameter('variantId', $variantId)
+                ->getScalarResult();
+            foreach ($mainVariantProductParameterValues as $mainVariantParameterValue) {
+                if (in_array($mainVariantParameterValue['parameter_id'], array_column($variantParameterIds, 'parameter_id'), true) === false) {
+                    $this->em->createNativeQuery('INSERT INTO product_parameter_values(product_id, parameter_id, value_id) VALUES (:productId, :parameterId, :valueId)', new ResultSetMapping())
+                        ->execute([
+                            'productId' => $variantId,
+                            'parameterId' => $mainVariantParameterValue['parameter_id'],
+                            'valueId' => $mainVariantParameterValue['value_id'],
+                        ]);
                 }
             }
-            if ($variantAlreadyHasGivenParameter === false) {
-                $mergedProductParameterValuesData[] = $mainVariantProductParameterValueData;
-            }
         }
-
-        return $mergedProductParameterValuesData;
     }
 
     /**
