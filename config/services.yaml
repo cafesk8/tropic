@@ -376,12 +376,6 @@ services:
         arguments:
             - '%googleApiKey%'
 
-    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator:
-        class: App\Model\Product\Pricing\ProductPriceRecalculator
-        tags:
-            # must be run before ProductVisibilityFacade
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: 20 }
-
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface: '@App\Model\Product\Parameter\ParameterDataFactory'
 
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterGridFactory: '@App\Model\Product\Parameter\ParameterGridFactory'
