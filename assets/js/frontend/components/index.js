@@ -32,5 +32,6 @@ import './safariDetection';
 import './scrollToPosition';
 import './searchAutocomplete';
 import './selectric';
+import './opener';
 import './spinbox';
 import './todo';

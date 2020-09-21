@@ -10,11 +10,16 @@
 @cart-detail-item-remove-width: @cart-detail-remove-size + 2*@cart-detail-item-remove-padding-width;
 @cart-detail-item-content-width: calc(~"@{calc-base} - @{cart-detail-item-pieces-width} - @{cart-detail-item-remove-width}");
 @cart-detail-item-transport-width: 55%;
+@cart-detail-item-space-for-scrollbar: 15px;
 
 .cart-detail {
     .reset-ul();
     display: flex;
     flex-direction: column;
+    max-height: 416px;
+    overflow-y: auto;
+    margin-right: -@cart-detail-item-space-for-scrollbar;
+    padding-right: @cart-detail-item-space-for-scrollbar;
 
     &__wrap {
         padding: @cart-detail-padding;
@@ -82,6 +87,10 @@
 
             .cart-detail__item--sets & {
                 flex-direction: column;
+            }
+
+            &__info {
+                flex: 1;
             }
 
             &__title {

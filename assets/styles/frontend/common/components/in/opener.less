@@ -1,0 +1,57 @@
+.in-opener {
+    position: relative;
+
+    &__wrap {
+        position: relative;
+        overflow: hidden;
+        transition: @transition;
+    }
+
+    &__button {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: -15px 0 10px;
+        cursor: pointer;
+        z-index: @z-index-above;
+
+        transition: @transition;
+        background-color: @color-f;
+
+        &__text {
+            margin: 0 10px 0 0;
+
+            text-decoration: underline;
+            font-size: @font-size-small;
+            font-family: @font-alt;
+            
+            .less {
+                display: none;
+            }
+        }
+
+        .svg {
+            transition: @transition;
+            font-size: 8px;
+            color: @color-turquoise;
+        }
+
+        &.open {
+            .in-opener__button__text {
+                .more {
+                    display: none;
+                }
+
+                .less {
+                    display: inline;
+                }
+            }
+
+            .svg {
+                transform: rotate(180deg);
+            }
+        }
+    }
+}
