@@ -26,9 +26,9 @@
                         {% if not typeSetOrSupplierSet %}
                             <div class="box-detail__image">
                                 {% set galleryImages = getImages(product) %}
-                                {% set showGallery = galleryImages|length > 0 or youtubeDetails %}
+                                {% set showGallery = galleryImages|length > 1 or youtubeDetails %}
 
-                                <div class="box-detail__image__main">
+                                <div class="box-detail__image__main{% if not imageExists(product) %} box-detail__image__main--no-image{% endif %}">
                                     {% if imageExists(product) %}
                                         <a href="{{ imageUrl(product, 'original') }}"
                                         class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
@@ -132,7 +132,7 @@
                                                     <div class="list-variants__item__description">
                                                         <div class="list-variants__item__description__image">
                                                             {% if shouldVariantImageBeDisplayed(variant) %}
-                                                                <a href="{{ imageUrl(variant, 'original') }}"  data-original-image="{{ imageUrl(variant, 'largeThumbnail') }}" class="list-variants__item__description__image__wrap js-popup-image js-hover-image">
+                                                                <a href="{{ imageUrl(variant, 'original') }}"  data-original-image="{{ imageUrl(variant, 'largeThumbnail') }}" class="js-popup-image js-hover-image">
                                                                     {{ image(variant, { size: 'thumbnail' }) }}
                                                                 </a>
                                                             {% else %}
@@ -222,6 +222,39 @@
                                     </div>
                                 </div>
                             </div>
+                            <ul class="list-params list-params--big list-params--with-gap">
+                                {% if product.brand %}
+                                    <li class="list-params__item">
+                                        <span class="list-params__item__text">
+                                            <span class="list-params__item__text__name">
+                                                {{ 'Výrobce'|trans }}
+                                            </span>
+                                            <span class="list-params__item__text__value">
+                                                <a href="{{ url('front_brand_detail', { id: product.brand.id }) }}">
+                                                    <span itemprop="brand">{{ product.brand.name }}</span>
+                                                </a>
+                                            </span>
+                                        </span>
+                                    </li>
+                                {% endif %}
+                                <li class="list-params__item">
+                                    <span class="list-params__item__text">
+                                        <span class="list-params__item__text__name">
+                                            {{ 'Záruka'|trans }}
+                                        </span>
+                                        <span class="list-params__item__text__value">
+                                            {% if product.warranty and product.supplierSet is same as (false) %}
+                                                {% transchoice product.warranty with {'%count%': product.warranty} %}
+                                                    {1} %count% měsíc  | [2,4] %count% měsíce | [5,Inf] %count% měsíců
+                                                {% endtranschoice %}
+                                            {% else %}
+                                                {{ '24 měsíců'|trans }}
+                                            {% endif %}
+                                        </span>
+                                    </span>
+                                </li>
+                            </ul>
+
                             {{ boxTabsMacro.files(product) }}
                         {% endif %}
                     </div>
@@ -422,17 +455,20 @@
             <h3 class="in-user-text__title">
                 {{ 'Videa'|trans }}
             </h3>
-            {% for youtubeDetail in youtubeDetails %}
-                <div class="youtubeWrapper margin-bottom-10">
-                    <iframe
-                            width="560"
-                            height="315"
-                            src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
-                            frameborder="0"
-                            allowfullscreen
-                    ></iframe>
-                </div>
-            {% endfor %}
+            
+            <div class="in-user-text__videos">
+                {% for youtubeDetail in youtubeDetails %}
+                    <div class="in-user-text__videos__item">
+                        <iframe
+                                width="100%"
+                                height="315"
+                                src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
+                                frameborder="0"
+                                allowfullscreen
+                        ></iframe>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     {% endif %}
 {% endmacro %}

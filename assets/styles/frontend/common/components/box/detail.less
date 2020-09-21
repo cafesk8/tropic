@@ -93,6 +93,13 @@
             text-align: center;
 
             font-size: 0;
+
+            &--no-image {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 350px;
+            }
         }
     }
 
@@ -362,7 +369,6 @@
 
         @media @query-lg {
             display: block;
-            max-width: @box-detail-variant-info-width;
         }
     }
 }

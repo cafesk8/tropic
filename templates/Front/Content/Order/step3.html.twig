@@ -17,7 +17,7 @@
                 </div>
                 <div class="box-order__wrap">
                     <div class="box-order__info box-order__info--delivery-details">
-                        <div class="box-order__info__content box-order__info__content--full-width">
+                        <div class="box-order__info__content box-order__info__content--full-width-row">
                             <div class="box-order__info__content__left">
                                 <h2 class="in-title in-title--small in-title--dark">
                                     {{ 'Informace o zákazníkovi'|trans }}
@@ -166,7 +166,7 @@
                             </div>
                         </div>
 
-                        <div class="box-order__info__content box-order__info__content--without-gap">
+                        <div class="box-order__info__content box-order__info__content--without-gap box-order__info__content--full-width">
                             <div class="margin-top-10">
                                 {{ form_widget(form.billingAddressFilled, {
                                     attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-billing-address-fields' }})

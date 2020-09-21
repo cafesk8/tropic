@@ -77,19 +77,27 @@
     &__content {
         @media @query-vl {
             display: flex;
+            flex-wrap: wrap;
             margin-left: -@in-tab-content-item-gap;
         }
 
         &__left {
             @media @query-vl {
                 width: calc(~"100% - @{in-tab-content-right-width}");
-                margin-left: @in-tab-content-item-gap;
+                padding-left: @in-tab-content-item-gap;
             }
         }
 
         &__right {
             @media @query-vl {
                 width: @in-tab-content-right-width;
+                padding-left: @in-tab-content-item-gap;
+            }
+        }
+
+        &__bottom {
+            @media @query-vl {
+                width: 100%;
                 margin-left: @in-tab-content-item-gap;
             }
         }
