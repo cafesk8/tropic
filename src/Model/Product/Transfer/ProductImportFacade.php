@@ -16,12 +16,13 @@ use App\Model\Product\Transfer\Exception\MainVariantNotFoundInEshopException;
 use App\Model\Product\Transfer\Exception\ProductNotFoundInEshopException;
 use App\Model\Product\Transfer\Exception\RelatedProductNotFoundException;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
 class ProductImportFacade
 {
-    public const PRODUCT_EXPORT_MAX_BATCH_LIMIT = 100;
+    public const PRODUCT_EXPORT_MAX_BATCH_LIMIT = 250;
 
     /**
      * @var \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade
@@ -64,12 +65,18 @@ class ProductImportFacade
     private array $notUpdatedPohodaProductIds = [];
 
     /**
+     * @var \App\Component\EntityExtension\EntityManagerDecorator
+     */
+    private EntityManagerInterface $entityManager;
+
+    /**
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade $pohodaProductExportFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\ProductDataFactory $productDataFactory
      * @param \App\Model\Product\Transfer\PohodaProductMapper $pohodaProductMapper
      * @param \App\Model\Product\Transfer\ProductInfoQueueImportFacade $productInfoQueueImportFacade
+     * @param \App\Component\EntityExtension\EntityManagerDecorator $entityManager
      */
     public function __construct(
         TransferLoggerFactory $transferLoggerFactory,
@@ -77,7 +84,8 @@ class ProductImportFacade
         ProductFacade $productFacade,
         ProductDataFactory $productDataFactory,
         PohodaProductMapper $pohodaProductMapper,
-        ProductInfoQueueImportFacade $productInfoQueueImportFacade
+        ProductInfoQueueImportFacade $productInfoQueueImportFacade,
+        EntityManagerInterface $entityManager
     ) {
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
         $this->pohodaProductExportFacade = $pohodaProductExportFacade;
@@ -85,6 +93,7 @@ class ProductImportFacade
         $this->productDataFactory = $productDataFactory;
         $this->pohodaProductMapper = $pohodaProductMapper;
         $this->productInfoQueueImportFacade = $productInfoQueueImportFacade;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -133,7 +142,7 @@ class ProductImportFacade
             $this->logger->persistTransferIssues();
         }
 
-        return $changedPohodaProductIds;
+        return $this->updatedPohodaProductIds;
     }
 
     /**
@@ -155,6 +164,7 @@ class ProductImportFacade
             } else {
                 $this->notUpdatedPohodaProductIds[] = $pohodaProduct->pohodaId;
             }
+            $this->entityManager->clear();
         }
     }
 
@@ -171,6 +181,7 @@ class ProductImportFacade
         }
 
         try {
+            $productData->markForDelayedPriceRecalculation = true;
             $createdProduct = $this->productFacade->create($productData);
         } catch (Exception $exc) {
             $this->logError('Import položky při vytvoření selhal', $exc, $pohodaProduct);
@@ -201,6 +212,7 @@ class ProductImportFacade
         }
 
         try {
+            $productData->markForDelayedPriceRecalculation = true;
             $editedProduct = $this->productFacade->edit($product->getId(), $productData);
         } catch (Exception $exc) {
             $this->logError('Import položky při úpravě selhal', $exc, $pohodaProduct);

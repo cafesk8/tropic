@@ -31,7 +31,8 @@ services:
         tags:
             - { name: doctrine.event_subscriber, priority: -10 }
 
-    App\Component\EntityExtension\EntityManagerDecorator:
+    Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator:
+        class: App\Component\EntityExtension\EntityManagerDecorator
         decorates: 'doctrine.orm.default_entity_manager'
         decoration_inner_name: 'App\Component\EntityExtension\EntityManagerDecorator.inner'
         arguments:
@@ -374,12 +375,6 @@ services:
     App\Component\GoogleApi\GoogleClient:
         arguments:
             - '%googleApiKey%'
-
-    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator:
-        class: App\Model\Product\Pricing\ProductPriceRecalculator
-        tags:
-            # must be run before ProductVisibilityFacade
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: 20 }
 
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface: '@App\Model\Product\Parameter\ParameterDataFactory'
 

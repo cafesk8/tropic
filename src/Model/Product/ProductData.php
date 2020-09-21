@@ -181,6 +181,8 @@ class ProductData extends BaseProductData
      */
     public array $namesForMergadoFeed;
 
+    public bool $markForDelayedPriceRecalculation = false;
+
     public function __construct()
     {
         parent::__construct();

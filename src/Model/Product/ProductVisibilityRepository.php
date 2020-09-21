@@ -81,10 +81,10 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
                             OR
                             EXISTS (
                                 SELECT 1
-                                FROM product_calculated_prices as pcp
-                                WHERE pcp.price_with_vat > 0
-                                    AND pcp.product_id = pv.product_id
-                                    AND pcp.pricing_group_id = pv.pricing_group_id
+                                FROM product_manual_input_prices as pmip
+                                WHERE pmip.input_price IS NOT NULL AND pmip.input_price > 0
+                                    AND pmip.product_id = pv.product_id
+                                    AND pmip.pricing_group_id = pv.pricing_group_id
                             )
                         )
                         AND
@@ -95,9 +95,9 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
                                 (
                                     SELECT COUNT(ps.item_id)
                                     FROM product_sets AS ps
-                                    JOIN product_calculated_prices AS pgicp ON pgicp.product_id = ps.item_id
-                                    JOIN pricing_groups AS pcg ON pcg.id = pgicp.pricing_group_id
-                                    WHERE pgicp.price_with_vat > 0
+                                    JOIN product_manual_input_prices AS pmip ON pmip.product_id = ps.item_id
+                                    JOIN pricing_groups AS pcg ON pcg.id = pmip.pricing_group_id
+                                    WHERE pmip.input_price IS NOT NULL AND pmip.input_price > 0
                                         AND ps.main_product_id = pv.product_id
                                         AND pcg.internal_id IN (\'ordinary_customer\', \'registered_customer\')
                                         AND pcg.domain_id = pv.domain_id

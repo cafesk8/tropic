@@ -58,9 +58,13 @@ class ProductManualInputPriceFacade extends BaseProductManualInputPriceFacade
         if ($manualInputPrice === null) {
             $manualInputPrice = $this->productManualInputPriceFactory->create($product, $pricingGroup, $inputPrice);
             $this->em->persist($manualInputPrice);
-        } else {
+            $this->em->flush($manualInputPrice);
+        } elseif ($manualInputPrice->getInputPrice() !== null && $inputPrice !== null && $manualInputPrice->getInputPrice()->equals($inputPrice) === false
+            || $manualInputPrice->getInputPrice() === null && $inputPrice !== null
+            || $manualInputPrice->getInputPrice() !== null && $inputPrice === null
+        ) {
             $manualInputPrice->setInputPrice($inputPrice);
+            $this->em->flush($manualInputPrice);
         }
-        $this->em->flush($manualInputPrice);
     }
 }

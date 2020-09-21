@@ -26,10 +26,6 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet viditelností produktů (pouze produkty označené k přepočtu)', instanceName: products }
 
-    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet cen produktů', instanceName: products }
-
     Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet dostupností produktů', instanceName: products }
