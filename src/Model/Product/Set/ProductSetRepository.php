@@ -9,6 +9,7 @@ use App\Model\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
 
 class ProductSetRepository
@@ -56,9 +57,9 @@ class ProductSetRepository
      * @param \App\Model\Product\Product $product
      * @param int $domainId
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @return \App\Model\Product\Set\ProductSet[]
+     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getVisibleByItem(Product $product, int $domainId, PricingGroup $pricingGroup): array
+    private function getVisibleByItemQueryBuilder(Product $product, int $domainId, PricingGroup $pricingGroup): QueryBuilder
     {
         return $this->em->createQueryBuilder()
             ->select('pg')
@@ -70,7 +71,20 @@ class ProductSetRepository
             ->andWhere('pg.item = :item')
             ->setParameter('domainId', $domainId)
             ->setParameter('pricingGroup', $pricingGroup)
-            ->setParameter('item', $product)
+            ->setParameter('item', $product);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \App\Model\Product\Set\ProductSet[]
+     */
+    public function getOfferedByItem(Product $product, int $domainId, PricingGroup $pricingGroup): array
+    {
+        return $this->getVisibleByItemQueryBuilder($product, $domainId, $pricingGroup)
+            ->join(Product::class, 'p', Join::WITH, 'p = pg.mainProduct')
+            ->andWhere('p.calculatedSellingDenied = FALSE')
             ->getQuery()->execute();
     }
 }
