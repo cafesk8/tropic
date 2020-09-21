@@ -8,7 +8,6 @@ import CustomizeBundle from 'framework/common/validation/customizeBundle';
 import { showFormErrorsWindow, findOrCreateErrorList } from './frontend/utils/customizeBundle';
 
 import './frontend/utils/loginWindowOpener';
-import './frontend/utils/availabilityOnStoreWindowOpener';
 import './frontend/utils/watchDogWindowOpener';
 
 import './loadTranslations';
