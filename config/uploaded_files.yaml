@@ -7,7 +7,7 @@
     class: App\Model\Order\GiftCertificate\OrderGiftCertificate
     types:
         -   name: default
-            multiple: false
+            multiple: true
 -   name: product
     class: App\Model\Product\Product
     types:

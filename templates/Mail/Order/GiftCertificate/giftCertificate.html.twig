@@ -5,7 +5,7 @@
 <body style="font-family: Firefly, DejaVu Sans, sans-serif;">
     <h1>Tropic Fishing</h1>
     <h2>{{ 'Dárkový poukaz'|trans }}</h2>
-    <p>
+    <p style="{% if greyscale is same as(false) %}color: #0f74a8;{% endif %}">
         <b>{{ giftCertificateCode }}</b>
     </p>
     <p>Hodnota: <b>{{ giftCertificateValue|priceWithCurrency(giftCertificateCurrency) }}</b></p>
