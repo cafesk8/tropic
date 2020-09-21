@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Model\Product\Brand\Brand;
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig;
@@ -193,6 +194,20 @@ class ImageExtension extends BaseImageExtension
                 return parent::getImageHtml($mainVariant, $attributes);
             }
         }
+
+        if ($imageOrEntity instanceof Brand) {
+            $this->preventDefault($attributes);
+            $brandImage = $this->imageFacade->findImageByEntity(
+                $this->imageConfig->getEntityName($imageOrEntity),
+                $imageOrEntity->getId(),
+                $attributes['type']
+            );
+
+            if ($brandImage === null) {
+                return '';
+            }
+        }
+
         return parent::getImageHtml($imageOrEntity, $attributes);
     }
 }
