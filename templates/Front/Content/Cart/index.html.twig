@@ -193,7 +193,8 @@
                         <div id="js-order-preview" class="box-cart__cart" data-url="{{ url('front_order_preview') }}">
                             {{ render(controller('App\\Controller\\Front\\OrderController:previewAction', {
                                 orderStep: "1",
-                                formSubmit: form.submit
+                                formSubmit: form.submit,
+                                orderPreview: orderPreview
                             })) }}
                         </div>
                     {{ form_end(form) }}
