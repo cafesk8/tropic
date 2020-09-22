@@ -165,13 +165,17 @@ import windowClose from '../utils/windowFunctions';
         }
 
         Packeta.Widget.pick('de4e7603bb838a8e', function (place) {
-            $('#transport_and_payment_form_packetaId').val(place.id);
-            $('#transport_and_payment_form_packetaName').val(place.name);
-            $('#transport_and_payment_form_packetaStreet').val(place.street);
-            $('#transport_and_payment_form_packetaCity').val(place.city);
-            $('#transport_and_payment_form_packetaZip').val(place.zip);
-            $('#transport_and_payment_form_packetaCountry').val(place.country);
-            $button.parents('.js-order-transport').find('.js-pickup-place-detail-name').text(place.name);
+            if (place !== null) {
+                $('#transport_and_payment_form_packetaId').val(place.id);
+                $('#transport_and_payment_form_packetaName').val(place.name);
+                $('#transport_and_payment_form_packetaStreet').val(place.street);
+                $('#transport_and_payment_form_packetaCity').val(place.city);
+                $('#transport_and_payment_form_packetaZip').val(place.zip);
+                $('#transport_and_payment_form_packetaCountry').val(place.country);
+                $button.parents('.js-order-transport').find('.js-pickup-place-detail-name').text(place.name);
+            }
+
+            $button.parents('.js-order-transport').find('.js-pickup-place-change-button').removeClass('display-none');
         }, options);
     };
 
