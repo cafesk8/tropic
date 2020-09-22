@@ -45,20 +45,37 @@ class ProductGiftInCartFacade
     public function getProductGiftInCartByProductId(array $cartItems): array
     {
         $giftsVariantsByProductId = [];
+        $alreadyUsedGiftQuantitiesIndexedByProductId = [];
 
         foreach ($cartItems as $cartItem) {
             if ($cartItem->getProduct()->isVariant() === true) {
-                $productGift = $cartItem->getProduct()->getMainVariant()->getFirstActiveInStockProductGiftByDomainId($this->domain->getId());
+                $productGifts = $cartItem->getProduct()->getMainVariant()->getActiveInStockProductGiftsByDomainId($this->domain->getId());
             } else {
-                $productGift = $cartItem->getProduct()->getFirstActiveInStockProductGiftByDomainId($this->domain->getId());
+                $productGifts = $cartItem->getProduct()->getActiveInStockProductGiftsByDomainId($this->domain->getId());
             }
 
-            if ($productGift !== null) {
+            $remainingQuantity = $cartItem->getQuantity();
+
+            foreach ($productGifts as $productGift) {
                 $gift = $productGift->getGift();
 
                 if ($this->productFacade->isProductMarketable($gift, $this->domain->getId())) {
-                    foreach ($this->getGiftVariants($gift, $cartItem) as $giftVariantIndex => $giftVariant) {
-                        $giftsVariantsByProductId[$cartItem->getProduct()->getId()][$giftVariantIndex] = $giftVariant;
+                    foreach ($this->getGiftVariants($gift, $cartItem, $remainingQuantity) as $giftVariantIndex => $giftVariant) {
+                        if (!isset($alreadyUsedGiftQuantitiesIndexedByProductId[$giftVariantIndex])) {
+                            $alreadyUsedGiftQuantitiesIndexedByProductId[$giftVariantIndex] = 0;
+                        }
+
+                        if ($giftVariant->getGift()->getRealStockQuantity() <= $alreadyUsedGiftQuantitiesIndexedByProductId[$giftVariant->getGift()->getId()]) {
+                            continue;
+                        }
+
+                        $giftsVariantsByProductId[$cartItem->getId()][$giftVariantIndex] = $giftVariant;
+                        $alreadyUsedGiftQuantitiesIndexedByProductId[$giftVariantIndex] += $giftVariant->getQuantity();
+                        $remainingQuantity -= $giftVariant->getQuantity();
+
+                        if ($remainingQuantity < 1) {
+                            break 2;
+                        }
                     }
                 }
             }
@@ -70,9 +87,10 @@ class ProductGiftInCartFacade
     /**
      * @param \App\Model\Product\Product $productGift
      * @param \App\Model\Cart\Item\CartItem $cartItem
+     * @param int $quantity
      * @return \App\Model\Product\Gift\ProductGiftInCart[]
      */
-    private function getGiftVariants(Product $productGift, CartItem $cartItem): array
+    private function getGiftVariants(Product $productGift, CartItem $cartItem, int $quantity): array
     {
         $giftVariantsByProductId = [];
         if ($productGift->isMainVariant() && count($productGift->getVariants()) > 0) {
@@ -85,15 +103,20 @@ class ProductGiftInCartFacade
                     $cartItem->getProduct(),
                     $giftVariant,
                     $this->productGiftCalculation->getGiftPrice(),
-                    $cartItem->getQuantity()
+                    $giftVariant->getAvailableQuantity($quantity)
                 );
+                $quantity -= $giftVariantsByProductId[$giftVariant->getId()]->getQuantity();
+
+                if ($quantity < 1) {
+                    break;
+                }
             }
         } else {
             $giftVariantsByProductId[$productGift->getId()] = new ProductGiftInCart(
                 $cartItem->getProduct(),
                 $productGift,
                 $this->productGiftCalculation->getGiftPrice(),
-                $cartItem->getQuantity()
+                $productGift->getAvailableQuantity($quantity)
             );
         }
 

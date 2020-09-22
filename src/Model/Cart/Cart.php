@@ -65,27 +65,28 @@ class Cart extends BaseCart
     {
         $cartGifts = [];
 
-        foreach ($productGiftsInCart as $productGiftInCart) {
+        foreach ($productGiftsInCart as $cartItemId => $productGiftInCart) {
             foreach ($productGiftInCart as $productGiftVariantInCart) {
-                $itemsByProductId = $this->getItemsByProductId($productGiftVariantInCart->getProduct()->getId());
-                $quantity = 0;
-                foreach ($itemsByProductId as $item) {
-                    $quantity += $item->getQuantity();
+                $quantity = $productGiftVariantInCart->getQuantity();
+                $cartItem = $this->getItemById($cartItemId);
+
+                if (!isset($cartGifts[$productGiftVariantInCart->getGift()->getId()])) {
+                    $cartGift = $cartItemFactory->create(
+                        $this,
+                        $productGiftVariantInCart->getGift(),
+                        $quantity,
+                        $productGiftVariantInCart->getPrice(),
+                        $productGiftVariantInCart->getProduct(),
+                        $cartItem
+                    );
+
+                    $this->addItem($cartGift);
+
+                    $cartGifts[$productGiftVariantInCart->getGift()->getId()] = $cartGift;
+                } else {
+                    $cartGift = $cartGifts[$productGiftVariantInCart->getGift()->getId()];
+                    $cartGift->changeQuantity($cartGift->getQuantity() + $quantity);
                 }
-                $cartItem = reset($itemsByProductId);
-
-                $cartGift = $cartItemFactory->create(
-                    $this,
-                    $productGiftVariantInCart->getGift(),
-                    $quantity,
-                    $productGiftVariantInCart->getPrice(),
-                    $productGiftVariantInCart->getProduct(),
-                    $cartItem
-                );
-
-                $this->addItem($cartGift);
-
-                $cartGifts[] = $cartGift;
             }
         }
 

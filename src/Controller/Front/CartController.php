@@ -236,7 +236,7 @@ class CartController extends FrontBaseController
 
     /**
      * @param \App\Model\Cart\Item\CartItem[] $cartItems
-     * @param \App\Model\Product\Gift\ProductGiftInCart[] $productGiftsInCart
+     * @param \App\Model\Product\Gift\ProductGiftInCart[][] $productGiftsInCart
      * @param \App\Model\Cart\Cart|null $cart
      * @return mixed[]
      */
@@ -251,7 +251,6 @@ class CartController extends FrontBaseController
             $cartFormData['quantities'][$cartItem->getId()] = $cartItem->getQuantity();
         }
 
-        /** @var \App\Model\Product\Gift\ProductGiftInCart $productGiftInCart */
         foreach ($productGiftsInCart as $productGiftInCart) {
             $cartFormData['chosenGifts'] = array_replace($cartFormData['chosenGifts'], $this->getChosenGiftVariant($productGiftInCart, $cart));
         }

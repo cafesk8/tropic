@@ -78,8 +78,8 @@
                                                     <a class="table-cart__cell__name" href="{{ cartItemUrl }}" title="{{ cartItem.name }}">
                                                         {{ cartItem.name }}
                                                     </a>
-                                                    {% if cartItem.product.id in cartGiftsByProductId|keys %}
-                                                        {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
+                                                    {% if cartItem.id in cartGiftsByProductId|keys %}
+                                                        {% set cartItemGift = cartGiftsByProductId[cartItem.id] %}
                                                         {% for giftVariant in cartItemGift %}
                                                             <div class="table-cart__cell__gift">
                                                                 <div class="table-cart__cell__gift__block">
