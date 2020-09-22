@@ -44,6 +44,14 @@
         </exec>
     </target>
 
+    <target name="cron-images" description="Runs images tranfers. Should be executed periodically by system Cron every 5 minutes.">
+        <exec executable="${path.php.executable}" passthru="true" checkreturn="true">
+            <arg value="${path.bin-console}" />
+            <arg value="shopsys:cron" />
+            <arg value="--instance-name=images" />
+        </exec>
+    </target>
+
     <target name="tests" depends="test-db-demo,test-elasticsearch-index-recreate,test-elasticsearch-export,tests-unit" description="Runs unit, functional and smoke tests. Builds new test database in the process.">
         <phingcall target="tests-functional"/>
         <phingcall target="tests-smoke"/>
