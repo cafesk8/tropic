@@ -23,31 +23,31 @@
 {% block main_content %}
 <div class="web__line">
     <div class="web__container web__container--big-padding">
-        <div class="box-list">
-            <h1 class="in-title in-title--big in-title--center">
-                {{ brand.getSeoH1(domain.id)|default(brand.name) }}
-                {{ paginator.titleAddon(paginationResult) }}
-            </h1>
+        <div class="wrap-page">
+            <div class="box-list">
+                <h1 class="in-title in-title--big in-title--center">
+                    {{ brand.getSeoH1(domain.id)|default(brand.name) }}
+                    {{ paginator.titleAddon(paginationResult) }}
+                </h1>
 
-            <div class="box-list__producer">
-                <div class="box-list__producer__image">
-                    {{ image(brand, { alt: brand.name, lazy: true }) }}
+                <div class="box-list__producer">
+                    <div class="box-list__producer__image">
+                        {{ image(brand, { alt: brand.name, lazy: true }) }}
+                    </div>
+                    <div class="box-list__producer__text in-user-text">
+                        {% if brand.description is not null %}
+                            {{ brand.description|raw }}
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="box-list__producer__text in-user-text">
-                    {% if brand.description is not null %}
-                        {{ brand.description|raw }}
-                    {% endif %}
-                </div>
-            </div>
 
-            {% if visibleCategories|length > 0 %}
-                {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleCategories, 'brand': brand} %}
-            {% endif %}
+                {% if visibleCategories|length > 0 %}
+                    {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleCategories, 'brand': brand} %}
+                {% endif %}
             <div>
                 {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListByBrandAction')) }}
                 {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: false, hiddenFilterFormButton: true } %}
             </div>
-
         </div>
     </div>
 </div>

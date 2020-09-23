@@ -42,10 +42,20 @@
         justify-content: flex-end;
         width: 100%;
 
+        &__left {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: auto;
+        }
+
         &__item {
             margin-top: 10px;
 
-            @media @query-vl {
+            @media @query-md {
+                margin-right: 10px;
+            }
+
+            @media @query-xl {
                 margin-top: 0;
             }
         }
@@ -274,6 +284,7 @@
             right: 0;
             
             color: @color-turquoise;
+            text-decoration: none;
 
             @media @query-vl {
                 display: none;
