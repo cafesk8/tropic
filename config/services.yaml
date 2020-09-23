@@ -777,3 +777,5 @@ services:
         arguments:
             - '@shopsys.shop.twig.cache_provider'
             - '@shopsys.shop.twig.cache_strategy'
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory: '@App\Model\Product\Parameter\ProductParameterValueDataFactory'
