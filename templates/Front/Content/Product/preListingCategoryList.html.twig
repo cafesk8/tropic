@@ -13,8 +13,8 @@
 {% endblock %}
 
 {% block pageStyles %}
-    {% set entryDirectory2 = 'frontend-style-prelist-' ~ getDomain().currentDomainConfig.stylesDirectory %}
-    {{ encore_entry_link_tags( entryDirectory2 ) }}
+    {% set entryDirectoryPage = 'frontend-style-prelist-' ~ getDomain().currentDomainConfig.stylesDirectory %}
+    {{ encore_entry_link_tags( entryDirectoryPage ) }}
 {% endblock %}
 
 {% block main_content %}
