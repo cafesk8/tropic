@@ -54,11 +54,6 @@
                 }
             )}}
         {% endif %}
-        <div class="display-none">
-                <span class="js-validation-errors-list js-validation-error-list-{{ form.privacyPolicy.vars.id }} form-error form-error--choice display-none">
-                    <ul class="form-error__list"></ul>
-                </span>
-        </div>
         <div class="text-center">
             {{ form_widget(form.send, { label: 'Odeslat zprávu'|trans, attr: {class: 'btn--success'}}) }}
         </div>

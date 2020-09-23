@@ -11,6 +11,7 @@ export function findOrCreateErrorList ($formInput, elementName) {
             + '<ul class="form-error__list"></ul>'
         + '</span>'
         ));
+        $errorList.insertBefore($formInput);
         $formInput.closest('.js-form-line').find('.js-form-line-error').append($errorList);
     }
 
