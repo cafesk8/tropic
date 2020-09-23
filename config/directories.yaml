@@ -2,3 +2,4 @@ parameters:
     public_directories:
         - '/web/%shopsys.content_dir_name%/uploadedFiles/migrations'
     internal_directories:
+        - '%kernel.project_dir%/%transfer_xml_backup_path%'

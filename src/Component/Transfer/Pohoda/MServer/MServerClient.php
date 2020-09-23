@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Transfer\Pohoda\MServer;
 
+use App\Component\Transfer\Pohoda\Backup\PohodaTransferBackup;
 use App\Component\Transfer\Pohoda\Customer\PohodaCustomerValidator;
 use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
 use App\Component\Transfer\Pohoda\Exception\PohodaMServerException;
@@ -16,6 +17,9 @@ class MServerClient
     public const POHODA_STW_INSTANCE_EXPORT_ADDRESSBOOK = 'Export adresáře do Pohody';
     public const POHODA_STW_INSTANCE_EXPORT_ORDERS = 'Export objednávek do Pohody';
     public const POHODA_STW_INSTANCE_IMPORT_IMAGE = 'Import obrázku z Pohody';
+
+    public const BACKUP_IDENTIFIER_EXPORT_ADDRESSBOOK = 'exportAddressBook';
+    public const BACKUP_IDENTIFIER_EXPORT_ORDERS = 'exportOrders';
 
     /**
      * @var \App\Component\Transfer\Pohoda\Xml\PohodaXmlGenerator
@@ -62,6 +66,8 @@ class MServerClient
      */
     private $pohodaOrderValidator;
 
+    private PohodaTransferBackup $pohodaTransferBackup;
+
     /**
      * @param string $pohodaMServerUrl
      * @param string $pohodaMServerPort
@@ -72,6 +78,7 @@ class MServerClient
      * @param \App\Component\Transfer\Pohoda\Xml\PohodaXmlResponseParser $pohodaXmlResponseParser
      * @param \App\Component\Transfer\Pohoda\Customer\PohodaCustomerValidator $pohodaCustomerValidator
      * @param \App\Component\Transfer\Pohoda\Order\PohodaOrderValidator $pohodaOrderValidator
+     * @param \App\Component\Transfer\Pohoda\Backup\PohodaTransferBackup $pohodaTransferBackup
      */
     public function __construct(
         string $pohodaMServerUrl,
@@ -82,7 +89,8 @@ class MServerClient
         PohodaXmlGenerator $pohodaXmlGenerator,
         PohodaXmlResponseParser $pohodaXmlResponseParser,
         PohodaCustomerValidator $pohodaCustomerValidator,
-        PohodaOrderValidator $pohodaOrderValidator
+        PohodaOrderValidator $pohodaOrderValidator,
+        PohodaTransferBackup $pohodaTransferBackup
     ) {
         $this->pohodaXmlGenerator = $pohodaXmlGenerator;
 
@@ -94,16 +102,23 @@ class MServerClient
         $this->pohodaXmlResponseParser = $pohodaXmlResponseParser;
         $this->pohodaCustomerValidator = $pohodaCustomerValidator;
         $this->pohodaOrderValidator = $pohodaOrderValidator;
+        $this->pohodaTransferBackup = $pohodaTransferBackup;
     }
 
     /**
      * @param string $pohodaStwInstance
      * @param string $connectionPath
      * @param string|null $postXmlData
+     * @param string|null $xmlBackupIdentifier
+     * @throws \App\Component\Transfer\Pohoda\Exception\PohodaMServerException
      * @return string
      */
-    private function send(string $pohodaStwInstance, string $connectionPath, ?string $postXmlData = null): string
-    {
+    private function send(
+        string $pohodaStwInstance,
+        string $connectionPath,
+        ?string $postXmlData = null,
+        ?string $xmlBackupIdentifier = null
+    ): string {
         $connectionUrl = $this->pohodaMServerUrl . ':' . $this->pohodaMServerPort . $connectionPath;
 
         $pohodaStwAuthorization = base64_encode($this->pohodaMServerLogin . ':' . $this->pohodaMServerPassword);
@@ -114,6 +129,9 @@ class MServerClient
             'STW-Instance: ' . $this->pohodaXmlGenerator->prepareEncodedData($pohodaStwInstance),
             'STW-Authorization: Basic ' . $pohodaStwAuthorization,
         ];
+
+        $transferTimestamp = time();
+        $this->pohodaTransferBackup->backupXml($xmlBackupIdentifier, $postXmlData, $transferTimestamp, 'request');
 
         $mServerConnection = curl_init($connectionUrl);
         curl_setopt($mServerConnection, CURLOPT_HTTPHEADER, $headers);
@@ -141,6 +159,8 @@ class MServerClient
         }
 
         curl_close($mServerConnection);
+
+        $this->pohodaTransferBackup->backupXml($xmlBackupIdentifier, $mServerResult, $transferTimestamp, 'response');
 
         return $mServerResult;
     }
@@ -174,7 +194,8 @@ class MServerClient
         $mServerResponse = $this->send(
             self::POHODA_STW_INSTANCE_EXPORT_ADDRESSBOOK,
             '/xml',
-            $xmlData
+            $xmlData,
+            self::BACKUP_IDENTIFIER_EXPORT_ADDRESSBOOK
         );
 
         $addressBookResponses = $this->pohodaXmlResponseParser->parseAddressBookResponses($mServerResponse);
@@ -217,7 +238,8 @@ class MServerClient
         $mServerResponse = $this->send(
             self::POHODA_STW_INSTANCE_EXPORT_ORDERS,
             '/xml',
-            $xmlData
+            $xmlData,
+            self::BACKUP_IDENTIFIER_EXPORT_ORDERS
         );
 
         $orderResponses = $this->pohodaXmlResponseParser->parseOrderResponses($mServerResponse);

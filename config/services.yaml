@@ -751,3 +751,7 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactoryInterface: '@App\Model\Product\Parameter\ProductParameterValueFactory'
 
     Shopsys\FrameworkBundle\Twig\SeoExtension: '@App\Twig\SeoExtension'
+
+    App\Component\Transfer\Pohoda\Backup\PohodaTransferBackup:
+        arguments:
+            $transferXmlBackupPath: '%transfer_xml_backup_path%'
