@@ -42,6 +42,7 @@ data:
         proxy_cache_path /var/www/cache levels=1:2 keys_zone=cache:10m max_size=2g inactive=60m use_temp_path=off;
 
         server {
+            add_header VSHCDN-WEBP-QUALITY 95;
             listen 80;
             root /var/www/html/web;
 
@@ -52,6 +53,7 @@ data:
         }
 
         server {
+            add_header VSHCDN-WEBP-QUALITY 95;
             listen 8080;
             root /var/www/html/web;
             server_tokens off;
