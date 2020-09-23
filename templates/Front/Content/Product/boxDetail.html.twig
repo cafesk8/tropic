@@ -14,6 +14,15 @@
     {% set typeSetOrSupplierSet = typeSet or typeSupplierSet %}
     {% set variantsCount = product.getVariantsCount(domain.id) %}
     {% set stickers = getImages(product, 'sticker') %}
+    {% set productUrl = url('front_product_detail', {id: product.id}) %}
+
+    <meta itemprop="url" content="{{ productUrl }}">
+    {% if product.ean %}
+        <meta itemprop="gtin" content="{{ product.ean }}">
+    {% endif %}
+    {% if product.catnum %}
+        <meta itemprop="sku" content="{{ product.id }}">
+    {% endif %}
 
     <div class="box-detail">
         <div class="web__line">
@@ -118,6 +127,7 @@
                                         {{ self.productPrice(product) }}
                                         <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
                                         <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
+                                        <meta itemprop="url" content="{{ productUrl }}">
                                         <link itemprop="availability"
                                             href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
                                     </div>
