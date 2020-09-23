@@ -111,6 +111,17 @@
                             </typ:list>
                         </typ:parameter>
                     {% endif -%}
+                    {% if pohodaOrder.pohodaStatusName is not null -%}
+                        <typ:parameter>
+                            <typ:name>RefVPrStavObj</typ:name>
+                            <typ:listValueRef>
+                                <typ:ids>{{ pohodaOrder.pohodaStatusName }}</typ:ids>
+                            </typ:listValueRef>
+                            <typ:list>
+                                <typ:ids>StavO</typ:ids>
+                            </typ:list>
+                        </typ:parameter>
+                    {% endif -%}
                 </ord:parameters>
             </ord:orderHeader>
 

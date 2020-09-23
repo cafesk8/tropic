@@ -75,6 +75,7 @@ class PohodaOrderMapper
         $pohodaOrder->number = $order->getNumber();
         $pohodaOrder->date = $order->getCreatedAt();
         $pohodaOrder->status = $order->getStatus()->getId();
+        $pohodaOrder->pohodaStatusName = $order->getStatus()->getTransferStatus();
         $pohodaOrder->customerEshopId = $order->getCustomerUser() === null ? null : $order->getCustomerUser()->getId();
         $pohodaOrder->totalPriceWithVat = $order->getTotalPriceWithVat();
         $pohodaOrder->pohodaTransportId = $order->getTransport()->getExternalId();

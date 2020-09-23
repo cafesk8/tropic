@@ -42,6 +42,11 @@ class PohodaOrder
     public ?int $status;
 
     /**
+     * @var string|null
+     */
+    public ?string $pohodaStatusName;
+
+    /**
      * @var int|null
      */
     public ?int $customerEshopId;
