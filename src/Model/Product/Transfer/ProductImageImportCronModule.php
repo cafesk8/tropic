@@ -50,8 +50,8 @@ class ProductImageImportCronModule extends AbstractTransferCronModule
      */
     protected function runTransfer(): bool
     {
-        $lastFinishAt = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER)->getLastFinishAt();
-        $this->productImageImportFacade->importImagesFromPohoda($lastFinishAt);
+        $lastStartAt = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER)->getLastStartAt();
+        $this->productImageImportFacade->importImagesFromPohoda($lastStartAt);
         $this->productExportSubscriber->exportScheduledRows();
 
         return false;

@@ -18,10 +18,6 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import změněných produktů a zařazení produktů do kategorií z Pohoda IS', instanceName: products }
 
-    App\Model\Product\Transfer\ProductImageImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import obrázků k produktům z Pohoda IS', instanceName: products }
-
     Shopsys\FrameworkBundle\Model\Product\ProductVisibilityImmediateCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet viditelností produktů (pouze produkty označené k přepočtu)', instanceName: products }

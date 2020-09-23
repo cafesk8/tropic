@@ -30,11 +30,11 @@ class ImageImportQueueFacade
     }
 
     /**
-     * @param \DateTime|null $lastFinishAt
+     * @param \DateTime|null $lastStartAt
      */
-    public function updateQueue(?DateTime $lastFinishAt): void
+    public function updateQueue(?DateTime $lastStartAt): void
     {
-        $productIds = $this->productFacade->getPohodaIdsForProductsUpdatedSince($lastFinishAt);
+        $productIds = $this->productFacade->getPohodaIdsForProductsUpdatedSince($lastStartAt);
 
         if (count($productIds) > 0) {
             $this->imageImportQueueRepository->insertChangedPohodaProductIds($productIds);

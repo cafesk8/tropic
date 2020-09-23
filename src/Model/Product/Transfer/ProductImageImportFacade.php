@@ -74,13 +74,13 @@ class ProductImageImportFacade
     }
 
     /**
-     * @param \DateTime|null $lastFinishAt
+     * @param \DateTime|null $lastStartAt
      */
-    public function importImagesFromPohoda(?DateTime $lastFinishAt): void
+    public function importImagesFromPohoda(?DateTime $lastStartAt): void
     {
         $imagesTargetPath = $this->getImagesTargetPath();
         $nextImageId = $this->imageFacade->getHighestImageId() + 1;
-        $this->imageInfoQueueFacade->updateQueue($lastFinishAt);
+        $this->imageInfoQueueFacade->updateQueue($lastStartAt);
         $productPohodaIds = $this->imageInfoQueueFacade->getIdsForImport(self::BATCH_LIMIT);
 
         $pohodaImages = $this->pohodaImageExportFacade->getPohodaImages($productPohodaIds);

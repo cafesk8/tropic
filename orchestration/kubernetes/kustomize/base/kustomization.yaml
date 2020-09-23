@@ -2,6 +2,7 @@ resources:
     - ../../cron/php-fpm-cron-executor-default.yaml
     - ../../cron/php-fpm-cron-executor-products.yaml
     - ../../cron/php-fpm-cron-executor-orders.yaml
+    - ../../cron/php-fpm-cron-executor-images.yaml
     - ../../deployments/redis.yaml
     - ../../deployments/webserver-php-fpm.yaml
     - ../../services/redis.yaml
