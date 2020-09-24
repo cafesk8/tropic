@@ -55,7 +55,7 @@ class OrderGiftCertificatePdfFacade
         $dirName = $this->fileUpload->getTemporaryDirectory();
 
         if (!is_dir($dirName)) {
-            mkdir($dirName, 0777, true);
+            $this->filesystem->createDir($dirName, ['visibility' => 'private']);
         }
 
         $uploadedFileData = $this->uploadedFileDataFactory->createByEntity($orderGiftCertificate);
