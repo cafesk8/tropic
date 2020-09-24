@@ -54,6 +54,7 @@ parameters:
             - '*/src/Command/Migrations/ImportLegacyCustomersFromCSVCommand.php'
             - '*/src/Command/Migrations/ImportLegacyOrdersFromCSVCommand.php'
             - '*/src/Model/Order/Migration/LegacyOrderValidator.php'
+            - '*/src/Model/Product/Transfer/ProductImageImportFacade.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/App/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
