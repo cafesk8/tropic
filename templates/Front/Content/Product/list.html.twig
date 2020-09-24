@@ -31,6 +31,10 @@
                 </h1>
 
                 {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert' : category.getAdvert()})) }}
+
+                {% if visibleChildren is not empty %}
+                    {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren, 'currentCategory': category} %}
+                {% endif %}
             </div>
         </div>
 
@@ -63,9 +67,6 @@
                     {% endif %}
 
                     <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
-                        {% if visibleChildren is not empty %}
-                            {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren, 'currentCategory': category} %}
-                        {% endif %}
                         {{ render(controller('App\\Controller\\Front\\BestsellingProductController:listAction', {'category': category, 'type': constant('App\\Controller\\Front\\BestsellingProductController::TYPE_VERTICAL')})) }}
                         {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction')) }}
                         <div class="box-list__products">

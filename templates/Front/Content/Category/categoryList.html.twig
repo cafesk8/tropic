@@ -35,31 +35,29 @@
             {% endfor %}
         </ul>
     {% else %}
-        <div class="list-categories-wrap">
-            <ul class="list-categories js-tabs-content {{ cssClass|default('') }}" data-tab-id="categories">
-                {% for category in categories %}
-                    {% if currentCategory is defined and currentCategory.isSaleType %}
-                        {% set categoryUrl = url('front_sale_product_list', { id: category.id }) %}
-                    {% elseif currentCategory is defined and currentCategory.isNewsType %}
-                        {% set categoryUrl = url('front_news_product_list', { id: category.id }) %}
-                    {% else %}
-                        {% set categoryUrl = url('front_product_list', { id: category.id }) %}
-                    {% endif %}
-                    <li class="list-categories__item">
-                        <a href="{{ categoryUrl }}"
-                        class="list-categories__item__link">
-                            <div class="list-categories__item__image">
-                                {{ image(category, { alt: category.name }) }}
-                            </div>
-                            <div class="list-categories__item__info">
-                                <p class="list-categories__item__text">
-                                    <span class="list-categories__item__text__name">{{ category.name }}</span>
-                                </p>
-                            </div>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+        <ul class="list-categories js-tabs-content {{ cssClass|default('') }}" data-tab-id="categories">
+            {% for category in categories %}
+                {% if currentCategory is defined and currentCategory.isSaleType %}
+                    {% set categoryUrl = url('front_sale_product_list', { id: category.id }) %}
+                {% elseif currentCategory is defined and currentCategory.isNewsType %}
+                    {% set categoryUrl = url('front_news_product_list', { id: category.id }) %}
+                {% else %}
+                    {% set categoryUrl = url('front_product_list', { id: category.id }) %}
+                {% endif %}
+                <li class="list-categories__item">
+                    <a href="{{ categoryUrl }}"
+                    class="list-categories__item__link">
+                        <div class="list-categories__item__image">
+                            {{ image(category, { alt: category.name }) }}
+                        </div>
+                        <div class="list-categories__item__info">
+                            <p class="list-categories__item__text">
+                                <span class="list-categories__item__text__name">{{ category.name }}</span>
+                            </p>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
     {% endif %}
 {% endif %}

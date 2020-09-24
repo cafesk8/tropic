@@ -58,7 +58,7 @@
             <div class="web__line" id="categories">
                 <div class="web__container">
                     <h3 class="box-search__subtitle">{{ 'Nalezené kategorie'|trans }}</h3>
-                    {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': foundCategories, 'cssClass': 'list-categories--four-on-row', 'title': 'Nalezené kategorie'|trans, 'showText': false } %}
+                    {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': foundCategories, 'title': 'Nalezené kategorie'|trans, 'showText': false } %}
                 </div>
             </div>
         {% endif %}
