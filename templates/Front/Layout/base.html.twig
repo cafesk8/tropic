@@ -23,8 +23,8 @@
         {{ encore_entry_link_tags( entryDirectoryHelpers ) }}
 
         <script>
-            var isEnglishDomain = '{{ isEnglishDomain() }}' == 1;
-            var isSlovakDomain = '{{ isSlovakDomain() }}' == 1;
+            const isEnglishDomain = '{{ isEnglishDomain() }}' == 1;
+            const isSlovakDomain = '{{ isSlovakDomain() }}' == 1;
         </script>
 
         {{ render(controller('App\\Controller\\Front\\HeurekaController:embedWidgetAction')) }}

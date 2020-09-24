@@ -787,3 +787,13 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPriceRepository: '@App\Model\Product\Pricing\ProductCalculatedPriceRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository: '@App\Model\Product\Search\ProductFilterCountDataElasticsearchRepository'
+
+    Soukicz\Zbozicz\Client:
+        arguments:
+            $shopId: '%zbozi_shop_id%'
+            $privateKey: '%zbozi_private_key%'
+            $sandbox: true
+
+    App\Controller\Front\ScriptController:
+        arguments:
+            $shopId: '%zbozi_shop_id%'

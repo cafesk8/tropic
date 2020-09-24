@@ -120,3 +120,6 @@ parameters:
         outbound_pass: password
         isProductionMode: false
         timeout: 30
+
+    zbozi_shop_id: 1642515681
+    zbozi_private_key: 6ae5d376778ee81c24636dc5142a0d7a

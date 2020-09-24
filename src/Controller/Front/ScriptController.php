@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Model\Order\Order;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Script\ScriptFacade;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,16 +21,21 @@ class ScriptController extends FrontBaseController
      */
     private $domain;
 
+    private string $shopId;
+
     /**
      * @param \Shopsys\FrameworkBundle\Model\Script\ScriptFacade $scriptFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param string $shopId
      */
     public function __construct(
         ScriptFacade $scriptFacade,
-        Domain $domain
+        Domain $domain,
+        string $shopId
     ) {
         $this->scriptFacade = $scriptFacade;
         $this->domain = $domain;
+        $this->shopId = $shopId;
     }
 
     public function embedAllPagesScriptsAction()
@@ -63,8 +68,9 @@ class ScriptController extends FrontBaseController
 
     /**
      * @param \App\Model\Order\Order $order
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function embedOrderSentPageGoogleAnalyticsScriptAction(Order $order)
+    public function embedOrderSentPageGoogleAnalyticsScriptAction(Order $order): Response
     {
         if (!$this->scriptFacade->isGoogleAnalyticsActivated($this->domain->getId())) {
             return new Response('');
@@ -72,6 +78,18 @@ class ScriptController extends FrontBaseController
 
         return $this->render('Front/Inline/MeasuringScript/googleAnalyticsEcommerce.html.twig', [
             'order' => $order,
+        ]);
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function embedOrderSentPageZboziScriptAction(Order $order): Response
+    {
+        return $this->render('Front/Inline/MeasuringScript/zbozi.html.twig', [
+            'order' => $order,
+            'shopId' => $this->shopId,
         ]);
     }
 }
