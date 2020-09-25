@@ -39,24 +39,37 @@
     &__messages {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-end;
         width: 100%;
+
+        @media @query-md {
+            justify-content: flex-end;
+        }
 
         &__left {
             display: flex;
             flex-wrap: wrap;
-            margin-right: auto;
+            width: 100%;
+
+            @media @query-md {
+                flex: 1;
+                width: auto;
+                min-width: 50%;
+                justify-content: space-between;
+            }
         }
 
         &__item {
             margin-top: 10px;
 
-            @media @query-md {
-                margin-right: 10px;
-            }
-
             @media @query-xl {
                 margin-top: 0;
+            }
+
+            &--left {
+                @media @query-md {
+                    margin-right: auto;
+                    padding-right: 10px;
+                }
             }
         }
     }
