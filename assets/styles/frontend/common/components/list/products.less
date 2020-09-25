@@ -103,6 +103,7 @@
         }
 
         &__image-wrap {
+            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -130,6 +131,14 @@
                     max-height: @list-products-item-image-height;
                 }
             }
+        }
+
+        &__sticker {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 64px;
+            text-align: right;
         }
 
         &__info {
