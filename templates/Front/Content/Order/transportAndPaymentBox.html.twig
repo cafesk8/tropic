@@ -13,7 +13,8 @@
             'class': 'js-store-input',
             'data-search-url': url('front_store_list')
         }}) }}
-        <div id="{{ form.transport.vars.id }}">
+        <div class="js-form-line" id="{{ form.transport.vars.id }}">
+            <div class="js-form-line-error"></div>
             {% for child in form.transport %}
                 {% set choice = form.transport.vars.choices[child.vars.name] %}
                 {% set transportPrice = transportsPrices[choice.data.id] %}
@@ -99,7 +100,8 @@
             {{ 'Vyberte způsob platby'|trans }}
         </h2>
 
-        <div id="{{ form.payment.vars.id }}">
+        <div class="js-form-line" id="{{ form.payment.vars.id }}">
+            <div class="js-form-line-error"></div>
             {% set bankTransferRendered = false %}
             {% set goPayBankSwiftForm = form.goPayBankSwift %}
             {% for child in form.payment %}
