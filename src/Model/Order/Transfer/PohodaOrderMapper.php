@@ -177,7 +177,7 @@ class PohodaOrderMapper
     private function mapOrderItem(Order $order, PohodaOrder $pohodaOrder, array $pohodaVatNames, OrderItem $orderItem, int $quantity, ?Store $stock = null, bool $isFromExternalStock = false): void
     {
         $pohodaOrderItem = new PohodaOrderItem();
-        $pohodaOrderItem->name = $orderItem->getName();
+        $pohodaOrderItem->name = substr($orderItem->getName(), 0, PohodaOrderItem::POHODA_NAME_MAX_LENGTH);
         $pohodaOrderItem->catnum = $orderItem->getCatnum();
         $pohodaOrderItem->quantity = $quantity;
         $pohodaOrderItem->unit = $orderItem->getUnitName();

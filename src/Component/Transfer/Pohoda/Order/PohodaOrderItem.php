@@ -8,6 +8,8 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 
 class PohodaOrderItem
 {
+    public const POHODA_NAME_MAX_LENGTH = 89;
+
     /**
      * @var string|null
      */
