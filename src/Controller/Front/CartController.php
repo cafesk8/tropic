@@ -230,6 +230,7 @@ class CartController extends FrontBaseController
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
             'quantifiedItemsDiscountsByIndex' => $orderPreview->getQuantifiedItemsDiscounts(),
+            'orderPreview' => $orderPreview,
         ]);
     }
 

@@ -494,6 +494,7 @@ class OrderController extends FrontBaseController
             'bulkyTransportRequired' => $this->cartFacade->isBulkyTransportRequired(),
             'oversizedTransportRequired' => $this->cartFacade->isOversizedTransportRequired(),
             'containsForeignSupplierProducts' => $this->cartFacade->containsForeignSupplierProducts(),
+            'orderPreview' => $orderPreview,
         ]);
     }
 
@@ -612,6 +613,7 @@ class OrderController extends FrontBaseController
             'store' => $orderData->store,
             'bulkyTransportRequired' => $this->cartFacade->isBulkyTransportRequired(),
             'oversizedTransportRequired' => $this->cartFacade->isOversizedTransportRequired(),
+            'orderPreview' => $orderPreview,
         ]);
     }
 
@@ -625,6 +627,7 @@ class OrderController extends FrontBaseController
         $paymentId = $request->get('paymentId');
         $orderStep = $request->get('orderStep');
         $simulateRegistration = filter_var($request->get('registration', false), FILTER_VALIDATE_BOOLEAN);
+        $orderPreview = $request->get('orderPreview');
 
         if ($transportId === null) {
             $transport = null;
@@ -638,7 +641,9 @@ class OrderController extends FrontBaseController
             $payment = $this->paymentFacade->getById($paymentId);
         }
 
-        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment, $simulateRegistration);
+        if ($orderPreview === null) {
+            $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
+        }
         $renderSubmitButton = $request->isXmlHttpRequest() === false || $orderStep === '1';
         $domainId = $this->domain->getId();
         $productsPrice = $orderPreview->getProductsPrice();
