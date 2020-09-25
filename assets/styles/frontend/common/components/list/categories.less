@@ -1,6 +1,6 @@
 @list-categories-item-gap: 16px;
 @list-categories-item-inner-gap-horizontal: 10px;
-@list-categories-item-inner-gap-vertical: 4px;
+@list-categories-item-inner-gap-vertical: 3px;
 @list-categories-image-size: 56px;
 
 .list-categories {
@@ -60,11 +60,13 @@
         }
 
         &__image {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
             width: @list-categories-image-size;
             height: @list-categories-image-size;
+
+            img {
+                .center-image();
+            }
         }
 
         &__info {
