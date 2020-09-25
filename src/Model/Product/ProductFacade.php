@@ -769,8 +769,9 @@ class ProductFacade extends BaseProductFacade
         $resultSetMapping
             ->addScalarResult('product_id', 'product_id')
             ->addScalarResult('parameter_id', 'parameter_id')
-            ->addScalarResult('value_id', 'value_id');
-        $mainVariantProductParameterValues = $this->em->createNativeQuery('SElECT product_id, parameter_id, value_id FROM product_parameter_values WHERE product_id = :mainVariantId', $resultSetMapping)
+            ->addScalarResult('value_id', 'value_id')
+            ->addScalarResult('position', 'position');
+        $mainVariantProductParameterValues = $this->em->createNativeQuery('SElECT product_id, parameter_id, value_id, position FROM product_parameter_values WHERE product_id = :mainVariantId', $resultSetMapping)
             ->setParameter('mainVariantId', $mainVariantId)
             ->getScalarResult();
 
@@ -793,11 +794,12 @@ class ProductFacade extends BaseProductFacade
 
             foreach ($mainVariantProductParameterValues as $mainVariantParameterValue) {
                 if (in_array($mainVariantParameterValue['parameter_id'], array_column($variantParameterValuesData, 'parameter_id'), true) === false) {
-                    $this->em->createNativeQuery('INSERT INTO product_parameter_values(product_id, parameter_id, value_id, taken_from_main_variant) VALUES (:productId, :parameterId, :valueId, :takenFromMainVariant)', new ResultSetMapping())
+                    $this->em->createNativeQuery('INSERT INTO product_parameter_values(product_id, parameter_id, value_id, taken_from_main_variant, position) VALUES (:productId, :parameterId, :valueId, :takenFromMainVariant, :position)', new ResultSetMapping())
                         ->execute([
                             'productId' => $variantId,
                             'parameterId' => $mainVariantParameterValue['parameter_id'],
                             'valueId' => $mainVariantParameterValue['value_id'],
+                            'position' => $mainVariantParameterValue['position'],
                             'takenFromMainVariant' => true,
                         ]);
                 }
