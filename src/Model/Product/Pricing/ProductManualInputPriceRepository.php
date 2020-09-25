@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing;
 
-use Doctrine\ORM\Query\Expr\Join;
+use App\Model\Pricing\Group\PricingGroup;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository as BaseProductManualInputPriceRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use Shopsys\FrameworkBundle\Model\Product\ProductDomain;
-use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
 
 /**
  * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice[] getByProduct(\App\Model\Product\Product $product)
@@ -29,37 +28,40 @@ class ProductManualInputPriceRepository extends BaseProductManualInputPriceRepos
         int $domainId,
         bool $allowSellingDeniedVariants = false
     ) {
-        $queryBuilder = $this->getProductManualInputPriceRepository()
-            ->createQueryBuilder('pmip')
-            ->select('MIN(pmip.inputPrice) as inputPrice, MAX(pmip.inputPrice) as maxInputPrice, IDENTITY(pmip.pricingGroup) as pricingGroupId')
-            ->where('pmip.pricingGroup IN (:pricingGroups)')
-            ->groupBy('pmip.pricingGroup')
-            ->setParameter('pricingGroups', $pricingGroups);
-
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping
+            ->addScalarResult('inputprice', 'inputPrice')
+            ->addScalarResult('maxinputprice', 'maxInputPrice')
+            ->addScalarResult('pricinggroupid', 'pricingGroupId');
+        $parameters = [];
         if ($product->isMainVariant()) {
-            $queryBuilder
-                ->join(Product::class, 'p', Join::WITH, 'pmip.product = p.id AND p.mainVariant = :mainVariantId')
-                ->leftJoin(ProductVisibility::class, 'pv', Join::WITH, 'p.id = pv.product');
+            $sql = 'SELECT MIN(pmip.input_price) AS inputPrice, MAX(pmip.input_price) AS maxInputPrice, pmip.pricing_group_id as pricingGroupId
+                FROM product_manual_input_prices pmip
+                INNER JOIN products p ON (pmip.product_id = p.id AND p.main_variant_id = :mainVariantId)
+                LEFT JOIN product_visibilities pv ON (p.id = pv.product_id)
+                LEFT JOIN product_domains pd ON (pd.product_id = p.id AND pd.domain_id = :domainId)
+                WHERE pmip.pricing_group_id IN (:pricingGroupIds)
+                AND pmip.input_price > 0
+                AND pv.visible = true';
 
             if (!$allowSellingDeniedVariants) {
-                $queryBuilder->andWhere('p.calculatedSellingDenied = false');
+                $sql .= ' AND p.calculated_selling_denied = false';
             }
-
-            $queryBuilder
-                ->andWhere('pmip.inputPrice > 0')
-                ->andWhere('pv.visible = true')
-                ->setParameter('mainVariantId', $product);
+            $parameters['mainVariantId'] = $product->getId();
+            $sql .= ' GROUP BY pmip.pricing_group_id';
         } else {
-            $queryBuilder
-                ->join(Product::class, 'p', Join::WITH, 'pmip.product = p.id')
-                ->andWhere('pmip.product = :product')
-                ->setParameter('product', $product->getId());
+            $sql = 'SELECT pmip.input_price AS inputPrice, 0 AS maxInputPrice, pmip.pricing_group_id AS pricingGroupId
+                FROM product_manual_input_prices pmip
+                LEFT JOIN product_domains pd ON (pd.product_id = pmip.product_id AND pd.domain_id = :domainId)
+                WHERE pmip.pricing_group_id IN (:pricingGroupIds)
+                AND pmip.product_id = :productId';
+            $parameters['productId'] = $product->getId();
         }
+        $parameters['domainId'] = $domainId;
+        $parameters['pricingGroupIds'] = array_map(function(PricingGroup $pricingGroup) {
+            return $pricingGroup->getId();
+        }, $pricingGroups);
 
-        $queryBuilder
-            ->leftJoin(ProductDomain::class, 'pd', Join::WITH, 'pd.product = p.id AND pd.domainId = :domainId')
-            ->setParameter('domainId', $domainId);
-
-        return $queryBuilder->getQuery()->getResult();
+        return $this->em->createNativeQuery($sql, $resultSetMapping)->setParameters($parameters)->getResult();
     }
 }
