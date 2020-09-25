@@ -90,7 +90,7 @@ class ProductExportRepository extends BaseProductExportRepository
         if ($product->isMainVariant()) {
             $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
         }
-        $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId);
+        $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId, $result['prices']);
         $result['delivery_days'] = $product->isMainVariant() ? '' : $product->getDeliveryDays();
         $result['is_available_in_days'] = $product->isMainVariant() ? false : $product->isAvailableInDays();
         $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
@@ -181,21 +181,27 @@ class ProductExportRepository extends BaseProductExportRepository
     /**
      * @param \App\Model\Product\Product $product
      * @param int $domainId
+     * @param array $prices
      * @return array
      */
-    private function getPricesForFilterIncludingVariants(BaseProduct $product, int $domainId): array
+    private function getPricesForFilterIncludingVariants(BaseProduct $product, int $domainId, array $prices): array
     {
+        $pricesForFilter = [];
         if ($product->isMainVariant() === false) {
-            return $this->getPricesForFilter($product, $domainId);
+            foreach ($prices as $price) {
+                $pricesForFilter[] = [
+                    'pricing_group_id' => $price['pricing_group_id'],
+                    'price_with_vat' => $price['price_with_vat'],
+                ];
+            }
         } else {
-            $pricesForFilter = [];
             foreach ($this->productFacade->getSellableVariantsForProduct($product, $domainId) as $variant) {
                 $variantPrices = $this->getPricesForFilter($variant, $domainId);
                 $pricesForFilter = array_merge($pricesForFilter, $variantPrices);
             }
-
-            return $pricesForFilter;
         }
+
+        return $pricesForFilter;
     }
 
     /**
