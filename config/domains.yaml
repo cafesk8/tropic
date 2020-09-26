@@ -6,9 +6,9 @@ domains:
     -   id: 2
         name: "Tropic SK"
         locale: sk
-        styles_directory: domain2
+        styles_directory: common
     -   id: 3
         name: "Tropic EN"
         locale: en
-        styles_directory: domain2
+        styles_directory: common
 

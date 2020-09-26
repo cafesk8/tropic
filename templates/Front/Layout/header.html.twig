@@ -123,17 +123,17 @@
                                 id="js-header-customer">
                                 {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                                     <div class="box-dropdown__options__item js-dropdown-item'">
-                                        <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
+                                        <a href="{{ url('front_customer_edit') }}" class="box-dropdown__options__item__logged-link">
                                             {{ app.user.firstName }} {{ app.user.lastName }}
                                         </a>
                                     </div>
                                     <div class="box-dropdown__options__item js-dropdown-item'">
-                                        <a href="{{ url('front_customer_orders') }}" class="menu-iconic__item__link">
+                                        <a href="{{ url('front_customer_orders') }}" class="box-dropdown__options__item__logged-link">
                                             {{ 'My orders'|trans }}
                                         </a>
                                     </div>
                                     <div class="box-dropdown__options__item js-dropdown-item'">
-                                        <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="menu-iconic__item__link js-logout-link-desktop">
+                                        <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="box-dropdown__options__item__logged-link js-logout-link-desktop">
                                             {{ 'Log out'|trans }}
                                         </a>
                                     </div>

@@ -11,10 +11,16 @@
 
         {{ render(controller('App\\Controller\\Front\\GtmController:headAction')) }}
 
-        {% set entryDirectory = 'frontend-style-' ~ getDomain().currentDomainConfig.stylesDirectory %}
+        {% set entryDirectory = 'frontend-style-base-' ~ getDomain().currentDomainConfig.stylesDirectory %}
         {{ encore_entry_link_tags( entryDirectory ) }}
+        {% block pageStyles %}
+            {% set entryDirectoryOther = 'frontend-style-other-pages-' ~ getDomain().currentDomainConfig.stylesDirectory %}
+            {{ encore_entry_link_tags( entryDirectoryOther ) }}
+        {% endblock %}
         {% set entryDirectoryPrint = 'frontend-print-style-' ~ getDomain().currentDomainConfig.stylesDirectory %}
         {{ encore_entry_link_tags( entryDirectoryPrint ) }}
+        {% set entryDirectoryHelpers = 'frontend-style-helpers-' ~ getDomain().currentDomainConfig.stylesDirectory %}
+        {{ encore_entry_link_tags( entryDirectoryHelpers ) }}
 
         <script>
             var isEnglishDomain = '{{ isEnglishDomain() }}' == 1;

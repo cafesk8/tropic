@@ -17,6 +17,11 @@
     {{ render(controller('App\\Controller\\Front\\BreadcrumbController:indexAction', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
 {% endblock %}
 
+{% block pageStyles %}
+    {% set entryDirectoryPage = 'frontend-style-product-' ~ getDomain().currentDomainConfig.stylesDirectory %}
+    {{ encore_entry_link_tags( entryDirectoryPage ) }}
+{% endblock %}
+
 {% block main_content %}
     <div itemscope itemtype="http://schema.org/Product">
         {{ boxDetail.productBox(product, youtubeDetails, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews) }}

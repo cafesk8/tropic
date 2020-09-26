@@ -21,69 +21,6 @@
 .cursor-auto {cursor: auto}
 .cursor-help {cursor: help}
 
-.double-lined {
-    display: inline-block;
-    position: relative;
-
-    &:before {
-        content: '';
-        position: absolute;
-        display: block;
-        height: 2px;
-        width: 100%;
-        left: 0;
-        top: -8px;
-
-        background-color: @color-add;
-    }
-
-    &:after {
-        content: '';
-        position: absolute;
-        display: block;
-        height: 2px;
-        width: 100%;
-        left: 0;
-        bottom: -7px;
-
-        background-color: @color-add;
-    }
-}
-
-.double-lined-hard {
-    position: relative;
-
-    &:before {
-        content: '';
-        position: absolute;
-        display: block;
-        height: 5px;
-        width: 100%;
-        left: 0;
-        bottom: 87px;
-
-        background-color: @color-add;
-    }
-
-    &--error {
-        &:before {
-            bottom: 120px;
-        }
-    }
-
-    &:after {
-        content: '';
-        position: absolute;
-        display: block;
-        height: 5px;
-        width: 100%;
-        left: 0;
-        bottom: -22px;
-
-        background-color: @color-add;
-    }
-}
-
 .full-width {
     width: 100%;
 }
