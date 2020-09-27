@@ -14,7 +14,6 @@ use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportRepository as BaseProductExportRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
@@ -27,7 +26,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
  * @method string extractDetailUrl(int $domainId, \App\Model\Product\Product $product)
- * @method array extractParameters(string $locale, \App\Model\Product\Product $product)
  * @method array extractVisibility(int $domainId, \App\Model\Product\Product $product)
  * @method int[] extractVariantIds(\App\Model\Product\Product $product)
  * @property \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
@@ -41,6 +39,8 @@ class ProductExportRepository extends BaseProductExportRepository
     private ProductSetFacade $productSetFacade;
 
     private array $variantsCachedPrices = [];
+
+    private array $cachedParameters = [];
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -274,6 +274,21 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $uniqueParameters;
+    }
+
+    /**
+     * @param string $locale
+     * @param \App\Model\Product\Product $product
+     * @return array
+     */
+    protected function extractParameters(string $locale, BaseProduct $product): array
+    {
+        $productId = $product->getId();
+        if (isset($this->cachedParameters[$locale][$productId]) === false) {
+            $this->cachedParameters[$locale][$productId] = parent::extractParameters($locale, $product);
+        }
+
+        return $this->cachedParameters[$locale][$productId];
     }
 
     /**
