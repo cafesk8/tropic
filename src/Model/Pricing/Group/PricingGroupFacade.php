@@ -34,6 +34,11 @@ class PricingGroupFacade extends BasePricingGroupFacade
     private $cachedPricingGroupByType = [];
 
     /**
+     * @var \App\Model\Pricing\Group\PricingGroup[]
+     */
+    private array $cachedDefaultPricingGroupsByDomainId = [];
+
+    /**
      * @param string $name
      * @param int $domainId
      * @return \App\Model\Pricing\Group\PricingGroup
@@ -141,10 +146,24 @@ class PricingGroupFacade extends BasePricingGroupFacade
         if ($customerUser !== null) {
             $pricingGroup = $customerUser->getPricingGroup();
         } else {
-            /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
-            $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($this->domain->getId());
+            $pricingGroup = $this->getDefaultPricingGroup($this->domain->getId());
         }
 
         return $pricingGroup;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    public function getDefaultPricingGroup(int $domainId): PricingGroup
+    {
+        if (isset($this->cachedDefaultPricingGroupsByDomainId[$domainId]) === false) {
+            /** @var \App\Model\Pricing\Group\PricingGroup $defaultPricingGroup */
+            $defaultPricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+            $this->cachedDefaultPricingGroupsByDomainId[$domainId] = $defaultPricingGroup;
+        }
+
+        return $this->cachedDefaultPricingGroupsByDomainId[$domainId];
     }
 }

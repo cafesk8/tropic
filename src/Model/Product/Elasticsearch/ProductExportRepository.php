@@ -38,8 +38,6 @@ class ProductExportRepository extends BaseProductExportRepository
 {
     private PricingGroupFacade $pricingGroupFacade;
 
-    private PricingGroupSettingFacade $pricingGroupSettingFacade;
-
     private ProductSetFacade $productSetFacade;
 
     /**
@@ -50,7 +48,6 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
@@ -62,12 +59,10 @@ class ProductExportRepository extends BaseProductExportRepository
         Domain $domain,
         ProductVisibilityRepository $productVisibilityRepository,
         FriendlyUrlFacade $friendlyUrlFacade,
-        PricingGroupSettingFacade $pricingGroupSettingFacade,
         ProductSetFacade $productSetFacade,
         PricingGroupFacade $pricingGroupFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
-        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
         $this->productSetFacade = $productSetFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
     }
@@ -119,7 +114,7 @@ class ProductExportRepository extends BaseProductExportRepository
      */
     protected function extractPrices(int $domainId, BaseProduct $product): array
     {
-        $defaultPricingGroupOnDomain = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+        $defaultPricingGroupOnDomain = $this->pricingGroupFacade->getDefaultPricingGroup($domainId);
         $standardPricingGroupOnDomain = $product->isInAnySaleStock() ? $defaultPricingGroupOnDomain : $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
         $pricesArray = parent::extractPrices($domainId, $product);
 

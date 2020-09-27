@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing;
 
+use App\Model\Pricing\Group\PricingGroupFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade as BaseProductManualInputPriceFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository;
@@ -20,20 +20,24 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 class ProductManualInputPriceFacade extends BaseProductManualInputPriceFacade
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
+     * @var \App\Model\Pricing\Group\PricingGroupFacade
      */
-    private $pricingGroupSettingFacade;
+    private PricingGroupFacade $pricingGroupFacade;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFactoryInterface $productManualInputPriceFactory
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
-    public function __construct(EntityManagerInterface $em, ProductManualInputPriceRepository $productManualInputPriceRepository, ProductManualInputPriceFactoryInterface $productManualInputPriceFactory, PricingGroupSettingFacade $pricingGroupSettingFacade)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        ProductManualInputPriceRepository $productManualInputPriceRepository,
+        ProductManualInputPriceFactoryInterface $productManualInputPriceFactory,
+        PricingGroupFacade $pricingGroupFacade
+    ) {
         parent::__construct($em, $productManualInputPriceRepository, $productManualInputPriceFactory);
-        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -43,7 +47,7 @@ class ProductManualInputPriceFacade extends BaseProductManualInputPriceFacade
      */
     public function refresh(Product $product, PricingGroup $pricingGroup, ?Money $inputPrice): void
     {
-        $defaultPricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($pricingGroup->getDomainId());
+        $defaultPricingGroup = $this->pricingGroupFacade->getDefaultPricingGroup($pricingGroup->getDomainId());
         $defaultInputPrice = $this->productManualInputPriceRepository->findByProductAndPricingGroup($product, $defaultPricingGroup);
         $manualInputPrice = $this->productManualInputPriceRepository->findByProductAndPricingGroup($product, $pricingGroup);
 
