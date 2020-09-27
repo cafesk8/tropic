@@ -40,6 +40,8 @@ class ProductExportRepository extends BaseProductExportRepository
 
     private ProductSetFacade $productSetFacade;
 
+    private array $variantsCachedPrices = [];
+
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
@@ -114,6 +116,11 @@ class ProductExportRepository extends BaseProductExportRepository
      */
     protected function extractPrices(int $domainId, BaseProduct $product): array
     {
+        $isVariant = $product->isVariant();
+        $productId = $product->getId();
+        if ($isVariant && isset($this->variantsCachedPrices[$domainId][$productId])) {
+            return $this->variantsCachedPrices[$domainId][$productId];
+        }
         $defaultPricingGroupOnDomain = $this->pricingGroupFacade->getDefaultPricingGroup($domainId);
         $standardPricingGroupOnDomain = $product->isInAnySaleStock() ? $defaultPricingGroupOnDomain : $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
         $pricesArray = parent::extractPrices($domainId, $product);
@@ -124,6 +131,10 @@ class ProductExportRepository extends BaseProductExportRepository
             $priceArray['is_default'] = ($priceArray['pricing_group_id'] === $defaultPricingGroupId);
             $priceArray['is_standard'] = ($priceArray['pricing_group_id'] === $standardPricingGroupId);
             $pricesArray[$key] = $priceArray;
+        }
+
+        if ($isVariant && isset($this->variantsCachedPrices[$domainId][$productId]) === false) {
+            $this->variantsCachedPrices[$domainId][$productId] = $pricesArray;
         }
 
         return $pricesArray;
@@ -188,16 +199,12 @@ class ProductExportRepository extends BaseProductExportRepository
     {
         $pricesForFilter = [];
         if ($product->isMainVariant() === false) {
-            foreach ($prices as $price) {
-                $pricesForFilter[] = [
-                    'pricing_group_id' => $price['pricing_group_id'],
-                    'price_with_vat' => $price['price_with_vat'],
-                ];
-            }
+            $pricesForFilter = $this->getPricesForFilterFromPrices($prices);
         } else {
             foreach ($this->productFacade->getSellableVariantsForProduct($product, $domainId) as $variant) {
-                $variantPrices = $this->getPricesForFilter($variant, $domainId);
-                $pricesForFilter = array_merge($pricesForFilter, $variantPrices);
+                $variantPrices = $this->extractPrices($domainId, $variant);
+                $variantPriceForFilter = $this->getPricesForFilterFromPrices($variantPrices);
+                $pricesForFilter = array_merge($pricesForFilter, $variantPriceForFilter);
             }
         }
 
@@ -205,20 +212,16 @@ class ProductExportRepository extends BaseProductExportRepository
     }
 
     /**
-     * @param \App\Model\Product\Product $product
-     * @param int $domainId
+     * @param array $prices
      * @return array
      */
-    private function getPricesForFilter(BaseProduct $product, int $domainId): array
+    private function getPricesForFilterFromPrices(array $prices): array
     {
         $pricesForFilter = [];
-        $productSellingPrices = $this->productFacade->getAllProductSellingPricesByDomainId($product, $domainId);
-        foreach ($productSellingPrices as $productSellingPrice) {
-            $sellingPrice = $productSellingPrice->getSellingPrice();
-
+        foreach ($prices as $price) {
             $pricesForFilter[] = [
-                'pricing_group_id' => $productSellingPrice->getPricingGroup()->getId(),
-                'price_with_vat' => (float)$sellingPrice->getPriceWithVat()->getAmount(),
+                'pricing_group_id' => $price['pricing_group_id'],
+                'price_with_vat' => $price['price_with_vat'],
             ];
         }
 
