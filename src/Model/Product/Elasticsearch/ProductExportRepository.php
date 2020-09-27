@@ -86,11 +86,11 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['gifts'] = $this->productFacade->getProductGiftName($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
         $result['amount_multiplier'] = $product->getAmountMultiplier();
-        $result['variants_aliases'] = $this->getVariantsAliases($product, $locale, $domainId);
+        $result['variants_aliases'] = $this->getVariantsAliases($variants, $locale);
         $result['variants_count'] = count($result['variants_aliases']);
         $result['set_items'] = $this->productSetFacade->getAllItemsDataByMainProduct($product, $locale);
         if ($product->isMainVariant()) {
-            $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
+            $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($variants));
         }
         $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId, $result['prices']);
         $result['delivery_days'] = $product->isMainVariant() ? '' : $product->getDeliveryDays();
@@ -159,15 +159,14 @@ class ProductExportRepository extends BaseProductExportRepository
     }
 
     /**
-     * @param \App\Model\Product\Product $product
+     * @param \App\Model\Product\Product[] $variants
      * @param string $locale
-     * @param int $domainId
      * @return string[]
      */
-    private function getVariantsAliases(BaseProduct $product, string $locale, int $domainId): array
+    private function getVariantsAliases(array $variants, string $locale): array
     {
         $variantsAliases = [];
-        foreach ($this->productFacade->getVisibleVariantsForProduct($product, $domainId) as $variant) {
+        foreach ($variants as $variant) {
             $variantsAliases[] = $variant->getVariantAlias($locale);
         }
 
@@ -175,14 +174,13 @@ class ProductExportRepository extends BaseProductExportRepository
     }
 
     /**
-     * @param \App\Model\Product\Product $product
-     * @param int $domainId
+     * @param \App\Model\Product\Product[] $variants
      * @return string[]
      */
-    private function getVariantsCatnums(BaseProduct $product, int $domainId): array
+    private function getVariantsCatnums(array $variants): array
     {
         $variantsCatnums = [];
-        foreach ($this->productFacade->getVisibleVariantsForProduct($product, $domainId) as $variant) {
+        foreach ($variants as $variant) {
             $variantsCatnums[] = $variant->getCatnum();
         }
 
