@@ -8,6 +8,7 @@ use App\Model\Advert\Product\AdvertProduct;
 use App\Model\Advert\Product\AdvertProductRepository;
 use App\Model\Category\CategoryFacade;
 use App\Model\Product\ProductRepository;
+use App\Twig\Cache\TwigCacheFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
@@ -45,6 +46,11 @@ class AdvertFacade extends BaseAdvertFacade
     private $categoryFacade;
 
     /**
+     * @var \App\Twig\Cache\TwigCacheFacade
+     */
+    private TwigCacheFacade $twigCacheFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertRepository $advertRepository
      * @param \App\Component\Image\ImageFacade $imageFacade
@@ -55,6 +61,7 @@ class AdvertFacade extends BaseAdvertFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \App\Model\Category\CategoryFacade $categoryFacade
+     * @param \App\Twig\Cache\TwigCacheFacade $twigCacheFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -66,7 +73,8 @@ class AdvertFacade extends BaseAdvertFacade
         AdvertProductRepository $advertProductRepository,
         CurrentCustomerUser $currentCustomerUser,
         ProductRepository $productRepository,
-        CategoryFacade $categoryFacade
+        CategoryFacade $categoryFacade,
+        TwigCacheFacade $twigCacheFacade
     ) {
         parent::__construct($em, $advertRepository, $imageFacade, $domain, $advertFactory, $advertPositionRegistry);
 
@@ -74,6 +82,7 @@ class AdvertFacade extends BaseAdvertFacade
         $this->currentCustomerUser = $currentCustomerUser;
         $this->productRepository = $productRepository;
         $this->categoryFacade = $categoryFacade;
+        $this->twigCacheFacade = $twigCacheFacade;
     }
 
     /**
@@ -87,6 +96,10 @@ class AdvertFacade extends BaseAdvertFacade
 
         $this->refreshAdvertProducts($advert, $advertData->products);
         $this->refreshAdvertCategories($advert, $advertData->categories);
+
+        if (in_array($advert->getPositionName(), $this->getCachedPositions(), true)) {
+            $this->twigCacheFacade->invalidateByKey('bannersOnHomepage', $advert->getDomainId());
+        }
 
         return $advert;
     }
@@ -104,7 +117,25 @@ class AdvertFacade extends BaseAdvertFacade
         $this->refreshAdvertProducts($advert, $advertData->products);
         $this->refreshAdvertCategories($advert, $advertData->categories);
 
+        if (in_array($advert->getPositionName(), $this->getCachedPositions(), true)) {
+            $this->twigCacheFacade->invalidateByKey('bannersOnHomepage', $advert->getDomainId());
+        }
+
         return $advert;
+    }
+
+    /**
+     * @param int $advertId
+     */
+    public function delete($advertId)
+    {
+        $advert = $this->advertRepository->getById($advertId);
+        $this->em->remove($advert);
+        $this->em->flush();
+
+        if (in_array($advert->getPositionName(), $this->getCachedPositions(), true)) {
+            $this->twigCacheFacade->invalidateByKey('bannersOnHomepage', $advert->getDomainId());
+        }
     }
 
     /**
@@ -189,5 +220,18 @@ class AdvertFacade extends BaseAdvertFacade
         $advert = parent::getById($advertId);
         $advert->setCategories($this->categoryFacade->getCategoriesByAdvert($advert));
         return $advert;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getCachedPositions(): array
+    {
+        return [
+            'firstSquare',
+            'secondSquare',
+            'thirdSquare',
+            'fourthRectangle',
+        ];
     }
 }

@@ -186,7 +186,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function getProductFlagsWithFreeTransportAndPaymentFlag(ProductPrice $productPrice, Product $product, int $limit): array
     {
         $productFlagsIndexedByPosition = $product->getFlagsIndexedByPosition($limit);
-        $freeTransportFlag = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
+        $freeTransportFlag = $this->getDefaultFreeTransportFlag();
         if ($freeTransportFlag !== null && $this->freeTransportAndPaymentFacade->isFree($productPrice->getPriceWithVat(), $this->domain->getId())) {
             $productFlagsIndexedByPosition[$freeTransportFlag->getPosition()] = $freeTransportFlag;
             sort($productFlagsIndexedByPosition);

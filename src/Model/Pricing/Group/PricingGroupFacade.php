@@ -29,17 +29,28 @@ class PricingGroupFacade extends BasePricingGroupFacade
     protected $pricingGroupRepository;
 
     /**
+     * @var \App\Model\Pricing\Group\PricingGroup[][]
+     */
+    private $cachedPricingGroupByType = [];
+
+    /**
      * @param string $name
      * @param int $domainId
      * @return \App\Model\Pricing\Group\PricingGroup
      */
     public function getByNameAndDomainId(string $name, int $domainId): PricingGroup
     {
+        if (array_key_exists($domainId, $this->cachedPricingGroupByType) && array_key_exists($name, $this->cachedPricingGroupByType[$domainId])) {
+            return $this->cachedPricingGroupByType[$domainId][$name];
+        }
+
         $pricingGroup = $this->pricingGroupRepository->findByNameAndDomainId($name, $domainId);
 
         if ($pricingGroup === null) {
             throw new PricingGroupNotFoundException('Cannot find pricing group ' . $name . ' on domain ID ' . $domainId);
         }
+
+        $this->cachedPricingGroupByType[$domainId][$name] = $pricingGroup;
 
         return $pricingGroup;
     }

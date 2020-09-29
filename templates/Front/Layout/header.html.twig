@@ -19,7 +19,9 @@
                             {{ 'Magazín'|trans }}
                         </a>
                     </li>
-                    {{ render(controller('App\\Controller\\Front\\ArticleController:headerListAction')) }}
+                    {% cache constant('App\\Model\\Article\\Article::PLACEMENT_TOP_MENU') {lifetime:60*60*24, domainId: domainId} %}
+                        {{ render(controller('App\\Controller\\Front\\ArticleController:headerListAction')) }}
+                    {% endcache %}
                     <li class="top-bar__menu__item">
                         <a href="{{ url('front_about_us_info') }}" class="top-bar__menu__item__link">
                             {{ 'Kontakt'|trans }}

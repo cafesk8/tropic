@@ -15,7 +15,6 @@ use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Brand\Brand;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
-use App\Model\Product\ProductFacade;
 use App\Model\Product\View\ListedProductViewElasticFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
@@ -108,11 +107,6 @@ class ProductController extends FrontBaseController
     private $categoryBlogArticleFacade;
 
     /**
-     * @var \App\Model\Product\ProductFacade
-     */
-    private $productFacade;
-
-    /**
      * @var \App\Model\Gtm\GtmFacade
      */
     private $gtmFacade;
@@ -159,7 +153,6 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
-     * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewFacade
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
@@ -181,7 +174,6 @@ class ProductController extends FrontBaseController
         ModuleFacade $moduleFacade,
         BlogArticleFacade $blogArticleFacade,
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
-        ProductFacade $productFacade,
         GtmFacade $gtmFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
         BrandFacade $brandFacade,
@@ -202,7 +194,6 @@ class ProductController extends FrontBaseController
         $this->moduleFacade = $moduleFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
-        $this->productFacade = $productFacade;
         $this->gtmFacade = $gtmFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->brandFacade = $brandFacade;
@@ -234,7 +225,7 @@ class ProductController extends FrontBaseController
         return $this->render('Front/Content/Product/detail.html.twig', [
             'product' => $product,
             'accessories' => $accessories,
-            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $domainId),
+            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $this->domain->getCurrentDomainConfig()),
             'domainId' => $domainId,
             'productBlogArticles' => $this->blogArticleFacade->getVisibleByProduct(
                 $product,
@@ -242,7 +233,7 @@ class ProductController extends FrontBaseController
                 $this->domain->getLocale(),
                 self::PRODUCT_BLOG_ARTICLES_LIMIT
             ),
-            'youtubeDetails' => $this->productFacade->getYoutubeViews($product),
+            'youtubeVideoIds' => $product->getYoutubeVideoIds(),
             'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
@@ -264,8 +255,8 @@ class ProductController extends FrontBaseController
         return $this->render('Front/Content/Product/boxTabs.html.twig', [
             'product' => $product,
             'productMainCategory' => $productMainCategory,
-            'youtubeDetails' => $this->productFacade->getYoutubeViews($product),
-            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $domainId),
+            'youtubeVideoIds' => $product->getYoutubeVideoIds(),
+            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $this->domain->getCurrentDomainConfig()),
         ]);
     }
 
@@ -280,7 +271,7 @@ class ProductController extends FrontBaseController
 
         $this->gtmFacade->onProductListByCategoryPage($category);
 
-        $visibleChildren = $this->categoryFacade->getAllVisibleAndListableChildrenByCategoryAndDomainId($category, $this->domain->getId());
+        $visibleChildren = $this->categoryFacade->getAllVisibleAndListableChildrenByCategoryAndDomain($category, $this->domain->getCurrentDomainConfig());
 
         if ($category->isPreListingCategory()) {
             return $this->render('Front/Content/Product/preListingCategoryList.html.twig', [

@@ -13,6 +13,10 @@ class FreeTransportAndPaymentFacade extends BaseFreeTransportAndPaymentFacade
 {
     private TransportFacade $transportFacade;
 
+    private bool $minOrderPriceForFreeTransportCalculated = false;
+
+    private ?Money $minOrderPriceForFreeTransport;
+
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
      * @param \App\Model\Transport\TransportFacade $transportFacade
@@ -48,6 +52,11 @@ class FreeTransportAndPaymentFacade extends BaseFreeTransportAndPaymentFacade
      */
     protected function getFreeTransportAndPaymentPriceLimitOnDomain($domainId): ?Money
     {
-        return $this->transportFacade->getMinOrderPriceForFreeTransport($domainId);
+        if ($this->minOrderPriceForFreeTransportCalculated === false) {
+            $this->minOrderPriceForFreeTransport = $this->transportFacade->getMinOrderPriceForFreeTransport($domainId);
+            $this->minOrderPriceForFreeTransportCalculated = true;
+        }
+
+        return $this->minOrderPriceForFreeTransport;
     }
 }

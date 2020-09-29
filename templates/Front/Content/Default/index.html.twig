@@ -25,46 +25,19 @@
         </div>
     </div>
 
-    {{ render(controller('App\\Controller\\Front\\AdvertController:bannerAction')) }}
+    {% cache 'bannersOnHomepage' {lifetime:60*60*4, domainId: domainId} %}
+        {{ render(controller('App\\Controller\\Front\\AdvertController:bannerAction')) }}
+    {% endcache %}
 
     {{ render(controller('App\\Controller\\Front\\TopProductController:listAction')) }}
 
-    {% if priceBombProducts is not empty %}
-        <div class="web__line">
-            <div class="web__container web__container--border-radius web__container--light">
-                <div class="box-products-bomb">
-                    <div class="box-products-bomb__content">
-                        {{ productList.productsBomb(priceBombProducts, 'h3') }}
-                        <div class="box-products-bomb__fishes">
-                            <img src="{{ asset('public/frontend/images/fishes-big.svg')}}" alt="{{ 'Rybky'|trans }}">
-                        </div>
-                    </div>
-                    <h1 class="box-products-bomb__title">
-                        {{ 'Cenová'|trans }}
-                        <div class="box-products-bomb__title__colored-text">
-                            <span>b</span><span>o</span><span>m</span><span>b</span><span>a</span>
-                        </div>
-                    </h1>
-                </div>
-            </div>
-        </div>
-    {% endif %}
+    {% cache 'priceBombProducts' {lifetime:60*60*4, domainId: domainId} %}
+        {{ render(controller('App\\Controller\\Front\\HomepageController:priceBombProductsAction')) }}
+    {% endcache %}
 
-    {% if newProducts is not empty %}
-        <div class="web__line">
-            <div class="web__container web__container--no-padding">
-                <div class="box-products-slider">
-                    <h2 class="box-products-slider__title">
-                        {{ 'Novinky'|trans }}
-                    </h2>
-                    {% if newsCategory is not null %}
-                        <a href="{{ url('front_product_list', { id: newsCategory.id }) }}">{{ 'Přejít na všechny novinky'|trans }}</a>
-                    {% endif %}
-                    {{ productList.horizontalList(newProducts, '', 'h3', 'new-products', true, false, true) }}
-                </div>
-            </div>
-        </div>
-    {% endif %}
+    {% cache 'newProducts' {lifetime:60*60*1, domainId: domainId} %}
+        {{ render(controller('App\\Controller\\Front\\HomepageController:newProductsAction')) }}
+    {% endcache %}
 
     <div class="web__line">
         <div class="web__container web__container--border-radius web__container--dark">

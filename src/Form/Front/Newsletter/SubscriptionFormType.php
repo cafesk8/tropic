@@ -53,6 +53,7 @@ class SubscriptionFormType extends AbstractType
             'attr' => ['novalidate' => 'novalidate'],
             TimedFormTypeExtension::OPTION_ENABLED => true,
             TimedFormTypeExtension::OPTION_MINIMUM_SECONDS => 1,
+            'csrf_protection' => false,
         ]);
     }
 }

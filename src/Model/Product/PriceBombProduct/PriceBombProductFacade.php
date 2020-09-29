@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\PriceBombProduct;
 
+use App\Twig\Cache\TwigCacheFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 
@@ -25,18 +26,26 @@ class PriceBombProductFacade
     private $priceBombProductFactory;
 
     /**
+     * @var \App\Twig\Cache\TwigCacheFacade
+     */
+    private TwigCacheFacade $twigCacheFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \App\Model\Product\PriceBombProduct\PriceBombProductRepository $priceBombProductRepository
      * @param \App\Model\Product\PriceBombProduct\PriceBombProductFactory $priceBombProductFactory
+     * @param \App\Twig\Cache\TwigCacheFacade $twigCacheFacade
      */
     public function __construct(
         EntityManagerInterface $em,
         PriceBombProductRepository $priceBombProductRepository,
-        PriceBombProductFactory $priceBombProductFactory
+        PriceBombProductFactory $priceBombProductFactory,
+        TwigCacheFacade $twigCacheFacade
     ) {
         $this->em = $em;
         $this->priceBombProductRepository = $priceBombProductRepository;
         $this->priceBombProductFactory = $priceBombProductFactory;
+        $this->twigCacheFacade = $twigCacheFacade;
     }
 
     /**
@@ -79,5 +88,7 @@ class PriceBombProductFacade
             $priceBombProducts[] = $priceBombProduct;
         }
         $this->em->flush($priceBombProducts);
+
+        $this->twigCacheFacade->invalidateByKey('priceBombProducts', $domainId);
     }
 }

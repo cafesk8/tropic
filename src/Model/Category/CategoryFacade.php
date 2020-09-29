@@ -62,6 +62,11 @@ class CategoryFacade extends BaseCategoryFacade
     public const NEWS_CATEGORIES_LEVEL = 2;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[][]
+     */
+    private array $listableProductCategoryDomainsIndexedById = [];
+
+    /**
      * @var \App\Model\Category\CategoryRepository
      */
     protected $categoryRepository;
@@ -135,12 +140,12 @@ class CategoryFacade extends BaseCategoryFacade
 
     /**
      * @param \App\Model\Category\Category $category
-     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \App\Model\Category\Category[]
      */
-    public function getAllVisibleAndListableChildrenByCategoryAndDomainId(Category $category, int $domainId): array
+    public function getAllVisibleAndListableChildrenByCategoryAndDomain(Category $category, DomainConfig $domainConfig): array
     {
-        return $this->categoryRepository->getAllVisibleAndListableChildrenByCategoryAndDomainId($category, $domainId);
+        return $this->categoryRepository->getAllVisibleAndListableChildrenByCategoryAndDomain($category, $domainConfig);
     }
 
     /**
@@ -176,12 +181,16 @@ class CategoryFacade extends BaseCategoryFacade
 
     /**
      * @param \App\Model\Product\Product $product
-     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
      */
-    public function getProductVisibleAndListableProductCategoryDomains(Product $product, int $domainId): array
+    public function getProductVisibleAndListableProductCategoryDomains(Product $product, DomainConfig $domainConfig): array
     {
-        return $this->categoryRepository->getProductVisibleAndListableProductCategoryDomains($product, $domainId);
+        if (array_key_exists($product->getId(), $this->listableProductCategoryDomainsIndexedById) === false) {
+            $this->listableProductCategoryDomainsIndexedById[$product->getId()] = $this->categoryRepository->getProductVisibleAndListableProductCategoryDomains($product, $domainConfig);
+        }
+
+        return $this->listableProductCategoryDomainsIndexedById[$product->getId()];
     }
 
     /**
