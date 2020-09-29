@@ -9,6 +9,8 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 
 class StoreFacade
 {
+    private const INTERNAL_STOCK_POHODA_NAME = 'TROPIC';
+
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
@@ -260,5 +262,13 @@ class StoreFacade
             $this->getPohodaStockTropicExternalNumber(),
             $this->getPohodaStockStoreSaleExternalNumber(),
         ];
+    }
+
+    /**
+     * @return \App\Model\Store\Store|null
+     */
+    public function findInternalStock(): ?Store
+    {
+        return $this->storeRepository->findByPohodaName(self::INTERNAL_STOCK_POHODA_NAME);
     }
 }

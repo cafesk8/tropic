@@ -13,6 +13,7 @@ use App\Model\Order\Item\OrderItem;
 use App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade;
 use App\Model\Order\Order;
 use App\Model\Store\Store;
+use App\Model\Store\StoreFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 
 class PohodaOrderMapper
@@ -27,14 +28,21 @@ class PohodaOrderMapper
      */
     private OrderItemSourceStockFacade $orderItemSourceStockFacade;
 
+    private StoreFacade $storeFacade;
+
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade $orderItemSourceStockFacade
+     * @param \App\Model\Store\StoreFacade $storeFacade
      */
-    public function __construct(PricingGroupSettingFacade $pricingGroupSettingFacade, OrderItemSourceStockFacade $orderItemSourceStockFacade)
-    {
+    public function __construct(
+        PricingGroupSettingFacade $pricingGroupSettingFacade,
+        OrderItemSourceStockFacade $orderItemSourceStockFacade,
+        StoreFacade $storeFacade
+    ) {
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
         $this->orderItemSourceStockFacade = $orderItemSourceStockFacade;
+        $this->storeFacade = $storeFacade;
     }
 
     /**
@@ -139,7 +147,17 @@ class PohodaOrderMapper
             if (count($orderItemSourceStocks) > 0) {
                 $orderItemSourceStocks = $this->orderItemSourceStockFacade->getAllByOrderItem($orderItem);
                 foreach ($orderItemSourceStocks as $orderItemSourceStock) {
-                    $this->mapOrderItem($order, $pohodaOrder, $pohodaVatNames, $orderItemSourceStock->getOrderItem(), $orderItemSourceStock->getQuantity(), $orderItemSourceStock->getStock());
+                    $stock = $orderItemSourceStock->getStock();
+                    /*
+                     * If is order item from external stock, we need force internal stock - because external stock is only virtual in Pohoda
+                     * External stock is not stock in Pohoda but only basic text input
+                     */
+                    $isFromExternalStock = false;
+                    if ($stock->isExternalStock()) {
+                        $stock = $this->storeFacade->findInternalStock();
+                        $isFromExternalStock = true;
+                    }
+                    $this->mapOrderItem($order, $pohodaOrder, $pohodaVatNames, $orderItemSourceStock->getOrderItem(), $orderItemSourceStock->getQuantity(), $stock, $isFromExternalStock);
                 }
             } else {
                 $this->mapOrderItem($order, $pohodaOrder, $pohodaVatNames, $orderItem, $orderItem->getQuantity());
@@ -154,8 +172,9 @@ class PohodaOrderMapper
      * @param \App\Model\Order\Item\OrderItem $orderItem
      * @param int $quantity
      * @param \App\Model\Store\Store|null $stock
+     * @param bool $isFromExternalStock
      */
-    private function mapOrderItem(Order $order, PohodaOrder $pohodaOrder, array $pohodaVatNames, OrderItem $orderItem, int $quantity, ?Store $stock = null): void
+    private function mapOrderItem(Order $order, PohodaOrder $pohodaOrder, array $pohodaVatNames, OrderItem $orderItem, int $quantity, ?Store $stock = null, bool $isFromExternalStock = false): void
     {
         $pohodaOrderItem = new PohodaOrderItem();
         $pohodaOrderItem->name = $orderItem->getName();
@@ -167,6 +186,7 @@ class PohodaOrderMapper
         $pohodaOrderItem->vatPercent = $orderItem->getVatPercent();
         $pohodaOrderItem->pohodaStockId = $stock === null ? null : $stock->getExternalNumber();
         $pohodaOrderItem->pohodaStockName = $stock === null ? null : $stock->getPohodaName();
+        $pohodaOrderItem->isFromExternalStock = $isFromExternalStock;
 
         $pohodaOrder->orderItems[] = $pohodaOrderItem;
     }
