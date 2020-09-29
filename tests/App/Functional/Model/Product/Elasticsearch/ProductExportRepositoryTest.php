@@ -92,6 +92,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'warranty',
             'variant_type',
             'recommended',
+            'supplier_set',
         ];
     }
 }

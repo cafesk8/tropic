@@ -111,6 +111,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['warranty'] = $product->getWarranty();
         $result['variant_type'] = $product->getVariantType();
         $result['recommended'] = $product->isRecommended();
+        $result['supplier_set'] = $product->isSupplierSet();
 
         return $result;
     }

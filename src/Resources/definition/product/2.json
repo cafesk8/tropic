@@ -387,6 +387,9 @@
       },
       "recommended": {
         "type": "boolean"
+      },
+      "supplier_set": {
+        "type": "boolean"
       }
     }
   }

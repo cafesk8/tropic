@@ -37,6 +37,7 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['warranty'] = $result['warranty'] ?? -1;
         $result['variant_type'] = $result['variant_type'] ?? Product::VARIANT_TYPE_NONE;
         $result['recommended'] = $result['recommended'] ?? false;
+        $result['supplier_set'] = $result['supplier_set'] ?? false;
 
         return $result;
     }

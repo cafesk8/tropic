@@ -66,6 +66,8 @@ class ListedProductView extends BaseListedProductView
 
     private bool $recommended;
 
+    private bool $supplierSet;
+
     /**
      * @param int $id
      * @param string $name
@@ -86,6 +88,7 @@ class ListedProductView extends BaseListedProductView
      * @param array $stickers
      * @param int|null $warranty
      * @param bool $recommended
+     * @param bool $supplierSet
      */
     public function __construct(
         int $id,
@@ -106,7 +109,8 @@ class ListedProductView extends BaseListedProductView
         string $unitName,
         array $stickers,
         ?int $warranty,
-        bool $recommended
+        bool $recommended,
+        bool $supplierSet
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
@@ -121,6 +125,7 @@ class ListedProductView extends BaseListedProductView
         $this->stickers = $stickers;
         $this->warranty = $warranty;
         $this->recommended = $recommended;
+        $this->supplierSet = $supplierSet;
     }
 
     /**
@@ -229,5 +234,13 @@ class ListedProductView extends BaseListedProductView
     public function isRecommended(): bool
     {
         return $this->recommended;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupplierSet(): bool
+    {
+        return $this->supplierSet;
     }
 }

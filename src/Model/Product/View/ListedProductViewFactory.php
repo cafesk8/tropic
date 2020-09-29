@@ -95,7 +95,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productArray['unit'],
             $this->imageViewFacade->getStickerViewsByProductId($productArray['id']),
             $productArray['warranty'],
-            $productArray['recommended']
+            $productArray['recommended'],
+            $productArray['supplier_set']
         );
     }
 
@@ -129,7 +130,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $product->getUnit()->getName($this->domain->getLocale()),
             $this->imageViewFacade->getStickerViewsByProductId($product->getId()),
             $product->getWarranty(),
-            $product->isRecommended()
+            $product->isRecommended(),
+            $product->isSupplierSet()
         );
     }
 

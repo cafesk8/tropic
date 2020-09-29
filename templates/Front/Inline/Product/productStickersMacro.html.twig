@@ -2,12 +2,11 @@
     {% if stickers is empty and productOrProductView.stickers is defined %}
         {% set stickers = productOrProductView.stickers %}
     {% endif %}
-
-    {% if stickers|length > 0 or productOrProductView.warranty > 24 or productOrProductView.recommended %}
+    {% if stickers|length > 0 or (productOrProductView.warranty > 24 and productOrProductView.supplierSet is same as (false)) or productOrProductView.recommended %}
         <div class="{{ cssClass }}">
             {% if productOrProductView.recommended %}
                 {% include 'Front/Inline/Product/recommendedSticker.html.twig' %}
-            {% elseif productOrProductView.warranty > 24 %}
+            {% elseif productOrProductView.warranty > 24 and productOrProductView.supplierSet is same as (false) %}
                 {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
             {% else %}
                 {{ image(stickers|first) }}
