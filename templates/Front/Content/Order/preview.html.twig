@@ -203,8 +203,8 @@
 
             <div id="js-order-preview-total-price" class="table-cart-preview table-cart-preview--without-gap">
                 <div class="table-cart-preview__total">
-                    {% if orderPreview.activeOrderDiscountLevel is not null or promocodeActive %}
-                        <span class="table-cart-preview__total__discount ">
+                    {% if (orderPreview.activeOrderDiscountLevel is not null or promocodeActive) and not orderPreview.totalDiscount.isZero %}
+                        <span class="table-cart-preview__total__discount">
                             {{ 'Ušetříte %price%'|trans({ '%price%': orderPreview.totalDiscount|price }) }}
                         </span>
                     {% endif %}
