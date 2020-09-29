@@ -16,6 +16,11 @@
     {{ paginator.titleAddon(paginationResult) }}
 {% endblock %}
 
+{% block pageStyles %}
+    {% set entryDirectoryPage = 'frontend-style-category-' ~ getDomain().currentDomainConfig.stylesDirectory %}
+    {{ encore_entry_link_tags( entryDirectoryPage ) }}
+{% endblock %}
+
 {% block meta_description %}
     {{ brand.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) }}
 {% endblock %}
