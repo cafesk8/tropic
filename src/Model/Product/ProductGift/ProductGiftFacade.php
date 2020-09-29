@@ -121,4 +121,13 @@ class ProductGiftFacade
             return $product->getId();
         }, $productGift->getProducts());
     }
+
+    /**
+     * @param \App\Model\Product\Product $gift
+     * @return \App\Model\Product\ProductGift\ProductGift[]
+     */
+    public function getByGift(Product $gift): array
+    {
+        return $this->productGiftRepository->getByGift($gift);
+    }
 }

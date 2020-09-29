@@ -317,7 +317,7 @@ class CartFacade extends BaseCartFacade
     }
 
     /**
-     * @param \App\Model\Product\Gift\ProductGiftInCart[] $productGiftInCart
+     * @param \App\Model\Product\Gift\ProductGiftInCart[][] $productGiftInCart
      */
     public function addAllGifts(array $productGiftInCart): void
     {

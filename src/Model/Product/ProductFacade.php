@@ -15,6 +15,7 @@ use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Flag\ProductFlagData;
 use App\Model\Product\Flag\ProductFlagDataFactory;
 use App\Model\Product\Flag\ProductFlagFacade;
+use App\Model\Product\ProductGift\ProductGiftFacade;
 use App\Model\Product\Set\ProductSetFacade;
 use App\Model\Product\Set\ProductSetFactory;
 use App\Model\Product\StoreStock\ProductStoreStockFactory;
@@ -173,6 +174,8 @@ class ProductFacade extends BaseProductFacade
      */
     private UploadedFileFacade $uploadedFileFacade;
 
+    private ProductGiftFacade $productGiftFacade;
+
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductRepository $productRepository
@@ -213,6 +216,7 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\Flag\ProductFlagFacade $productFlagFacade
      * @param \App\Model\Product\Flag\ProductFlagDataFactory $productFlagDataFactory
      * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileFacade $uploadedFileFacade
+     * @param \App\Model\Product\ProductGift\ProductGiftFacade $productGiftFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -253,7 +257,8 @@ class ProductFacade extends BaseProductFacade
         FlagFacade $flagFacade,
         ProductFlagFacade $productFlagFacade,
         ProductFlagDataFactory $productFlagDataFactory,
-        UploadedFileFacade $uploadedFileFacade
+        UploadedFileFacade $uploadedFileFacade,
+        ProductGiftFacade $productGiftFacade
     ) {
         parent::__construct(
             $em,
@@ -297,6 +302,7 @@ class ProductFacade extends BaseProductFacade
         $this->productFlagFacade = $productFlagFacade;
         $this->productFlagDataFactory = $productFlagDataFactory;
         $this->uploadedFileFacade = $uploadedFileFacade;
+        $this->productGiftFacade = $productGiftFacade;
     }
 
     /**
@@ -494,6 +500,12 @@ class ProductFacade extends BaseProductFacade
             $realStockQuantity = (int)floor($product->getStockQuantity() / $product->getAmountMultiplier()) * $product->getAmountMultiplier();
         }
         $product->setRealStockQuantity($realStockQuantity);
+
+        if ($realStockQuantity < 1) {
+            foreach ($this->productGiftFacade->getByGift($product) as $productGift) {
+                $this->markProductsForExport($productGift->getProducts());
+            }
+        }
 
         $this->em->flush($product);
     }
@@ -1029,13 +1041,13 @@ class ProductFacade extends BaseProductFacade
      * @param string $locale
      * @return string[][]
      */
-    public function getProductGiftNames(Product $product, int $domainId, string $locale): array
+    public function getProductGiftName(Product $product, int $domainId, string $locale): array
     {
-        $gifts = $product->getGifts($domainId);
+        $gift = $product->getFirstActiveInStockProductGiftByDomainId($domainId);
         $giftNames = [];
-        foreach ($gifts as $gift) {
+        if ($gift !== null) {
             $giftNames[] = [
-                'name' => $gift->getName($locale),
+                'name' => $gift->getGift()->getName($locale),
             ];
         }
 

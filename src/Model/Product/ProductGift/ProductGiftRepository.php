@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\ProductGift;
 
 use App\Component\Domain\DomainHelper;
+use App\Model\Product\Product;
 use App\Model\Product\ProductGift\Exception\ProductGiftNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -78,5 +79,14 @@ class ProductGiftRepository
             ])
             ->orderBy('pg.title, t.name')
             ->groupBy('pg.id, pg.title, t.name, pg.active');
+    }
+
+    /**
+     * @param \App\Model\Product\Product $gift
+     * @return \App\Model\Product\ProductGift\ProductGift[]
+     */
+    public function getByGift(Product $gift): array
+    {
+        return $this->getProductGiftRepository()->findBy(['gift' => $gift]);
     }
 }

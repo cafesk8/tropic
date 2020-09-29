@@ -9,6 +9,7 @@ use App\Model\Product\Exception\ProductIsNotMainVariantException;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\ProductFlag;
 use App\Model\Product\Mall\ProductMallExportMapper;
+use App\Model\Product\ProductGift\ProductGift;
 use App\Model\Product\Set\ProductSet;
 use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
@@ -794,6 +795,30 @@ class Product extends BaseProduct
 
     /**
      * @param int $domainId
+     * @return \App\Model\Product\ProductGift\ProductGift[]
+     */
+    public function getActiveInStockProductGiftsByDomainId(int $domainId): array
+    {
+        $productGifts = $this->getActiveProductGiftsByDomainId($domainId);
+        $productGiftsInStock = array_filter($productGifts, fn (ProductGift $productGift) => !$productGift->getGift()->isCurrentlyOutOfStock());
+        usort($productGiftsInStock, fn (ProductGift $productGift1, ProductGift $productGift2) => $productGift2->getId() - $productGift1->getId());
+
+        return $productGiftsInStock;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Product\ProductGift\ProductGift|null
+     */
+    public function getFirstActiveInStockProductGiftByDomainId(int $domainId): ?ProductGift
+    {
+        $productGiftsInStock = $this->getActiveInStockProductGiftsByDomainId($domainId);
+
+        return array_shift($productGiftsInStock);
+    }
+
+    /**
+     * @param int $domainId
      * @return \App\Model\Product\Product[]
      */
     public function getGifts(int $domainId): array
@@ -1452,5 +1477,20 @@ class Product extends BaseProduct
     public function isRecommended(): bool
     {
         return count(array_filter($this->getActiveFlags(), fn (Flag $flag) => $flag->isRecommended())) > 0;
+    }
+
+    /**
+     * @param int|null $quantity
+     * @return int
+     */
+    public function getAvailableQuantity(?int $quantity = null): int
+    {
+        $realStockQuantity = $this->getRealStockQuantity();
+
+        if ($quantity === null) {
+            return $realStockQuantity;
+        }
+
+        return $realStockQuantity > $quantity ? $quantity : $realStockQuantity;
     }
 }

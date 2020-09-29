@@ -86,7 +86,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
         $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale);
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
-        $result['gifts'] = $this->productFacade->getProductGiftNames($product, $domainId, $locale);
+        $result['gifts'] = $this->productFacade->getProductGiftName($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
         $result['amount_multiplier'] = $product->getAmountMultiplier();
         $result['variants_aliases'] = $this->getVariantsAliases($product, $locale, $domainId);
