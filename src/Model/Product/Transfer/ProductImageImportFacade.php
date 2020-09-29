@@ -122,14 +122,24 @@ class ProductImageImportFacade
             try {
                 $this->processImage($pohodaImage, $imagesTargetPath, $nextImageId, $product);
             } catch (PohodaMServerException $ex) {
-                $this->logger->addError('Problém s připojením na mServer', [
-                    'message' => $ex->getMessage(),
-                    'pohodaImage' => $pohodaImage,
-                    'productId' => $product->getId(),
-                    'catnum' => $product->getCatnum(),
-                ]);
-                $couldConnectToMserver = false;
-                break;
+                if (str_contains($ex->getMessage(), '404')) {
+                    $this->logger->addError('Obrázek nenalezen', [
+                        'message' => $ex->getMessage(),
+                        'pohodaImage' => $pohodaImage,
+                        'productId' => $product->getId(),
+                        'catnum' => $product->getCatnum(),
+                    ]);
+                    $this->imageInfoQueueFacade->rescheduleImageImport($product->getPohodaId());
+                } else {
+                    $this->logger->addError('Problém s připojením na mServer', [
+                        'message' => $ex->getMessage(),
+                        'pohodaImage' => $pohodaImage,
+                        'productId' => $product->getId(),
+                        'catnum' => $product->getCatnum(),
+                    ]);
+                    $couldConnectToMserver = false;
+                    break;
+                }
             } catch (Exception $ex) {
                 $this->logger->addError('Při importu došlo k chybě', [
                     'message' => $ex->getMessage(),
