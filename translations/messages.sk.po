@@ -1,3 +1,9 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sk\n"
+
 msgid "%code%"
 msgstr "%code%"
 
@@ -48,6 +54,9 @@ msgstr "2 - štvorec"
 
 msgid "200m od prodejny Kaufland směr centrum, v prostorech budovy označené nyní Urban Sport"
 msgstr "200m od predajne Kaufland smer centrum, v priestoroch budovy označenej Urban Sport"
+
+msgid "24 měsíců"
+msgstr "24 mesiacov"
 
 msgid "25 let záruku zdarma, objednat směnnou zásilku nebo"
 msgstr "25 rokov záruky zadarmo, objednať výmennú zásielku alebo"
@@ -528,6 +537,12 @@ msgstr "Ďalšie hodnotenie zákazníkov"
 
 msgid "Další informace"
 msgstr "Ďalšie informácie"
+
+msgid "Darkovy_poukaz_-_barevny"
+msgstr "Darkovy_poukaz_-_farebny"
+
+msgid "Darkovy_poukaz_-_cernobily"
+msgstr "Darkovy_poukaz_-_čiernobiela"
 
 msgid "Date and time of order creation"
 msgstr "Dátum a čas vytvorenia objednávky"
@@ -1081,6 +1096,9 @@ msgstr "ID z IS"
 msgid "ID z Pohody"
 msgstr "ID z Pohody"
 
+msgid "ID z původního e-shopu"
+msgstr "ID z pôvodného e-shopu"
+
 msgid "IN TIME"
 msgstr "NA ČAS"
 
@@ -1356,6 +1374,9 @@ msgstr "Správa"
 
 msgid "Meta description"
 msgstr "Meta popis"
+
+msgid "Migrace"
+msgstr "Migrácie"
 
 msgid "Migrace - import CSV"
 msgstr "Migrácia - import CSV"
@@ -1683,6 +1704,9 @@ msgstr "Nákupný košík"
 
 msgid "Nálepka Prodloužená záruka"
 msgstr "Nálepka Predĺžená záruka"
+
+msgid "Nálepka Tropic doporučuje"
+msgstr "Nálepka Tropic odporúča"
 
 msgid "Násobky pro nákup můžete nastavit na kartě hlavní varianty."
 msgstr "Násobky pre nákup môžete nastaviť na karte hlavnej varianty."
@@ -2644,6 +2668,9 @@ msgstr "Skryť ďalšie spôsoby dopravy"
 msgid "Skrýt další způsoby platby"
 msgstr "Skryť ďalšie spôsoby platby"
 
+msgid "Skrýt položky"
+msgstr "Skryť položky"
+
 msgid "Skrývání zboží"
 msgstr "Skrývanie tovaru"
 
@@ -2839,6 +2866,9 @@ msgstr "Tento mesiac máme v akcii"
 msgid "Tento produkt nemá žádné příznaky"
 msgstr "Tento produkt nemá žiadne príznaky"
 
+msgid "Tento produkt prodlouží dodání celé objednávky"
+msgstr "Tento produkt predĺži dodanie celej objednávky"
+
 msgid "Tento příznak nemůže být smazán, protože je automaticky přiřazován produktům se zásobami na výprodejových skladech."
 msgstr "Tento príznak nemôže byť zmazaný, pretože je automaticky priradzovaný produktom so zásobami na výpredajových skladoch."
 
@@ -2940,6 +2970,9 @@ msgstr "Tovar na Slovensko"
 
 msgid "Treti článek v horním menu"
 msgstr "Tretí článok v hornom menu"
+
+msgid "Tropic doporučuje"
+msgstr "Tropic odporúča"
 
 msgid "Tuhle značku není možné smazat. Jde o značku, která je automaticky přiřazena všem produktem."
 msgstr "Túto značku nie je možné zmazať. Ide o značku, ktorá je automaticky priradená všetkým produktom."
@@ -3526,6 +3559,9 @@ msgstr "Zobraziť na stránke predajní"
 msgid "Zobrazit nedostupné produkty"
 msgstr "Zobraziť nedostupné produkty"
 
+msgid "Zobrazit všechny položky"
+msgstr "Zobraziť všetky položky"
+
 msgid "Zobrazit všechny výsledky"
 msgstr "Zobraziť všetky výsledky"
 
@@ -3594,6 +3630,9 @@ msgstr "a"
 
 msgid "a další kategorie"
 msgstr "[1,4] ...a ďalšie %count% kategórie|[5,Inf[ ...a ďalších %count% kategórií"
+
+msgid "a další za běžnou cenu"
+msgstr "a ďalšie za bežnú cenu"
 
 msgid "a máte"
 msgstr "a máte"
@@ -3744,6 +3783,9 @@ msgstr "predajňa3"
 
 msgid "stores"
 msgstr "predajne"
+
+msgid "strana %page% z %pageCount%"
+msgstr "strana %page% z %pageCount%"
 
 msgid "tel.: +420 595 177 177"
 msgstr "tel.: +420 595 177 177"
@@ -3927,3 +3969,4 @@ msgstr "Žiadne sklady sa nenašli"
 
 msgid "Žádné slevy na celý nákup nenalezeny."
 msgstr "Žiadne zľavy na celý nákup sa nenašli."
+

@@ -55,6 +55,9 @@ msgstr "2 - čtverec"
 msgid "200m od prodejny Kaufland směr centrum, v prostorech budovy označené nyní Urban Sport"
 msgstr ""
 
+msgid "24 měsíců"
+msgstr "24 měsíců"
+
 msgid "25 let záruku zdarma, objednat směnnou zásilku nebo"
 msgstr "25 let záruku zdarma, objednat směnnou zásilku nebo"
 
@@ -538,6 +541,12 @@ msgstr ""
 msgid "Další informace"
 msgstr ""
 
+msgid "Darkovy_poukaz_-_barevny"
+msgstr "Darkovy_poukaz_-_barevny"
+
+msgid "Darkovy_poukaz_-_cernobily"
+msgstr "Darkovy_poukaz_-_cernobily"
+
 msgid "Date and time of order creation"
 msgstr "Datum a čas vytvoření objednávky"
 
@@ -687,9 +696,6 @@ msgstr ""
 
 msgid "Doprava zdarma"
 msgstr "Doprava zdarma"
-
-msgid "Doprava zdarma pro členy"
-msgstr ""
 
 msgid "Doprava zdarma při nákupu <strong>nad 2&nbsp;500&nbsp;Kč</strong>"
 msgstr "Doprava zdarma při nákupu <strong>nad 2&nbsp;500&nbsp;Kč</strong>"
@@ -1087,6 +1093,9 @@ msgstr "ID z IS"
 msgid "ID z Pohody"
 msgstr ""
 
+msgid "ID z původního e-shopu"
+msgstr "ID z původního e-shopu"
+
 msgid "IN TIME"
 msgstr "IN TIME"
 
@@ -1341,6 +1350,9 @@ msgstr "Vzkaz"
 
 msgid "Meta description"
 msgstr "Meta description"
+
+msgid "Migrace"
+msgstr "Migrace"
 
 msgid "Migrace - import CSV"
 msgstr ""
@@ -1668,6 +1680,9 @@ msgstr ""
 
 msgid "Nálepka Prodloužená záruka"
 msgstr ""
+
+msgid "Nálepka Tropic doporučuje"
+msgstr "Nálepka Tropic doporučuje"
 
 msgid "Násobky pro nákup můžete nastavit na kartě hlavní varianty."
 msgstr "Násobky pro nákup můžete nastavit na kartě hlavní varianty."
@@ -2614,6 +2629,9 @@ msgstr ""
 msgid "Skrýt další způsoby platby"
 msgstr ""
 
+msgid "Skrýt položky"
+msgstr "Skrýt položky"
+
 msgid "Skrývání zboží"
 msgstr "Skrývání zboží"
 
@@ -2809,6 +2827,9 @@ msgstr ""
 msgid "Tento produkt nemá žádné příznaky"
 msgstr ""
 
+msgid "Tento produkt prodlouží dodání celé objednávky"
+msgstr "Tento produkt prodlouží dodání celé objednávky"
+
 msgid "Tento příznak nemůže být smazán, protože je automaticky přiřazován produktům se zásobami na výprodejových skladech."
 msgstr ""
 
@@ -2910,6 +2931,9 @@ msgstr ""
 
 msgid "Treti článek v horním menu"
 msgstr "Třetí článek v horním menu"
+
+msgid "Tropic doporučuje"
+msgstr "Tropic doporučuje"
 
 msgid "Tuhle značku není možné smazat. Jde o značku, která je automaticky přiřazena všem produktem."
 msgstr "Tuhle značku není možné smazat. Jde o značku, která je automaticky přiřazena všem produktům."
@@ -3493,6 +3517,9 @@ msgstr "Zobrazit na stránce prodejen"
 msgid "Zobrazit nedostupné produkty"
 msgstr ""
 
+msgid "Zobrazit všechny položky"
+msgstr "Zobrazit všechny položky"
+
 msgid "Zobrazit všechny výsledky"
 msgstr "Zobrazit všechny výsledky"
 
@@ -3561,6 +3588,9 @@ msgstr "a"
 
 msgid "a další kategorie"
 msgstr "[1,4] ...a další %count% kategorie|[5,Inf[ ...a dalších %count% kategorií"
+
+msgid "a další za běžnou cenu"
+msgstr "a další za běžnou cenu"
 
 msgid "a máte"
 msgstr ""
@@ -3634,9 +3664,6 @@ msgstr "např. Praha"
 msgid "naše služby"
 msgstr "naše služby"
 
-msgid "nebo na"
-msgstr ""
-
 msgid "nebo pište na"
 msgstr ""
 
@@ -3676,9 +3703,6 @@ msgstr "problémů"
 msgid "prodejna@tropicfishing.cz"
 msgstr ""
 
-msgid "prodejně"
-msgstr ""
-
 msgid "productGifts"
 msgstr "Dárkové zboží"
 
@@ -3709,11 +3733,11 @@ msgstr ""
 msgid "stores"
 msgstr "prodejen"
 
+msgid "strana %page% z %pageCount%"
+msgstr "strana %page% z %pageCount%"
+
 msgid "tel.: +420 595 177 177"
 msgstr "tel.: +420 595 177 177"
-
-msgid "tropic klubu"
-msgstr ""
 
 msgid "u&nbsp;tebe"
 msgstr "u&nbsp;vás"
