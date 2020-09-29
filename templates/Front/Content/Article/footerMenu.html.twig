@@ -16,7 +16,9 @@
         {% if isPlacementShopping %}
             {% for customLink, customLinkName in customLinks %}
                 {% set customLinkUrl = url(customLink) %}
-                <a href="{{ customLinkUrl }}" class="list-menu__item__link">{{ customLinkName }}</a>
+                <li class="list-menu__item">
+                    <a href="{{ customLinkUrl }}" class="list-menu__item__link">{{ customLinkName }}</a>
+                </li>
             {% endfor %}
         {% endif %}
         {% for article in articles %}

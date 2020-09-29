@@ -2,6 +2,7 @@ import Register from 'framework/common/utils/Register';
 
 export default function opener () {
     let opener = $('.js-opener-container');
+    console.log('test');
 
     opener.each(function () {
         let items = $(this).find('.js-opener-item');
@@ -42,8 +43,10 @@ export default function opener () {
                     $(this).addClass('open');
                 }
             });
-        }
+        };
     });
 }
 
 (new Register()).registerCallback(opener);
+
+$(window).resize(opener);
