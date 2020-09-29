@@ -317,8 +317,6 @@
                         {{ image(productView.image, { size: 'biggerThumbnail', alt: productView.name, lazy: true }) }}
                     </div>
 
-                    {{ productStickersMacro.list(productView, [], 'list-products-bomb__item__sticker') }}
-
                     {% if productSellingPrice is not null %}
                         <div class="list-products-bomb__item__price">
                             {% if productSellingPrice.hasHigherStandardPrice %}
