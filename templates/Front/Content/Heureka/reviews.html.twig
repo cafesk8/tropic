@@ -72,16 +72,21 @@
 
                         {% if review.pros %}
                             <ul class="list-pros-cons list-pros-cons--pros">
-                                <li class="list-pros-cons__item svg-plus">
-                                    {{ review.pros|raw }}
-                                </li>
+                                {% for pro in review.pros|split('\n') %}
+                                    <li class="list-pros-cons__item svg-plus">
+                                        {{ pro|raw }}
+                                    </li>
+                                {% endfor %}
                             </ul>
                         {% endif %}
+
                         {% if review.cons %}
                             <ul class="list-pros-cons list-pros-cons--cons">
-                                <li class="list-pros-cons__item svg-minus">
-                                    {{ review.cons|raw }}
-                                </li>
+                                {% for con in review.cons|split('\n') %}
+                                    <li class="list-pros-cons__item svg-minus">
+                                        {{ con|raw }}
+                                    </li>
+                                {% endfor %}
                             </ul>
                         {% endif %}
                     </div>
