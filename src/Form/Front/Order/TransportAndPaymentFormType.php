@@ -174,6 +174,7 @@ class TransportAndPaymentFormType extends AbstractType
                     new Constraints\Callback([$this, 'validateOversizedTransportRequirement']),
                 ],
                 'invalid_message' => 'Please choose shipping type',
+                'required' => true,
             ])
             ->add('payment', SingleCheckboxChoiceType::class, [
                 'choices' => $payments,
@@ -183,6 +184,7 @@ class TransportAndPaymentFormType extends AbstractType
                     new Constraints\NotNull(['message' => 'Please choose payment type']),
                 ],
                 'invalid_message' => 'Please choose payment type',
+                'required' => true,
             ])
             ->add('goPayBankSwift', SingleCheckboxChoiceType::class, [
                 'choices' => $this->goPayBankSwiftFacade->getAllByCurrencyId($currency->getId()),

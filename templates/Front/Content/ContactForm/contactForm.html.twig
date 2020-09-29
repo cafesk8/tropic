@@ -20,14 +20,14 @@
 </div>
 <div class="wrap-article__row">
     <div class="wrap-article__row__full">
-        <div class="form-line">
+        <div class="form-line js-form-line">
             <div class="form-line__input">
                 <label class="input-label" for="{{ form.message.vars.id }}">
                     {{ 'Message'|trans }}
                 </label>
                 {{ form_widget(form.message, { attr: { tabindex: 5 } }) }}
             </div>
-            <div class="form-line__error">
+            <div class="form-line__error js-form-line-error">
                 {{ form_errors(form.message, { errors_attr: { class: 'form-error--under' }} ) }}
             </div>
         </div>

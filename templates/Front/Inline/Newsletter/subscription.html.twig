@@ -8,12 +8,12 @@
         </p>
         <div class="footer-newsletter__form">
             <div class="footer-newsletter__form__input">
-                <div class="form-line">
+                <div class="form-line js-form-line">
                     <div class="form-line__input">
                         {{ form_widget(form.email) }}
                         <label class="input-label required">E-mail</label>
                     </div>
-                    <div class="form-line__error">
+                    <div class="form-line__error js-form-line-error">
                         {{ form_errors(form.email) }}
                     </div>
                 </div>

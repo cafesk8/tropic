@@ -34,7 +34,7 @@
                     <div class="wrap-box">
                         <h3 class="wrap-box__title">{{ 'Changing password'|trans }}</h3>
                         <div class="wrap-box__in" id="{{ form.customerUserData.password.vars.id }}">
-                            <div class="form-line">
+                            <div class="form-line js-form-line">
                                 <div class="form-line__input">
                                     <label class="input-label">{{ 'Heslo'|trans }}</label>
                                     {{ form_widget(form.customerUserData.password.first, { label: 'Password'|trans}) }}
@@ -45,7 +45,7 @@
                                         data-original-title="{{ 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans }}">
                                     </i>
                                 </div>
-                                <div class="form-line__error">
+                                <div class="form-line__error js-form-line-error">
                                     {{ form_errors(form.customerUserData.password.first, { label: 'Password'|trans}) }}
                                 </div>
                             </div>
