@@ -316,7 +316,8 @@ class ProductController extends FrontBaseController
             $productFilterCountData = $this->productOnCurrentDomainFacade->getProductFilterCountDataInCategory(
                 $id,
                 $productFilterConfig,
-                $productFilterData
+                $productFilterData,
+                $category->isUnavailableProductsShown()
             );
         }
 
@@ -397,7 +398,8 @@ class ProductController extends FrontBaseController
             $productFilterCountData = $this->productOnCurrentDomainFacade->getProductFilterCountDataInCategory(
                 $category->getId(),
                 $productFilterConfig,
-                $productFilterData
+                $productFilterData,
+                $category->isUnavailableProductsShown()
             );
         }
 
@@ -480,7 +482,8 @@ class ProductController extends FrontBaseController
             $productFilterCountData = $this->productOnCurrentDomainFacade->getProductFilterCountDataInCategory(
                 $category->getId(),
                 $productFilterConfig,
-                $productFilterData
+                $productFilterData,
+                $category->isUnavailableProductsShown()
             );
         }
 
