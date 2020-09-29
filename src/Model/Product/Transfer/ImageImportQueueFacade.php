@@ -59,4 +59,12 @@ class ImageImportQueueFacade
     {
         $this->imageImportQueueRepository->removeUpdatedProducts($updatedPohodaProductIds);
     }
+
+    /**
+     * @param int $pohodaId
+     */
+    public function rescheduleImageImport(int $pohodaId): void
+    {
+        $this->imageImportQueueRepository->rescheduleImageImport($pohodaId);
+    }
 }

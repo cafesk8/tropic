@@ -79,4 +79,22 @@ class ImageImportQueueRepository
             'updatedProducts' => $updatedPohodaProductIds,
         ]);
     }
+
+    /**
+     * @param int $pohodaId
+     */
+    public function rescheduleImageImport(int $pohodaId): void
+    {
+        $timezone = new \DateTimeZone(date_default_timezone_get());
+
+        $query = $this->em->createNativeQuery(
+            'UPDATE pohoda_images_import_queue SET inserted_at = :insertedAt WHERE pohoda_product_id = :pohodaProductId',
+            new ResultSetMapping()
+        );
+
+        $query->execute([
+            'pohodaProductId' => $pohodaId,
+            'insertedAt' => new \DateTime('now', $timezone),
+        ]);
+    }
 }
