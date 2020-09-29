@@ -65,7 +65,8 @@ class ContactFormController extends FrontBaseController
         ]);
         $form->handleRequest($request);
 
-        $message = '';
+        $message = t('Počkejte 5 sekund');
+        $success = null;
         if ($form->isSubmitted() && $form->isValid()) {
             $contactFormData = $form->getData();
 
@@ -75,19 +76,23 @@ class ContactFormController extends FrontBaseController
                     'action' => $this->generateUrl('front_contact_form_send'),
                 ]);
                 $message = t('Thank you, your message has been sent.');
+                $success = true;
             } catch (\Shopsys\FrameworkBundle\Model\Mail\Exception\MailException $ex) {
                 $message = t('Error occurred when sending e-mail.');
+                $success = false;
             }
         }
 
         $contactFormHtml = $this->renderView('Front/Content/ContactForm/contactForm.html.twig', [
             'form' => $form->createView(),
             'privacyPolicyArticle' => $privacyPolicyArticle,
+            'mainText' => $this->contactFormSettingsFacade->getMainText($this->domain->getId()),
         ]);
 
         return new JsonResponse([
             'contactFormHtml' => $contactFormHtml,
             'message' => $message,
+            'success' => $success,
         ]);
     }
 
