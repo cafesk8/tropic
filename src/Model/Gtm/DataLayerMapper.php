@@ -300,6 +300,7 @@ class DataLayerMapper
 
         $orderDomainConfig = $this->domain->getDomainConfigById($order->getDomainId());
         $affiliation = $orderDomainConfig->getName();
+        $priceBeforeDiscounts = $this->getMoneyAsString($order->getTotalPriceWithoutVat()->add($order->getOrderDiscountPrice()));
 
         $dataLayerPurchase = [
             'actionField' => [
@@ -311,6 +312,7 @@ class DataLayerMapper
                 'shipping' => $this->getMoneyAsString($shipping->add($payment)),
                 'shippingWithTax' => $this->getMoneyAsString($shippingWithTax->add($paymentWithTax)),
                 'shippingTax' => $this->getMoneyAsString($shippingTax->add($paymentTax)),
+                'priceBeforeDiscounts' => $priceBeforeDiscounts,
             ],
             'products' => $productsData,
         ];
@@ -327,7 +329,7 @@ class DataLayerMapper
 
         foreach ($order->getItems() as $item) {
             if ($item->isTypeOrderDiscount()) {
-                $couponsArray['coupon'] = $item->getName();
+                $couponsArray['coupon'] = $item->getName() . '|' . $priceBeforeDiscounts;
             }
         }
 

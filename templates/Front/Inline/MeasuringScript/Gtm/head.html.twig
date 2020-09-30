@@ -3,6 +3,10 @@
         currencyCode = '{{ currencyCode }}';
         gtmEnabled = true;
         dataLayer = [{{ gtmDataLayer|json_encode|raw }}];
+        {% if cofidisPaymentLink is defined and cofidisPaymentLink is not null %}
+            dataLayer[0].eventCallback = function(){window.location.href='{{ cofidisPaymentLink }}';};
+            dataLayer[0].eventTimeout = 2000;
+        {% endif %}
         {% for dataLayerPush in gtmDataLayerPushes %}
             dataLayer.push({{ dataLayerPush|json_encode|raw }});
         {% endfor %}
