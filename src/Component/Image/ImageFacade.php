@@ -13,6 +13,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\FileUpload\FileUpload;
 use Shopsys\FrameworkBundle\Component\FileUpload\ImageUploadData;
 use Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig;
+use Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException;
 use Shopsys\FrameworkBundle\Component\Image\ImageFactoryInterface;
 use Shopsys\FrameworkBundle\Component\Image\ImageLocator;
 use Shopsys\FrameworkBundle\Component\Image\ImageRepository;
@@ -21,7 +22,6 @@ use Shopsys\FrameworkBundle\Component\Image\ImageRepository;
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \App\Component\FileUpload\FileUpload $fileUpload
  * @property \App\Component\Image\ImageRepository $imageRepository
- * @method saveImageOrdering(\App\Component\Image\Image[] $orderedImages)
  * @method \App\Component\Image\Image[] getAllImagesByEntity(object $entity)
  * @method deleteImageFiles(\App\Component\Image\Image $image)
  * @method string getImageUrl(\Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig, \App\Component\Image\Image|object $imageOrEntity, string|null $sizeName, string|null $type)
@@ -410,5 +410,25 @@ class ImageFacade extends BaseImageFacade
     public function findImageByEntity(string $entityName, int $entityId, ?string $type): ?Image
     {
         return $this->imageRepository->findImageByEntity($entityName, $entityId, $type);
+    }
+
+    /**
+     * @param \App\Component\Image\Image[] $orderedImages
+     */
+    protected function saveImageOrdering($orderedImages): void
+    {
+        // Image entity can be cached and it caused fatal on flush ("Entity has to be managed or scheduled for removal for single computation")
+        $persistedImages = [];
+        foreach ($orderedImages as $image) {
+            if ($this->em->getUnitOfWork()->isInIdentityMap($image) === true) {
+                $persistedImages[] = $image;
+            } else {
+                try {
+                    $persistedImages[] = $this->getById($image->getId());
+                } catch (ImageNotFoundException $ex) {
+                }
+            }
+        }
+        parent::saveImageOrdering($persistedImages);
     }
 }
