@@ -16,10 +16,16 @@ class ProductParameterValueFactory extends BaseProductParameterValueFactory
      * @param \App\Model\Product\Parameter\Parameter $parameter
      * @param \App\Model\Product\Parameter\ParameterValue $value
      * @param int|null $position
+     * @param bool $takenFromMainVariant
      * @return \App\Model\Product\Parameter\ProductParameterValue
      */
-    public function create(Product $product, Parameter $parameter, ParameterValue $value, ?int $position = null): ProductParameterValue
-    {
-        return new ProductParameterValue($product, $parameter, $value, $position);
+    public function create(
+        Product $product,
+        Parameter $parameter,
+        ParameterValue $value,
+        ?int $position = null,
+        bool $takenFromMainVariant = false
+    ): ProductParameterValue {
+        return new ProductParameterValue($product, $parameter, $value, $position, $takenFromMainVariant);
     }
 }

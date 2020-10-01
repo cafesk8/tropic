@@ -730,7 +730,7 @@ class ProductFacade extends BaseProductFacade
         }
         $this->em->flush($oldProductParameterValues);
 
-        $toFlush = [];
+        $newProductParameterValues = [];
         foreach ($productParameterValuesData as $productParameterValueData) {
             $productParameterValue = $this->productParameterValueFactory->create(
                 $product,
@@ -739,32 +739,39 @@ class ProductFacade extends BaseProductFacade
                     $productParameterValueData->parameterValueData->text,
                     $productParameterValueData->parameterValueData->locale
                 ),
-                $productParameterValueData->position
+                $productParameterValueData->position,
+                $productParameterValueData->takenFromMainVariant
             );
             $this->em->persist($productParameterValue);
-            $toFlush[] = $productParameterValue;
+            $newProductParameterValues[] = $productParameterValue;
         }
 
-        if (count($toFlush) > 0) {
-            $this->em->flush($toFlush);
+        if (count($newProductParameterValues) > 0) {
+            $this->em->flush($newProductParameterValues);
         }
 
         if ($product->isMainVariant()) {
-            $this->propagateMainVariantParametersToVariants($product->getId());
+            $actuallyRemovedMainProductParameterValues = $this->getActuallyRemovedProductParameterValues(
+                $oldProductParameterValues,
+                $newProductParameterValues
+            );
+            $this->propagateMainVariantParametersToVariants($product->getId(), $actuallyRemovedMainProductParameterValues);
         }
     }
 
     /**
      * @param int $mainVariantId
+     * @param \App\Model\Product\Parameter\ProductParameterValue[] $removedMainProductParameterValues
      */
-    private function propagateMainVariantParametersToVariants(int $mainVariantId): void
+    private function propagateMainVariantParametersToVariants(int $mainVariantId, array $removedMainProductParameterValues): void
     {
         $resultSetMapping = new ResultSetMapping();
         $resultSetMapping
             ->addScalarResult('product_id', 'product_id')
             ->addScalarResult('parameter_id', 'parameter_id')
-            ->addScalarResult('value_id', 'value_id');
-        $mainVariantProductParameterValues = $this->em->createNativeQuery('SElECT product_id, parameter_id, value_id FROM product_parameter_values WHERE product_id = :mainVariantId', $resultSetMapping)
+            ->addScalarResult('value_id', 'value_id')
+            ->addScalarResult('position', 'position');
+        $mainVariantProductParameterValues = $this->em->createNativeQuery('SElECT product_id, parameter_id, value_id, position FROM product_parameter_values WHERE product_id = :mainVariantId', $resultSetMapping)
             ->setParameter('mainVariantId', $mainVariantId)
             ->getScalarResult();
 
@@ -777,17 +784,77 @@ class ProductFacade extends BaseProductFacade
         foreach (array_column($variantIds, 'id') as $variantId) {
             $resultSetMapping = new ResultSetMapping();
             $resultSetMapping->addScalarResult('parameter_id', 'parameter_id');
-            $variantParameterIds = $this->em->createNativeQuery('SElECT parameter_id FROM product_parameter_values WHERE product_id = :variantId', $resultSetMapping)
+            $resultSetMapping->addScalarResult('value_id', 'value_id');
+            $resultSetMapping->addScalarResult('taken_from_main_variant', 'taken_from_main_variant');
+            $variantParameterValuesData = $this->em->createNativeQuery('SElECT parameter_id, value_id, taken_from_main_variant FROM product_parameter_values WHERE product_id = :variantId', $resultSetMapping)
                 ->setParameter('variantId', $variantId)
                 ->getScalarResult();
+
+            $this->removeVariantParametersByMainVariant($variantId, $removedMainProductParameterValues, $variantParameterValuesData);
+
             foreach ($mainVariantProductParameterValues as $mainVariantParameterValue) {
-                if (in_array($mainVariantParameterValue['parameter_id'], array_column($variantParameterIds, 'parameter_id'), true) === false) {
-                    $this->em->createNativeQuery('INSERT INTO product_parameter_values(product_id, parameter_id, value_id) VALUES (:productId, :parameterId, :valueId)', new ResultSetMapping())
+                if (in_array($mainVariantParameterValue['parameter_id'], array_column($variantParameterValuesData, 'parameter_id'), true) === false) {
+                    $this->em->createNativeQuery('INSERT INTO product_parameter_values(product_id, parameter_id, value_id, taken_from_main_variant, position) VALUES (:productId, :parameterId, :valueId, :takenFromMainVariant, :position)', new ResultSetMapping())
                         ->execute([
                             'productId' => $variantId,
                             'parameterId' => $mainVariantParameterValue['parameter_id'],
                             'valueId' => $mainVariantParameterValue['value_id'],
+                            'position' => $mainVariantParameterValue['position'],
+                            'takenFromMainVariant' => true,
                         ]);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param \App\Model\Product\Parameter\ProductParameterValue[] $oldProductParameterValues
+     * @param \App\Model\Product\Parameter\ProductParameterValue[] $newProductParameterValues
+     * @return \App\Model\Product\Parameter\ProductParameterValue[]
+     */
+    private function getActuallyRemovedProductParameterValues(
+        array $oldProductParameterValues,
+        array $newProductParameterValues
+    ): array {
+        foreach ($oldProductParameterValues as $key => $oldProductParameterValue) {
+            foreach ($newProductParameterValues as $newProductParameterValue) {
+                if ($oldProductParameterValue->getParameter() === $newProductParameterValue->getParameter()
+                    && $oldProductParameterValue->getValue() === $newProductParameterValue->getValue()
+                ) {
+                    unset($oldProductParameterValues[$key]);
+                    break;
+                }
+            }
+        }
+
+        return $oldProductParameterValues;
+    }
+
+    /**
+     * Remove variant parameters that have been originally taken from the main variant but are no longer assigned to the main variant
+     *
+     * @param int $variantId
+     * @param \App\Model\Product\Parameter\ProductParameterValue[] $removedMainVariantProductParameterValues
+     * @param array $variantParameterValuesData
+     */
+    private function removeVariantParametersByMainVariant(
+        int $variantId,
+        array $removedMainVariantProductParameterValues,
+        array $variantParameterValuesData
+    ): void {
+        foreach ($variantParameterValuesData as $variantParameterValueData) {
+            if ($variantParameterValueData['taken_from_main_variant'] === true) {
+                foreach ($removedMainVariantProductParameterValues as $removedMainVariantProductParameterValue) {
+                    if ($removedMainVariantProductParameterValue->getParameter()->getId() === $variantParameterValueData['parameter_id']
+                        && $removedMainVariantProductParameterValue->getValue()->getId() === $variantParameterValueData['value_id']
+                    ) {
+                        $this->em->createNativeQuery('DELETE FROM product_parameter_values WHERE product_id = :productId AND parameter_id = :parameterId AND value_id = :valueId', new ResultSetMapping())
+                            ->execute([
+                                'productId' => $variantId,
+                                'parameterId' => $variantParameterValueData['parameter_id'],
+                                'valueId' => $variantParameterValueData['value_id'],
+                            ]);
+                    }
                 }
             }
         }

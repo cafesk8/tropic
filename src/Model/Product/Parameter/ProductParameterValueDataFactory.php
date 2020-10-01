@@ -11,8 +11,8 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFac
 /**
  * @method \App\Model\Product\Parameter\ProductParameterValueData create()
  * @method \App\Model\Product\Parameter\ProductParameterValueData createFromProductParameterValue(\App\Model\Product\Parameter\ProductParameterValue $productParameterValue)
- * @method \App\Model\Product\Parameter\ProductParameterValueData create()
- * @method \App\Model\Product\Parameter\ProductParameterValueData createFromProductParameterValue(\App\Model\Product\Parameter\ProductParameterValue $productParameterValue)
+ * @property \App\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
+ * @method __construct(\App\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory)
  */
 class ProductParameterValueDataFactory extends BaseProductParameterValueDataFactory
 {
@@ -26,6 +26,7 @@ class ProductParameterValueDataFactory extends BaseProductParameterValueDataFact
     ): void {
         parent::fillFromProductParameterValue($productParameterValueData, $productParameterValue);
         $productParameterValueData->position = $productParameterValue->getPosition();
+        $productParameterValueData->takenFromMainVariant = $productParameterValue->isTakenFromMainVariant();
     }
 
     /**

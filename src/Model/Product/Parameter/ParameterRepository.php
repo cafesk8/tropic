@@ -23,6 +23,8 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository as BaseP
  * @method \App\Model\Product\Parameter\Parameter|null findParameterByNames(string[] $namesByLocale)
  * @method \Doctrine\ORM\QueryBuilder getProductParameterValuesByProductQueryBuilder(\App\Model\Product\Product $product)
  * @method \Doctrine\ORM\QueryBuilder getProductParameterValuesByProductSortedByNameQueryBuilder(\App\Model\Product\Product $product, string $locale)
+ * @property \App\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $entityManager, \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueFactoryInterface $parameterValueFactory, \App\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory)
  */
 class ParameterRepository extends BaseParameterRepository
 {
