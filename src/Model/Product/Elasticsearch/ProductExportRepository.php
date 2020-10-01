@@ -14,7 +14,6 @@ use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportRepository as BaseProductExportRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
@@ -27,7 +26,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
  * @method string extractDetailUrl(int $domainId, \App\Model\Product\Product $product)
- * @method array extractParameters(string $locale, \App\Model\Product\Product $product)
  * @method array extractVisibility(int $domainId, \App\Model\Product\Product $product)
  * @method int[] extractVariantIds(\App\Model\Product\Product $product)
  * @property \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
@@ -38,9 +36,11 @@ class ProductExportRepository extends BaseProductExportRepository
 {
     private PricingGroupFacade $pricingGroupFacade;
 
-    private PricingGroupSettingFacade $pricingGroupSettingFacade;
-
     private ProductSetFacade $productSetFacade;
+
+    private array $variantsCachedPrices = [];
+
+    private array $cachedParameters = [];
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -50,7 +50,6 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
@@ -62,12 +61,10 @@ class ProductExportRepository extends BaseProductExportRepository
         Domain $domain,
         ProductVisibilityRepository $productVisibilityRepository,
         FriendlyUrlFacade $friendlyUrlFacade,
-        PricingGroupSettingFacade $pricingGroupSettingFacade,
         ProductSetFacade $productSetFacade,
         PricingGroupFacade $pricingGroupFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
-        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
         $this->productSetFacade = $productSetFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
     }
@@ -89,13 +86,13 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['gifts'] = $this->productFacade->getProductGiftName($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
         $result['amount_multiplier'] = $product->getAmountMultiplier();
-        $result['variants_aliases'] = $this->getVariantsAliases($product, $locale, $domainId);
+        $result['variants_aliases'] = $this->getVariantsAliases($variants, $locale);
         $result['variants_count'] = count($result['variants_aliases']);
         $result['set_items'] = $this->productSetFacade->getAllItemsDataByMainProduct($product, $locale);
         if ($product->isMainVariant()) {
-            $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
+            $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($variants));
         }
-        $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId);
+        $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId, $result['prices']);
         $result['delivery_days'] = $product->isMainVariant() ? '' : $product->getDeliveryDays();
         $result['is_available_in_days'] = $product->isMainVariant() ? false : $product->isAvailableInDays();
         $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
@@ -119,7 +116,12 @@ class ProductExportRepository extends BaseProductExportRepository
      */
     protected function extractPrices(int $domainId, BaseProduct $product): array
     {
-        $defaultPricingGroupOnDomain = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+        $isVariant = $product->isVariant();
+        $productId = $product->getId();
+        if ($isVariant && isset($this->variantsCachedPrices[$domainId][$productId])) {
+            return $this->variantsCachedPrices[$domainId][$productId];
+        }
+        $defaultPricingGroupOnDomain = $this->pricingGroupFacade->getDefaultPricingGroup($domainId);
         $standardPricingGroupOnDomain = $product->isInAnySaleStock() ? $defaultPricingGroupOnDomain : $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
         $pricesArray = parent::extractPrices($domainId, $product);
 
@@ -129,6 +131,10 @@ class ProductExportRepository extends BaseProductExportRepository
             $priceArray['is_default'] = ($priceArray['pricing_group_id'] === $defaultPricingGroupId);
             $priceArray['is_standard'] = ($priceArray['pricing_group_id'] === $standardPricingGroupId);
             $pricesArray[$key] = $priceArray;
+        }
+
+        if ($isVariant && isset($this->variantsCachedPrices[$domainId][$productId]) === false) {
+            $this->variantsCachedPrices[$domainId][$productId] = $pricesArray;
         }
 
         return $pricesArray;
@@ -153,15 +159,14 @@ class ProductExportRepository extends BaseProductExportRepository
     }
 
     /**
-     * @param \App\Model\Product\Product $product
+     * @param \App\Model\Product\Product[] $variants
      * @param string $locale
-     * @param int $domainId
      * @return string[]
      */
-    private function getVariantsAliases(BaseProduct $product, string $locale, int $domainId): array
+    private function getVariantsAliases(array $variants, string $locale): array
     {
         $variantsAliases = [];
-        foreach ($this->productFacade->getVisibleVariantsForProduct($product, $domainId) as $variant) {
+        foreach ($variants as $variant) {
             $variantsAliases[] = $variant->getVariantAlias($locale);
         }
 
@@ -169,14 +174,13 @@ class ProductExportRepository extends BaseProductExportRepository
     }
 
     /**
-     * @param \App\Model\Product\Product $product
-     * @param int $domainId
+     * @param \App\Model\Product\Product[] $variants
      * @return string[]
      */
-    private function getVariantsCatnums(BaseProduct $product, int $domainId): array
+    private function getVariantsCatnums(array $variants): array
     {
         $variantsCatnums = [];
-        foreach ($this->productFacade->getVisibleVariantsForProduct($product, $domainId) as $variant) {
+        foreach ($variants as $variant) {
             $variantsCatnums[] = $variant->getCatnum();
         }
 
@@ -186,38 +190,36 @@ class ProductExportRepository extends BaseProductExportRepository
     /**
      * @param \App\Model\Product\Product $product
      * @param int $domainId
+     * @param array $prices
      * @return array
      */
-    private function getPricesForFilterIncludingVariants(BaseProduct $product, int $domainId): array
+    private function getPricesForFilterIncludingVariants(BaseProduct $product, int $domainId, array $prices): array
     {
+        $pricesForFilter = [];
         if ($product->isMainVariant() === false) {
-            return $this->getPricesForFilter($product, $domainId);
+            $pricesForFilter = $this->getPricesForFilterFromPrices($prices);
         } else {
-            $pricesForFilter = [];
             foreach ($this->productFacade->getSellableVariantsForProduct($product, $domainId) as $variant) {
-                $variantPrices = $this->getPricesForFilter($variant, $domainId);
-                $pricesForFilter = array_merge($pricesForFilter, $variantPrices);
+                $variantPrices = $this->extractPrices($domainId, $variant);
+                $variantPriceForFilter = $this->getPricesForFilterFromPrices($variantPrices);
+                $pricesForFilter = array_merge($pricesForFilter, $variantPriceForFilter);
             }
-
-            return $pricesForFilter;
         }
+
+        return $pricesForFilter;
     }
 
     /**
-     * @param \App\Model\Product\Product $product
-     * @param int $domainId
+     * @param array $prices
      * @return array
      */
-    private function getPricesForFilter(BaseProduct $product, int $domainId): array
+    private function getPricesForFilterFromPrices(array $prices): array
     {
         $pricesForFilter = [];
-        $productSellingPrices = $this->productFacade->getAllProductSellingPricesByDomainId($product, $domainId);
-        foreach ($productSellingPrices as $productSellingPrice) {
-            $sellingPrice = $productSellingPrice->getSellingPrice();
-
+        foreach ($prices as $price) {
             $pricesForFilter[] = [
-                'pricing_group_id' => $productSellingPrice->getPricingGroup()->getId(),
-                'price_with_vat' => (float)$sellingPrice->getPriceWithVat()->getAmount(),
+                'pricing_group_id' => $price['pricing_group_id'],
+                'price_with_vat' => $price['price_with_vat'],
             ];
         }
 
@@ -270,6 +272,21 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $uniqueParameters;
+    }
+
+    /**
+     * @param string $locale
+     * @param \App\Model\Product\Product $product
+     * @return array
+     */
+    protected function extractParameters(string $locale, BaseProduct $product): array
+    {
+        $productId = $product->getId();
+        if (isset($this->cachedParameters[$locale][$productId]) === false) {
+            $this->cachedParameters[$locale][$productId] = parent::extractParameters($locale, $product);
+        }
+
+        return $this->cachedParameters[$locale][$productId];
     }
 
     /**

@@ -97,8 +97,6 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         $inputPrice = Money::zero();
         $maxInputPrice = Money::zero();
         $standardPriceInput = null;
-        $defaultCurrencyPriceInput = null;
-        $maxDefaultCurrencyPriceInput = null;
 
         foreach ($manualInputPrices as $manualInputPrice) {
             if ($manualInputPrice !== null) {

@@ -17,9 +17,10 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade as BasePricin
  * @method \App\Model\Pricing\Group\PricingGroup[] getByDomainId(int $domainId)
  * @method \App\Model\Pricing\Group\PricingGroup[] getAllExceptIdByDomainId(int $id, int $domainId)
  * @method \App\Model\Pricing\Group\PricingGroup[][] getAllIndexedByDomainId()
- * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade, \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPriceRepository $productCalculatedPriceRepository, \App\Model\Customer\User\CustomerUserRepository $customerUserRepository, \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFactoryInterface $pricingGroupFactory, \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade, \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository, \App\Model\Product\Pricing\ProductCalculatedPriceRepository $productCalculatedPriceRepository, \App\Model\Customer\User\CustomerUserRepository $customerUserRepository, \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFactoryInterface $pricingGroupFactory, \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher)
  * @method dispatchPricingGroupEvent(\App\Model\Pricing\Group\PricingGroup $pricingGroup, string $eventType)
  * @property \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
+ * @property \App\Model\Product\Pricing\ProductCalculatedPriceRepository $productCalculatedPriceRepository
  */
 class PricingGroupFacade extends BasePricingGroupFacade
 {
@@ -32,6 +33,11 @@ class PricingGroupFacade extends BasePricingGroupFacade
      * @var \App\Model\Pricing\Group\PricingGroup[][]
      */
     private $cachedPricingGroupByType = [];
+
+    /**
+     * @var \App\Model\Pricing\Group\PricingGroup[]
+     */
+    private array $cachedDefaultPricingGroupsByDomainId = [];
 
     /**
      * @param string $name
@@ -141,10 +147,24 @@ class PricingGroupFacade extends BasePricingGroupFacade
         if ($customerUser !== null) {
             $pricingGroup = $customerUser->getPricingGroup();
         } else {
-            /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
-            $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($this->domain->getId());
+            $pricingGroup = $this->getDefaultPricingGroup($this->domain->getId());
         }
 
         return $pricingGroup;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    public function getDefaultPricingGroup(int $domainId): PricingGroup
+    {
+        if (isset($this->cachedDefaultPricingGroupsByDomainId[$domainId]) === false) {
+            /** @var \App\Model\Pricing\Group\PricingGroup $defaultPricingGroup */
+            $defaultPricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+            $this->cachedDefaultPricingGroupsByDomainId[$domainId] = $defaultPricingGroup;
+        }
+
+        return $this->cachedDefaultPricingGroupsByDomainId[$domainId];
     }
 }

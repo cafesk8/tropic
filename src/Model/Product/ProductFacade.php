@@ -675,9 +675,7 @@ class ProductFacade extends BaseProductFacade
      */
     public function getVisibleVariantsForProduct(Product $product, int $domainId): array
     {
-        $defaultPricingGroup = $this->pricingGroupRepository->getById(
-            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
-        );
+        $defaultPricingGroup = $this->pricingGroupFacade->getDefaultPricingGroup($domainId);
 
         return $this->productRepository->getAllVisibleVariantsByMainVariant(
             $product,
@@ -693,9 +691,7 @@ class ProductFacade extends BaseProductFacade
      */
     public function getSellableVariantsForProduct(Product $product, int $domainId): array
     {
-        $defaultPricingGroup = $this->pricingGroupRepository->getById(
-            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
-        );
+        $defaultPricingGroup = $this->pricingGroupFacade->getDefaultPricingGroup($domainId);
 
         return $this->productRepository->getAllSellableVariantsByMainVariant(
             $product,
@@ -866,9 +862,7 @@ class ProductFacade extends BaseProductFacade
      */
     public function hideVariantsWithDifferentPriceForDomain(int $domainId): array
     {
-        $defaultPricingGroup = $this->pricingGroupRepository->getById(
-            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
-        );
+        $defaultPricingGroup = $this->pricingGroupFacade->getDefaultPricingGroup($domainId);
 
         $hiddenVariantsIds = [];
 
