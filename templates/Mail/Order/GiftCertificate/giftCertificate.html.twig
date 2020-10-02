@@ -6,11 +6,19 @@
 <body>
     <div style="font-family: 'Kanit'; width:633px;">
         <div style="float:left; width:50%; padding-right:45px;">
-            <div style="text-align: right; margin-bottom: 110px;">
-                <img style="display: inline-block;" src="./public/frontend/images/logo.png" alt="{{ 'Logo'|trans }}">
+            <div style="text-align:right; margin-bottom:110px;">
+                {% if greyscale is same as(false) %}
+                    <img style="display:inline-block;" src="./public/frontend/images/logo-blue.svg" alt="{{ 'Logo'|trans }}">
+                {% else %}
+                    <img style="display:inline-block;" src="./public/frontend/images/logo-black.svg" alt="{{ 'Logo'|trans }}">
+                {% endif %}
             </div>
-            <div style="flaot:right; width: 270px; display: inline-block;">
-                <img style="width: 100%" src="./public/frontend/images/fishes-big.svg" alt="{{ 'Fishes'|trans }}">
+            <div style="text-align: right;">
+                {% if greyscale is same as(false) %}
+                    <img style="display:inline-block; width:270px" src="./public/frontend/images/fishes-big-right.svg" alt="{{ 'Fishes'|trans }}">
+                {% else %}
+                    <img style="display:inline-block; width:270px" src="./public/frontend/images/fishes-big-right-black.svg" alt="{{ 'Fishes'|trans }}">
+                {% endif %}
             </div>
         </div>
         <div style="float:left; width:50%; padding-left:45px; border-left:2px solid #0077b3;">
@@ -37,7 +45,7 @@
                 {{ 'Platnost poukazu je 12 měsíců od zakoupení.'|trans }}
             </p>
             <p style="margin:0px; padding:0px; font-size:10px; line-height:10px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
-                {{ 'TROPIC LIBEREC s.r.o., Vyhlídková 655, Liberec 25, IČO: <strong>25415981</strong>'|trans|raw }}
+                {{ 'TROPIC LIBEREC s.r.o., U Sadu 655, Liberec 25, IČO: <strong>25415981</strong>'|trans|raw }}
             </p>
             <a style="display:block; margin:0px 0px 10px 0px; padding:0px; font-size:10px; line-height:10px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}" href="http://www.tropicfishing.cz/">
                 <strong>{{ 'http://www.tropicfishing.cz/'|trans }}</strong>
