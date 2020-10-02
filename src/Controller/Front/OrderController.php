@@ -1100,12 +1100,11 @@ class OrderController extends FrontBaseController
     private function getCofidisPaymentLink(Order $order): ?string
     {
         $cofidisPaymentLink = null;
-        if ($order->getPayment()->isCofidis()) {
-            try {
-                $cofidisPaymentLink = $this->cofidisFacade->sendPaymentToCofidis($order);
-            } catch (CofidisException $e) {
-                $this->addErrorFlash(t('Připojení k bráně Cofidis selhalo.'));
-            }
+
+        try {
+            $cofidisPaymentLink = $this->cofidisFacade->getCofidisPaymentLink($order);
+        } catch (CofidisException $e) {
+            $this->addErrorFlash(t('Připojení k bráně Cofidis selhalo.'));
         }
 
         return $cofidisPaymentLink;

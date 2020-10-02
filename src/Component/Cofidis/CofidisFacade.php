@@ -12,6 +12,8 @@ class CofidisFacade
 
     private CofidisOrderMapper $cofidisOrderMapper;
 
+    private array $paymentLinks;
+
     /**
      * @param \App\Component\Cofidis\CofidisClientFactory $cofidisClientFactory
      * @param \App\Component\Cofidis\CofidisOrderMapper $cofidisOrderMapper
@@ -34,5 +36,25 @@ class CofidisFacade
         $cofidisPaymentData = $this->cofidisOrderMapper->createCofidisPaymentData($order, $cofidisClient->getConfig());
 
         return $cofidisClient->sendPaymentToCofidis($cofidisPaymentData);
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @return string|null
+     */
+    public function getCofidisPaymentLink(Order $order): ?string
+    {
+        if (!$order->getPayment()->isCofidis()) {
+            return null;
+        }
+
+        if (isset($this->paymentLinks[$order->getId()]) && !empty($this->paymentLinks[$order->getId()])) {
+            return $this->paymentLinks[$order->getId()];
+        }
+
+        $paymentLink = $this->sendPaymentToCofidis($order);
+        $this->paymentLinks[$order->getId()] = $paymentLink;
+
+        return $paymentLink;
     }
 }

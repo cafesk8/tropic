@@ -83,6 +83,8 @@ class DataLayerProduct implements JsonSerializable
      */
     private $position;
 
+    private string $productType;
+
     /**
      * @param string $id
      */
@@ -209,5 +211,13 @@ class DataLayerProduct implements JsonSerializable
     public function jsonSerialize()
     {
         return array_filter(get_object_vars($this));
+    }
+
+    /**
+     * @param string $productType
+     */
+    public function setProductType(string $productType): void
+    {
+        $this->productType = $productType;
     }
 }
