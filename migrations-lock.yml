@@ -1348,3 +1348,6 @@
 20200904135802:
     class: App\Migrations\Version20200904135802
     skip: false
+20201002131656:
+    class: App\Migrations\Version20201002131656
+    skip: false

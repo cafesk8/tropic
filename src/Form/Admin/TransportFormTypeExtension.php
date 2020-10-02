@@ -90,6 +90,10 @@ class TransportFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('Mall id'),
             ])
+            ->add('zboziType', TextType::class, [
+                'required' => false,
+                'label' => t('Typ pro Zboží.cz'),
+            ])
             ->add('externalId', TextType::class, [
                 'label' => 'ID z IS',
                 'required' => false,

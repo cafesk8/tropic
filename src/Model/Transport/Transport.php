@@ -135,6 +135,11 @@ class Transport extends BaseTransport
     private bool $oversizedAllowed;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $zboziType;
+
+    /**
      * @param \App\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
@@ -171,6 +176,7 @@ class Transport extends BaseTransport
         $this->mergadoTransportType = $transportData->mergadoTransportType;
         $this->bulkyAllowed = $transportData->bulkyAllowed;
         $this->oversizedAllowed = $transportData->oversizedAllowed;
+        $this->zboziType = $transportData->zboziType;
     }
 
     /**
@@ -347,5 +353,13 @@ class Transport extends BaseTransport
     public function isOversizedAllowed(): bool
     {
         return $this->oversizedAllowed;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getZboziType(): ?string
+    {
+        return $this->zboziType;
     }
 }

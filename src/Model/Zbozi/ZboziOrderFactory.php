@@ -21,7 +21,7 @@ class ZboziOrderFactory
 
         $zboziOrder = new ZboziOrder($order->getNumber());
         $zboziOrder->setEmail($order->getEmail());
-        //$zboziOrder->setDeliveryType(???);
+        $zboziOrder->setDeliveryType((string)$order->getOrderTransport()->getTransport()->getZboziType());
         $zboziOrder->setDeliveryPrice(
             (float)$orderTransport->getTotalPriceWithVat()->getAmount() + (float)$orderPayment->getTotalPriceWithVat()->getAmount()
         );

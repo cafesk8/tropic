@@ -52,6 +52,7 @@ class TransportDataFactory extends BaseTransportDataFactory
         $transportData->mergadoTransportType = $transport->getMergadoTransportType();
         $transportData->bulkyAllowed = $transport->isBulkyAllowed();
         $transportData->oversizedAllowed = $transport->isOversizedAllowed();
+        $transportData->zboziType = $transport->getZboziType();
 
         foreach ($this->domain->getAllIds() as $domainId) {
             $transportData->actionPricesIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->getActionPrice();
