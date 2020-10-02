@@ -2792,7 +2792,7 @@ msgid "Tento e-mail je registrován. Můžete se <span>přihlásit</span>"
 msgstr ""
 
 msgid "Tento měsíc máme v akci"
-msgstr ""
+msgstr "Special Offer"
 
 msgid "Tento produkt nemá žádné příznaky"
 msgstr ""

@@ -2081,7 +2081,7 @@ msgid "Podle zvolené adresy nebylo možné vyhledat žádné pobočky"
 msgstr "Podľa zvolenej adresy nebolo možné vyhľadať žiadne pobočky"
 
 msgid "Podle zákona o evidenci tržeb je prodávající povinen vystavit kupujícímu účtenku. Zároveň je povinen zaevidovat přijatou tržbu u správce daně online; v případě technického výpadku pak nejpozději do 48 hodin."
-msgstr "Podle zákona o evidencií tržieb je predávajúci povinný vystaviť kupujúcemu účtenku. Zároveň je povinný zaevidovať prijatú tržbu u správcu daní online; v prípade technického výpadku potom najneskôr do 48 hodín."
+msgstr "Podľa zákona o evidencií tržieb je predávajúci povinný vystaviť kupujúcemu účtenku. Zároveň je povinný zaevidovať prijatú tržbu u správcu daní online; v prípade technického výpadku potom najneskôr do 48 hodín."
 
 msgid "Podrobnosti o skladu/prodejně"
 msgstr "Podrobnosti o sklade/predajni"
@@ -2861,7 +2861,7 @@ msgid "Tento e-mail je registrován. Můžete se <span>přihlásit</span>"
 msgstr "Tento e-mail je registrovaný. Môžete sa <span>prihlásiť</span>"
 
 msgid "Tento měsíc máme v akci"
-msgstr "Tento mesiac máme v akcii"
+msgstr "Akčná ponuka"
 
 msgid "Tento produkt nemá žádné příznaky"
 msgstr "Tento produkt nemá žiadne príznaky"
