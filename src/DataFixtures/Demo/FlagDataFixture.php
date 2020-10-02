@@ -67,7 +67,6 @@ class FlagDataFixture extends AbstractReferenceFixture
         $flagData->pohodaId = Flag::POHODA_ID_NEW;
         $flagData->rgbColor = '#efd6ff';
         $flagData->visible = true;
-        $flagData->news = true;
         $this->createFlag($flagData, self::FLAG_NEW_PRODUCT);
 
         foreach ($this->domain->getAllLocales() as $locale) {
@@ -77,7 +76,6 @@ class FlagDataFixture extends AbstractReferenceFixture
         $flagData->pohodaId = null;
         $flagData->rgbColor = '#d6fffa';
         $flagData->visible = true;
-        $flagData->news = false;
         $this->createFlag($flagData, self::FLAG_TOP_PRODUCT);
 
         foreach ($this->domain->getAllLocales() as $locale) {
@@ -95,8 +93,6 @@ class FlagDataFixture extends AbstractReferenceFixture
 
         $flagData->rgbColor = '#000000';
         $flagData->visible = true;
-        $flagData->pohodaId = Flag::POHODA_ID_DISCOUNT;
-        $flagData->sale = false;
         $this->createFlag($flagData, self::FLAG_DISCOUNT_PRODUCT);
 
         foreach ($this->domain->getAllLocales() as $locale) {
@@ -152,8 +148,7 @@ class FlagDataFixture extends AbstractReferenceFixture
      */
     private function createSaleFlagReference(): void
     {
-        $saleFlags = $this->flagFacade->getSaleFlags();
-        $saleFlag = reset($saleFlags);
+        $saleFlag = $this->flagFacade->getSaleFlag();
         $saleFlagData = $this->flagDataFactory->createFromFlag($saleFlag);
         foreach ($this->domain->getAllLocales() as $locale) {
             $saleFlagData->name[$locale] = t('Výprodej', [], 'dataFixtures', $locale);

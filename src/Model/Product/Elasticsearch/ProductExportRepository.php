@@ -6,6 +6,7 @@ namespace App\Model\Product\Elasticsearch;
 
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Flag\Flag;
+use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\Set\ProductSetFacade;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,6 +43,8 @@ class ProductExportRepository extends BaseProductExportRepository
 
     private array $cachedParameters = [];
 
+    private FlagFacade $flagFacade;
+
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
@@ -52,6 +55,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -62,11 +66,13 @@ class ProductExportRepository extends BaseProductExportRepository
         ProductVisibilityRepository $productVisibilityRepository,
         FriendlyUrlFacade $friendlyUrlFacade,
         ProductSetFacade $productSetFacade,
-        PricingGroupFacade $pricingGroupFacade
+        PricingGroupFacade $pricingGroupFacade,
+        FlagFacade $flagFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->productSetFacade = $productSetFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->flagFacade = $flagFacade;
     }
 
     /**
@@ -227,14 +233,20 @@ class ProductExportRepository extends BaseProductExportRepository
     }
 
     /**
+     * On FE, we do not want to display "clearance" flag at all, "sale" flag is used instead
+     *
      * @param \App\Model\Product\Product $product
      * @return int[]
      */
     protected function extractFlags(BaseProduct $product): array
     {
-        return array_map(function (Flag $flag) {
+        $saleFlag = $this->flagFacade->getSaleFlag();
+        return array_unique(array_map(function (Flag $flag) use ($saleFlag) {
+            if ($flag->isClearance()) {
+                return $saleFlag->getId();
+            }
             return $flag->getId();
-        }, $product->getActiveFlags());
+        }, $product->getActiveFlags()));
     }
 
     /**

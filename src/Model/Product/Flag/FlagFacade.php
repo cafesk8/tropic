@@ -6,6 +6,7 @@ namespace App\Model\Product\Flag;
 
 use App\Component\Setting\Setting;
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Model\Product\Flag\Exception\FlagNotFoundException;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade as BaseFlagFacade;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagFactory;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagRepository;
@@ -102,19 +103,29 @@ class FlagFacade extends BaseFlagFacade
     }
 
     /**
-     * @return \App\Model\Product\Flag\Flag[]
+     * @return \App\Model\Product\Flag\Flag
      */
-    public function getSaleFlags(): array
+    public function getSaleFlag(): Flag
     {
-        return $this->flagRepository->getSaleFlags();
+        $flag = $this->flagRepository->findSaleFlag();
+        if ($flag === null) {
+            throw new FlagNotFoundException('Special sale flag not found');
+        }
+
+        return $flag;
     }
 
     /**
-     * @return \App\Model\Product\Flag\Flag[]
+     * @return \App\Model\Product\Flag\Flag
      */
-    public function getNewsFlags(): array
+    public function getNewsFlag(): Flag
     {
-        return $this->flagRepository->getNewsFlags();
+        $flag = $this->flagRepository->findNewsFlag();
+        if ($flag === null) {
+            throw new FlagNotFoundException('Special news flag not found');
+        }
+
+        return $flag;
     }
 
     /**

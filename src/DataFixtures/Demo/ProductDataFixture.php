@@ -181,7 +181,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->categoriesByDomainId[Domain::SECOND_DOMAIN_ID][] = $this->persistentReferenceFacade->getReference(CategoryDataFixture::CATEGORY_ELECTRONICS);
         $productData->categoriesByDomainId[Domain::SECOND_DOMAIN_ID][] = $this->persistentReferenceFacade->getReference(CategoryDataFixture::CATEGORY_TV);
         $productData->categoriesByDomainId[Domain::SECOND_DOMAIN_ID][] = $this->persistentReferenceFacade->getReference(CategoryDataFixture::CATEGORY_BOOKS);
-        $this->setFlags($productData, [FlagDataFixture::FLAG_TOP_PRODUCT, FlagDataFixture::FLAG_ACTION_PRODUCT]);
+        $this->setFlags($productData, [FlagDataFixture::FLAG_TOP_PRODUCT, FlagDataFixture::FLAG_ACTION_PRODUCT, FlagDataFixture::FLAG_CLEARANCE_PRODUCT]);
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_SENCOR);

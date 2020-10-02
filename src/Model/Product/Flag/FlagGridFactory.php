@@ -30,14 +30,14 @@ class FlagGridFactory extends BaseFlagGridFactory
         $grid->addColumn('name', 'at.name', t('Name'), true);
         $grid->addColumn('rgbColor', 'a.rgbColor', t('Colour'), true);
         $grid->addColumn('visible', 'a.visible', t('Filter by'), true);
-        $grid->addColumn('sale', 'a.sale', t('Výprodejový'), false);
-        $grid->addColumn('news', 'a.news', t('Novinka'), false);
 
         $grid->setActionColumnClassAttribute('table-col table-col-10');
         $grid->addDeleteActionColumn('admin_flag_delete', ['id' => 'a.id'])
             ->setConfirmMessage(t('Do you really want to remove this flag?'));
 
-        $grid->setTheme('@ShopsysFramework/Admin/Content/Flag/listGrid.html.twig');
+        $grid->setTheme('@ShopsysFramework/Admin/Content/Flag/listGrid.html.twig', [
+            'saleFlagPohodaId' => Flag::POHODA_ID_DISCOUNT,
+        ]);
 
         $grid->enableDragAndDrop(Flag::class);
 

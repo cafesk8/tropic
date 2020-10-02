@@ -14,6 +14,7 @@ use App\Model\Order\Item\OrderItem;
 use App\Model\Order\Order;
 use App\Model\Order\Preview\OrderPreview;
 use App\Model\Product\Flag\Flag;
+use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -60,6 +61,8 @@ class DataLayerMapper
 
     private Domain $domain;
 
+    private FlagFacade $flagFacade;
+
     /**
      * DataLayerMapper constructor.
      * @param \App\Model\Category\CategoryFacade $categoryFacade
@@ -67,19 +70,22 @@ class DataLayerMapper
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Gtm\GtmHelper $gtmHelper
      * @param \Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade $administratorFrontSecurityFacade
+     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
         Domain $domain,
         GtmHelper $gtmHelper,
-        AdministratorFrontSecurityFacade $administratorFrontSecurityFacade
+        AdministratorFrontSecurityFacade $administratorFrontSecurityFacade,
+        FlagFacade $flagFacade
     ) {
         $this->categoryFacade = $categoryFacade;
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
         $this->domain = $domain;
         $this->gtmHelper = $gtmHelper;
         $this->administratorFrontSecurityFacade = $administratorFrontSecurityFacade;
+        $this->flagFacade = $flagFacade;
     }
 
     /**
@@ -261,7 +267,8 @@ class DataLayerMapper
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, Domain::MAIN_ADMIN_DOMAIN_ID);
         $dataLayerProduct->setCategory($this->categoryFacade->getCategoriesNamesInPathAsString($productMainCategory, $locale));
         $dataLayerProduct->setAvailability($product->getCalculatedAvailability()->getName($locale));
-        $dataLayerProduct->setLabels(array_map(fn (Flag $flag) => $flag->getName($locale), $product->getActiveFlags()));
+        $saleFlag = $this->flagFacade->getSaleFlag();
+        $dataLayerProduct->setLabels(array_map(fn (Flag $flag) => $flag->isClearance() ? $saleFlag->getName($locale) : $flag->getName($locale), $product->getActiveFlags()));
     }
 
     /**

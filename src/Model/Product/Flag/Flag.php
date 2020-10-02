@@ -35,20 +35,6 @@ class Flag extends BaseFlag implements OrderableEntityInterface
     private $position;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $sale;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $news;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(type="string", length=20, nullable=true)
@@ -78,8 +64,6 @@ class Flag extends BaseFlag implements OrderableEntityInterface
      */
     private function fillCommonProperties(FlagData $flagData): void
     {
-        $this->sale = $flagData->sale;
-        $this->news = $flagData->news;
         $this->pohodaId = $flagData->pohodaId;
     }
 
@@ -104,7 +88,15 @@ class Flag extends BaseFlag implements OrderableEntityInterface
      */
     public function isSale(): bool
     {
-        return $this->sale;
+        return $this->pohodaId === self::POHODA_ID_DISCOUNT;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClearance(): bool
+    {
+        return $this->pohodaId === self::POHODA_ID_CLEARANCE;
     }
 
     /**
@@ -112,7 +104,7 @@ class Flag extends BaseFlag implements OrderableEntityInterface
      */
     public function isNews(): bool
     {
-        return $this->news;
+        return $this->pohodaId === self::POHODA_ID_NEW;
     }
 
     /**
@@ -120,7 +112,7 @@ class Flag extends BaseFlag implements OrderableEntityInterface
      */
     public function isSpecial(): bool
     {
-        return $this->news || $this->sale;
+        return $this->isSale() || $this->isNews() || $this->isClearance();
     }
 
     /**

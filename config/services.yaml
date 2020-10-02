@@ -785,3 +785,5 @@ services:
     Shopsys\FrameworkBundle\Form\Transformers\ProductParameterValueToProductParameterValuesLocalizedTransformer: '@App\Form\Transformers\ProductParameterValueToProductParameterValuesLocalizedTransformer'
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPriceRepository: '@App\Model\Product\Pricing\ProductCalculatedPriceRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository: '@App\Model\Product\Search\ProductFilterCountDataElasticsearchRepository'

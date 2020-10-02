@@ -54,7 +54,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     ): BaseFilterQuery {
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
             ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
-            ->filterOnlyListable();
+            ->excludeVariants();
 
         if ($pohodaProductType !== null) {
             $filterQuery = $filterQuery->filterByPohodaProductType($pohodaProductType);
@@ -182,15 +182,19 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     }
 
     /**
-     * Includes visible not-sellable products
+     * Includes visible not-sellable products (when the category is set to show unavailable products)
      *
      * @inheritDoc
      */
-    public function getProductFilterCountDataInCategory(int $categoryId, ProductFilterConfig $productFilterConfig, ProductFilterData $productFilterData): ProductFilterCountData
+    public function getProductFilterCountDataInCategory(int $categoryId, ProductFilterConfig $productFilterConfig, ProductFilterData $productFilterData, bool $showUnavailableProducts = false): ProductFilterCountData
     {
         $baseFilterQuery = $this->filterQueryFactory->create($this->getIndexName())
             ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
             ->filterByCategory([$categoryId]);
+        if (!$showUnavailableProducts) {
+            $baseFilterQuery = $baseFilterQuery->filterOnlySellable();
+        }
+
         $baseFilterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $baseFilterQuery, $this->currentCustomerUser->getPricingGroup());
         $baseFilterQuery = $this->productFilterDataToQueryTransformer->addStockToQuery($productFilterData, $baseFilterQuery);
 
