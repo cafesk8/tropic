@@ -557,29 +557,6 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param \App\Model\Product\View\ListedProductView $listedProductView
-     * @param string $type
-     * @param bool $showAmountInput
-     * @param bool $onlyRefresh
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function productActionAction(ListedProductView $listedProductView, string $type = 'normal', bool $showAmountInput = true, bool $onlyRefresh = false)
-    {
-        $form = $this->createForm(AddProductFormType::class, ['productId' => $listedProductView->getId()], [
-            'action' => $this->generateUrl('front_cart_add_product'),
-            'minimum_amount' => $listedProductView->getAction()->getMinimumAmount(),
-            'only_refresh' => $onlyRefresh,
-        ]);
-
-        return $this->render('Front/Inline/Cart/productAction.html.twig', [
-            'form' => $form->createView(),
-            'productView' => $listedProductView,
-            'type' => $type,
-            'showAmountInput' => $showAmountInput,
-        ]);
-    }
-
-    /**
      * @param \Shopsys\FrameworkBundle\Model\Cart\AddProductResult[] $addProductResults
      * @return array
      */
