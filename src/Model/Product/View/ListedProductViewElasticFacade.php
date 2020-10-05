@@ -147,6 +147,10 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
             $this->currentCustomerUser->getPricingGroup()
         );
 
+        if (count($bestsellingProductIds) === 0) {
+            return [];
+        }
+
         return $this->createFromArray($this->productOnCurrentDomainFacade->getSellableHitsForIds($bestsellingProductIds));
     }
 
