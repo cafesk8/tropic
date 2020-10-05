@@ -7,12 +7,12 @@ namespace Tests\App\Functional\Model\Product;
 use App\DataFixtures\Demo\BrandDataFixture;
 use App\DataFixtures\Demo\CategoryDataFixture;
 use App\DataFixtures\Demo\FlagDataFixture;
+use App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
@@ -23,7 +23,7 @@ use Tests\App\Test\ParameterTransactionFunctionalTestCase;
 abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransactionFunctionalTestCase
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory
+     * @var \App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory
      */
     protected $productFilterConfigFactory;
 
@@ -58,7 +58,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
      */
     public function testCategory(Category $category, ProductFilterData $filterData, ProductFilterCountData $expectedCountData): void
     {
-        $filterConfig = $this->productFilterConfigFactory->createForCategory($this->domain->getId(), $this->domain->getLocale(), $category);
+        $filterConfig = $this->productFilterConfigFactory->createForCategory($category);
         $countData = $this->productOnCurrentDomainFacade->getProductFilterCountDataInCategory($category->getId(), $filterConfig, $filterData);
 
         $this->assertEquals($expectedCountData, $this->removeEmptyParameters($countData));
@@ -91,7 +91,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
     {
         $this->skipTestIfFirstDomainIsNotInEnglish();
 
-        $filterConfig = $this->productFilterConfigFactory->createForSearch($this->domain->getId(), $this->domain->getLocale(), $searchText);
+        $filterConfig = $this->productFilterConfigFactory->createForSearch($searchText);
         $countData = $this->productOnCurrentDomainFacade->getProductFilterCountDataForSearch($searchText, $filterConfig, $filterData);
 
         $this->assertEquals($expectedCountData, $this->removeEmptyParameters($countData));

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Brand;
 
+use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade as BaseBrandFacade;
 
 /**
@@ -26,5 +27,16 @@ class BrandFacade extends BaseBrandFacade
     public function getByName(string $name): Brand
     {
         return $this->brandRepository->getByName($name);
+    }
+
+    /**
+     * @param int[] $brandsIds
+     * @param string $locale
+     * @param \App\Model\Category\Category|null $category
+     * @return \App\Model\Product\Brand\Brand[]
+     */
+    public function getBrandsForFilterByIds(array $brandsIds, string $locale, ?Category $category = null): array
+    {
+        return $this->brandRepository->getBrandsForFilterByIds($brandsIds, $locale, $category);
     }
 }
