@@ -660,7 +660,11 @@ class PohodaProductMapper
             }
             foreach ($pohodaParameter->values as $locale => $parameterValue) {
                 if ($pohodaParameter->isTypeBool()) {
-                    $parameterValue = (int)$parameterValue === 1 ? t('Ano', [], null, $locale) : t('Ne', [], null, $locale);
+                    if ((int)$parameterValue === 1) {
+                        $parameterValue = t('Ano', [], 'messages', $locale);
+                    } else {
+                        $parameterValue = t('Ne', [], 'messages', $locale);
+                    }
                 }
                 /** @var \App\Model\Product\Parameter\ProductParameterValueData $productParameterValueData */
                 $productParameterValueData = $this->productParameterValueDataFactory->create();

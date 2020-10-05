@@ -16,8 +16,14 @@ msgstr "Email cannot be longer than {{ limit }} characters"
 msgid "Externí ID nesmí být delší než {{ limit }} znaků"
 msgstr "External ID cannot be longer than {{ limit }} characters"
 
+msgid "Externí název nesmí být delší než {{ limit }} znaků"
+msgstr ""
+
 msgid "First name cannot be longer than {{ limit }} characters"
 msgstr "First name cannot be longer than {{ limit }} characters"
+
+msgid "Flag color in must be in valid hexadecimal code e.g. #3333ff"
+msgstr ""
 
 msgid "Google Maps link cannot be longer than {{ limit }} characters"
 msgstr "Google Maps link cannot be longer than {{ limit }} characters"
@@ -30,6 +36,9 @@ msgstr "Hours must be between 0 and 23"
 
 msgid "Identification number cannot be longer than {{ limit }} characters"
 msgstr "Heading (H1) cannot be longer than {{ limit }} characters"
+
+msgid "Identifikátor cenové skupiny musí obsahovat maximálně 10 znaků"
+msgstr ""
 
 msgid "Image can be only in JPG, GIF or PNG format"
 msgstr "Image can be only in JPG, GIF or PNG format"
@@ -48,6 +57,12 @@ msgstr "Select a carrier service"
 
 msgid "Name cannot be longer than {{ limit }} characters"
 msgstr "Name cannot be longer than {{ limit }} characters"
+
+msgid "Není možné vyvořit variantu, pro kterou neexistuje odpovídající hlavní varianta"
+msgstr ""
+
+msgid "Název z pohody nemůže být delší než {{ limit }} znaků."
+msgstr ""
 
 msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr "Opening hours cannot be longer than {{ limit }} characters"
@@ -106,8 +121,14 @@ msgstr "Please enter e-mail"
 msgid "Please enter first name"
 msgstr "Please enter first name"
 
+msgid "Please enter flag color"
+msgstr ""
+
 msgid "Please enter identification number"
 msgstr "Please enter identification number"
+
+msgid "Please enter identifier for IS Pohoda"
+msgstr ""
 
 msgid "Please enter last name"
 msgstr "Please enter last name"
@@ -148,6 +169,9 @@ msgstr "Please select country"
 msgid "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
 msgstr "Fill out the information bar to display it to users"
 
+msgid "Popis nemůže mít více než {{ limit }} znaků"
+msgstr ""
+
 msgid "Position in list cannot be longer than {{ limit }} characters"
 msgstr "Position in list cannot be longer than {{ limit }} characters"
 
@@ -166,11 +190,17 @@ msgstr "Quantity must be greater than {{ compared_value }}"
 msgid "Region nesmí být delší než {{ limit }} znaků"
 msgstr "Region must not exceed {{ limit }} characters"
 
+msgid "Soubor může být pouze ve formátu PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP"
+msgstr ""
+
 msgid "Store name cannot be longer than {{ limit }} characters"
 msgstr "Store name cannot be longer than {{ limit }} characters"
 
 msgid "Street name cannot be longer than {{ limit }} characters"
 msgstr "Street name cannot be longer than {{ limit }} characters"
+
+msgid "Tato hladina ceny objednávky již existuje"
+msgstr ""
 
 msgid "Tax number cannot be longer than {{ limit }} characters"
 msgstr "Tax number cannot be longer than {{ limit }} characters"
@@ -190,11 +220,26 @@ msgstr "This e-mail is already registered"
 msgid "Uploaded image is to large ({{ size }} {{ suffix }}). Maximum size of an image is {{ limit }} {{ suffix }}."
 msgstr "Uploaded image is too large ({{ size }} {{ suffix }}). Maximum size of an image is {{ limit }} {{ suffix }}."
 
+msgid "Variant alias cannot be longer then {{ limit }} characters"
+msgstr "Modification name cannot be longer than {{ limit }} characters"
+
+msgid "Velikost souboru je příliš velká: ({{ size }} {{ suffix }}). Maximální velikost souboru je {{ limit }} {{ suffix }}."
+msgstr ""
+
 msgid "Vložené ID Youtube videa neobsahuje žádné video."
 msgstr "Embedded Youtube video ID contains no video."
 
+msgid "Vyberte prosím nějaké produkty"
+msgstr ""
+
+msgid "Vyberte prosím platbu"
+msgstr ""
+
 msgid "Vyberte prosím pobočku"
 msgstr "Select a store"
+
+msgid "Vyplňte pobočku, prosím"
+msgstr ""
 
 msgid "Vyplňte prosím SKU dárkového certifikátu."
 msgstr "Fill in SKU of gift certificate"
@@ -205,11 +250,17 @@ msgstr "Fill in the deadline for receiving orders"
 msgid "Vyplňte prosím jméno"
 msgstr "Fill in the name"
 
+msgid "Vyplňte prosím minimální částku pro zobrazení kalkulačky na detailu produktu."
+msgstr ""
+
 msgid "Vyplňte prosím množství."
 msgstr "Fill in the quantity"
 
 msgid "Vyplňte prosím nominální hodnotu dárkového certifikátu."
 msgstr "Fill in the nominal value of the gift certificate"
+
+msgid "Vyplňte prosím nominální hodnotu dárkového poukazu."
+msgstr ""
 
 msgid "Vyplňte prosím nominální hodnotu slevy."
 msgstr "Fill in the nominal value of the discount"
@@ -238,11 +289,24 @@ msgstr "Fill in the street of the store"
 msgid "You have to agree with privacy policy"
 msgstr "You have to agree with privacy policy"
 
+msgid "Zadané ID modifikace je již v systému přiřazeno jinému produktu"
+msgstr ""
+
+msgid "Zadané ID modifikace má neplatný formát (očekává se nenulový počet znaků před i za hvězdičkou, přičemž část za hvězdičkou by měla obsahovat jen číslice)"
+msgstr ""
+
+msgid "Zadejte datum a čas ve formátu DD.MM.RRRR HH:MM:SS (například 24.02.2020 14:05:34)"
+msgstr ""
+
 msgid "Zadejte prosím celé číslo."
 msgstr "Fill in an integer."
+
+msgid "Zadejte prosím hladinu ceny objednávky"
+msgstr ""
+
+msgid "Zadejte prosím výši slevy"
+msgstr ""
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "Zip code cannot be longer than {{ limit }} characters"
 
-msgid "Variant alias cannot be longer then {{ limit }} characters"
-msgstr "Modification name cannot be longer than {{ limit }} characters"

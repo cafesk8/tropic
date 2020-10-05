@@ -8,10 +8,12 @@ use App\Model\Cart\Cart;
 use App\Model\Customer\User\CustomerUser;
 use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
 use App\Model\Order\Discount\OrderDiscountCalculation;
+use App\Model\Order\PromoCode\Exception\InactivePromoCodeException;
 use App\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
 use App\Model\Order\PromoCode\Exception\PromoCodeIsNotBetterThanOrderLevelDiscountException;
 use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
+use App\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException;
 use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -140,7 +142,11 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         if ($promoCode === null || $promoCode->getDomainId() !== $this->domain->getId()) {
             throw new InvalidPromoCodeException($enteredCode);
         } elseif ($promoCode->hasRemainingUses() === false) {
-            throw new \App\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException($enteredCode);
+            if ($promoCode->isActive()) {
+                throw new UsageLimitPromoCodeException($enteredCode);
+            } else {
+                throw new InactivePromoCodeException($enteredCode);
+            }
         } elseif ($this->isPromoCodeValidInItsValidDates($promoCode) === false) {
             throw new \App\Model\Order\PromoCode\Exception\PromoCodeIsNotValidNow($enteredCode);
         } elseif ($promoCode->getMinOrderValue() !== null && $totalWatchedPriceOfProducts->isLessThan($promoCode->getMinOrderValue())) {
