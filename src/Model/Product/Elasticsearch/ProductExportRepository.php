@@ -242,12 +242,7 @@ class ProductExportRepository extends BaseProductExportRepository
     protected function extractFlags(BaseProduct $product): array
     {
         $saleFlag = $this->flagFacade->getSaleFlag();
-        return array_unique(array_map(function (Flag $flag) use ($saleFlag) {
-            if ($flag->isClearance()) {
-                return $saleFlag->getId();
-            }
-            return $flag->getId();
-        }, $product->getActiveFlags()));
+        return array_values(array_unique(array_map(fn (Flag $flag) => $flag->isClearance() ? $saleFlag->getId() : $flag->getId(), $product->getActiveFlags())));
     }
 
     /**
