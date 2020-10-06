@@ -82,14 +82,6 @@ front_personal_data_access_export:
     path: /export-osobnich-udaju/{hash}/
     defaults: { _controller: App\Controller\Front\PersonalDataController:accessExportAction }
 
-front_store_index:
-    path: /prodejny/
-    defaults: { _controller: App\Controller\Front\StoreController:indexAction }
-
-front_store_detail:
-    path: /prodejny/detail/{storeId}/
-    defaults: { _controller: App\Controller\Front\StoreController:detailAction }
-
 front_brand_list:
     path: /prehled-znacek/
     defaults: { _controller: App\Controller\Front\BrandController:listAction }

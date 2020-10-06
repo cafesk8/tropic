@@ -82,14 +82,6 @@ front_personal_data_access_export:
     path: /personal-information-export/{hash}/
     defaults: { _controller: App\Controller\Front\PersonalDataController:accessExportAction }
 
-front_store_index:
-    path: /stores/
-    defaults: { _controller: App\Controller\Front\StoreController:indexAction }
-
-front_store_detail:
-    path: /stores/detail/{storeId}/
-    defaults: { _controller: App\Controller\Front\StoreController:detailAction }
-
 front_brand_list:
     path: /brands-overview/
     defaults: { _controller: App\Controller\Front\BrandController:listAction }

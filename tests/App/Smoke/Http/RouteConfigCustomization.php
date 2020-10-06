@@ -491,10 +491,6 @@ class RouteConfigCustomization
             ->customizeByRouteName(['front_download_uploaded_file'], function (RouteConfig $config) {
                 $config->skipRoute('Downloading uploaded files is not tested.');
             })
-            ->customizeByRouteName(['front_store_detail'], function (RouteConfig $config) {
-                $config->changeDefaultRequestDataSet('Use ID 5 as default store.')
-                    ->setParameter('storeId', 5);
-            })
             ->customizeByRouteName(['front_sale_product_list'], function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Check category televize-audio as sale category.')
                     ->setParameter('id', 3);

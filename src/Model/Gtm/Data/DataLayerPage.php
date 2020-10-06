@@ -25,7 +25,6 @@ class DataLayerPage implements JsonSerializable
     public const TYPE_PURCHASE = 'purchase';
     public const TYPE_PURCHASE_FAIL = 'purchase fail';
     public const TYPE_SEARCH = 'search';
-    public const TYPE_STORES = 'stores';
     public const TYPE_ABOUT_US = 'contact';
     public const TYPE_ORDERS_LIST = 'orders_list';
     public const TYPE_ORDER_DETAIL = 'order_detail';
@@ -70,7 +69,6 @@ class DataLayerPage implements JsonSerializable
             self::TYPE_PURCHASE,
             self::TYPE_PURCHASE_FAIL,
             self::TYPE_SEARCH,
-            self::TYPE_STORES,
             self::TYPE_ABOUT_US,
             self::TYPE_ORDERS_LIST,
             self::TYPE_ORDER_DETAIL,

@@ -41,7 +41,6 @@ class DataLayerMapper
         'front_product_list' => DataLayerPage::TYPE_CATEGORY,
         'front_precart' => DataLayerPage::TYPE_PRECART,
         'front_order_not_paid' => DataLayerPage::TYPE_PURCHASE_FAIL,
-        'front_store_index' => DataLayerPage::TYPE_STORES,
         'front_about_us_info' => DataLayerPage::TYPE_ABOUT_US,
         'front_customer_orders' => DataLayerPage::TYPE_ORDERS_LIST,
         'front_customer_order_detail_registered' => DataLayerPage::TYPE_ORDER_DETAIL,
