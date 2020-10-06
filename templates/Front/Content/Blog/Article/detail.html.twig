@@ -27,16 +27,6 @@
                             {{ blogArticle.perex|raw }}
                         </div>
 
-                        {% if imageExists(blogArticle) %}
-                            <div class="in-article__main-img">
-                                {{ image(blogArticle, { itemprop: 'image' }) }}
-                                
-                                <div class="in-article__img-caption">
-                                    {{ blogArticle.mainPhotoTitle }}
-                                </div>
-                            </div>
-                        {% endif %}
-
                         <div class="in-article__text in-user-text">
                             {{ blogArticle.description|raw }}
                         </div>
