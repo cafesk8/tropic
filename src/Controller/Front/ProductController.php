@@ -339,6 +339,7 @@ class ProductController extends FrontBaseController
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData),
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData),
             'disableIndexing' => count($productFilterData->brands) >= 2,
+            'disableIndexingAndFollowing' => $this->isIndexingAndFollowingDisabled($productFilterData),
             'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ];
 
@@ -421,6 +422,7 @@ class ProductController extends FrontBaseController
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData, true),
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData, Category::SALE_TYPE),
             'disableIndexing' => count($productFilterData->brands) >= 2,
+            'disableIndexingAndFollowing' => $this->isIndexingAndFollowingDisabled($productFilterData),
             'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ];
 
@@ -505,6 +507,7 @@ class ProductController extends FrontBaseController
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData, true),
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData, Category::NEWS_TYPE),
             'disableIndexing' => count($productFilterData->brands) >= 2,
+            'disableIndexingAndFollowing' => $this->isIndexingAndFollowingDisabled($productFilterData),
             'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
         ];
 
@@ -845,5 +848,28 @@ class ProductController extends FrontBaseController
         }
 
         return $categoryTitle;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData return bool
+     * @return bool
+     */
+    private function isIndexingAndFollowingDisabled(ProductFilterData $productFilterData): bool
+    {
+        if ($productFilterData->minimalPrice !== null
+            || $productFilterData->maximalPrice !== null
+            || $productFilterData->inStock === true
+            || empty($productFilterData->flags) === false
+        ) {
+            return true;
+        }
+
+        foreach ($productFilterData->parameters as $parameter) {
+            if (empty($parameter->values) === false ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

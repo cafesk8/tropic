@@ -82,9 +82,11 @@
     </div>
 {% endmacro %}
 
-{% macro metaRobots(paginationResult, disableIndexing) %}
-    {% if (paginationResult.page != 1 and isUserAgentSeznamBot()) or disableIndexing %}
+{% macro metaRobots(paginationResult, disableIndexing, disableIndexingAndFollowing) %}
+    {% if (paginationResult.page != 1 and isUserAgentSeznamBot()) or (disableIndexing and disableIndexingAndFollowing is same as(false)) %}
         <meta name="robots" content="noindex, follow">
+    {% elseif (disableIndexingAndFollowing) %}
+        <meta name="robots" content="noindex, nofollow">
     {% else %}
         <meta name="robots" content="index, follow">
     {% endif %}
