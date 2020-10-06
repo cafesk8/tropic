@@ -1,0 +1,12 @@
+{% macro productAvailability(product, shoppingItemQuantity) %}
+    {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
+    {% import 'Front/Content/Product/productAvailabilityInDaysMacro.html.twig' as availabilityInDays %}
+    {% set shoppingItemDeliveryDays = getOrderProcessItemDeliveryDays(product, shoppingItemQuantity) %}
+    {% if shoppingItemDeliveryDays is not null %}
+        {{ availabilityInDays.productAvailabilityInDays(shoppingItemDeliveryDays) }}
+    {% else %}
+        <span class="in-availability__date" style="color: {{ getAvailabilityColor(product.calculatedAvailability.name) }};">
+            {{ product.calculatedAvailability.name }}
+        </span>
+    {% endif %}
+{% endmacro %}

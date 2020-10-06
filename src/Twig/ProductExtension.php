@@ -163,6 +163,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 'sortProductSetsByPrice',
                 [$this, 'sortProductSetsByPrice']
             ),
+            new TwigFunction(
+                'getOrderProcessItemDeliveryDays',
+                [$this, 'getOrderProcessItemDeliveryDays']
+            ),
         ];
     }
 
@@ -305,5 +309,19 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         }
 
         return $this->saleFlag;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $shoppingItemQuantity
+     * @return string|null
+     */
+    public function getOrderProcessItemDeliveryDays(Product $product, int $shoppingItemQuantity): ?string
+    {
+        if ($product->getDeliveryDays() !== null && $product->getRealInternalStockQuantity() < $shoppingItemQuantity) {
+            return $product->getDeliveryDays();
+        }
+
+        return null;
     }
 }

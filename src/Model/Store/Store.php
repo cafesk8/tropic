@@ -385,6 +385,14 @@ class Store implements PickupPlaceInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isInternalStock(): bool
+    {
+        return $this->pohodaName === self::POHODA_STOCK_TROPIC_NAME;
+    }
+
+    /**
      * @return string|null
      */
     public function getPohodaName(): ?string

@@ -27,7 +27,7 @@
 
 {% block main_content %}
     {% import 'Front/Inline/Common/discountExclusionNoticeMacro.html.twig' as discountExclusion %}
-    {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as productAvailability %}
+    {% import 'Front/Content/Product/shoppingItemAvailabilityMacro.html.twig' as productAvailability %}
     <div class="web__line">
         <div class="web__container web__container--transparent">
             {% include 'Front/Inline/OrderProgress/index.html.twig' with {step: '1'} only %}
@@ -98,7 +98,7 @@
                                                 <i class="svg svg-remove"></i>
                                             </a>
                                             <div class="table-cart__cell table-cart__cell--availability">
-                                                {{ productAvailability.productAvailability(cartItem.product, cartItem.saleItem) }}
+                                                {{ productAvailability.productAvailability(cartItem.product, cartItem.quantity) }}
                                             </div>
                                             <div class="table-cart__cell table-cart__cell--price-unit">
                                                 {{ cartItemPrice.unitPrice.priceWithVat|price }}

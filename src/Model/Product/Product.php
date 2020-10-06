@@ -412,16 +412,38 @@ class Product extends BaseProduct
     /**
      * @return int
      */
-    public function getInternalStockQuantity(): int
+    public function getNonExternalStockQuantity(): int
     {
-        $internalStockQuantity = 0;
+        $nonExternalStockQuantity = 0;
         foreach ($this->storeStocks as $storeStock) {
             if ($storeStock->getStockQuantity() !== null && !$storeStock->getStore()->isExternalStock()) {
-                $internalStockQuantity += $storeStock->getStockQuantity();
+                $nonExternalStockQuantity += $storeStock->getStockQuantity();
             }
         }
 
-        return $internalStockQuantity;
+        return $nonExternalStockQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealNonExternalGroupedStockQuantity(): int
+    {
+        return $this->getCalculatedStockQuantity($this->getNonExternalStockQuantity());
+    }
+
+    /**
+     * @return int
+     */
+    private function getInternalStockQuantity(): int
+    {
+        foreach ($this->storeStocks as $storeStock) {
+            if ($storeStock->getStore()->isInternalStock() && $storeStock->getStockQuantity() !== null) {
+                return $storeStock->getStockQuantity();
+            }
+        }
+
+        return 0;
     }
 
     /**
@@ -429,12 +451,7 @@ class Product extends BaseProduct
      */
     public function getRealInternalStockQuantity(): int
     {
-        $internalStockQuantity = $this->getInternalStockQuantity();
-        if ($internalStockQuantity % $this->getAmountMultiplier() !== 0) {
-            return (int)floor($internalStockQuantity / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
-        }
-
-        return $internalStockQuantity;
+        return $this->getCalculatedStockQuantity($this->getInternalStockQuantity());
     }
 
     /**
@@ -465,12 +482,7 @@ class Product extends BaseProduct
             throw new \Exception('Don\'t call getRealExternalStockQuantity from main variant!');
         }
 
-        $externalStockQuantity = $this->getExternalStockQuantity();
-        if ($externalStockQuantity % $this->getAmountMultiplier() !== 0) {
-            return (int)floor($externalStockQuantity / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
-        }
-
-        return $externalStockQuantity;
+        return $this->getCalculatedStockQuantity($this->getExternalStockQuantity());
     }
 
     /**
@@ -1213,11 +1225,7 @@ class Product extends BaseProduct
             throw new \Exception('Don\'t call getRealSaleStocksQuantity from main variant!');
         }
 
-        if ($this->getSaleStocksQuantity() % $this->getAmountMultiplier() !== 0) {
-            return (int)floor($this->getSaleStocksQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
-        }
-
-        return $this->getSaleStocksQuantity();
+        return $this->getCalculatedStockQuantity($this->getSaleStocksQuantity());
     }
 
     /**
@@ -1241,11 +1249,7 @@ class Product extends BaseProduct
             throw new \Exception('Don\'t call getRealNonSaleStocksQuantity from main variant!');
         }
 
-        if ($this->getNonSaleStocksQuantity() % $this->getAmountMultiplier() !== 0) {
-            return (int)floor($this->getNonSaleStocksQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
-        }
-
-        return $this->getNonSaleStocksQuantity();
+        return $this->getCalculatedStockQuantity($this->getNonSaleStocksQuantity());
     }
 
     /**
@@ -1390,13 +1394,13 @@ class Product extends BaseProduct
     public function getBiggestVariantRealInternalStockQuantity(): int
     {
         if (!$this->isMainVariant()) {
-            return $this->isSellingDenied() ? 0 : $this->getRealInternalStockQuantity();
+            return $this->isSellingDenied() ? 0 : $this->getRealNonExternalGroupedStockQuantity();
         }
 
         $biggestQuantity = 0;
 
         foreach ($this->variants as $variant) {
-            $currentQuantity = $variant->isSellingDenied() ? 0 : $variant->getRealInternalStockQuantity();
+            $currentQuantity = $variant->isSellingDenied() ? 0 : $variant->getRealNonExternalGroupedStockQuantity();
             $biggestQuantity = $currentQuantity > $biggestQuantity ? $currentQuantity : $biggestQuantity;
         }
 
@@ -1509,5 +1513,18 @@ class Product extends BaseProduct
         }
 
         return $categoriesByDomainId;
+    }
+
+    /**
+     * @param int $baseQuantity
+     * @return int
+     */
+    private function getCalculatedStockQuantity(int $baseQuantity): int
+    {
+        if ($baseQuantity % $this->getAmountMultiplier() !== 0) {
+            return (int)floor($baseQuantity / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
+        }
+
+        return $baseQuantity;
     }
 }

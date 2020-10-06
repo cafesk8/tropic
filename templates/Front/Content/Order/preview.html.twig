@@ -1,5 +1,5 @@
 {% macro productPreviewItem(product, quantity, price, saleItem = false, canShowAvailability = true) %}
-    {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
+    {% import 'Front/Content/Product/shoppingItemAvailabilityMacro.html.twig' as availability %}
     <li class="list-cart-preview__item{% if product.isPohodaProductTypeSet or product.isSupplierSet %} list-cart-preview__item--sets{% endif %} js-opener-item">
         {% if product.isPohodaProductTypeSet %}
             <div class="list-cart-preview__item__wrap-image">
@@ -33,7 +33,7 @@
         <div class="list-cart-preview__item__info">
             {% if canShowAvailability is same as (true) %}
                 <div class="list-cart-preview__item__availability">
-                    {{ availability.productAvailability(product, saleItem) }}
+                    {{ availability.productAvailability(product, quantity) }}
                 </div>
             {% endif %}
             <div class="list-cart-preview__item__pieces">
