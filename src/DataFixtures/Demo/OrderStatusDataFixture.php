@@ -79,21 +79,27 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
             switch ($referenceName) {
                 case self::ORDER_STATUS_NEW:
                     $orderStatusData->name[$locale] = t('Nová', [], 'dataFixtures', $locale);
+                    $orderStatusData->transferStatus = 'Nova';
                     break;
                 case self::ORDER_STATUS_IN_PROGRESS:
                     $orderStatusData->name[$locale] = t('Vyřizuje se', [], 'dataFixtures', $locale);
+                    $orderStatusData->transferStatus = 'vyrizujese';
                     break;
                 case self::ORDER_STATUS_DONE:
                     $orderStatusData->name[$locale] = t('Vyřízena', [], 'dataFixtures', $locale);
+                    $orderStatusData->transferStatus = 'vyrizena';
                     break;
                 case self::ORDER_STATUS_CANCELED:
                     $orderStatusData->name[$locale] = t('Stornována', [], 'dataFixtures', $locale);
+                    $orderStatusData->transferStatus = 'storno';
                     break;
                 case self::ORDER_STATUS_CUSTOMER_DID_NOT_PICK_UP:
                     $orderStatusData->name[$locale] = t('Nepřevzato zákazníkem', [], 'dataFixtures', $locale);
+                    $orderStatusData->transferStatus = 'nevyzvedl';
                     break;
                 case self::ORDER_STATUS_PAID:
                     $orderStatusData->name[$locale] = t('Zaplaceno', [], 'dataFixtures', $locale);
+                    $orderStatusData->transferStatus = 'zaplaceno';
                     break;
                 default:
                     throw new \Shopsys\FrameworkBundle\Component\DataFixture\Exception\UnknownNameTranslationForOrderStatusReferenceNameException($referenceName);
