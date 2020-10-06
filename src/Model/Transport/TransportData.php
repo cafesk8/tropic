@@ -12,64 +12,31 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
  */
 class TransportData extends BaseTransportData
 {
-    /**
-     * @var string|null
-     */
-    public $balikobotShipper;
+    public ?string $balikobotShipper;
 
-    /**
-     * @var string|null
-     */
-    public $balikobotShipperService;
+    public ?string $balikobotShipperService;
 
-    /**
-     * @var bool
-     */
-    public $pickupPlace;
+    public bool $pickupPlace;
 
-    /**
-     * @var bool
-     */
-    public $initialDownload;
+    public bool $initialDownload;
 
-    /**
-     * @var string
-     */
-    public $transportType;
+    public string $transportType;
 
     /**
      * @var \App\Model\Country\Country[]
      */
-    public $countries;
+    public array $countries;
 
-    /**
-     * @var string
-     */
-    public $mallType;
+    public ?string $mallType;
 
-    /**
-     * @var string|null
-     */
-    public $externalId;
+    public ?string $externalId;
 
-    /**
-     * @var string|null
-     */
-    public $trackingUrlPattern;
+    public ?string $trackingUrlPattern;
 
-    /**
-     * @var string|null
-     */
-    public $mergadoTransportType;
+    public ?string $mergadoTransportType;
 
-    /**
-     * @var bool
-     */
     public bool $bulkyAllowed;
 
-    /**
-     * @var bool
-     */
     public bool $oversizedAllowed;
 
     /**
@@ -102,6 +69,8 @@ class TransportData extends BaseTransportData
      */
     public array $minFreeOrderPricesIndexedByDomainId;
 
+    public ?string $zboziType;
+
     public function __construct()
     {
         parent::__construct();
@@ -116,5 +85,13 @@ class TransportData extends BaseTransportData
         $this->actionDatesToIndexedByDomainId = [];
         $this->actionActiveIndexedByDomainId = [];
         $this->minFreeOrderPricesIndexedByDomainId = [];
+        $this->balikobotShipperService = null;
+        $this->balikobotShipper = null;
+        $this->countries = [];
+        $this->mallType = null;
+        $this->externalId = null;
+        $this->trackingUrlPattern = null;
+        $this->mergadoTransportType = null;
+        $this->zboziType = null;
     }
 }

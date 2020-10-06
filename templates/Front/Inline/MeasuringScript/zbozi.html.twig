@@ -1,0 +1,15 @@
+<script>
+    (function(w,d,s,u,n,k,c,t){w.ZboziConversionObject=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments)};w[n].key=k;c=d.createElement(s);
+        t=d.getElementsByTagName(s)[0];c.async=1;c.src=u;t.parentNode.insertBefore(c,t)
+    })(window,document,"script","https://www.zbozi.cz/conversion/js/conv-v3.js","zbozi","{{ shopId }}");
+
+    // Enables test mode
+    zbozi("useSandbox");
+
+    zbozi("setOrder",{
+        "orderId": {{ order.number }}
+    });
+
+    zbozi("send");
+</script>

@@ -307,7 +307,7 @@ class DataLayerMapper
 
         $orderDomainConfig = $this->domain->getDomainConfigById($order->getDomainId());
         $affiliation = $orderDomainConfig->getName();
-        $priceBeforeDiscounts = $this->getMoneyAsString($order->getTotalPriceWithoutVat()->add($order->getOrderDiscountPrice()));
+        $priceBeforeDiscounts = array_sum(array_map(fn (OrderItem $orderItem) => (float)$orderItem->getTotalPriceWithVat()->getAmount(), $order->getProductItems()));
 
         $dataLayerPurchase = [
             'actionField' => [
@@ -330,13 +330,13 @@ class DataLayerMapper
         if ($gtmCoupons !== null) {
             foreach (explode(Order::PROMO_CODES_SEPARATOR, $gtmCoupons) as $key => $couponData) {
                 $couponNumber = $key + 1;
-                $couponsArray['coupon' . $couponNumber] = $couponData;
+                $couponsArray['coupon' . $couponNumber] = $couponData . (string)$priceBeforeDiscounts;
             }
         }
 
         foreach ($order->getItems() as $item) {
             if ($item->isTypeOrderDiscount()) {
-                $couponsArray['coupon'] = $item->getName() . '|' . $priceBeforeDiscounts;
+                $couponsArray['coupon'] = $item->getName() . '|' . (string)$priceBeforeDiscounts;
             }
         }
 

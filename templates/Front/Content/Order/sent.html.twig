@@ -15,6 +15,7 @@
 
     {{ render(controller('App\\Controller\\Front\\ScriptController:embedOrderSentPageScriptsAction', {order: order})) }}
     {{ render(controller('App\\Controller\\Front\\ScriptController:embedOrderSentPageGoogleAnalyticsScriptAction', {order: order})) }}
+    {{ render(controller('App\\Controller\\Front\\ScriptController:embedOrderSentPageZboziScriptAction', {order: order})) }}
 
     <div class="web__container">
         <div class="web__main">

@@ -34,6 +34,7 @@ use App\Model\PayPal\PayPalFacade;
 use App\Model\Security\CustomerLoginHandler;
 use App\Model\Transport\PickupPlace\PacketaPickupPlaceData;
 use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
+use App\Model\Zbozi\ZboziFacade;
 use Exception;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
@@ -233,6 +234,11 @@ class OrderController extends FrontBaseController
     private $heurekaReviewFacade;
 
     /**
+     * @var \App\Model\Zbozi\ZboziFacade
+     */
+    private ZboziFacade $zboziFacade;
+
+    /**
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -266,6 +272,7 @@ class OrderController extends FrontBaseController
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \App\Component\Cofidis\CofidisFacade $cofidisFacade
      * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
+     * @param \App\Model\Zbozi\ZboziFacade $zboziFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -300,7 +307,8 @@ class OrderController extends FrontBaseController
         OrderItemDataFactory $orderItemDataFactory,
         FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
         CofidisFacade $cofidisFacade,
-        HeurekaReviewFacade $heurekaReviewFacade
+        HeurekaReviewFacade $heurekaReviewFacade,
+        ZboziFacade $zboziFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -335,6 +343,7 @@ class OrderController extends FrontBaseController
         $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
         $this->cofidisFacade = $cofidisFacade;
         $this->heurekaReviewFacade = $heurekaReviewFacade;
+        $this->zboziFacade = $zboziFacade;
     }
 
     /**
@@ -718,8 +727,8 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
-        /** @var \App\Model\Order\Order $order */
         $order = $this->orderFacade->getById($orderId);
+        $this->zboziFacade->sendOrder($order);
         $goPayData = null;
 
         if ($order->getPayment()->isGoPay()) {
