@@ -887,7 +887,7 @@ msgid "Excl. VAT"
 msgstr ""
 
 msgid "Exclude from sale"
-msgstr "Vyjmout z výprodeje"
+msgstr "Vyřadit z prodeje"
 
 msgid "Export do Mall.cz"
 msgstr "Export do Mall.cz"
