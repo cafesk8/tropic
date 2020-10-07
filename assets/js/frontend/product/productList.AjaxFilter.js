@@ -160,6 +160,7 @@ export default class ProductListAjaxFilter {
     scrollToListTop () {
         const $productList = $('.js-product-list-ajax-filter-products-with-controls');
         if ($productList && $productList.offset()) {
+            $('.js-product-filter-opener').click();
             $('html, body').animate({ scrollTop: $productList.offset().top }, 'slow');
         }
     }
