@@ -1493,4 +1493,21 @@ class Product extends BaseProduct
 
         return $realStockQuantity > $quantity ? $quantity : $realStockQuantity;
     }
+
+    /**
+     * @return \App\Model\Category\Category[][]
+     */
+    public function getCategoriesIndexedByDomainId(): array
+    {
+        /** @var \App\Model\Category\Category[][] $categoriesByDomainId */
+        $categoriesByDomainId = parent::getCategoriesIndexedByDomainId();
+
+        foreach ($this->domains as $productDomain) {
+            if (!isset($categoriesByDomainId[$productDomain->getDomainId()])) {
+                $categoriesByDomainId[$productDomain->getDomainId()] = [];
+            }
+        }
+
+        return $categoriesByDomainId;
+    }
 }
