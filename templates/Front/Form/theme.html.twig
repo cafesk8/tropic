@@ -49,13 +49,15 @@
 {% endblock form_row %}
 
 {% block checkbox_row %}
-    <div class="{{ rowClass|default('form-line') }}">
+    <div class="{{ rowClass|default('form-line') }} js-form-line">
         <div class="form-choice">
             {{ form_widget(form, { attr: { class: "css-checkbox" } }) }}
             {{ form_label(form, label, { label_attr: { class: "input-label--checkbox css-checkbox__image" }}) }}
+            {{ block('icon') }}
+        </div>
+        <div class="form-line__error js-form-line-error">
             {% set errors_attr = errors_attr|default({})|merge({'class': (errors_attr.class|default('form-error--choice'))}) %}
             {{ form_errors(form, { errors_attr: errors_attr } ) }}
-            {{ block('icon') }}
         </div>
     </div>
 {% endblock checkbox_row %}
