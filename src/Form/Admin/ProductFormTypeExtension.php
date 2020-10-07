@@ -81,6 +81,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'foreignSupplier',
         'weight',
         'sellingDenied',
+        'bulky',
+        'oversized',
     ];
 
     /**
