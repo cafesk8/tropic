@@ -38,10 +38,13 @@ class CustomerUserData extends BaseCustomerUserData
      */
     public $legacyId;
 
+    public bool $newPasswordSet;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->pricingGroupUpdatedAt = new DateTime();
+        $this->newPasswordSet = true;
     }
 }

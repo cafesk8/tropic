@@ -103,6 +103,13 @@ class CustomerUser extends BaseCustomerUser
     private $legacyId;
 
     /**
+     * Did legacy user set new password in new eshop?
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private bool $newPasswordSet;
+
+    /**
      * @param \App\Model\Customer\User\CustomerUserData $customerUserData
      */
     public function __construct(BaseCustomerUserData $customerUserData)
@@ -115,6 +122,7 @@ class CustomerUser extends BaseCustomerUser
         $this->userTransferId = new ArrayCollection();
         $this->pohodaId = $customerUserData->pohodaId;
         $this->legacyId = $customerUserData->legacyId;
+        $this->newPasswordSet = $customerUserData->newPasswordSet;
     }
 
     /**
@@ -129,6 +137,7 @@ class CustomerUser extends BaseCustomerUser
 
         $this->pohodaId = $customerUserData->pohodaId;
         $this->legacyId = $customerUserData->legacyId;
+        $this->newPasswordSet = $customerUserData->newPasswordSet;
     }
 
     /**
@@ -272,5 +281,22 @@ class CustomerUser extends BaseCustomerUser
     public function getLegacyId(): ?int
     {
         return $this->legacyId;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNewPasswordSet(): bool
+    {
+        return $this->newPasswordSet;
+    }
+
+    /**
+     * @param string $passwordHash
+     */
+    public function setPasswordHash(string $passwordHash): void
+    {
+        parent::setPasswordHash($passwordHash);
+        $this->newPasswordSet = true;
     }
 }

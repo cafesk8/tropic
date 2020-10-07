@@ -1,7 +1,6 @@
 import Ajax from 'framework/common/utils/Ajax';
 import Register from 'framework/common/utils/Register';
 import { createLoaderOverlay, showLoaderOverlay } from 'framework/common/utils/loaderOverlay';
-import Translator from 'bazinga-translator';
 
 (function ($) {
 
@@ -30,7 +29,7 @@ import Translator from 'bazinga-translator';
                         const $validationErrors = $('.js-login-validation-errors');
                         if ($validationErrors.hasClass('display-none')) {
                             $validationErrors
-                                .text(Translator.trans('This account doesn\'t exist or password is incorrect'))
+                                .html(data.error_message)
                                 .show();
                         }
 
