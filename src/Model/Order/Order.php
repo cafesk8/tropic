@@ -390,7 +390,9 @@ class Order extends BaseOrder
         $this->telephone = Utils::ifNull($orderData->telephone, $orderData->deliveryTelephone);
         $this->deliveryAddressSameAsBillingAddress = $orderData->deliveryAddressSameAsBillingAddress;
         if ($this->deliveryAddressSameAsBillingAddress) {
-            $this->companyName = $orderData->deliveryCompanyName;
+            if ($orderData->transport === null || ($orderData->transport !== null && !$orderData->transport->isPickupPlaceType())) {
+                $this->companyName = $orderData->deliveryCompanyName;
+            }
             $this->street = $orderData->deliveryStreet;
             $this->city = $orderData->deliveryCity;
             $this->postcode = $orderData->deliveryPostcode;

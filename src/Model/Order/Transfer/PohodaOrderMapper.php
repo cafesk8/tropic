@@ -106,6 +106,57 @@ class PohodaOrderMapper
     private function mapAddresses(Order $order, PohodaOrder $pohodaOrder): void
     {
         $pohodaBillingAddress = new PohodaAddress();
+        $pohodaDeliveryAddress = new PohodaAddress();
+
+        if ($order->getTransport()->isPickupPlaceType()) {
+            $this->mapBasicDeliveryAddress($order, $pohodaDeliveryAddress);
+
+            if ($order->isDeliveryAddressSameAsBillingAddress()) {
+                $pohodaBillingAddress->name = $order->getFirstName() . ' ' . $order->getLastName();
+                $pohodaBillingAddress->phone = $order->getTelephone();
+                $pohodaBillingAddress->email = $order->getEmail();
+                $pohodaBillingAddress->country = $order->getCountry()->getCode();
+            } else {
+                $this->mapFullBillingAddress($order, $pohodaBillingAddress);
+            }
+        } else {
+            $this->mapFullBillingAddress($order, $pohodaBillingAddress);
+
+            if ($order->isDeliveryAddressSameAsBillingAddress()) {
+                $pohodaDeliveryAddress = clone $pohodaBillingAddress;
+            } else {
+                $this->mapBasicDeliveryAddress($order, $pohodaDeliveryAddress);
+                if ($order->getDeliveryCountry() !== null) {
+                    $pohodaDeliveryAddress->country = $order->getDeliveryCountry()->getCode();
+                }
+                $pohodaDeliveryAddress->email = $order->getEmail();
+                $pohodaDeliveryAddress->phone = $order->getTelephone();
+            }
+        }
+
+        $pohodaOrder->address = $pohodaBillingAddress;
+        $pohodaOrder->shipToAddress = $pohodaDeliveryAddress;
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param \App\Component\Transfer\Pohoda\Customer\PohodaAddress $pohodaDeliveryAddress
+     */
+    private function mapBasicDeliveryAddress(Order $order, PohodaAddress $pohodaDeliveryAddress): void
+    {
+        $pohodaDeliveryAddress->company = $order->getDeliveryCompanyName();
+        $pohodaDeliveryAddress->name = $order->getDeliveryFirstName() . ' ' . $order->getDeliveryLastName();
+        $pohodaDeliveryAddress->city = $order->getDeliveryCity();
+        $pohodaDeliveryAddress->street = $order->getDeliveryStreet();
+        $pohodaDeliveryAddress->zip = $order->getDeliveryPostcode();
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param \App\Component\Transfer\Pohoda\Customer\PohodaAddress $pohodaBillingAddress
+     */
+    private function mapFullBillingAddress(Order $order, PohodaAddress $pohodaBillingAddress): void
+    {
         $pohodaBillingAddress->company = $order->getCompanyName();
         $pohodaBillingAddress->ico = $order->getCompanyNumber();
         $pohodaBillingAddress->dic = $order->getCompanyTaxNumber();
@@ -116,24 +167,6 @@ class PohodaOrderMapper
         $pohodaBillingAddress->country = $order->getCountry()->getCode();
         $pohodaBillingAddress->email = $order->getEmail();
         $pohodaBillingAddress->phone = $order->getTelephone();
-        $pohodaOrder->address = $pohodaBillingAddress;
-
-        $pohodaDeliveryAddress = new PohodaAddress();
-        if ($order->isDeliveryAddressSameAsBillingAddress()) {
-            $pohodaDeliveryAddress = clone $pohodaBillingAddress;
-        } else {
-            $pohodaDeliveryAddress->company = $order->getDeliveryCompanyName();
-            $pohodaDeliveryAddress->name = $order->getDeliveryFirstName() . ' ' . $order->getDeliveryLastName();
-            $pohodaDeliveryAddress->city = $order->getDeliveryCity();
-            $pohodaDeliveryAddress->street = $order->getDeliveryStreet();
-            $pohodaDeliveryAddress->zip = $order->getDeliveryPostcode();
-            if ($order->getDeliveryCountry() !== null) {
-                $pohodaDeliveryAddress->country = $order->getDeliveryCountry()->getCode();
-            }
-            $pohodaDeliveryAddress->email = $order->getEmail();
-            $pohodaDeliveryAddress->phone = $order->getTelephone();
-        }
-        $pohodaOrder->shipToAddress = $pohodaDeliveryAddress;
     }
 
     /**
