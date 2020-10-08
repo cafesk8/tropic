@@ -7,7 +7,12 @@
     margin-left: -@in-stickers-item-gap;
 
     &__item {
+        height: 70px;
         margin-left: @in-stickers-item-gap;
         margin-bottom: @in-stickers-item-gap;
+
+        @media @query-md {
+            height: 100px;
+        }
     }
 }

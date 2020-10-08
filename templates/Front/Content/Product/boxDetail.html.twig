@@ -222,11 +222,11 @@
                                 {% endif %}
 
                                 {% for sticker in stickers %}
-                                    <div class="in-stickers__item">
-                                        {% if not loop.first or product.recommended or product.warranty > 24 %}
+                                    {% if not loop.first or product.recommended or product.warranty > 24 %}
+                                        <div class="in-stickers__item">
                                             {{ image(sticker) }}
-                                        {% endif %}
-                                    </div>
+                                        </div>
+                                    {% endif %}
                                 {% endfor %}
                             {% else %}
                                 {% if product.recommended %}
