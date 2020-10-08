@@ -1,0 +1,94 @@
+<div id="js-cart-box-content-inside">
+    <div class="cart-detail__wrap">
+        <ul class="cart-detail">
+            {% for cartItem in cartItems %}
+                {% set quantifiedItemPrice = orderPreview.quantifiedItemsPrices[loop.index0] %}
+                <li class="cart-detail__item{% if cartItem.product.isPohodaProductTypeSet or cartItem.product.isSupplierSet %} cart-detail__item--sets{% endif %}">
+                    <div class="cart-detail__item__content">
+                        {% if cartItem.product.isPohodaProductTypeSet %}
+                            <div class="cart-detail__item__wrap-image">
+                                {% for productSet in cartItem.product.productSets %}
+                                    <div class="cart-detail__item__image cart-detail__item__image--sets svg svg-plus-big">
+                                        {{ image(productSet.item, {size: 'thumbnail'}) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% elseif cartItem.product.isSupplierSet %}
+                            <div class="cart-detail__item__wrap-image">
+                                {% for image in getSupplierSetItemsImages(cartItem.product) %}
+                                    <div class="cart-detail__item__image cart-detail__item__image--sets svg svg-plus-big">
+                                        {{ image(image, {size: 'thumbnail'}) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="cart-detail__item__image">
+                                {{ image(cartItem.product, {size: 'thumbnail'}) }}
+                            </div>
+                        {% endif %}
+                        <div class="cart-detail__item__content__info">
+                            <a class="cart-detail__item__content__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="Product name">{{ cartItem.product.name }}</a>
+                            <span class="cart-detail__item__content__price"> {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
+                                {% if quantifiedItemPrice.unitPrice.hasHigherStandardPrice %}
+                                    <span class="cart-detail__item__content__price__old">{{ quantifiedItemPrice.unitPrice.standardPrice.priceWithVat|price }}</span>
+                                {% endif %}
+                                                </span>
+                        </div>
+                    </div>
+                    <div class="cart-detail__item__pieces">
+                        {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
+                    </div>
+                    <span class="cart-detail__item__remove js-cart-ajax-remove" data-src="{{ url('front_cart_delete', { cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id) }) }}">
+                                            <i class="svg svg-remove"></i>
+                                        </span>
+                </li>
+            {% endfor %}
+        </ul>
+
+        {% for promoCodeId, promoCode in orderPreview.promoCodesIndexedById %}
+            <div class="cart-detail__promo-code">
+                {{ 'Sleva'|trans }}
+                <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': promoCode.code }) }}
+                <span class="cart-detail__promo-code__discount">
+                                        - {{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
+                                    </span>
+            </div>
+        {% endfor %}
+
+        <div class="cart-detail__total">
+            <div class="cart-detail__total__text">
+                {{ 'Celkem'|trans }}
+            </div>
+            <div class="cart-detail__total__price">
+                {{ productsPrice.priceWithVat|price }}
+            </div>
+        </div>
+    </div>
+    <div class="cart-detail__bottom">
+        <div class="cart-detail__bottom__transport">
+            {% if isFreeTransportAndPaymentActive %}
+                {% if isPaymentAndTransportFree %}
+                    <div class="in-free-transport">
+                        <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
+                        <div class="in-free-transport__pipe">
+                            <div class="in-free-transport__pipe__line" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="in-free-transport">
+                        <div class="in-free-transport__title">
+                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }} {{ 'máte'|trans }}
+                            <br><span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                        </div>
+                        <div class="in-free-transport__pipe">
+                            <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="cart-detail__bottom__button">
+            <a href="{{ url('front_cart') }}" class="btn btn--success">{{ 'Přejít do košíku'|trans }}</a>
+        </div>
+    </div>
+</div>

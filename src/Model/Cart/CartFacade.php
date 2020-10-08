@@ -109,13 +109,14 @@ class CartFacade extends BaseCartFacade
     }
 
     /**
-     * @return array
+     * @param \App\Model\Cart\Cart|null $cart
      */
-    public function correctCartQuantitiesAccordingToStockedQuantities(): array
+    public function correctCartQuantitiesAccordingToStockedQuantities(?Cart $cart): void
     {
+        if ($cart === null) {
+            return;
+        }
         $cartModifiedQuantitiesIndexedByCartItemId = [];
-
-        $cart = $this->findCartOfCurrentCustomerUser();
 
         foreach ($cart->getItems() as $cartItem) {
             $newCartItemQuantity = $this->getValidCartItemQuantity($cartItem);
@@ -130,8 +131,6 @@ class CartFacade extends BaseCartFacade
         if (count($cartModifiedQuantitiesIndexedByCartItemId) > 0) {
             $this->changeQuantities($cartModifiedQuantitiesIndexedByCartItemId);
         }
-
-        return $cartModifiedQuantitiesIndexedByCartItemId;
     }
 
     /**
@@ -310,6 +309,7 @@ class CartFacade extends BaseCartFacade
             throw new OutOfStockException();
         }
         $cart->setModifiedNow();
+        $this->correctCartQuantitiesAccordingToStockedQuantities($cart);
 
         $this->em->flush();
 

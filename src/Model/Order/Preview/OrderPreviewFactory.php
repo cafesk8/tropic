@@ -17,6 +17,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @property \App\Model\Order\Preview\OrderPreviewCalculation $orderPreviewCalculation
@@ -31,12 +32,18 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
     protected $cartFacade;
 
     /**
+     * @var \Symfony\Component\HttpFoundation\Session\Session
+     */
+    private SessionInterface $session;
+
+    /**
      * @param \App\Model\Order\Preview\OrderPreviewCalculation $orderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
+     * @param \Symfony\Component\HttpFoundation\Session\Session $session
      */
     public function __construct(
         OrderPreviewCalculation $orderPreviewCalculation,
@@ -44,10 +51,12 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         CurrencyFacade $currencyFacade,
         CurrentCustomerUser $currentCustomerUser,
         CartFacade $cartFacade,
-        CurrentPromoCodeFacade $currentPromoCodeFacade
+        CurrentPromoCodeFacade $currentPromoCodeFacade,
+        SessionInterface $session
     ) {
         parent::__construct($orderPreviewCalculation, $domain, $currencyFacade, $currentCustomerUser, $cartFacade, $currentPromoCodeFacade);
         $this->orderPreviewCalculation = $orderPreviewCalculation;
+        $this->session = $session;
     }
 
     /**
@@ -109,7 +118,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         if ($promoCodeDiscountPercent !== null || $validEnteredPromoCode !== null) {
             throw new InvalidArgumentException('Neither "$promoCodeDiscountPercent" nor "$validEnteredPromoCode" argument is supported, you need to use "$promoCodes" array instead');
         }
-        return $this->orderPreviewCalculation->calculatePreview(
+        $orderPreview = $this->orderPreviewCalculation->calculatePreview(
             $currency,
             $domainId,
             $quantifiedProducts,
@@ -123,5 +132,10 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $orderGiftProduct,
             $simulateRegistration
         );
+
+        $this->session->set(OrderPreview::ITEMS_COUNT_SESSION_KEY, $orderPreview->getProductsCount());
+        $this->session->set(OrderPreview::TOTAL_PRICE_SESSION_KEY, $orderPreview->getTotalPrice()->getPriceWithVat()->getAmount());
+
+        return $orderPreview;
     }
 }

@@ -2,7 +2,7 @@ import Responsive from '../utils/responsive';
 import HoverIntentSetting from './HoverIntentSetting';
 import Register from 'framework/common/utils/Register';
 import 'jquery-hoverintent/jquery.hoverIntent';
-import Ajax from 'framework/common/utils/Ajax';
+import hoverIntentReload from './hoverIntentReload';
 
 export default class HoverIntent {
 
@@ -33,21 +33,7 @@ export default class HoverIntent {
                         $(this).addClass(hoverIntentSetting.getClassForOpen());
                     }
 
-                    const reloadUrl = $(this).data('after-callback-url');
-                    const _this = this;
-                    if (reloadUrl) {
-                        Ajax.ajax({
-                            url: reloadUrl,
-                            loaderElement: '.cart',
-                            type: 'GET',
-                            success: function (html) {
-                                let $html = $($.parseHTML(html));
-
-                                $($(_this).data('after-replace-selector')).html($html);
-                                (new Register()).registerNewContent($html);
-                            }
-                        });
-                    }
+                    hoverIntentReload($(this));
                 },
                 out: function () {
                     if ($(this).find('input:focus').length === 0) {

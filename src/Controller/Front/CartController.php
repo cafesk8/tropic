@@ -13,6 +13,7 @@ use App\Model\Cart\Cart;
 use App\Model\Cart\CartFacade;
 use App\Model\Gtm\GtmFacade;
 use App\Model\Order\Gift\OrderGiftFacade;
+use App\Model\Order\Preview\OrderPreview;
 use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Gift\ProductGiftInCartFacade;
@@ -23,11 +24,11 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
-use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
@@ -107,6 +108,11 @@ class CartController extends FrontBaseController
     private ProductCachedAttributesFacade $productCachedAttributesFacade;
 
     /**
+     * @var \Symfony\Component\HttpFoundation\Session\Session
+     */
+    private SessionInterface $session;
+
+    /**
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
@@ -122,6 +128,7 @@ class CartController extends FrontBaseController
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Component\Cofidis\Banner\CofidisBannerFacade $cofidisBannerFacade
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Symfony\Component\HttpFoundation\Session\Session $session
      */
     public function __construct(
         CartFacade $cartFacade,
@@ -138,7 +145,8 @@ class CartController extends FrontBaseController
         DiscountExclusionFacade $discountExclusionFacade,
         PricingGroupFacade $pricingGroupFacade,
         CofidisBannerFacade $cofidisBannerFacade,
-        ProductCachedAttributesFacade $productCachedAttributesFacade
+        ProductCachedAttributesFacade $productCachedAttributesFacade,
+        SessionInterface $session
     ) {
         $this->cartFacade = $cartFacade;
         $this->domain = $domain;
@@ -155,6 +163,7 @@ class CartController extends FrontBaseController
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->cofidisBannerFacade = $cofidisBannerFacade;
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
+        $this->session = $session;
     }
 
     /**
@@ -163,7 +172,7 @@ class CartController extends FrontBaseController
     public function indexAction(Request $request)
     {
         $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
-        $this->correctCartItemQuantitiesByStore($cart);
+        $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities($cart);
         $cartItems = $cart === null ? [] : $cart->getItems();
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();
@@ -279,12 +288,34 @@ class CartController extends FrontBaseController
      */
     public function boxAction(Request $request): Response
     {
+        $renderFlashMessage = $request->query->getBoolean('renderFlashMessages', false);
+        $forceOrderPreviewRecalculation = $request->query->getBoolean('forceOrderPreviewRecalculation', false);
+
+        $productsPriceFromSession = $this->session->get(OrderPreview::TOTAL_PRICE_SESSION_KEY);
+        $productsCount = $this->session->get(OrderPreview::ITEMS_COUNT_SESSION_KEY);
+
+        if ($forceOrderPreviewRecalculation || $productsPriceFromSession === null || $productsCount === null) {
+            $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
+            $productsPrice = $orderPreview->getTotalPrice()->getPriceWithVat();
+            $productsCount = $orderPreview->getProductsCount();
+        } else {
+            $productsPrice = Money::create($productsPriceFromSession);
+        }
+
+        return $this->render('Front/Inline/Cart/cartBox.html.twig', [
+            'productsCount' => $productsCount,
+            'productsPrice' => $productsPrice,
+            'renderFlashMessages' => $renderFlashMessage,
+        ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function boxContentAction(): Response
+    {
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
         $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
-
-        $this->correctCartItemQuantitiesByStore($cart);
-
-        $renderFlashMessage = $request->query->getBoolean('renderFlashMessages', false);
 
         $productsPrice = $orderPreview->getTotalPrice();
 
@@ -294,12 +325,10 @@ class CartController extends FrontBaseController
             $domainId
         );
 
-        return $this->render('Front/Inline/Cart/cartBox.html.twig', [
-            'cart' => $cart,
+        return $this->render('Front/Inline/Cart/cartBoxContent.html.twig', [
             'cartItems' => $cart === null ? [] : $cart->getItems(),
             'orderPreview' => $orderPreview,
             'productsPrice' => $productsPrice,
-            'renderFlashMessages' => $renderFlashMessage,
             'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
             'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
             'remainingPriceWithVat' => $remainingPriceWithVat,
@@ -539,20 +568,13 @@ class CartController extends FrontBaseController
         }
 
         if ($request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('front_cart_box', ['renderFlashMessages' => true]);
+            return $this->redirectToRoute('front_cart_box', [
+                'renderFlashMessages' => true,
+                'forceOrderPreviewRecalculation' => true,
+            ]);
         }
 
         return $this->redirectToRoute('front_cart');
-    }
-
-    /**
-     * @param \App\Model\Cart\Cart|null $cart
-     */
-    private function correctCartItemQuantitiesByStore(?Cart $cart): void
-    {
-        if ($cart !== null) {
-            $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities();
-        }
     }
 
     /**
