@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Component\Cofidis\Banner\CofidisBannerFacade;
 use App\Component\DiscountExclusion\DiscountExclusionFacade;
 use App\Form\Front\Product\ProductFilterFormType;
 use App\Model\Blog\Article\BlogArticleFacade;
@@ -16,6 +17,7 @@ use App\Model\Product\Brand\Brand;
 use App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
+use App\Model\Product\ProductCachedAttributesFacade;
 use App\Model\Product\View\ListedProductViewElasticFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
@@ -136,6 +138,10 @@ class ProductController extends FrontBaseController
      */
     private $heurekaReviewFacade;
 
+    private CofidisBannerFacade $cofidisBannerFacade;
+
+    private ProductCachedAttributesFacade $productCachedAttributesFacade;
+
     /**
      * @var \App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory
      */
@@ -161,6 +167,8 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
      * @param \App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory $productFilterConfigFactory
+     * @param \App\Component\Cofidis\Banner\CofidisBannerFacade $cofidisBannerFacade
+     * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -181,7 +189,9 @@ class ProductController extends FrontBaseController
         PricingGroupFacade $pricingGroupFacade,
         FlagFacade $flagFacade,
         HeurekaReviewFacade $heurekaReviewFacade,
-        ProductFilterConfigFactory $productFilterConfigFactory
+        ProductFilterConfigFactory $productFilterConfigFactory,
+        CofidisBannerFacade $cofidisBannerFacade,
+        ProductCachedAttributesFacade $productCachedAttributesFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -202,6 +212,8 @@ class ProductController extends FrontBaseController
         $this->flagFacade = $flagFacade;
         $this->heurekaReviewFacade = $heurekaReviewFacade;
         $this->productFilterConfigFactory = $productFilterConfigFactory;
+        $this->cofidisBannerFacade = $cofidisBannerFacade;
+        $this->productCachedAttributesFacade = $productCachedAttributesFacade;
     }
 
     /**
@@ -221,6 +233,8 @@ class ProductController extends FrontBaseController
         $domainId = $this->domain->getId();
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();
+        /** @var \App\Model\Product\Pricing\ProductPrice $productSellingPrice */
+        $productSellingPrice = $this->productCachedAttributesFacade->getProductSellingPrice($product);
 
         return $this->render('Front/Content/Product/detail.html.twig', [
             'product' => $product,
@@ -239,6 +253,7 @@ class ProductController extends FrontBaseController
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
             'parentSetViews' => $this->listedProductViewElasticFacade->getParentSetsByProduct($product, $domainId, $this->pricingGroupFacade->getCurrentPricingGroup($customerUser)),
             'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+            'showCofidisBanner' => $this->cofidisBannerFacade->isAllowedToShowCofidisBanner($productSellingPrice),
         ]);
     }
 

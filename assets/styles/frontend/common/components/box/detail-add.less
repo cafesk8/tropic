@@ -175,11 +175,11 @@
         font-family: @font-alt;
 
         &--variant {
-            font-size: @font-size-extra-small + 1px;
+            flex: 1;
+            justify-content: flex-end;
+            padding-left: 10px;
 
-            @media @query-vl {
-                justify-content: flex-end;
-            }
+            font-size: @font-size-extra-small + 1px;
         }
 
         &__image {
@@ -187,6 +187,28 @@
 
             .box-detail-add__payments--variant & {
                 height: 30px;
+            }
+        }
+    }
+
+    &__show-more {
+        text-align: center;
+
+        &__button {
+            &__less {
+                display: none;
+            }
+
+            &.open {
+                .box-detail-add__show-more__button {
+                    &__more {
+                        display: none;
+                    }
+
+                    &__less {
+                        display: block;
+                    }
+                }
             }
         }
     }
