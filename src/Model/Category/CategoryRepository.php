@@ -415,7 +415,7 @@ class CategoryRepository extends BaseCategoryRepository
                             INNER JOIN flags f ON pf.flag_id = f.id
                             INNER JOIN product_visibilities pv ON pv.product_id = pcd.product_id AND pv.domain_id = pcd.domain_id
                             INNER JOIN pricing_groups pg ON pg.id = pv.pricing_group_id AND pg.domain_id = pcd.domain_id
-                            WHERE f.pohoda_id = :saleFlagPohodaId
+                            WHERE f.pohoda_id IN (:saleFlagPohodaIds)
                                 AND (pf.active_from IS NULL OR pf.active_from <= :now)
                                 AND (pf.active_to IS NULL OR pf.active_to >= :now)
                                 AND pv.visible = true
@@ -433,7 +433,7 @@ class CategoryRepository extends BaseCategoryRepository
 
         $query->execute([
             'now' => $now,
-            'saleFlagPohodaId' => Flag::POHODA_ID_DISCOUNT,
+            'saleFlagPohodaIds' => [Flag::POHODA_ID_DISCOUNT, Flag::POHODA_ID_CLEARANCE],
         ]);
     }
 
