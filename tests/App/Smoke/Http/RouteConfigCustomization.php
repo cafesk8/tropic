@@ -301,6 +301,10 @@ class RouteConfigCustomization
             ->customizeByRouteName('admin_default_schedulecategoriesimport', function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Schedule import categories cron module')
                     ->setExpectedStatusCode(302);
+            })
+            ->customizeByRouteName('admin_mergadofeedschedule_schedulemergadofeedexport', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Schedule feed export cron module')
+                    ->setExpectedStatusCode(302);
             });
     }
 

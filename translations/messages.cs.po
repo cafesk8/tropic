@@ -3913,3 +3913,6 @@ msgstr "< PŘEDCHOZÍ"
 msgid "NEXT >"
 msgstr "DALŠÍ >"
 
+msgid "Feed successfully generated."
+msgstr "Feed byl úspěšně vygenerován."
+

@@ -1,0 +1,27 @@
+{% extends '@!ShopsysFramework/Admin/Content/Feed/listGrid.html.twig' %}
+{% macro getLabel(row) %}
+    {{ row.feedLabel }} - {{ row.domainConfig.name }}
+    {% if row.additionalInformation is not null %}
+        <span
+            title="{{ row.additionalInformation }}"
+            class="js-tooltip cursor-help"
+            data-toggle="tooltip"
+            data-placement="top"
+        >
+            <i class="svg svg-question"></i>
+        </span>
+    {% endif %}
+{% endmacro %}
+
+{% block grid_value_cell_id_label %}
+    {% import _self as self %}
+    {% if row.created %}
+        <a href="{{ row.url }}" target="_blank">{{ self.getLabel(row) }}</a>
+    {% else %}
+        {{ self.getLabel(row) }}
+    {% endif %}
+{% endblock %}
+
+{% block grid_value_cell_id_actions %}
+
+{% endblock %}

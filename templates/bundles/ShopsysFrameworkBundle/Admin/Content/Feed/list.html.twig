@@ -1,0 +1,12 @@
+{% extends '@!ShopsysFramework/Admin/Content/Feed/list.html.twig' %}
+
+{% block title %}- {{ 'XML Feeds'|trans }}{% endblock %}
+{% block h1 %}{{ 'XML Feeds'|trans }}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <a href="{{ url('admin_mergadofeedschedule_schedulemergadofeedexport') }}" class="btn wrap-bar__btn">
+            {{ 'Generate'|trans }}
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block main_content %}{{ gridView.render() }}{% endblock %}

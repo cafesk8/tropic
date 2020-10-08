@@ -43,10 +43,7 @@ services:
             - { name: shopsys.cron, hours: '5', minutes: '0', readableName: 'Delete old temporary uploaded files' }
 
     # TWICE PER DAY ----------------------------------------------------------------------------------
-    Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule: ~
-
-    overriddenDailyFeedCronModule:
-        class: App\Model\Feed\DailyFeedCronModule
+    App\Model\Feed\DailyFeedCronModule:
         tags:
             - { name: shopsys.cron, hours: '*/6', minutes: '0', readableName: 'Generování denních feedů' }
 
