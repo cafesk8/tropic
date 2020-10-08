@@ -163,44 +163,28 @@
                                 {{ form_row(form.companyName, { label: 'Company name'|trans }) }}
                                 {{ form_row(form.companyNumber, { label: 'Company number'|trans }) }}
                                 {{ form_row(form.companyTaxNumber, { label: 'Tax number'|trans }) }}
-                            </div>
-                        </div>
-
-                        <div class="box-order__info__content box-order__info__content--without-gap box-order__info__content--full-width">
-                            <div class="margin-top-10">
-                                {{ form_widget(form.billingAddressFilled, {
-                                    attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-billing-address-fields' }})
-                                }}
-                                <label for="{{ form.billingAddressFilled.vars.id }}" class="css-checkbox__image">
-                                    {{ 'Chci zadat fakturační údaje'|trans }}
-                                </label>
-                            </div>
-                            <div id="js-billing-address-fields" class="margin-top-20">
-                                <h2 class="in-title in-title--small in-title--dark">
-                                    {{ 'Billing data'|trans }} <span class="heading-addition">{{ '(Tato adresa bude na daňovém dokladu. Pokud nebude vyplněna, použije se doručovací adresa.)'|trans }}</span>
-                                </h2>
                                 {{ form_row(form.street, { label: 'Street'|trans }) }}
                                 {{ form_row(form.city, { label: 'City'|trans }) }}
                                 {{ form_row(form.postcode, { label: 'Postcode'|trans }) }}
                                 {{ form_row(form.country, { label: 'Country'|trans }) }}
-                            </div>
 
-                            {% do form.note.setRendered %}
+                                {% do form.note.setRendered %}
 
-                            {% if form.disallowHeurekaVerifiedByCustomers is defined %}
-                                {% if not containsForeignSupplierProducts %}
-                                    <div class="margin-top-10">
-                                        {{ form_widget(form.disallowHeurekaVerifiedByCustomers, {
-                                            attr: { class: 'css-checkbox' }})
-                                        }}
-                                        <label for="{{ form.disallowHeurekaVerifiedByCustomers.vars.id }}" class="css-checkbox__image">
-                                            {{ form.disallowHeurekaVerifiedByCustomers.vars.label }}
-                                        </label>
-                                    </div>
-                                {% else %}
-                                    {% do form.disallowHeurekaVerifiedByCustomers.setRendered %}
+                                {% if form.disallowHeurekaVerifiedByCustomers is defined %}
+                                    {% if not containsForeignSupplierProducts %}
+                                        <div class="margin-top-10">
+                                            {{ form_widget(form.disallowHeurekaVerifiedByCustomers, {
+                                                attr: { class: 'css-checkbox' }})
+                                            }}
+                                            <label for="{{ form.disallowHeurekaVerifiedByCustomers.vars.id }}" class="css-checkbox__image">
+                                                {{ form.disallowHeurekaVerifiedByCustomers.vars.label }}
+                                            </label>
+                                        </div>
+                                    {% else %}
+                                        {% do form.disallowHeurekaVerifiedByCustomers.setRendered %}
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
+                            </div>
                         </div>
                     </div>
 

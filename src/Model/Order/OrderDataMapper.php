@@ -39,6 +39,7 @@ class OrderDataMapper extends BaseOrderDataMapper
     {
         /** @var \App\Model\Order\OrderData $orderData */
         $orderData = parent::getOrderDataFromFrontOrderData($frontOrderData);
+        $orderData->deliveryAddressSameAsBillingAddress = !$frontOrderData->companyCustomer;
 
         if ($orderData->transport !== null) {
             if ($orderData->transport->isPacketaType() && isset($frontOrderData->packetaId)) {
