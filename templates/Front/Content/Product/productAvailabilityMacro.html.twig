@@ -9,7 +9,7 @@
         <span class="in-availability__date">
             {{ saleStockQuantity.showInfo(product.realSaleStocksQuantity, product.unit.name) }}
         </span>
-    {% elseif showSaleStockAvailability is same as(false) and product.isAvailableInDays(true) %}
+    {% elseif product.isAvailableInDays(not(showSaleStockAvailability)) %}
         {{ availabilityInDays.productAvailabilityInDays(product.deliveryDays) }}
     {% else %}
         <span class="in-availability__date" style="color: {{ getAvailabilityColor(product.calculatedAvailability.name) }};">
