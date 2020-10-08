@@ -369,19 +369,26 @@ class CartFacade extends BaseCartFacade
      */
     public function findCartByCustomerUserIdentifier(CustomerUserIdentifier $customerUserIdentifier)
     {
-        /** @var \App\Model\Cart\Cart|null $cart */
+        /** @var \App\Model\Cart\Cart $cart */
         $cart = $this->cartRepository->findByCustomerUserIdentifier($customerUserIdentifier);
 
-        if ($cart !== null) {
-            $this->cartWatcherFacade->checkCartModifications($cart, $customerUserIdentifier->getCustomerUser());
+        return $cart;
+    }
 
-            if ($cart->isEmpty()) {
-                $this->deleteCart($cart);
-
-                return null;
-            }
+    /**
+     * @param \App\Model\Cart\Cart|null $cart
+     * @return \App\Model\Cart\Cart|null
+     */
+    public function checkCartModificationsAndDeleteCartIfEmpty(?Cart $cart): ?Cart
+    {
+        if ($cart === null) {
+            return null;
         }
-
+        $this->cartWatcherFacade->checkCartModifications($cart);
+        if ($cart->isEmpty()) {
+            $this->deleteCart($cart);
+            $cart = null;
+        }
         return $cart;
     }
 

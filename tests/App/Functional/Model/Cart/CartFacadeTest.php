@@ -16,8 +16,8 @@ use Shopsys\FrameworkBundle\Model\Cart\CartFactory;
 use Shopsys\FrameworkBundle\Model\Cart\CartRepository;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade;
-use  Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
-use  Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifierFactory;
 use Shopsys\FrameworkBundle\Model\Localization\TranslatableListener;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
@@ -160,7 +160,7 @@ class CartFacadeTest extends TransactionFunctionalTestCase
      */
     public function testCartNotExistIfNoListableProductIsInCart(int $productId, bool $cartShouldBeNull): void
     {
-        /** @var \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade */
+        /** @var \App\Model\Cart\CartFacade $cartFacade */
         $cartFacade = $this->getContainer()->get(CartFacade::class);
         /** @var \Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactory $cartItemFactory */
         $cartItemFactory = $this->getContainer()->get(CartItemFactoryInterface::class);
@@ -177,6 +177,7 @@ class CartFacadeTest extends TransactionFunctionalTestCase
         $this->assertFalse($cart->isEmpty(), 'Cart should not be empty');
 
         $cart = $cartFacade->findCartOfCurrentCustomerUser();
+        $cart = $cartFacade->checkCartModificationsAndDeleteCartIfEmpty($cart);
 
         if ($cartShouldBeNull) {
             $this->assertNull($cart);

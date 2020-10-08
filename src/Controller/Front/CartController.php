@@ -172,10 +172,11 @@ class CartController extends FrontBaseController
     public function indexAction(Request $request)
     {
         $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
-        $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities($cart);
-        $cartItems = $cart === null ? [] : $cart->getItems();
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();
+        $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities($cart);
+        $this->cartFacade->checkCartModificationsAndDeleteCartIfEmpty($cart);
+        $cartItems = $cart === null ? [] : $cart->getItems();
 
         $domainId = $this->domain->getId();
 

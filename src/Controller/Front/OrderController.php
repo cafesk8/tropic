@@ -356,11 +356,11 @@ class OrderController extends FrontBaseController
         if ($cart === null) {
             return $this->redirectToRoute('front_cart');
         }
-
-        $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities($cart);
-
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();
+
+        $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities($cart);
+        $this->cartFacade->checkCartModificationsAndDeleteCartIfEmpty($cart);
 
         $frontOrderFormData = new FrontOrderData();
         if ($customerUser instanceof CustomerUser) {
