@@ -309,8 +309,11 @@ class ProductExportRepository extends BaseProductExportRepository
             ->andWhere('prv.domainId = :domainId')
             ->andWhere('prv.visible = TRUE')
             ->andWhere('p.sellingDenied = FALSE')
+            ->andWhere('p.supplierSet = FALSE OR p.realStockQuantity > 0')
+            ->andWhere('p.pohodaProductType != :productTypeSet OR p.realStockQuantity > 0')
             ->groupBy('p.id')
             ->orderBy('p.id')
-            ->setParameter('domainId', $domainId);
+            ->setParameter('domainId', $domainId)
+            ->setParameter('productTypeSet', Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET);
     }
 }
