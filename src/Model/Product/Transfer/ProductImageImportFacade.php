@@ -98,6 +98,7 @@ class ProductImageImportFacade
         $productsIndexedByPohodaId = [];
         $processedProductPohodaIds = [];
         $couldConnectToMserver = true;
+        $productPohodaIdsWithoutImages = $productPohodaIds;
 
         foreach ($productPohodaIds as $productPohodaId) {
             $product = $this->productFacade->findByPohodaId($productPohodaId);
@@ -109,6 +110,12 @@ class ProductImageImportFacade
 
         foreach ($pohodaImages as $pohodaImage) {
             $productPohodaId = $pohodaImage->productPohodaId;
+            $productIndex = array_search($productPohodaId, $productPohodaIdsWithoutImages, true);
+
+            if ($productIndex !== false) {
+                unset($productPohodaIdsWithoutImages[$productIndex]);
+            }
+
             if (!isset($productsIndexedByPohodaId[$productPohodaId])) {
                 $this->logger->addWarning('Product not found by Pohoda ID. Image will not be transferred', [
                     'productPohodaId' => $productPohodaId,
@@ -129,7 +136,7 @@ class ProductImageImportFacade
                         'productId' => $product->getId(),
                         'catnum' => $product->getCatnum(),
                     ]);
-                    $this->imageInfoQueueFacade->rescheduleImageImport($product->getPohodaId());
+                    $this->imageInfoQueueFacade->rescheduleImageImport($productPohodaId);
                 } else {
                     $this->logger->addError('Problém s připojením na mServer', [
                         'message' => $ex->getMessage(),
@@ -152,7 +159,7 @@ class ProductImageImportFacade
             $nextImageId++;
             $this->imageFacade->restartImagesIdsDbSequence();
             $pohodaImageIdsIndexedByProductId[$product->getId()][] = $pohodaImage->id;
-            $processedProductPohodaIds[] = $product->getPohodaId();
+            $processedProductPohodaIds[] = $productPohodaId;
         }
 
         if ($couldConnectToMserver) {
@@ -161,6 +168,7 @@ class ProductImageImportFacade
                 $this->productExportScheduler->scheduleRowIdForImmediateExport($productId);
             }
             $this->imageInfoQueueFacade->removeProductsFromQueue($processedProductPohodaIds);
+            $this->imageInfoQueueFacade->removeProductsFromQueue($productPohodaIdsWithoutImages);
         }
 
         $this->logger->persistTransferIssues();
