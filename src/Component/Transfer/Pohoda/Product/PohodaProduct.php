@@ -6,6 +6,8 @@ namespace App\Component\Transfer\Pohoda\Product;
 
 class PohodaProduct
 {
+    public const INTERNAL_SUPPLIER_NAME = '2prod';
+
     public const COL_POHODA_ID = 'pohodaId';
     public const COL_POHODA_PRODUCT_TYPE = 'pohodaProductType';
     public const COL_NAME = 'name';
@@ -52,6 +54,7 @@ class PohodaProduct
     public const COL_PRIORITY = 'priority';
     public const COL_FOREIGN_SUPPLIER = 'foreignSupplier';
     public const COL_WEIGHT = 'weight';
+    public const COL_PRODUCT_SUPPLIER_NAME = 'supplierName';
 
     public const COL_EXTERNAL_STOCK = 'externalStock';
     public const COL_STOCK_TOTAL = 'totalStock';

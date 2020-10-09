@@ -62,6 +62,7 @@ class PohodaProductExportRepository
         'VPrZahrDodav' => PohodaProduct::COL_FOREIGN_SUPPLIER,
         'Hmotnost' => PohodaProduct::COL_WEIGHT,
         'VPrIdent' => PohodaProduct::COL_SELLING_DENIED,
+        'Firma' => PohodaProduct::COL_PRODUCT_SUPPLIER_NAME,
     ];
 
     /**

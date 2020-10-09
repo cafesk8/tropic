@@ -113,9 +113,18 @@ class PohodaProductExportFacade
         $stocksInformation = $this->pohodaProductExportRepository->getStockInformationByCatnums(array_column($pohodaProductsResult, PohodaProduct::COL_CATNUM));
         $defaultPohodaStockExternalNumber = $this->storeFacade->getDefaultPohodaStockExternalNumber();
         $externalPohodaStockExternalNumber = $this->storeFacade->getPohodaStockExternalExternalNumber();
+        $pohodaStockStoreExternalNumber = $this->storeFacade->getPohodaStockStoreExternalNumber();
         foreach ($stocksInformation as $information) {
             if (isset($pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]])) {
-                $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION][$information[PohodaProduct::COL_STOCK_ID]] = (int)$information[PohodaProduct::COL_STOCK_TOTAL];
+                $supplierName = $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_PRODUCT_SUPPLIER_NAME];
+
+                // If product (internal stock TROPIC) have supplier "2prod", stock quantity at store is always zero
+                if ((int)$information[PohodaProduct::COL_STOCK_ID] === $pohodaStockStoreExternalNumber && $supplierName === PohodaProduct::INTERNAL_SUPPLIER_NAME) {
+                    $stockQuantity = 0;
+                } else {
+                    $stockQuantity = (int)$information[PohodaProduct::COL_STOCK_TOTAL];
+                }
+                $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION][$information[PohodaProduct::COL_STOCK_ID]] = $stockQuantity;
 
                 // External stock is on product on default stock TROPIC
                 if ((int)$information[PohodaProduct::COL_STOCK_ID] === $defaultPohodaStockExternalNumber && $information[PohodaProduct::COL_EXTERNAL_STOCK] !== null) {
