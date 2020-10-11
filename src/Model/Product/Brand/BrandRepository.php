@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Brand;
 
+use App\Model\Category\CategoryBrand\CategoryBrand;
+use Doctrine\ORM\Query\Expr\Join;
+use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandRepository as BaseBrandRepository;
 
 /**
@@ -49,5 +52,32 @@ class BrandRepository extends BaseBrandRepository
         $brands = $this->getBrandRepository()->findBy(['slug' => $slugs]);
 
         return array_map(fn (Brand $brand) => $brand->getId(), $brands);
+    }
+
+    /**
+     * @param int[] $brandsIds
+     * @param string $locale
+     * @param \App\Model\Category\Category|null $category
+     * @return \App\Model\Product\Brand\Brand[]
+     */
+    public function getBrandsForFilterByIds(array $brandsIds, string $locale, ?Category $category = null): array
+    {
+        $brandsQueryBuilder = $this->getBrandRepository()->createQueryBuilder('b')
+            ->select('b, bt')
+            ->join('b.translations', 'bt', Join::WITH, 'bt.locale = :locale')
+            ->where('b.id IN (:brandIds)')
+            ->setParameter('brandIds', $brandsIds)
+            ->setParameter('locale', $locale);
+
+        if ($category !== null) {
+            $brandsQueryBuilder
+                ->leftJoin(CategoryBrand::class, 'cb', Join::WITH, 'b = cb.brand AND cb.category = :category')
+                ->setParameter('category', $category)
+                ->orderBy('cb.priority, b.name', 'asc');
+        } else {
+            $brandsQueryBuilder->orderBy('b.name', 'asc');
+        }
+
+        return $brandsQueryBuilder->getQuery()->getResult();
     }
 }

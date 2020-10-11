@@ -25,7 +25,6 @@ use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
-use Shopsys\ReadModelBundle\Product\Listed\ListedProductView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -554,29 +553,6 @@ class CartController extends FrontBaseController
         if ($cart !== null) {
             $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities();
         }
-    }
-
-    /**
-     * @param \App\Model\Product\View\ListedProductView $listedProductView
-     * @param string $type
-     * @param bool $showAmountInput
-     * @param bool $onlyRefresh
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function productActionAction(ListedProductView $listedProductView, string $type = 'normal', bool $showAmountInput = true, bool $onlyRefresh = false)
-    {
-        $form = $this->createForm(AddProductFormType::class, ['productId' => $listedProductView->getId()], [
-            'action' => $this->generateUrl('front_cart_add_product'),
-            'minimum_amount' => $listedProductView->getAction()->getMinimumAmount(),
-            'only_refresh' => $onlyRefresh,
-        ]);
-
-        return $this->render('Front/Inline/Cart/productAction.html.twig', [
-            'form' => $form->createView(),
-            'productView' => $listedProductView,
-            'type' => $type,
-            'showAmountInput' => $showAmountInput,
-        ]);
     }
 
     /**

@@ -71,6 +71,11 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     private $freeTransportFlag;
 
     /**
+     * @var bool
+     */
+    private $isFreeTransportFlagObtained = false;
+
+    /**
      * @var \App\Model\Product\Availability\AvailabilityFacade
      */
     private $availabilityFacade;
@@ -236,8 +241,9 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      */
     private function getDefaultFreeTransportFlag(): ?Flag
     {
-        if ($this->freeTransportFlag === null) {
+        if ($this->isFreeTransportFlagObtained === false) {
             $this->freeTransportFlag = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
+            $this->isFreeTransportFlagObtained = true;
         }
 
         return $this->freeTransportFlag;

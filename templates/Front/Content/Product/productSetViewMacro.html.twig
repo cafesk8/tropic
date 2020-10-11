@@ -1,4 +1,5 @@
 {% macro productSetView(productView) %}
+    {% import 'Front/Inline/Cart/productAction.html.twig' as productAction %}
     <li class="list-products__item-set">
         <div class="box-products-set">
             <div class="box-products-set__row">
@@ -94,7 +95,7 @@
                         {% endif %}
 
                         <div class="box-products-set__info__button">
-                            {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { listedProductView: productView, showAmountInput: false } )) }}
+                            {{ productAction.addToCart(productView, 'normal', false) }}
                         </div>
                     </a>
                 </div>

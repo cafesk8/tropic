@@ -267,4 +267,92 @@ class FilterQuery extends BaseFilterQuery
 
         return $clone;
     }
+
+    /**
+     * @param int $pricingGroupId
+     * @return array
+     */
+    public function getFilterQuery(int $pricingGroupId): array
+    {
+        return [
+            'index' => $this->indexName,
+            'body' => [
+                'size' => 0,
+                'aggs' => [
+                    'parameters' => [
+                        'nested' => [
+                            'path' => 'parameters',
+                        ],
+                        'aggs' => [
+                            'by_parameters' => [
+                                'terms' => [
+                                    'field' => 'parameters.parameter_id',
+                                    'size' => static::MAXIMUM_REASONABLE_AGGREGATION_BUCKET_COUNT,
+                                ],
+                                'aggs' => [
+                                    'by_value' => [
+                                        'terms' => [
+                                            'field' => 'parameters.parameter_value_id',
+                                            'size' => static::MAXIMUM_REASONABLE_AGGREGATION_BUCKET_COUNT,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    'flags' => [
+                        'terms' => [
+                            'field' => 'flags',
+                            'size' => static::MAXIMUM_REASONABLE_AGGREGATION_BUCKET_COUNT,
+                        ],
+                    ],
+                    'brands' => [
+                        'terms' => [
+                            'field' => 'brand',
+                            'size' => static::MAXIMUM_REASONABLE_AGGREGATION_BUCKET_COUNT,
+                        ],
+                    ],
+                    'stock' => [
+                        'filter' => [
+                            'term' => [
+                                'in_stock' => 'true',
+                            ],
+                        ],
+                    ],
+                    'prices' => [
+                        'nested' => [
+                            'path' => 'prices',
+                        ],
+                        'aggs' => [
+                            'filter_pricing_group' => [
+                                'filter' => [
+                                    'term' => [
+                                        'prices.pricing_group_id' => $pricingGroupId,
+                                    ],
+                                ],
+                                'aggs' => [
+                                    'min_price' => [
+                                        'min' => [
+                                            'field' => 'prices.price_with_vat',
+                                        ],
+                                    ],
+                                    'max_price' => [
+                                        'max' => [
+                                            'field' => 'prices.price_with_vat',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'query' => [
+                    'bool' => [
+                        'must' => $this->match,
+                        'filter' => $this->filters,
+                    ],
+                ],
+            ],
+        ];
+    }
 }

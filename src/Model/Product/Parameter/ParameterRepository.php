@@ -6,6 +6,7 @@ namespace App\Model\Product\Parameter;
 
 use App\Model\Product\Parameter\Exception\ParameterValueNotFoundException;
 use App\Model\Product\Product;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository as BaseParameterRepository;
@@ -107,5 +108,45 @@ class ParameterRepository extends BaseParameterRepository
             ->addSelect('v');
 
         return $queryBuilder->getQuery()->execute();
+    }
+
+    /**
+     * @param int[] $parameterIds
+     * @param string $locale
+     * @return \App\Model\Product\Parameter\Parameter[]
+     */
+    public function getVisibleParametersByIds(array $parameterIds, string $locale): array
+    {
+        $parametersQueryBuilder = $this->getParameterRepository()->createQueryBuilder('p')
+            ->select('p, pt')
+            ->join('p.translations', 'pt', Join::WITH, 'pt.locale = :locale')
+            ->where('p.id IN (:parameterIds)')
+            ->andWhere('p.visible = true')
+            ->setParameter('parameterIds', $parameterIds)
+            ->setParameter('locale', $locale)
+            ->orderBy('pt.name', 'asc');
+
+        return $parametersQueryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param int[] $parameterValueIds
+     * @return \App\Model\Product\Parameter\ParameterValue[]
+     */
+    public function getParameterValuesByIds(array $parameterValueIds): array
+    {
+        $parameterValues = $this->getParameterValueRepository()->createQueryBuilder('pv')
+            ->where('pv.id IN (:parameterValueIds)')
+            ->setParameter('parameterValueIds', $parameterValueIds)
+            ->getQuery()->getResult();
+
+        $parameterValuesIndexedById = [];
+
+        /** @var \App\Model\Product\Parameter\ParameterValue $parameterValue */
+        foreach ($parameterValues as $parameterValue) {
+            $parameterValuesIndexedById[$parameterValue->getId()] = $parameterValue;
+        }
+
+        return $parameterValuesIndexedById;
     }
 }

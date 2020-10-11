@@ -144,4 +144,22 @@ class FlagFacade extends BaseFlagFacade
 
         return $flagsIndexedByPohodaId;
     }
+
+    /**
+     * @param int[] $flagsIds
+     * @param string $locale
+     * @return \App\Model\Product\Flag\Flag[]
+     */
+    public function getFlagsForFilterByIds(array $flagsIds, string $locale): array
+    {
+        $flags = $this->flagRepository->getFlagsForFilterByIds($flagsIds, $locale);
+
+        foreach ($flags as $key => $flag) {
+            if ($flag->isClearance()) {
+                $flags[$key] = $this->getSaleFlag();
+            }
+        }
+
+        return array_unique($flags, SORT_REGULAR);
+    }
 }

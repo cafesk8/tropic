@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\Parameter;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoice;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter as BaseParameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade as BaseParameterFacade;
@@ -184,5 +185,36 @@ class ParameterFacade extends BaseParameterFacade
         });
 
         return $parameters;
+    }
+
+    /**
+     * @param int[][] $parameterValueIdsIndexedByParameterId
+     * @param string $locale
+     * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoice[]
+     */
+    public function getParameterFilterChoicesByIds(array $parameterValueIdsIndexedByParameterId, string $locale): array
+    {
+        $parameterValueIds = array_reduce($parameterValueIdsIndexedByParameterId, 'array_merge', []);
+        $allParameters = $this->parameterRepository->getVisibleParametersByIds(array_keys($parameterValueIdsIndexedByParameterId), $locale);
+        $allParameterValues = $this->parameterRepository->getParameterValuesByIds($parameterValueIds);
+
+        $parameterFilterChoices = [];
+
+        foreach ($allParameters as $parameter) {
+            $valueIdsForParameter = $parameterValueIdsIndexedByParameterId[$parameter->getId()];
+            $parameterValues = array_intersect_key($allParameterValues, array_flip($valueIdsForParameter));
+
+            uasort($parameterValues, function(ParameterValue $first, ParameterValue $second)
+            {
+                return strnatcmp($first->getText(), $second->getText());
+            });
+
+            $parameterFilterChoices[] = new ParameterFilterChoice(
+                $parameter,
+                $parameterValues
+            );
+        }
+
+        return $parameterFilterChoices;
     }
 }

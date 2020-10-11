@@ -13,6 +13,7 @@ use App\Model\Gtm\GtmFacade;
 use App\Model\Heureka\HeurekaReviewFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Brand\Brand;
+use App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\View\ListedProductViewElasticFacade;
@@ -23,7 +24,6 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade;
@@ -50,11 +50,6 @@ class ProductController extends FrontBaseController
      * @var \App\Model\Product\Brand\BrandFacade
      */
     protected $brandFacade;
-
-    /**
-     * @var \App\Model\Product\Filter\ProductFilterConfigFactory
-     */
-    private $productFilterConfigFactory;
 
     /**
      * @var \App\Model\Category\CategoryFacade
@@ -142,11 +137,15 @@ class ProductController extends FrontBaseController
     private $heurekaReviewFacade;
 
     /**
+     * @var \App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory
+     */
+    private ProductFilterConfigFactory $productFilterConfigFactory;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
-     * @param \App\Model\Product\Filter\ProductFilterConfigFactory $productFilterConfigFactory
      * @param \App\Model\Product\Listing\ProductListOrderingModeForListFacade $productListOrderingModeForListFacade
      * @param \App\Model\Product\Listing\ProductListOrderingModeForBrandFacade $productListOrderingModeForBrandFacade
      * @param \App\Model\Product\Listing\ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade
@@ -161,13 +160,13 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
+     * @param \App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory $productFilterConfigFactory
      */
     public function __construct(
         RequestExtension $requestExtension,
         CategoryFacade $categoryFacade,
         Domain $domain,
         ProductOnCurrentDomainFacadeInterface $productOnCurrentDomainFacade,
-        ProductFilterConfigFactory $productFilterConfigFactory,
         ProductListOrderingModeForListFacade $productListOrderingModeForListFacade,
         ProductListOrderingModeForBrandFacade $productListOrderingModeForBrandFacade,
         ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade,
@@ -181,13 +180,13 @@ class ProductController extends FrontBaseController
         ListedProductViewElasticFacade $listedProductViewElasticFacade,
         PricingGroupFacade $pricingGroupFacade,
         FlagFacade $flagFacade,
-        HeurekaReviewFacade $heurekaReviewFacade
+        HeurekaReviewFacade $heurekaReviewFacade,
+        ProductFilterConfigFactory $productFilterConfigFactory
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
         $this->domain = $domain;
         $this->productOnCurrentDomainFacade = $productOnCurrentDomainFacade;
-        $this->productFilterConfigFactory = $productFilterConfigFactory;
         $this->productListOrderingModeForListFacade = $productListOrderingModeForListFacade;
         $this->productListOrderingModeForBrandFacade = $productListOrderingModeForBrandFacade;
         $this->productListOrderingModeForSearchFacade = $productListOrderingModeForSearchFacade;
@@ -202,6 +201,7 @@ class ProductController extends FrontBaseController
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->flagFacade = $flagFacade;
         $this->heurekaReviewFacade = $heurekaReviewFacade;
+        $this->productFilterConfigFactory = $productFilterConfigFactory;
     }
 
     /**
@@ -296,7 +296,7 @@ class ProductController extends FrontBaseController
 
         $productFilterData = new ProductFilterData();
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category);
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, [], $category->isUnavailableProductsShown());
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -377,7 +377,7 @@ class ProductController extends FrontBaseController
 
         $productFilterData->flags[] = $saleFlag;
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, [$saleFlag]);
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, [$saleFlag], $category->isUnavailableProductsShown());
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -461,7 +461,7 @@ class ProductController extends FrontBaseController
 
         $productFilterData->flags[] = $newsFlag;
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, [$newsFlag]);
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, [$newsFlag], $category->isUnavailableProductsShown());
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -616,15 +616,15 @@ class ProductController extends FrontBaseController
     /**
      * @param \App\Model\Category\Category $category
      * @param \App\Model\Product\Flag\Flag[] $onlyFlags
+     * @param bool $showUnavailableProducts
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
-    private function createProductFilterConfigForCategory(BaseCategory $category, array $onlyFlags = [])
+    private function createProductFilterConfigForCategory(BaseCategory $category, array $onlyFlags = [], bool $showUnavailableProducts = false)
     {
         return $this->productFilterConfigFactory->createForCategory(
-            $this->domain->getId(),
-            $this->domain->getLocale(),
             $category,
-            $onlyFlags
+            $onlyFlags,
+            $showUnavailableProducts,
         );
     }
 
@@ -634,11 +634,7 @@ class ProductController extends FrontBaseController
      */
     private function createProductFilterConfigForSearch($searchText)
     {
-        return $this->productFilterConfigFactory->createForSearch(
-            $this->domain->getId(),
-            $this->domain->getLocale(),
-            $searchText
-        );
+        return $this->productFilterConfigFactory->createForSearch($searchText);
     }
 
     /**
