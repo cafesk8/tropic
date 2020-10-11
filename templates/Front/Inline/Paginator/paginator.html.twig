@@ -121,8 +121,37 @@
     </a>
 {% endmacro %}
 
+{% macro loadPreviousButton(paginationResult, pageQueryParameter = 'page') %}
+    {% if paginationResult.pageCount > 1 -%}
+        {% set route = getRoute() -%}
+        {% set routeParams = getAllRequestParams() -%}
+        {% if not paginationResult.firstPage -%}
+            {% set page = paginationResult.previousPage -%}
+            {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
+                <a  class ="btn btn--big box-button_previous" href="{{ path(route, routeParams) }}" rel="prev">
+                    {{ '< PREVIOUS'|trans }}
+                </a>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+{% macro loadNextButton(paginationResult, pageQueryParameter = 'page') %}
+    {% if paginationResult.pageCount > 1 -%}
+        {% set route = getRoute() -%}
+        {% set routeParams = getAllRequestParams() -%}
+        {% if not paginationResult.lastPage -%}
+            {% set page = paginationResult.nextPage -%}
+            {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
+                <a class ="btn btn--big box-button_next" href="{{ path(route, routeParams) }}" rel="next">
+                    {{ 'NEXT >'|trans }}
+                </a>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
 {% macro titleAddon(paginationResult) %}
     {% if paginationResult.page > 1 %}
         {{ 'strana %page% z %pageCount%'|trans({'%page%': paginationResult.page, '%pageCount%': paginationResult.pageCount}) }}
     {% endif %}
 {% endmacro %}
+

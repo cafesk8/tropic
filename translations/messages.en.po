@@ -3871,3 +3871,9 @@ msgstr ""
 msgid "Žádné slevy na celý nákup nenalezeny."
 msgstr ""
 
+msgid "< PREVIOUS"
+msgstr "< PREVIOUS"
+
+msgid "NEXT >"
+msgstr "NEXT >"
+
