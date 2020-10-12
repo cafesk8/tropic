@@ -521,6 +521,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         $displayAvailabilityGroup
             ->remove('hidden')
+            ->remove('sellingDenied')
             ->add('shown', DomainsType::class, [
                 'required' => false,
                 'label' => t('Display on'),
@@ -528,6 +529,14 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'attr' => [
                     'labelIcon' => true,
                     'labelIconTitle' => t('Skryté zboží se nezobrazuje ve výpisech ani nelze vyhledat. Detail tohoto zboží není dostupný přímým přístupem z URL. Zboží nelze vložit do košíku.'),
+                ],
+            ])
+            ->add('sellingDenied', YesNoType::class, [
+                'required' => false,
+                'label' => t('Exclude from sale'),
+                'attr' => [
+                    'icon' => true,
+                    'iconTitle' => t('Produkty takto vyřazené z prodeje se nikde na e-shopu nezobrazují (a to ani v případě, že mají zobrazování výše nastaveno pomocí "Zobrazit na").'),
                 ],
             ])
             ->add('mallExport', YesNoType::class, [

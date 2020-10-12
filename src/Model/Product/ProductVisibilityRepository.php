@@ -70,6 +70,8 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
             'UPDATE product_visibilities AS pv
             SET visible = CASE
                     WHEN (
+                        p.selling_denied = FALSE
+                        AND
                         pd.shown = TRUE
                         AND
                         (p.selling_from IS NULL OR p.selling_from <= :now)
