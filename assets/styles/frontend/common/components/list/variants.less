@@ -2,7 +2,6 @@
 @list-variants-item-gap: 15px;
 @list-variants-item-prices-size: 24px;
 @list-variants-item-parameters-item-name-width: 70px;
-@list-variants-item-description-availability-width: 60%;
 
 .list-variants {
     .reset-ul();
@@ -16,10 +15,6 @@
 
         border-radius: @radius;
         background-color: @color-box;
-
-        &:last-child {
-            margin-bottom: 0;
-        }
 
         &__info {
             width: 100%;
@@ -81,6 +76,8 @@
             }
 
             &__name {
+                display: flex;
+                flex-direction: column;
                 width: calc(~"100% - @{list-variants-image-size}");
                 line-height: @font-size-big;
                 padding-left: @list-variants-item-gap;
@@ -89,11 +86,17 @@
                 font-size: @font-size-big;
 
                 @media @query-md {
-                    width: calc(~"100% / 2 - (@{list-variants-image-size} / 2)");
+                    flex-direction: row;
                 }
 
-                @media @query-vl {
-                    width: calc(~"(100% - @{list-variants-item-description-availability-width}) - (@{list-variants-image-size} / 2)");
+                &__text {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+
+                    @media @query-md {
+                        width: 50%;
+                    }
                 }
 
                 &__code {
@@ -102,18 +105,14 @@
                     font-size: @font-size-extra-small + 1px;
                     opacity: 0.5;
                 }
-            }
+                
+                &__availability {
+                    width: 100%;
 
-            &__availability {
-                width: 100%;
-
-                @media @query-md {
-                    padding-left: @list-variants-item-gap;
-                    width: calc(~"100% / 2 - (@{list-variants-image-size} / 2)");
-                }
-
-                @media @query-vl {
-                    width: calc(~"@{list-variants-item-description-availability-width} - (@{list-variants-image-size} / 2)");
+                    @media @query-md {
+                        width: 50%;
+                        padding-left: @list-variants-item-gap;
+                    }
                 }
             }
         }
@@ -219,6 +218,21 @@
 
             @media @query-vl {
                 width: auto;
+            }
+        }
+
+        &__bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+
+            @media @query-md {
+                flex-direction: row;
+            }
+
+            @media @query-vl {
+                margin-top: 10px;
             }
         }
     }

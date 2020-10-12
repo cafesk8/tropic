@@ -71,10 +71,10 @@
         {% endif %}
     </div>
 
-    {% if showCofidisBanner %}
-        <div class="box-detail-add__payments{% if type == 'detailVariant' %} box-detail-add__payments--variant{% endif %}">
+    {% if showCofidisBanner and type != 'detailVariant' %}
+        <div class="box-detail-add__payments">
             <img class="box-detail-add__payments__image" src="{{ asset('public/frontend/images/cofidis-logo.png')}}" alt="{{ 'Cofidis'|trans }}">
-            Na splátky ještě dnes již od {{ sellingPrice.monthlyCofidisBasePayment|price }} měsíčně
+            {{ 'Na splátky ještě dnes již od'|trans }} {{ sellingPrice.monthlyCofidisBasePayment|price }} {{ 'měsíčně'|trans }}
         </div>
     {% endif %}
 {{ form_end(form) }}

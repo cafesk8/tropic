@@ -1,4 +1,4 @@
-<a class="box-detail__watch-dog js-watch-dog-window-opener" data-url="{{ url('front_watch_dog_window_form', {'productId': product.Id}) }}">
+<a class="box-detail__watch-dog {{ type == 'variant' ? 'box-detail__watch-dog--variant' : ''}} js-watch-dog-window-opener" data-url="{{ url('front_watch_dog_window_form', {'productId': product.Id}) }}">
     <span class="box-detail__watch-dog__icon">
         {% include 'Front/Svg/tick.svg' %}
     </span>
