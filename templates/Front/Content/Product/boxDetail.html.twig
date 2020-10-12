@@ -139,7 +139,7 @@
                                         itemtype="http://schema.org/AggregateOffer" {% endif %}
                                         class="list-variants">
                                         {% for variant in filterOnlyVisibleVariants(product) %}
-                                            {{ loop.index > maxVisibleVariants ? '<div class="display-none" id="listVariantsHidden">' : '' }}
+                                            {{ loop.index0 == maxVisibleVariants ? '<div class="display-none" id="listVariantsHidden">' : '' }}
                                             <li class="list-variants__item">
                                                 <div class="list-variants__item__info">
                                                     <div class="list-variants__item__description">
@@ -211,20 +211,20 @@
                                                     </div>
                                                 {% endif %}
                                             </li>
-                                            {{ loop.index > maxVisibleVariants ? '</div>' : '' }}
+                                            {{ loop.last and loop.length > maxVisibleVariants ? '</div>' : '' }}
                                         {% endfor %}
                                     </ul>
 
                                     {% if filterOnlyVisibleVariants(product)|length > maxVisibleVariants %}
                                         <div class="box-detail-add__show-more">
-                                            <button class="box-detail-add__show-more__button btn btn--big js-responsive-toggle" data-element="listVariantsHidden">
+                                            <a class="box-detail-add__show-more__button btn btn--big js-responsive-toggle" data-element="listVariantsHidden">
                                                 <span class="box-detail-add__show-more__button__more">
                                                     {{ 'Načíst dalších'|trans }} {{ filterOnlyVisibleVariants(product)|length - maxVisibleVariants }} {{ 'variant'|trans }}
                                                 </span>
                                                 <span class="box-detail-add__show-more__button__less">
                                                     {{ 'Skrýt varianty'|trans }}
                                                 </span>
-                                            </button>
+                                            </a>
                                         </div>
                                     {% endif %}
                                 {% endif %}
