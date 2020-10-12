@@ -21,7 +21,7 @@
                 {% endif %}
             </div>
         </div>
-        <div style="float:left; width:50%; padding-left:45px; border-left:2px solid #0077b3;">
+        <div style="float:left; width:50%; padding-left:45px; border-left:2px solid {% if greyscale is same as(false) %}#0077b3{% else %}#000{% endif %};">
             <p style="font-size:27px; line-height:16px; font-weight:700; text-transform:uppercase; margin-top:0px; margin-bottom:25px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
                 {{ 'Dárkový<br> poukaz<br> v hodnotě'|trans|raw }}
             </p>
@@ -45,7 +45,7 @@
                 {{ 'Platnost poukazu je 12 měsíců od zakoupení.'|trans }}
             </p>
             <p style="margin:0px; padding:0px; font-size:10px; line-height:10px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
-                {{ 'TROPIC LIBEREC s.r.o., U Sadu 655, Liberec 25, IČO: <strong>25415981</strong>'|trans|raw }}
+                {{ 'TROPIC LIBEREC s.r.o., U Sadu 655, Liberec 25, IČO: 25415981'|trans|raw }}
             </p>
             <a style="display:block; margin:0px 0px 10px 0px; padding:0px; font-size:10px; line-height:10px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}" href="http://www.tropicfishing.cz/">
                 <strong>{{ 'http://www.tropicfishing.cz/'|trans }}</strong>
