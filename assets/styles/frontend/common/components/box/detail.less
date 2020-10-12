@@ -100,6 +100,22 @@
                 align-items: center;
                 height: 350px;
             }
+
+            &__sticker {
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 70px;
+                text-align: right;
+
+                @media @query-md {
+                    height: 100px;
+                }
+
+                img {
+                    max-height: 100%;
+                }
+            }
         }
     }
 
@@ -255,7 +271,7 @@
     &__watch-dog {
         display: flex;
         width: 100%;
-        margin-top: 20px;
+        margin: 20px 0;
         text-align: center;
         justify-content: center;
 

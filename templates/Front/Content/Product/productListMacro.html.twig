@@ -17,8 +17,9 @@
                                 <a href="{{ productView.action.detailUrl }}" class="list-products__item__image-wrap">
                                     <div class="list-products__item__image dont-print">
                                         {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
-                                        {{ productStickersMacro.list(productView) }}
                                     </div>
+
+                                    {{ productStickersMacro.list(productView, [], 'list-products__item__sticker') }}
 
                                     {% set productFlagIds = productView.flagIds %}
                                     {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
@@ -115,8 +116,9 @@
                                 <a class="list-products-slider__item__image-wrap" href="{{ productView.action.detailUrl }}">
                                     <div class="list-products-slider__item__image dont-print">
                                         {{ image(productView.image, { size: 'listSlider', alt: productView.name, lazy: true }) }}
-                                        {{ productStickersMacro.list(productView) }}
                                     </div>
+
+                                    {{ productStickersMacro.list(productView, [], 'list-products-slider__item__sticker') }}
 
                                     {% set productFlagIds = productView.flagIds %}
                                     {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
@@ -313,7 +315,6 @@
 
                     <div class="list-products-bomb__item__image dont-print">
                         {{ image(productView.image, { size: 'biggerThumbnail', alt: productView.name, lazy: true }) }}
-                        {{ productStickersMacro.list(productView) }}
                     </div>
 
                     {% if productSellingPrice is not null %}

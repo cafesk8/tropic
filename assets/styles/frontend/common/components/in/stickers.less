@@ -1,0 +1,34 @@
+@in-stickers-item-gap: 30px;
+
+.in-stickers {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: -@in-stickers-item-gap;
+
+    &__item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 70px;
+        width: @calc-base / 3;
+        padding-left: @in-stickers-item-gap;
+        margin-bottom: @in-stickers-item-gap;
+
+        @media @query-md {
+            height: 100px;
+        }
+
+        @media @query-vl {
+            width: 100% / 4;
+        }
+
+        picture {
+            display: flex;
+        }
+
+        img {
+            max-height: 100%;
+        }
+    }
+}

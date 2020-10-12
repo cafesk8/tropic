@@ -47,7 +47,7 @@
                                         {{ noimage({ alt: product.name }) }}
                                     {% endif %}
 
-                                    {{ stickersMacro.list(product, stickers, 'box-detail__image__stickers') }}
+                                    {{ stickersMacro.list(product, stickers, 'box-detail__image__main__sticker') }}
                                 </div>
 
                                 {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, variantsCount) }}
@@ -82,7 +82,6 @@
                                     <div class="box-detail__description__flags">
                                         {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail in-flag--in-set', false, sellingPrice, variantsCount) }}
                                     </div>
-                                    {{ stickersMacro.list(product, stickers, 'box-detail__image__stickers') }}
                                 </div>
 
                                 <p class="box-detail__description__code">
@@ -214,15 +213,41 @@
                             {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', {product: product}) }}
                         {% endif %}
 
-                        {% if product.recommended and product.warranty > 24 %}
-                            {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
-                        {% endif %}
+                        <div class="in-stickers">
+                            {% if not typeSetOrSupplierSet %}
+                                {% if product.recommended and product.warranty > 24 %}
+                                    <div class="in-stickers__item">
+                                        <img src="{{ asset('public/frontend/images/extended-warranty.png') }}"  alt="{{ 'Nálepka Prodloužená záruka'|trans }}" loading="lazy">
+                                    </div>
+                                {% endif %}
 
-                        {% for sticker in stickers %}
-                            {% if not loop.first or product.recommended or product.warranty > 24 %}
-                                {{ image(sticker) }}
+                                {% for sticker in stickers %}
+                                    {% if not loop.first or product.recommended or product.warranty > 24 %}
+                                        <div class="in-stickers__item">
+                                            {{ image(sticker) }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                {% if product.recommended %}
+                                    <div class="in-stickers__item">
+                                        <img src="{{ asset('public/frontend/images/recommended.png') }}" alt="{{ 'Nálepka Tropic doporučuje'|trans }}" loading="lazy">
+                                    </div>
+                                {% endif %}
+
+                                {% if product.warranty > 24 %}
+                                    <div class="in-stickers__item">
+                                        <img src="{{ asset('public/frontend/images/extended-warranty.png') }}"  alt="{{ 'Nálepka Prodloužená záruka'|trans }}" loading="lazy">
+                                    </div>
+                                {% endif %}
+
+                                {% for sticker in stickers %}
+                                    <div class="in-stickers__item">
+                                        {{ image(sticker) }}
+                                    </div>
+                                {% endfor %}
                             {% endif %}
-                        {% endfor %}
+                        </div>
 
                         {% if product.isMainVariant %}
                             <div class="wrap-gradient wrap-gradient--with-gap">

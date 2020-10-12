@@ -1,13 +1,13 @@
-{% macro list(productOrProductView, stickers = [], cssClass = 'list-products__item__image__stickers') %}
+{% macro list(productOrProductView, stickers = [], cssClass = '') %}
     {% if stickers is empty and productOrProductView.stickers is defined %}
         {% set stickers = productOrProductView.stickers %}
     {% endif %}
     {% if stickers|length > 0 or (productOrProductView.warranty > 24 and productOrProductView.supplierSet is same as (false)) or productOrProductView.recommended %}
         <div class="{{ cssClass }}">
             {% if productOrProductView.recommended %}
-                {% include 'Front/Inline/Product/recommendedSticker.html.twig' %}
+                <img src="{{ asset('public/frontend/images/recommended.png') }}" alt="{{ 'Nálepka Tropic doporučuje'|trans }}" loading="lazy">
             {% elseif productOrProductView.warranty > 24 and productOrProductView.supplierSet is same as (false) %}
-                {% include 'Front/Inline/Product/extendedWarrantySticker.html.twig' %}
+                <img src="{{ asset('public/frontend/images/extended-warranty.png') }}" alt="{{ 'Nálepka Prodloužená záruka'|trans }}" loading="lazy">
             {% else %}
                 {{ image(stickers|first) }}
             {% endif %}
