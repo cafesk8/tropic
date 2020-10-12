@@ -6,6 +6,7 @@ namespace App\Model\Product\Filter\Elasticsearch;
 
 use App\Model\Product\Brand\BrandFacade;
 use App\Model\Product\Flag\FlagFacade;
+use App\Model\Product\Parameter\Parameter;
 use App\Model\Product\Parameter\ParameterFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -72,7 +73,7 @@ class ProductFilterConfigFactory
         }
 
         return new ProductFilterConfig(
-            $this->aggregateParametersData($elasticFilterData),
+            $this->aggregateParametersData($elasticFilterData, $category->getFilterParameters()),
             $this->aggregateFlagsData($elasticFilterData),
             $this->aggregateBrandsData($elasticFilterData, $category),
             $this->aggregatePriceRangeData($elasticFilterData)
@@ -150,9 +151,10 @@ class ProductFilterConfigFactory
 
     /**
      * @param array $elasticFilterData
+     * @param \App\Model\Product\Parameter\Parameter[] $parametersToShowInFilter
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoice[]
      */
-    private function aggregateParametersData(array $elasticFilterData): array
+    private function aggregateParametersData(array $elasticFilterData, array $parametersToShowInFilter): array
     {
         $parametersData = $elasticFilterData['aggregations']['parameters']['by_parameters']['buckets'];
 
@@ -162,6 +164,17 @@ class ProductFilterConfigFactory
             $parameterValueIdsIndexedByParameterId[$parameter['key']] = array_map(function($parameter) {
                 return $parameter['key'];
             }, $parameter['by_value']['buckets']);
+        }
+
+        if (count($parameterValueIdsIndexedByParameterId) === 0) {
+            return [];
+        }
+
+        $parameterIdsToShowInFilter = array_map(fn (Parameter $parameter) => $parameter->getId(), $parametersToShowInFilter);
+        foreach (array_keys($parameterValueIdsIndexedByParameterId) as $parameterId) {
+            if (!in_array($parameterId, $parameterIdsToShowInFilter, true)) {
+                unset($parameterValueIdsIndexedByParameterId[$parameterId]);
+            }
         }
 
         if (count($parameterValueIdsIndexedByParameterId) === 0) {
