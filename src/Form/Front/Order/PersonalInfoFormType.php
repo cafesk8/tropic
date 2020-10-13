@@ -8,7 +8,6 @@ use App\Model\Order\FrontOrderData;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Constraints\Email;
 use Shopsys\FrameworkBundle\Form\DeliveryAddressChoiceType;
-use Shopsys\FrameworkBundle\Form\Transformers\InverseTransformer;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
@@ -31,7 +30,6 @@ use Symfony\Component\Validator\Constraints;
 class PersonalInfoFormType extends AbstractType
 {
     public const VALIDATION_GROUP_COMPANY_CUSTOMER = 'companyCustomer';
-    public const VALIDATION_GROUP_BILLING_ADDRESS_FILLED = 'billingAddressFilled';
     public const VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED = 'deliveryAddressRequired';
     public const VALIDATION_GROUP_REGISTRATION_PASSWORD_REQUIRED = 'passwordRequired';
 
@@ -193,12 +191,12 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter street',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                        'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                        'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                 ],
             ])
@@ -206,12 +204,12 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter city',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                        'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                        'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                 ],
             ])
@@ -219,7 +217,7 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter zip code',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                        'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                     new Constraints\Length(['max' => 6, 'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters']),
                 ],
@@ -232,18 +230,10 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please choose country',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                        'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                 ],
             ]);
-
-        $builder->add($builder
-                ->create('billingAddressFilled', CheckboxType::class, [
-                    'required' => false,
-                    'value' => false,
-                    'property_path' => 'deliveryAddressSameAsBillingAddress',
-                ])
-                ->addModelTransformer(new InverseTransformer()));
 
         if ($this->currentCustomerUser->findCurrentCustomerUser() !== null) {
             $builder->add('deliveryAddress', DeliveryAddressChoiceType::class, [
@@ -371,9 +361,7 @@ class PersonalInfoFormType extends AbstractType
                     if ($orderData->companyCustomer) {
                         $validationGroups[] = self::VALIDATION_GROUP_COMPANY_CUSTOMER;
                     }
-                    if (!$orderData->deliveryAddressSameAsBillingAddress) {
-                        $validationGroups[] = self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED;
-                    }
+
                     if ($this->isPickupPlaceAndStoreNull($orderData) && !$this->isPacketaTransport($orderData) && $orderData->deliveryAddress === null) {
                         $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED;
                     }

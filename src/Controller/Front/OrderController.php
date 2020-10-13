@@ -363,7 +363,6 @@ class OrderController extends FrontBaseController
         $customerUser = $this->getUser();
 
         $frontOrderFormData = new FrontOrderData();
-        $frontOrderFormData->deliveryAddressSameAsBillingAddress = true;
         if ($customerUser instanceof CustomerUser) {
             $this->orderFacade->prefillFrontOrderData($frontOrderFormData, $customerUser);
             /** @var \App\Model\Country\Country $country */
@@ -556,7 +555,6 @@ class OrderController extends FrontBaseController
         $customerUser = $this->getUser();
 
         $frontOrderFormData = new FrontOrderData();
-        $frontOrderFormData->deliveryAddressSameAsBillingAddress = true;
         if ($customerUser instanceof CustomerUser) {
             $this->orderFacade->prefillFrontOrderData($frontOrderFormData, $customerUser);
         }
