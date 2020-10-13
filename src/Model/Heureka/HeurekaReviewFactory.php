@@ -8,17 +8,12 @@ use SimpleXMLElement;
 
 class HeurekaReviewFactory
 {
-    /**
-     * @var \App\Model\Heureka\HeurekaReviewItemFactory
-     */
-    private $heurekaReviewItemFactory;
+    private HeurekaReviewItemFactory $heurekaReviewItemFactory;
 
     /**
      * @param \App\Model\Heureka\HeurekaReviewItemFactory $heurekaReviewItemFactory
      */
-    public function __construct(
-        HeurekaReviewItemFactory $heurekaReviewItemFactory
-    ) {
+    public function __construct(HeurekaReviewItemFactory $heurekaReviewItemFactory) {
         $this->heurekaReviewItemFactory = $heurekaReviewItemFactory;
     }
 
@@ -32,14 +27,14 @@ class HeurekaReviewFactory
     }
 
     /**
-     * @param \SimpleXMLElement $simpleXmlElement
+     * @param \SimpleXMLElement $reviewXml
+     * @param int $domainId
      * @return \App\Model\Heureka\HeurekaReview
      */
-    public function createFromXml(SimpleXMLElement $simpleXmlElement): HeurekaReview
+    public function createFromXml(SimpleXMLElement $reviewXml, int $domainId): HeurekaReview
     {
-        $heurekaReviewItem = $this->heurekaReviewItemFactory->create($simpleXmlElement);
-        $heurekaReview = $this->create($heurekaReviewItem);
+        $heurekaReviewItem = $this->heurekaReviewItemFactory->create($reviewXml, $domainId);
 
-        return $heurekaReview;
+        return $this->create($heurekaReviewItem);
     }
 }

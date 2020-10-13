@@ -8,10 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class HeurekaReviewRepository
 {
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    protected $em;
+    protected EntityManagerInterface $em;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -30,18 +27,24 @@ class HeurekaReviewRepository
     }
 
     /**
+     * @param int|null $domainId
      * @return \App\Model\Heureka\HeurekaReview[]
      */
-    public function getAll(): array
+    public function getAll(?int $domainId = null): array
     {
-        return $this->getHeurekaReviewRepository()->findAll();
+        if ($domainId === null) {
+            return $this->getHeurekaReviewRepository()->findAll();
+        }
+
+        return $this->getHeurekaReviewRepository()->findBy(['domainId' => $domainId]);
     }
 
     /**
+     * @param int $domainId
      * @return \App\Model\Heureka\HeurekaReview[]
      */
-    public function getLatestReviews(): array
+    public function getLatestReviews(int $domainId): array
     {
-        return $this->getHeurekaReviewRepository()->findBy([], ['addedAt' => 'DESC'], HeurekaReview::HEUREKA_REVIEW_LIMIT, 0);
+        return $this->getHeurekaReviewRepository()->findBy(['domainId' => $domainId], ['addedAt' => 'DESC'], HeurekaReview::HEUREKA_REVIEW_LIMIT, 0);
     }
 }

@@ -91,7 +91,7 @@ class BlogCategoryController extends FrontBaseController
             'isMainPage' => $blogCategory->isMainPage(),
             'blogArticlePaginationResult' => $blogArticlePaginationResult,
             'lastBlogCategoryForBlogArticlesByBlogArticleId' => $lastBlogCategoryForBlogArticlesByBlogArticleId,
-            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
         ]);
     }
 

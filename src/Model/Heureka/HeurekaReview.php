@@ -74,10 +74,16 @@ class HeurekaReview
     protected $summary;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private int $domainId;
+
+    /**
      * @param \App\Model\Heureka\HeurekaReviewItem $heurekaReviewItem
      */
     public function __construct(HeurekaReviewItem $heurekaReviewItem)
     {
+        $this->domainId = $heurekaReviewItem->domainId;
         $this->ratingId = $heurekaReviewItem->ratingId;
         $this->addedAt = $heurekaReviewItem->addedAt;
         $this->totalRatings = $heurekaReviewItem->totalRatings;
@@ -93,6 +99,14 @@ class HeurekaReview
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDomainId(): int
+    {
+        return $this->domainId;
     }
 
     /**
