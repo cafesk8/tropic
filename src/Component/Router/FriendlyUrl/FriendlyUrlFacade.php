@@ -65,4 +65,14 @@ class FriendlyUrlFacade extends BaseFriendlyUrlFacade
 
         $this->friendlyUrlCacheFacade->saveToCache($mainFriendlyUrl);
     }
+
+    /**
+     * @param string $slug
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl
+     */
+    public function getFriendlyUrlBySlugAndDomainId(string $slug, int $domainId): FriendlyUrl
+    {
+        return $this->friendlyUrlRepository->getFriendlyUrlBySlugAndDomainId($slug, $domainId);
+    }
 }

@@ -39,3 +39,7 @@ services:
     App\Command\Migrations\ImportLegacyProductUrlsCommand:
         arguments:
             $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'
+
+    App\Command\Migrations\ImportOtherLegacyUrlsCommand:
+        arguments:
+            $shopsysMigrationsDirPath: '%shopsys.migrations_dir%'
