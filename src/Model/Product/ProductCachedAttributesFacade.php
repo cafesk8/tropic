@@ -52,6 +52,11 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     protected $registeredCustomerPricesByProductId;
 
     /**
+     * @var \App\Model\Product\Pricing\ProductPrice[]
+     */
+    private array $salePricesByProductId = [];
+
+    /**
      * @param \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
@@ -146,18 +151,36 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
     /**
      * @param \App\Model\Product\Product $product
+     * @param bool|null $isSale
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
      */
-    public function getProductSellingPrice(BaseProduct $product)
+    public function getProductSellingPrice(BaseProduct $product, ?bool $isSale = null)
     {
-        if (isset($this->sellingPricesByProductId[$product->getId()])) {
+        if ($isSale === true && isset($this->salePricesByProductId[$product->getId()])) {
+            return $this->salePricesByProductId[$product->getId()];
+        } elseif ($isSale !== true && isset($this->sellingPricesByProductId[$product->getId()])) {
             return $this->sellingPricesByProductId[$product->getId()];
         }
+
+        return $this->calculateProductSellingPriceAndSaveToCache($product, $isSale);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param bool|null $isSale
+     * @return \App\Model\Product\Pricing\ProductPrice
+     */
+    public function calculateProductSellingPriceAndSaveToCache(Product $product, ?bool $isSale = null): ProductPrice
+    {
         $productPrice = $this->productPriceCalculationForCustomerUser->calculatePriceForCurrentUser(
             $product,
-            $product->isInAnySaleStock()
+            $isSale ?? $product->isInAnySaleStock()
         );
-        $this->sellingPricesByProductId[$product->getId()] = $productPrice;
+        if ($isSale === true) {
+            $this->salePricesByProductId[$product->getId()] = $productPrice;
+        } else {
+            $this->sellingPricesByProductId[$product->getId()] = $productPrice;
+        }
 
         return $productPrice;
     }

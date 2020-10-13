@@ -79,7 +79,7 @@ class ProductPriceCalculationForCustomerUser extends BaseProductPriceCalculation
     /**
      * @param \App\Model\Product\Product $product
      * @param bool $salePrice
-     * @return \App\Model\Product\Pricing\ProductPrice|\Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice
+     * @return \App\Model\Product\Pricing\ProductPrice
      */
     public function calculatePriceForCurrentUser(BaseProduct $product, bool $salePrice = false)
     {

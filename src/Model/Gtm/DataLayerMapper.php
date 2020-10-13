@@ -181,7 +181,7 @@ class DataLayerMapper
             $quantity = $quantifiedProduct->getQuantity();
 
             $dataLayerProduct = new DataLayerProduct();
-            $this->mapProductToDataLayerProduct($product, $dataLayerProduct, $locale);
+            $this->mapProductToDataLayerProduct($product, $dataLayerProduct, $locale, false, $quantifiedProduct->isSaleItem());
             $dataLayerProduct->setQuantity($quantity);
             $dataLayerProducts[] = $dataLayerProduct;
         }
@@ -227,8 +227,9 @@ class DataLayerMapper
      * @param \App\Model\Gtm\Data\DataLayerProduct $dataLayerProduct
      * @param string $locale
      * @param bool $isGift
+     * @param bool $isSale
      */
-    public function mapProductToDataLayerProduct(Product $product, DataLayerProduct $dataLayerProduct, string $locale, bool $isGift = false): void
+    public function mapProductToDataLayerProduct(Product $product, DataLayerProduct $dataLayerProduct, string $locale, bool $isGift = false, ?bool $isSale = null): void
     {
         $dataLayerProduct->setName((string)$product->getName($locale));
         $dataLayerProduct->setId((string)$product->getId());
@@ -240,7 +241,7 @@ class DataLayerMapper
             $dataLayerProduct->setTax('0.0');
             $dataLayerProduct->setPriceWithTax('0.0');
         } else {
-            $sellingPrice = $this->productCachedAttributesFacade->getProductSellingPrice($product);
+            $sellingPrice = $this->productCachedAttributesFacade->getProductSellingPrice($product, $isSale);
 
             if ($sellingPrice !== null) {
                 $dataLayerProduct->setPrice($sellingPrice->getPriceWithoutVat()->getAmount());
