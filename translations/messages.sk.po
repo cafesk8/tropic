@@ -3970,3 +3970,8 @@ msgstr "Žiadne sklady sa nenašli"
 msgid "Žádné slevy na celý nákup nenalezeny."
 msgstr "Žiadne zľavy na celý nákup sa nenašli."
 
+msgid "< PREVIOUS"
+msgstr "< PREDCHÁDZAJÚCI"
+
+msgid "NEXT >"
+msgstr "DALŠÍ >"

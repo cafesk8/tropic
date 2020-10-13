@@ -3904,3 +3904,9 @@ msgstr ""
 msgid "Žádné slevy na celý nákup nenalezeny."
 msgstr ""
 
+msgid "< PREVIOUS"
+msgstr "< PŘEDCHOZÍ"
+
+msgid "NEXT >"
+msgstr "DALŠÍ >"
+

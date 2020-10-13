@@ -71,6 +71,16 @@
                         </div>
                     {% endif %}
 
+                    {% if paginationResult.results|length > 0 %}
+                        <div class="box-list__actions__pagination">
+                            {% set entityName = 'products'|trans %}
+                            {% if paging is not defined %}
+                                {% set paging = true %}
+                            {% endif %}
+                            {{ paginator.paginatorNavigation(paginationResult, entityName, 'page', false, paging) }}
+                        </div>
+                    {% endif %}
+
                     <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
                         {{ render(controller('App\\Controller\\Front\\BestsellingProductController:listAction', {'category': category, 'type': constant('App\\Controller\\Front\\BestsellingProductController::TYPE_VERTICAL')})) }}
                         {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction')) }}
