@@ -1,16 +1,56 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="font-family: Firefly, DejaVu Sans, sans-serif;">
-    <h1>Tropic Fishing</h1>
-    <h2>{{ 'Dárkový poukaz'|trans }}</h2>
-    <p style="{% if greyscale is same as(false) %}color: #0f74a8;{% endif %}">
-        <b>{{ giftCertificateCode }}</b>
-    </p>
-    <p>Hodnota: <b>{{ giftCertificateValue|priceWithCurrency(giftCertificateCurrency) }}</b></p>
-    {% if giftCertificateValidTo is not empty %}
-        <p>Platný do: <b>{{ giftCertificateValidTo|formatDateTime }}</b></p>
-    {% endif %}
+<body>
+    <div style="font-family: 'Kanit'; width:633px;">
+        <div style="float:left; width:50%; padding-right:45px;">
+            <div style="text-align:right; margin-bottom:110px;">
+                {% if greyscale is same as(false) %}
+                    <img style="display:inline-block;" src="./public/frontend/images/logo-blue.svg" alt="{{ 'Logo'|trans }}">
+                {% else %}
+                    <img style="display:inline-block;" src="./public/frontend/images/logo-black.svg" alt="{{ 'Logo'|trans }}">
+                {% endif %}
+            </div>
+            <div style="text-align: right;">
+                {% if greyscale is same as(false) %}
+                    <img style="display:inline-block; width:270px" src="./public/frontend/images/fishes-big-right.svg" alt="{{ 'Fishes'|trans }}">
+                {% else %}
+                    <img style="display:inline-block; width:270px" src="./public/frontend/images/fishes-big-right-black.svg" alt="{{ 'Fishes'|trans }}">
+                {% endif %}
+            </div>
+        </div>
+        <div style="float:left; width:50%; padding-left:45px; border-left:2px solid {% if greyscale is same as(false) %}#0077b3{% else %}#000{% endif %};">
+            <p style="font-size:27px; line-height:16px; font-weight:700; text-transform:uppercase; margin-top:0px; margin-bottom:25px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
+                {{ 'Dárkový<br> poukaz<br> v hodnotě'|trans|raw }}
+            </p>
+            <p style="font-size:66px; line-height:40px; font-weight:700; margin-bottom:25px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
+                {{ giftCertificateValue|priceWithCurrency(giftCertificateCurrency) }}
+            </p>
+            <div style="height: 70px;">
+                <p style="margin:0px; padding:0px; font-size:14px; line-height:14px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
+                    {{ giftCertificateCode }}
+                </p>
+                {% if giftCertificateValidTo is not empty %}
+                    <p style="margin:0px; padding:0px; font-size:12px; line-height:12px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
+                        {{ 'Platný do:'|trans }} <strong>{{ giftCertificateValidTo|formatDateTime }}</strong>
+                    </p>            
+                {% endif %}
+            </div>
+            <p style="margin:0px; padding:0px; font-size:10px; line-height:10px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
+                {{ 'Kód vložte v pokladně při dokočení objednávky.'|trans }}
+            </p>
+            <p style="margin:0px; padding:0px; font-size:10px; line-height:10px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
+                {{ 'Platnost poukazu je 12 měsíců od zakoupení.'|trans }}
+            </p>
+            <p style="margin:0px; padding:0px; font-size:10px; line-height:10px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
+                {{ 'TROPIC LIBEREC s.r.o., U Sadu 655, Liberec 25, IČO: 25415981'|trans|raw }}
+            </p>
+            <a style="display:block; margin:0px 0px 10px 0px; padding:0px; font-size:10px; line-height:10px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}" href="http://www.tropicfishing.cz/">
+                <strong>{{ 'http://www.tropicfishing.cz/'|trans }}</strong>
+            </a>
+        </div>
+    </div>
 </body>
 </html>
