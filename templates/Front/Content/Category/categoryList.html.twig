@@ -48,8 +48,7 @@
                     {% set categoryUrl = categoryUrl ~ '?vyrobce=' ~ brand.name|lower %}
                 {% endif %}
                 <li class="list-categories__item">
-                    <a href="{{ categoryUrl }}"
-                    class="list-categories__item__link">
+                    <a href="{{ categoryUrl }}" class="list-categories__item__link">
                         <div class="list-categories__item__image">
                             {{ image(category, { alt: category.name }) }}
                         </div>

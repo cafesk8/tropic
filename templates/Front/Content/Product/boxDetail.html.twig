@@ -38,7 +38,7 @@
                                 {% set galleryImages = getImages(product) %}
                                 {% set showGallery = galleryImages|length > 1 or youtubeVideoIds %}
 
-                                <div class="box-detail__image__main{% if not imageExists(product) %} box-detail__image__main--no-image{% endif %}">
+                                <div class="box-detail__image__main">
                                     {% if imageExists(product) %}
                                         <a href="{{ imageUrl(product, 'original') }}"
                                         class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">

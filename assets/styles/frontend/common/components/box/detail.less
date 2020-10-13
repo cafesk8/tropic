@@ -88,17 +88,30 @@
         position: relative;
 
         &__main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 250px;
             position: relative;
             margin-bottom: @box-detail-image-main-bottom-gap;
             text-align: center;
 
             font-size: 0;
 
-            &--no-image {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 350px;
+            @media @query-sm {
+                height: 316px;
+            }
+
+            @media @query-lg {
+                height: 400px;
+            }
+
+            @media @query-vl {
+                height: 458px;
+            }
+
+            img {
+                .center-image();
             }
 
             &__sticker {
@@ -113,6 +126,7 @@
                 }
 
                 img {
+                    position: static;
                     max-height: 100%;
                 }
             }

@@ -100,6 +100,15 @@
     &--full-width {
         width: 100%;
     }
+
+    @btn-with-input-height: @input-height;
+    @btn-with-input-font-size: @font-size-small;
+
+    &--with-input {
+        min-height: @btn-with-input-height;
+
+        font-size: @btn-with-input-font-size;
+    }
 }
 
 // Button with border
