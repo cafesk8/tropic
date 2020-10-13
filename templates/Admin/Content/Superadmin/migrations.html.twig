@@ -153,6 +153,18 @@
 					WHERE GT.title != '' OR GT.metadescription != '' OR GT.nazev_feed_heureka != ''
 					ORDER BY G.id, GT.language
 				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Automatické přesměrování URL produktů - importujte soubor s názvem "product_urls.csv"</td>
+				<td>
+					SELECT G.catnum, U.url, U.domain
+					FROM `url` U
+					JOIN goods G ON G.id = U.id
+					WHERE U.page = 'product_detail'
+					AND G.catnum != ''
+				</td>
+				<td></td>
 			</tr>
 		</tbody>
 
