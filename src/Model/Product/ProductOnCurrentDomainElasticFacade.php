@@ -130,8 +130,16 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         $productIds = $this->productElasticsearchRepository->getSortedProductIdsByFilterQuery($filterQuery);
 
         $listableProductsByIds = $this->productRepository->findByIds($productIds->getIds());
+        $sortedListableProductsByIds = [];
 
-        return new PaginationResult($page, $limit, $productIds->getTotal(), $listableProductsByIds);
+        foreach ($listableProductsByIds as $product) {
+            $index = array_search((string)$product->getId(), $productIds->getIds(), true);
+            $sortedListableProductsByIds[$index] = $product;
+        }
+
+        ksort($sortedListableProductsByIds);
+
+        return new PaginationResult($page, $limit, $productIds->getTotal(), $sortedListableProductsByIds);
     }
 
     /**
