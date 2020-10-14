@@ -15,7 +15,10 @@ parameters:
     mailer_password: ~
     mailer_disable_delivery: false
     mailer_master_email_address: no-reply@shopsys.com
-    mailer_delivery_whitelist: [/@shopsys\.com$/]
+    mailer_delivery_whitelist:
+        - /@shopsys\.com$/
+        - /@tropicliberec\.cz/
+        - /@tropicfishing\.cz/
 
     secret: ThisTokenIsNotSoSecretChangeIt
     trusted_proxies:
