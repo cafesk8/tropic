@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Elasticsearch;
 
+use App\Model\Category\CategoryFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
@@ -45,6 +46,8 @@ class ProductExportRepository extends BaseProductExportRepository
 
     private FlagFacade $flagFacade;
 
+    private CategoryFacade $categoryFacade;
+
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
@@ -56,6 +59,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \App\Model\Category\CategoryFacade $categoryFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -67,12 +71,14 @@ class ProductExportRepository extends BaseProductExportRepository
         FriendlyUrlFacade $friendlyUrlFacade,
         ProductSetFacade $productSetFacade,
         PricingGroupFacade $pricingGroupFacade,
-        FlagFacade $flagFacade
+        FlagFacade $flagFacade,
+        CategoryFacade $categoryFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->productSetFacade = $productSetFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->flagFacade = $flagFacade;
+        $this->categoryFacade = $categoryFacade;
     }
 
     /**
@@ -112,6 +118,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['variant_type'] = $product->getVariantType();
         $result['recommended'] = $product->isRecommended();
         $result['supplier_set'] = $product->isSupplierSet();
+        $result['main_category_path'] = $this->getMainCategoryPath($product, $domainId);
 
         return $result;
     }
@@ -315,5 +322,15 @@ class ProductExportRepository extends BaseProductExportRepository
             ->orderBy('p.id')
             ->setParameter('domainId', $domainId)
             ->setParameter('productTypeSet', Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return string
+     */
+    private function getMainCategoryPath(Product $product, int $domainId): string
+    {
+       return $this->categoryFacade->getCategoryFullPath($product, $this->domain->getDomainConfigById($domainId), '/') ?? '';
     }
 }

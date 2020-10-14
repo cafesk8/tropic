@@ -38,6 +38,7 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['variant_type'] = $result['variant_type'] ?? Product::VARIANT_TYPE_NONE;
         $result['recommended'] = $result['recommended'] ?? false;
         $result['supplier_set'] = $result['supplier_set'] ?? false;
+        $result['main_category_path'] = $result['main_category_path'] ?? '';
 
         return $result;
     }
