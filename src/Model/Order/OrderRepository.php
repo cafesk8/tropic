@@ -283,7 +283,7 @@ class OrderRepository extends BaseOrderRepository
     public function getForTransfer(int $limit): array
     {
         $queryBuilder = $this->createOrderQueryBuilder()
-            ->where('o.exportStatus = :exportStatus')
+            ->andWhere('o.exportStatus = :exportStatus')
             ->orderBy('o.createdAt', 'ASC')
             ->setMaxResults($limit)
             ->setParameters([
