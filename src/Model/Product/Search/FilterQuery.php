@@ -34,6 +34,7 @@ class FilterQuery extends BaseFilterQuery
     {
         /** @var \App\Model\Product\Search\FilterQuery $clone */
         $clone = clone $this;
+        $text = str_replace('/', '\/', $text);
 
         $clone->match = [
             'multi_match' => [
