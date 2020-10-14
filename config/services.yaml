@@ -797,3 +797,5 @@ services:
     App\Controller\Front\ScriptController:
         arguments:
             $shopId: '%zbozi_shop_id%'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade: ~
