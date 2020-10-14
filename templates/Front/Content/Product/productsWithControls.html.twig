@@ -25,16 +25,18 @@
         {% if paginationResult.results|length > 0 %}
             {{ productList.list(paginationResult.results) }}
 
-            {% if app.request.attributes.get('_route') is same as ('front_product_list') %}
-                <div class="box-button">
-                    {{ paginator.loadPreviousButton(paginationResult, 'page') }}
-                    {{ paginator.loadNextButton(paginationResult, 'page') }}
-                </div> 
-            {% else %}
-            <div class="box-list__actions__button">
-                {{ paginator.loadMoreButton(paginationResult) }}
-            </div>
-            {% endif %}
+            <div class="box-list__actions">
+                {% if app.request.attributes.get('_route') is same as ('front_product_list') %}
+                    <div class="box-list__actions__listing">
+                        {{ paginator.loadPreviousButton(paginationResult, 'page') }}
+                        {{ paginator.loadNextButton(paginationResult, 'page') }}
+                    </div> 
+                {% else %}
+                    <div class="box-list__actions__button">
+                        {{ paginator.loadMoreButton(paginationResult) }}
+                    </div>
+                {% endif %}
+
                 <div class="box-list__actions__pagination">
                     {% set entityName = 'products'|trans %}
                     {% if paging is not defined %}
@@ -42,6 +44,7 @@
                     {% endif %}
                     {{ paginator.paginatorNavigation(paginationResult, entityName, 'page', false, paging) }}
                 </div>
+            </div>
         {% endif %}
     </div>
 

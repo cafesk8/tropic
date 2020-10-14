@@ -73,6 +73,20 @@
         }
     }
 
+    &__ordering {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        @media @query-vl {
+            margin-bottom: 25px;
+        }
+
+        &__pagination {
+            margin-left: auto;
+        }
+    }
+
     &__products {
         margin-bottom: @box-list-bottom-gap;
 
@@ -201,11 +215,9 @@
     &__actions {
         position: relative;
         display: flex;
-        flex-direction: column;
-
-        @media @query-xl {
-            flex-direction: row;
-        }
+        flex-wrap: wrap;
+        flex-direction: row;
+        margin-bottom: -10px;
 
         &__button {
             display: flex;
@@ -228,11 +240,20 @@
             }
         }
 
-        &__pagination {
-            @media @query-xl {
-                position: absolute;
-                right: 0;
+        &__listing {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+            margin-bottom: 10px;
+
+            &__item {
+                margin: 0 10px;
+                width: 160px;
             }
+        }
+
+        &__pagination {
+            margin: 0 auto 10px;
         }
     }
 }
