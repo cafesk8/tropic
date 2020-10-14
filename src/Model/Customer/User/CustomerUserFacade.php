@@ -19,6 +19,7 @@ use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFacade;
+use Shopsys\FrameworkBundle\Model\Customer\Exception\CustomerUserNotFoundByEmailAndDomainException;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade as BaseCustomerUserFacade;
@@ -372,5 +373,21 @@ class CustomerUserFacade extends BaseCustomerUserFacade
     public function findByLegacyId($legacyId): ?CustomerUser
     {
         return $this->customerUserRepository->findByLegacyId($legacyId);
+    }
+
+    /**
+     * @param string $email
+     * @param int $domainId
+     * @return bool
+     */
+    public function needsToSetNewPassword(string $email, int $domainId): bool
+    {
+        try {
+            $customerUser = $this->customerUserRepository->getCustomerUserByEmailAndDomain($email, $domainId);
+
+            return !$customerUser->isNewPasswordSet();
+        } catch (CustomerUserNotFoundByEmailAndDomainException $exception) {
+            return false;
+        }
     }
 }

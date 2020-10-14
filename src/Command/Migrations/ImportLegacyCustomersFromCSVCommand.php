@@ -230,6 +230,7 @@ class ImportLegacyCustomersFromCSVCommand extends Command
                 } else {
                     $customerUserData = $this->customerUserDataFactory->createForDomainId($domainId);
                     $customerUserData->password = $this->hashGenerator->generateHash(6);
+                    $customerUserData->newPasswordSet = false;
 
                     $customerUserUpdateData = $this->customerUserUpdateDataFactory->create();
                     $customerUserData->pricingGroup = $this->pricingGroupFacade->getById($csvRow[self::USER_COL_INDEX_PRICE_CAT]);

@@ -2371,6 +2371,9 @@ msgstr "I'll add a note to the order"
 msgid "Přihlaste se"
 msgstr "Log in"
 
+msgid "Přihlašujete se poprvé na novém e-shopu, prosím, nastavte si heslo pomocí funkce „Zapomenuté heslo“"
+msgstr "You are logging in for the first time in the new e-shop, please set a password using the \"<a href=\"%passwordResetUrl%\">Forgotten password</a>\" function."
+
 msgid "Přihlásit se"
 msgstr "Log in"
 

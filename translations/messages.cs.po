@@ -2401,6 +2401,9 @@ msgstr "Přidám poznámku k objednávce"
 msgid "Přihlaste se"
 msgstr "Přihlaste se"
 
+msgid "Přihlašujete se poprvé na novém e-shopu, prosím, nastavte si heslo pomocí funkce „Zapomenuté heslo“"
+msgstr "Přihlašujete se poprvé na novém e-shopu, prosím, nastavte si heslo pomocí funkce „<a href=\"%passwordResetUrl%\">Zapomenuté heslo</a>“."
+
 msgid "Přihlásit se"
 msgstr "Přihlásit se"
 
