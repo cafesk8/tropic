@@ -1,7 +1,7 @@
-{% macro productAvailability(product, shoppingItemQuantity) %}
+{% macro productAvailability(product, shoppingItemQuantity, saleItem) %}
     {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
     {% import 'Front/Content/Product/productAvailabilityInDaysMacro.html.twig' as availabilityInDays %}
-    {% set shoppingItemDeliveryDays = getOrderProcessItemDeliveryDays(product, shoppingItemQuantity) %}
+    {% set shoppingItemDeliveryDays = getOrderProcessItemDeliveryDays(product, shoppingItemQuantity, saleItem) %}
     {% if shoppingItemDeliveryDays is not null %}
         {{ availabilityInDays.productAvailabilityInDays(shoppingItemDeliveryDays) }}
     {% else %}

@@ -133,4 +133,20 @@ class CartItem extends BaseCartItem
 
         return $isSameProduct && ($bothAreSaleItems || $bothAreRegularItems);
     }
+
+    /**
+     * @return bool
+     */
+    public function isExtendedDelivery(): bool
+    {
+        if (!$this->saleItem
+            && !$this->getProduct()->isProductOnlyAtStoreStock(true)
+            && $this->getProduct()->getDeliveryDays() !== null
+            && $this->getProduct()->getRealInternalStockQuantity() < $this->getQuantity()
+        ) {
+            return true;
+        }
+
+        return false;
+    }
 }

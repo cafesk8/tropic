@@ -33,7 +33,7 @@
         <div class="list-cart-preview__item__info">
             {% if canShowAvailability is same as (true) %}
                 <div class="list-cart-preview__item__availability">
-                    {{ availability.productAvailability(product, quantity) }}
+                    {{ availability.productAvailability(product, quantity, saleItem) }}
                 </div>
             {% endif %}
             <div class="list-cart-preview__item__pieces">

@@ -314,11 +314,16 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     /**
      * @param \App\Model\Product\Product $product
      * @param int $shoppingItemQuantity
+     * @param bool $saleItem
      * @return string|null
      */
-    public function getOrderProcessItemDeliveryDays(Product $product, int $shoppingItemQuantity): ?string
+    public function getOrderProcessItemDeliveryDays(Product $product, int $shoppingItemQuantity, bool $saleItem): ?string
     {
-        if ($product->getDeliveryDays() !== null && $product->getRealInternalStockQuantity() < $shoppingItemQuantity) {
+        if (!$saleItem
+            && !$product->isProductOnlyAtStoreStock(true)
+            && $product->getDeliveryDays() !== null
+            && $product->getRealInternalStockQuantity() < $shoppingItemQuantity
+        ) {
             return $product->getDeliveryDays();
         }
 

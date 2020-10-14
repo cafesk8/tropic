@@ -465,6 +465,28 @@ class Product extends BaseProduct
     /**
      * @return int
      */
+    private function getStoreStockQuantity(): int
+    {
+        foreach ($this->storeStocks as $storeStock) {
+            if ($storeStock->getStore()->isStoreStock() && $storeStock->getStockQuantity() !== null) {
+                return $storeStock->getStockQuantity();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealStoreStockQuantity(): int
+    {
+        return $this->getCalculatedStockQuantity($this->getStoreStockQuantity());
+    }
+
+    /**
+     * @return int
+     */
     public function getExternalStockQuantity(): int
     {
         if ($this->isMainVariant()) {
@@ -491,6 +513,18 @@ class Product extends BaseProduct
         }
 
         return $this->getCalculatedStockQuantity($this->getExternalStockQuantity());
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealExternalStockAndStoreStockQuantity(): int
+    {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call getRealExternalStockAndStoreStockQuantity from main variant!');
+        }
+
+        return $this->getCalculatedStockQuantity($this->getExternalStockQuantity() + $this->getStoreStockQuantity());
     }
 
     /**
@@ -1155,6 +1189,34 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param bool $withoutSaleStock
+     * @return bool
+     */
+    public function isProductOnlyAtExternalStockAndStoreStock(bool $withoutSaleStock = false): bool
+    {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant!');
+        }
+        $stockQuantity = $withoutSaleStock ? $this->getRealNonSaleStocksQuantity() : $this->getRealStockQuantity();
+
+        return $this->getRealExternalStockAndStoreStockQuantity() > 0 && $this->getRealExternalStockAndStoreStockQuantity() === $stockQuantity;
+    }
+
+    /**
+     * @param bool $withoutSaleStock
+     * @return bool
+     */
+    public function isProductOnlyAtStoreStock(bool $withoutSaleStock = false): bool
+    {
+        if ($this->isMainVariant()) {
+            throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant!');
+        }
+        $stockQuantity = $withoutSaleStock ? $this->getRealNonSaleStocksQuantity() : $this->getRealStockQuantity();
+
+        return $this->getRealStoreStockQuantity() > 0 && $this->getRealStoreStockQuantity() === $stockQuantity;
+    }
+
+    /**
      * @return bool
      */
     public function isAvailable(): bool
@@ -1176,8 +1238,12 @@ class Product extends BaseProduct
         if ($this->isMainVariant()) {
             throw new \Exception('Don\'t call isAvailableInDays from main variant!');
         }
+        if ($this->isProductOnlyAtStoreStock($withoutSaleStock))
+        {
+            return false;
+        }
 
-        return $this->isProductOnlyAtExternalStock($withoutSaleStock) && $this->getDeliveryDays() !== null;
+        return $this->isProductOnlyAtExternalStockAndStoreStock($withoutSaleStock) && $this->getDeliveryDays() !== null;
     }
 
     /**
