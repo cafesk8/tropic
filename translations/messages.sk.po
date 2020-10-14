@@ -286,6 +286,9 @@ msgstr "Kategória blogu <strong>{{ name }}</strong> bola odstránená"
 msgid "Brand"
 msgstr "Značka"
 
+msgid "Brand overview"
+msgstr "Prehľad značiek"
+
 msgid "Bulk editing done"
 msgstr "Hromadné úpravy sú dokončené"
 
@@ -698,7 +701,7 @@ msgid "Doprava objednávky"
 msgstr "Doprava objednávky"
 
 msgid "Doprava při nákupu nad 1000 Kč zdarma"
-msgstr "Doprava pri nákupe nad 70 € zadarmo"
+msgstr "Doprava pri nákupe od 50 € zadarmo"
 
 msgid "Doprava zdarma"
 msgstr "Doprava zadarmo"
@@ -951,6 +954,9 @@ msgstr "Zabudnuté heslo"
 
 msgid "Framework"
 msgstr "Framework"
+
+msgid "Free"
+msgstr "Zadarmo"
 
 msgid "Full name"
 msgstr "Celé meno"
@@ -1430,7 +1436,7 @@ msgid "Move"
 msgstr "Presunúť"
 
 msgid "Možnost nákupu na splátky"
-msgstr "Možnosť nákupu na splátky"
+msgstr "Benefity pre stálych aj nových zákazníkov"
 
 msgid "Možnost vrácení zboží do 30 dnů"
 msgstr "Možnosť vrátenia tovaru do 30 dní"
@@ -3419,7 +3425,7 @@ msgid "Výrobce"
 msgstr "Výrobca"
 
 msgid "Výrobci"
-msgstr "Výrobci"
+msgstr "Výrobcovia"
 
 msgid "Výrobek"
 msgstr "Výrobok"
@@ -3470,7 +3476,7 @@ msgid "YouTube videa"
 msgstr "YouTube videá"
 
 msgid "Your cart is unfortunately empty. To create order, you have to <a href=\"%url%\">choose</a> some product first"
-msgstr "Váš košík, je žiaľ, prázdny. Ak chcete vytvoriť objednávku, musíte najskôr <a href=\"%url%\">vybrať</a> nejaký produkty"
+msgstr "Váš košík je, žiaľ, prázdny. Ak chcete vytvoriť objednávku, musíte najskôr <a href=\"%url%\">vybrať</a> nejaký produkt"
 
 msgid "Your data had been successfully updated"
 msgstr "Vaše údaje boli úspešne aktualizované"
@@ -3506,7 +3512,7 @@ msgid "Zahraniční dodavatel"
 msgstr "Zahraničný dodávateľ"
 
 msgid "Založeno 2000 - tradice prodeje již 20 let"
-msgstr "Založené 2000 - tradícia predaja už 20 rokov"
+msgstr "Založené v roku 2000 - tradícia predaja už 20 rokov"
 
 msgid "Zaplatit"
 msgstr "Zaplatiť"
