@@ -53,6 +53,7 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
     /**
      * Product group is hidden when any of its products are missing prices for ordinary customer or registered customer
      * If any product in product group doesn't have a name for selected domain then whole product group is hidden
+     * If any of the products in the set is hidden on the given domain, then the whole set is hidden
      * Now uses ProductDomain::shown instead of Product::calculatedHidden
      *
      * @param bool $onlyMarkedProducts
@@ -136,6 +137,13 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
                             WHERE pcd.product_id = p.id
                                 AND pcd.domain_id = pv.domain_id
                                 AND cd.visible = TRUE
+                        )
+                        AND TRUE = ALL(
+                          SELECT pd.shown
+                          FROM product_sets AS ps
+                          JOIN product_domains AS pd ON pd.product_id = ps.item_id
+                          WHERE ps.main_product_id = pv.product_id
+                          AND pd.domain_id = pv.domain_id
                         )
                     )
                     THEN TRUE
