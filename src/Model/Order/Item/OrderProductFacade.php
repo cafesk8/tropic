@@ -18,10 +18,10 @@ use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 
 /**
- * @method runRecalculationsAfterStockQuantityChange(\App\Model\Order\Item\OrderItem[] $orderProducts)
  * @method \App\Model\Order\Item\OrderItem[] getOrderProductsUsingStockFromOrderProducts(\App\Model\Order\Item\OrderItem[] $orderProducts)
  * @property \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
  * @property \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  */
 class OrderProductFacade extends BaseOrderProductFacade
 {
@@ -162,5 +162,25 @@ class OrderProductFacade extends BaseOrderProductFacade
             $this->em->flush();
             $this->runRecalculationsAfterStockQuantityChange($orderProducts);
         }
+    }
+
+    /**
+     * Product visibility recalculation is not triggered here to avoid deadlocks on conflict with CRON modules that run in parallel.
+     * Also, "hidden" calculation is removed - the attribute is deprecated on this project since ac2363d07dbd6eacbd840a151c7aafab6b9a4d0c
+     *
+     * @param \App\Model\Order\Item\OrderItem[] $orderProducts
+     */
+    protected function runRecalculationsAfterStockQuantityChange(array $orderProducts)
+    {
+        $orderProductsUsingStock = $this->getOrderProductsUsingStockFromOrderProducts($orderProducts);
+        $relevantProducts = [];
+        foreach ($orderProductsUsingStock as $orderProductUsingStock) {
+            $relevantProduct = $orderProductUsingStock->getProduct();
+            $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($relevantProduct);
+            $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($relevantProduct);
+            $relevantProduct->markForVisibilityRecalculation();
+            $relevantProducts[] = $relevantProduct;
+        }
+        $this->em->flush($relevantProducts);
     }
 }

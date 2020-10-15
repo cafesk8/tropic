@@ -356,7 +356,6 @@ class ProductFacade extends BaseProductFacade
         $this->friendlyUrlFacade->createFriendlyUrls('front_product_detail', $product->getId(), $product->getNames());
 
         $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($product);
-        $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
         $this->productPriceRecalculationScheduler->scheduleProductForImmediateRecalculation($product);
 
         $this->updateProductStoreStocks($productData, $product);
@@ -1128,7 +1127,6 @@ class ProductFacade extends BaseProductFacade
         $mainVariant = $product->isVariant() ? $product->getMainVariant() : $product;
         $mainVariant->markForVisibilityRecalculation();
         $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
-        $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
         $this->productPriceRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
         $this->productExportScheduler->scheduleRowIdForImmediateExport($mainVariant->getId());
     }
