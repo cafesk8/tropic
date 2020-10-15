@@ -308,14 +308,16 @@ class DataLayerMapper
     {
         $productItems = [...$order->getProductItems(), ...$order->getGiftItems()];
         $productsData = [];
+        $productsDataIndexedByProductId = $this->getElasticProductsDataIndexedById(
+            array_filter(array_map(fn (OrderItem $productItem) => $productItem->getProduct() !== null ? $productItem->getProduct()->getId() : null, $productItems)));
         foreach ($productItems as $productItem) {
             $product = $productItem->getProduct();
 
             if ($product === null) {
                 continue;
             }
-
-            $productsData[] = $this->createDataLayerPurchaseProductFromOrderProductItem($productItem, $locale);
+            $categoryPath = $productsDataIndexedByProductId[$product->getId()]['main_category_path'] ?? '';
+            $productsData[] = $this->createDataLayerPurchaseProductFromOrderProductItem($productItem, $locale, $categoryPath);
         }
 
         $revenue = $order->getTotalPriceWithoutVat()
@@ -376,16 +378,15 @@ class DataLayerMapper
     /**
      * @param \App\Model\Order\Item\OrderItem $productItem
      * @param string $locale
+     * @param string $categoryPath
      * @return array
      */
-    private function createDataLayerPurchaseProductFromOrderProductItem(OrderItem $productItem, string $locale): array
+    private function createDataLayerPurchaseProductFromOrderProductItem(OrderItem $productItem, string $locale, string $categoryPath): array
     {
         $product = $productItem->getProduct();
         $price = $productItem->getPriceWithoutVat();
         $tax = $productItem->getPriceWithVat()->subtract($productItem->getPriceWithoutVat());
         $priceWithTax = $productItem->getPriceWithVat();
-
-        $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, Domain::MAIN_ADMIN_DOMAIN_ID);
 
         $orderProductData = [
             'name' => $product->getName($locale),
@@ -396,7 +397,7 @@ class DataLayerMapper
             'tax' => $this->getMoneyAsString($tax),
             'priceWithTax' => $this->getMoneyAsString($priceWithTax),
             'brand' => ($product->getBrand() === null) ? '' : $product->getBrand()->getName(),
-            'category' => $this->categoryFacade->getCategoriesNamesInPathAsString($productMainCategory, $locale),
+            'category' => $categoryPath,
             'availability' => $this->gtmHelper->getGtmAvailabilityByOrderItem($productItem),
             'quantity' => $productItem->getQuantity(),
         ];
