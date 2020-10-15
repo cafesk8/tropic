@@ -74,7 +74,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * @property \App\Twig\NumberFormatterExtension $numberFormatterExtension
  * @property \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
  * @property \App\Model\Order\Item\OrderItemFactory $orderItemFactory
- * @method \App\Model\Order\Order createOrder(\App\Model\Order\OrderData $orderData, \App\Model\Order\Preview\OrderPreview $orderPreview, \App\Model\Customer\User\CustomerUser|null $customerUser)
  * @method prefillFrontOrderData(\App\Model\Order\FrontOrderData $orderData, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order[] getCustomerUserOrderList(\App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order[] getOrderListForEmailByDomainId(string $email, int $domainId)
@@ -899,5 +898,46 @@ class OrderFacade extends BaseOrderFacade
     public function getOrdersWithLegacyIdAndWithoutPohodaIdFromDate(DateTime $fromDate): array
     {
         return $this->orderRepository->getOrdersWithLegacyIdAndWithoutPohodaIdFromDate($fromDate);
+    }
+
+    /**
+     * This method is copy-pasted from vendor, but the whole identity map is flushed here instead of the provided array
+     * It improves the performance, see https://github.com/shopsys/shopsys/pull/2080
+     *
+     * @param \App\Model\Order\OrderData $orderData
+     * @param \App\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
+     *
+     * @return \App\Model\Order\Order
+     */
+    public function createOrder(BaseOrderData $orderData, BaseOrderPreview $orderPreview, ?BaseCustomerUser $customerUser = null)
+    {
+        $orderNumber = $this->orderNumberSequenceRepository->getNextNumber();
+        $orderUrlHash = $this->orderHashGeneratorRepository->getUniqueHash();
+
+        $this->setOrderDataAdministrator($orderData);
+
+        /** @var \App\Model\Order\Order $order */
+        $order = $this->orderFactory->create(
+            $orderData,
+            (string)$orderNumber,
+            $orderUrlHash,
+            $customerUser
+        );
+
+        $this->fillOrderItems($order, $orderPreview);
+
+        foreach ($order->getItems() as $orderItem) {
+            $this->em->persist($orderItem);
+        }
+
+        $order->setTotalPrice(
+            $this->orderPriceCalculation->getOrderTotalPrice($order)
+        );
+
+        $this->em->persist($order);
+        $this->em->flush();
+
+        return $order;
     }
 }
