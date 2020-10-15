@@ -86,8 +86,8 @@ class OrderProductFacade extends BaseOrderProductFacade
 
                 foreach ($orderItemSourceStocksData as $orderItemSourceStockData) {
                     $orderItemSourceStockData->orderItem = $orderProductUsingStock;
-                    $this->orderItemSourceStockFacade->create($orderItemSourceStockData);
                 }
+                $this->orderItemSourceStockFacade->createMultiple($orderItemSourceStocksData);
 
                 if ($product->isPohodaProductTypeSet()) {
                     foreach ($product->getProductSets() as $productSet) {
