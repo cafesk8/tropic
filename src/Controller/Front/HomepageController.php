@@ -105,7 +105,7 @@ class HomepageController extends FrontBaseController
             ),
             'domainId' => $this->domain->getId(),
             'loyaltyProgramArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $this->domain->getId()),
-            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
         ]);
     }
 

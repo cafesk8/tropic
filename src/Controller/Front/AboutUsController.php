@@ -56,7 +56,7 @@ class AboutUsController extends FrontBaseController
 
         return $this->render('Front/Content/AboutUs/info.html.twig', [
             'loyaltyProgramArticle' => $loyaltyProgramArticle,
-            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
             'infoOpeningHours' => $this->shopInfoSettingFacade->getOpeningHours($this->domain->getId()),
         ]);
     }

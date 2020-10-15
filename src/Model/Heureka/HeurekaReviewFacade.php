@@ -4,77 +4,66 @@ declare(strict_types=1);
 
 namespace App\Model\Heureka;
 
+use App\Component\Domain\DomainHelper;
 use Doctrine\ORM\EntityManagerInterface;
-use SimpleXMLElement;
 
 class HeurekaReviewFacade
 {
-    /**
-     * @var \App\Model\Heureka\HeurekaReviewItemFactory
-     */
-    protected $heurekaReviewItemFactory;
+    public const HEUREKA_REVIEWS_URLS = [
+        DomainHelper::CZECH_DOMAIN => 'https://obchody.heureka.cz/tropicliberec-cz/recenze/',
+        DomainHelper::SLOVAK_DOMAIN => 'https://obchody.heureka.sk/tropicliberec-sk/recenze/',
+    ];
 
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    protected $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * @var \App\Model\Heureka\HeurekaReviewRepository
-     */
-    protected $heurekaReviewRepository;
+    private HeurekaReviewRepository $heurekaReviewRepository;
 
-    /**
-     * @var \App\Model\Heureka\HeurekaReviewFactory
-     */
-    protected $heurekaReviewFactory;
+    private HeurekaReviewFactory $heurekaReviewFactory;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \App\Model\Heureka\HeurekaReviewItemFactory $heurekaReviewItemFactory
      * @param \App\Model\Heureka\HeurekaReviewRepository $heurekaReviewRepository
      * @param \App\Model\Heureka\HeurekaReviewFactory $heurekaReviewFactory
      */
     public function __construct(
         EntityManagerInterface $em,
-        HeurekaReviewItemFactory $heurekaReviewItemFactory,
         HeurekaReviewRepository $heurekaReviewRepository,
         HeurekaReviewFactory $heurekaReviewFactory
     ){
         $this->em = $em;
-        $this->heurekaReviewItemFactory = $heurekaReviewItemFactory;
         $this->heurekaReviewRepository = $heurekaReviewRepository;
         $this->heurekaReviewFactory = $heurekaReviewFactory;
     }
 
     /**
-     * @param \SimpleXMLElement $itemFromXml
+     * @param \App\Model\Heureka\HeurekaReviewItem $reviewItem
      * @return \App\Model\Heureka\HeurekaReview
      */
-    public function create(SimpleXMLElement $itemFromXml): HeurekaReview
+    public function create(HeurekaReviewItem $reviewItem): HeurekaReview
     {
-        $heurekaReviewItem = $this->heurekaReviewItemFactory->create($itemFromXml);
-        $heurekaReview = $this->heurekaReviewFactory->create($heurekaReviewItem);
+        $review = $this->heurekaReviewFactory->create($reviewItem);
 
-        $this->em->persist($heurekaReview);
+        $this->em->persist($review);
         $this->em->flush();
 
-        return $heurekaReview;
+        return $review;
     }
 
     /**
+     * @param int|null $domainId
      * @return \App\Model\Heureka\HeurekaReview[]
      */
-    public function getAll(): array
+    public function getAll(?int $domainId = null): array
     {
-        return $this->heurekaReviewRepository->getAll();
+        return $this->heurekaReviewRepository->getAll($domainId);
     }
 
     /**
+     * @param int $domainId
      * @return \App\Model\Heureka\HeurekaReview[]
      */
-    public function getLatestReviews(): array
+    public function getLatestReviews(int $domainId): array
     {
-        return $this->heurekaReviewRepository->getLatestReviews();
+        return $this->heurekaReviewRepository->getLatestReviews($domainId);
     }
 }

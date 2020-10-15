@@ -43,7 +43,10 @@ class HeurekaReviewItem
      */
     public $summary;
 
+    public int $domainId;
+
     /**
+     * @param int $domainId
      * @param int $ratingId
      * @param \DateTime $addedAt
      * @param float $totalRatings
@@ -53,6 +56,7 @@ class HeurekaReviewItem
      * @param string|null $summary
      */
     public function __construct(
+        int $domainId,
         int $ratingId,
         DateTime $addedAt,
         float $totalRatings,
@@ -61,6 +65,7 @@ class HeurekaReviewItem
         ?string $cons,
         ?string $summary
     ) {
+        $this->domainId = $domainId;
         $this->ratingId = $ratingId;
         $this->addedAt = $addedAt;
         $this->totalRatings = $totalRatings;

@@ -252,7 +252,7 @@ class ProductController extends FrontBaseController
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
             'parentSetViews' => $this->listedProductViewElasticFacade->getParentSetsByProduct($product, $domainId, $this->pricingGroupFacade->getCurrentPricingGroup($customerUser)),
-            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
             'showCofidisBanner' => $this->cofidisBannerFacade->isAllowedToShowCofidisBanner($productSellingPrice),
         ]);
     }
@@ -292,7 +292,7 @@ class ProductController extends FrontBaseController
             return $this->render('Front/Content/Product/preListingCategoryList.html.twig', [
                 'category' => $category,
                 'visibleChildren' => $visibleChildren,
-                'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+                'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
                 'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
                     $category,
                     $this->domain->getId(),
@@ -355,7 +355,7 @@ class ProductController extends FrontBaseController
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData),
             'disableIndexing' => count($productFilterData->brands) >= 2,
             'disableIndexingAndFollowing' => $this->isIndexingAndFollowingDisabled($productFilterData),
-            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
         ];
 
         if ($request->isXmlHttpRequest()) {
@@ -438,7 +438,7 @@ class ProductController extends FrontBaseController
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData, Category::SALE_TYPE),
             'disableIndexing' => count($productFilterData->brands) >= 2,
             'disableIndexingAndFollowing' => $this->isIndexingAndFollowingDisabled($productFilterData),
-            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
         ];
 
         $request->query->set('product_filter_form', $params);
@@ -523,7 +523,7 @@ class ProductController extends FrontBaseController
             'categoryTitle' => $this->getCategoryTitleWithActiveBrands($category, $productFilterData, Category::NEWS_TYPE),
             'disableIndexing' => count($productFilterData->brands) >= 2,
             'disableIndexingAndFollowing' => $this->isIndexingAndFollowingDisabled($productFilterData),
-            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
         ];
 
         $request->query->set('product_filter_form', $params);
@@ -588,7 +588,7 @@ class ProductController extends FrontBaseController
             'priceRange' => $productFilterConfig->getPriceRange(),
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData),
             'disableIndexing' => count($productFilterData->brands) >= 2,
-            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
         ];
 
         if ($request->isXmlHttpRequest()) {

@@ -74,7 +74,7 @@ class BlogArticleController extends FrontBaseController
             'blogArticle' => $blogArticle,
             'activeCategories' => $blogCategoryIds,
             'domainId' => $this->domain->getId(),
-            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews(),
+            'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
         ]);
     }
 

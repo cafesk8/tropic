@@ -79,6 +79,9 @@ msgstr "404-boot"
 msgid "483 10 44 44"
 msgstr "220 570 777"
 
+msgid "483 104 444"
+msgstr ""
+
 msgid "6 důvodů, proč nakoupit u nás"
 msgstr "6 dôvodov, prečo nakúpiť u nás"
 
@@ -501,6 +504,9 @@ msgstr "Vytvorené v"
 
 msgid "Creation date"
 msgstr "Dátum vytvorenia"
+
+msgid "Cron overview"
+msgstr "Prehľad cronov"
 
 msgid "Current status"
 msgstr "Súčasný stav"
@@ -1465,6 +1471,9 @@ msgstr "Môže byť použitý pre darčekové poukazy"
 msgid "Můžete nahrát soubor v těchto formátech: PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP"
 msgstr "Môžete nahrať súbor v týchto formátoch: PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP"
 
+msgid "Na splátky ještě dnes již od"
+msgstr "Na splátky ešte dnes už od"
+
 msgid "Nabízené produkty"
 msgstr "Ponúkané produkty"
 
@@ -1524,6 +1533,9 @@ msgstr "Nastaviť"
 
 msgid "Načerpejte inspiraci"
 msgstr "Načerpajte inšpiráciu"
+
+msgid "Načíst dalších"
+msgstr "Načítať ďalších"
 
 msgid "Naše prodejna"
 msgstr "Naša predajňa"
@@ -1611,6 +1623,12 @@ msgstr "Nová kategória blogu"
 
 msgid "New delivery address"
 msgstr "Nová dodacia adresa"
+
+msgid "New orders"
+msgstr "Nové objednávky"
+
+msgid "New registered customers"
+msgstr "Novo registrovaní zákazníci"
 
 msgid "New store"
 msgstr "Nový obchod"
@@ -2182,6 +2200,9 @@ msgstr "Počet produktov, ku ktorým je darček priradený"
 msgid "Počet variant"
 msgstr "{1} %variantsCount% varianta|[2,4] %variantsCount% varianty|[5,Inf[ %variantsCount% variánt"
 
+msgid "Počkejte 5 sekund"
+msgstr "Počkajte 5 sekúnd"
+
 msgid "Pošta bez hranic"
 msgstr "Pošta bez hraníc"
 
@@ -2476,6 +2497,9 @@ msgstr "Príznak pre dopravu zadarmo"
 msgid "Příznaky"
 msgstr "Príznaky"
 
+msgid "Quick product search"
+msgstr "Rýchle vyhľadávanie produktov"
+
 msgid "Quick search"
 msgstr "Rýchle vyhľadávanie"
 
@@ -2535,6 +2559,9 @@ msgstr "SMS výstraha 2 dni do vyzdvihnutia"
 
 msgid "SMS alert 5 dní do vyzvednutí"
 msgstr "SMS výstraha 5 dní do vyzdvihnutia"
+
+msgid "Sales overview (last 7 days)"
+msgstr "Prehľad predajov (posledných 7 dní)"
 
 msgid "Samostatný produkt (ne hlavní a ne vedlejší varianta)"
 msgstr "Samostatný produkt (nie hlavný a nie vedľajší variant)"
@@ -2673,6 +2700,9 @@ msgstr "Skryť ďalšie spôsoby platby"
 
 msgid "Skrýt položky"
 msgstr "Skryť položky"
+
+msgid "Skrýt varianty"
+msgstr "Skryť varianty"
 
 msgid "Skrývání zboží"
 msgstr "Skrývanie tovaru"
@@ -2994,6 +3024,9 @@ msgstr "Typ dopravy pre Mergado"
 
 msgid "Typ platby"
 msgstr "Typ platby"
+
+msgid "Typ pro Zboží.cz"
+msgstr "Typ pre Zboží.cz"
 
 msgid "Typ produktu"
 msgstr "Typ produktu"
@@ -3694,6 +3727,9 @@ msgstr "možnosť získať"
 msgid "máte"
 msgstr "máte"
 
+msgid "měsíčně"
+msgstr "mesačne"
+
 msgid "na celý sortiment"
 msgstr "na celý sortiment"
 
@@ -3712,11 +3748,17 @@ msgstr "naše služby"
 msgid "nebo na"
 msgstr "alebo na"
 
+msgid "nebo nás kontaktuje na e-mailu"
+msgstr "alebo nás kontaktuje na e-mailu"
+
 msgid "nebo pište na"
 msgstr "alebo píšte na"
 
 msgid "nepovinné"
 msgstr "nepovinné"
+
+msgid "new customers"
+msgstr "noví zákazníci"
 
 msgid "neznámá"
 msgstr "neznáma"
@@ -3735,6 +3777,9 @@ msgstr "obchodnými podmienkami"
 
 msgid "on stock"
 msgstr "na sklade"
+
+msgid "orders sold"
+msgstr "predané objednávky"
 
 msgid "osobních údajů"
 msgstr "osobných údajov"
@@ -3766,6 +3811,9 @@ msgstr "produktov"
 msgid "promo products"
 msgstr "promo produkty"
 
+msgid "případně na infolinku"
+msgstr "prípadne na infolinku"
+
 msgid "records"
 msgstr "záznamy"
 
@@ -3796,6 +3844,9 @@ msgstr "tel.: +420 595 177 177"
 msgid "tropic klubu"
 msgstr "tropic klubu"
 
+msgid "turnover in"
+msgstr "obrat v"
+
 msgid "u&nbsp;tebe"
 msgstr "u&nbsp;vás"
 
@@ -3807,6 +3858,9 @@ msgstr "v hodnote"
 
 msgid "v měně dle zvolené domény"
 msgstr "v mene podľa zvolenej domény"
+
+msgid "variant"
+msgstr "variantov"
 
 msgid "všechny zákazníky"
 msgstr "všetkých zákazníkov"

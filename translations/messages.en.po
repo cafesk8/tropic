@@ -76,7 +76,7 @@ msgstr ""
 msgid "404-boot"
 msgstr ""
 
-msgid "483 10 44 44"
+msgid "483 104 444"
 msgstr ""
 
 msgid "6 důvodů, proč nakoupit u nás"
@@ -501,6 +501,9 @@ msgstr "Created at"
 
 msgid "Creation date"
 msgstr "Creation date"
+
+msgid "Cron overview"
+msgstr ""
 
 msgid "Current status"
 msgstr "Current status"
@@ -1429,6 +1432,9 @@ msgstr ""
 msgid "Můžete nahrát soubor v těchto formátech: PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP"
 msgstr ""
 
+msgid "Na splátky ještě dnes již od"
+msgstr ""
+
 msgid "Nabízené produkty"
 msgstr ""
 
@@ -1487,6 +1493,9 @@ msgid "Nastavit"
 msgstr "Set"
 
 msgid "Načerpejte inspiraci"
+msgstr ""
+
+msgid "Načíst dalších"
 msgstr ""
 
 msgid "Naše prodejna"
@@ -1576,6 +1585,12 @@ msgstr "New blog category"
 msgid "New delivery address"
 msgstr ""
 
+msgid "New orders"
+msgstr ""
+
+msgid "New registered customers"
+msgstr ""
+
 msgid "New store"
 msgstr "New store"
 
@@ -1623,9 +1638,6 @@ msgstr "Nothing to choose from"
 
 msgid "Nothing to choose from."
 msgstr "Nothing to choose from."
-
-msgid "Novinka"
-msgstr ""
 
 msgid "Novinky"
 msgstr ""
@@ -2131,6 +2143,9 @@ msgstr "Amount of products with linked gift"
 msgid "Počet variant"
 msgstr "{1} %variantsCount% variant|[2,Inf[ %variantsCount% variants"
 
+msgid "Počkejte 5 sekund"
+msgstr ""
+
 msgid "Pošta bez hranic"
 msgstr "Mail without borders"
 
@@ -2182,14 +2197,8 @@ msgstr "Store"
 msgid "Prodejna - výprodej"
 msgstr ""
 
-msgid "Prodejna v Liberci"
-msgstr ""
-
 msgid "Prodejny"
 msgstr "Stores"
-
-msgid "Prodloužená záruka"
-msgstr ""
 
 msgid "Product <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }}) added to the cart"
 msgstr "Product <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }}) added to the cart"
@@ -2407,6 +2416,9 @@ msgstr "Flag for free shipping"
 msgid "Příznaky"
 msgstr ""
 
+msgid "Quick product search"
+msgstr ""
+
 msgid "Quick search"
 msgstr "Quick search"
 
@@ -2466,6 +2478,9 @@ msgstr "SMS alert 2 days before pickup"
 
 msgid "SMS alert 5 dní do vyzvednutí"
 msgstr "SMS alert 5 days before pickup"
+
+msgid "Sales overview (last 7 days)"
+msgstr ""
 
 msgid "Samostatný produkt (ne hlavní a ne vedlejší varianta)"
 msgstr "Separate product (neither a main product nor a variant)"
@@ -2604,6 +2619,9 @@ msgstr "Hide payment methods"
 
 msgid "Skrýt položky"
 msgstr "Hide items"
+
+msgid "Skrýt varianty"
+msgstr ""
 
 msgid "Skrývání zboží"
 msgstr "Hiding of products"
@@ -2922,6 +2940,9 @@ msgstr ""
 
 msgid "Typ platby"
 msgstr "Payment type"
+
+msgid "Typ pro Zboží.cz"
+msgstr ""
 
 msgid "Typ produktu"
 msgstr "Product type"
@@ -3301,9 +3322,6 @@ msgstr "Delivery date calculation"
 msgid "Výprodej"
 msgstr ""
 
-msgid "Výprodejový"
-msgstr ""
-
 msgid "Výprodejový sklad"
 msgstr ""
 
@@ -3571,9 +3589,6 @@ msgstr ""
 msgid "a registrace"
 msgstr ""
 
-msgid "a telefon"
-msgstr ""
-
 msgid "a údaje vám předvyplníme."
 msgstr "and we will pre-fill information for you."
 
@@ -3622,6 +3637,9 @@ msgstr "way to obtain"
 msgid "máte"
 msgstr "you have"
 
+msgid "měsíčně"
+msgstr ""
+
 msgid "na celý sortiment"
 msgstr "for the entire range"
 
@@ -3637,10 +3655,16 @@ msgstr "e.g Prague"
 msgid "naše služby"
 msgstr "our services"
 
+msgid "nebo nás kontaktuje na e-mailu"
+msgstr ""
+
 msgid "nebo pište na"
 msgstr ""
 
 msgid "nepovinné"
+msgstr ""
+
+msgid "new customers"
 msgstr ""
 
 msgid "neznámá"
@@ -3660,6 +3684,9 @@ msgstr "terms and conditions"
 
 msgid "on stock"
 msgstr "on stock"
+
+msgid "orders sold"
+msgstr ""
 
 msgid "osobních údajů"
 msgstr "personal information"
@@ -3684,6 +3711,9 @@ msgstr "products"
 
 msgid "promo products"
 msgstr "promo products"
+
+msgid "případně na infolinku"
+msgstr ""
 
 msgid "records"
 msgstr "records"
@@ -3712,6 +3742,9 @@ msgstr "page %page% out of %pageCount%"
 msgid "tel.: +420 595 177 177"
 msgstr "tel.: +420 595 177 177"
 
+msgid "turnover in"
+msgstr ""
+
 msgid "u&nbsp;tebe"
 msgstr "at&nbsp;your&nbsp;place"
 
@@ -3723,6 +3756,9 @@ msgstr "with value of"
 
 msgid "v měně dle zvolené domény"
 msgstr "in currency by selected domain"
+
+msgid "variant"
+msgstr ""
 
 msgid "všechny zákazníky"
 msgstr "all customers"
