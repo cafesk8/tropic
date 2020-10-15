@@ -383,7 +383,7 @@ class ImageFacade extends BaseImageFacade
     {
         $entityName = $this->imageConfig->getEntityName($entity);
         $entityId = $this->getEntityId($entity);
-        $this->imageCacheFacade->invalidateCacheByEntityNameAndEntityIdAndType($entityName, $entityId, null);
+        $this->imageCacheFacade->invalidateCacheByEntityNameAndEntityIdAndType($entityName, $entityId, $type);
 
         parent::manageImages($entity, $imageUploadData, $type);
     }
