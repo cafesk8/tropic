@@ -170,6 +170,7 @@ class OrderProductFacade extends BaseOrderProductFacade
     /**
      * Product visibility recalculation is not triggered here to avoid deadlocks on conflict with CRON modules that run in parallel.
      * Also, "hidden" calculation is removed - the attribute is deprecated on this project since ac2363d07dbd6eacbd840a151c7aafab6b9a4d0c
+     * All the remaining recalculations are run only if the product is sold out
      *
      * @param \App\Model\Order\Item\OrderItem[] $orderProducts
      */
@@ -179,11 +180,15 @@ class OrderProductFacade extends BaseOrderProductFacade
         $relevantProducts = [];
         foreach ($orderProductsUsingStock as $orderProductUsingStock) {
             $relevantProduct = $orderProductUsingStock->getProduct();
-            $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($relevantProduct);
-            $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($relevantProduct);
-            $relevantProduct->markForVisibilityRecalculation();
-            $relevantProducts[] = $relevantProduct;
+            if ($relevantProduct->getRealStockQuantity() <= 0) {
+                $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($relevantProduct);
+                $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($relevantProduct);
+                $relevantProduct->markForVisibilityRecalculation();
+                $relevantProducts[] = $relevantProduct;
+            }
         }
-        $this->em->flush($relevantProducts);
+        if (count($relevantProducts) > 0) {
+            $this->em->flush($relevantProducts);
+        }
     }
 }
