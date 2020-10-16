@@ -9,6 +9,8 @@
 @box-list-description-line-height: 24px;
 @box-list-description-font-size: 16px;
 
+@box-list-actions-listing-item-gap: 10px;
+
 .box-list {
     &__title {
         display: block;
@@ -243,17 +245,28 @@
         &__listing {
             display: flex;
             justify-content: center;
-            flex: 1;
-            margin-bottom: 10px;
+            width: 100%;
+            margin-bottom: @box-list-actions-listing-item-gap;
+
+            @media @query-sm {
+                flex: 1;
+                width: auto;
+            }
 
             &__item {
-                margin: 0 10px;
-                width: 160px;
+                margin: 0 @box-list-actions-listing-item-gap;
+                width: 120px;
+                padding: 0 10px;
+
+                @media @query-sm {
+                    width: 160px;
+                    padding: 0 32px;
+                }
             }
         }
 
         &__pagination {
-            margin: 0 auto 10px;
+            margin: 0 auto @box-list-actions-listing-item-gap;
         }
     }
 }

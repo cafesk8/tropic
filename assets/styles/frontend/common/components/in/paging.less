@@ -30,12 +30,16 @@
             padding: 0 5px;
             height: @in-paging-size;
             line-height: @in-paging-size;
-            margin: @in-paging-item-gap / 2;
+            margin: (@in-paging-item-gap / 2) 2px;
             text-align: center;
 
             font-size: 16px;
             border-radius: @radius-small;
             box-shadow: @box-shadow-outer;
+
+            @media @query-sm {
+                margin: @in-paging-item-gap / 2;
+            }
 
             &:hover {
                 text-decoration: none;
