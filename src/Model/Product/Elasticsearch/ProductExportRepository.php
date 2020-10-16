@@ -92,8 +92,9 @@ class ProductExportRepository extends BaseProductExportRepository
         $variants = $this->productFacade->getVisibleVariantsForProduct($product, $domainId);
         $result = parent::extractResult($product, $domainId, $locale);
 
+        $result['variant_type'] = $product->getVariantType();
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
-        $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale);
+        $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale, $result['variant_type']);
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
         $result['gifts'] = $this->productFacade->getProductGiftName($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
@@ -115,7 +116,6 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
         $result['parameters'] = $this->appendSetItemParameters($locale, $product, $result['parameters']);
         $result['warranty'] = $product->getWarranty();
-        $result['variant_type'] = $product->getVariantType();
         $result['recommended'] = $product->isRecommended();
         $result['supplier_set'] = $product->isSupplierSet();
         $result['main_category_path'] = $this->getMainCategoryPath($product, $domainId);
@@ -155,21 +155,31 @@ class ProductExportRepository extends BaseProductExportRepository
     }
 
     /**
+     * we don't want export main product's parameters if has variants,
+     * because it caused bad counts (or zero) by parameter value. ex: balení: 100ml (0)
+     *
      * @param array $baseParameters
      * @param \App\Model\Product\Product[] $variants
      * @param string $locale
+     * @param string $variantType
      * @return array
      */
-    private function extractParametersForProductIncludingVariants(array $baseParameters, array $variants, string $locale): array
+    private function extractParametersForProductIncludingVariants(
+        array $baseParameters,
+        array $variants,
+        string $locale,
+        string $variantType): array
     {
-        $parameters = [];
-        foreach ($variants as $variant) {
-            $parameters = array_merge($this->extractParameters($locale, $variant), $parameters);
+        if ($variantType === Product::VARIANT_TYPE_NONE || $variantType === Product::VARIANT_TYPE_VARIANT) {
+            return $baseParameters;
+        } else {
+            $parameters = [];
+            foreach ($variants as $variant) {
+                $parameters = array_merge($this->extractParameters($locale, $variant), $parameters);
+            }
+
+            return array_values(array_unique($parameters, SORT_REGULAR));
         }
-
-        $parameters = array_merge($baseParameters, $parameters);
-
-        return array_values(array_unique($parameters, SORT_REGULAR));
     }
 
     /**
