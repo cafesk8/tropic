@@ -74,9 +74,11 @@ class OrderProductFacade extends BaseOrderProductFacade
     public function subtractOrderProductsFromStock(array $orderProducts)
     {
         if ($this->moduleFacade->isEnabled(ModuleList::PRODUCT_STOCK_CALCULATIONS)) {
+            $toFlush = [];
             $orderProductsUsingStock = $this->getOrderProductsUsingStockFromOrderProducts($orderProducts);
             foreach ($orderProductsUsingStock as $orderProductUsingStock) {
                 $product = $orderProductUsingStock->getProduct();
+                $toFlush[] = $product;
                 $orderItemSourceStocksData = $this->subtractStockQuantity(
                     $product,
                     $orderProductUsingStock->getQuantity(),
@@ -91,6 +93,7 @@ class OrderProductFacade extends BaseOrderProductFacade
 
                 if ($product->isPohodaProductTypeSet()) {
                     foreach ($product->getProductSets() as $productSet) {
+                        $toFlush[] = $productSet->getItem();
                         $this->subtractStockQuantity(
                             $productSet->getItem(),
                             $orderProductUsingStock->getQuantity() * $productSet->getItemCount(),
@@ -104,7 +107,9 @@ class OrderProductFacade extends BaseOrderProductFacade
                 }
                 $this->productFacade->updateTotalProductStockQuantity($product);
             }
-            $this->em->flush();
+            if (count($toFlush) > 0) {
+                $this->em->flush($toFlush);
+            }
             $this->runRecalculationsAfterStockQuantityChange($orderProducts);
         }
     }
