@@ -1,4 +1,5 @@
 {% import 'Front/Content/Product/filterFormMacro.html.twig' as productFilterForm %}
+{% import 'Front/Inline/Paginator/paginator.html.twig' as paginator %}
 
 <input type="hidden" id="js-product-list-ajax-filter-current-url" value="{{ url(getRoute(), getAllRequestParams()) }}">
 <input type="hidden" id="js-product-list-ajax-category-title" value="{{ categoryTitle }}">
@@ -28,7 +29,18 @@
         </div>
     </div>
     <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
-        {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction')) }}
+        <div class="box-list__ordering">
+            {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction')) }}
+            {% if paginationResult.results|length > 0 %}
+                <div class="box-list__ordering__pagination">
+                    {% set entityName = 'products'|trans %}
+                    {% if paging is not defined %}
+                        {% set paging = true %}
+                    {% endif %}
+                    {{ paginator.paginatorNavigation(paginationResult, entityName, 'page', false, paging) }}
+                </div>
+            {% endif %}
+        </div>
         <div class="box-list__products">
             {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted} %}
         </div>
