@@ -331,4 +331,13 @@ class PohodaProductExportFacade
     {
         return $this->pohodaProductExportRepository->getPohodaProductIdsByExternalStockLastUpdateTime($lastUpdateTime);
     }
+
+    /**
+     * @param array $pohodaProductIds
+     * @return array
+     */
+    public function getPohodaProductExternalStockQuantitiesByProductIds(array $pohodaProductIds): array
+    {
+        return $this->pohodaProductExportRepository->getPohodaProductExternalStockQuantitiesByProductIds($pohodaProductIds);
+    }
 }

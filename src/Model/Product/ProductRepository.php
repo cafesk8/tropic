@@ -848,4 +848,47 @@ class ProductRepository extends BaseProductRepository
             'domainId' => DomainHelper::CZECH_DOMAIN,
         ]);
     }
+
+    /**
+     * @param int[] $pohodaProductIds
+     * @return array
+     */
+    public function getProductIdsIndexedByPohodaIds(array $pohodaProductIds): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('id', 'id');
+        $resultSetMapping->addScalarResult('pohoda_id', 'pohodaId');
+
+        $query = $this->em->createNativeQuery(
+            'SELECT id, pohoda_id 
+            FROM products
+            WHERE pohoda_id IN (:pohodaProductIds)',
+            $resultSetMapping
+        )->setParameters([
+            'pohodaProductIds' => $pohodaProductIds,
+        ]);
+
+        $productsResult = $query->getResult();
+        $productIds = [];
+        foreach ($productsResult as $productResult) {
+            $productIds[(int)$productResult['pohodaId']] = (int)$productResult['id'];
+        }
+
+        return $productIds;
+    }
+
+    /**
+     * @param int[] $productIds
+     */
+    public function manualMarkProductsForExportAndRecalculateAvailability(array $productIds): void
+    {
+        $query = $this->em->createNativeQuery(
+            'UPDATE products SET 
+                    export_product = TRUE, 
+                    recalculate_availability = TRUE
+            WHERE id IN(:productIds)',
+            new ResultSetMapping()
+        )->setParameter('productIds', $productIds);
+        $query->execute();
+    }
 }

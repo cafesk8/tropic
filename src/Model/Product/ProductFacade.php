@@ -1393,4 +1393,21 @@ class ProductFacade extends BaseProductFacade
             $this->productRepository->setDescriptionTranslation($productId, $domainId, $description, $descriptionHash);
         }
     }
+
+    /**
+     * @param int[] $pohodaProductIds
+     * @return array
+     */
+    public function getProductIdsIndexedByPohodaIds(array $pohodaProductIds): array
+    {
+        return $this->productRepository->getProductIdsIndexedByPohodaIds($pohodaProductIds);
+    }
+
+    /**
+     * @param int[] $productIds
+     */
+    public function manualMarkProductsForExportAndRecalculateAvailability(array $productIds): void
+    {
+        $this->productRepository->manualMarkProductsForExportAndRecalculateAvailability($productIds);
+    }
 }

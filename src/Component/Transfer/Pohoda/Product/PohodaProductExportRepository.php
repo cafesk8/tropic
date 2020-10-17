@@ -456,4 +456,33 @@ class PohodaProductExportRepository
 
         return $query->getResult();
     }
+
+    /**
+     * @param array $pohodaProductIds
+     * @return array
+     */
+    public function getPohodaProductExternalStockQuantitiesByProductIds(array $pohodaProductIds): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('ID', PohodaProduct::COL_POHODA_ID)
+            ->addScalarResult('VPrExtSklad', PohodaProduct::COL_EXTERNAL_STOCK);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT
+                Product.ID,
+                Product.VPrExtSklad
+            FROM Skz Product
+            WHERE Product.ID IN (:pohodaProductIds)
+                AND Product.RefSklad = :defaultStockId 
+                AND Product.IObchod = 1
+            ORDER BY Product.VPrDatSaveStavZ',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'pohodaProductIds' => $pohodaProductIds,
+                'defaultStockId' => $this->storeFacade->getDefaultPohodaStockExternalNumber(),
+            ]);
+
+        return $query->getResult();
+    }
 }
