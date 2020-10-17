@@ -804,3 +804,9 @@ services:
         class: App\Model\Product\Availability\ProductAvailabilityRecalculator
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    App\Component\Cron\CronFacade:
+        arguments:
+            - '@monolog.logger.cron'
+
+    Shopsys\FrameworkBundle\Component\Cron\CronFacade: '@App\Component\Cron\CronFacade'
