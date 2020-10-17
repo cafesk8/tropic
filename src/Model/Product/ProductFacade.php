@@ -1406,8 +1406,16 @@ class ProductFacade extends BaseProductFacade
     /**
      * @param int[] $productIds
      */
-    public function manualMarkProductsForExportAndRecalculateAvailability(array $productIds): void
+    public function manualMarkProductsForExport(array $productIds): void
     {
-        $this->productRepository->manualMarkProductsForExportAndRecalculateAvailability($productIds);
+        $this->productRepository->manualMarkProductsForExport($productIds);
+    }
+
+    /**
+     * @param int[] $productIds
+     */
+    public function manualMarkProductsForRecalculateAvailability(array $productIds): void
+    {
+        $this->productRepository->manualMarkProductsForRecalculateAvailability($productIds);
     }
 }

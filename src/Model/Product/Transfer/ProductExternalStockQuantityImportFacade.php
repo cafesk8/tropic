@@ -24,12 +24,17 @@ class ProductExternalStockQuantityImportFacade
     /**
      * @var int[]
      */
-    private array $updatedPohodaProductIds = [];
+    private array $pohodaProductIdsForRemoveFromQueue = [];
 
     /**
      * @var int[]
      */
     private array $updatedProductIds = [];
+
+    /**
+     * @var int[]
+     */
+    private array $productIdsMarkForRecalculation = [];
 
     /**
      * @var int[]
@@ -82,8 +87,9 @@ class ProductExternalStockQuantityImportFacade
      */
     public function processImport(): array
     {
-        $this->updatedPohodaProductIds = [];
+        $this->pohodaProductIdsForRemoveFromQueue = [];
         $this->updatedProductIds = [];
+        $this->productIdsMarkForRecalculation = [];
         $this->notFoundProductPohodaIdsInEshop = [];
 
         $changedPohodaProductIds = $this->productExternalStockQuantityQueueImportFacade->getChangedPohodaProductIds(self::PRODUCT_EXPORT_STOCK_QUANTITIES_MAX_BATCH_LIMIT);
@@ -104,17 +110,18 @@ class ProductExternalStockQuantityImportFacade
                 'exceptionMessage' => $exception->getMessage(),
             ]);
         } finally {
-            $this->updatedPohodaProductIds = array_filter($this->updatedPohodaProductIds);
+            $this->pohodaProductIdsForRemoveFromQueue = array_filter($this->pohodaProductIdsForRemoveFromQueue);
             $this->updatedProductIds = array_filter($this->updatedProductIds);
             $this->logger->addInfo('Proběhne smazání produktů z fronty skladových zásob', [
-                'updatedPohodaProductIdsCount' => count($this->updatedPohodaProductIds),
+                'updatedPohodaProductIdsCount' => count($this->pohodaProductIdsForRemoveFromQueue),
             ]);
             $this->productExternalStockQuantityQueueImportFacade->removeProductsFromQueue($changedPohodaProductIds);
-            $this->markProductsForRecalculation($this->updatedProductIds);
             $this->logger->addInfo('Nenalezené produkty v e-shopu', [
                 'count' => count($this->notFoundProductPohodaIdsInEshop),
                 'notFoundProductPohodaIdsInEshop' => $this->notFoundProductPohodaIdsInEshop,
             ]);
+
+            $this->markProductsForRecalculation($this->updatedProductIds, $this->productIdsMarkForRecalculation);
 
             $this->logger->persistTransferIssues();
         }
@@ -124,27 +131,31 @@ class ProductExternalStockQuantityImportFacade
     }
 
     /**
-     * @param array $stockQuantities
+     * @param array $productsStockQuantities
      */
-    private function updateProductsStockQuantities(array $stockQuantities): void
+    private function updateProductsStockQuantities(array $productsStockQuantities): void
     {
-        $productIdsIndexedByPohodaIds = $this->productFacade->getProductIdsIndexedByPohodaIds(array_column($stockQuantities, PohodaProduct::COL_POHODA_ID));
+        $productIdsIndexedByPohodaIds = $this->productFacade->getProductIdsIndexedByPohodaIds(array_column($productsStockQuantities, PohodaProduct::COL_POHODA_ID));
         $externalStock = $this->storeFacade->findExternalStock();
         if ($externalStock === null) {
             $this->logger->addError('Externí sklad v eshopu neexistuje. Import skladových zásob externího skladu nebude proveden!');
         }
+        $currentStockQuantities = $this->productStoreStockFacade->getProductStockQuantities($productIdsIndexedByPohodaIds, $externalStock->getId());
 
-        foreach ($stockQuantities as $stockQuantity) {
-            $pohodaId = (int)$stockQuantity[PohodaProduct::COL_POHODA_ID];
-            $externalStockQuantity = (int)$stockQuantity[PohodaProduct::COL_EXTERNAL_STOCK];
+        foreach ($productsStockQuantities as $productStockQuantity) {
+            $pohodaId = (int)$productStockQuantity[PohodaProduct::COL_POHODA_ID];
+            $externalStockQuantity = (int)$productStockQuantity[PohodaProduct::COL_EXTERNAL_STOCK];
+
             try {
-                $this->editProductQuantities($pohodaId, $productIdsIndexedByPohodaIds, $externalStockQuantity, $externalStock->getId());
+                $this->editProductExternalStockQuantity($pohodaId, $productIdsIndexedByPohodaIds, $externalStockQuantity, $externalStock->getId(), $currentStockQuantities);
             } catch (Exception $exc) {
                 $this->logger->addError('Chyba importu skladových zásob externího skladu', [
                     'pohodaId' => $pohodaId,
                     'externalStockQuantity' => $externalStockQuantity,
                     'exceptionMessage' => $exc->getMessage(),
                 ]);
+            } finally {
+                $this->pohodaProductIdsForRemoveFromQueue[] = $pohodaId;
             }
 
             $this->entityManager->clear();
@@ -153,42 +164,70 @@ class ProductExternalStockQuantityImportFacade
 
     /**
      * @param int $pohodaId
-     * @param array $productIdsIndexedByPohodaIds
-     * @param int $externalStockQuantity
+     * @param int[] $productIdsIndexedByPohodaIds
+     * @param int $newExternalStockQuantity
      * @param int $externalStockId
+     * @param int[] $currentStockQuantities
      */
-    private function editProductQuantities(int $pohodaId, array $productIdsIndexedByPohodaIds, int $externalStockQuantity, int $externalStockId): void
+    private function editProductExternalStockQuantity(int $pohodaId, array $productIdsIndexedByPohodaIds, int $newExternalStockQuantity, int $externalStockId, array $currentStockQuantities): void
     {
         if (!isset($productIdsIndexedByPohodaIds[$pohodaId])) {
             $this->logger->addError('Produkt při aktualizaci skladových zásob externího skladu nebyl nenalezen', [
                 'pohodaId' => $pohodaId,
             ]);
             $this->notFoundProductPohodaIdsInEshop[] = $pohodaId;
-            $this->updatedPohodaProductIds[] = $pohodaId;
+
             return;
         }
 
         $productId = $productIdsIndexedByPohodaIds[$pohodaId];
-        $this->productStoreStockFacade->manualInsertStoreStock($productId, $externalStockId, $externalStockQuantity);
+        $currentStockQuantity = $currentStockQuantities[$productId] ?? 0;
+
+        if ($currentStockQuantity === $newExternalStockQuantity) {
+            $this->logger->addInfo('Produkt má stejnou skladovou zásobu. Skladová zásoba nebude aktualizována.', [
+                'pohodaId' => $pohodaId,
+                'productId' => $productId,
+                'currentExternalStockQuantity' => $currentStockQuantity,
+                'newExternalStockQuantity' => $newExternalStockQuantity,
+            ]);
+
+            return;
+        }
+
+        if (($currentStockQuantity === 0 && $newExternalStockQuantity > 0) || ($currentStockQuantity > 0 && $newExternalStockQuantity === 0)) {
+            $this->productIdsMarkForRecalculation[] = $productId;
+        }
+
+        $this->productStoreStockFacade->manualInsertStoreStock($productId, $externalStockId, $newExternalStockQuantity);
 
         $this->logger->addInfo('Produktu byla upravena skladová zásoba externího skladu', [
             'pohodaId' => $pohodaId,
             'productId' => $productId,
-            'externalStockQuantity' => $externalStockQuantity,
+            'currentStockQuantity' => $currentStockQuantity,
+            'newExternalStockQuantity' => $newExternalStockQuantity,
         ]);
 
-        $this->updatedPohodaProductIds[] = $pohodaId;
         $this->updatedProductIds[] = $productId;
     }
 
     /**
      * @param array $updatedProductIds
+     * @param array $productIdsForRecalculationMark
      */
-    private function markProductsForRecalculation(array $updatedProductIds): void
+    private function markProductsForRecalculation(array $updatedProductIds, array $productIdsForRecalculationMark): void
     {
-        $this->logger->addInfo('Označení produktů k přepočtu viditelností a exportu do Elasticsearch', [
-            'updatedProductIds' => count($updatedProductIds),
+        $this->logger->addInfo('Označení produktů k exportu do Elasticsearch', [
+            'productIdsCount' => count($updatedProductIds),
         ]);
-        $this->productFacade->manualMarkProductsForExportAndRecalculateAvailability($updatedProductIds);
+        if (count($updatedProductIds) > 0) {
+            $this->productFacade->manualMarkProductsForExport($updatedProductIds);
+        }
+
+        $this->logger->addInfo('Označení produktů k přepočtu dostupností', [
+            'productIdsCount' => count($productIdsForRecalculationMark),
+        ]);
+        if (count($productIdsForRecalculationMark) > 0) {
+            $this->productFacade->manualMarkProductsForRecalculateAvailability($productIdsForRecalculationMark);
+        }
     }
 }

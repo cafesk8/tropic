@@ -25,4 +25,14 @@ class ProductStoreStockFacade
     {
         $this->productStoreStockRepository->manualInsertStoreStock($productId, $storeId, $quantity);
     }
+
+    /**
+     * @param array $productIds
+     * @param int $storeId
+     * @return array
+     */
+    public function getProductStockQuantities(array $productIds, int $storeId): array
+    {
+        return $this->productStoreStockRepository->getProductStockQuantities($productIds, $storeId);
+    }
 }

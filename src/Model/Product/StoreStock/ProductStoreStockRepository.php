@@ -39,4 +39,35 @@ class ProductStoreStockRepository
             'quantity' => $quantity,
         ]);
     }
+
+    /**
+     * @param int[] $productIds
+     * @param int $storeId
+     * @return array
+     */
+    public function getProductStockQuantities(array $productIds, int $storeId): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('product_id', 'productId');
+        $resultSetMapping->addScalarResult('stock_quantity', 'stockQuantity');
+
+        $query = $this->em->createNativeQuery(
+            'SELECT product_id, stock_quantity
+            FROM product_store_stocks
+            WHERE product_id IN (:productIds)
+                AND store_id = :storeId',
+            $resultSetMapping
+        )->setParameters([
+            'productIds' => $productIds,
+            'storeId' => $storeId,
+        ]);
+
+        $stockQuantitiesResult = $query->getResult();
+        $stockQuantities = [];
+        foreach ($stockQuantitiesResult as $productResult) {
+            $stockQuantities[(int)$productResult['productId']] = (int)$productResult['stockQuantity'];
+        }
+
+        return $stockQuantities;
+    }
 }
