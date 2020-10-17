@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Zbozi;
 
+use App\Component\Domain\DomainHelper;
 use App\Model\Order\Order;
 use Soukicz\Zbozicz\Client;
 
@@ -28,7 +29,8 @@ class ZboziFacade
      */
     public function sendOrder(Order $order): void
     {
-        $zboziOrder = $this->zboziOrderFactory->createFromOrder($order);
+        $locale = DomainHelper::DOMAIN_ID_TO_LOCALE[$order->getDomainId()];
+        $zboziOrder = $this->zboziOrderFactory->createFromOrder($order, $locale);
         $this->client->sendOrder($zboziOrder);
     }
 }

@@ -859,6 +859,22 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
+     * @return \App\Model\Order\Order[]
+     */
+    public function getAllForExportToZbozi(): array
+    {
+        return $this->orderRepository->getAllForExportToZbozi();
+    }
+
+    /**
+     * @param int[] $orderIds
+     */
+    public function markOrdersAsExportedToZbozi(array $orderIds): void
+    {
+        $this->orderRepository->markOrdersAsExportedToZbozi($orderIds);
+    }
+
+    /**
      * @param int $pohodaId
      * @return \App\Model\Order\Order|null
      */

@@ -63,6 +63,8 @@ class Order extends BaseOrder
     public const EXPORT_NOT_YET = 'export_not_yet';
     public const EXPORT_ERROR = 'export_error';
     public const PROMO_CODES_SEPARATOR = ';';
+    public const EXPORT_ZBOZI_NOT_YET = 'export_zbozi_not_yet';
+    public const EXPORT_ZBOZI_DONE = 'export_zbozi_done';
 
     /**
      * @var string|null
@@ -290,6 +292,13 @@ class Order extends BaseOrder
      * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $legacyId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    private string $exportZboziStatus = self::EXPORT_ZBOZI_NOT_YET;
 
     /**
      * @param \App\Model\Order\OrderData $orderData
