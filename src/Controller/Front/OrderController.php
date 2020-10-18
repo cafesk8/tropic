@@ -349,8 +349,6 @@ class OrderController extends FrontBaseController
         }
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();
-
-        $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities($cart);
         $this->cartFacade->checkCartModificationsAndDeleteCartIfEmpty($cart);
 
         $frontOrderFormData = new FrontOrderData();
@@ -415,6 +413,7 @@ class OrderController extends FrontBaseController
         $this->checkTransportAndPaymentChanges($orderData, $orderPreview, $transports, $payments);
 
         if ($isValid) {
+            $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities($cart);
             if ($orderFlow->nextStep()) {
                 $form = $orderFlow->createForm();
             } elseif (count($this->getErrorMessages()) === 0 && count($this->getInfoMessages()) === 0) {

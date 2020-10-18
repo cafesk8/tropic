@@ -174,7 +174,6 @@ class CartController extends FrontBaseController
         $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();
-        $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities($cart);
         $this->cartFacade->checkCartModificationsAndDeleteCartIfEmpty($cart);
         $cartItems = $cart === null ? [] : $cart->getItems();
 
@@ -196,6 +195,7 @@ class CartController extends FrontBaseController
 
         $invalidCart = false;
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities($cart);
             try {
                 $this->cartFacade->changeQuantities($form->getData()['quantities']);
                 $this->cartFacade->setOrderGiftProduct($form->getData()['orderGiftProduct']);
