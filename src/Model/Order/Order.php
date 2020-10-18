@@ -65,6 +65,9 @@ class Order extends BaseOrder
     public const PROMO_CODES_SEPARATOR = ';';
     public const EXPORT_ZBOZI_NOT_YET = 'export_zbozi_not_yet';
     public const EXPORT_ZBOZI_DONE = 'export_zbozi_done';
+    public const EXPORT_HEUREKA_NOT_YET = 'export_heureka_not_yet';
+    public const EXPORT_HEUREKA_DONE = 'export_heureka_done';
+    public const EXPORT_HEUREKA_NEVER = 'export_heureka_never';
 
     /**
      * @var string|null
@@ -301,6 +304,13 @@ class Order extends BaseOrder
     private string $exportZboziStatus = self::EXPORT_ZBOZI_NOT_YET;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    private string $exportHeurekaStatus = self::EXPORT_HEUREKA_NOT_YET;
+
+    /**
      * @param \App\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -358,6 +368,9 @@ class Order extends BaseOrder
         $this->giftCertificates = new ArrayCollection();
         $this->pohodaId = $orderData->pohodaId;
         $this->legacyId = $orderData->legacyId;
+        if ($orderData->disallowHeurekaVerifiedByCustomers) {
+            $this->exportHeurekaStatus = self::EXPORT_HEUREKA_NEVER;
+        }
     }
 
     /**
