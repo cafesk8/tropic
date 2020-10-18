@@ -446,8 +446,6 @@ class OrderController extends FrontBaseController
                     );
                 }
 
-                $this->orderFacade->sendSms($order);
-
                 return $this->redirectToRoute('front_order_sent');
             }
         }
