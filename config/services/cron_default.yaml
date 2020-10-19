@@ -56,10 +56,6 @@ services:
             - { name: shopsys.cron, hours: '*', minutes: '10', readableName: 'Generování hodinových feedů' }
 
     # ALWAYS -----------------------------------------------------------------------------------------
-    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet cen produktů' }
-
     App\Model\Category\SpecialCategoriesCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Označení kategorií s výprodejovými produkty a novinkami' }

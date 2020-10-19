@@ -19,7 +19,6 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
@@ -99,13 +98,10 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
     {
         $em = $this->getEntityManager();
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $productData = $this->getDefaultProductData();
         $productData->shown = [DomainHelper::CZECH_DOMAIN => false, DomainHelper::SLOVAK_DOMAIN => false, DomainHelper::ENGLISH_DOMAIN => false];
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->flush();
         $id = $product->getId();
@@ -135,12 +131,9 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
     {
         $em = $this->getEntityManager();
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $productData = $this->getDefaultProductData();
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->flush();
         $id = $product->getId();
@@ -171,8 +164,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
     {
         $em = $this->getEntityManager();
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $sellingFrom = new DateTime('now');
         $sellingFrom->modify('+1 day');
@@ -180,7 +171,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $productData = $this->getDefaultProductData();
         $productData->sellingFrom = $sellingFrom;
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->flush();
         $id = $product->getId();
@@ -200,8 +190,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
     {
         $em = $this->getEntityManager();
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $sellingTo = new DateTime('now');
         $sellingTo->modify('-1 day');
@@ -209,7 +197,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $productData = $this->getDefaultProductData();
         $productData->sellingTo = $sellingTo;
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->flush();
         $id = $product->getId();
@@ -229,8 +216,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
     {
         $em = $this->getEntityManager();
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $sellingFrom = new DateTime('now');
         $sellingFrom->modify('-1 day');
@@ -241,7 +226,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $productData->sellingFrom = $sellingFrom;
         $productData->sellingTo = $sellingTo;
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->flush();
         $id = $product->getId();
@@ -261,8 +245,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
     {
         $em = $this->getEntityManager();
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $productData = $this->getDefaultProductData();
         $this->setPriceForAllDomains($productData, Money::zero());
@@ -270,7 +252,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
 
         $this->setPriceForAllDomains($productData, null);
         $product2 = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $product1Id = $product1->getId();
         $product2Id = $product2->getId();
@@ -294,12 +275,9 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $em = $this->getEntityManager();
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade */
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $productData = $this->getDefaultProductData();
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->clear();
 
@@ -325,13 +303,10 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $em = $this->getEntityManager();
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade */
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $productData = $this->getDefaultProductData();
         $productData->name = ['cs' => null, 'en' => null];
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->clear();
 
@@ -357,8 +332,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $em = $this->getEntityManager();
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade */
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         /** @var \App\Model\Category\Category $category */
         $category = $this->getReference(CategoryDataFixture::CATEGORY_GARDEN_TOOLS);
@@ -366,7 +339,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $productData = $this->getDefaultProductData();
         $productData->categoriesByDomainId = [Domain::FIRST_DOMAIN_ID => [$category]];
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->clear();
 
@@ -392,13 +364,10 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $em = $this->getEntityManager();
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade */
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $productData = $this->getDefaultProductData();
         $productData->categoriesByDomainId = [];
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->clear();
 
@@ -423,8 +392,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $em = $this->getEntityManager();
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade */
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
 
         $productData = $this->getDefaultProductData();
         $this->setPriceForAllDomains($productData, Money::create(10));
@@ -436,7 +403,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $productData->manualInputPricesByPricingGroupId[$pricingGroupWithZeroPriceId] = Money::zero();
 
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->clear();
 
@@ -459,8 +425,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $em = $this->getEntityManager();
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade */
         $productFacade = $this->getContainer()->get(ProductFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator */
-        $productPriceRecalculator = $this->getContainer()->get(ProductPriceRecalculator::class);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade */
         $pricingGroupFacade = $this->getContainer()->get(PricingGroupFacade::class);
 
@@ -477,7 +441,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $productData->manualInputPricesByPricingGroupId[$pricingGroupWithNullPriceId] = null;
 
         $product = $productFacade->create($productData);
-        $productPriceRecalculator->runImmediateRecalculations();
 
         $em->clear();
 
