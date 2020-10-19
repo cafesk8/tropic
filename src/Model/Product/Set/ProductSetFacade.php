@@ -7,7 +7,6 @@ namespace App\Model\Product\Set;
 use App\Component\Image\ImageFacade;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Product;
-use App\Model\Store\Store;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 
 class ProductSetFacade
@@ -99,13 +98,6 @@ class ProductSetFacade
         $quantity = 0;
 
         foreach ($productSet->getItem()->getStoreStocks() as $storeStock) {
-            if (!in_array($storeStock->getStore()->getPohodaName(), [
-                Store::POHODA_STOCK_TROPIC_NAME,
-                Store::POHODA_STOCK_EXTERNAL_NAME,
-            ], true)) {
-                continue;
-            }
-
             $quantity += $storeStock->getStockQuantity();
         }
 

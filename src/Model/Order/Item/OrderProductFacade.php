@@ -80,7 +80,8 @@ class OrderProductFacade extends BaseOrderProductFacade
                 $orderItemSourceStocksData = $this->subtractStockQuantity(
                     $product,
                     $orderProductUsingStock->getQuantity(),
-                    $orderProductUsingStock->isSaleItem()
+                    $orderProductUsingStock->isSaleItem(),
+                    false
                 );
 
                 foreach ($orderItemSourceStocksData as $orderItemSourceStockData) {
@@ -93,7 +94,8 @@ class OrderProductFacade extends BaseOrderProductFacade
                         $this->subtractStockQuantity(
                             $productSet->getItem(),
                             $orderProductUsingStock->getQuantity() * $productSet->getItemCount(),
-                            $orderProductUsingStock->isSaleItem()
+                            $orderProductUsingStock->isSaleItem(),
+                            true
                         );
                     }
                 }
@@ -111,9 +113,10 @@ class OrderProductFacade extends BaseOrderProductFacade
      * @param \App\Model\Product\Product $product
      * @param int $quantity
      * @param bool $isSaleItem
+     * @param bool $isSetItem
      * @return \App\Model\Order\ItemSourceStock\OrderItemSourceStockData[]
      */
-    private function subtractStockQuantity(Product $product, int $quantity, bool $isSaleItem): array
+    private function subtractStockQuantity(Product $product, int $quantity, bool $isSaleItem, bool $isSetItem): array
     {
         $orderItemSourceStocksData = [];
         $remainingQuantity = $quantity;
@@ -123,7 +126,7 @@ class OrderProductFacade extends BaseOrderProductFacade
             $isSaleStock = $productStoreStock->getStore()->isSaleStock();
             $availableQuantity = $productStoreStock->getStockQuantity();
 
-            if (($isSaleStock && !$isSaleItem) || (!$isSaleStock && $isSaleItem) || $availableQuantity < 1) {
+            if (!$isSetItem && (($isSaleStock && !$isSaleItem) || (!$isSaleStock && $isSaleItem) || $availableQuantity < 1)) {
                 continue;
             }
 
