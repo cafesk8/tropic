@@ -810,3 +810,8 @@ services:
     Shopsys\FrameworkBundle\Component\Cron\CronFacade: '@App\Component\Cron\CronFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator: ~
+
+    # must be run after TransactionalMasterRequestListener so the recalculations are run outside the main request transaction
+    App\Model\Product\SoldOutActions\ProductSoldOutActionsListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -5 }
