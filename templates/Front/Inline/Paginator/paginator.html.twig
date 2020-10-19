@@ -128,7 +128,7 @@
         {% if not paginationResult.firstPage -%}
             {% set page = paginationResult.previousPage -%}
             {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
-                <a  class ="btn btn--big box-button_previous" href="{{ path(route, routeParams) }}" rel="prev">
+                <a class="box-list__actions__listing__item btn btn--big" href="{{ path(route, routeParams) }}" rel="prev">
                     {{ '< PREVIOUS'|trans }}
                 </a>
         {% endif %}
@@ -142,7 +142,7 @@
         {% if not paginationResult.lastPage -%}
             {% set page = paginationResult.nextPage -%}
             {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
-                <a class ="btn btn--big box-button_next" href="{{ path(route, routeParams) }}" rel="next">
+                <a class="box-list__actions__listing__item btn btn--big" href="{{ path(route, routeParams) }}" rel="next">
                     {{ 'NEXT >'|trans }}
                 </a>
         {% endif %}

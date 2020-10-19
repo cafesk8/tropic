@@ -9,6 +9,8 @@
 @box-list-description-line-height: 24px;
 @box-list-description-font-size: 16px;
 
+@box-list-actions-listing-item-gap: 10px;
+
 .box-list {
     &__title {
         display: block;
@@ -70,6 +72,20 @@
 
         &--full-width {
             width: 100%;
+        }
+    }
+
+    &__ordering {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        @media @query-vl {
+            margin-bottom: 25px;
+        }
+
+        &__pagination {
+            margin-left: auto;
         }
     }
 
@@ -201,11 +217,9 @@
     &__actions {
         position: relative;
         display: flex;
-        flex-direction: column;
-
-        @media @query-xl {
-            flex-direction: row;
-        }
+        flex-wrap: wrap;
+        flex-direction: row;
+        margin-bottom: -10px;
 
         &__button {
             display: flex;
@@ -228,11 +242,31 @@
             }
         }
 
-        &__pagination {
-            @media @query-xl {
-                position: absolute;
-                right: 0;
+        &__listing {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: @box-list-actions-listing-item-gap;
+
+            @media @query-sm {
+                flex: 1;
+                width: auto;
             }
+
+            &__item {
+                margin: 0 @box-list-actions-listing-item-gap;
+                width: 120px;
+                padding: 0 10px;
+
+                @media @query-sm {
+                    width: 160px;
+                    padding: 0 32px;
+                }
+            }
+        }
+
+        &__pagination {
+            margin: 0 auto @box-list-actions-listing-item-gap;
         }
     }
 }
