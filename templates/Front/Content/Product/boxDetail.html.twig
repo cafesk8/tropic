@@ -200,16 +200,16 @@
                                                     {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'detailVariant'})) }}
                                                 </div>
 
-                                                {% if showCofidisBanner %}
-                                                    <div class="list-variants__item__bottom">
-                                                        {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', {product: variant, type: 'variant'}) }}
-                                                        
+                                                <div class="list-variants__item__bottom">
+                                                    {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', {product: variant, type: 'variant'}) }}
+                                                    
+                                                    {% if showCofidisBanner %}
                                                         <div class="box-detail-add__payments box-detail-add__payments--variant">
                                                             <img class="box-detail-add__payments__image" src="{{ asset('public/frontend/images/cofidis-logo.png')}}" alt="{{ 'Cofidis'|trans }}">
                                                             {{ 'Na splátky ještě dnes již od'|trans}} {{ sellingPrice.monthlyCofidisBasePayment|price }} {{ 'měsíčně'|trans }}
                                                         </div>
-                                                    </div>
-                                                {% endif %}
+                                                    {% endif %}
+                                                </div>
                                             </li>
                                             {{ loop.last and loop.length > maxVisibleVariants ? '</div>' : '' }}
                                         {% endfor %}

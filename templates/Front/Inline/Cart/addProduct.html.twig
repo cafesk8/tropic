@@ -40,7 +40,7 @@
         {% if not product.isMainVariant %}
             {% if type == 'detailVariant' %}
                 <div class="box-detail-add__buttons__item-variant">
-                    <div class="in-add-to-cart in-add-to-cart--mobile-centered">
+                    <div class="in-add-to-cart">
                         <div class="in-add-to-cart__spinbox {% if product.realStockQuantity < 1 or product.calculatedSellingDenied or not showAmountInput %} display-none{% endif %}">
                             <div class="in-message in-message--warning js-maximum-amount-warning display-none">
                                 {{ 'Větší množství není možné nakoupit'|trans }}

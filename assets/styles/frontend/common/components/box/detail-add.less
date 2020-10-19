@@ -96,8 +96,12 @@
 
         &__availability {
             display: flex;
-            width: calc(~"100% - @{box-detail-add-action-spinbox-width}");
+            width: 100%;
             align-items: center;
+
+            @media @query-md {
+                width: calc(~"100% - @{box-detail-add-action-spinbox-width}");
+            }
         }
     }
 

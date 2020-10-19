@@ -9,17 +9,21 @@
 
     &__title {
         display: block;
-        text-align: center;
+        text-align: left;
         line-height: 42px;
         margin-bottom: 8px;
 
         color: @color-f;
         font-size: 36px;
+
+        @media @query-lg {
+            text-align: center;
+        }
     }
 
     &__link {
         display: block;
-        text-align: center;
+        text-align: left;
         margin-bottom: 22px;
         line-height: 18px;
         opacity: 0.6;
@@ -28,6 +32,7 @@
         color: @color-f;
 
         @media @query-lg {
+            text-align: center;
             margin-bottom: 69px;
         }
 
