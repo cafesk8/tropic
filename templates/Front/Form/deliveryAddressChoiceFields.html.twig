@@ -20,7 +20,7 @@
                                         <div>{{ deliveryAddress.country.name }}</div>
                                     {% endif %}
                                 </div>
-                                <a class="list-addresses__item__remove" data-href="{{ url('front_customer_delivery_address_delete', { deliveryAddressId: deliveryAddress.id }) }}" class="js-delivery-address-remove-button">
+                                <a class="list-addresses__item__remove js-delivery-address-remove-button" data-href="{{ url('front_customer_delivery_address_delete', { deliveryAddressId: deliveryAddress.id }) }}">
                                     <i class="svg svg-remove"></i>
                                 </a>
                             </label>
