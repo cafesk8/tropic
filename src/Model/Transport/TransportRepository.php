@@ -77,8 +77,11 @@ class TransportRepository extends BaseTransportRepository
 
         if ($showEmailTransportInCart === false) {
             $queryBuilder->andWhere('t.transportType != :transportEmailType');
-            $queryBuilder->setParameter('transportEmailType', Transport::TYPE_EMAIL);
+        } else {
+            $queryBuilder->andWhere('t.transportType = :transportEmailType');
         }
+
+        $queryBuilder->setParameter('transportEmailType', Transport::TYPE_EMAIL);
 
         if ($oversizedTransportAllowed) {
             $queryBuilder->andWhere('t.oversizedAllowed = true');

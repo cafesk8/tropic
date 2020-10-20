@@ -21,6 +21,7 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 class TransportDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
     public const TRANSPORT_CZECH_POST = 'transport_cp';
+    public const TRANSPORT_EMAIL = 'transport_email';
     public const TRANSPORT_PPL = 'transport_ppl';
     public const TRANSPORT_PERSONAL = 'transport_personal';
     public const TRANSPORT_PPL_DE = 'transport_ppl_de';
@@ -184,6 +185,20 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $this->setPriceForAllDomains($transportData, Money::create('3'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createTransport(self::TRANSPORT_ZASILKOVNA_SK, $transportData);
+
+        $transportData = $this->transportDataFactory->create();
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $transportData->name[$locale] = t('Emailem', [], 'dataFixtures', $locale);
+        }
+
+        $transportData->transportType = Transport::TYPE_EMAIL;
+        $transportData->zboziType = 'VLASTNI_PREPRAVA';
+        $this->setPriceForAllDomains($transportData, Money::zero());
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
+
+        $this->createTransport(self::TRANSPORT_EMAIL, $transportData);
     }
 
     /**
