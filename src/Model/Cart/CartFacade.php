@@ -110,11 +110,12 @@ class CartFacade extends BaseCartFacade
 
     /**
      * @param \App\Model\Cart\Cart|null $cart
+     * @return \App\Model\Cart\Cart|null
      */
-    public function correctCartQuantitiesAccordingToStockedQuantities(?Cart $cart): void
+    public function correctCartQuantitiesAccordingToStockedQuantities(?Cart $cart): ?Cart
     {
         if ($cart === null) {
-            return;
+            return null;
         }
         $cartModifiedQuantitiesIndexedByCartItemId = [];
 
@@ -131,6 +132,8 @@ class CartFacade extends BaseCartFacade
         if (count($cartModifiedQuantitiesIndexedByCartItemId) > 0) {
             $this->changeQuantities($cartModifiedQuantitiesIndexedByCartItemId);
         }
+
+        return $this->findCartOfCurrentCustomerUser();
     }
 
     /**
@@ -387,9 +390,9 @@ class CartFacade extends BaseCartFacade
         $this->cartWatcherFacade->checkCartModifications($cart);
         if ($cart->isEmpty()) {
             $this->deleteCart($cart);
-            $cart = null;
+            return null;
         }
-        return $cart;
+        return $this->correctCartQuantitiesAccordingToStockedQuantities($cart);
     }
 
     /**

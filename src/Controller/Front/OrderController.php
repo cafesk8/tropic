@@ -344,12 +344,12 @@ class OrderController extends FrontBaseController
     public function indexAction(Request $request)
     {
         $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
+        $cart = $this->cartFacade->checkCartModificationsAndDeleteCartIfEmpty($cart);
         if ($cart === null) {
             return $this->redirectToRoute('front_cart');
         }
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();
-        $this->cartFacade->checkCartModificationsAndDeleteCartIfEmpty($cart);
 
         $frontOrderFormData = new FrontOrderData();
         if ($customerUser instanceof CustomerUser) {
@@ -413,10 +413,13 @@ class OrderController extends FrontBaseController
         $this->checkTransportAndPaymentChanges($orderData, $orderPreview, $transports, $payments);
 
         if ($isValid) {
-            $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities($cart);
+            $cart = $this->cartFacade->checkCartModificationsAndDeleteCartIfEmpty($cart);
+            if ($cart === null) {
+                return $this->redirectToRoute('front_cart');
+            }
             if ($orderFlow->nextStep()) {
                 $form = $orderFlow->createForm();
-            } elseif (count($this->getErrorMessages()) === 0 && count($this->getInfoMessages()) === 0) {
+            } elseif (!$this->existAnyErrorOrInfoMessages()) {
                 $order = $this->orderFacade->createOrderFromFront($orderData, $frontOrderFormData->deliveryAddress);
 
                 if ($frontOrderFormData->newsletterSubscription) {
