@@ -64,9 +64,7 @@ class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalcula
     private function propagateSellingDeniedFromSetItems(array $products)
     {
         foreach ($products as $product) {
-            $productIds = array_map(function (ProductSet $productSet) {
-                return $productSet->getItem()->getId();
-            }, $product->getProductSets());
+            $productIds = array_map(fn (ProductSet $productSet) => $productSet->getItem()->getId(), $product->getProductSets());
 
             if (count($productIds) < 1) {
                 continue;
