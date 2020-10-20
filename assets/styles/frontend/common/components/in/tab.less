@@ -101,12 +101,17 @@
         }
 
         &__title {
-            display: block;
+            display: flex;
+            align-items: center;
             position: relative;
             height: @in-tab-head-item-height-mobile;
             line-height: @in-tab-head-item-height-mobile;
+            margin-bottom: 10px;
+            padding: 0 10px;
 
             cursor: pointer;
+            border: 3px solid @color-border;
+            border-radius: @radius-medium;
 
             &__link {
                 color: @color-base;
@@ -138,6 +143,10 @@
         &__item {
             display: none;
             padding-top: 12px;
+
+            @media @query-vl {
+                display: block !important;
+            }
 
             &--without-gap {
                 @media @query-vl {

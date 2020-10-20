@@ -124,11 +124,13 @@
             </div>
         </div>
 
-        <div class="web__line">
-            <div class="web__container">
-                {% include 'Front/Content/Heureka/reviews.html.twig' with { reviews: heurekaReviews } %}
+        {% if heurekaReviews|length > 0 %}
+            <div class="web__line">
+                <div class="web__container">
+                    {% include 'Front/Content/Heureka/reviews.html.twig' with { reviews: heurekaReviews } %}
+                </div>
             </div>
-        </div>
+        {% endif %}
 
         {% block last_visited_products %}
             {{ render(controller('App\\Controller\\Front\\LastVisitedProductsController:showAction')) }}
