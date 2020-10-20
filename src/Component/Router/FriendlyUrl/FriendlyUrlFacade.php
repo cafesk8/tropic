@@ -75,4 +75,14 @@ class FriendlyUrlFacade extends BaseFriendlyUrlFacade
     {
         return $this->friendlyUrlRepository->getFriendlyUrlBySlugAndDomainId($slug, $domainId);
     }
+
+    /**
+     * @param int $domainId
+     * @param string $slug
+     * @return \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl|null
+     */
+    public function findByDomainIdAndSlug(int $domainId, string $slug): ?FriendlyUrl
+    {
+        return $this->friendlyUrlRepository->findByDomainIdAndSlug($domainId, $slug);
+    }
 }

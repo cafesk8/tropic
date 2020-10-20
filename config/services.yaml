@@ -837,3 +837,9 @@ services:
             - '@monolog.logger.cron'
 
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\MarkProductForExportSubscriber: '@App\Model\Product\Elasticsearch\MarkProductForExportSubscriber'
+
+    # Must be run before NormalizeUrlTrailingSlashSubscriber
+    App\Component\Router\DynamicLegacyUrlRedirectSubscriber:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 5}
+
