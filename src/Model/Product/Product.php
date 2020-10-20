@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product;
 
 use App\Component\Domain\DomainHelper;
+use App\Model\Cart\Exception\OutOfStockException;
 use App\Model\Product\Exception\ProductIsNotMainVariantException;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\ProductFlag;
@@ -686,9 +687,13 @@ class Product extends BaseProduct
 
     /**
      * @param int $realStockQuantity
+     * @param bool $checkQuantityBefore
      */
-    public function setRealStockQuantity(int $realStockQuantity): void
+    public function setRealStockQuantity(int $realStockQuantity, bool $checkQuantityBefore = false): void
     {
+        if ($checkQuantityBefore && $this->getRealStockQuantity() <= 0) {
+            throw new OutOfStockException();
+        }
         $this->realStockQuantity = $realStockQuantity;
     }
 

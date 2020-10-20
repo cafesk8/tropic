@@ -460,8 +460,9 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \App\Model\Product\Product $product
+     * @param bool $checkQuantityBefore
      */
-    public function updateTotalProductStockQuantity(Product $product): void
+    public function updateTotalProductStockQuantity(Product $product, bool $checkQuantityBefore = false): void
     {
         $totalStockQuantity = 0;
         foreach ($product->getStocksWithoutZeroQuantityOnStore() as $productStoreStock) {
@@ -478,7 +479,7 @@ class ProductFacade extends BaseProductFacade
         if ($product->getStockQuantity() % $product->getAmountMultiplier() !== 0) {
             $realStockQuantity = (int)floor($product->getStockQuantity() / $product->getAmountMultiplier()) * $product->getAmountMultiplier();
         }
-        $product->setRealStockQuantity($realStockQuantity);
+        $product->setRealStockQuantity($realStockQuantity, $checkQuantityBefore);
 
         if ($realStockQuantity < 1) {
             foreach ($this->productGiftFacade->getByGift($product) as $productGift) {

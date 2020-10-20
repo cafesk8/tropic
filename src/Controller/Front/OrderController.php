@@ -11,6 +11,7 @@ use App\Form\Front\Order\DomainAwareOrderFlowFactory;
 use App\Form\Front\Order\OrderFlow;
 use App\Form\Front\Order\PaymentFormType;
 use App\Model\Blog\Article\BlogArticleFacade;
+use App\Model\Cart\Exception\OutOfStockException;
 use App\Model\Country\CountryFacade;
 use App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Customer\User\CustomerUserUpdateDataFactory;
@@ -420,7 +421,11 @@ class OrderController extends FrontBaseController
             if ($orderFlow->nextStep()) {
                 $form = $orderFlow->createForm();
             } elseif (!$this->existAnyErrorOrInfoMessages()) {
-                $order = $this->orderFacade->createOrderFromFront($orderData, $frontOrderFormData->deliveryAddress);
+                try {
+                    $order = $this->orderFacade->createOrderFromFront($orderData, $frontOrderFormData->deliveryAddress);
+                } catch (OutOfStockException $ex) {
+                    return $this->redirectToRoute('front_order_index');
+                }
 
                 if ($frontOrderFormData->newsletterSubscription) {
                     $this->newsletterFacade->addSubscribedEmail($frontOrderFormData->email, $this->domain->getId());

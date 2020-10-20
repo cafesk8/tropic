@@ -105,7 +105,7 @@ class OrderProductFacade extends BaseOrderProductFacade
                 if ($product->getRealSaleStocksQuantity() <= 0) {
                     $product->markForRefresh();
                 }
-                $this->productFacade->updateTotalProductStockQuantity($product);
+                $this->productFacade->updateTotalProductStockQuantity($product, true);
             }
             if (count($toFlush) > 0) {
                 $this->em->flush($toFlush);
