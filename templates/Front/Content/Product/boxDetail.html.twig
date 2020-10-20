@@ -9,7 +9,7 @@
     {% set domain = getDomain() %}
     {% set showGalleryMaxCount = 3 %}
     {% set showFlagsMaxCount = 3 %}
-    {% set maxVisibleVariants = 1 %}
+    {% set maxVisibleVariants = 3 %}
     {% set typeSet = product.pohodaProductType is same as(5) %}
     {% set typeSupplierSet = product.supplierSet is same as(true) %}
     {% set typeSetOrSupplierSet = typeSet or typeSupplierSet %}
@@ -223,7 +223,10 @@
                                                 data-space-above-position="60" 
                                                 data-element="listVariantsHidden">
                                                 <span class="box-detail-add__show-more__button__more">
-                                                    {{ 'Načíst dalších'|trans }} {{ filterOnlyVisibleVariants(product)|length - maxVisibleVariants }} {{ 'variant'|trans }}
+                                                    {% set variantsCount = filterOnlyVisibleVariants(product)|length - maxVisibleVariants %}
+                                                    {% transchoice variantsCount with {'%count%': variantsCount} %}
+                                                    {1} NAČÍST DALŠÍ %count% VARIANTU |[2,4] NAČÍST DALŠÍ %count% VARIANTY |[5,Inf] NAČÍST DALŠÍCH %count% VARIANT
+                                                    {% endtranschoice %}
                                                 </span>
                                                 <span class="box-detail-add__show-more__button__less">
                                                     {{ 'Skrýt varianty'|trans }}
