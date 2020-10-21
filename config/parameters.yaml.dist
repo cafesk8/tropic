@@ -39,9 +39,9 @@ parameters:
             clientSecret: acdDPRSW
             language: CS
         sk:
-            goid: 8111408481
-            clientId: 1437261089
-            clientSecret: acdDPRSW
+            goid: 8646591998
+            clientId: 1444786871
+            clientSecret: XEDsTGrR
             language: SK
         en:
             goid: 8111408481
