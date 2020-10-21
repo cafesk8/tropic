@@ -88,6 +88,9 @@ msgstr "6 dôvodov, prečo nakúpiť u nás"
 msgid "702 00 Ostrava"
 msgstr "702 00 Ostrava"
 
+msgid "< PREVIOUS"
+msgstr "< PREDCHÁDZAJÚCI"
+
 msgid "<a href=\"{{ url }}\">Dárek k objednávce</a> byl úspěšně upraven"
 msgstr "<a href=\"{{ url }}\">Darček k objednávke</a> bol úspešne upravený"
 
@@ -793,6 +796,9 @@ msgstr "Darčekový poukaz"
 msgid "Dárkový poukaz - aktivován"
 msgstr "Darčekový poukaz - aktivovaný"
 
+msgid "Dárkový<br> poukaz<br> v hodnotě"
+msgstr ""
+
 msgid "Dárky"
 msgstr "Darčeky"
 
@@ -925,6 +931,9 @@ msgstr "Fakturačná adresa"
 msgid "Fakturační údaje"
 msgstr "Fakturačné údaje"
 
+msgid "Feed successfully generated."
+msgstr ""
+
 msgid "Files"
 msgstr "Súbory"
 
@@ -942,6 +951,9 @@ msgstr "Krstné meno"
 
 msgid "Fish"
 msgstr "Ryba"
+
+msgid "Fishes"
+msgstr ""
 
 msgid "Flags"
 msgstr "Zástavky"
@@ -966,6 +978,9 @@ msgstr "GEIS"
 
 msgid "GLS"
 msgstr "GLS"
+
+msgid "Generate"
+msgstr ""
 
 msgid "Generovat tento produkt do Mergado XML feedu"
 msgstr "Generovať tento produkt do Mergado XML feedu"
@@ -1306,6 +1321,9 @@ msgstr "Kód darčekového poukazu"
 msgid "Kód produktu"
 msgstr "Kód produktu"
 
+msgid "Kód vložte v pokladně při dokočení objednávky."
+msgstr ""
+
 msgid "Last name"
 msgstr "Priezvisko"
 
@@ -1332,6 +1350,9 @@ msgstr "Odhlásiť sa"
 
 msgid "Login"
 msgstr "Prihlásiť sa"
+
+msgid "Logo"
+msgstr ""
 
 msgid "Magazín"
 msgstr "Magazín"
@@ -1476,6 +1497,9 @@ msgstr "Môže byť použitý pre darčekové poukazy"
 
 msgid "Můžete nahrát soubor v těchto formátech: PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP"
 msgstr "Môžete nahrať súbor v týchto formátoch: PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP"
+
+msgid "NEXT >"
+msgstr "DALŠÍ >"
 
 msgid "Na splátky ještě dnes již od"
 msgstr "Na splátky ešte dnes už od"
@@ -2053,11 +2077,17 @@ msgstr "Platba"
 msgid "Platnost"
 msgstr "Platnosť"
 
+msgid "Platnost poukazu je 12 měsíců od zakoupení."
+msgstr ""
+
 msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
 msgstr "Platnosť zľavového kupónu \"%code%\" vypršala. Prosím, skontrolujte ho."
 
 msgid "Platný do"
 msgstr "Platný do"
+
+msgid "Platný do:"
+msgstr ""
 
 msgid "Platný od"
 msgstr "Platný od"
@@ -2346,6 +2376,9 @@ msgstr "Produkty"
 
 msgid "Produkty k článku blogu"
 msgstr "Produkty k článku blogu"
+
+msgid "Produkty takto vyřazené z prodeje se nikde na e-shopu nezobrazují (a to ani v případě, že mají zobrazování výše nastaveno pomocí \"Zobrazit na\")."
+msgstr ""
 
 msgid "Promo code"
 msgstr "Promo kód"
@@ -2880,6 +2913,9 @@ msgstr "TOP Značky"
 
 msgid "TOPTRANS"
 msgstr "TOPTRANS"
+
+msgid "TROPIC LIBEREC s.r.o., U Sadu 655, Liberec 25, IČO: 25415981"
+msgstr ""
 
 msgid "Tak tady nic nechytíš :-)"
 msgstr "Tak tu nič nechytíš :-)"
@@ -3448,6 +3484,9 @@ msgstr "Všetky produkty"
 msgid "Vždy vyčkejte, až vás budeme informovat, že zboží je připravené k odběru."
 msgstr "Vždy počkajte, až vás budeme informovať, že tovar je pripravený k odberu."
 
+msgid "XML Feeds"
+msgstr ""
+
 msgid "Yes"
 msgstr "Áno"
 
@@ -3715,6 +3754,9 @@ msgstr "histórii svojich objednávok,"
 msgid "hlášek"
 msgstr "hlášok"
 
+msgid "http://www.tropicfishing.cz/"
+msgstr ""
+
 msgid "in upper menu"
 msgstr "v hornom menu"
 
@@ -3913,6 +3955,9 @@ msgstr "{1} %count% mesiac | [2,4] %count% mesiace | [5,Inf] %count% mesiacov"
 msgid "{1} %stocksWithoutZeroQuantityOnStoreCount% prodejně| [2,Inf] %stocksWithoutZeroQuantityOnStoreCount% prodejnách"
 msgstr "{1} %stocksWithoutZeroQuantityOnStoreCount% predajni| [2,Inf] %stocksWithoutZeroQuantityOnStoreCount% predajniach"
 
+msgid "{1} NAČÍST DALŠÍ %count% VARIANTU |[2,4] NAČÍST DALŠÍ %count% VARIANTY |[5,Inf] NAČÍST DALŠÍCH %count% VARIANT"
+msgstr "{1} Načítať ďalšiu %count% variantu |[2,4] Načítať ďalšie %count% varianty |[5,Inf] Načítať ďalších %count% variant"
+
 msgid "{1}Load next %loadNextCount% item|[2,Inf]Load next %loadNextCount% items"
 msgstr "{1} Načítať ďalšiu %loadNextCount% položku| [2, Inf] Načítať ďalšie %loadNextCount% položky"
 
@@ -4033,8 +4078,3 @@ msgstr "Žiadne sklady sa nenašli"
 msgid "Žádné slevy na celý nákup nenalezeny."
 msgstr "Žiadne zľavy na celý nákup sa nenašli."
 
-msgid "< PREVIOUS"
-msgstr "< PREDCHÁDZAJÚCI"
-
-msgid "NEXT >"
-msgstr "DALŠÍ >"

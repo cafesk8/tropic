@@ -137,7 +137,8 @@
                                     <ul {% if getProductSellingPrice(product) is not null %}itemprop="offers"
                                         itemscope
                                         itemtype="http://schema.org/AggregateOffer" {% endif %}
-                                        class="list-variants">
+                                        class="list-variants"
+                                        id="list-variants">
                                         {% for variant in filterOnlyVisibleVariants(product) %}
                                             {{ loop.index0 == maxVisibleVariants ? '<div class="display-none" id="listVariantsHidden">' : '' }}
                                             <li class="list-variants__item">
@@ -217,9 +218,15 @@
 
                                     {% if filterOnlyVisibleVariants(product)|length > maxVisibleVariants %}
                                         <div class="box-detail-add__show-more">
-                                            <a class="box-detail-add__show-more__button btn btn--big js-responsive-toggle" data-element="listVariantsHidden">
+                                            <a class="box-detail-add__show-more__button btn btn--big js-responsive-toggle js-scroll-to-position" 
+                                                href="#list-variants" 
+                                                data-space-above-position="60" 
+                                                data-element="listVariantsHidden">
                                                 <span class="box-detail-add__show-more__button__more">
-                                                    {{ 'Načíst dalších'|trans }} {{ filterOnlyVisibleVariants(product)|length - maxVisibleVariants }} {{ 'variant'|trans }}
+                                                    {% set variantsCount = filterOnlyVisibleVariants(product)|length - maxVisibleVariants %}
+                                                    {% transchoice variantsCount with {'%count%': variantsCount} %}
+                                                    {1} NAČÍST DALŠÍ %count% VARIANTU |[2,4] NAČÍST DALŠÍ %count% VARIANTY |[5,Inf] NAČÍST DALŠÍCH %count% VARIANT
+                                                    {% endtranschoice %}
                                                 </span>
                                                 <span class="box-detail-add__show-more__button__less">
                                                     {{ 'Skrýt varianty'|trans }}

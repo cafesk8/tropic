@@ -85,6 +85,9 @@ msgstr ""
 msgid "702 00 Ostrava"
 msgstr "702 00 Ostrava"
 
+msgid "< PREVIOUS"
+msgstr "< PREVIOUS"
+
 msgid "<a href=\"{{ url }}\">Dárek k objednávce</a> byl úspěšně upraven"
 msgstr ""
 
@@ -384,9 +387,6 @@ msgstr ""
 
 msgid "Chci zadat doručovací adresu"
 msgstr "I want to fill in different delivery address"
-
-msgid "Chci zadat fakturační údaje"
-msgstr ""
 
 msgid "Chci zadat jiné fakturační údaje"
 msgstr "I want to fill in different billing information"
@@ -778,6 +778,9 @@ msgstr ""
 msgid "Dárkový poukaz - aktivován"
 msgstr ""
 
+msgid "Dárkový<br> poukaz<br> v hodnotě"
+msgstr ""
+
 msgid "Dárky k objednávce"
 msgstr ""
 
@@ -907,6 +910,9 @@ msgstr "Billing address"
 msgid "Fakturační údaje"
 msgstr ""
 
+msgid "Feed successfully generated."
+msgstr ""
+
 msgid "Files"
 msgstr ""
 
@@ -923,6 +929,9 @@ msgid "First name"
 msgstr "First name"
 
 msgid "Fish"
+msgstr ""
+
+msgid "Fishes"
 msgstr ""
 
 msgid "Flags"
@@ -945,6 +954,9 @@ msgstr "GEIS"
 
 msgid "GLS"
 msgstr "GLS"
+
+msgid "Generate"
+msgstr ""
 
 msgid "Generovat tento produkt do Mergado XML feedu"
 msgstr ""
@@ -1267,6 +1279,9 @@ msgstr ""
 msgid "Kód produktu"
 msgstr "Product code"
 
+msgid "Kód vložte v pokladně při dokočení objednávky."
+msgstr ""
+
 msgid "Last name"
 msgstr "Last name"
 
@@ -1293,6 +1308,9 @@ msgstr "Log out"
 
 msgid "Login"
 msgstr "Login"
+
+msgid "Logo"
+msgstr ""
 
 msgid "Magazín"
 msgstr "Magazine"
@@ -1432,6 +1450,9 @@ msgstr ""
 msgid "Můžete nahrát soubor v těchto formátech: PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP"
 msgstr ""
 
+msgid "NEXT >"
+msgstr "NEXT >"
+
 msgid "Na splátky ještě dnes již od"
 msgstr ""
 
@@ -1493,9 +1514,6 @@ msgid "Nastavit"
 msgstr "Set"
 
 msgid "Načerpejte inspiraci"
-msgstr ""
-
-msgid "Načíst dalších"
 msgstr ""
 
 msgid "Naše prodejna"
@@ -1999,11 +2017,17 @@ msgstr "Payment"
 msgid "Platnost"
 msgstr "Validity"
 
+msgid "Platnost poukazu je 12 měsíců od zakoupení."
+msgstr ""
+
 msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
 msgstr "Promo code \"%code%\" expired. Check it, please."
 
 msgid "Platný do"
 msgstr "Valid until"
+
+msgid "Platný do:"
+msgstr ""
 
 msgid "Platný od"
 msgstr "Valid from"
@@ -2259,6 +2283,9 @@ msgstr "Products"
 
 msgid "Produkty k článku blogu"
 msgstr "Products for blog article"
+
+msgid "Produkty takto vyřazené z prodeje se nikde na e-shopu nezobrazují (a to ani v případě, že mají zobrazování výše nastaveno pomocí \"Zobrazit na\")."
+msgstr ""
 
 msgid "Promo code"
 msgstr "Promo code"
@@ -2793,6 +2820,9 @@ msgstr ""
 
 msgid "TOPTRANS"
 msgstr "TOPTRANS"
+
+msgid "TROPIC LIBEREC s.r.o., U Sadu 655, Liberec 25, IČO: 25415981"
+msgstr ""
 
 msgid "Tak tady nic nechytíš :-)"
 msgstr ""
@@ -3355,6 +3385,9 @@ msgstr "All products"
 msgid "Vždy vyčkejte, až vás budeme informovat, že zboží je připravené k odběru."
 msgstr ""
 
+msgid "XML Feeds"
+msgstr ""
+
 msgid "Yes"
 msgstr "Yes"
 
@@ -3619,6 +3652,9 @@ msgstr "history of your orders,"
 msgid "hlášek"
 msgstr ""
 
+msgid "http://www.tropicfishing.cz/"
+msgstr ""
+
 msgid "in upper menu"
 msgstr "in upper menu"
 
@@ -3757,9 +3793,6 @@ msgstr "with value of"
 msgid "v měně dle zvolené domény"
 msgstr "in currency by selected domain"
 
-msgid "variant"
-msgstr ""
-
 msgid "všechny zákazníky"
 msgstr "all customers"
 
@@ -3798,6 +3831,9 @@ msgstr ""
 
 msgid "{1} %stocksWithoutZeroQuantityOnStoreCount% prodejně| [2,Inf] %stocksWithoutZeroQuantityOnStoreCount% prodejnách"
 msgstr "{1} %stocksWithoutZeroQuantityOnStoreCount% store| [2,Inf] %stocksWithoutZeroQuantityOnStoreCount% stores"
+
+msgid "{1} NAČÍST DALŠÍ %count% VARIANTU |[2,4] NAČÍST DALŠÍ %count% VARIANTY |[5,Inf] NAČÍST DALŠÍCH %count% VARIANT"
+msgstr ""
 
 msgid "{1}Load next %loadNextCount% item|[2,Inf]Load next %loadNextCount% items"
 msgstr "{1}Load next %loadNextCount% item|[2,Inf]Load next %loadNextCount% items"
@@ -3909,10 +3945,4 @@ msgstr ""
 
 msgid "Žádné slevy na celý nákup nenalezeny."
 msgstr ""
-
-msgid "< PREVIOUS"
-msgstr "< PREVIOUS"
-
-msgid "NEXT >"
-msgstr "NEXT >"
 
