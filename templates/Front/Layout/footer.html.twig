@@ -116,9 +116,15 @@
                             </div>
                             <div class="footer-middle__awards__right">
                                 <div class="footer-middle__awards__heureka">
-                                    <a href="{{ getHeurekaReviewsUrl() }}" target="_blank" title="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o.">
-                                        <img src="https://im9.cz/cb/19416-11.png" height="130" width="340" alt="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o." style="border: 0;">
-                                    </a>
+                                    {% if isSlovakDomain() is same as (true) %}
+                                        <a href="{{ getHeurekaReviewsUrl() }}" target="_blank" title="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o.">
+                                            <img src="https://im9.cz/sk/cb/20799-11.png" height="130" width="340" alt="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o." style="border: 0;">
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ getHeurekaReviewsUrl() }}" target="_blank" title="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o.">
+                                            <img src="https://im9.cz/cb/19416-11.png" height="130" width="340" alt="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o." style="border: 0;">
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
