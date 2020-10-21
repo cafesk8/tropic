@@ -5,6 +5,12 @@
 {% set domain = getDomain() %}
 {% set accessoriesHeadline = 'K produktu budete potřebovat'|trans %}
 
+{% block meta_robots %}
+    {% if product.isMainVariant() %}
+        <meta name="robots" content="index, follow">
+    {% endif %}
+{% endblock %}
+
 {% block meta_description %}
     {{- product.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}
 {% endblock %}
