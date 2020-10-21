@@ -126,3 +126,16 @@ parameters:
 
     zbozi_shop_id: 1642515681
     zbozi_private_key: 6ae5d376778ee81c24636dc5142a0d7a
+
+    mserver_email_notifications_enabled: false
+
+    mserver_error_500_email_recipients:
+        - 'pavel@chcisystem.cz'
+        - 'pabiskova@tropicliberec.cz'
+        - 'krizek.jr@tropicliberec.cz'
+        - 'tomas.mandok@shopsys.com'
+
+    mserver_error_timeout_email_recipients:
+        - 'pabiskova@tropicliberec.cz'
+        - 'krizek.jr@tropicliberec.cz'
+        - 'tomas.mandok@shopsys.com'

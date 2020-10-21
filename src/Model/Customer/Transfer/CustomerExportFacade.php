@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Customer\Transfer;
 
 use App\Component\Transfer\Logger\TransferLoggerFactory;
+use App\Component\Transfer\Mail\TransferMailFacade;
 use App\Component\Transfer\Pohoda\Customer\PohodaCustomerValidator;
 use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
 use App\Component\Transfer\Pohoda\Exception\PohodaMServerException;
@@ -13,6 +14,7 @@ use App\Component\Transfer\Pohoda\Response\PohodaResponse;
 use App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Customer\User\CustomerUserUpdateDataFactory;
 use App\Model\Transfer\Transfer;
+use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 
 class CustomerExportFacade
 {
@@ -46,6 +48,8 @@ class CustomerExportFacade
      */
     private $pohodaCustomerValidator;
 
+    private TransferMailFacade $transferMailFacade;
+
     /**
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Model\Customer\Transfer\PohodaCustomerMapper $pohodaCustomerMapper
@@ -53,6 +57,7 @@ class CustomerExportFacade
      * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
      * @param \App\Component\Transfer\Pohoda\Customer\PohodaCustomerValidator $pohodaCustomerValidator
+     * @param \App\Component\Transfer\Mail\TransferMailFacade $transferMailFacade
      */
     public function __construct(
         TransferLoggerFactory $transferLoggerFactory,
@@ -60,7 +65,8 @@ class CustomerExportFacade
         MServerClient $mServerClient,
         CustomerUserFacade $customerUserFacade,
         CustomerUserUpdateDataFactory $customerUserUpdateDataFactory,
-        PohodaCustomerValidator $pohodaCustomerValidator
+        PohodaCustomerValidator $pohodaCustomerValidator,
+        TransferMailFacade $transferMailFacade
     ) {
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(Transfer::IDENTIFIER_EXPORT_CUSTOMERS);
 
@@ -69,6 +75,7 @@ class CustomerExportFacade
         $this->customerUserFacade = $customerUserFacade;
         $this->customerUserUpdateDataFactory = $customerUserUpdateDataFactory;
         $this->pohodaCustomerValidator = $pohodaCustomerValidator;
+        $this->transferMailFacade = $transferMailFacade;
     }
 
     /**
@@ -105,6 +112,13 @@ class CustomerExportFacade
             } catch (PohodaMServerException $exc) {
                 $errorMessage = 'Při exportu došlo k chybě: ' . $exc->getMessage();
                 $this->logger->addError($errorMessage);
+                try {
+                    $this->transferMailFacade->sendMailByErrorMessage($exc->getMessage());
+                } catch (\Swift_SwiftException | MailException $mailException) {
+                    $this->logger->addError('Chyba při odesílání emailové notifikace o chybě mSeveru', [
+                        'exceptionMessage' => $mailException->getMessage(),
+                    ]);
+                }
             }
         } else {
             $this->logger->addInfo('Nejsou žádná data ke zpracování');

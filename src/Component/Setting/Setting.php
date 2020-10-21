@@ -15,4 +15,6 @@ class Setting extends BaseSetting
     public const FREE_TRANSPORT_FLAG = 'freeTransportFlagId';
     public const DEFAULT_AVAILABILITY_OUT_OF_STOCK_ID = 'defaultAvailabilityOutOfStockId';
     public const COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID = 'cofidis_banner_minimum_show_price';
+    public const LAST_SENT_M_SERVER_ERROR_500_INFO = 'lastSentMServerError500Info';
+    public const LAST_SENT_M_SERVER_ERROR_TIMEOUT_INFO = 'lastSentMServerTimeoutInfo';
 }

@@ -815,3 +815,11 @@ services:
     App\Model\Product\SoldOutActions\ProductSoldOutActionsListener:
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -5 }
+
+    Shopsys\FrameworkBundle\Model\Mail\Setting\MailSettingFacade: '@App\Model\Mail\MailSettingFacade'
+
+    App\Component\Transfer\Mail\TransferMailFacade:
+        arguments:
+            - '%mserver_email_notifications_enabled%'
+            - '%mserver_error_500_email_recipients%'
+            - '%mserver_error_timeout_email_recipients%'

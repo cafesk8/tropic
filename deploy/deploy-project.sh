@@ -39,6 +39,7 @@ function deploy() {
         ["parameters.balikobot.apiKey"]="${BALIKOBOT_APIKEY}"
         ["parameters.zbozi_shop_id"]="${ZBOZI_SHOP_ID}"
         ["parameters.zbozi_private_key"]="${ZBOZI_PRIVATE_KEY}"
+        ["parameters.mserver_email_notifications_enabled"]=${MSERVER_EMAIL_NOTIFICATIONS_ENABLED}
 
         # GoPay
         ["parameters.gopay_config.cs.goid"]="${GOPAY_CONFIG_GOID_CS}"

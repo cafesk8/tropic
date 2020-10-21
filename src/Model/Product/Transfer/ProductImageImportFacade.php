@@ -7,6 +7,7 @@ namespace App\Model\Product\Transfer;
 use App\Component\Image\ImageFacade;
 use App\Component\Transfer\Logger\TransferLogger;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
+use App\Component\Transfer\Mail\TransferMailFacade;
 use App\Component\Transfer\Pohoda\Exception\PohodaMServerException;
 use App\Component\Transfer\Pohoda\MServer\MServerClient;
 use App\Component\Transfer\Pohoda\Product\Image\PohodaImage;
@@ -16,6 +17,7 @@ use App\Model\Product\ProductFacade;
 use DateTime;
 use Exception;
 use League\Flysystem\FilesystemInterface;
+use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler;
 
 class ProductImageImportFacade
@@ -41,6 +43,8 @@ class ProductImageImportFacade
 
     private ImageImportQueueFacade $imageInfoQueueFacade;
 
+    private TransferMailFacade $transferMailFacade;
+
     /**
      * @param string $imagesDirectory
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
@@ -51,6 +55,7 @@ class ProductImageImportFacade
      * @param \App\Component\Transfer\Pohoda\Product\Image\PohodaImageExportFacade $pohodaImageExportFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler $productExportScheduler
      * @param \App\Model\Product\Transfer\ImageImportQueueFacade $imageInfoQueueFacade
+     * @param \App\Component\Transfer\Mail\TransferMailFacade $transferMailFacade
      */
     public function __construct(
         string $imagesDirectory,
@@ -61,7 +66,8 @@ class ProductImageImportFacade
         ProductFacade $productFacade,
         PohodaImageExportFacade $pohodaImageExportFacade,
         ProductExportScheduler $productExportScheduler,
-        ImageImportQueueFacade $imageInfoQueueFacade
+        ImageImportQueueFacade $imageInfoQueueFacade,
+        TransferMailFacade $transferMailFacade
     ) {
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImageImportCronModule::TRANSFER_IDENTIFIER);
         $this->mServerClient = $mServerClient;
@@ -72,6 +78,7 @@ class ProductImageImportFacade
         $this->pohodaImageExportFacade = $pohodaImageExportFacade;
         $this->productExportScheduler = $productExportScheduler;
         $this->imageInfoQueueFacade = $imageInfoQueueFacade;
+        $this->transferMailFacade = $transferMailFacade;
     }
 
     /**
@@ -145,6 +152,13 @@ class ProductImageImportFacade
                         'catnum' => $product->getCatnum(),
                     ]);
                     $couldConnectToMserver = false;
+                    try {
+                        $this->transferMailFacade->sendMailByErrorMessage($ex->getMessage());
+                    } catch (\Swift_SwiftException | MailException $mailException) {
+                        $this->logger->addError('Chyba při odesílání emailové notifikace o chybě mSeveru', [
+                            'exceptionMessage' => $mailException->getMessage(),
+                        ]);
+                    }
                     break;
                 }
             } catch (Exception $ex) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Order\Transfer;
 
 use App\Component\Transfer\Logger\TransferLoggerFactory;
+use App\Component\Transfer\Mail\TransferMailFacade;
 use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
 use App\Component\Transfer\Pohoda\Exception\PohodaMServerException;
 use App\Component\Transfer\Pohoda\MServer\MServerClient;
@@ -14,6 +15,7 @@ use App\Model\Customer\Transfer\CustomerExportFacade;
 use App\Model\Order\OrderFacade;
 use App\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 
 class OrderExportFacade
 {
@@ -59,6 +61,8 @@ class OrderExportFacade
      */
     private $mServerClient;
 
+    private TransferMailFacade $transferMailFacade;
+
     /**
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Model\Customer\Transfer\CustomerExportFacade $customerExportFacade
@@ -68,6 +72,7 @@ class OrderExportFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Component\Transfer\Pohoda\Order\PohodaOrderValidator $pohodaOrderValidator
      * @param \App\Component\Transfer\Pohoda\MServer\MServerClient $mServerClient
+     * @param \App\Component\Transfer\Mail\TransferMailFacade $transferMailFacade
      */
     public function __construct(
         TransferLoggerFactory $transferLoggerFactory,
@@ -77,7 +82,8 @@ class OrderExportFacade
         VatFacade $vatFacade,
         Domain $domain,
         PohodaOrderValidator $pohodaOrderValidator,
-        MServerClient $mServerClient
+        MServerClient $mServerClient,
+        TransferMailFacade $transferMailFacade
     ) {
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(OrderExportCronModule::TRANSFER_IDENTIFIER);
 
@@ -88,6 +94,7 @@ class OrderExportFacade
         $this->domain = $domain;
         $this->pohodaOrderValidator = $pohodaOrderValidator;
         $this->mServerClient = $mServerClient;
+        $this->transferMailFacade = $transferMailFacade;
     }
 
     public function processExport(): void
@@ -144,6 +151,13 @@ class OrderExportFacade
                 $this->logger->addError('Při exportu došlo k chybě', [
                     'exceptionMessage' => $exc->getMessage(),
                 ]);
+                try {
+                    $this->transferMailFacade->sendMailByErrorMessage($exc->getMessage());
+                } catch (\Swift_SwiftException | MailException $mailException) {
+                    $this->logger->addError('Chyba při odesílání emailové notifikace o chybě mSeveru', [
+                        'exceptionMessage' => $mailException->getMessage(),
+                    ]);
+                }
             }
         } else {
             $this->logger->addInfo('Nejsou žádné objednávky ke zpracování');
