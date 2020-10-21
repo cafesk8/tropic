@@ -1,27 +1,30 @@
 <div id="js-cart-box" data-reload-url="{{ url('front_cart_box') }}">
-
-    <div class="box-dropdown box-dropdown--min-width box-dropdown--open-light js-dropdown
-        {% if cart is not null %}js-hover-intent{% else %}box-dropdown--without-arrow{% endif %}"
-        data-type="{% if cart is null %}link{% else %}link-on-mobile{% endif %}"
+    {% set cartIsEmpty = productsCount is same as(0) %}
+    <div class="box-dropdown box-dropdown--min-width box-dropdown--open-light js-dropdown js-cart-box-dropdown
+        {% if not cartIsEmpty %}js-hover-intent{% else %}box-dropdown--without-arrow{% endif %}"
+        data-type="{% if not cartIsEmpty %}link{% else %}link-on-mobile{% endif %}"
+        data-after-callback-url="{{ url('front_cart_content') }}"
+        data-after-replace-selector=".js-cart-box-content"
+        data-replaced-content-selector="#js-cart-box-content-inside"
         >
 
-        <a href="{{ path('front_cart') }}" class="box-dropdown__select">
+        <a {% if not cartIsEmpty %}href="{{ path('front_cart') }}"{% endif %} class="box-dropdown__select">
             <div class="cart__icon">
                 {% include 'Front/Svg/cart.svg' %}
-                {% if cart is not null %}
+                {% if not cartIsEmpty %}
                     <span class="cart__icon__count">
-                        {{ cart.items|length }}
+                        {{ productsCount }}
                     </span>
                 {% endif %}
             </div>
             <span class="cart__info js-cart-info">
-                {% if cart is null %}
+                {% if cartIsEmpty %}
                     {{ 'Prázdný'|trans }}
                 {% else %}
-                    <span class="cart__info__currency">{{ productsPrice.priceWithVat|price }}</span>
+                    <span class="cart__info__currency">{{ productsPrice|price }}</span>
                 {% endif %}
             </span>
-            {% if cart is not null %}
+            {% if not cartIsEmpty %}
                 <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up">
                     <i class="svg svg-triangle"></i>
                 </i>
@@ -30,106 +33,14 @@
                 </i>
             {% endif %}
         </a>
-        {% if cart is not null %}
+        {% if not cartIsEmpty %}
+            <div class="display-none">
+                {% if renderFlashMessages %}
+                    {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
+                {% endif %}
+            </div>
             <div class="box-dropdown__options box-dropdown__options--basket js-dropdown-options">
-                <div class="js-cart-box-content">
-                    <div class="display-none">
-                        {% if renderFlashMessages %}
-                            {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
-                        {% endif %}
-                    </div>
-                    <div class="cart-detail__wrap">
-                        <ul class="cart-detail">
-                            {% for cartItem in cartItems %}
-                                {% set quantifiedItemPrice = orderPreview.quantifiedItemsPrices[loop.index0] %}
-                                <li class="cart-detail__item{% if cartItem.product.isPohodaProductTypeSet or cartItem.product.isSupplierSet %} cart-detail__item--sets{% endif %}">
-                                    <div class="cart-detail__item__content">
-                                         {% if cartItem.product.isPohodaProductTypeSet %}
-                                            <div class="cart-detail__item__wrap-image">
-                                                {% for productSet in cartItem.product.productSets %}
-                                                    <div class="cart-detail__item__image cart-detail__item__image--sets svg svg-plus-big">
-                                                        {{ image(productSet.item, {size: 'thumbnail'}) }}
-                                                    </div>
-                                                {% endfor %}
-                                            </div>
-                                         {% elseif cartItem.product.isSupplierSet %}
-                                             <div class="cart-detail__item__wrap-image">
-                                                 {% for image in getSupplierSetItemsImages(cartItem.product) %}
-                                                     <div class="cart-detail__item__image cart-detail__item__image--sets svg svg-plus-big">
-                                                         {{ image(image, {size: 'thumbnail'}) }}
-                                                     </div>
-                                                 {% endfor %}
-                                             </div>
-                                        {% else %}
-                                            <div class="cart-detail__item__image">
-                                                {{ image(cartItem.product, {size: 'thumbnail'}) }}
-                                            </div>
-                                        {% endif %}
-                                        <div class="cart-detail__item__content__info">
-                                            <a class="cart-detail__item__content__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="Product name">{{ cartItem.product.name }}</a>
-                                            <span class="cart-detail__item__content__price"> {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
-                                                {% if quantifiedItemPrice.unitPrice.hasHigherStandardPrice %}
-                                                    <span class="cart-detail__item__content__price__old">{{ quantifiedItemPrice.unitPrice.standardPrice.priceWithVat|price }}</span>
-                                                {% endif %}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="cart-detail__item__pieces">
-                                        {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
-                                    </div>
-                                    <span class="cart-detail__item__remove js-cart-ajax-remove" data-src="{{ url('front_cart_delete', { cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id) }) }}">
-                                        <i class="svg svg-remove"></i>
-                                    </span>
-                                </li>
-                            {% endfor %}
-                        </ul>
-
-                        {% for promoCodeId, promoCode in orderPreview.promoCodesIndexedById %}
-                            <div class="cart-detail__promo-code">
-                                {{ 'Sleva'|trans }}
-                                <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': promoCode.code }) }}
-                                <span class="cart-detail__promo-code__discount">
-                                    - {{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
-                                </span>
-                            </div>
-                        {% endfor %}
-
-                        <div class="cart-detail__total">
-                            <div class="cart-detail__total__text">
-                                {{ 'Celkem'|trans }}
-                            </div>
-                            <div class="cart-detail__total__price">
-                                {{ productsPrice.priceWithVat|price }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cart-detail__bottom">
-                        <div class="cart-detail__bottom__transport">
-                            {% if isFreeTransportAndPaymentActive %}
-                                {% if isPaymentAndTransportFree %}
-                                    <div class="in-free-transport">
-                                        <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
-                                        <div class="in-free-transport__pipe">
-                                            <div class="in-free-transport__pipe__line" style="width: 100%;"></div>
-                                        </div>
-                                    </div>
-                                {% else %}
-                                    <div class="in-free-transport">
-                                        <div class="in-free-transport__title">
-                                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }} {{ 'máte'|trans }}
-                                            <br><span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
-                                        </div>
-                                        <div class="in-free-transport__pipe">
-                                            <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                        <div class="cart-detail__bottom__button">
-                            <a href="{{ url('front_cart') }}" class="btn btn--success">{{ 'Přejít do košíku'|trans }}</a>
-                        </div>
-                    </div>
+                <div class="js-cart-box-content" style="min-height: 100px"> {# TODO KOD - I need the min-height of this element so the loader is displayed properly #}
                 </div>
             </div>
         {% endif %}

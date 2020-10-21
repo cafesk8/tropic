@@ -121,6 +121,8 @@ class OrderData extends BaseOrderData
 
     public ?int $legacyId;
 
+    public bool $disallowHeurekaVerifiedByCustomers = false;
+
     public function __construct()
     {
         parent::__construct();

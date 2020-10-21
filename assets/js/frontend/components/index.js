@@ -13,6 +13,7 @@ import './honeyPot';
 import './horizontalList';
 import './hoverImage';
 import './hoverIntent';
+import './hoverIntentReload';
 import './HoverIntentSetting';
 import './infoRow';
 import './lazyLoadInit';

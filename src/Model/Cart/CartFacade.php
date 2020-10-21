@@ -109,13 +109,15 @@ class CartFacade extends BaseCartFacade
     }
 
     /**
-     * @return array
+     * @param \App\Model\Cart\Cart|null $cart
+     * @return \App\Model\Cart\Cart|null
      */
-    public function correctCartQuantitiesAccordingToStockedQuantities(): array
+    public function correctCartQuantitiesAccordingToStockedQuantities(?Cart $cart): ?Cart
     {
+        if ($cart === null) {
+            return null;
+        }
         $cartModifiedQuantitiesIndexedByCartItemId = [];
-
-        $cart = $this->findCartOfCurrentCustomerUser();
 
         foreach ($cart->getItems() as $cartItem) {
             $newCartItemQuantity = $this->getValidCartItemQuantity($cartItem);
@@ -131,7 +133,7 @@ class CartFacade extends BaseCartFacade
             $this->changeQuantities($cartModifiedQuantitiesIndexedByCartItemId);
         }
 
-        return $cartModifiedQuantitiesIndexedByCartItemId;
+        return $this->findCartOfCurrentCustomerUser();
     }
 
     /**
@@ -310,6 +312,7 @@ class CartFacade extends BaseCartFacade
             throw new OutOfStockException();
         }
         $cart->setModifiedNow();
+        $this->correctCartQuantitiesAccordingToStockedQuantities($cart);
 
         $this->em->flush();
 
@@ -369,20 +372,27 @@ class CartFacade extends BaseCartFacade
      */
     public function findCartByCustomerUserIdentifier(CustomerUserIdentifier $customerUserIdentifier)
     {
-        /** @var \App\Model\Cart\Cart|null $cart */
+        /** @var \App\Model\Cart\Cart $cart */
         $cart = $this->cartRepository->findByCustomerUserIdentifier($customerUserIdentifier);
 
-        if ($cart !== null) {
-            $this->cartWatcherFacade->checkCartModifications($cart, $customerUserIdentifier->getCustomerUser());
-
-            if ($cart->isEmpty()) {
-                $this->deleteCart($cart);
-
-                return null;
-            }
-        }
-
         return $cart;
+    }
+
+    /**
+     * @param \App\Model\Cart\Cart|null $cart
+     * @return \App\Model\Cart\Cart|null
+     */
+    public function checkCartModificationsAndDeleteCartIfEmpty(?Cart $cart): ?Cart
+    {
+        if ($cart === null) {
+            return null;
+        }
+        $this->cartWatcherFacade->checkCartModifications($cart);
+        if ($cart->isEmpty()) {
+            $this->deleteCart($cart);
+            return null;
+        }
+        return $this->correctCartQuantitiesAccordingToStockedQuantities($cart);
     }
 
     /**

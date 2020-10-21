@@ -16,6 +16,7 @@ use App\Model\Order\GiftCertificate\OrderGiftCertificateFacade;
 use App\Model\Order\Item\OrderItemFactory;
 use App\Model\Order\Item\QuantifiedProduct;
 use App\Model\Order\Mall\Exception\StatusChangException;
+use App\Model\Order\Preview\OrderPreview;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeFacade;
 use App\Model\Order\Status\OrderStatus;
@@ -52,7 +53,7 @@ use Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository;
 use Shopsys\FrameworkBundle\Model\Order\OrderUrlGenerator;
-use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
+use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository;
@@ -61,6 +62,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
@@ -72,7 +74,6 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @property \App\Twig\NumberFormatterExtension $numberFormatterExtension
  * @property \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
  * @property \App\Model\Order\Item\OrderItemFactory $orderItemFactory
- * @method \App\Model\Order\Order createOrder(\App\Model\Order\OrderData $orderData, \App\Model\Order\Preview\OrderPreview $orderPreview, \App\Model\Customer\User\CustomerUser|null $customerUser)
  * @method prefillFrontOrderData(\App\Model\Order\FrontOrderData $orderData, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order[] getCustomerUserOrderList(\App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order[] getOrderListForEmailByDomainId(string $email, int $domainId)
@@ -149,6 +150,11 @@ class OrderFacade extends BaseOrderFacade
     private $currentOrderDiscountLevelFacade;
 
     /**
+     * @var \Symfony\Component\HttpFoundation\Session\Session
+     */
+    private SessionInterface $session;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
      * @param \App\Model\Order\OrderRepository $orderRepository
@@ -184,6 +190,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \App\Model\Order\GiftCertificate\OrderGiftCertificateFacade $orderGiftCertificateFacade
      * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
+     * @param \Symfony\Component\HttpFoundation\Session\Session $session
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -220,7 +227,8 @@ class OrderFacade extends BaseOrderFacade
         SmsMessageFactory $smsMessageFactory,
         PromoCodeFacade $promoCodeFacade,
         OrderGiftCertificateFacade $orderGiftCertificateFacade,
-        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
+        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade,
+        SessionInterface $session
     ) {
         parent::__construct(
             $em,
@@ -260,6 +268,7 @@ class OrderFacade extends BaseOrderFacade
         $this->promoCodeFacade = $promoCodeFacade;
         $this->orderGiftCertificateFacade = $orderGiftCertificateFacade;
         $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
+        $this->session = $session;
     }
 
     /**
@@ -341,6 +350,7 @@ class OrderFacade extends BaseOrderFacade
 
         $this->cartFacade->deleteCartOfCurrentCustomerUser();
         $this->currentOrderDiscountLevelFacade->unsetActiveOrderLevelDiscount();
+        $this->unsetOrderPreviewInfoFromSession();
 
         if ($customerUser !== null) {
             $order->setCustomerTransferId($customerUser->getTransferId());
@@ -349,6 +359,12 @@ class OrderFacade extends BaseOrderFacade
         }
 
         return $order;
+    }
+
+    private function unsetOrderPreviewInfoFromSession(): void
+    {
+        $this->session->remove(OrderPreview::ITEMS_COUNT_SESSION_KEY);
+        $this->session->remove(OrderPreview::TOTAL_PRICE_SESSION_KEY);
     }
 
     /**
@@ -424,7 +440,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\Order $order
      * @param \App\Model\Order\Preview\OrderPreview $orderPreview
      */
-    protected function fillOrderItems(BaseOrder $order, OrderPreview $orderPreview): void
+    protected function fillOrderItems(BaseOrder $order, BaseOrderPreview $orderPreview): void
     {
         $locale = $this->domain->getDomainConfigById($order->getDomainId())->getLocale();
 
@@ -528,8 +544,6 @@ class OrderFacade extends BaseOrderFacade
         }
 
         if ($originalOrderStatus !== $updatedOrder->getStatus()) {
-            $this->sendSms($updatedOrder);
-
             if ($updatedOrder->getStatus()->activatesGiftCertificates()) {
                 $this->activateGiftCertificates($updatedOrder);
             }
@@ -573,7 +587,7 @@ class OrderFacade extends BaseOrderFacade
      */
     public function fillOrderProducts(
         BaseOrder $order,
-        OrderPreview $orderPreview,
+        BaseOrderPreview $orderPreview,
         string $locale
     ): void {
         $quantifiedItemPrices = $orderPreview->getQuantifiedItemsPrices();
@@ -843,6 +857,38 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
+     * @return \App\Model\Order\Order[]
+     */
+    public function getAllForExportToZbozi(): array
+    {
+        return $this->orderRepository->getAllForExportToZbozi();
+    }
+
+    /**
+     * @param int[] $orderIds
+     */
+    public function markOrdersAsExportedToZbozi(array $orderIds): void
+    {
+        $this->orderRepository->markOrdersAsExportedToZbozi($orderIds);
+    }
+
+    /**
+     * @return \App\Model\Order\Order[]
+     */
+    public function getAllForExportToHeureka(): array
+    {
+        return $this->orderRepository->getAllForExportToHeureka();
+    }
+
+    /**
+     * @param int[] $orderIds
+     */
+    public function markOrdersAsExportedToHeureka(array $orderIds): void
+    {
+        $this->orderRepository->markOrdersAsExportedToHeureka($orderIds);
+    }
+
+    /**
      * @param int $pohodaId
      * @return \App\Model\Order\Order|null
      */
@@ -882,5 +928,46 @@ class OrderFacade extends BaseOrderFacade
     public function getOrdersWithLegacyIdAndWithoutPohodaIdFromDate(DateTime $fromDate): array
     {
         return $this->orderRepository->getOrdersWithLegacyIdAndWithoutPohodaIdFromDate($fromDate);
+    }
+
+    /**
+     * This method is copy-pasted from vendor, but the whole identity map is flushed here instead of the provided array
+     * It improves the performance, see https://github.com/shopsys/shopsys/pull/2080
+     *
+     * @param \App\Model\Order\OrderData $orderData
+     * @param \App\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
+     *
+     * @return \App\Model\Order\Order
+     */
+    public function createOrder(BaseOrderData $orderData, BaseOrderPreview $orderPreview, ?BaseCustomerUser $customerUser = null)
+    {
+        $orderNumber = $this->orderNumberSequenceRepository->getNextNumber();
+        $orderUrlHash = $this->orderHashGeneratorRepository->getUniqueHash();
+
+        $this->setOrderDataAdministrator($orderData);
+
+        /** @var \App\Model\Order\Order $order */
+        $order = $this->orderFactory->create(
+            $orderData,
+            (string)$orderNumber,
+            $orderUrlHash,
+            $customerUser
+        );
+
+        $this->fillOrderItems($order, $orderPreview);
+
+        foreach ($order->getItems() as $orderItem) {
+            $this->em->persist($orderItem);
+        }
+
+        $order->setTotalPrice(
+            $this->orderPriceCalculation->getOrderTotalPrice($order)
+        );
+
+        $this->em->persist($order);
+        $this->em->flush();
+
+        return $order;
     }
 }

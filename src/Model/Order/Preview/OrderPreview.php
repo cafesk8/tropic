@@ -24,6 +24,9 @@ use Shopsys\FrameworkBundle\Model\Transport\Transport;
  */
 class OrderPreview extends BaseOrderPreview
 {
+    public const TOTAL_PRICE_SESSION_KEY = 'totalCartPrice';
+    public const ITEMS_COUNT_SESSION_KEY = 'cartItemsCount';
+
     /**
      * @var \App\Model\Product\Product|null
      */
@@ -333,5 +336,13 @@ class OrderPreview extends BaseOrderPreview
         $totalDiscount = $totalDiscount->add($this->getOrderDiscountLevelTotalDiscount()->getPriceWithVat());
 
         return $totalDiscount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProductsCount(): int
+    {
+        return count($this->getQuantifiedProducts());
     }
 }

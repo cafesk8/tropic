@@ -11,6 +11,7 @@ use App\Form\Front\Order\DomainAwareOrderFlowFactory;
 use App\Form\Front\Order\OrderFlow;
 use App\Form\Front\Order\PaymentFormType;
 use App\Model\Blog\Article\BlogArticleFacade;
+use App\Model\Cart\Exception\OutOfStockException;
 use App\Model\Country\CountryFacade;
 use App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Customer\User\CustomerUserUpdateDataFactory;
@@ -34,7 +35,6 @@ use App\Model\PayPal\PayPalFacade;
 use App\Model\Security\CustomerLoginHandler;
 use App\Model\Transport\PickupPlace\PacketaPickupPlaceData;
 use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
-use App\Model\Zbozi\ZboziFacade;
 use Exception;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
@@ -234,11 +234,6 @@ class OrderController extends FrontBaseController
     private $heurekaReviewFacade;
 
     /**
-     * @var \App\Model\Zbozi\ZboziFacade
-     */
-    private ZboziFacade $zboziFacade;
-
-    /**
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -272,7 +267,6 @@ class OrderController extends FrontBaseController
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \App\Component\Cofidis\CofidisFacade $cofidisFacade
      * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
-     * @param \App\Model\Zbozi\ZboziFacade $zboziFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -307,8 +301,7 @@ class OrderController extends FrontBaseController
         OrderItemDataFactory $orderItemDataFactory,
         FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
         CofidisFacade $cofidisFacade,
-        HeurekaReviewFacade $heurekaReviewFacade,
-        ZboziFacade $zboziFacade
+        HeurekaReviewFacade $heurekaReviewFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -343,7 +336,6 @@ class OrderController extends FrontBaseController
         $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
         $this->cofidisFacade = $cofidisFacade;
         $this->heurekaReviewFacade = $heurekaReviewFacade;
-        $this->zboziFacade = $zboziFacade;
     }
 
     /**
@@ -353,12 +345,10 @@ class OrderController extends FrontBaseController
     public function indexAction(Request $request)
     {
         $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
+        $cart = $this->cartFacade->checkCartModificationsAndDeleteCartIfEmpty($cart);
         if ($cart === null) {
             return $this->redirectToRoute('front_cart');
         }
-
-        $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities();
-
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();
 
@@ -424,11 +414,18 @@ class OrderController extends FrontBaseController
         $this->checkTransportAndPaymentChanges($orderData, $orderPreview, $transports, $payments);
 
         if ($isValid) {
+            $cart = $this->cartFacade->checkCartModificationsAndDeleteCartIfEmpty($cart);
+            if ($cart === null) {
+                return $this->redirectToRoute('front_cart');
+            }
             if ($orderFlow->nextStep()) {
                 $form = $orderFlow->createForm();
-            } elseif (count($this->getErrorMessages()) === 0 && count($this->getInfoMessages()) === 0) {
-                $order = $this->orderFacade->createOrderFromFront($orderData, $frontOrderFormData->deliveryAddress);
-                $this->orderFacade->sendHeurekaOrderInfo($order, $frontOrderFormData->disallowHeurekaVerifiedByCustomers);
+            } elseif (!$this->existAnyErrorOrInfoMessages()) {
+                try {
+                    $order = $this->orderFacade->createOrderFromFront($orderData, $frontOrderFormData->deliveryAddress);
+                } catch (OutOfStockException $ex) {
+                    return $this->redirectToRoute('front_order_index');
+                }
 
                 if ($frontOrderFormData->newsletterSubscription) {
                     $this->newsletterFacade->addSubscribedEmail($frontOrderFormData->email, $this->domain->getId());
@@ -454,8 +451,6 @@ class OrderController extends FrontBaseController
                         t('Unable to send some e-mails, please contact us for order verification.')
                     );
                 }
-
-                $this->orderFacade->sendSms($order);
 
                 return $this->redirectToRoute('front_order_sent');
             }
@@ -726,7 +721,6 @@ class OrderController extends FrontBaseController
         }
 
         $order = $this->orderFacade->getById($orderId);
-        $this->zboziFacade->sendOrder($order);
         $goPayData = null;
 
         if ($order->getPayment()->isGoPay()) {

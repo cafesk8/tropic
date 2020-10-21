@@ -12,9 +12,10 @@ class ZboziOrderFactory
 {
     /**
      * @param \App\Model\Order\Order $order
+     * @param string $locale
      * @return \Soukicz\Zbozicz\Order
      */
-    public function createFromOrder(Order $order): ZboziOrder
+    public function createFromOrder(Order $order, string $locale): ZboziOrder
     {
         $orderTransport = $order->getOrderTransport();
         $orderPayment = $order->getOrderPayment();
@@ -29,12 +30,14 @@ class ZboziOrderFactory
 
         foreach ($order->getProductItems() as $item) {
             $product = $item->getProduct();
-            $zboziItem = new CartItem();
-            $zboziItem->setId((string)$product->getId());
-            $zboziItem->setName($product->getName());
-            $zboziItem->setUnitPrice((float)$item->getPriceWithVat()->getAmount());
-            $zboziItem->setQuantity($item->getQuantity());
-            $zboziOrder->addCartItem($zboziItem);
+            if ($product !== null) {
+                $zboziItem = new CartItem();
+                $zboziItem->setId((string)$product->getId());
+                $zboziItem->setName($product->getName($locale));
+                $zboziItem->setUnitPrice((float)$item->getPriceWithVat()->getAmount());
+                $zboziItem->setQuantity($item->getQuantity());
+                $zboziOrder->addCartItem($zboziItem);
+            }
         }
 
         return $zboziOrder;

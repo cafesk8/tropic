@@ -382,6 +382,9 @@
       },
       "supplier_set": {
         "type": "boolean"
+      },
+      "main_category_path": {
+        "type": "text"
       }
     }
   }

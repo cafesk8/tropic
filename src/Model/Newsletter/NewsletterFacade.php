@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade as BaseNewsletterF
 
 /**
  * @property \App\Model\Newsletter\NewsletterRepository $newsletterRepository
+ * @property \App\Component\EntityExtension\EntityManagerDecorator $em
  * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Newsletter\NewsletterRepository $newsletterRepository, \Shopsys\FrameworkBundle\Model\Newsletter\NewsletterSubscriberFactoryInterface $newsletterSubscriberFactory)
  * @method \App\Model\Newsletter\NewsletterSubscriber|null findNewsletterSubscriberByEmailAndDomainId(string $email, int $domainId)
  * @method \App\Model\Newsletter\NewsletterSubscriber getNewsletterSubscriberById(int $id)
@@ -30,7 +31,7 @@ class NewsletterFacade extends BaseNewsletterFacade
     {
         $newsletterSubscriber->setExportedToEcomail();
         $this->em->persist($newsletterSubscriber);
-        $this->em->flush();
+        $this->em->flush($newsletterSubscriber);
     }
 
     /**
@@ -40,7 +41,7 @@ class NewsletterFacade extends BaseNewsletterFacade
     {
         $newsletterSubscriber->setNotExportedToEcomail();
         $this->em->persist($newsletterSubscriber);
-        $this->em->flush();
+        $this->em->flush($newsletterSubscriber);
     }
 
     /**
@@ -54,7 +55,7 @@ class NewsletterFacade extends BaseNewsletterFacade
         if ($newsletterSubscriber === null) {
             $newsletterSubscriber = $this->newsletterSubscriberFactory->create($email, new DateTimeImmutable(), $domainId);
             $this->em->persist($newsletterSubscriber);
-            $this->em->flush();
+            $this->em->flush($newsletterSubscriber);
         } else {
             $this->markAsNotExportedToEcomail($newsletterSubscriber);
         }

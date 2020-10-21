@@ -1,12 +1,12 @@
 import Ajax from 'framework/common/utils/Ajax';
 import Register from 'framework/common/utils/Register';
+import hoverIntentReload from '../components/hoverIntentReload';
 
 export default class CartBox {
     static reload (event) {
         Ajax.ajax({
             loaderElement: '#js-cart-box',
             url: $(event.currentTarget).data('reload-url'),
-            data: { 'isIntentActive': $(event.currentTarget).hasClass('active'), loadItems: true },
             type: 'get',
             success: function (data) {
                 $('#js-cart-box').replaceWith(data);
@@ -31,6 +31,7 @@ export default class CartBox {
                 $('#js-cart-box').replaceWith($cartBox);
 
                 (new Register()).registerNewContent($cartBox);
+                hoverIntentReload($cartBox.filterAllNodes('.js-cart-box-dropdown'));
             }
         });
     }

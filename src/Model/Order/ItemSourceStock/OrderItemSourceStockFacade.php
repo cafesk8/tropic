@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class OrderItemSourceStockFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \App\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -20,7 +20,7 @@ class OrderItemSourceStockFacade
     private $orderItemSourceStockRepository;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \App\Component\EntityExtension\EntityManagerDecorator $em
      * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockRepository $orderItemSourceStockRepository
      */
     public function __construct(EntityManagerInterface $em, OrderItemSourceStockRepository $orderItemSourceStockRepository)
@@ -33,13 +33,24 @@ class OrderItemSourceStockFacade
      * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockData $orderItemSourceStockData
      * @return \App\Model\Order\ItemSourceStock\OrderItemSourceStock
      */
-    public function create(OrderItemSourceStockData $orderItemSourceStockData): OrderItemSourceStock
+    private function create(OrderItemSourceStockData $orderItemSourceStockData): OrderItemSourceStock
     {
         $orderItemSourceStock = new OrderItemSourceStock($orderItemSourceStockData);
         $this->em->persist($orderItemSourceStock);
-        $this->em->flush();
 
         return $orderItemSourceStock;
+    }
+
+    /**
+     * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockData[] $orderItemSourceStocksData
+     */
+    public function createMultiple(array $orderItemSourceStocksData): void
+    {
+        $toFlush = [];
+        foreach ($orderItemSourceStocksData as $orderItemSourceStockData) {
+            $toFlush[] = $this->create($orderItemSourceStockData);
+        }
+        $this->em->flush($toFlush);
     }
 
     /**

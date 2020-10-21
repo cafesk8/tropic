@@ -74,9 +74,11 @@ class OrderProductFacade extends BaseOrderProductFacade
     public function subtractOrderProductsFromStock(array $orderProducts)
     {
         if ($this->moduleFacade->isEnabled(ModuleList::PRODUCT_STOCK_CALCULATIONS)) {
+            $toFlush = [];
             $orderProductsUsingStock = $this->getOrderProductsUsingStockFromOrderProducts($orderProducts);
             foreach ($orderProductsUsingStock as $orderProductUsingStock) {
                 $product = $orderProductUsingStock->getProduct();
+                $toFlush[] = $product;
                 $orderItemSourceStocksData = $this->subtractStockQuantity(
                     $product,
                     $orderProductUsingStock->getQuantity(),
@@ -86,11 +88,12 @@ class OrderProductFacade extends BaseOrderProductFacade
 
                 foreach ($orderItemSourceStocksData as $orderItemSourceStockData) {
                     $orderItemSourceStockData->orderItem = $orderProductUsingStock;
-                    $this->orderItemSourceStockFacade->create($orderItemSourceStockData);
                 }
+                $this->orderItemSourceStockFacade->createMultiple($orderItemSourceStocksData);
 
                 if ($product->isPohodaProductTypeSet()) {
                     foreach ($product->getProductSets() as $productSet) {
+                        $toFlush[] = $productSet->getItem();
                         $this->subtractStockQuantity(
                             $productSet->getItem(),
                             $orderProductUsingStock->getQuantity() * $productSet->getItemCount(),
@@ -102,9 +105,11 @@ class OrderProductFacade extends BaseOrderProductFacade
                 if ($product->getRealSaleStocksQuantity() <= 0) {
                     $product->markForRefresh();
                 }
-                $this->productFacade->updateTotalProductStockQuantity($product);
+                $this->productFacade->updateTotalProductStockQuantity($product, true);
             }
-            $this->em->flush();
+            if (count($toFlush) > 0) {
+                $this->em->flush($toFlush);
+            }
             $this->runRecalculationsAfterStockQuantityChange($orderProducts);
         }
     }
@@ -170,6 +175,7 @@ class OrderProductFacade extends BaseOrderProductFacade
     /**
      * Product visibility recalculation is not triggered here to avoid deadlocks on conflict with CRON modules that run in parallel.
      * Also, "hidden" calculation is removed - the attribute is deprecated on this project since ac2363d07dbd6eacbd840a151c7aafab6b9a4d0c
+     * All the remaining recalculations are run only if the product is sold out
      *
      * @param \App\Model\Order\Item\OrderItem[] $orderProducts
      */
@@ -179,11 +185,15 @@ class OrderProductFacade extends BaseOrderProductFacade
         $relevantProducts = [];
         foreach ($orderProductsUsingStock as $orderProductUsingStock) {
             $relevantProduct = $orderProductUsingStock->getProduct();
-            $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($relevantProduct);
-            $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($relevantProduct);
-            $relevantProduct->markForVisibilityRecalculation();
-            $relevantProducts[] = $relevantProduct;
+            if ($relevantProduct->getRealStockQuantity() <= 0) {
+                $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($relevantProduct);
+                $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($relevantProduct);
+                $relevantProduct->markForVisibilityRecalculation();
+                $relevantProducts[] = $relevantProduct;
+            }
         }
-        $this->em->flush($relevantProducts);
+        if (count($relevantProducts) > 0) {
+            $this->em->flush($relevantProducts);
+        }
     }
 }

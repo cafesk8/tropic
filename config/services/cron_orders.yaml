@@ -9,6 +9,14 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Export objednávek a uživatelů do IS Pohoda', instanceName: orders }
 
+    App\Model\Zbozi\ZboziOrderTransferCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*/10', readableName: 'Export objednávek do služby Zbozi', instanceName: orders }
+
+    App\Model\Heureka\HeurekaOrderExportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*/10', readableName: 'Export objednávek do služby Heureka', instanceName: orders }
+
     App\Model\Order\Transfer\Status\OrderStatusImportCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import stavů objednávek z IS Pohoda', instanceName: orders }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Gtm;
 
+use App\Model\Cart\Item\CartItem;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
 use App\Model\Customer\User\CustomerUser as Customer;
@@ -11,12 +12,14 @@ use App\Model\Gtm\Data\DataLayerPage;
 use App\Model\Gtm\Data\DataLayerProduct;
 use App\Model\Gtm\Data\DataLayerUser;
 use App\Model\Order\Item\OrderItem;
+use App\Model\Order\Item\QuantifiedProduct;
 use App\Model\Order\Order;
 use App\Model\Order\Preview\OrderPreview;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductCachedAttributesFacade;
+use App\Model\Product\ProductOnCurrentDomainElasticFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
@@ -62,14 +65,16 @@ class DataLayerMapper
 
     private FlagFacade $flagFacade;
 
+    private ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade;
+
     /**
-     * DataLayerMapper constructor.
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Gtm\GtmHelper $gtmHelper
      * @param \Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade $administratorFrontSecurityFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,
@@ -77,7 +82,8 @@ class DataLayerMapper
         Domain $domain,
         GtmHelper $gtmHelper,
         AdministratorFrontSecurityFacade $administratorFrontSecurityFacade,
-        FlagFacade $flagFacade
+        FlagFacade $flagFacade,
+        ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade
     ) {
         $this->categoryFacade = $categoryFacade;
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
@@ -85,6 +91,7 @@ class DataLayerMapper
         $this->gtmHelper = $gtmHelper;
         $this->administratorFrontSecurityFacade = $administratorFrontSecurityFacade;
         $this->flagFacade = $flagFacade;
+        $this->productOnCurrentDomainElasticFacade = $productOnCurrentDomainElasticFacade;
     }
 
     /**
@@ -173,31 +180,44 @@ class DataLayerMapper
     public function createDataLayerProductsFromOrderPreview(OrderPreview $orderPreview, string $locale): array
     {
         $quantifiedProducts = $orderPreview->getQuantifiedProducts();
+        $gifts = $orderPreview->getGifts();
+        $orderGift = $orderPreview->getOrderGiftProduct();
         $dataLayerProducts = [];
+
+        $itemIds = array_map(fn (QuantifiedProduct $quantifiedProduct) => ($quantifiedProduct->getProduct()->getId()), $quantifiedProducts);
+        $giftIds = array_map(fn (CartItem $gift) => ($gift->getProduct()->getId()), $gifts);
+        $allIds = array_merge($itemIds, $giftIds);
+        if ($orderGift !== null) {
+            $allIds[] = $orderGift->getId();
+        }
+
+        $productsDataIndexedByProductId = $this->getElasticProductsDataIndexedById($allIds);
 
         foreach ($quantifiedProducts as $quantifiedProduct) {
             /** @var \App\Model\Product\Product $product */
             $product = $quantifiedProduct->getProduct();
             $quantity = $quantifiedProduct->getQuantity();
+            $categoryPath = $productsDataIndexedByProductId[$product->getId()]['main_category_path'] ?? '';
 
             $dataLayerProduct = new DataLayerProduct();
-            $this->mapProductToDataLayerProduct($product, $dataLayerProduct, $locale);
+            $this->mapProductToDataLayerProduct($product, $dataLayerProduct, $locale, false, $quantifiedProduct->isSaleItem(), $categoryPath);
             $dataLayerProduct->setQuantity($quantity);
             $dataLayerProducts[] = $dataLayerProduct;
         }
 
-        foreach ($orderPreview->getGifts() as $gift) {
+        foreach ($gifts as $gift) {
+            $productGift = $gift->getProduct();
+            $categoryPath = $productsDataIndexedByProductId[$productGift->getId()]['main_category_path'] ?? '';
             $dataLayerProduct = new DataLayerProduct();
-            $this->mapProductToDataLayerProduct($gift->getProduct(), $dataLayerProduct, $locale, true);
+            $this->mapProductToDataLayerProduct($productGift, $dataLayerProduct, $locale, true, null, $categoryPath);
             $dataLayerProduct->setQuantity($gift->getQuantity());
             $dataLayerProducts[] = $dataLayerProduct;
         }
 
-        $orderGift = $orderPreview->getOrderGiftProduct();
-
         if ($orderGift !== null) {
+            $categoryPath = $productsDataIndexedByProductId[$orderGift->getId()]['main_category_path'] ?? '';
             $dataLayerProduct = new DataLayerProduct();
-            $this->mapProductToDataLayerProduct($orderGift, $dataLayerProduct, $locale, true);
+            $this->mapProductToDataLayerProduct($orderGift, $dataLayerProduct, $locale, true, null, $categoryPath);
             $dataLayerProduct->setQuantity(1);
             $dataLayerProducts[] = $dataLayerProduct;
         }
@@ -212,10 +232,12 @@ class DataLayerMapper
      */
     public function createDataLayerProductsFromProducts(array $products, string $locale): array
     {
+        $productsDataIndexedByProductId = $this->getElasticProductsDataIndexedById(array_map(fn (Product $product) => $product->getId(), $products));
         $dataLayerProducts = [];
         foreach ($products as $product) {
+            $categoryPath = $productsDataIndexedByProductId[$product->getId()]['main_category_path'] ?? '';
             $dataLayerProduct = new DataLayerProduct();
-            $this->mapProductToDataLayerProduct($product, $dataLayerProduct, $locale);
+            $this->mapProductToDataLayerProduct($product, $dataLayerProduct, $locale, false, null, $categoryPath);
             $dataLayerProducts[] = $dataLayerProduct;
         }
 
@@ -227,9 +249,17 @@ class DataLayerMapper
      * @param \App\Model\Gtm\Data\DataLayerProduct $dataLayerProduct
      * @param string $locale
      * @param bool $isGift
+     * @param bool $isSale
+     * @param string $categoryPath
      */
-    public function mapProductToDataLayerProduct(Product $product, DataLayerProduct $dataLayerProduct, string $locale, bool $isGift = false): void
-    {
+    public function mapProductToDataLayerProduct(
+        Product $product,
+        DataLayerProduct $dataLayerProduct,
+        string $locale,
+        bool $isGift = false,
+        ?bool $isSale = null,
+        string $categoryPath = ''
+    ): void {
         $dataLayerProduct->setName((string)$product->getName($locale));
         $dataLayerProduct->setId((string)$product->getId());
         $dataLayerProduct->setSku((string)$product->getEan());
@@ -240,7 +270,7 @@ class DataLayerMapper
             $dataLayerProduct->setTax('0.0');
             $dataLayerProduct->setPriceWithTax('0.0');
         } else {
-            $sellingPrice = $this->productCachedAttributesFacade->getProductSellingPrice($product);
+            $sellingPrice = $this->productCachedAttributesFacade->getProductSellingPrice($product, $isSale);
 
             if ($sellingPrice !== null) {
                 $dataLayerProduct->setPrice($sellingPrice->getPriceWithoutVat()->getAmount());
@@ -263,8 +293,7 @@ class DataLayerMapper
             $dataLayerProduct->setProductType('set');
         }
 
-        $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, Domain::MAIN_ADMIN_DOMAIN_ID);
-        $dataLayerProduct->setCategory($this->categoryFacade->getCategoriesNamesInPathAsString($productMainCategory, $locale));
+        $dataLayerProduct->setCategory($categoryPath);
         $dataLayerProduct->setAvailability($product->getCalculatedAvailability()->getName($locale));
         $saleFlag = $this->flagFacade->getSaleFlag();
         $dataLayerProduct->setLabels(array_map(fn (Flag $flag) => $flag->isClearance() ? $saleFlag->getName($locale) : $flag->getName($locale), $product->getActiveFlags()));
@@ -279,14 +308,16 @@ class DataLayerMapper
     {
         $productItems = [...$order->getProductItems(), ...$order->getGiftItems()];
         $productsData = [];
+        $productsDataIndexedByProductId = $this->getElasticProductsDataIndexedById(
+            array_filter(array_map(fn (OrderItem $productItem) => $productItem->getProduct() !== null ? $productItem->getProduct()->getId() : null, $productItems)));
         foreach ($productItems as $productItem) {
             $product = $productItem->getProduct();
 
             if ($product === null) {
                 continue;
             }
-
-            $productsData[] = $this->createDataLayerPurchaseProductFromOrderProductItem($productItem, $locale);
+            $categoryPath = $productsDataIndexedByProductId[$product->getId()]['main_category_path'] ?? '';
+            $productsData[] = $this->createDataLayerPurchaseProductFromOrderProductItem($productItem, $locale, $categoryPath);
         }
 
         $revenue = $order->getTotalPriceWithoutVat()
@@ -347,16 +378,15 @@ class DataLayerMapper
     /**
      * @param \App\Model\Order\Item\OrderItem $productItem
      * @param string $locale
+     * @param string $categoryPath
      * @return array
      */
-    private function createDataLayerPurchaseProductFromOrderProductItem(OrderItem $productItem, string $locale): array
+    private function createDataLayerPurchaseProductFromOrderProductItem(OrderItem $productItem, string $locale, string $categoryPath): array
     {
         $product = $productItem->getProduct();
         $price = $productItem->getPriceWithoutVat();
         $tax = $productItem->getPriceWithVat()->subtract($productItem->getPriceWithoutVat());
         $priceWithTax = $productItem->getPriceWithVat();
-
-        $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, Domain::MAIN_ADMIN_DOMAIN_ID);
 
         $orderProductData = [
             'name' => $product->getName($locale),
@@ -367,7 +397,7 @@ class DataLayerMapper
             'tax' => $this->getMoneyAsString($tax),
             'priceWithTax' => $this->getMoneyAsString($priceWithTax),
             'brand' => ($product->getBrand() === null) ? '' : $product->getBrand()->getName(),
-            'category' => $this->categoryFacade->getCategoriesNamesInPathAsString($productMainCategory, $locale),
+            'category' => $categoryPath,
             'availability' => $this->gtmHelper->getGtmAvailabilityByOrderItem($productItem),
             'quantity' => $productItem->getQuantity(),
         ];
@@ -392,5 +422,14 @@ class DataLayerMapper
     private function getMoneyAsString(Money $price): string
     {
         return $price->round(self::PRICE_SCALE)->getAmount();
+    }
+
+    /**
+     * @param int[] $productIds
+     * @return array
+     */
+    private function getElasticProductsDataIndexedById(array $productIds): array
+    {
+        return $this->productOnCurrentDomainElasticFacade->getSellableHitsForIds(array_combine($productIds, $productIds));
     }
 }

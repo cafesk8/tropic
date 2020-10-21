@@ -11,6 +11,7 @@ use App\Model\Cart\CartWatcher\CartWatcher;
 use App\Model\Cart\Item\CartItem;
 use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\Product;
+use App\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
@@ -134,8 +135,9 @@ class CartWatcherTest extends TransactionFunctionalTestCase
 
         $productPriceCalculationForUser = $this->getContainer()->get(ProductPriceCalculationForCustomerUser::class);
         $domain = $this->getContainer()->get(Domain::class);
+        $productCachedAttributesFacade = $this->getContainer()->get(ProductCachedAttributesFacade::class);
 
-        $cartWatcher = new CartWatcher($productPriceCalculationForUser, $productVisibilityRepositoryMock, $domain);
+        $cartWatcher = new CartWatcher($productPriceCalculationForUser, $productVisibilityRepositoryMock, $domain, $productCachedAttributesFacade);
 
         $cart = new Cart($customerUserIdentifier->getCartIdentifier());
         $cart->addItem($cartItemMock);

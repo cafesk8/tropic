@@ -11,6 +11,7 @@ use App\Model\PayPal\PayPalFacade;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\ResultSetMapping;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
@@ -291,6 +292,66 @@ class OrderRepository extends BaseOrderRepository
             ]);
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @return \App\Model\Order\Order[]
+     */
+    public function getAllForExportToZbozi(): array
+    {
+        $queryBuilder = $this->createOrderQueryBuilder()
+            ->andWhere('o.exportZboziStatus = :exportZboziStatus')
+            ->orderBy('o.createdAt', 'ASC')
+            ->setParameters([
+                'exportZboziStatus' => Order::EXPORT_ZBOZI_NOT_YET,
+            ]);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param int[] $orderIds
+     */
+    public function markOrdersAsExportedToZbozi(array $orderIds): void
+    {
+        $this->em->createNativeQuery('
+            UPDATE orders
+            SET export_zbozi_status = :exported
+            WHERE id IN (:orderIds)', new ResultSetMapping()
+        )->setParameters([
+            'exported' => Order::EXPORT_ZBOZI_DONE,
+            'orderIds' => $orderIds,
+        ])->execute();
+    }
+
+    /**
+     * @return \App\Model\Order\Order[]
+     */
+    public function getAllForExportToHeureka(): array
+    {
+        $queryBuilder = $this->createOrderQueryBuilder()
+            ->andWhere('o.exportHeurekaStatus = :exportHeurekaStatus')
+            ->orderBy('o.createdAt', 'ASC')
+            ->setParameters([
+                'exportHeurekaStatus' => Order::EXPORT_HEUREKA_NOT_YET,
+            ]);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param int[] $orderIds
+     */
+    public function markOrdersAsExportedToHeureka(array $orderIds): void
+    {
+        $this->em->createNativeQuery('
+            UPDATE orders
+            SET export_heureka_status = :exported
+            WHERE id IN (:orderIds)', new ResultSetMapping()
+        )->setParameters([
+            'exported' => Order::EXPORT_HEUREKA_DONE,
+            'orderIds' => $orderIds,
+        ])->execute();
     }
 
     /**

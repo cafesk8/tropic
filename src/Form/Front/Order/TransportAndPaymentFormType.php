@@ -8,6 +8,7 @@ use App\Component\Domain\DomainHelper;
 use App\Model\Cart\CartFacade;
 use App\Model\Country\CountryFacade;
 use App\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
+use App\Model\Order\Preview\OrderPreview;
 use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\Store\StoreIdToEntityTransformer;
 use App\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer;
@@ -28,6 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -84,6 +86,11 @@ class TransportAndPaymentFormType extends AbstractType
     private OrderPreviewFactory $orderPreviewFactory;
 
     /**
+     * @var \Symfony\Component\HttpFoundation\Session\Session
+     */
+    private SessionInterface $session;
+
+    /**
      * @param \App\Model\Transport\TransportFacade $transportFacade
      * @param \App\Model\Payment\PaymentFacade $paymentFacade
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
@@ -94,6 +101,7 @@ class TransportAndPaymentFormType extends AbstractType
      * @param \App\Model\Country\CountryFacade $countryFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
+     * @param \Symfony\Component\HttpFoundation\Session\Session $session
      */
     public function __construct(
         TransportFacade $transportFacade,
@@ -105,7 +113,8 @@ class TransportAndPaymentFormType extends AbstractType
         Domain $domain,
         CountryFacade $countryFacade,
         CartFacade $cartFacade,
-        OrderPreviewFactory $orderPreviewFactory
+        OrderPreviewFactory $orderPreviewFactory,
+        SessionInterface $session
     ) {
         $this->transportFacade = $transportFacade;
         $this->paymentFacade = $paymentFacade;
@@ -117,6 +126,7 @@ class TransportAndPaymentFormType extends AbstractType
         $this->countryFacade = $countryFacade;
         $this->cartFacade = $cartFacade;
         $this->orderPreviewFactory = $orderPreviewFactory;
+        $this->session = $session;
     }
 
     /**
@@ -126,8 +136,13 @@ class TransportAndPaymentFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $country = $options['country'] ?? $this->countryFacade->getHackedCountry();
-        $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
-        $orderPrice = $orderPreview->getTotalPrice()->getPriceWithVat();
+        $orderPriceFromSession = $this->session->get(OrderPreview::TOTAL_PRICE_SESSION_KEY);
+        if ($orderPriceFromSession !== null) {
+            $orderPrice = Money::create($orderPriceFromSession);
+        } else {
+            $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
+            $orderPrice = $orderPreview->getTotalPrice()->getPriceWithVat();
+        }
         $showOnlyGiftCertificatePaymentsInCart = $this->cartFacade->showOnlyGiftCertificatePaymentsInCart();
         $payments = $this->paymentFacade->getVisibleByDomainIdAndGiftCertificateUsabilityAndPrice($options['domain_id'], $showOnlyGiftCertificatePaymentsInCart, $orderPrice);
         $showEmailTransportInCart = $this->cartFacade->showEmailTransportInCart();
