@@ -75,17 +75,17 @@ class OrderStatusImportFacade
             $changedPohodaOrderIds
         );
 
-        $updatedPohodaOrderIds = [];
+        $pohodaOrderIdsToRemoveFromQueue = [];
         if (count($pohodaOrderStatuses) === 0) {
             $this->logger->addInfo('Nejsou žádná data ve frontě ke zpracování');
         } else {
             $this->logger->addInfo('Proběhne uložení stavů objednávek z fronty', ['pohodaOrderStatusesCount' => count($pohodaOrderStatuses)]);
-            $updatedPohodaOrderIds = $this->updateOrdersByPohodaOrders($pohodaOrderStatuses);
+            $pohodaOrderIdsToRemoveFromQueue = $this->updateOrdersByPohodaOrders($pohodaOrderStatuses);
         }
 
-        if (count($updatedPohodaOrderIds) > 0) {
-            $this->logger->addInfo('Proběhne odstranění objednávek z fronty', ['updatedPohodaOrderIds' => count($updatedPohodaOrderIds)]);
-            $this->orderStatusQueueImportFacade->removeOrdersFromQueue($updatedPohodaOrderIds);
+        if (count($pohodaOrderIdsToRemoveFromQueue) > 0) {
+            $this->logger->addInfo('Proběhne odstranění objednávek z fronty', ['pohodaOrderIdsToRemoveFromQueue' => count($pohodaOrderIdsToRemoveFromQueue)]);
+            $this->orderStatusQueueImportFacade->removeOrdersFromQueue($pohodaOrderIdsToRemoveFromQueue);
         }
 
         $this->logger->persistTransferIssues();
@@ -99,20 +99,22 @@ class OrderStatusImportFacade
      */
     private function updateOrdersByPohodaOrders(array $pohodaOrderStatuses): array
     {
-        $updatedPohodaOrderIds = [];
+        $pohodaOrderIdsToRemoveFromQueue = [];
         foreach ($pohodaOrderStatuses as $pohodaOrderStatus) {
             $order = $this->orderFacade->findByPohodaId($pohodaOrderStatus->pohodaOrderId);
 
             if ($order !== null) {
-                $updatedPohodaOrderIds[] = $this->editOrderStatus($order, $pohodaOrderStatus);
+                $this->editOrderStatus($order, $pohodaOrderStatus);
             } else {
-                $this->logger->addError('Objednávka neexistuje', [
+                $this->logger->addError('Objednávka v e-shopu neexistuje', [
                     'pohodaOrderId' => $pohodaOrderStatus->pohodaOrderId,
                 ]);
             }
+
+            $pohodaOrderIdsToRemoveFromQueue[] = $pohodaOrderStatus->pohodaOrderId;
         }
 
-        return array_filter($updatedPohodaOrderIds);
+        return array_filter($pohodaOrderIdsToRemoveFromQueue);
     }
 
     /**
