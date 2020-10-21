@@ -12,8 +12,8 @@ export default class CofidisCalculator {
         const productPrice = parseInt($(this).data('product-price'));
 
         const $window = new Window({
-            content: '<iframe src="https://www.iplatba.cz/kalkulacka-nakupu-na-splatky/?cenaZbozi=' + productPrice + '&idObchodu=MjA5NDY=" class="cofidis-calculator"></iframe>',
-            cssClass: 'window-popup--wide box-cofidis-calculator'
+            content: '<iframe src="https://www.iplatba.cz/kalkulacka-nakupu-na-splatky/?cenaZbozi=' + productPrice + '&idObchodu=MjA5NDY=" class="window-popup__in__cofidis"></iframe>',
+            cssClass: 'window-popup--wide window-popup--no-padding'
         });
         $window.getWindow();
 
