@@ -784,8 +784,6 @@ services:
 
     Shopsys\FrameworkBundle\Form\Transformers\ProductParameterValueToProductParameterValuesLocalizedTransformer: '@App\Form\Transformers\ProductParameterValueToProductParameterValuesLocalizedTransformer'
 
-    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPriceRepository: '@App\Model\Product\Pricing\ProductCalculatedPriceRepository'
-
     Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository: '@App\Model\Product\Search\ProductFilterCountDataElasticsearchRepository'
 
     Soukicz\Zbozicz\Client:
@@ -810,3 +808,10 @@ services:
             - '@monolog.logger.cron'
 
     Shopsys\FrameworkBundle\Component\Cron\CronFacade: '@App\Component\Cron\CronFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator: ~
+
+    # must be run after TransactionalMasterRequestListener so the recalculations are run outside the main request transaction
+    App\Model\Product\SoldOutActions\ProductSoldOutActionsListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -5 }

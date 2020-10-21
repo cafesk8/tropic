@@ -31,7 +31,6 @@ class PricingGroupFacadeTest extends TransactionFunctionalTestCase
         $pricingGroupData->name = 'pricing_group_name';
         $domainId = 1;
         $pricingGroup = $pricingGroupFacade->create($pricingGroupData, $domainId);
-        $productPriceRecalculator->runAllScheduledRecalculations();
         $productCalculatedPrice = $em->getRepository(ProductCalculatedPrice::class)->findOneBy([
             'product' => $product,
             'pricingGroup' => $pricingGroup,

@@ -272,6 +272,14 @@ class Product extends BaseProduct
     private ?float $weight;
 
     /**
+     * @deprecated, we do not work with product_calculated_prices on this project at all
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default" = true})
+     */
+    protected $recalculatePrice;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -347,7 +355,6 @@ class Product extends BaseProduct
         $this->supplierSet = $productData->supplierSet;
         $this->foreignSupplier = $productData->foreignSupplier;
         $this->weight = $productData->weight;
-        $this->recalculatePrice = $productData->markForDelayedPriceRecalculation;
     }
 
     /**
@@ -1531,5 +1538,13 @@ class Product extends BaseProduct
         }
 
         return $baseQuantity;
+    }
+
+    /**
+     * @deprecated, we do not work with product_calculated_prices on this project at all
+     */
+    public function markPriceAsRecalculated()
+    {
+        parent::markPriceAsRecalculated();
     }
 }

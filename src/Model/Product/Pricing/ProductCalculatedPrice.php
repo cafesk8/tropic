@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Model\Product\Pricing;
 
 use Doctrine\ORM\Mapping as ORM;
-use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPrice as BaseProductCalculatedPrice;
 
 /**
+ * @deprecated, we do not work with product_calculated_prices on this project at all
+ *
  * @ORM\Table(name="product_calculated_prices")
  * @ORM\Entity
  * @property \App\Model\Product\Product $product
@@ -19,11 +20,4 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPrice as Base
  */
 class ProductCalculatedPrice extends BaseProductCalculatedPrice
 {
-    /**
-     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
-     */
-    public function getPriceWithVat(): ?Money
-    {
-        return $this->priceWithVat;
-    }
 }

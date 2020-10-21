@@ -8,6 +8,7 @@ use App\Model\Order\ItemSourceStock\OrderItemSourceStockDataFactory;
 use App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
+use App\Model\Product\SoldOutActions\ProductSoldOutActionsScheduler;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
@@ -40,6 +41,8 @@ class OrderProductFacade extends BaseOrderProductFacade
      */
     private $orderItemSourceStockDataFactory;
 
+    private ProductSoldOutActionsScheduler $productSoldOutActionsScheduler;
+
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
@@ -50,6 +53,7 @@ class OrderProductFacade extends BaseOrderProductFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade $orderItemSourceStockFacade
      * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockDataFactory $orderItemSourceStockDataFactory
+     * @param \App\Model\Product\SoldOutActions\ProductSoldOutActionsScheduler $productSoldOutActionsScheduler
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -60,12 +64,14 @@ class OrderProductFacade extends BaseOrderProductFacade
         ModuleFacade $moduleFacade,
         ProductFacade $productFacade,
         OrderItemSourceStockFacade $orderItemSourceStockFacade,
-        OrderItemSourceStockDataFactory $orderItemSourceStockDataFactory
+        OrderItemSourceStockDataFactory $orderItemSourceStockDataFactory,
+        ProductSoldOutActionsScheduler $productSoldOutActionsScheduler
     ) {
         parent::__construct($em, $productHiddenRecalculator, $productSellingDeniedRecalculator, $productAvailabilityRecalculationScheduler, $productVisibilityFacade, $moduleFacade);
         $this->productFacade = $productFacade;
         $this->orderItemSourceStockFacade = $orderItemSourceStockFacade;
         $this->orderItemSourceStockDataFactory = $orderItemSourceStockDataFactory;
+        $this->productSoldOutActionsScheduler = $productSoldOutActionsScheduler;
     }
 
     /**
@@ -101,9 +107,6 @@ class OrderProductFacade extends BaseOrderProductFacade
                             true
                         );
                     }
-                }
-                if ($product->getRealSaleStocksQuantity() <= 0) {
-                    $product->markForRefresh();
                 }
                 $this->productFacade->updateTotalProductStockQuantity($product, true);
             }
@@ -173,27 +176,20 @@ class OrderProductFacade extends BaseOrderProductFacade
     }
 
     /**
-     * Product visibility recalculation is not triggered here to avoid deadlocks on conflict with CRON modules that run in parallel.
-     * Also, "hidden" calculation is removed - the attribute is deprecated on this project since ac2363d07dbd6eacbd840a151c7aafab6b9a4d0c
-     * All the remaining recalculations are run only if the product is sold out
+     * When a product is sold out, all the necessary recalculations are processed outside the main request transaction.
+     * This is done to avoid the potential deadlocks on conflict with CRON modules that run in parallel.
+     * "hidden" calculation is removed - the attribute is deprecated on this project since ac2363d07dbd6eacbd840a151c7aafab6b9a4d0c
      *
      * @param \App\Model\Order\Item\OrderItem[] $orderProducts
      */
     protected function runRecalculationsAfterStockQuantityChange(array $orderProducts)
     {
         $orderProductsUsingStock = $this->getOrderProductsUsingStockFromOrderProducts($orderProducts);
-        $relevantProducts = [];
         foreach ($orderProductsUsingStock as $orderProductUsingStock) {
             $relevantProduct = $orderProductUsingStock->getProduct();
             if ($relevantProduct->getRealStockQuantity() <= 0) {
-                $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($relevantProduct);
-                $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($relevantProduct);
-                $relevantProduct->markForVisibilityRecalculation();
-                $relevantProducts[] = $relevantProduct;
+                $this->productSoldOutActionsScheduler->scheduleProduct($relevantProduct);
             }
-        }
-        if (count($relevantProducts) > 0) {
-            $this->em->flush($relevantProducts);
         }
     }
 }
