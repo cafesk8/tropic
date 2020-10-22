@@ -30,7 +30,13 @@ class AddProductFormType extends AbstractType
             ->add('quantity', TextType::class, [
                 'data' => 1,
                 'constraints' => [
-                    new Constraints\GreaterThanOrEqual($options['minimum_amount']),
+                    new Constraints\GreaterThanOrEqual([
+                        'value' => $options['minimum_amount'],
+                        'message' => t('Tento produkt lze nakoupit v minimálním množství %amount%&nbsp;%unitName%', [
+                            '%amount%' => $options['minimum_amount'],
+                            '%unitName%' => $options['unit_name'],
+                        ]),
+                    ]),
                     new Constraints\Regex(['pattern' => '/^\d+$/']),
                 ],
             ])
@@ -51,7 +57,7 @@ class AddProductFormType extends AbstractType
             'csrf_protection' => false, // CSRF is not necessary (and can be annoying) in this form
             'only_refresh' => false,
         ])
-            ->setRequired(['minimum_amount', 'only_refresh'])
+            ->setRequired(['minimum_amount', 'only_refresh', 'unit_name'])
             ->setAllowedTypes('minimum_amount', 'int')
             ->setAllowedTypes('only_refresh', 'bool');
     }

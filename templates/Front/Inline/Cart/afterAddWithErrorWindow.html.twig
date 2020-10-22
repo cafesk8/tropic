@@ -7,7 +7,7 @@
         </div>
         <ul class="list-simple">
             {% for error in errors %}
-                <li class="list-simple__item">{{ error }}</li>
+                <li class="list-simple__item">{{ error|raw }}</li>
             {% endfor %}
         </ul>
     </div>

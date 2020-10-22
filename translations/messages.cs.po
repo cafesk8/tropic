@@ -3040,8 +3040,8 @@ msgstr "Uložit"
 msgid "Unable to add product to cart"
 msgstr "Zboží se nám nepodařilo vložit do košíku."
 
-msgid "Unable to add product to cart:<br/><ul><li>{{ errors|raw }}</li></ul>"
-msgstr "Zboží se nám nepodařilo vložit do košíku:<br/><ul><li>{{ errors|raw }}</li></ul>"
+msgid "Unable to add product to cart:<br/><ul><li>%errors%</li></ul>"
+msgstr "Zboží se nám nepodařilo vložit do košíku:<br/><ul><li>%errors%</li></ul>"
 
 msgid "Unable to remove item from cart. The item is probably already removed."
 msgstr "Nepodařilo se nám odstranit položku z košíku. Nejspíš už v něm není."

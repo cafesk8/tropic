@@ -349,6 +349,7 @@ class CartController extends FrontBaseController
         $form = $this->createForm(AddProductFormType::class, ['productId' => $product->getId()], [
             'action' => $this->generateUrl('front_cart_add_product'),
             'minimum_amount' => $product->getRealMinimumAmount(),
+            'unit_name' => $product->getUnit()->getName(),
         ]);
 
         $hardDisabled = $product->isMainVariant() || $product->getRealStockQuantity() < 1 || $product->getCalculatedSellingDenied();
@@ -403,11 +404,10 @@ class CartController extends FrontBaseController
             // Form errors list in flash message is temporary solution.
             // We need to determine couse of error when adding product to cart.
             $formErrors = $this->errorExtractor->getAllErrorsAsArray($form, $this->getErrorMessages());
-            $this->addErrorFlashTwig(
-                t('Unable to add product to cart:<br/><ul><li>{{ errors|raw }}</li></ul>'),
-                [
+            $this->addErrorFlash(
+                t('Unable to add product to cart:<br/><ul><li>%errors%</li></ul>', [
                     'errors' => implode('</li><li>', $formErrors),
-                ]
+                ])
             );
         }
 
@@ -427,7 +427,10 @@ class CartController extends FrontBaseController
     public function addProductAjaxAction(Request $request)
     {
         $product = $this->productFacade->getSellableById($request->request->get('add_product_form')['productId']);
-        $form = $this->createForm(AddProductFormType::class, [], ['minimum_amount' => $product->getRealMinimumAmount()]);
+        $form = $this->createForm(AddProductFormType::class, [], [
+            'minimum_amount' => $product->getRealMinimumAmount(),
+            'unit_name' => $product->getUnit()->getName(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -474,9 +477,10 @@ class CartController extends FrontBaseController
             // Form errors list in flash message is temporary solution.
             // We need to determine couse of error when adding product to cart.
             $formErrors = $this->errorExtractor->getAllErrorsAsArray($form, $this->getErrorMessages());
-            $this->addErrorFlashTwig(
-                t('Unable to add product to cart:<br/><ul><li>{{ errors|raw }}</li></ul>'),
-                ['errors' => implode('</li><li>', $formErrors)]
+            $this->addErrorFlash(
+                t('Unable to add product to cart:<br/><ul><li>%errors%</li></ul>', [
+                    '%errors%' => implode('</li><li>', $formErrors),
+                ])
             );
         }
 
