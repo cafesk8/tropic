@@ -193,7 +193,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
         ]);
         $builderTransportTypeGroup->add('mergadoTransportType', ChoiceType::class, [
             'label' => t('Typ dopravy pro Mergado'),
-            'choices' => $this->mergadoTransportTypeFacade->getShipperNamesIndexedByName(),
+            'choices' => $this->mergadoTransportTypeFacade->getMergadoTransportNamesIndexedByName(),
             'required' => false,
             'icon_title' => t('Při nevyplnění nebude doprava do Mergada exportována.'),
         ]);

@@ -17,12 +17,13 @@ class MergadoTransportTypeFacade
         INTIME = 'INTIME',
         PPL = 'PPL',
         TOPTRANS = 'TOPTRANS',
-        OWN_TRANSPORT = 'VLASTNI_PREPRAVA';
+        OWN_TRANSPORT = 'VLASTNI_PREPRAVA',
+        ZASILKOVNA = 'ZASILKOVNA';
 
     /**
      * @return string[]
      */
-    public function getShipperNamesIndexedById(): array
+    public function getMergadoTransportNamesIndexedById(): array
     {
         return [
             self::CZECH_POST => t('Česká pošta'),
@@ -36,15 +37,16 @@ class MergadoTransportTypeFacade
             self::PPL => t('PPL'),
             self::TOPTRANS => t('TOPTRANS'),
             self::OWN_TRANSPORT => t('Vlastí přeprava'),
+            self::ZASILKOVNA => t('Zásilkovna'),
         ];
     }
 
     /**
      * @return string[]
      */
-    public function getShipperNamesIndexedByName(): array
+    public function getMergadoTransportNamesIndexedByName(): array
     {
-        return array_flip($this->getShipperNamesIndexedById());
+        return array_flip($this->getMergadoTransportNamesIndexedById());
     }
 
     /**
@@ -53,6 +55,6 @@ class MergadoTransportTypeFacade
      */
     public function isMergadoTransportTypeAllowed(?string $mergadoTransportType): bool
     {
-        return array_key_exists($mergadoTransportType, $this->getShipperNamesIndexedById()) === true;
+        return array_key_exists($mergadoTransportType, $this->getMergadoTransportNamesIndexedById()) === true;
     }
 }

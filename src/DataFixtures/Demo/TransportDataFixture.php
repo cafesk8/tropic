@@ -167,6 +167,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             $transportData->name[$locale] = t('Zásilkovna CZ', [], 'dataFixtures', $locale);
         }
         $transportData->transportType = Transport::TYPE_ZASILKOVNA_CZ;
+        $transportData->mergadoTransportType = MergadoTransportTypeFacade::ZASILKOVNA;
         $transportData->initialDownload = false;
 
         $this->setPriceForAllDomains($transportData, Money::create('68'));
@@ -179,6 +180,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             $transportData->name[$locale] = t('Zásilkovna SK', [], 'dataFixtures', $locale);
         }
         $transportData->transportType = Transport::TYPE_ZASILKOVNA_SK;
+        $transportData->mergadoTransportType = MergadoTransportTypeFacade::ZASILKOVNA;
         $transportData->zboziType = 'ZASILKOVNA';
         $transportData->initialDownload = false;
 
