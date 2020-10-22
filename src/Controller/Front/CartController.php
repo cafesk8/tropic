@@ -6,7 +6,6 @@ namespace App\Controller\Front;
 
 use App\Component\Cofidis\Banner\CofidisBannerFacade;
 use App\Component\DiscountExclusion\DiscountExclusionFacade;
-use App\Component\FlashMessage\ErrorExtractor;
 use App\Form\Front\Cart\AddProductFormType;
 use App\Form\Front\Cart\CartFormType;
 use App\Model\Cart\Cart;
@@ -21,6 +20,7 @@ use App\Model\Product\Product;
 use App\Model\Product\ProductCachedAttributesFacade;
 use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
@@ -69,7 +69,7 @@ class CartController extends FrontBaseController
     private $orderPreviewFactory;
 
     /**
-     * @var \App\Component\FlashMessage\ErrorExtractor
+     * @var \Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor
      */
     private $errorExtractor;
 
@@ -117,7 +117,7 @@ class CartController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
-     * @param \App\Component\FlashMessage\ErrorExtractor $errorExtractor
+     * @param \Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor $errorExtractor
      * @param \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface $tokenManager
      * @param \App\Model\Product\Gift\ProductGiftInCartFacade $productGiftInCartFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
