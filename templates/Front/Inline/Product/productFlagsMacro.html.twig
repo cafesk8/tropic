@@ -9,7 +9,7 @@
                     {% set processedFlags = processedFlags + 1 %}
                 {% endif %}
             {% endfor %}
-            
+
             {% if not onlyFirst or (onlyFirst and processedFlags < 1) %}
                 {% if variantsCount > 0 %}
                     {{ _self.detail('Počet variant'|transchoice(variantsCount, {'%variantsCount%': variantsCount}), '#00aed8') }}
@@ -18,7 +18,7 @@
             {% endif %}
 
             {% if not onlyFirst or (onlyFirst and processedFlags < 1) %}
-                {% if sellingPrice.hasHigherStandardPrice %}
+                {% if sellingPrice.hasHigherStandardPrice and sellingPrice.pricePercentageDifference > 0 %}
                     {{ _self.detail('%discountValue%% sleva'|trans({'%discountValue%': sellingPrice.pricePercentageDifference}), '#d53030') }}
                     {% set processedFlags = processedFlags + 1 %}
                 {% endif %}
