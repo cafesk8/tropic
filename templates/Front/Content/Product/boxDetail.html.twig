@@ -252,7 +252,11 @@
                             {% if not typeSetOrSupplierSet %}
                                 {% if product.recommended and product.warranty > 24 %}
                                     <div class="in-stickers__item">
-                                        <img src="{{ asset('public/frontend/images/extended-warranty.png') }}"  alt="{{ 'Nálepka Prodloužená záruka'|trans }}" loading="lazy">
+                                        {% if isSlovakDomain() is same as (true) %}
+                                            <img src="{{ asset('public/frontend/images/extended-warranty-sk.png') }}" alt="{{ 'Nálepka Predĺžená záruka'|trans }}" loading="lazy">
+                                        {% else %}
+                                            <img src="{{ asset('public/frontend/images/extended-warranty.png') }}" alt="{{ 'Nálepka Prodloužená záruka'|trans }}" loading="lazy">
+                                        {% endif %}
                                     </div>
                                 {% endif %}
 
@@ -266,13 +270,21 @@
                             {% else %}
                                 {% if product.recommended %}
                                     <div class="in-stickers__item">
-                                        <img src="{{ asset('public/frontend/images/recommended.png') }}" alt="{{ 'Nálepka Tropic doporučuje'|trans }}" loading="lazy">
+                                        {% if isSlovakDomain() is same as (true) %}
+                                            <img src="{{ asset('public/frontend/images/recommended-sk.png') }}" alt="{{ 'Nálepka Tropic doporučuje'|trans }}" loading="lazy">
+                                        {% else %}
+                                            <img src="{{ asset('public/frontend/images/recommended.png') }}" alt="{{ 'Nálepka Tropic doporučuje'|trans }}" loading="lazy">
+                                        {% endif %}
                                     </div>
                                 {% endif %}
 
                                 {% if product.warranty > 24 %}
                                     <div class="in-stickers__item">
-                                        <img src="{{ asset('public/frontend/images/extended-warranty.png') }}"  alt="{{ 'Nálepka Prodloužená záruka'|trans }}" loading="lazy">
+                                        {% if isSlovakDomain() is same as (true) %}
+                                            <img src="{{ asset('public/frontend/images/extended-warranty-sk.png') }}" alt="{{ 'Nálepka Predĺžená záruka'|trans }}" loading="lazy">
+                                        {% else %}
+                                            <img src="{{ asset('public/frontend/images/extended-warranty.png') }}" alt="{{ 'Nálepka Prodloužená záruka'|trans }}" loading="lazy">
+                                        {% endif %}
                                     </div>
                                 {% endif %}
 
