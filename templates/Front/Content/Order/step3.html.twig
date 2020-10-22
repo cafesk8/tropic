@@ -22,7 +22,7 @@
                                 <h2 class="in-title in-title--small in-title--dark">
                                     {{ 'Informace o zákazníkovi'|trans }}
                                 </h2>
-                                {% set isSelectedPickupPlaceTransport = transport is not empty and (transport.isPickupPlace or transport.isChooseStore) %}
+                                {% set isSelectedPickupPlaceTransport = transport is not empty and (transport.isPickupPlace or transport.isChooseStore or transport.isPacketaType) %}
                                 <div class="box-order__info__row">
                                     <div class="box-order__info__row__item box-order__info__row__item--50">
                                         {{ form_row(form.firstName, { label: 'First name'|trans }) }}
@@ -88,7 +88,7 @@
                                 {% if transport.isChooseStore is same as (true) %}
                                     {% set pickupPlaceData = store %}
                                 {% endif %}
-                                <span>{{ "Název pobočky"|trans }}</span>&nbsp;{{ pickupPlaceData.name }} <br/>
+                                <span class="js-pickup-place-name">{{ "Název pobočky"|trans }}</span>&nbsp;{{ pickupPlaceData.name }} <br/>
                                 <span>{{ "Ulice"|trans }}</span>&nbsp;{{ pickupPlaceData.street }} <br/>
                                 <span>{{ "Město"|trans }}</span>&nbsp;{{ pickupPlaceData.city }} <br/>
                                 <span>{{ "PSČ"|trans }}</span>&nbsp;{{ pickupPlaceData.postcode }} <br/>

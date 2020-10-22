@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Order;
 
+use App\Model\Country\CountryFacade;
 use App\Model\Order\FrontOrderData;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Constraints\Email;
 use Shopsys\FrameworkBundle\Form\DeliveryAddressChoiceType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\Country;
-use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Symfony\Component\Form\AbstractType;
@@ -33,25 +33,13 @@ class PersonalInfoFormType extends AbstractType
     public const VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED = 'deliveryAddressRequired';
     public const VALIDATION_GROUP_REGISTRATION_PASSWORD_REQUIRED = 'passwordRequired';
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
-     */
-    private $currentCustomerUser;
+    private CurrentCustomerUser $currentCustomerUser;
 
-    /**
-     * @var \App\Model\Country\CountryFacade
-     */
-    private $countryFacade;
+    private CountryFacade $countryFacade;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade
-     */
-    private $heurekaFacade;
+    private HeurekaFacade $heurekaFacade;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
+    private Domain $domain;
 
     /**
      * @param \App\Model\Country\CountryFacade $countryFacade

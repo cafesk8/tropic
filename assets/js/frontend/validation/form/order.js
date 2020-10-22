@@ -38,7 +38,7 @@ export default function orderValidator ($container) {
             if ($orderPersonalInfoForm.find('#order_personal_info_form_companyCustomer').is(':checked')) {
                 groups.push(constant('\\App\\Form\\Front\\Customer\\BillingAddressFormType::VALIDATION_GROUP_COMPANY_CUSTOMER'));
             }
-            if ($orderPersonalInfoForm.find('#order_personal_info_form_deliveryStreet') !== null && $orderPersonalInfoForm.find('#order_personal_info_form_deliveryAddress_placeholder').is(':checked')) {
+            if ($orderPersonalInfoForm.find('.js-pickup-place-name').length === 0 && ($orderPersonalInfoForm.find('#order_personal_info_form_deliveryStreet').is(':visible') || $orderPersonalInfoForm.find('#order_personal_info_form_deliveryAddress_placeholder').is(':checked'))) {
                 groups.push('deliveryAddressRequired');
             }
             if ($orderPersonalInfoForm.find('.js-order-registration-checkbox').is(':checked')) {
