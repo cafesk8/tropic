@@ -49,9 +49,15 @@
                                             </a>
                                         </li>
                                         <li class="list-socials__item">
-                                            <a class="list-socials__item__link list-socials__item__link--facebook btn-with-border" href="https://www.facebook.com/tropicliberec.cz/" target="_blank">
-                                                {{ 'Facebook'|trans }}
-                                            </a>
+                                            {% if isSlovakDomain() is same as (true) %}
+                                                <a class="list-socials__item__link list-socials__item__link--facebook btn-with-border" href="https://www.facebook.com/tropicfishing.sk" target="_blank">
+                                                    {{ 'Facebook'|trans }}
+                                                </a>
+                                            {% else %}
+                                                <a class="list-socials__item__link list-socials__item__link--facebook btn-with-border" href="https://www.facebook.com/tropicliberec.cz/" target="_blank">
+                                                    {{ 'Facebook'|trans }}
+                                                </a>
+                                            {% endif %}
                                         </li>
                                         <li class="list-socials__item">
                                             <a class="list-socials__item__link list-socials__item__link--youtube btn-with-border" href="https://www.youtube.com/channel/UC6o1AK-Fi_XkISYidB3NOOA" target="_blank">
@@ -110,9 +116,15 @@
                             </div>
                             <div class="footer-middle__awards__right">
                                 <div class="footer-middle__awards__heureka">
-                                    <a href="{{ getHeurekaReviewsUrl() }}" target="_blank" title="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o.">
-                                        <img src="https://im9.cz/cb/19416-11.png" height="130" width="340" alt="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o." style="border: 0;">
-                                    </a>
+                                    {% if isSlovakDomain() is same as (true) %}
+                                        <a href="{{ getHeurekaReviewsUrl() }}" target="_blank" title="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o.">
+                                            <img src="https://im9.cz/sk/cb/20799-11.png" height="130" width="340" alt="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o." style="border: 0;">
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ getHeurekaReviewsUrl() }}" target="_blank" title="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o.">
+                                            <img src="https://im9.cz/cb/19416-11.png" height="130" width="340" alt="Heureka.cz - ověřené hodnocení obchodu TROPIC LIBEREC s.r.o." style="border: 0;">
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
