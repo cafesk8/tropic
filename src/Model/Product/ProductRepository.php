@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Component\Domain\DomainHelper;
 use App\Model\Category\Category;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Set\ProductSet;
@@ -790,5 +791,61 @@ class ProductRepository extends BaseProductRepository
         ')->setParameter('ids', array_column($ids, 'id'));
 
         return $query->iterate();
+    }
+
+    /**
+     * @param int $productId
+     * @param int $domainId
+     * @param string $description
+     * @param string $descriptionHash
+     */
+    public function setDescriptionTranslation(int $productId, int $domainId, string $description, string $descriptionHash): void
+    {
+        $this->em->createNativeQuery('UPDATE product_domains 
+                SET description = :description 
+                WHERE product_id = :productId AND domain_id = :domainId',
+            new ResultSetMapping()
+        )->execute([
+            'description' => $description,
+            'productId' => $productId,
+            'domainId' => $domainId,
+        ]);
+        $this->em->createNativeQuery('UPDATE product_domains 
+                SET description_hash = :hash 
+                WHERE product_id = :productId AND domain_id = :domainId',
+            new ResultSetMapping()
+        )->execute([
+            'hash' => $descriptionHash,
+            'productId' => $productId,
+            'domainId' => DomainHelper::CZECH_DOMAIN,
+        ]);
+    }
+
+    /**
+     * @param int $productId
+     * @param int $domainId
+     * @param string $description
+     * @param string $descriptionHash
+     */
+    public function setShortDescriptionTranslation(int $productId, int $domainId, string $description, string $descriptionHash): void
+    {
+        $this->em->createNativeQuery('UPDATE product_domains 
+                SET short_description = :description 
+                WHERE product_id = :productId AND domain_id = :domainId',
+            new ResultSetMapping()
+        )->execute([
+            'description' => $description,
+            'productId' => $productId,
+            'domainId' => $domainId,
+        ]);
+        $this->em->createNativeQuery('UPDATE product_domains 
+                SET short_description_hash = :hash 
+                WHERE product_id = :productId AND domain_id = :domainId',
+            new ResultSetMapping()
+        )->execute([
+            'hash' => $descriptionHash,
+            'productId' => $productId,
+            'domainId' => DomainHelper::CZECH_DOMAIN,
+        ]);
     }
 }

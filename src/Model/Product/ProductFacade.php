@@ -1377,4 +1377,20 @@ class ProductFacade extends BaseProductFacade
     {
         return $this->productRepository->getPohodaIdsForProductsUpdatedSince($dateTime);
     }
+
+    /**
+     * @param int $productId
+     * @param int $domainId
+     * @param string $description
+     * @param string $descriptionHash
+     * @param bool $short
+     */
+    public function setDescriptionTranslation(int $productId, int $domainId, string $description, string $descriptionHash, bool $short): void
+    {
+        if ($short) {
+            $this->productRepository->setShortDescriptionTranslation($productId, $domainId, $description, $descriptionHash);
+        } else {
+            $this->productRepository->setDescriptionTranslation($productId, $domainId, $description, $descriptionHash);
+        }
+    }
 }
