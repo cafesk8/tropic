@@ -230,14 +230,15 @@ class ProductExternalStockQuantityImportFacade
 
             return;
         }
-
-        $this->updateProductStockQuantity($productId, $currentStockQuantities[$productId], $productAmountMultiplier, $newExternalStockQuantity, $externalStockId);
+        $productCurrentStockQuantities = $currentStockQuantities[$productId] ?? [];
+        $this->updateProductStockQuantity($productId, $pohodaId, $productCurrentStockQuantities, $productAmountMultiplier, $newExternalStockQuantity, $externalStockId);
 
         $this->updatedProductIds[] = $productId;
     }
 
     /**
      * @param int $productId
+     * @param int $pohodaId
      * @param array $currentStockQuantities
      * @param int $productAmountMultiplier
      * @param int $newExternalStockQuantity
@@ -245,6 +246,7 @@ class ProductExternalStockQuantityImportFacade
      */
     private function updateProductStockQuantity(
         int $productId,
+        int $pohodaId,
         array $currentStockQuantities,
         int $productAmountMultiplier,
         int $newExternalStockQuantity,
@@ -253,18 +255,23 @@ class ProductExternalStockQuantityImportFacade
         $this->productStoreStockFacade->manualInsertStoreStock($productId, $externalStockId, $newExternalStockQuantity);
 
         $totalStockQuantity = 0;
-        foreach ($currentStockQuantities as $storeId => $stockQuantity) {
-            if ($storeId === $externalStockId) {
-                $totalStockQuantity += $newExternalStockQuantity;
-            } else {
-                $totalStockQuantity += $stockQuantity;
+        if (empty($currentStockQuantities)) {
+            $totalStockQuantity += $newExternalStockQuantity;
+        } else {
+            foreach ($currentStockQuantities as $storeId => $stockQuantity) {
+                if ($storeId === $externalStockId) {
+                    $totalStockQuantity += $newExternalStockQuantity;
+                } else {
+                    $totalStockQuantity += $stockQuantity;
+                }
             }
         }
+
         $realStockQuantity = $this->productFacade->calculateRealStockQuantity($totalStockQuantity, $productAmountMultiplier);
         $this->productFacade->manualUpdateProductStockQuantities($productId, $totalStockQuantity, $realStockQuantity);
 
         $this->logger->addInfo('Produktu byla upravena skladová zásoba externího skladu', [
-            'pohodaId' => $productId,
+            'pohodaId' => $pohodaId,
             'productId' => $productId,
             'previousStockQuantities' => $currentStockQuantities,
             'newExternalStockQuantity' => $newExternalStockQuantity,
