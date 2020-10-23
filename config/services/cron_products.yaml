@@ -14,9 +14,6 @@ services:
             - { name: shopsys.cron, hours: '0', minutes: '30', readableName: 'Přepočet viditelností produktů (všechny produkty)', instanceName: products }
 
     # ALWAYS -----------------------------------------------------------------------------------------
-    App\Model\Product\Transfer\ProductExternalStockQuantityImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import skladových zásob externího skladu z Pohoda IS', instanceName: products }
 
     App\Model\Product\Transfer\ProductImportCronModule:
         tags:

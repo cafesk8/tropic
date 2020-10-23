@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # ALWAYS -----------------------------------------------------------------------------------------
+    App\Model\Product\Transfer\ProductExternalStockQuantityImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import skladových zásob externího skladu z Pohoda IS', instanceName: stocks }
