@@ -50,14 +50,19 @@ class ProductExportStockFacade
 
     /**
      * @param int[] $productIds
+     * @return int[]
      */
-    public function exportStockInformation(array $productIds): void
+    public function exportStockInformation(array $productIds): array
     {
+        $exportedCountByDomainId = [];
         foreach ($this->domain->getAllIds() as $domainId) {
             $indexDefinition = $this->indexDefinitionLoader->getIndexDefinition($this->productIndex::getName(), $domainId);
             $productIdsToExport = $this->getIdsAlreadyPresentInElastic($productIds, $indexDefinition->getIndexAlias());
+            $exportedCountByDomainId[$domainId] = count($productIdsToExport);
             $this->indexFacade->exportIds($this->productIndex, $indexDefinition, $productIdsToExport, true);
         }
+
+        return $exportedCountByDomainId;
     }
 
     /**

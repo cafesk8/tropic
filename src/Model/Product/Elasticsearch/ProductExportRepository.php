@@ -6,6 +6,7 @@ namespace App\Model\Product\Elasticsearch;
 
 use App\Model\Category\CategoryFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Availability\ProductAvailabilityRecalculator;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
@@ -48,6 +49,8 @@ class ProductExportRepository extends BaseProductExportRepository
 
     private CategoryFacade $categoryFacade;
 
+    private ProductAvailabilityRecalculator $productAvailabilityRecalculator;
+
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
@@ -60,6 +63,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
+     * @param \App\Model\Product\Availability\ProductAvailabilityRecalculator $productAvailabilityRecalculator
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -72,13 +76,15 @@ class ProductExportRepository extends BaseProductExportRepository
         ProductSetFacade $productSetFacade,
         PricingGroupFacade $pricingGroupFacade,
         FlagFacade $flagFacade,
-        CategoryFacade $categoryFacade
+        CategoryFacade $categoryFacade,
+        ProductAvailabilityRecalculator $productAvailabilityRecalculator
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->productSetFacade = $productSetFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->flagFacade = $flagFacade;
         $this->categoryFacade = $categoryFacade;
+        $this->productAvailabilityRecalculator = $productAvailabilityRecalculator;
     }
 
     /**
@@ -91,8 +97,10 @@ class ProductExportRepository extends BaseProductExportRepository
     protected function extractResult(BaseProduct $product, int $domainId, string $locale, bool $stockOnly = false): array
     {
         if ($stockOnly) {
-            $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
+            $this->productAvailabilityRecalculator->recalculateOneProductAvailability($product);
             $result['availability'] = $product->getCalculatedAvailability()->getName($locale);
+            $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
+            $result['stock_quantity'] = $product->getStockQuantity();
             $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
             $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
 

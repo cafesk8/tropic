@@ -900,36 +900,4 @@ class ProductRepository extends BaseProductRepository
         ]);
         $query->execute();
     }
-
-    /**
-     * @param int[] $productIds
-     */
-    public function manualMarkProductsForExport(array $productIds): void
-    {
-        foreach ($productIds as $productId) {
-            $query = $this->em->createNativeQuery(
-                'UPDATE products 
-                SET export_product = TRUE
-                WHERE id = :productId',
-                new ResultSetMapping()
-            )->setParameter('productId', $productId);
-            $query->execute();
-        }
-    }
-
-    /**
-     * @param int[] $productIds
-     */
-    public function manualMarkProductsForRecalculateAvailability(array $productIds): void
-    {
-        foreach ($productIds as $productId) {
-            $query = $this->em->createNativeQuery(
-                'UPDATE products
-                SET recalculate_availability = TRUE
-                WHERE id = :productId',
-                new ResultSetMapping()
-            )->setParameter('productId', $productId);
-            $query->execute();
-        }
-    }
 }
