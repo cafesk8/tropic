@@ -51,8 +51,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'name',
         'catnum',
         'pohodaId',
-        'shortDescriptions',
-        'descriptions',
         'usingStock',
         'registrationDiscountDisabled',
         'promoDiscountDisabled',
