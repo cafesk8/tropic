@@ -49,38 +49,36 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 {
     public const DISABLED_FIELDS = [
         'name',
-        'catnum',
-        'pohodaId',
-        'usingStock',
-        'registrationDiscountDisabled',
-        'promoDiscountDisabled',
-        'manualInputPricesByPricingGroupId',
-        'vatsIndexedByDomainId',
-        'variantId',
-        'categoriesByDomainId',
+        'basicInformationGroup.catnum',
+        'basicInformationGroup.pohodaId',
+        'displayAvailabilityGroup.usingStock',
+        'discountExclusionGroup.registrationDiscountDisabled',
+        'discountExclusionGroup.promoDiscountDisabled',
+        'pricesGroup.productCalculatedPricesGroup.vatsIndexedByDomainId',
+        'basicInformationGroup.variantId',
+        'displayAvailabilityGroup.categoriesByDomainId',
         'storeStock',
         'accessories',
-        'eurCalculatedAutomatically',
-        'deliveryDays',
-        'outOfStockAction',
-        'outOfStockAvailability',
-        'youtubeVideoIds',
-        'brand',
-        'unit',
-        'ean',
-        'warranty',
-        'minimumAmount',
-        'amountMultiplier',
-        'images',
-        'shown',
-        'parameters',
-        'supplierSet',
-        'orderingPriority',
-        'foreignSupplier',
-        'weight',
-        'sellingDenied',
-        'bulky',
-        'oversized',
+        'displayAvailabilityGroup.deliveryDays',
+        'videosGroup.youtubeVideoIds',
+        'basicInformationGroup.brand',
+        'displayAvailabilityGroup.unit',
+        'basicInformationGroup.ean',
+        'basicInformationGroup.warranty',
+        'amountGroup.minimumAmount',
+        'amountGroup.amountMultiplier',
+        'imageGroup.images',
+        'displayAvailabilityGroup.shown',
+        'parametersGroup.parameters',
+        'basicInformationGroup.supplierSet',
+        'displayAvailabilityGroup.orderingPriority',
+        'displayAvailabilityGroup.foreignSupplier',
+        'basicInformationGroup.weight',
+        'displayAvailabilityGroup.sellingDenied',
+        'basicInformationGroup.bulky',
+        'basicInformationGroup.oversized',
+        'descriptionsGroup.descriptions.1',
+        'shortDescriptionsGroup.shortDescriptions.1',
     ];
 
     /**
@@ -435,7 +433,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ]);
 
             if ($pricingGroup->getDomainId() === DomainHelper::CZECH_DOMAIN) {
-                $this->dynamicallyDisabledFields[] = (string)$pricingGroup->getId();
+                $this->dynamicallyDisabledFields[] = 'pricesGroup.productCalculatedPricesGroup.manualInputPricesByPricingGroupId.' . $pricingGroup->getId();
             }
         }
 

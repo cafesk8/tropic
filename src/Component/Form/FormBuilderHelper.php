@@ -30,21 +30,26 @@ class FormBuilderHelper
         if (!$this->disableFields) {
             return;
         }
+
         $this->walkFormElements($builder->all(), $disabledFields);
     }
 
     /**
      * @param array $elements
      * @param array $disabledFields
+     * @param string $path
      */
-    private function walkFormElements(array $elements, array $disabledFields): void
+    private function walkFormElements(array $elements, array $disabledFields, string $path = ''): void
     {
         foreach ($elements as $element) {
+            $currentPath = empty($path) ? $element->getName() : $path . '.' . $element->getName();
+
             /** @var \Ivory\OrderedForm\Builder\OrderedFormBuilder $element */
-            if (in_array($element->getName(), $disabledFields, true)) {
+            if (in_array($currentPath, $disabledFields, true)) {
                 $element->setDisabled(true);
             }
-            $this->walkFormElements($element->all(), $disabledFields);
+
+            $this->walkFormElements($element->all(), $disabledFields, $currentPath);
         }
     }
 
