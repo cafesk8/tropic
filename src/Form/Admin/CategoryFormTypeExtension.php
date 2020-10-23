@@ -32,10 +32,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CategoryFormTypeExtension extends AbstractTypeExtension
 {
     public const DISABLED_FIELDS = [
-        'pohodaId',
-        'name',
-        'listable',
-        'updatedByPohodaAt',
+        'settings.pohodaId',
+        'settings.name',
+        'settings.listable',
+        'settings.updatedByPohodaAt',
     ];
 
     /**
