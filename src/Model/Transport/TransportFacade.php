@@ -210,7 +210,6 @@ class TransportFacade extends BaseTransportFacade
         bool $oversizedTransportRequired,
         bool $bulkyTransportRequired
     ): array {
-        /** @var \App\Model\Transport\Transport[] $visibleTransports */
         $visibleTransports = $this->getVisibleByDomainIdAndTransportEmailType($domainId, $visiblePaymentsOnDomain, $showEmailTransportInCart, $oversizedTransportRequired, $bulkyTransportRequired);
 
         if ($country === null) {
