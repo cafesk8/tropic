@@ -823,3 +823,9 @@ services:
             - '%mserver_email_notifications_enabled%'
             - '%mserver_error_500_email_recipients%'
             - '%mserver_error_timeout_email_recipients%'
+
+    Shopsys\FrameworkBundle\Component\Elasticsearch\IndexFacade: '@App\Component\Elasticsearch\IndexFacade'
+
+    App\Model\Product\Elasticsearch\ProductIndex: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductIndex: '@App\Model\Product\Elasticsearch\ProductIndex'

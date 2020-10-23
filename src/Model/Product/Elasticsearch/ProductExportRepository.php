@@ -85,10 +85,20 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Model\Product\Product $product
      * @param int $domainId
      * @param string $locale
+     * @param bool $stockOnly
      * @return array
      */
-    protected function extractResult(BaseProduct $product, int $domainId, string $locale): array
+    protected function extractResult(BaseProduct $product, int $domainId, string $locale, bool $stockOnly = false): array
     {
+        if ($stockOnly) {
+            $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
+            $result['availability'] = $product->getCalculatedAvailability()->getName($locale);
+            $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
+            $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
+
+            return $result;
+        }
+
         $variants = $this->productFacade->getVisibleVariantsForProduct($product, $domainId);
         $result = parent::extractResult($product, $domainId, $locale);
 
@@ -342,5 +352,30 @@ class ProductExportRepository extends BaseProductExportRepository
     private function getMainCategoryPath(Product $product, int $domainId): string
     {
        return $this->categoryFacade->getCategoryFullPath($product, $this->domain->getDomainConfigById($domainId), '/') ?? '';
+    }
+
+    /**
+     * It is now possible to get products data only for exporting updated stock quantities
+     * @param int $domainId
+     * @param string $locale
+     * @param int[] $productIds
+     * @param bool $stockOnly
+     * @return array
+     */
+    public function getProductsDataForIds(int $domainId, string $locale, array $productIds, bool $stockOnly = false): array
+    {
+        $queryBuilder = $this->createQueryBuilder($domainId)
+            ->andWhere('p.id IN (:productIds)')
+            ->setParameter('productIds', $productIds);
+
+        $query = $queryBuilder->getQuery();
+
+        $result = [];
+        /** @var \App\Model\Product\Product $product */
+        foreach ($query->getResult() as $product) {
+            $result[$product->getId()] = $this->extractResult($product, $domainId, $locale, $stockOnly);
+        }
+
+        return $result;
     }
 }

@@ -8,6 +8,7 @@ use App\Component\Transfer\Logger\TransferLogger;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Component\Transfer\Pohoda\Product\PohodaProduct;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade;
+use App\Model\Product\Elasticsearch\ProductExportStockFacade;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\StoreStock\ProductStoreStockFacade;
 use App\Model\Store\StoreFacade;
@@ -55,6 +56,8 @@ class ProductExternalStockQuantityImportFacade
 
     private ProductFacade $productFacade;
 
+    private ProductExportStockFacade $productExportStockFacade;
+
     /**
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade $pohodaProductExportFacade
@@ -63,6 +66,7 @@ class ProductExternalStockQuantityImportFacade
      * @param \App\Model\Store\StoreFacade $storeFacade
      * @param \App\Model\Product\StoreStock\ProductStoreStockFacade $productStoreStockFacade
      * @param \App\Model\Product\ProductFacade $productFacade
+     * @param \App\Model\Product\Elasticsearch\ProductExportStockFacade $productExportStockFacade
      */
     public function __construct(
         TransferLoggerFactory $transferLoggerFactory,
@@ -71,7 +75,8 @@ class ProductExternalStockQuantityImportFacade
         EntityManagerInterface $entityManager,
         StoreFacade $storeFacade,
         ProductStoreStockFacade $productStoreStockFacade,
-        ProductFacade $productFacade
+        ProductFacade $productFacade,
+        ProductExportStockFacade $productExportStockFacade
     ) {
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductExternalStockQuantityImportCronModule::TRANSFER_IDENTIFIER);
         $this->entityManager = $entityManager;
@@ -80,6 +85,7 @@ class ProductExternalStockQuantityImportFacade
         $this->storeFacade = $storeFacade;
         $this->productStoreStockFacade = $productStoreStockFacade;
         $this->productFacade = $productFacade;
+        $this->productExportStockFacade = $productExportStockFacade;
     }
 
     /**
@@ -280,15 +286,17 @@ class ProductExternalStockQuantityImportFacade
      */
     private function markProductsForRecalculation(array $updatedProductIds, array $productIdsForRecalculationMark): void
     {
-        $this->logger->addInfo('Označení produktů k exportu do Elasticsearch', [
+        $this->logger->addInfo('Exportuji do Elasticsearch', [
             'productIdsCount' => count($updatedProductIds),
+            'currentTime' => new \DateTime(),
         ]);
         if (count($updatedProductIds) > 0) {
-            $this->productFacade->manualMarkProductsForExport($updatedProductIds);
+            $this->productExportStockFacade->exportStockInformation($updatedProductIds);
         }
 
         $this->logger->addInfo('Označení produktů k přepočtu dostupností', [
             'productIdsCount' => count($productIdsForRecalculationMark),
+            'currentTime' => new \DateTime(),
         ]);
         if (count($productIdsForRecalculationMark) > 0) {
             $this->productFacade->manualMarkProductsForRecalculateAvailability($productIdsForRecalculationMark);
