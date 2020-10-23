@@ -35,6 +35,7 @@ import './frontend/cart';
 import 'framework/common/validation/customizeFpValidator';
 import './frontend/validation/validationInit';
 import 'framework/common/validation';
+import './frontend/validation/form/customizeFpValidator';
 
 import './frontend/blog/blogList';
 
