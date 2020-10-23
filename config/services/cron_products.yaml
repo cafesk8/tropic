@@ -30,10 +30,6 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přeuložení označených produktů pro správný přepočet přiřazení výprodejových štítků apod.', instanceName: products }
 
-    App\Model\Product\Translation\ProductTranslationCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Automatický překlad produktů přes Google Translate', instanceName: products }
-
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportChangedCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: "Export změněných produktů do Elasticsearch", instanceName: products }
