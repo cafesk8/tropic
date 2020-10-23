@@ -42,30 +42,28 @@ class ProductStoreStockRepository
 
     /**
      * @param int[] $productIds
-     * @param int $storeId
      * @return array
      */
-    public function getProductStockQuantities(array $productIds, int $storeId): array
+    public function getProductStockQuantities(array $productIds): array
     {
         $resultSetMapping = new ResultSetMapping();
         $resultSetMapping->addScalarResult('product_id', 'productId');
         $resultSetMapping->addScalarResult('stock_quantity', 'stockQuantity');
+        $resultSetMapping->addScalarResult('store_id', 'storeId');
 
         $query = $this->em->createNativeQuery(
-            'SELECT product_id, stock_quantity
+            'SELECT product_id, stock_quantity, store_id
             FROM product_store_stocks
-            WHERE product_id IN (:productIds)
-                AND store_id = :storeId',
+            WHERE product_id IN (:productIds)',
             $resultSetMapping
         )->setParameters([
             'productIds' => $productIds,
-            'storeId' => $storeId,
         ]);
 
         $stockQuantitiesResult = $query->getResult();
         $stockQuantities = [];
         foreach ($stockQuantitiesResult as $productResult) {
-            $stockQuantities[(int)$productResult['productId']] = (int)$productResult['stockQuantity'];
+            $stockQuantities[(int)$productResult['productId']][(int)$productResult['storeId']] = (int)$productResult['stockQuantity'];
         }
 
         return $stockQuantities;

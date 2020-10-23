@@ -28,11 +28,10 @@ class ProductStoreStockFacade
 
     /**
      * @param array $productIds
-     * @param int $storeId
      * @return array
      */
-    public function getProductStockQuantities(array $productIds, int $storeId): array
+    public function getProductStockQuantities(array $productIds): array
     {
-        return $this->productStoreStockRepository->getProductStockQuantities($productIds, $storeId);
+        return $this->productStoreStockRepository->getProductStockQuantities($productIds);
     }
 }

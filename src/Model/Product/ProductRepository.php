@@ -858,9 +858,10 @@ class ProductRepository extends BaseProductRepository
         $resultSetMapping = new ResultSetMapping();
         $resultSetMapping->addScalarResult('id', 'id');
         $resultSetMapping->addScalarResult('pohoda_id', 'pohodaId');
+        $resultSetMapping->addScalarResult('amount_multiplier', 'amountMultiplier');
 
         $query = $this->em->createNativeQuery(
-            'SELECT id, pohoda_id 
+            'SELECT id, pohoda_id, amount_multiplier
             FROM products
             WHERE pohoda_id IN (:pohodaProductIds)',
             $resultSetMapping
@@ -871,10 +872,33 @@ class ProductRepository extends BaseProductRepository
         $productsResult = $query->getResult();
         $productIds = [];
         foreach ($productsResult as $productResult) {
-            $productIds[(int)$productResult['pohodaId']] = (int)$productResult['id'];
+            $productIds[(int)$productResult['pohodaId']] = [
+                'productId' => (int)$productResult['id'],
+                'amountMultiplier' => (int)$productResult['amountMultiplier'],
+            ];
         }
 
         return $productIds;
+    }
+
+    /**
+     * @param int $productId
+     * @param int $stockQuantity
+     * @param int $realStockQuantity
+     */
+    public function manualUpdateProductStockQuantities(int $productId, int $stockQuantity, int $realStockQuantity): void
+    {
+        $query = $this->em->createNativeQuery(
+            'UPDATE products 
+            SET stock_quantity = :stockQuantity, real_stock_quantity = :realStockQuantity
+            WHERE id = :productId',
+            new ResultSetMapping()
+        )->setParameters([
+            'stockQuantity' => $stockQuantity,
+            'realStockQuantity' => $realStockQuantity,
+            'productId' => $productId,
+        ]);
+        $query->execute();
     }
 
     /**

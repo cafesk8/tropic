@@ -483,6 +483,14 @@ class PohodaProductExportRepository
                 'defaultStockId' => $this->storeFacade->getDefaultPohodaStockExternalNumber(),
             ]);
 
-        return $query->getResult();
+        $stockQuantities = [];
+        foreach ($query->getResult() as $stockQuantity) {
+            $stockQuantities[$stockQuantity[PohodaProduct::COL_POHODA_ID]] = [
+                PohodaProduct::COL_POHODA_ID => $stockQuantity[PohodaProduct::COL_POHODA_ID],
+                PohodaProduct::COL_EXTERNAL_STOCK => $stockQuantity[PohodaProduct::COL_EXTERNAL_STOCK],
+            ];
+        }
+
+        return $stockQuantities;
     }
 }

@@ -60,6 +60,8 @@ class ProductExternalStockQuantityImportCronModule extends AbstractTransferCronM
         $updatedProductIds = $this->productStockQuantityImportFacade->processImport();
         $this->totalUpdatedProducts += count($updatedProductIds);
 
-        return $this->totalUpdatedProducts <= self::MAXIMUM_PRODUCTS_UPDATE && !$this->productExternalStockQuantityQueueImportFacade->isQueueEmpty();
+        return $this->totalUpdatedProducts <= self::MAXIMUM_PRODUCTS_UPDATE
+            && $this->totalUpdatedProducts > 0
+            && !$this->productExternalStockQuantityQueueImportFacade->isQueueEmpty();
     }
 }
