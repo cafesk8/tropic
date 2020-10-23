@@ -1,4 +1,4 @@
-{% macro list(productFlags, classAddition, onlyFirst, sellingPrice, variantsCount) %}
+{% macro list(productFlags, classAddition, onlyFirst, sellingPrice, variantsCount, discountDisplayType = 'percentage') %}
     {% set processedFlags = 0 %}
 
     {% if productFlags|length > 0 or (sellingPrice is not null and sellingPrice.hasHigherStandardPrice) or variantsCount > 0 %}
@@ -18,8 +18,15 @@
             {% endif %}
 
             {% if not onlyFirst or (onlyFirst and processedFlags < 1) %}
-                {% if sellingPrice.hasHigherStandardPrice and sellingPrice.pricePercentageDifference > 0 %}
+                {% if sellingPrice.hasHigherStandardPrice
+                    and sellingPrice.pricePercentageDifference > 0
+                    and discountDisplayType is same as(constant('App\\Twig\\FlagsExtension::DISCOUNT_DISPLAY_TYPE_PERCENTAGE'))
+                %}
                     {{ _self.detail('%discountValue%% sleva'|trans({'%discountValue%': sellingPrice.pricePercentageDifference}), '#d53030') }}
+                    {% set processedFlags = processedFlags + 1 %}
+                {% elseif sellingPrice.hasHigherStandardPrice
+                    and discountDisplayType is same as(constant('App\\Twig\\FlagsExtension::DISCOUNT_DISPLAY_TYPE_NOMINAL')) %}
+                    {{ _self.detail('Ušetříte %discountValue%'|trans({'%discountValue%': sellingPrice.standardPriceDifference|price }), '#d53030') }}
                     {% set processedFlags = processedFlags + 1 %}
                 {% endif %}
             {% endif %}

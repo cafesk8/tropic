@@ -12,6 +12,10 @@ use Twig\TwigFunction;
 
 class FlagsExtension extends AbstractExtension
 {
+    public const DISCOUNT_DISPLAY_TYPE_PERCENTAGE = 'percentage';
+    // the constant is used in Twig templates
+    public const DISCOUNT_DISPLAY_TYPE_NOMINAL = 'nominal';
+
     /**
      * @var \Twig\Environment
      */
@@ -50,6 +54,7 @@ class FlagsExtension extends AbstractExtension
      * @param bool $onlyFirst
      * @param \App\Model\Product\Pricing\ProductPrice|null $productPrice
      * @param int $variantsCount
+     * @param string $discountDisplayType
      * @return string
      */
     public function renderFlagsByIds(
@@ -57,7 +62,8 @@ class FlagsExtension extends AbstractExtension
         string $classAddition = '',
         bool $onlyFirst = false,
         ?ProductPrice $productPrice = null,
-        int $variantsCount = 0
+        int $variantsCount = 0,
+        string $discountDisplayType = self::DISCOUNT_DISPLAY_TYPE_PERCENTAGE
     ): string {
         return $this->twigEnvironment->render(
             'Front/Inline/Product/productFlags.html.twig',
@@ -67,6 +73,7 @@ class FlagsExtension extends AbstractExtension
                 'onlyFirst' => $onlyFirst,
                 'sellingPrice' => $productPrice,
                 'variantsCount' => $variantsCount,
+                'discountDisplayType' => $discountDisplayType,
             ]
         );
     }

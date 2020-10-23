@@ -306,7 +306,7 @@
                         {% if freeTransportAndPaymentFlagId is not null %}
                             {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
                         {% endif %}
-                        {{ renderFlagsByIds(productFlagIds, 'in-flag--bomb', true, productSellingPrice, productView.variantsCount) }}
+                        {{ renderFlagsByIds(productFlagIds, 'in-flag--bomb', true, productSellingPrice, productView.variantsCount, constant('App\\Twig\\FlagsExtension::DISCOUNT_DISPLAY_TYPE_NOMINAL')) }}
                     </div>
 
                     <{{ productHeadingTagName|default('h2') }} class="list-products-bomb__item__title">
