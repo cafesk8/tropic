@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Component\Transfer\Pohoda\Product;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager;
 use App\Component\Transfer\Pohoda\Helpers\PohodaDateTimeHelper;
+use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Store\StoreFacade;
 use DateTime;
 use DateTimeZone;
@@ -14,8 +16,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 class PohodaProductExportRepository
 {
     private const PRODUCT_TYPE_SET_ID = 5;
-
-    private const SELLING_EUR_PRICE_ID = 4;
 
     private const POHODA_PRODUCT_COLUMN_ALIASES = [
         'ID' => PohodaProduct::COL_POHODA_ID,
@@ -72,14 +72,18 @@ class PohodaProductExportRepository
 
     private StoreFacade $storeFacade;
 
+    private PricingGroupFacade $pricingGroupFacade;
+
     /**
      * @param \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager $pohodaEntityManager
      * @param \App\Model\Store\StoreFacade $storeFacade
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
-    public function __construct(PohodaEntityManager $pohodaEntityManager, StoreFacade $storeFacade)
+    public function __construct(PohodaEntityManager $pohodaEntityManager, StoreFacade $storeFacade, PricingGroupFacade $pricingGroupFacade)
     {
         $this->pohodaEntityManager = $pohodaEntityManager;
         $this->storeFacade = $storeFacade;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -98,6 +102,7 @@ class PohodaProductExportRepository
 
         $resultSetMapping->addScalarResult('ProdejC', PohodaProduct::COL_SELLING_PRICE_EUR);
         $queryColumns[] = 'Prices.ProdejC';
+        $registeredCustomerOnSecondDomainPricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup(DomainHelper::SLOVAK_DOMAIN);
         $query = $this->pohodaEntityManager->createNativeQuery(
             'SELECT ' . implode(', ', $queryColumns) . '
              FROM Skz Product
@@ -110,7 +115,7 @@ class PohodaProductExportRepository
             $resultSetMapping
         )->setParameters([
             'pohodaProductIds' => $pohodaProductIds,
-            'sellingEurPriceId' => self::SELLING_EUR_PRICE_ID,
+            'sellingEurPriceId' => $registeredCustomerOnSecondDomainPricingGroup->getPohodaId(),
         ]);
 
         $pohodaProductResult = $query->getResult();

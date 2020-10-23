@@ -50,11 +50,18 @@ class PricingGroup extends BasePricingGroup
     private $calculatedFromDefault;
 
     /**
-     * @var string|null
+     * in Pohoda, this is "SkCeny.IDS"
      *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $pohodaIdent;
+    private ?string $pohodaIdent = null;
+
+    /**
+     * in Pohoda, this is "SkCeny.ID"
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $pohodaId = null;
 
     /**
      * @param \App\Model\Pricing\Group\PricingGroupData $pricingGroupData
@@ -165,5 +172,13 @@ class PricingGroup extends BasePricingGroup
     public function getPohodaIdent(): ?string
     {
         return $this->pohodaIdent;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPohodaId(): ?int
+    {
+        return $this->pohodaId;
     }
 }
