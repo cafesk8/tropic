@@ -106,7 +106,7 @@ class ProductImportFacade
             $changedPohodaProductIds
         );
         $returnedPohodaIds = array_map(fn (PohodaProduct $pohodaProduct) => $pohodaProduct->pohodaId, $pohodaProducts);
-        $notExistingPohodaIds = array_diff($changedPohodaProductIds, $returnedPohodaIds);
+        $notExistingPohodaIds = array_diff(array_column($changedPohodaProductIds, 'pohodaId'), $returnedPohodaIds);
         $notExistingPohodaIdsCount = count($notExistingPohodaIds);
         if ($notExistingPohodaIdsCount > 0) {
             $this->logger->addInfo('Odmazávám z fronty produkty, které nejsou v Pohodě', [
