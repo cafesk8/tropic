@@ -31,6 +31,8 @@ class StoreFacade
      */
     private $storeFactory;
 
+    private ?Store $externalStockCache = null;
+
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Store\StoreRepository $storeRepository
@@ -270,5 +272,16 @@ class StoreFacade
     public function findInternalStock(): ?Store
     {
         return $this->storeRepository->findByPohodaName(self::INTERNAL_STOCK_POHODA_NAME);
+    }
+
+    /**
+     * @return \App\Model\Store\Store|null
+     */
+    public function findExternalStock(): ?Store
+    {
+        if ($this->externalStockCache === null) {
+            $this->externalStockCache = $this->storeRepository->findByPohodaName(Store::POHODA_STOCK_EXTERNAL_NAME);
+        }
+        return $this->externalStockCache;
     }
 }

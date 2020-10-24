@@ -420,4 +420,77 @@ class PohodaProductExportRepository
 
         return $query->getResult();
     }
+
+    /**
+     * @param \DateTime|null $lastUpdateTime
+     * @return array
+     */
+    public function getPohodaProductIdsByExternalStockLastUpdateTime(?DateTime $lastUpdateTime): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('ID', PohodaProduct::COL_POHODA_ID);
+
+        if ($lastUpdateTime !== null) {
+            // Timezone in Pohoda is always Europe/Prague and we store dates in UTC so we need to convert the last update time to Pohoda´s timezone
+            $lastUpdateTime->setTimezone(new DateTimeZone('Europe/Prague'));
+        }
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT Product.ID
+            FROM Skz Product
+            WHERE Product.RefSklad = :defaultStockId 
+                AND Product.IDS IN (
+                    SELECT IDS
+                    FROM SKz 
+                    WHERE VPrDatSaveStavZ > :lastUpdateDateTime
+                    GROUP BY IDS
+                )
+                AND Product.IObchod = 1
+            ORDER BY Product.VPrDatSaveStavZ',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'defaultStockId' => $this->storeFacade->getDefaultPohodaStockExternalNumber(),
+                'lastUpdateDateTime' => $lastUpdateTime === null ? PohodaDateTimeHelper::FIRST_UPDATE_TIME : $lastUpdateTime->format(PohodaDateTimeHelper::DATE_TIME_FORMAT),
+            ]);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param array $pohodaProductIds
+     * @return array
+     */
+    public function getPohodaProductExternalStockQuantitiesByProductIds(array $pohodaProductIds): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('ID', PohodaProduct::COL_POHODA_ID)
+            ->addScalarResult('VPrExtSklad', PohodaProduct::COL_EXTERNAL_STOCK);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT
+                Product.ID,
+                Product.VPrExtSklad
+            FROM Skz Product
+            WHERE Product.ID IN (:pohodaProductIds)
+                AND Product.RefSklad = :defaultStockId 
+                AND Product.IObchod = 1
+            ORDER BY Product.VPrDatSaveStavZ',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'pohodaProductIds' => $pohodaProductIds,
+                'defaultStockId' => $this->storeFacade->getDefaultPohodaStockExternalNumber(),
+            ]);
+
+        $stockQuantities = [];
+        foreach ($query->getResult() as $stockQuantity) {
+            $stockQuantities[$stockQuantity[PohodaProduct::COL_POHODA_ID]] = [
+                PohodaProduct::COL_POHODA_ID => $stockQuantity[PohodaProduct::COL_POHODA_ID],
+                PohodaProduct::COL_EXTERNAL_STOCK => $stockQuantity[PohodaProduct::COL_EXTERNAL_STOCK],
+            ];
+        }
+
+        return $stockQuantities;
+    }
 }

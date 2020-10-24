@@ -474,11 +474,8 @@ class ProductFacade extends BaseProductFacade
         }
 
         $product->setStockQuantity($totalStockQuantity);
+        $realStockQuantity = $this->calculateRealStockQuantity($totalStockQuantity, $product->getAmountMultiplier());
 
-        $realStockQuantity = $totalStockQuantity;
-        if ($product->getStockQuantity() % $product->getAmountMultiplier() !== 0) {
-            $realStockQuantity = (int)floor($product->getStockQuantity() / $product->getAmountMultiplier()) * $product->getAmountMultiplier();
-        }
         $product->setRealStockQuantity($realStockQuantity, $checkQuantityBefore);
 
         if ($realStockQuantity < 1) {
@@ -488,6 +485,21 @@ class ProductFacade extends BaseProductFacade
         }
 
         $this->em->flush($product);
+    }
+
+    /**
+     * @param int $totalStockQuantity
+     * @param int $amountMultiplier
+     * @return int
+     */
+    public function calculateRealStockQuantity(int $totalStockQuantity, int $amountMultiplier): int
+    {
+        $realStockQuantity = $totalStockQuantity;
+        if ($totalStockQuantity % $amountMultiplier !== 0) {
+            $realStockQuantity = (int)floor($totalStockQuantity / $amountMultiplier) * $amountMultiplier;
+        }
+
+        return $realStockQuantity;
     }
 
     /**
@@ -1392,5 +1404,24 @@ class ProductFacade extends BaseProductFacade
         } else {
             $this->productRepository->setDescriptionTranslation($productId, $domainId, $description, $descriptionHash);
         }
+    }
+
+    /**
+     * @param int[] $pohodaProductIds
+     * @return array
+     */
+    public function getProductIdsIndexedByPohodaIds(array $pohodaProductIds): array
+    {
+        return $this->productRepository->getProductIdsIndexedByPohodaIds($pohodaProductIds);
+    }
+
+    /**
+     * @param int $productId
+     * @param int $stockQuantity
+     * @param int $realStockQuantity
+     */
+    public function manualUpdateProductStockQuantities(int $productId, int $stockQuantity, int $realStockQuantity): void
+    {
+        $this->productRepository->manualUpdateProductStockQuantities($productId, $stockQuantity, $realStockQuantity);
     }
 }

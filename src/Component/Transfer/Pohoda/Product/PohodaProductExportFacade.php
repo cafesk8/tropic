@@ -322,4 +322,22 @@ class PohodaProductExportFacade
     {
         return array_map(fn (array $variant) => $variant[PohodaProduct::COL_POHODA_ID], $this->pohodaProductExportRepository->getVariantIdsByMainVariantId($mainVariantId));
     }
+
+    /**
+     * @param \DateTime|null $lastUpdateTime
+     * @return array
+     */
+    public function getPohodaProductIdsByExternalStockLastUpdateTime(?DateTime $lastUpdateTime): array
+    {
+        return $this->pohodaProductExportRepository->getPohodaProductIdsByExternalStockLastUpdateTime($lastUpdateTime);
+    }
+
+    /**
+     * @param array $pohodaProductIds
+     * @return array
+     */
+    public function getPohodaProductExternalStockQuantitiesByProductIds(array $pohodaProductIds): array
+    {
+        return $this->pohodaProductExportRepository->getPohodaProductExternalStockQuantitiesByProductIds($pohodaProductIds);
+    }
 }
