@@ -1,4 +1,4 @@
-{% macro productBox(product, youtubeVideoIds, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews, showCofidisBanner) %}
+{% macro productBox(product, currentVariant, youtubeVideoIds, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews, showCofidisBanner) %}
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
@@ -77,9 +77,9 @@
                         {% else %}
                             <div class="box-detail__description">
                                 <div class="box-detail__description__wrap">
-                                    <h2 class="box-detail__description__title" itemprop="name">
+                                    <h1 class="box-detail__description__title" itemprop="name">
                                         {{ product.getSeoH1(domain.id)|default(product.name) }}
-                                    </h2>
+                                    </h1>
                                     <div class="box-detail__description__flags">
                                         {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail in-flag--in-set', false, sellingPrice, variantsCount) }}
                                     </div>
@@ -103,9 +103,13 @@
 
                     <div class="box-detail__info">
                         {% if not typeSetOrSupplierSet %}
-                            <h2 class="box-detail__info__title{% if product.isMainVariant %} box-detail__info__title--big-gap{% endif %}" itemprop="name">
-                                {{ product.getSeoH1(domain.id)|default(product.name) }}
-                            </h2>
+                            <h1 class="box-detail__info__title{% if product.isMainVariant %} box-detail__info__title--big-gap{% endif %}" itemprop="name">
+                                {% if currentVariant is not null %}
+                                    {{ currentVariant.getSeoH1(domain.id)|default(currentVariant.name) }}
+                                {% else %}
+                                    {{ product.getSeoH1(domain.id)|default(product.name) }}
+                                {% endif %}
+                            </h1>
                         {% endif %}
 
                         {% set productGift = product.firstActiveInStockProductGiftByDomainId(domain.id) %}
@@ -203,7 +207,7 @@
 
                                                 <div class="list-variants__item__bottom">
                                                     {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', {product: variant, type: 'variant'}) }}
-                                                    
+
                                                     {% if showCofidisBanner %}
                                                         <div class="box-detail-add__payments box-detail-add__payments--variant">
                                                             <img class="box-detail-add__payments__image" src="{{ asset('public/frontend/images/cofidis-logo.png')}}" alt="{{ 'Cofidis'|trans }}">
@@ -218,9 +222,9 @@
 
                                     {% if filterOnlyVisibleVariants(product)|length > maxVisibleVariants %}
                                         <div class="box-detail-add__show-more">
-                                            <a class="box-detail-add__show-more__button btn btn--big js-responsive-toggle js-scroll-to-position" 
-                                                href="#list-variants" 
-                                                data-space-above-position="60" 
+                                            <a class="box-detail-add__show-more__button btn btn--big js-responsive-toggle js-scroll-to-position"
+                                                href="#list-variants"
+                                                data-space-above-position="60"
                                                 data-element="listVariantsHidden">
                                                 <span class="box-detail-add__show-more__button__more">
                                                     {% set variantsCount = filterOnlyVisibleVariants(product)|length - maxVisibleVariants %}

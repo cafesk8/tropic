@@ -225,8 +225,10 @@ class ProductController extends FrontBaseController
         $product = $this->productOnCurrentDomainFacade->getVisibleProductById($id);
         $this->gtmFacade->onProductDetailPage($product);
 
+        $currentVariant = null;
         if ($product->isVariant()) {
-            return $this->redirectToRoute('front_product_detail', ['id' => $product->getMainVariant()->getId()]);
+            $currentVariant = $product;
+            $product = $product->getMainVariant();
         }
 
         $accessories = $this->listedProductViewFacade->getAllAccessories($product->getId());
@@ -238,6 +240,7 @@ class ProductController extends FrontBaseController
 
         return $this->render('Front/Content/Product/detail.html.twig', [
             'product' => $product,
+            'currentVariant' => $currentVariant,
             'accessories' => $accessories,
             'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $this->domain->getCurrentDomainConfig()),
             'domainId' => $domainId,

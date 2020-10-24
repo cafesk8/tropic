@@ -5,12 +5,22 @@
 {% set domain = getDomain() %}
 {% set accessoriesHeadline = 'K produktu budete potřebovat'|trans %}
 
+{% block meta_robots %}
+    {% if product.isMainVariant() %}
+        <meta name="robots" content="index, follow">
+    {% endif %}
+{% endblock %}
+
 {% block meta_description %}
     {{- product.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}
 {% endblock %}
 
 {% block title %}
-    {{ product.getSeoTitle(domain.id)|default(product.name) }}
+    {% if currentVariant is not null %}
+        {{ currentVariant.getSeoTitle(domain.id)|default(currentVariant.name) }}
+    {% else %}
+        {{ product.getSeoTitle(domain.id)|default(product.name) }}
+    {% endif %}
 {% endblock %}
 
 {% block breadcrumbDetail %}
@@ -24,7 +34,7 @@
 
 {% block main_content %}
     <div itemscope itemtype="http://schema.org/Product">
-        {{ boxDetail.productBox(product, youtubeVideoIds, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews, showCofidisBanner) }}
+        {{ boxDetail.productBox(product, currentVariant, youtubeVideoIds, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews, showCofidisBanner) }}
     </div>
 
     {% if productBlogArticles|length > 0 %}
