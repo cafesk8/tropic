@@ -105,6 +105,16 @@ class ProductImportFacade
         $pohodaProducts = $this->pohodaProductExportFacade->findPohodaProductsByPohodaIds(
             $changedPohodaProductIds
         );
+        $returnedPohodaIds = array_map(fn (PohodaProduct $pohodaProduct) => $pohodaProduct->pohodaId, $pohodaProducts);
+        $notExistingPohodaIds = array_diff($changedPohodaProductIds, $returnedPohodaIds);
+        $notExistingPohodaIdsCount = count($notExistingPohodaIds);
+        if ($notExistingPohodaIdsCount > 0) {
+            $this->logger->addInfo('Odmazávám z fronty produkty, které nejsou v Pohodě', [
+                'count' => $notExistingPohodaIdsCount,
+                'pohodaIds' => $notExistingPohodaIds,
+            ]);
+            $this->productInfoQueueImportFacade->removeProductsFromQueue($notExistingPohodaIds);
+        }
         try {
             if (count($pohodaProducts) === 0) {
                 $this->logger->addInfo('Nejsou žádná data ve frontě ke zpracování');
