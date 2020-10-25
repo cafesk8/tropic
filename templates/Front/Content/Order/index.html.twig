@@ -53,7 +53,7 @@
 {% endblock %}
 
 {% block main_content %}
-    {{ form_start(form, { attr: { id: "js-order-form", 'data-ajax-save-url': url('front_order_save_form') }}) }}
+    {{ form_start(form, { attr: { id: "js-order-form", 'data-ajax-save-url': url('front_order_save_form'), autocomplete: 'foxentry' }}) }}
         {% include 'Front/Content/Order/step' ~ orderStep ~ '.html.twig' %}
     {{ form_end(form) }}
 
