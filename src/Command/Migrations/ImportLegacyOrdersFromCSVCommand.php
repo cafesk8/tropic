@@ -384,7 +384,7 @@ class ImportLegacyOrdersFromCSVCommand extends Command
         $orderData->legacyId = (int)$orderCsvRow[self::ORDER_COL_INDEX_LEGACY_ID];
         $orderData->domainId = $legacyDomainId;
         $orderData->currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($orderData->domainId);
-        $orderData->email = trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_EMAIL]);
+        $orderData->email = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_EMAIL]), 50);
         $orderData->createdAt = new \DateTime();
         $orderData->createdAt->setTimestamp((int)$orderCsvRow[self::ORDER_COL_INDEX_CREATED_AT]);
 
@@ -397,48 +397,53 @@ class ImportLegacyOrdersFromCSVCommand extends Command
         $orderData->status = $this->getOrderStatusByLegacyStatusId((int)$orderCsvRow[self::ORDER_COL_INDEX_STATUS]);
 
         if (!empty($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_NAME])) {
-            $orderData->companyName = $orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_NAME];
+            $orderData->companyName = $this->getMaxSizeValue($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_NAME], 100);
         }
         if (!empty($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_NUMBER])) {
-            $orderData->companyNumber = trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_NUMBER]);
+            $orderData->companyNumber = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_NUMBER]), 20);
         }
         if (!empty($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_TAX_NUMBER])) {
-            $orderData->companyTaxNumber = trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_TAX_NUMBER]);
+            $orderData->companyTaxNumber = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_TAX_NUMBER]), 30);
         }
 
         $orderData->country = $this->countryFacade->getByCode($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COUNTRY_CODE]);
-        $orderData->city = $orderCsvRow[self::ORDER_COL_INDEX_BILLING_CITY];
-        $orderData->postcode = trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_POSTCODE]);
+        $orderData->city = $this->getMaxSizeValue($orderCsvRow[self::ORDER_COL_INDEX_BILLING_CITY], 100);
+        $orderData->postcode = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_POSTCODE]), 6);
 
-        $orderData->firstName = strlen($orderCsvRow[self::ORDER_COL_INDEX_BILLING_FIRST_NAME]) > LegacyOrderValidator::FIRST_NAME_LENGTH ?
-            trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_FIRST_NAME]) : $orderCsvRow[self::ORDER_COL_INDEX_BILLING_FIRST_NAME];
-
-        $orderData->lastName = strlen($orderCsvRow[self::ORDER_COL_INDEX_BILLING_LAST_NAME]) > LegacyOrderValidator::LAST_NAME_LENGTH ?
-            trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_LAST_NAME]) : $orderCsvRow[self::ORDER_COL_INDEX_BILLING_LAST_NAME];
-
-        $orderData->street = $orderCsvRow[self::ORDER_COL_INDEX_BILLING_STREET];
-        $orderData->telephone = trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_PHONE]);
+        $orderData->firstName = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_FIRST_NAME]), LegacyOrderValidator::FIRST_NAME_LENGTH);
+        $orderData->lastName = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_LAST_NAME]), LegacyOrderValidator::LAST_NAME_LENGTH);
+        $orderData->street = $this->getMaxSizeValue($orderCsvRow[self::ORDER_COL_INDEX_BILLING_STREET], 100);
+        $orderData->telephone = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_PHONE]), 20);
 
         if (empty($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_STREET])) {
             $orderData->deliveryAddressSameAsBillingAddress = true;
+
+            $orderData->deliveryCountry = $this->countryFacade->getByCode($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COUNTRY_CODE]);
+            $orderData->deliveryCity = $this->getMaxSizeValue($orderCsvRow[self::ORDER_COL_INDEX_BILLING_CITY], 100);
+            $orderData->deliveryPostcode = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_POSTCODE]), 6);
+            if (!empty($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_NAME])) {
+                $orderData->deliveryCompanyName = $this->getMaxSizeValue($orderCsvRow[self::ORDER_COL_INDEX_BILLING_COMPANY_NAME], 100);
+            }
+
+            $orderData->deliveryFirstName = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_FIRST_NAME]), LegacyOrderValidator::FIRST_NAME_LENGTH);
+            $orderData->deliveryLastName = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_LAST_NAME]), LegacyOrderValidator::LAST_NAME_LENGTH);
+
+            $orderData->deliveryStreet = $this->getMaxSizeValue($orderCsvRow[self::ORDER_COL_INDEX_BILLING_STREET], 100);
+            $orderData->deliveryTelephone = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_BILLING_PHONE]), 30);
         } else {
             $orderData->deliveryAddressSameAsBillingAddress = false;
 
             $orderData->deliveryCountry = $this->countryFacade->getByCode($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_COUNTRY_CODE]);
-            $orderData->deliveryCity = $orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_CITY];
-            $orderData->deliveryPostcode = trim($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_POSTCODE]);
+            $orderData->deliveryCity = $this->getMaxSizeValue($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_CITY], 100);
+            $orderData->deliveryPostcode = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_POSTCODE]), 6);
             if (!empty($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_COMPANY_NAME])) {
-                $orderData->deliveryCompanyName = $orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_COMPANY_NAME];
+                $orderData->deliveryCompanyName = $this->getMaxSizeValue($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_COMPANY_NAME], 100);
             }
 
-            $orderData->deliveryFirstName = strlen($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_FIRST_NAME]) > LegacyOrderValidator::FIRST_NAME_LENGTH ?
-                trim($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_FIRST_NAME]) : $orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_FIRST_NAME];
-
-            $orderData->deliveryLastName = strlen($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_LAST_NAME]) > LegacyOrderValidator::LAST_NAME_LENGTH ?
-                trim($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_LAST_NAME]) : $orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_LAST_NAME];
-
-            $orderData->deliveryStreet = $orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_STREET];
-            $orderData->deliveryTelephone = trim($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_PHONE]);
+            $orderData->deliveryFirstName = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_FIRST_NAME]), LegacyOrderValidator::FIRST_NAME_LENGTH);
+            $orderData->deliveryLastName = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_LAST_NAME]), LegacyOrderValidator::LAST_NAME_LENGTH);
+            $orderData->deliveryStreet = $this->getMaxSizeValue($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_STREET], 100);
+            $orderData->deliveryTelephone = $this->getMaxSizeValue(trim($orderCsvRow[self::ORDER_COL_INDEX_DELIVERY_PHONE]), 30);
         }
     }
 
@@ -765,5 +770,24 @@ class ImportLegacyOrdersFromCSVCommand extends Command
             $this->entityManager->persist($orderMigrationIssue);
         }
         $this->entityManager->flush();
+    }
+
+    /**
+     * @param string $value
+     * @return string
+     */
+    private function getValueOrDash(string $value): string
+    {
+        return empty($value) ? '-' : $value;
+    }
+
+    /**
+     * @param string $value
+     * @param int $maxSize
+     * @return string
+     */
+    private function getMaxSizeValue(string $value, int $maxSize): string
+    {
+        return mb_substr($this->getValueOrDash($value), 0, $maxSize, 'UTF-8');
     }
 }
