@@ -900,4 +900,21 @@ class ProductRepository extends BaseProductRepository
         ]);
         $query->execute();
     }
+
+    /**
+     * @param int[] $pohodaIds
+     */
+    public function markAsExportedToElasticByPohodaIds(array $pohodaIds): void
+    {
+        foreach ($pohodaIds as $pohodaId) {
+            $queryBuilder = $this->em->createQueryBuilder();
+            $queryBuilder
+                ->update(Product::class, 'p')
+                ->set('p.exportProduct', 'false')
+                ->where('p.pohodaId = :pohodaId')
+                ->setParameter('pohodaId', $pohodaId)
+                ->getQuery()
+                ->execute();
+        }
+    }
 }

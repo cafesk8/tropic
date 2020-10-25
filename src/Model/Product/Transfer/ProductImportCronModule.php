@@ -7,6 +7,7 @@ namespace App\Model\Product\Transfer;
 use App\Component\Transfer\AbstractTransferCronModule;
 use App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager;
 use App\Component\Transfer\TransferCronModuleDependency;
+use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 
@@ -36,6 +37,8 @@ class ProductImportCronModule extends AbstractTransferCronModule
 
     private ProductVisibilityFacade $productVisibilityFacade;
 
+    private ProductFacade $productFacade;
+
     /**
      * @param \App\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \App\Model\Product\Transfer\ProductImportFacade $productImportFacade
@@ -43,6 +46,7 @@ class ProductImportCronModule extends AbstractTransferCronModule
      * @param \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager $pohodaEntityManager
      * @param \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportSubscriber $productExportSubscriber
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
+     * @param \App\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
@@ -50,7 +54,8 @@ class ProductImportCronModule extends AbstractTransferCronModule
         ProductInfoQueueImportFacade $productInfoQueueImportFacade,
         PohodaEntityManager $pohodaEntityManager,
         ProductExportSubscriber $productExportSubscriber,
-        ProductVisibilityFacade $productVisibilityFacade
+        ProductVisibilityFacade $productVisibilityFacade,
+        ProductFacade $productFacade
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->productImportFacade = $productImportFacade;
@@ -58,6 +63,7 @@ class ProductImportCronModule extends AbstractTransferCronModule
         $this->pohodaEntityManager = $pohodaEntityManager;
         $this->productExportSubscriber = $productExportSubscriber;
         $this->productVisibilityFacade = $productVisibilityFacade;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -91,6 +97,7 @@ class ProductImportCronModule extends AbstractTransferCronModule
         if (count($changedPohodaProductIds) > 0) {
             $this->productVisibilityFacade->refreshProductsVisibilityForMarked();
             $this->productExportSubscriber->exportScheduledRows();
+            $this->productFacade->markAsExportedToElasticByPohodaIds($changedPohodaProductIds);
         }
     }
 }

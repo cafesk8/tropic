@@ -1433,4 +1433,12 @@ class ProductFacade extends BaseProductFacade
     {
         $this->productRepository->manualUpdateProductStockQuantities($productId, $stockQuantity, $realStockQuantity);
     }
+
+    /**
+     * @param int[] $pohodaIds
+     */
+    public function markAsExportedToElasticByPohodaIds(array $pohodaIds): void
+    {
+        $this->productRepository->markAsExportedToElasticByPohodaIds($pohodaIds);
+    }
 }
