@@ -11,7 +11,8 @@ export default class ProductList {
             const orderingName = $(this).data('ordering-mode');
 
             $.cookie(cookieName, orderingName, { path: '/' });
-            location.reload(true);
+            let currentLocation = window.location.href;
+            window.location.href = currentLocation.replace(/&*page=\d+&*/, '').replace(/\?$/, '');
 
             return false;
         });
