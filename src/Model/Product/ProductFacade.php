@@ -53,6 +53,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
+use Symfony\Bridge\Monolog\Logger;
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
@@ -162,7 +163,10 @@ class ProductFacade extends BaseProductFacade
 
     private ProductGiftFacade $productGiftFacade;
 
+    private Logger $logger;
+
     /**
+     * @param \Symfony\Bridge\Monolog\Logger $logger
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
@@ -203,6 +207,7 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\ProductGift\ProductGiftFacade $productGiftFacade
      */
     public function __construct(
+        Logger $logger,
         EntityManagerInterface $em,
         ProductRepository $productRepository,
         ProductVisibilityFacade $productVisibilityFacade,
@@ -283,6 +288,7 @@ class ProductFacade extends BaseProductFacade
         $this->productFlagDataFactory = $productFlagDataFactory;
         $this->uploadedFileFacade = $uploadedFileFacade;
         $this->productGiftFacade = $productGiftFacade;
+        $this->logger = $logger;
     }
 
     /**
@@ -480,6 +486,9 @@ class ProductFacade extends BaseProductFacade
 
         if ($realStockQuantity < 1) {
             foreach ($this->productGiftFacade->getByGift($product) as $productGift) {
+                $this->logger->addInfo('markProductsForExport', [
+                    'productGift' => $productGift,
+                ]);
                 $this->markProductsForExport($productGift->getProducts());
             }
         }
