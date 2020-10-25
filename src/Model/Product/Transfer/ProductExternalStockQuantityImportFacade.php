@@ -112,15 +112,21 @@ class ProductExternalStockQuantityImportFacade
         } finally {
             $this->pohodaProductIdsForRemoveFromQueue = array_filter($this->pohodaProductIdsForRemoveFromQueue);
             $this->updatedProductIds = array_filter($this->updatedProductIds);
-            $this->logger->addInfo('Proběhne smazání produktů z fronty skladových zásob', [
-                'updatedPohodaProductIdsCount' => count($this->pohodaProductIdsForRemoveFromQueue),
-            ]);
-            $this->productExternalStockQuantityQueueImportFacade->removeProductsFromQueue($this->pohodaProductIdsForRemoveFromQueue);
-            $this->logger->addInfo('Nenalezené produkty v e-shopu', [
-                'count' => count($this->notFoundProductPohodaIdsInEshop),
-                'notFoundProductPohodaIdsInEshop' => $this->notFoundProductPohodaIdsInEshop,
-            ]);
 
+            if (count($this->pohodaProductIdsForRemoveFromQueue) > 0) {
+                $this->logger->addInfo('Proběhne smazání produktů z fronty skladových zásob', [
+                    'updatedPohodaProductIdsCount' => count($this->pohodaProductIdsForRemoveFromQueue),
+                ]);
+                $this->productExternalStockQuantityQueueImportFacade->removeProductsFromQueue($this->pohodaProductIdsForRemoveFromQueue);
+            }
+
+            if (count($this->notFoundProductPohodaIdsInEshop) > 0) {
+                $this->logger->addInfo('Nenalezené produkty v e-shopu', [
+                    'count' => count($this->notFoundProductPohodaIdsInEshop),
+                    'notFoundProductPohodaIdsInEshop' => $this->notFoundProductPohodaIdsInEshop,
+                ]);
+                $this->productExternalStockQuantityQueueImportFacade->removeProductsFromQueue($this->notFoundProductPohodaIdsInEshop);
+            }
             $this->exportProducts($this->updatedProductIds);
 
             $this->logger->persistTransferIssues();
@@ -227,6 +233,7 @@ class ProductExternalStockQuantityImportFacade
                 'previousExternalStockQuantity' => $currentExternalStockQuantity,
                 'newExternalStockQuantity' => $newExternalStockQuantity,
             ]);
+            $this->pohodaProductIdsForRemoveFromQueue[] = $pohodaId;
 
             return;
         }
