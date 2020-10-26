@@ -123,15 +123,23 @@ class ImportLegacySlovakDescriptionsFromCSVCommand extends Command
                 $longDescription = $csvRow[self::USER_COL_INDEX_LONG_DESCRIPTION];
                 foreach ($products as $product) {
                     $productData = $this->productDataFactory->createFromProduct($product);
-                    if ($description !== '') {
-                        $productData->shortDescriptions[DomainHelper::SLOVAK_DOMAIN] = $description;
-                    }
-                    if ($longDescription !== '') {
-                        $productData->descriptions[DomainHelper::SLOVAK_DOMAIN] = $longDescription;
-                    }
+                    $isShortDescriptionUpdated = false;
+                    $isDescriptionUpdated = false;
 
-                    $this->productFacade->edit($product->getId(), $productData);
-                    $countUpdated++;
+                    if ($description !== '' && !$product->isShortDescriptionAutomaticallyTranslated()) {
+                        $productData->shortDescriptions[DomainHelper::SLOVAK_DOMAIN] = $description;
+                        $isShortDescriptionUpdated = true;
+                    }
+                    if ($longDescription !== '' && !$product->isDescriptionAutomaticallyTranslated()) {
+                        $productData->descriptions[DomainHelper::SLOVAK_DOMAIN] = $longDescription;
+                        $isDescriptionUpdated = true;
+                    }
+                    if ($isDescriptionUpdated || $isShortDescriptionUpdated) {
+                        $this->productFacade->edit($product->getId(), $productData);
+                        $countUpdated++;
+                    } else {
+                        $countSkipped++;
+                    }
                 }
             } catch (\Exception $exc) {
                 $countSkipped++;
