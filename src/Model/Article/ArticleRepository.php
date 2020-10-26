@@ -30,4 +30,17 @@ class ArticleRepository extends BaseArticleRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+    /**
+     * @param int $articleId
+     * @param int $domainId
+     * @return \App\Model\Article\Article|null
+     */
+    public function findVisibleByArticleIdAndDomainId(int $articleId, int $domainId): ?Article
+    {
+        return $this->getVisibleArticlesByDomainIdQueryBuilder($domainId)
+            ->andWhere('a.id = :articleId')
+            ->setParameter('articleId', $articleId)
+            ->getQuery()->getOneOrNullResult();
+    }
 }

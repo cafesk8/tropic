@@ -39,6 +39,7 @@ class ArticleExtension extends AbstractExtension
     {
         return [
             new TwigFunction('getArticleBySettingValue', [$this, 'getArticleBySettingValue']),
+            new TwigFunction('findVisibleArticleBySettingValue', [$this, 'findVisibleArticleBySettingValue']),
         ];
     }
 
@@ -49,5 +50,14 @@ class ArticleExtension extends AbstractExtension
     public function getArticleBySettingValue(string $settingValue): ?Article
     {
         return $this->articleFacade->findArticleBySettingValueAndDomainId($settingValue, $this->domain->getId());
+    }
+
+    /**
+     * @param string $settingValue
+     * @return \App\Model\Article\Article|null
+     */
+    public function findVisibleArticleBySettingValue(string $settingValue): ?Article
+    {
+        return $this->articleFacade->findVisibleArticleBySettingValueAndDomainId($settingValue, $this->domain->getId());
     }
 }

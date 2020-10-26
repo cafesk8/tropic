@@ -6,6 +6,9 @@
 
 {% block main_content %}
     {% set domainId = getDomain().id %}
+    {% set returnedGoodsArticle = findVisibleArticleBySettingValue(constant('App\\Component\\Setting\\Setting::RETURNED_GOODS_ARTICLE_ID'))%}
+    {% set changesInOrderArticle = findVisibleArticleBySettingValue(constant('App\\Component\\Setting\\Setting::CHANGES_IN_ORDER_ARTICLE_ID'))%}
+    {% set complaintGoodsArticle = findVisibleArticleBySettingValue(constant('App\\Component\\Setting\\Setting::COMPLAINT_GOODS_ARTICLE_ID')) %}
     <div class="web__line">
         <div class="web__container">
             <div class="box-contact">
@@ -37,16 +40,34 @@
                                 {{ 'S čím potřebujete pomoct?'|trans }}
                             </p>
 
-                            <ul class="list-simple js-not-implemented-yet">
+                            <ul class="list-simple">
+                                {% if returnedGoodsArticle is not null %}
                                 <li class="list-simple__item svg-fish">
-                                    <a href="#">Vrácení zboží ve 14 denní lhůtě (odstoupení od smlouvy)</a>
+                                    <a href="{{ url(
+                                        'front_article_detail', {
+                                            'id': returnedGoodsArticle.id
+                                        }
+                                    ) }}">{{ 'Vrácení zboží ve 30 denní lhůtě (odstoupení od smlouvy)'|trans }}</a>
                                 </li>
+                                {% endif %}
+                                {% if changesInOrderArticle is not null %}
                                 <li class="list-simple__item svg-fish">
-                                    <a href="#">Změna nebo storno objednávky</a>
+                                    <a href="{{ url(
+                                        'front_article_detail', {
+                                            'id': changesInOrderArticle.id
+                                        }
+                                    ) }}">{{ 'Změna nebo storno objednávky'|trans }}</a>
                                 </li>
+                                {% endif %}
+                                {% if complaintGoodsArticle is not null %}
                                 <li class="list-simple__item svg-fish">
-                                    <a href="#">Chci reklamovat zboží</a>
+                                    <a href="{{ url(
+                                        'front_article_detail', {
+                                            'id': complaintGoodsArticle.id
+                                        }
+                                    ) }}">{{ 'Chci reklamovat zboží'|trans }}</a>
                                 </li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>

@@ -4078,3 +4078,12 @@ msgstr "Žiadne sklady sa nenašli"
 msgid "Žádné slevy na celý nákup nenalezeny."
 msgstr "Žiadne zľavy na celý nákup sa nenašli."
 
+
+msgid "Změna nebo storno objednávky"
+msgstr "Zmena alebo storno objednávky"
+
+msgid "Vrácení zboží ve 30 denní lhůtě (odstoupení od smlouvy)"
+msgstr "Vrátenie tovaru v 30 dennej lehote (odstúpenie od zmluvy)"
+
+msgid "Chci reklamovat zboží"
+msgstr "Chcem reklamovať tovar"

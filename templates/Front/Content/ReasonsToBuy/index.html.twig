@@ -1,7 +1,14 @@
+{% set aboutUsArticle = findVisibleArticleBySettingValue(constant('App\\Component\\Setting\\Setting::ABOUT_US_ARTICLE_ID')) %}
 <div class="box-reasons-to-buy">
     <div class="box-reasons-to-buy__left">
         <h2 class="box-reasons-to-buy__title">{{ '6 důvodů, proč nakoupit u nás'|trans }}</h2>
-        <a class="box-reasons-to-buy__link js-not-implemented-yet" href="">{{ 'Poznejte nás'|trans }}</a>
+        {% if aboutUsArticle is not null %}
+        <a class="box-reasons-to-buy__link" href="{{ url(
+            'front_article_detail', {
+                'id': aboutUsArticle.id
+            }
+        ) }}">{{ 'Poznejte nás'|trans }}</a>
+        {% endif %}
     </div>
     <div class="box-reasons-to-buy__right">
         <ul class="list-reasons-to-buy">

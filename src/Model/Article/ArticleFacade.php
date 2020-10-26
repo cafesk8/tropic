@@ -77,8 +77,7 @@ class ArticleFacade extends BaseArticleFacade
      */
     public function findArticleBySettingValueAndDomainId(string $settingValue, int $domainId): ?Article
     {
-        $articleId = $this->setting->getForDomain($settingValue, $domainId);
-
+        $articleId = $this->setting->findForDomain($settingValue, $domainId);
         if ($articleId !== null) {
             return $this->findById($articleId);
         }
@@ -177,5 +176,30 @@ class ArticleFacade extends BaseArticleFacade
             Article::PLACEMENT_SERVICES,
             Article::PLACEMENT_TOP_MENU,
         ];
+    }
+
+    /**
+     * @param string $settingValue
+     * @param int $domainId
+     * @return \App\Model\Article\Article|null
+     */
+    public function findVisibleArticleBySettingValueAndDomainId(string $settingValue, int $domainId): ?Article
+    {
+        $articleId = $this->setting->findForDomain($settingValue, $domainId);
+        if ($articleId !== null) {
+            return $this->findVisibleByArticleIdAndDomainId($articleId, $domainId);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param int $articleId
+     * @param int $domainId
+     * @return \App\Model\Article\Article|null
+     */
+    public function findVisibleByArticleIdAndDomainId(int $articleId, int $domainId): ?Article
+    {
+        return $this->articleRepository->findVisibleByArticleIdAndDomainId($articleId, $domainId);
     }
 }
