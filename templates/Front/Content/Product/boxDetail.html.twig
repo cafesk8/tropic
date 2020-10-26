@@ -249,7 +249,9 @@
                         </div>
 
                         {% if not product.isMainVariant %}
-                            {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', { product: product, type: '' }) }}
+                            <div class="text-center">
+                                {{ include('/Front/Content/WatchDog/watchDogLink.html.twig', { product: product, type: '' }) }}
+                            </div>
                         {% endif %}
 
                         <div class="in-stickers">
