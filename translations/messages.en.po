@@ -3007,8 +3007,8 @@ msgstr "Save"
 msgid "Unable to add product to cart"
 msgstr "Unable to add product to cart"
 
-msgid "Unable to add product to cart:<br/><ul><li>{{ errors|raw }}</li></ul>"
-msgstr "Unable to add product to cart:<br/><ul><li>{{ errors|raw }}</li></ul>"
+msgid "Unable to add product to cart:<br/><ul><li>%errors%</li></ul>"
+msgstr "Unable to add product to cart:<br/><ul><li>%errors%</li></ul>"
 
 msgid "Unable to remove item from cart. The item is probably already removed."
 msgstr "Unable to remove item from cart. The item is probably already removed."
