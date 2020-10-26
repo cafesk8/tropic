@@ -96,6 +96,15 @@ class ProductExternalStockQuantityImportFacade
         $stockQuantities = $this->pohodaProductExportFacade->getPohodaProductExternalStockQuantitiesByProductIds(
             $changedPohodaProductIds
         );
+        $notExistingPohodaIds = array_diff(array_column($changedPohodaProductIds, 'pohodaId'), array_keys($stockQuantities));
+        $notExistingPohodaIdsCount = count($notExistingPohodaIds);
+        if ($notExistingPohodaIdsCount > 0) {
+            $this->logger->addInfo('Z fronty budou odmazány produkty, které nejsou v Pohodě', [
+                'count' => $notExistingPohodaIdsCount,
+                'pohodaIds' => $notExistingPohodaIds,
+            ]);
+            $this->productExternalStockQuantityQueueImportFacade->removeProductsFromQueue($notExistingPohodaIds);
+        }
         try {
             if (count($stockQuantities) === 0) {
                 $this->logger->addInfo('Nejsou žádná data ve frontě skladových zásob ke zpracování');
