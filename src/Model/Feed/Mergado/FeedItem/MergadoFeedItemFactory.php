@@ -170,7 +170,7 @@ class MergadoFeedItemFactory
             $productVideos[self::FIRST_YOUTUBE_VIDEO_ID_INDEX] ?? null,
             array_slice($productVideos, self::FIRST_ALTERNATIVE_YOUTUBE_VIDEO_ID_INDEX),
             $this->productParametersBatchLoader->getProductParametersByName($product, $domainConfig),
-            $this->getMergadoTransports($currency, $domainConfig),
+            $this->getMergadoTransports($currency, $domainConfig, $product),
             $product->getWarranty(),
             $this->getPurchaseVsSellingPriceDifference($product, $sellingPrice, $domainId),
             $this->getSaleExclusionType($product),
@@ -198,11 +198,13 @@ class MergadoFeedItemFactory
     /**
      * @param \App\Model\Pricing\Currency\Currency $currency
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @param \App\Model\Product\Product $product
      * @return \App\Model\Feed\Mergado\FeedItem\MergadoFeedDeliveryItem[]
      */
     private function getMergadoTransports(
         Currency $currency,
-        DomainConfig $domainConfig
+        DomainConfig $domainConfig,
+        Product $product
     ): array {
         $payments = $this->paymentFacade->getVisibleByDomainId($domainConfig->getId());
         $transports = $this->transportFacade->getVisibleByDomainId($domainConfig->getId(), $payments);
@@ -211,6 +213,10 @@ class MergadoFeedItemFactory
 
         foreach ($transports as $transport) {
             if ($this->mergadoTransportTypeFacade->isMergadoTransportTypeAllowed($transport->getMergadoTransportType())) {
+                if (($product->isBulky() && !$transport->isBulkyAllowed()) || ($product->isOversized() && !$transport->isOversizedAllowed())) {
+                    continue;
+                }
+
                 $mergadoTransports[] = new MergadoFeedDeliveryItem(
                     $transport->getId(),
                     $transport->getMergadoTransportType(),
