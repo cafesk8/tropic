@@ -94,7 +94,9 @@ class OrderDiscountCalculation
     {
         $totalDiscount = Price::zero();
         foreach ($quantifiedItemsDiscountsByIndex as $quantifiedItemDiscount) {
-            $totalDiscount = $totalDiscount->add($quantifiedItemDiscount);
+            if ($quantifiedItemDiscount !== null) {
+                $totalDiscount = $totalDiscount->add($quantifiedItemDiscount);
+            }
         }
 
         return $totalDiscount;
