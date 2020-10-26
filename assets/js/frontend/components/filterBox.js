@@ -26,7 +26,7 @@ import Register from 'framework/common/utils/Register';
             });
         }
 
-        $('#js-selected-filters-box').toggleClass(
+        $selectedFiltersBox.toggleClass(
             'display-none',
             $filterRangeUncheckLinks.length === 0 && $filterUncheckButtons.length === 0
         );

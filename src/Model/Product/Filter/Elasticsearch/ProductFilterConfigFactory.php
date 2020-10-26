@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Filter\Elasticsearch;
 
+use App\Model\Pricing\Currency\Currency;
+use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Product\Brand\BrandFacade;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Parameter\Parameter;
@@ -29,6 +31,8 @@ class ProductFilterConfigFactory
 
     private ParameterFacade $parameterFacade;
 
+    private Currency $currency;
+
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
@@ -36,6 +40,7 @@ class ProductFilterConfigFactory
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      */
     public function __construct(
         Domain $domain,
@@ -43,7 +48,8 @@ class ProductFilterConfigFactory
         ProductFilterElasticFacade $productFilterElasticFacade,
         FlagFacade $flagFacade,
         BrandFacade $brandFacade,
-        ParameterFacade $parameterFacade
+        ParameterFacade $parameterFacade,
+        CurrencyFacade $currencyFacade
     ) {
         $this->domain = $domain;
         $this->currentCustomerUser = $currentCustomerUser;
@@ -51,6 +57,7 @@ class ProductFilterConfigFactory
         $this->flagFacade = $flagFacade;
         $this->brandFacade = $brandFacade;
         $this->parameterFacade = $parameterFacade;
+        $this->currency = $currencyFacade->getDomainDefaultCurrencyByDomainId($this->domain->getId());
     }
 
     /**
@@ -103,9 +110,14 @@ class ProductFilterConfigFactory
     private function aggregatePriceRangeData(array $elasticFilterData): PriceRange
     {
         $pricesData = $elasticFilterData['aggregations']['prices']['filter_pricing_group'];
+        $decimals = $this->currency->getRoundingType() === Currency::ROUNDING_TYPE_HUNDREDTHS ? 2 : 0;
+        $multiplier = pow(10, $decimals);
 
-        $minPrice = Money::create((string)($pricesData['min_price']['value'] ?? 0));
-        $maxPrice = Money::create((string)($pricesData['max_price']['value'] ?? 0));
+        $minPriceValue = isset($pricesData['min_price']['value']) ? floor(($pricesData['min_price']['value'] * $multiplier)) / $multiplier : 0;
+        $maxPriceValue = isset($pricesData['max_price']['value']) ? ceil(($pricesData['max_price']['value'] * $multiplier)) / $multiplier : 0;
+
+        $minPrice = Money::create((string)$minPriceValue);
+        $maxPrice = Money::create((string)$maxPriceValue);
 
         return new PriceRange($minPrice, $maxPrice);
     }
