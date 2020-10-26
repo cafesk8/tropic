@@ -177,10 +177,12 @@ export default class Window {
         const _this = this;
         Window.showOverlay();
         if (_this.options.closeOnBgClick) {
-            Window.getOverlay().click(function () {
-                _this.$window.trigger('windowClose');
-                return false;
-            });
+            Window.getOverlay()
+                .bind('click.window', this.options.eventClose)
+                .click(function () {
+                    _this.$window.trigger('windowClose');
+                    return false;
+                });
         }
         _this.$window.appendTo(Window.getMainContainer());
         if (this.$window.height() < Window.flexPopupHeightIssueDetectionBoundaryHeight) {
