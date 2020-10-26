@@ -623,7 +623,7 @@ class OrderFacade extends BaseOrderFacade
             }
 
             $orderDiscountLevel = $orderPreview->getActiveOrderDiscountLevel();
-            if ($orderDiscountLevel !== null && array_key_exists($index, $orderDiscountLevelQuantifiedItemDiscountsByIndex)) {
+            if ($orderDiscountLevel !== null && !empty($orderDiscountLevelQuantifiedItemDiscountsByIndex[$index])) {
                 $this->addOrderDiscountLevelItem(
                     $orderItem,
                     $orderDiscountLevelQuantifiedItemDiscountsByIndex[$index],
