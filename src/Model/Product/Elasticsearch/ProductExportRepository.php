@@ -38,6 +38,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
 class ProductExportRepository extends BaseProductExportRepository
 {
     public const SCOPE_STOCKS = 'stocks';
+    public const SCOPE_URLS = 'urls';
 
     private PricingGroupFacade $pricingGroupFacade;
 
@@ -105,6 +106,11 @@ class ProductExportRepository extends BaseProductExportRepository
             $result['stock_quantity'] = $product->getStockQuantity();
             $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
             $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
+
+            return $result;
+        }
+        if ($scope === self::SCOPE_URLS) {
+            $result['detail_url'] = $this->extractDetailUrl($domainId, $product);
 
             return $result;
         }
@@ -410,5 +416,33 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $result;
+    }
+
+    /**
+     * Copy pasted from vendor, added $scope parameter to define what data should be exported
+     *
+     * @param int $domainId
+     * @param string $locale
+     * @param int $lastProcessedId
+     * @param int $batchSize
+     * @param string|null $scope
+     * @return array
+     */
+    public function getProductsData(int $domainId, string $locale, int $lastProcessedId, int $batchSize, ?string $scope = null): array
+    {
+        $queryBuilder = $this->createQueryBuilder($domainId)
+            ->andWhere('p.id > :lastProcessedId')
+            ->setParameter('lastProcessedId', $lastProcessedId)
+            ->setMaxResults($batchSize);
+
+        $query = $queryBuilder->getQuery();
+
+        $results = [];
+        /** @var \App\Model\Product\Product $product */
+        foreach ($query->getResult() as $product) {
+            $results[$product->getId()] = $this->extractResult($product, $domainId, $locale, $scope);
+        }
+
+        return $results;
     }
 }

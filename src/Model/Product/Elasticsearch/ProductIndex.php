@@ -28,4 +28,20 @@ class ProductIndex extends BaseProductIndex
             $scope
         );
     }
+
+    /**
+     * Copy pasted from vendor, added $scope parameter to define what data should be exported
+     *
+     * @inheritDoc
+     */
+    public function getExportDataForBatch(int $domainId, int $lastProcessedId, int $batchSize, ?string $scope = null): array
+    {
+        return $this->productExportRepository->getProductsData(
+            $domainId,
+            $this->domain->getDomainConfigById($domainId)->getLocale(),
+            $lastProcessedId,
+            $batchSize,
+            $scope
+        );
+    }
 }
