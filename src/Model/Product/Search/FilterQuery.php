@@ -161,6 +161,38 @@ class FilterQuery extends BaseFilterQuery
     }
 
     /**
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    public function filterOnlyInSale(): self
+    {
+        $clone = clone $this;
+
+        $clone->filters[] = [
+            'term' => [
+                'is_in_any_sale_stock' => true,
+            ],
+        ];
+
+        return $clone;
+    }
+
+    /**
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    public function filterOnlyInNews(): self
+    {
+        $clone = clone $this;
+
+        $clone->filters[] = [
+            'term' => [
+                'is_in_news' => true,
+            ],
+        ];
+
+        return $clone;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getParametersPlusNumbersQuery(int $selectedParameterId, array $selectedValuesIds): array

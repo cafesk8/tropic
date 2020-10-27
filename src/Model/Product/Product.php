@@ -1613,4 +1613,27 @@ class Product extends BaseProduct
     {
         parent::markPriceAsRecalculated();
     }
+
+    /**
+     * @param int $domainId
+     * @return bool
+     */
+    public function isProductInNews(int $domainId): bool
+    {
+        if ($this->isMainVariant()) {
+            foreach ($this->getVariants() as $variant) {
+                if ($variant->isProductInNews($domainId)) {
+                    return true;
+                }
+            }
+        }
+
+        foreach ($this->getFlags() as $flag) {
+            if ($flag->isNews()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

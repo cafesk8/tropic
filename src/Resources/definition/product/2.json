@@ -393,6 +393,9 @@
       },
       "main_category_path": {
         "type": "text"
+      },
+      "is_in_any_sale_stock": {
+        "type": "boolean"
       }
     }
   }

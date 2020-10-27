@@ -138,6 +138,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['recommended'] = $product->isRecommended();
         $result['supplier_set'] = $product->isSupplierSet();
         $result['main_category_path'] = $this->getMainCategoryPath($product, $domainId);
+        $result['is_in_news'] = $product->isProductInNews($domainId);
 
         return $result;
     }

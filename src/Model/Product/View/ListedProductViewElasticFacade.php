@@ -137,9 +137,10 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
     /**
      * @param \App\Model\Category\Category $category
+     * @param string|null $routeName
      * @return \Shopsys\ReadModelBundle\Product\Listed\ListedProductView[]
      */
-    public function getAllOfferedBestsellingProducts(Category $category): array
+    public function getAllOfferedBestsellingProducts(Category $category, ?string $routeName): array
     {
         $bestsellingProductIds = $this->cachedBestsellingProductFacade->getAllOfferedBestsellingProductIds(
             $this->domain->getId(),
@@ -151,7 +152,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
             return [];
         }
 
-        return $this->createFromArray($this->productOnCurrentDomainFacade->getSellableHitsForIds($bestsellingProductIds));
+        return $this->createFromArray($this->productOnCurrentDomainFacade->getSellableHitsForIds($bestsellingProductIds, $routeName));
     }
 
     /**

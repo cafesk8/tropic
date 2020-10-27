@@ -72,7 +72,7 @@
                     {% endif %}
 
                     <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
-                        {{ render(controller('App\\Controller\\Front\\BestsellingProductController:listAction', {'category': category, 'type': constant('App\\Controller\\Front\\BestsellingProductController::TYPE_VERTICAL')})) }}
+                        {{ render(controller('App\\Controller\\Front\\BestsellingProductController:listAction', {'category': category, 'type': constant('App\\Controller\\Front\\BestsellingProductController::TYPE_VERTICAL'), routeName: getRoute()})) }}
 
                         <div class="box-list__ordering">
                             {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction')) }}
