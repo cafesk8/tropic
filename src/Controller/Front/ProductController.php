@@ -373,7 +373,7 @@ class ProductController extends FrontBaseController
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listBySaleCategoryAction(Request $request, int $id): Response
+    public function listBySaleSubCategoryAction(Request $request, int $id): Response
     {
         $params = $request->query->get('product_filter_form');
         $tmpParams = $params;
@@ -458,7 +458,7 @@ class ProductController extends FrontBaseController
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listByNewsCategoryAction(Request $request, int $id): Response
+    public function listByNewsSubCategoryAction(Request $request, int $id): Response
     {
         $params = $request->query->get('product_filter_form');
         $tmpParams = $params;
