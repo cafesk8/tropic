@@ -16,16 +16,16 @@ class ProductIndex extends BaseProductIndex
      * It is now possible to get products data only for exporting updated stock quantities
      * @param int $domainId
      * @param array $restrictToIds
-     * @param bool $stockOnly
+     * @param string|null $scope
      * @return array
      */
-    public function getExportDataForIds(int $domainId, array $restrictToIds, bool $stockOnly = false): array
+    public function getExportDataForIds(int $domainId, array $restrictToIds, ?string $scope = null): array
     {
         return $this->productExportRepository->getProductsDataForIds(
             $domainId,
             $this->domain->getDomainConfigById($domainId)->getLocale(),
             $restrictToIds,
-            $stockOnly
+            $scope
         );
     }
 }

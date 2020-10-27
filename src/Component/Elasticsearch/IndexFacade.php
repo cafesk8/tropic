@@ -19,9 +19,9 @@ class IndexFacade extends BaseIndexFacade
      * @param \App\Model\Product\Elasticsearch\ProductIndex $index
      * @param \Shopsys\FrameworkBundle\Component\Elasticsearch\IndexDefinition $indexDefinition
      * @param array $restrictToIds
-     * @param bool $stockOnly
+     * @param string|null $scope
      */
-    public function exportIds(AbstractIndex $index, IndexDefinition $indexDefinition, array $restrictToIds, bool $stockOnly = false): void
+    public function exportIds(AbstractIndex $index, IndexDefinition $indexDefinition, array $restrictToIds, ?string $scope = null): void
     {
         $this->sqlLoggerFacade->temporarilyDisableLogging();
 
@@ -33,7 +33,7 @@ class IndexFacade extends BaseIndexFacade
         foreach ($chunkedIdsToExport as $idsToExport) {
             // detach objects from manager to prevent memory leaks
             $this->entityManager->clear();
-            $currentBatchData = $index->getExportDataForIds($domainId, $idsToExport, $stockOnly);
+            $currentBatchData = $index->getExportDataForIds($domainId, $idsToExport, $scope);
 
             if (!empty($currentBatchData)) {
                 $this->indexRepository->bulkUpdate($indexAlias, $currentBatchData);
