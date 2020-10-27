@@ -334,7 +334,7 @@ class OrderFacade extends BaseOrderFacade
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment, $orderData->registration);
         /** @var \App\Model\Customer\User\CustomerUser $customerUser */
         $customerUser = $this->currentCustomerUser->findCurrentCustomerUser();
-        $this->gtmHelper->amendGtmCouponToOrderData($orderData, $validEnteredPromoCodes, $orderPreview);
+        $this->gtmHelper->amendGtmCouponToOrderData($orderData, $validEnteredPromoCodes);
 
         foreach ($validEnteredPromoCodes as $validEnteredPromoCode) {
             $orderData->promoCodesCodes[] = $validEnteredPromoCode->getCode();

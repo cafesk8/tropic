@@ -98,7 +98,7 @@ class DataLayerMapper
      * @param string $routeName
      * @param \App\Model\Gtm\Data\DataLayerPage $dataLayerPage
      */
-    public function mapRouteNameToDataLayerPage($routeName, DataLayerPage $dataLayerPage): void
+    public function mapRouteNameToDataLayerPage(string $routeName, DataLayerPage $dataLayerPage): void
     {
         $dataLayerPage->setType(
             self::ROUTE_NAMES_TO_PAGE_TYPE[$routeName] ?? DataLayerPage::TYPE_OTHER
@@ -359,7 +359,7 @@ class DataLayerMapper
 
         if ($gtmCoupons !== null) {
             foreach (explode(Order::PROMO_CODES_SEPARATOR, $gtmCoupons) as $key => $couponData) {
-                $couponsArray['coupon'] = $couponData . (string)$priceBeforeDiscounts;
+                $couponsArray['coupon'] = $couponData . '|' . (string)$priceBeforeDiscounts;
             }
         }
 
