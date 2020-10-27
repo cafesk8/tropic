@@ -358,16 +358,17 @@ class DataLayerMapper
         $couponsArray = [];
 
         if ($gtmCoupons !== null) {
-            $couponsArray['coupon'] = str_replace(Order::PROMO_CODES_SEPARATOR, '|', $gtmCoupons);
+            $couponsArray[] = str_replace(Order::PROMO_CODES_SEPARATOR, '|', $gtmCoupons);
         }
 
         foreach ($order->getItems() as $item) {
             if ($item->isTypeOrderDiscount()) {
-                $couponsArray['coupon'] = $item->getName() . '|' . (string)$priceBeforeDiscounts;
+                $couponsArray[] = explode(' ', $item->getName())[1];
+                break;
             }
         }
 
-        $dataLayerPurchase['actionField'] = array_merge($dataLayerPurchase['actionField'], $couponsArray);
+        $dataLayerPurchase['actionField'] = array_merge($dataLayerPurchase['actionField'], ['coupon' => implode('|', $couponsArray)]);
 
         return $dataLayerPurchase;
     }
