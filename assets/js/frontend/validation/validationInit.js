@@ -30,7 +30,7 @@ export const highlightSubmitButtons = ($form) => {
 };
 
 export const isFormValid = (form) => {
-    return $(form).find('.js-validation-errors-message:visible').length === 0;
+    return $(form).find('.js-validation-errors-message:visible, .foxentry-input-icon-invalid:visible').length === 0;
 };
 
 export const elementBind = (element) => {
