@@ -109,7 +109,7 @@ class ProductFilterConfigFactory
      */
     private function aggregatePriceRangeData(array $elasticFilterData): PriceRange
     {
-        $pricesData = $elasticFilterData['aggregations']['prices']['filter_pricing_group'];
+        $pricesData = $elasticFilterData['aggregations']['prices_for_filter']['filter_pricing_group'];
         $decimals = $this->currency->getRoundingType() === Currency::ROUNDING_TYPE_HUNDREDTHS ? 2 : 0;
         $multiplier = pow(10, $decimals);
 
