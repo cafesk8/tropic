@@ -694,7 +694,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return string|string
+     * @return string
      */
     public function getGtmCoupons(): ?string
     {

@@ -358,9 +358,7 @@ class DataLayerMapper
         $couponsArray = [];
 
         if ($gtmCoupons !== null) {
-            foreach (explode(Order::PROMO_CODES_SEPARATOR, $gtmCoupons) as $key => $couponData) {
-                $couponsArray['coupon'] = $couponData . '|' . (string)$priceBeforeDiscounts;
-            }
+            $couponsArray['coupon'] = str_replace(Order::PROMO_CODES_SEPARATOR, '|', $gtmCoupons);
         }
 
         foreach ($order->getItems() as $item) {
