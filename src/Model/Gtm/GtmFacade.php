@@ -251,4 +251,20 @@ class GtmFacade
 
         return $currency->getCode();
     }
+
+    /**
+     * @param string $searchText
+     * @param int $productsCount
+     * @param int $setsCount
+     * @param int $categoriesCount
+     */
+    public function onSearchPage(string $searchText, int $productsCount, int $setsCount, int $categoriesCount)
+    {
+        $this->dataLayer->set('search', [
+            'searchTerm' => $searchText,
+            'products' => $productsCount,
+            'sets' => $setsCount,
+            'categories' => $categoriesCount,
+        ]);
+    }
 }
