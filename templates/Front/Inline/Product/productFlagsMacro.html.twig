@@ -26,7 +26,7 @@
                     {% set processedFlags = processedFlags + 1 %}
                 {% elseif sellingPrice.hasHigherStandardPrice
                     and discountDisplayType is same as(constant('App\\Twig\\FlagsExtension::DISCOUNT_DISPLAY_TYPE_NOMINAL')) %}
-                    {{ _self.detail('Ušetříte %discountValue%'|trans({'%discountValue%': sellingPrice.standardPriceDifference|price }), '#d53030') }}
+                    {{ _self.detail('Ušetříte %price%'|trans({'%price%': sellingPrice.standardPriceDifference|price }), '#d53030') }}
                     {% set processedFlags = processedFlags + 1 %}
                 {% endif %}
             {% endif %}

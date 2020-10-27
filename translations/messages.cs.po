@@ -382,6 +382,9 @@ msgstr ""
 msgid "Chci odebírat novinky a souhlasím se zpracováním osobních údajů"
 msgstr ""
 
+msgid "Chci reklamovat zboží"
+msgstr ""
+
 msgid "Chci se stát členem Věrnostního programu"
 msgstr "Chci se stát členem Věrnostního programu"
 
@@ -1706,6 +1709,9 @@ msgid "Nyní budete přesměrováni na platební bránu GoPay."
 msgstr "Nyní budete přesměrováni na platební bránu GoPay."
 
 msgid "Nákupní košík"
+msgstr ""
+
+msgid "Nálepka Predĺžená záruka"
 msgstr ""
 
 msgid "Nálepka Prodloužená záruka"
@@ -3208,6 +3214,9 @@ msgstr ""
 msgid "Volejte na"
 msgstr "Volejte na"
 
+msgid "Vrácení zboží ve 30 denní lhůtě (odstoupení od smlouvy)"
+msgstr ""
+
 msgid "Vrácení zdarma <strong>do 30 dnů</strong>"
 msgstr "Vrácení zdarma <strong>do 30 dnů</strong>"
 
@@ -3519,6 +3528,9 @@ msgstr "Z konečných stavů nelze měnit stav objednávky"
 
 msgid "Zlevněné produkty"
 msgstr "Zlevněné produkty"
+
+msgid "Změna nebo storno objednávky"
+msgstr ""
 
 msgid "Změna pro"
 msgstr "Změna pro"

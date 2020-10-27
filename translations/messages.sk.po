@@ -385,6 +385,9 @@ msgstr "Chcem odoberať novinky a súhlasím so <a href=\"%url%\" target=\"_blan
 msgid "Chci odebírat novinky a souhlasím se zpracováním osobních údajů"
 msgstr "Chcem odoberať novinky a súhlasím so spracovaním osobných údajov"
 
+msgid "Chci reklamovat zboží"
+msgstr "Chcem reklamovať tovar"
+
 msgid "Chci se stát členem Věrnostního programu"
 msgstr "Chcem sa stať členom Vernostného programu"
 
@@ -1750,6 +1753,9 @@ msgstr "Teraz budete presmerovaný na platobnú bránu GoPay."
 msgid "Nákupní košík"
 msgstr "Nákupný košík"
 
+msgid "Nálepka Predĺžená záruka"
+msgstr ""
+
 msgid "Nálepka Prodloužená záruka"
 msgstr "Nálepka Predĺžená záruka"
 
@@ -2321,7 +2327,7 @@ msgid "Product <strong>{{ name }}</strong> added to the cart (total amount {{ qu
 msgstr "Produkt <strong>{{ name }}</strong> pridaný do košíka (celková suma {{ quantity|formatNumber }} {{ unitName }})"
 
 msgid "Product <strong>{{ name }}</strong> you had in cart is no longer available. Please check your order."
-msgstr "Produkt <strong> {{name}} </strong>, ktorý ste mali v košíku, už nie je k dispozícii. Skontrolujte svoju objednávku."
+msgstr "Produkt <strong>{{ name }}</strong>, ktorý ste mali v košíku, už nie je k dispozícii. Skontrolujte svoju objednávku."
 
 msgid "Product <strong>{{ product|productDisplayName }}</strong> modified"
 msgstr "Produkt <strong>{{ product|productDisplayName }} </strong> bol upravený"
@@ -2983,6 +2989,9 @@ msgstr "Platnosť odkazu na zmenu hesla vypršala."
 msgid "The price of payment {{ paymentName }} changed during ordering process. Check your order, please."
 msgstr "Cena platby {{ paymentName }} sa počas procesu objednávania zmenila. Skontrolujte si svoju objednávku."
 
+msgid "The price of the product <strong>{{ name }}</strong> you have in cart has changed. Please, check your order."
+msgstr "Bola zmenená cena tovaru <strong>{{ name }}</strong>, ktorý máte v košíku. Prosím, prekontrolujte si objednávku."
+
 msgid "The price of shipping {{ transportName }} changed during ordering process. Check your order, please."
 msgstr "Cena poštovného {{transportName}} sa počas procesu objednávania zmenila. Skontrolujte si svoju objednávku."
 
@@ -3273,6 +3282,9 @@ msgstr "Vložte svoj e-mail a my Vás budeme informovať o znížení ceny alebo
 
 msgid "Volejte na"
 msgstr "Volajte na"
+
+msgid "Vrácení zboží ve 30 denní lhůtě (odstoupení od smlouvy)"
+msgstr "Vrátenie tovaru v 30 dennej lehote (odstúpenie od zmluvy)"
 
 msgid "Vrácení zdarma <strong>do 30 dnů</strong>"
 msgstr "Vrátenie zadarmo <strong>do 30 dní</strong>"
@@ -3588,6 +3600,9 @@ msgstr "Z konečných stavov nemožno meniť stav objednávky"
 
 msgid "Zlevněné produkty"
 msgstr "Zľavnené produkty"
+
+msgid "Změna nebo storno objednávky"
+msgstr "Zmena alebo storno objednávky"
 
 msgid "Změna pro"
 msgstr "Zmena pre"
@@ -4078,12 +4093,3 @@ msgstr "Žiadne sklady sa nenašli"
 msgid "Žádné slevy na celý nákup nenalezeny."
 msgstr "Žiadne zľavy na celý nákup sa nenašli."
 
-
-msgid "Změna nebo storno objednávky"
-msgstr "Zmena alebo storno objednávky"
-
-msgid "Vrácení zboží ve 30 denní lhůtě (odstoupení od smlouvy)"
-msgstr "Vrátenie tovaru v 30 dennej lehote (odstúpenie od zmluvy)"
-
-msgid "Chci reklamovat zboží"
-msgstr "Chcem reklamovať tovar"

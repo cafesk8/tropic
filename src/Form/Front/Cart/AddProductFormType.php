@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class AddProductFormType extends AbstractType
 {
@@ -30,14 +31,14 @@ class AddProductFormType extends AbstractType
             ->add('quantity', TextType::class, [
                 'data' => 1,
                 'constraints' => [
-                    new Constraints\GreaterThanOrEqual([
-                        'value' => $options['minimum_amount'],
-                        'message' => t('Tento produkt lze nakoupit v minimálním množství %amount%&nbsp;%unitName%', [
+                    new Constraints\Regex(['pattern' => '/^\d+$/']),
+                    new Constraints\Callback([
+                        'callback' => [$this, 'validateMinimumAmount'],
+                        'payload' => [
                             '%amount%' => $options['minimum_amount'],
                             '%unitName%' => $options['unit_name'],
-                        ]),
+                        ],
                     ]),
-                    new Constraints\Regex(['pattern' => '/^\d+$/']),
                 ],
             ])
             ->add('onlyRefresh', HiddenType::class, [
@@ -60,5 +61,17 @@ class AddProductFormType extends AbstractType
             ->setRequired(['minimum_amount', 'only_refresh', 'unit_name'])
             ->setAllowedTypes('minimum_amount', 'int')
             ->setAllowedTypes('only_refresh', 'bool');
+    }
+
+    /**
+     * @param int $quantity
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
+     * @param array $data
+     */
+    public function validateMinimumAmount(int $quantity, ExecutionContextInterface $context, array $data): void
+    {
+        if ($quantity < $data['%amount%']) {
+            $context->addViolation('Tento produkt lze nakoupit v minimálním množství %amount%&nbsp;%unitName%', $data);
+        }
     }
 }
