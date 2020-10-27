@@ -89,7 +89,7 @@ msgid "702 00 Ostrava"
 msgstr "702 00 Ostrava"
 
 msgid "< PREVIOUS"
-msgstr "< PREDCHÁDZAJÚCI"
+msgstr "< PREDOŠLÁ"
 
 msgid "<a href=\"{{ url }}\">Dárek k objednávce</a> byl úspěšně upraven"
 msgstr "<a href=\"{{ url }}\">Darček k objednávke</a> bol úspešne upravený"
@@ -1499,7 +1499,7 @@ msgid "Můžete nahrát soubor v těchto formátech: PNG, JPG, GIF, BMP, TXT, RT
 msgstr "Môžete nahrať súbor v týchto formátoch: PNG, JPG, GIF, BMP, TXT, RTF, PDF, DOC, DOCX, ODF, XLS, XLSX, PPT, PPTX, XML, HTM, HTML, CSV, ZIP"
 
 msgid "NEXT >"
-msgstr "DALŠÍ >"
+msgstr "ĎALŠIA >"
 
 msgid "Na splátky ještě dnes již od"
 msgstr "Na splátky ešte dnes už od"
@@ -3785,7 +3785,7 @@ msgid "na prodejně?"
 msgstr "na predajni?"
 
 msgid "např. 603 123 456"
-msgstr "napr. 905 123 456"
+msgstr "napr. +421 905 123 456"
 
 msgid "např. Praha"
 msgstr "napr. Bratislava"

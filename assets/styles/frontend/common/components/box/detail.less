@@ -283,8 +283,7 @@
     }
 
     &__watch-dog {
-        display: flex;
-        width: 100%;
+        display: inline-flex;
         margin: 20px 0;
         text-align: center;
         justify-content: center;
@@ -293,6 +292,12 @@
             margin-top: 0;
             margin-bottom: 0;
             width: auto;
+        }
+
+        &:hover {
+            .box-detail__watch-dog__text {
+                text-decoration: none;
+            }
         }
 
         &__icon {

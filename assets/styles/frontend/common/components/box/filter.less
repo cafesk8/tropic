@@ -13,8 +13,10 @@
     margin-bottom: @margin-gap;
 
     &.active-mobile {
-        width: 100%;
-        margin-right: 0;
+        @media @query-not-large-desktop {
+            width: 100%;
+            margin-right: 0;
+        }
     }
 
     &__top {

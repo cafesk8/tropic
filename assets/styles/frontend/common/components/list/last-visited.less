@@ -22,7 +22,7 @@
     }
 
     .slick-list {
-        overflow: hidden;
+        width: 100%;
     }
 
     .slick-track {
@@ -79,11 +79,8 @@
     }
 
     &__list {
-        display: none;
-
-        &.slick-initialized {
-            display: block;
-        }
+        display: flex;
+        overflow: hidden;
     }
 
     &__in {
@@ -92,6 +89,24 @@
     }
 
     &__item {
+        min-width: 100%;
+
+        @media @query-md {
+            min-width: 100% / 2;
+        }
+
+        @media @query-lg {
+            min-width: @calc-base / 3;
+        }
+
+        @media @query-xl {
+            min-width: 100% / 5;
+        }
+
+        .slick-initialized & {
+            min-width: auto !important;
+        }
+
         &__block {
             display: flex;
             flex-direction: row;
