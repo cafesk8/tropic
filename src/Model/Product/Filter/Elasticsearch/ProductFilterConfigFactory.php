@@ -62,15 +62,20 @@ class ProductFilterConfigFactory
 
     /**
      * @param \App\Model\Category\Category $category
-     * @param array $onlyFlags
+     * @param string|null $categoryType
      * @param bool $showUnavailableProducts
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
-    public function createForCategory(BaseCategory $category, array $onlyFlags = [], bool $showUnavailableProducts = false): ProductFilterConfig
+    public function createForCategory(BaseCategory $category, ?string $categoryType = null, bool $showUnavailableProducts = false): ProductFilterConfig
     {
-        $elasticFilterData = $this->productFilterElasticFacade->getProductFilterDataInCategory($category->getId(), $this->currentCustomerUser->getPricingGroup(), $showUnavailableProducts);
+        $elasticFilterData = $this->productFilterElasticFacade->getProductFilterDataInCategory(
+            $category->getId(),
+            $this->currentCustomerUser->getPricingGroup(),
+            $showUnavailableProducts,
+            $categoryType
+        );
 
-        if ($onlyFlags || ($category->isSaleType() || $category->isNewsType())) {
+        if ($categoryType !== null || ($category->isSaleType() || $category->isNewsType())) {
             return new ProductFilterConfig(
                 [],
                 [],

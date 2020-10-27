@@ -314,7 +314,7 @@ class ProductController extends FrontBaseController
 
         $productFilterData = new ProductFilterData();
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, [], $category->isUnavailableProductsShown());
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, null, $category->isUnavailableProductsShown());
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -396,7 +396,7 @@ class ProductController extends FrontBaseController
 
         $productFilterData->flags[] = $saleFlag;
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, [$saleFlag], $category->isUnavailableProductsShown());
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, Category::SALE_TYPE, $category->isUnavailableProductsShown());
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -481,7 +481,7 @@ class ProductController extends FrontBaseController
 
         $productFilterData->flags[] = $newsFlag;
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, [$newsFlag], $category->isUnavailableProductsShown());
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, Category::NEWS_TYPE, $category->isUnavailableProductsShown());
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -643,15 +643,15 @@ class ProductController extends FrontBaseController
 
     /**
      * @param \App\Model\Category\Category $category
-     * @param \App\Model\Product\Flag\Flag[] $onlyFlags
+     * @param string|null $categoryType
      * @param bool $showUnavailableProducts
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
-    private function createProductFilterConfigForCategory(BaseCategory $category, array $onlyFlags = [], bool $showUnavailableProducts = false)
+    private function createProductFilterConfigForCategory(BaseCategory $category, ?string $categoryType = null, bool $showUnavailableProducts = false)
     {
         return $this->productFilterConfigFactory->createForCategory(
             $category,
-            $onlyFlags,
+            $categoryType,
             $showUnavailableProducts,
         );
     }
