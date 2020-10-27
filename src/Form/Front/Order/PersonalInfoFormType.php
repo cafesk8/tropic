@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Order;
 
+use App\Model\Country\CountryFacade;
 use App\Model\Order\FrontOrderData;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Constraints\Email;
 use Shopsys\FrameworkBundle\Form\DeliveryAddressChoiceType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\Country;
-use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Symfony\Component\Form\AbstractType;
@@ -33,25 +33,13 @@ class PersonalInfoFormType extends AbstractType
     public const VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED = 'deliveryAddressRequired';
     public const VALIDATION_GROUP_REGISTRATION_PASSWORD_REQUIRED = 'passwordRequired';
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
-     */
-    private $currentCustomerUser;
+    private CurrentCustomerUser $currentCustomerUser;
 
-    /**
-     * @var \App\Model\Country\CountryFacade
-     */
-    private $countryFacade;
+    private CountryFacade $countryFacade;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade
-     */
-    private $heurekaFacade;
+    private HeurekaFacade $heurekaFacade;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
+    private Domain $domain;
 
     /**
      * @param \App\Model\Country\CountryFacade $countryFacade
@@ -151,6 +139,7 @@ class PersonalInfoFormType extends AbstractType
             ])
             ->add('companyCustomer', CheckboxType::class, ['required' => false])
             ->add('companyName', TextType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'required' => true,
                 'constraints' => [
                     new Constraints\NotBlank([
@@ -164,6 +153,7 @@ class PersonalInfoFormType extends AbstractType
                 ],
             ])
             ->add('companyNumber', TextType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'required' => true,
                 'constraints' => [
                     new Constraints\NotBlank([
@@ -178,6 +168,7 @@ class PersonalInfoFormType extends AbstractType
                 ],
             ])
             ->add('companyTaxNumber', TextType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'required' => false,
                 'constraints' => [
                     new Constraints\Length([
@@ -188,6 +179,7 @@ class PersonalInfoFormType extends AbstractType
                 ],
             ])
             ->add('street', TextType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter street',
@@ -201,6 +193,7 @@ class PersonalInfoFormType extends AbstractType
                 ],
             ])
             ->add('city', TextType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter city',
@@ -214,6 +207,7 @@ class PersonalInfoFormType extends AbstractType
                 ],
             ])
             ->add('postcode', TextType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter zip code',
@@ -224,16 +218,17 @@ class PersonalInfoFormType extends AbstractType
             ]);
 
         $builder->add('country', ChoiceType::class, [
-                'choices' => $countries,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Please choose country',
-                        'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
-                    ]),
-                ],
-            ]);
+            'attr' => ['autocomplete' => 'foxentry'],
+            'choices' => $countries,
+            'choice_label' => 'name',
+            'choice_value' => 'id',
+            'constraints' => [
+                new Constraints\NotBlank([
+                    'message' => 'Please choose country',
+                    'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
+                ]),
+            ],
+        ]);
 
         if ($this->currentCustomerUser->findCurrentCustomerUser() !== null) {
             $builder->add('deliveryAddress', DeliveryAddressChoiceType::class, [
@@ -243,6 +238,7 @@ class PersonalInfoFormType extends AbstractType
 
         $builder
             ->add('deliveryCompanyName', TextType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'required' => false,
                 'constraints' => [
                     new Constraints\Length([
@@ -253,6 +249,7 @@ class PersonalInfoFormType extends AbstractType
                 ],
             ])
             ->add('deliveryStreet', TextType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'required' => true,
                 'constraints' => [
                     new Constraints\NotBlank([
@@ -267,6 +264,7 @@ class PersonalInfoFormType extends AbstractType
                 ],
             ])
             ->add('deliveryCity', TextType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'required' => true,
                 'constraints' => [
                     new Constraints\NotBlank([
@@ -281,6 +279,7 @@ class PersonalInfoFormType extends AbstractType
                 ],
             ])
             ->add('deliveryPostcode', TextType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'required' => true,
                 'constraints' => [
                     new Constraints\NotBlank([
@@ -295,6 +294,7 @@ class PersonalInfoFormType extends AbstractType
                 ],
             ])
             ->add('deliveryCountry', ChoiceType::class, [
+                'attr' => ['autocomplete' => 'foxentry'],
                 'required' => true,
                 'choices' => $countries,
                 'data' => $this->countryFacade->getHackedCountry(),
