@@ -11,16 +11,16 @@ import Register from 'framework/common/utils/Register';
     };
 
     Shopsys.variantsToggle.toggleFunction = function (event) {
-        $('.js-variantsToggle-button').click( function () {
+        $('.js-variantsToggle-button').click(function () {
             const container = $(this).closest('.js-variantsToggle').find('.js-variantsToggle-container');
             container.slideToggle();
 
-            if($(this).hasClass('open')) {
+            if ($(this).hasClass('open')) {
                 Shopsys.variantsToggle.scrollToUp();
             }
 
             $(this).toggleClass('open');
-        })
+        });
     };
 
     Shopsys.variantsToggle.scrollToUp = function () {
@@ -33,7 +33,7 @@ import Register from 'framework/common/utils/Register';
         }, 1000);
 
         return false;
-    }
+    };
 
     new Register().registerCallback(Shopsys.variantsToggle.init);
 
