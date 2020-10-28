@@ -2,7 +2,6 @@
 @list-menu-select-spacer-height: 10px;
 @list-menu-padding-right: 25px;
 @list-menu-open-background-color: @color-light;
-@list-menu-arrow-size: 10px;
 @list-menu-columns-count: 3;
 @list-menu-columns-gap: 30px;
 @list-menu-columns-gap-small: 16px;
@@ -157,13 +156,11 @@
                 display: none;
 
                 @media @query-vl {
-                    display: inline-block;
-                    vertical-align: middle;
-                    height: @list-menu-arrow-size;
+                    display: inline-flex;
                     margin-left: 5px;
                     opacity: 0.6;
 
-                    font-size: @list-menu-arrow-size;
+                    font-size: 10px;
 
                     .open & {
                         transform: rotate(180deg);

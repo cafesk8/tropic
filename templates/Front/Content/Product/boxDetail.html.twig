@@ -124,7 +124,7 @@
                         {% endif %}
 
                         <div class="box-detail__add-basket{% if product.isMainVariant %} box-detail__add-basket--variant{% endif %}">
-                            <div class="box-detail-add">
+                            <div class="box-detail-add js-variantsToggle">
                                 {% if not product.isMainVariant %}
                                     <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
                                         {{ discountExclusion.discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
@@ -141,10 +141,9 @@
                                     <ul {% if getProductSellingPrice(product) is not null %}itemprop="offers"
                                         itemscope
                                         itemtype="http://schema.org/AggregateOffer" {% endif %}
-                                        class="list-variants"
-                                        id="list-variants">
+                                        class="list-variants">
                                         {% for variant in filterOnlyVisibleVariants(product) %}
-                                            {{ loop.index0 == maxVisibleVariants ? '<div class="display-none" id="listVariantsHidden">' : '' }}
+                                            {{ loop.index0 == maxVisibleVariants ? '<div class="display-none js-variantsToggle-container">' : '' }}
                                             <li class="list-variants__item">
                                                 <div class="list-variants__item__info">
                                                     <div class="list-variants__item__description">
@@ -222,10 +221,7 @@
 
                                     {% if filterOnlyVisibleVariants(product)|length > maxVisibleVariants %}
                                         <div class="box-detail-add__show-more">
-                                            <a class="box-detail-add__show-more__button btn btn--big js-responsive-toggle js-scroll-to-position"
-                                                href="#list-variants"
-                                                data-space-above-position="60"
-                                                data-element="listVariantsHidden">
+                                            <a class="box-detail-add__show-more__button btn btn--big js-variantsToggle-button">
                                                 <span class="box-detail-add__show-more__button__more">
                                                     {% set variantsCount = filterOnlyVisibleVariants(product)|length - maxVisibleVariants %}
                                                     {% transchoice variantsCount with {'%count%': variantsCount} %}

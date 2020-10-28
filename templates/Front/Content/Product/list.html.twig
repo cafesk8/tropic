@@ -98,7 +98,7 @@
         <div class="web__line">
             <div class="web__container">
                 <div class="box-list__bottom">
-                    <div class="box-list__bottom__description">
+                    <div class="box-list__bottom__description{% if categoriesBlogArticles is empty %} box-list__bottom__description--full-width{% endif %}">
                         <h3 class="box-list__bottom__title">
                             {{ category.name }}
                         </h3>

@@ -156,6 +156,13 @@
                 margin-bottom: @box-list-bottom-gap;
             }
 
+            &--full-width {
+                @media @query-lg {
+                    width: 100%;
+                    padding-right: 0;
+                }
+            }
+
             &__text {
                 margin-top: -5px;
                 line-height: @box-list-description-line-height;
