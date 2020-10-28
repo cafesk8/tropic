@@ -39,6 +39,7 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['recommended'] = $result['recommended'] ?? false;
         $result['supplier_set'] = $result['supplier_set'] ?? false;
         $result['main_category_path'] = $result['main_category_path'] ?? '';
+        $result['is_in_news'] = $result['is_in_news'] ?? false;
 
         return $result;
     }

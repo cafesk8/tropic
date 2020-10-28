@@ -94,6 +94,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'recommended',
             'supplier_set',
             'main_category_path',
+            'is_in_news',
         ];
     }
 }

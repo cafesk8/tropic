@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Filter\Elasticsearch;
 
+use App\Model\Category\Category;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Product\Product;
 use App\Model\Product\Search\FilterQueryFactory;
@@ -55,16 +56,27 @@ class ProductFilterElasticFacade
      * @param int $categoryId
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param bool $showUnavailableProducts
+     * @param string|null $categoryType
      * @return array
      */
-    public function getProductFilterDataInCategory(int $categoryId, PricingGroup $pricingGroup, bool $showUnavailableProducts = false): array
-    {
+    public function getProductFilterDataInCategory(
+        int $categoryId,
+        PricingGroup $pricingGroup,
+        bool $showUnavailableProducts = false,
+        ?string $categoryType = null
+    ): array {
         $baseFilterQuery = $this->filterQueryFactory->create($this->getIndexName())
             ->filterOnlyVisible($pricingGroup)
             ->filterByCategory([$categoryId])
             ->excludeVariants();
         if (!$showUnavailableProducts) {
             $baseFilterQuery = $baseFilterQuery->filterOnlySellable();
+        }
+        if ($categoryType === Category::SALE_TYPE) {
+            $baseFilterQuery = $baseFilterQuery->filterOnlyInSale();
+        }
+        if ($categoryType === Category::NEWS_TYPE) {
+            $baseFilterQuery = $baseFilterQuery->filterOnlyInNews();
         }
 
         return $this->client->search($baseFilterQuery->getFilterQuery($pricingGroup->getId()));

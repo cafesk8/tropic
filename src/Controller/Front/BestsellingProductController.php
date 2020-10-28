@@ -28,11 +28,12 @@ class BestsellingProductController extends FrontBaseController
     /**
      * @param \App\Model\Category\Category $category
      * @param string|null $type
+     * @param string|null $routeName
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(Category $category, ?string $type = null)
+    public function listAction(Category $category, ?string $type = null, ?string $routeName = null)
     {
-        $bestsellingProducts = $this->listedProductViewFacade->getAllOfferedBestsellingProducts($category);
+        $bestsellingProducts = $this->listedProductViewFacade->getAllOfferedBestsellingProducts($category, $routeName);
 
         $templateName = 'Front/Content/Product/bestsellingProductsList.html.twig';
         $viewParameters = ['productViews' => $bestsellingProducts];

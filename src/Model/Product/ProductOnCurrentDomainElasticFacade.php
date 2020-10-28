@@ -25,12 +25,21 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 {
     /**
      * @param int[] $ids
+     * @param string|null $routeName
      * @return array
      */
-    public function getSellableHitsForIds(array $ids): array
+    public function getSellableHitsForIds(array $ids, ?string $routeName = null): array
     {
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
             ->filterIds(array_values($ids));
+
+        if ($routeName === 'front_sale_product_list') {
+            $filterQuery = $filterQuery->filterOnlyInSale();
+        }
+
+        if ($routeName === 'front_news_product_list'){
+            $filterQuery = $filterQuery->filterOnlyInNews();
+        }
 
         $hits = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery)->getHits();
 
