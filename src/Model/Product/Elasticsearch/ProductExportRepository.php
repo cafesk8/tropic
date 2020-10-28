@@ -123,11 +123,12 @@ class ProductExportRepository extends BaseProductExportRepository
         if ($product->isMainVariant()) {
             $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($variants));
         }
-        $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId, $result['prices']);
+        $isInAnySaleStock = $product->isInAnySaleStock();
+        $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId, $result['prices'], $isInAnySaleStock);
         $result['delivery_days'] = $product->isMainVariant() ? '' : $product->getDeliveryDays();
         $result['is_available_in_days'] = $product->isMainVariant() ? false : $product->isAvailableInDays();
         $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
-        $result['is_in_any_sale_stock'] = $product->isInAnySaleStock();
+        $result['is_in_any_sale_stock'] = $isInAnySaleStock;
         $result['pohoda_product_type'] = $this->getPohodaProductType($product);
         $result['ordering_priority'] = $product->getBiggestVariantOrderingPriority();
         $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
@@ -233,17 +234,18 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Model\Product\Product $product
      * @param int $domainId
      * @param array $prices
+     * @param bool $isInAnySaleStock
      * @return array
      */
-    private function getPricesForFilterIncludingVariants(BaseProduct $product, int $domainId, array $prices): array
+    private function getPricesForFilterIncludingVariants(BaseProduct $product, int $domainId, array $prices, bool $isInAnySaleStock): array
     {
         $pricesForFilter = [];
         if ($product->isMainVariant() === false) {
-            $pricesForFilter = $this->getPricesForFilterFromPrices($prices);
+            $pricesForFilter = $this->getPricesForFilterFromPrices($prices, $isInAnySaleStock, $domainId);
         } else {
             foreach ($this->productFacade->getSellableVariantsForProduct($product, $domainId) as $variant) {
                 $variantPrices = $this->extractPrices($domainId, $variant);
-                $variantPriceForFilter = $this->getPricesForFilterFromPrices($variantPrices);
+                $variantPriceForFilter = $this->getPricesForFilterFromPrices($variantPrices, $isInAnySaleStock, $domainId);
                 $pricesForFilter = array_merge($pricesForFilter, $variantPriceForFilter);
             }
         }
@@ -253,19 +255,39 @@ class ProductExportRepository extends BaseProductExportRepository
 
     /**
      * @param array $prices
+     * @param bool $isInAnySaleStock
+     * @param mixed $domainId
      * @return array
      */
-    private function getPricesForFilterFromPrices(array $prices): array
+    private function getPricesForFilterFromPrices(array $prices, bool $isInAnySaleStock, $domainId): array
     {
         $pricesForFilter = [];
+        $salePrice = $this->getSalePriceFromPriceArray($prices, $domainId);
         foreach ($prices as $price) {
             $pricesForFilter[] = [
                 'pricing_group_id' => $price['pricing_group_id'],
-                'price_with_vat' => $price['price_with_vat'],
+                'price_with_vat' => $isInAnySaleStock ? $salePrice : $price['price_with_vat'],
             ];
         }
 
         return $pricesForFilter;
+    }
+
+    /**
+     * @param array $prices
+     * @param int $domainId
+     * @return float
+     */
+    private function getSalePriceFromPriceArray(array $prices, int $domainId): float
+    {
+        $salePricePricingGroupId = $this->pricingGroupFacade->getSalePricePricingGroup($domainId)->getId();
+        foreach ($prices as $price) {
+            if ($price['pricing_group_id'] === $salePricePricingGroupId) {
+                return $price['price_with_vat'];
+            }
+        }
+
+        return (float)0;
     }
 
     /**

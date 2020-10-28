@@ -51,7 +51,7 @@
                             <div class="box-filter js-product-filter">
                                 {% if isSaleCategory %}
                                     {% set categoryUrl = url('front_sale_product_list', { id: category.id }) %}
-                                {% elseif isSaleCategory %}
+                                {% elseif isNewsCategory %}
                                     {% set categoryUrl = url('front_news_product_list', { id: category.id }) %}
                                 {% else %}
                                     {% set categoryUrl = url('front_product_list', { id: category.id }) %}
@@ -73,7 +73,7 @@
 
                     <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
                         {{ render(controller('App\\Controller\\Front\\BestsellingProductController:listAction', {'category': category, 'type': constant('App\\Controller\\Front\\BestsellingProductController::TYPE_VERTICAL')})) }}
-                        
+
                         <div class="box-list__ordering">
                             {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction')) }}
                             {% if paginationResult.results|length > 0 %}

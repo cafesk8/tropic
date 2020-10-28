@@ -320,26 +320,26 @@ class FilterQuery extends BaseFilterQuery
                             ],
                         ],
                     ],
-                    'prices' => [
+                    'prices_for_filter' => [
                         'nested' => [
-                            'path' => 'prices',
+                            'path' => 'prices_for_filter',
                         ],
                         'aggs' => [
                             'filter_pricing_group' => [
                                 'filter' => [
                                     'term' => [
-                                        'prices.pricing_group_id' => $pricingGroupId,
+                                        'prices_for_filter.pricing_group_id' => $pricingGroupId,
                                     ],
                                 ],
                                 'aggs' => [
                                     'min_price' => [
                                         'min' => [
-                                            'field' => 'prices.price_with_vat',
+                                            'field' => 'prices_for_filter.price_with_vat',
                                         ],
                                     ],
                                     'max_price' => [
                                         'max' => [
-                                            'field' => 'prices.price_with_vat',
+                                            'field' => 'prices_for_filter.price_with_vat',
                                         ],
                                     ],
                                 ],
