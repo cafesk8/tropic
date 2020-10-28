@@ -6,42 +6,19 @@ namespace App\Model\Gtm;
 
 use App\Model\Order\Item\OrderItem;
 use App\Model\Order\OrderData;
-use App\Model\Order\Preview\OrderPreview;
 use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
-use App\Twig\NumberFormatterExtension;
-use Shopsys\FrameworkBundle\Twig\PriceExtension;
 
 class GtmHelper
 {
-    /**
-     * @var \App\Model\Gtm\GtmContainer
-     */
-    private $gtmContainer;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Twig\PriceExtension
-     */
-    private $priceExtension;
-
-    /**
-     * @var \App\Twig\NumberFormatterExtension
-     */
-    private $numberFormatterExtension;
+    private GtmContainer $gtmContainer;
 
     /**
      * @param \App\Model\Gtm\GtmContainer $gtmContainer
-     * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
-     * @param \App\Twig\NumberFormatterExtension $numberFormatterExtension
      */
     public function __construct(
-        GtmContainer $gtmContainer,
-        PriceExtension $priceExtension,
-        NumberFormatterExtension $numberFormatterExtension
+        GtmContainer $gtmContainer
     ) {
         $this->gtmContainer = $gtmContainer;
-        $this->priceExtension = $priceExtension;
-        $this->numberFormatterExtension = $numberFormatterExtension;
     }
 
     /**
@@ -56,64 +33,16 @@ class GtmHelper
 
         $availability = $orderItem->getProduct()->getCalculatedAvailability();
         $availabilityName = $availability->getName($this->gtmContainer->getDataLayer()->getLocale());
-        $gtmAvailability = mb_strtolower($availabilityName);
 
-        return $gtmAvailability;
+        return mb_strtolower($availabilityName);
     }
 
     /**
      * @param \App\Model\Order\OrderData $orderData
      * @param \App\Model\Order\PromoCode\PromoCode[] $usedPromoCodes
-     * @param \App\Model\Order\Preview\OrderPreview|null $orderPreview
      */
-    public function amendGtmCouponToOrderData(OrderData $orderData, array $usedPromoCodes, ?OrderPreview $orderPreview = null): void
+    public function amendGtmCouponToOrderData(OrderData $orderData, array $usedPromoCodes): void
     {
-        foreach ($usedPromoCodes as $usedPromoCode) {
-            $orderData->gtmCoupons[] = sprintf(
-                '%s|%s|%s',
-                $usedPromoCode->getCode(),
-                $this->getCouponDiscountDescription($usedPromoCode),
-                $this->getPriceWithoutDiscount($usedPromoCode, $orderPreview)
-            );
-        }
-
-        // free transport can be place here
-    }
-
-    /**
-     * @param \App\Model\Order\PromoCode\PromoCode $usedPromoCode
-     * @return string
-     */
-    private function getCouponDiscountDescription(PromoCode $usedPromoCode): string
-    {
-        if ($usedPromoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-            $couponDiscount = $this->priceExtension->priceFilter($usedPromoCode->getNominalDiscount());
-        } elseif ($usedPromoCode->isUseNominalDiscount()) {
-            $couponDiscount = $this->priceExtension->priceFilter($usedPromoCode->getNominalDiscount());
-        } else {
-            $couponDiscount = $this->numberFormatterExtension->formatPercent($usedPromoCode->getPercent());
-        }
-
-        return $couponDiscount;
-    }
-
-    /**
-     * @param \App\Model\Order\PromoCode\PromoCode $usedPromoCode
-     * @param \App\Model\Order\Preview\OrderPreview|null $orderPreview
-     * @return string
-     */
-    private function getPriceWithoutDiscount(PromoCode $usedPromoCode, ?OrderPreview $orderPreview): string
-    {
-        if ($orderPreview === null) {
-            return '';
-        }
-
-        $priceWithoutDiscount = $orderPreview->getProductsPrice();
-        if ($usedPromoCode->isTypePromoCode()) {
-            $totalPromoCodeDiscount = $orderPreview->getTotalItemDiscountsIndexedByPromoCodeId()[$usedPromoCode->getId()];
-            $orderPreview->getProductsPrice()->add($totalPromoCodeDiscount);
-        }
-
-        return $this->priceExtension->priceFilter($priceWithoutDiscount->getPriceWithVat());
+        $orderData->gtmCoupons = array_map(fn (PromoCode $promoCode) => $promoCode->getCode(), $usedPromoCodes);
     }
 }

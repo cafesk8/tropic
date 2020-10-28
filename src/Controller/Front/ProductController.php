@@ -599,6 +599,13 @@ class ProductController extends FrontBaseController
         } else {
             $viewParameters['foundCategories'] = $this->searchCategories($searchText);
             $viewParameters['paginationResultSets'] = $this->getPaginationResultSets($searchText, $orderingModeId, 1);
+            $this->gtmFacade->onSearchPage(
+                $searchText,
+                $paginationResultProducts->getTotalCount(),
+                $viewParameters['paginationResultSets']->getTotalCount(),
+                count($viewParameters['foundCategories'])
+            );
+
             return $this->render('Front/Content/Product/search.html.twig', $viewParameters);
         }
     }
