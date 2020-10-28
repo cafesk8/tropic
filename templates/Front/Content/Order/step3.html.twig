@@ -169,23 +169,22 @@
                                 {{ form_row(form.country, { label: 'Country'|trans }) }}
 
                                 {% do form.note.setRendered %}
-
-                                {% if form.disallowHeurekaVerifiedByCustomers is defined %}
-                                    {% if not containsForeignSupplierProducts %}
-                                        <div class="margin-top-10">
-                                            {{ form_widget(form.disallowHeurekaVerifiedByCustomers, {
-                                                attr: { class: 'css-checkbox' }})
-                                            }}
-                                            <label for="{{ form.disallowHeurekaVerifiedByCustomers.vars.id }}" class="css-checkbox__image">
-                                                {{ form.disallowHeurekaVerifiedByCustomers.vars.label }}
-                                            </label>
-                                        </div>
-                                    {% else %}
-                                        {% do form.disallowHeurekaVerifiedByCustomers.setRendered %}
-                                    {% endif %}
-                                {% endif %}
                             </div>
                         </div>
+                        {% if form.disallowHeurekaVerifiedByCustomers is defined %}
+                            {% if not containsForeignSupplierProducts %}
+                                <div class="margin-top-10">
+                                    {{ form_widget(form.disallowHeurekaVerifiedByCustomers, {
+                                        attr: { class: 'css-checkbox' }})
+                                    }}
+                                    <label for="{{ form.disallowHeurekaVerifiedByCustomers.vars.id }}" class="css-checkbox__image">
+                                        {{ form.disallowHeurekaVerifiedByCustomers.vars.label }}
+                                    </label>
+                                </div>
+                            {% else %}
+                                {% do form.disallowHeurekaVerifiedByCustomers.setRendered %}
+                            {% endif %}
+                        {% endif %}
                     </div>
 
                     <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
