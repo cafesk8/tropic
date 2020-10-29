@@ -19,7 +19,7 @@
         <p class="in-user-text text-center">{{ 'There were problems during payment of created order with number %orderNumber%.'|trans({ '%orderNumber%' : order.number }) }}</p>
         <p class="in-user-text text-center">
             <a href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}">
-                {{ 'Klikněte zde pro zopakování úhrady objednávky'|trans }}
+                {{ 'Klikněte zde pro zopakování úhrady objednávky'|trans }} - {{ order.payment.name }}
             </a>
         </p>
     </div>
