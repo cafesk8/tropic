@@ -101,6 +101,7 @@ class ProductExportRepository extends BaseProductExportRepository
     {
         if ($scope === self::SCOPE_STOCKS) {
             $this->productAvailabilityRecalculator->recalculateOneProductAvailability($product);
+            $result['in_stock'] = $product->getCalculatedAvailability()->getDispatchTime() === 0;
             $result['availability'] = $product->getCalculatedAvailability()->getName($locale);
             $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
             $result['stock_quantity'] = $product->getStockQuantity();
