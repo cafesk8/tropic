@@ -2,6 +2,13 @@ front_about_us_info:
     path: /kontakt/
     defaults: { _controller: App\Controller\Front\AboutUsController:infoAction }
 
+legacy_front_about_us_info:
+    path: /kontakty/
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController:redirectAction
+    defaults:
+        route: 'front_about_us_info'
+        permanent: true
+
 front_cart:
     path: /kosik/
     defaults: { _controller: App\Controller\Front\CartController:indexAction }
@@ -13,6 +20,13 @@ front_customer_edit:
 front_customer_orders:
     path: /zakaznik/objednavky/
     defaults: { _controller: App\Controller\Front\CustomerController:ordersAction }
+
+legacy_front_customer_orders:
+    path: /objednavky/
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController:redirectAction
+    defaults:
+        route: 'front_customer_orders'
+        permanent: true
 
 front_customer_order_detail_registered:
     path: /zakaznik/detail-objednavky/{orderNumber}
@@ -86,3 +100,9 @@ front_brand_list:
     path: /prehled-znacek/
     defaults: { _controller: App\Controller\Front\BrandController:listAction }
 
+legacy_front_brand_list:
+    path: /vyrobci/
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController:redirectAction
+    defaults:
+        route: 'front_brand_list'
+        permanent: true

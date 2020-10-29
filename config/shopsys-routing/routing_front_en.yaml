@@ -2,6 +2,14 @@ front_about_us_info:
     path: /contact/
     defaults: { _controller: App\Controller\Front\AboutUsController:infoAction }
 
+# Legacy route must be defined for all locales
+legacy_front_about_us_info:
+    path: /kontakty/
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController:redirectAction
+    defaults:
+        route: 'front_about_us_info'
+        permanent: true
+
 front_cart:
     path: /cart/
     defaults: { _controller: App\Controller\Front\CartController:indexAction }
@@ -13,6 +21,14 @@ front_customer_edit:
 front_customer_orders:
     path: /customer/orders/
     defaults: { _controller: App\Controller\Front\CustomerController:ordersAction }
+
+# Legacy route must be defined for all locales
+legacy_front_customer_orders:
+    path: /objednavky/
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController:redirectAction
+    defaults:
+        route: 'front_customer_orders'
+        permanent: true
 
 front_customer_order_detail_registered:
     path: /customer/orders/detail/{orderNumber}
@@ -85,3 +101,11 @@ front_personal_data_access_export:
 front_brand_list:
     path: /brands-overview/
     defaults: { _controller: App\Controller\Front\BrandController:listAction }
+
+# Legacy route must be defined for all locales
+legacy_front_brand_list:
+    path: /vyrobci/
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController:redirectAction
+    defaults:
+        route: 'front_brand_list'
+        permanent: true
