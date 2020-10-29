@@ -32,4 +32,18 @@ class ProductAvailabilityRecalculator extends BaseProductAvailabilityRecalculato
     {
         $this->recalculateProductAvailability($product);
     }
+
+    /**
+     * We need to "refresh" (using EntityManager::find) product because it might not be in the identity map.
+     * This happens in products import from Pohoda
+     */
+    public function runImmediateRecalculations()
+    {
+        $products = $this->productAvailabilityRecalculationScheduler->getProductsForImmediateRecalculation();
+        foreach ($products as $product) {
+            $product = $this->em->find(Product::class, $product->getId());
+            $this->recalculateProductAvailability($product);
+        }
+        $this->productAvailabilityRecalculationScheduler->cleanScheduleForImmediateRecalculation();
+    }
 }
