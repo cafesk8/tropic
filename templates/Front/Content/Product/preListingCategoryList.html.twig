@@ -37,7 +37,6 @@
     {{ render(controller('App\\Controller\\Front\\TopProductController:listAction')) }}
     {{ render(controller('App\\Controller\\Front\\BestsellingProductController:listAction', {'category': category})) }}
 
-    {# TODO CODER: style blogArticles (Zeny na cestach in inVision) #}
     {% if categoriesBlogArticles|length > 0 %}
         <div class="web__line">
             <div class="web__container web__container--border-radius web__container--dark">
