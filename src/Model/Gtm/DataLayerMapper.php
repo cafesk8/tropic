@@ -287,6 +287,10 @@ class DataLayerMapper
             $dataLayerProduct->setVariant($product->getVariantAlias($locale) ?? '');
         }
 
+        if ($product->isMainVariant()) {
+            $dataLayerProduct->setVariants($product->getVariantsCount($this->domain->getId()));
+        }
+
         if ($isGift) {
             $dataLayerProduct->setProductType('dárek');
         } elseif ($product->isPohodaProductTypeSet() || $product->isSupplierSet()) {

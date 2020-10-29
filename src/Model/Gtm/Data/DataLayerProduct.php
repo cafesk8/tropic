@@ -85,6 +85,8 @@ class DataLayerProduct implements JsonSerializable
 
     private string $productType;
 
+    private int $variants;
+
     /**
      * @param string $id
      */
@@ -219,5 +221,13 @@ class DataLayerProduct implements JsonSerializable
     public function setProductType(string $productType): void
     {
         $this->productType = $productType;
+    }
+
+    /**
+     * @param int $variants
+     */
+    public function setVariants(int $variants): void
+    {
+        $this->variants = $variants;
     }
 }
