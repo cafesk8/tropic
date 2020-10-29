@@ -47,7 +47,7 @@
                                     {% endif %}
                                 {% endfor %}
                                 <a href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}" class="btn wrap-box__button">
-                                    <span class="wrap-box__button__name">{{ 'Opakovat platbu'|trans }}</span>
+                                    <span class="wrap-box__button__name">{{ 'Opakovat platbu'|trans }} - {{ order.payment.name }}</span>
                                 </a>
                             </div>
                         </div>
