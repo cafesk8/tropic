@@ -74,6 +74,6 @@ class PohodaImage
      */
     private function getImageExtension(): string
     {
-        return substr($this->file, strpos($this->file, '.') + 1);
+        return substr($this->file, strrpos($this->file, '.') + 1);
     }
 }
