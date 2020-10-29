@@ -59,7 +59,7 @@ class ProductExportStockFacade
             $indexDefinition = $this->indexDefinitionLoader->getIndexDefinition($this->productIndex::getName(), $domainId);
             $productIdsToExport = $this->getIdsAlreadyPresentInElastic($productIds, $indexDefinition->getIndexAlias());
             $exportedCountByDomainId[$domainId] = count($productIdsToExport);
-            $this->indexFacade->exportIds($this->productIndex, $indexDefinition, $productIdsToExport, true);
+            $this->indexFacade->exportIds($this->productIndex, $indexDefinition, $productIdsToExport, ProductExportRepository::SCOPE_STOCKS);
         }
 
         return $exportedCountByDomainId;
