@@ -904,8 +904,7 @@ class OrderFacade extends BaseOrderFacade
     public function sendHeurekaOrderInfo(BaseOrder $order, $disallowHeurekaVerifiedByCustomers)
     {
         foreach ($order->getItems() as $item) {
-            $product = $item->getProduct();
-            if ($item->isTypeProduct() && $product !== null && $product->isForeignSupplier()) {
+            if ($item->isTypeProduct() && $item->getProduct() !== null && $item->getProduct()->isForeignSupplier()) {
                 return;
             }
         }
