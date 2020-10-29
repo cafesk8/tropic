@@ -33,6 +33,8 @@ use App\Model\Order\OrderDataMapper;
 use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\PayPal\PayPalFacade;
 use App\Model\Security\CustomerLoginHandler;
+use App\Model\Store\Store;
+use App\Model\Store\StoreFacade;
 use App\Model\Transport\PickupPlace\PacketaPickupPlaceData;
 use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Exception;
@@ -222,6 +224,11 @@ class OrderController extends FrontBaseController
     private $orderItemDataFactory;
 
     /**
+     * @var \App\Model\Store\StoreFacade
+     */
+    private $storeFacade;
+
+    /**
      * @var \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade
      */
     private FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade;
@@ -267,6 +274,7 @@ class OrderController extends FrontBaseController
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \App\Component\Cofidis\CofidisFacade $cofidisFacade
      * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
+     * @param \App\Model\Store\StoreFacade $storeFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -301,7 +309,8 @@ class OrderController extends FrontBaseController
         OrderItemDataFactory $orderItemDataFactory,
         FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
         CofidisFacade $cofidisFacade,
-        HeurekaReviewFacade $heurekaReviewFacade
+        HeurekaReviewFacade $heurekaReviewFacade,
+        StoreFacade $storeFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -336,6 +345,7 @@ class OrderController extends FrontBaseController
         $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
         $this->cofidisFacade = $cofidisFacade;
         $this->heurekaReviewFacade = $heurekaReviewFacade;
+        $this->storeFacade = $storeFacade;
     }
 
     /**
@@ -384,14 +394,22 @@ class OrderController extends FrontBaseController
             $orderFlow->nextStep();
         }
 
-        $form = $orderFlow->createForm();
-        $isValid = $orderFlow->isValid($form);
-        // FormData are filled during isValid() call
-        $orderData = $this->orderDataMapper->getOrderDataFromFrontOrderData($frontOrderFormData);
-
         $payment = $frontOrderFormData->payment;
         /** @var \App\Model\Transport\Transport $transport */
         $transport = $frontOrderFormData->transport;
+
+        if ($transport !== null && $transport->isChooseStore()) {
+            $frontOrderFormData->store = $this->storeFacade->getByPohodaName(Store::POHODA_STOCK_STORE_NAME);
+        }
+
+        $form = $orderFlow->createForm();
+        $isValid = $orderFlow->isValid($form);
+
+        // FormData are filled during isValid() call
+        $orderData = $this->orderDataMapper->getOrderDataFromFrontOrderData($frontOrderFormData);
+        if ($transport !== null && $transport->isChooseStore()) {
+            $orderData->store = $this->storeFacade->getByPohodaName(Store::POHODA_STOCK_STORE_NAME);
+        }
 
         if ($transport !== null && $transport->isPickupPlace()) {
             if ($orderData->pickupPlace !== null) {

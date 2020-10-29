@@ -9,10 +9,6 @@
             'class': 'js-pickup-place-input',
             'data-search-url': url('front_pickup_place_search')
         }}) }}
-        {{ form_widget(form.store, { attr: {
-            'class': 'js-store-input',
-            'data-search-url': url('front_store_list')
-        }}) }}
         <div class="js-form-line" id="{{ form.transport.vars.id }}">
             <div class="js-form-line-error"></div>
             {% for child in form.transport %}
@@ -24,7 +20,6 @@
                             class: 'css-radio js-order-transport-input',
                             'data-id': choice.data.id,
                             'data-transport-pickup': choice.data.pickupPlace,
-                            'data-choose-store': choice.data.chooseStore,
                             'data-type': choice.data.transportType,
                             'data-language': getDomain().locale
                         } }) }}
@@ -46,13 +41,11 @@
                             {% endif %}
                         </span>
 
-                        {% if choice.data.isPickupPlace() or choice.data.isChooseStore() %}
+                        {% if choice.data.isPickupPlace() %}
                             {% set checked = child.vars.checked == true %}
                             {% set pickupPlaceName = '' %}
                             {% if pickupPlace != null and checked %}
                                 {% set pickupPlaceName = pickupPlace.name %}
-                            {% elseif store != null and checked %}
-                                {% set pickupPlaceName = store.name %}
                             {% endif %}
                             <span class="js-pickup-place-detail js-pickup-place-tooltip js-pickup-place-detail-{{ choice.data.id }}"
                                 title="{{ pickupPlaceName }}">
@@ -63,7 +56,7 @@
                                     type="button"
                                     data-id="{{ choice.data.id }}"
                                     class="box-chooser__item__pickup-button js-pickup-place-change-button link-style btn-no-style{% if checked == false %} display-none{% endif %}"
-                                    data-form-field-class="{% if choice.data.isPickupPlace() %}js-pickup-place-input{% elseif choice.data.isChooseStore() %}js-store-input{% endif %}"
+                                    data-form-field-class="js-pickup-place-input"
                                     data-type="{{ choice.data.transportType }}"
                                     data-language="{{ getDomain().locale }}"
                                 >
