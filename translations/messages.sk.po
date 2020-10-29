@@ -31,8 +31,8 @@ msgstr "+420 777 862 119"
 msgid ", Shopsys s.r.o. Všechna práva vyhrazena."
 msgstr ", Shopsys s.r.o. Všetky práva vyhradené."
 
-msgid ", Tropic Fishing s.r.o. Všechna práva vyhrazena."
-msgstr ", Tropic Fishing s.r.o. Všetky práva vyhradené."
+msgid ", Tropic Liberec s.r.o. Všechna práva vyhrazena."
+msgstr ", Tropic Liberec s.r.o. Všetky práva vyhradené."
 
 msgid "- Výprodej"
 msgstr "- Výpredaj"
