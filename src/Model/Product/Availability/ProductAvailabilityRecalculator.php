@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 
 /**
  * @property \App\Component\EntityExtension\EntityManagerDecorator $em
+ * @property \App\Model\Product\Availability\ProductAvailabilityCalculation $productAvailabilityCalculation
  */
 class ProductAvailabilityRecalculator extends BaseProductAvailabilityRecalculator
 {
