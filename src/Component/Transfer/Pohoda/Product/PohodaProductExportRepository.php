@@ -102,7 +102,7 @@ class PohodaProductExportRepository
 
         $resultSetMapping->addScalarResult('ProdejC', PohodaProduct::COL_SELLING_PRICE_EUR);
         $queryColumns[] = 'Prices.ProdejC';
-        $registeredCustomerOnSecondDomainPricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup(DomainHelper::SLOVAK_DOMAIN);
+        $ordinaryCustomerOnSecondDomainPricingGroup = $this->pricingGroupFacade->getOrdinaryCustomerPricingGroup(DomainHelper::SLOVAK_DOMAIN);
         $query = $this->pohodaEntityManager->createNativeQuery(
             'SELECT ' . implode(', ', $queryColumns) . '
              FROM Skz Product
@@ -115,7 +115,7 @@ class PohodaProductExportRepository
             $resultSetMapping
         )->setParameters([
             'pohodaProductIds' => $pohodaProductIds,
-            'sellingEurPriceId' => $registeredCustomerOnSecondDomainPricingGroup->getPohodaId(),
+            'sellingEurPriceId' => $ordinaryCustomerOnSecondDomainPricingGroup->getPohodaId(),
         ]);
 
         $pohodaProductResult = $query->getResult();
