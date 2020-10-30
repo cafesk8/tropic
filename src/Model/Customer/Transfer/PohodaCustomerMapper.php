@@ -29,9 +29,10 @@ class PohodaCustomerMapper
             $pohodaBillingAddress->ico = $customerUser->getCustomer()->getBillingAddress()->getCompanyNumber();
             $pohodaBillingAddress->dic = $customerUser->getCustomer()->getBillingAddress()->getCompanyTaxNumber();
             $pohodaBillingAddress->name = $customerUser->getFirstName() . ' ' . $customerUser->getLastName();
-            $pohodaBillingAddress->city = $customerUser->getCustomer()->getBillingAddress()->getCity();
-            $pohodaBillingAddress->street = $customerUser->getCustomer()->getBillingAddress()->getStreet();
-            $pohodaBillingAddress->zip = $customerUser->getCustomer()->getBillingAddress()->getPostcode();
+            $defaultDeliveryAddress = $customerUser->getDefaultDeliveryAddress();
+            $pohodaBillingAddress->city = $customerUser->getCustomer()->getBillingAddress()->getCity() ?? ($defaultDeliveryAddress !== null ? $defaultDeliveryAddress->getCity() : '-');
+            $pohodaBillingAddress->street = $customerUser->getCustomer()->getBillingAddress()->getStreet() ?? ($defaultDeliveryAddress !== null ? $defaultDeliveryAddress->getStreet() : '-');
+            $pohodaBillingAddress->zip = $customerUser->getCustomer()->getBillingAddress()->getPostcode() ?? ($defaultDeliveryAddress !== null ? $defaultDeliveryAddress->getPostcode() : '-');
 
             if ($customerUser->getCustomer()->getBillingAddress()->getCountry() !== null) {
                 $pohodaBillingAddress->country = $customerUser->getCustomer()->getBillingAddress()->getCountry()->getCode();
