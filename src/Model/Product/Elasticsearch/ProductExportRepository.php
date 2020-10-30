@@ -10,6 +10,7 @@ use App\Model\Product\Availability\ProductAvailabilityRecalculator;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
+use App\Model\Product\ProductSellingDeniedRecalculator;
 use App\Model\Product\Set\ProductSetFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
@@ -54,6 +55,8 @@ class ProductExportRepository extends BaseProductExportRepository
 
     private ProductAvailabilityRecalculator $productAvailabilityRecalculator;
 
+    private ProductSellingDeniedRecalculator $productSellingDeniedRecalculator;
+
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
@@ -67,6 +70,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Product\Availability\ProductAvailabilityRecalculator $productAvailabilityRecalculator
+     * @param \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -80,7 +84,8 @@ class ProductExportRepository extends BaseProductExportRepository
         PricingGroupFacade $pricingGroupFacade,
         FlagFacade $flagFacade,
         CategoryFacade $categoryFacade,
-        ProductAvailabilityRecalculator $productAvailabilityRecalculator
+        ProductAvailabilityRecalculator $productAvailabilityRecalculator,
+        ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->productSetFacade = $productSetFacade;
@@ -88,6 +93,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $this->flagFacade = $flagFacade;
         $this->categoryFacade = $categoryFacade;
         $this->productAvailabilityRecalculator = $productAvailabilityRecalculator;
+        $this->productSellingDeniedRecalculator = $productSellingDeniedRecalculator;
     }
 
     /**
@@ -100,6 +106,7 @@ class ProductExportRepository extends BaseProductExportRepository
     protected function extractResult(BaseProduct $product, int $domainId, string $locale, ?string $scope = null): array
     {
         if ($scope === self::SCOPE_STOCKS) {
+            $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
             $this->productAvailabilityRecalculator->recalculateOneProductAvailability($product);
             $result['in_stock'] = $product->getCalculatedAvailability()->getDispatchTime() === 0;
             $result['availability'] = $product->getCalculatedAvailability()->getName($locale);
