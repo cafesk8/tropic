@@ -31,7 +31,7 @@ msgstr ""
 msgid ", Shopsys s.r.o. Všechna práva vyhrazena."
 msgstr ", Shopsys s.r.o. Všechna práva vyhrazena."
 
-msgid ", Tropic Fishing s.r.o. Všechna práva vyhrazena."
+msgid ", Tropic Liberec s.r.o. Všechna práva vyhrazena."
 msgstr ""
 
 msgid "- Výprodej"
