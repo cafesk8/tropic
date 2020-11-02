@@ -7,7 +7,7 @@ services:
     # ALWAYS -----------------------------------------------------------------------------------------
     App\Model\Order\Transfer\OrderExportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Export objednávek a uživatelů do IS Pohoda', instanceName: orders }
+            - { name: shopsys.cron, hours: '*', minutes: '0,15,30,45', readableName: 'Export objednávek a uživatelů do IS Pohoda', instanceName: orders }
 
     App\Model\Zbozi\ZboziOrderTransferCronModule:
         tags:
