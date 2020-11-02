@@ -111,6 +111,7 @@ class TransferLogger
         if (!empty($context)) {
             $contextString = json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
+        $contextString = $contextString === false ? null : $contextString;
         $this->transferIssuesData[] = new TransferIssueData($this->transferIdentifier, $transferIssueMessage, $this->transferIssuesGroupId, $contextString);
     }
 
