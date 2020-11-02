@@ -30,6 +30,7 @@ class PohodaInvalidDataException extends Exception implements PohodaTransferExce
     {
         $constraintsViolationsMessages = [];
 
+        /** @var \Symfony\Component\Validator\ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
             $constraintsViolationsMessages[] =
                 sprintf('Nevalidní hodnota pro %s - "%s"', $violation->getPropertyPath(), $violation->getMessage());
