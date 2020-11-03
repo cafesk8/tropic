@@ -86,7 +86,10 @@ class GoPayTransactionFacade
             if (isset($goPayStatusResponse->json['state'])) {
                 $goPayTransaction = $goPayStatusResponseData->goPayTransaction;
                 $goPayTransaction->setGoPayStatus($goPayStatusResponse->json['state']);
+                // State is saved to Order as well to make it easier for use in Order Grid in admin
+                $order->setGoPayStatus($goPayStatusResponse->json['state']);
                 $toFlush[] = $goPayTransaction;
+                $toFlush[] = $order;
             }
         }
 

@@ -857,3 +857,5 @@ services:
         class: Doctrine\Common\Cache\PhpFileCache
         arguments:
             - '%kernel.cache_dir%/annotations'
+
+    Shopsys\FrameworkBundle\Model\Order\Listing\OrderListAdminRepository: '@App\Model\Order\Listing\OrderListAdminRepository'
