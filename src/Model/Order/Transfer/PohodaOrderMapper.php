@@ -12,37 +12,37 @@ use App\Component\Transfer\Pohoda\Order\PohodaOrderItem;
 use App\Model\Order\Item\OrderItem;
 use App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade;
 use App\Model\Order\Order;
+use App\Model\Product\Unit\UnitFacade;
 use App\Model\Store\Store;
 use App\Model\Store\StoreFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 
 class PohodaOrderMapper
 {
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
-     */
     private PricingGroupSettingFacade $pricingGroupSettingFacade;
 
-    /**
-     * @var \App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade
-     */
     private OrderItemSourceStockFacade $orderItemSourceStockFacade;
 
     private StoreFacade $storeFacade;
+
+    private UnitFacade $unitFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade $orderItemSourceStockFacade
      * @param \App\Model\Store\StoreFacade $storeFacade
+     * @param \App\Model\Product\Unit\UnitFacade $unitFacade
      */
     public function __construct(
         PricingGroupSettingFacade $pricingGroupSettingFacade,
         OrderItemSourceStockFacade $orderItemSourceStockFacade,
-        StoreFacade $storeFacade
+        StoreFacade $storeFacade,
+        UnitFacade $unitFacade
     ) {
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
         $this->orderItemSourceStockFacade = $orderItemSourceStockFacade;
         $this->storeFacade = $storeFacade;
+        $this->unitFacade = $unitFacade;
     }
 
     /**
@@ -214,7 +214,11 @@ class PohodaOrderMapper
         $pohodaOrderItem->name = mb_substr($orderItem->getName(), 0, PohodaOrderItem::POHODA_NAME_MAX_LENGTH);
         $pohodaOrderItem->catnum = $orderItem->getCatnum();
         $pohodaOrderItem->quantity = $quantity;
-        $pohodaOrderItem->unit = $orderItem->getUnitName();
+
+        if ($orderItem->getUnitName() !== null) {
+            $pohodaOrderItem->unit = $this->unitFacade->getByNameAndLocale($orderItem->getUnitName(), DomainHelper::DOMAIN_ID_TO_LOCALE[$order->getDomainId()])->getPohodaName();
+        }
+
         $pohodaOrderItem->unitPriceWithVat = $orderItem->getPriceWithVat();
         $pohodaOrderItem->vatRate = $pohodaVatNames[$order->getDomainId()][(int)$orderItem->getVatPercent()] ?? null;
         $pohodaOrderItem->vatPercent = $orderItem->getVatPercent();
