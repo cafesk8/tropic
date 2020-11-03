@@ -100,6 +100,10 @@
                 <ord:note></ord:note>
                 <ord:intNote>{{ pohodaOrder.internalNote }}</ord:intNote>
                 <ord:parameters>
+                    <typ:parameter>
+                        <typ:name>VPrHodnotaND</typ:name>
+                        <typ:currencyValue>{{ pohodaOrder.totalPriceWithVat.amount }}</typ:currencyValue>
+                    </typ:parameter>
                     {% if pohodaOrder.pohodaTransportId is not null -%}
                         <typ:parameter>
                             <typ:name>RefVPrDopravaTyp</typ:name>
