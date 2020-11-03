@@ -10,8 +10,8 @@ use Doctrine\ORM\EntityManagerInterface;
 class HeurekaReviewFacade
 {
     public const HEUREKA_REVIEWS_URLS = [
-        DomainHelper::CZECH_DOMAIN => 'https://obchody.heureka.cz/tropicliberec-cz/recenze/',
-        DomainHelper::SLOVAK_DOMAIN => 'https://obchody.heureka.sk/tropicliberec-sk/recenze/',
+        DomainHelper::CZECH_DOMAIN => 'https://obchody.heureka.cz/tropicfishing-cz/recenze/',
+        DomainHelper::SLOVAK_DOMAIN => 'https://obchody.heureka.sk/tropicfishing-sk/recenze/',
     ];
 
     private EntityManagerInterface $em;
