@@ -449,7 +449,7 @@ class OrderController extends FrontBaseController
                     $this->newsletterFacade->addSubscribedEmail($frontOrderFormData->email, $this->domain->getId());
                 }
 
-                if ($frontOrderFormData->registration) {
+                if ($frontOrderFormData->registration && !$this->isUserLoggedOrRegistered($frontOrderFormData->email)) {
                     $customerData = $this->customerUserUpdateDataFactory->createFromOrder($order, $frontOrderFormData->password, $this->domain->getId());
                     $customer = $this->customerUserFacade->create($customerData);
                     $this->authenticator->loginUser($customer, $request);
