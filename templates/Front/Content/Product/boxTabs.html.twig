@@ -26,7 +26,7 @@
         <div class="in-tab in-tab--full-width js-anchor-tabs">
             <div class="in-tab__content">
                 <div class="in-tab__content__left">
-                    {% if product.getDescription(domain.id) %}
+                    {% if product.getDescription(domain.id) or product.isMainVariant is same as(false) %}
                         <div class="in-tab__content__title js-tabs-button" data-tab-id="description">
                             <a href="#" class="in-tab__content__title__link">
                                 {{ descriptionHeadline }}
@@ -42,10 +42,18 @@
                                 {{ product.getSeoH1(domain.id)|default(product.name) }}
                             </p>
                             <div class="in-user-text" itemprop="description">
-                                {% if product.getDescription(domain.id) %}
-                                    <p>
-                                        {{ product.getDescription(domain.id)|raw }}
-                                    </p>
+                                {% if(product.variantType is same as(constant('App\\Model\\Product\\Product::VARIANT_TYPE_VARIANT'))) %}
+                                    {% if product.getMainVariant.getDescription(domain.id) %}
+                                        <p>
+                                            {{ product.getMainVariant.getDescription(domain.id)|raw }}
+                                        </p>
+                                    {% endif %}
+                                {% else %}
+                                    {% if product.getDescription(domain.id) %}
+                                        <p>
+                                            {{ product.getDescription(domain.id)|raw }}
+                                        </p>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>
