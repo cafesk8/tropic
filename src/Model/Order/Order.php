@@ -36,7 +36,6 @@ use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
  * @property \App\Model\Administrator\Administrator|null $createdAsAdministrator
  * @method editData(\App\Model\Order\OrderData $orderData)
  * @method editOrderTransport(\App\Model\Order\OrderData $orderData)
- * @method setDeliveryAddress(\App\Model\Order\OrderData $orderData)
  * @method addItem(\App\Model\Order\Item\OrderItem $item)
  * @method removeItem(\App\Model\Order\Item\OrderItem $item)
  * @method setStatus(\App\Model\Order\Status\OrderStatus $status)
@@ -643,6 +642,40 @@ class Order extends BaseOrder
         $this->deliveryCity = $orderData->deliveryCity;
         $this->deliveryPostcode = $orderData->deliveryPostcode;
         $this->deliveryCountry = $orderData->deliveryCountry;
+    }
+
+    /**
+     * @param \App\Model\Order\OrderData $orderData
+     */
+    protected function setDeliveryAddress(BaseOrderData $orderData)
+    {
+        $this->deliveryAddressSameAsBillingAddress = $orderData->deliveryAddressSameAsBillingAddress;
+        if ($orderData->deliveryAddressSameAsBillingAddress) {
+            //disable value override when transport type is zasilkovna
+            if($orderData->orderTransport
+                && $orderData->orderTransport->transport->getTransportType() !== Transport::TYPE_ZASILKOVNA_CZ)
+            {
+                $this->deliveryCompanyName = $orderData->companyName;
+            }
+
+            $this->deliveryFirstName = $orderData->firstName;
+            $this->deliveryLastName = $orderData->lastName;
+
+            $this->deliveryTelephone = $orderData->telephone;
+            $this->deliveryStreet = $orderData->street;
+            $this->deliveryCity = $orderData->city;
+            $this->deliveryPostcode = $orderData->postcode;
+            $this->deliveryCountry = $orderData->country;
+        } else {
+            $this->deliveryFirstName = $orderData->deliveryFirstName;
+            $this->deliveryLastName = $orderData->deliveryLastName;
+            $this->deliveryCompanyName = $orderData->deliveryCompanyName;
+            $this->deliveryTelephone = $orderData->deliveryTelephone;
+            $this->deliveryStreet = $orderData->deliveryStreet;
+            $this->deliveryCity = $orderData->deliveryCity;
+            $this->deliveryPostcode = $orderData->deliveryPostcode;
+            $this->deliveryCountry = $orderData->deliveryCountry;
+        }
     }
 
     /**
