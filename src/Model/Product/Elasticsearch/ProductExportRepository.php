@@ -129,6 +129,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['variant_type'] = $product->getVariantType();
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
         $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale, $result['variant_type']);
+        $result['parameters_for_filter'] = $this->extractParametersForFilterForProductIncludingVariants($result['parameters'], $variants, $locale, $result['variant_type']);
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
         $result['gifts'] = $this->productFacade->getProductGiftName($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
@@ -215,6 +216,32 @@ class ProductExportRepository extends BaseProductExportRepository
             }
 
             return array_values(array_unique($parameters, SORT_REGULAR));
+        }
+    }
+
+    /**
+     * @param array $baseParameters
+     * @param \App\Model\Product\Product[] $variants
+     * @param string $locale
+     * @param string $variantType
+     * @return array
+     */
+    private function extractParametersForFilterForProductIncludingVariants(
+        array $baseParameters,
+        array $variants,
+        string $locale,
+        string $variantType
+    ): array {
+        if ($variantType === Product::VARIANT_TYPE_NONE || $variantType === Product::VARIANT_TYPE_VARIANT) {
+            return ['parameters' => ['parameter_groups' => $baseParameters]];
+        } else {
+            $parameters = [];
+
+            foreach ($variants as $variant) {
+                $parameters[] = ['parameter_groups' => $this->extractParameters($locale, $variant)];
+            }
+
+            return ['parameters' => $parameters];
         }
     }
 

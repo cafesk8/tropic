@@ -245,7 +245,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     }
 
     /**
-     * Override makes product groups appear in results
+     * Override makes product sets appear in results
      *
      * @inheritDoc
      */
