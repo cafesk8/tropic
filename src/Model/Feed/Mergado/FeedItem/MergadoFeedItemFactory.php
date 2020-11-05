@@ -435,6 +435,6 @@ class MergadoFeedItemFactory
         $nameForMergadoFeed = $product->getNameForMergadoFeed($domainConfig->getId());
         $name = $product->getName($domainConfig->getLocale());
 
-        return $nameForMergadoFeed ?? $name;
+        return empty($nameForMergadoFeed) ? $name : $nameForMergadoFeed;
     }
 }
