@@ -151,6 +151,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
         $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
         $result['parameters'] = $this->appendSetItemParameters($locale, $product, $result['parameters']);
+        $result['parameters_for_filter'] = $this->appendSetItemParametersForFilter($locale, $product, $result['parameters_for_filter']);
         $result['warranty'] = $product->getWarranty();
         $result['recommended'] = $product->isRecommended();
         $result['supplier_set'] = $product->isSupplierSet();
@@ -233,7 +234,11 @@ class ProductExportRepository extends BaseProductExportRepository
         string $variantType
     ): array {
         if ($variantType === Product::VARIANT_TYPE_NONE || $variantType === Product::VARIANT_TYPE_VARIANT) {
-            return ['parameter_groups' => $baseParameters];
+            if (!empty($baseParameters)) {
+                return ['parameter_groups' => $baseParameters];
+            }
+
+            return [];
         } else {
             $parameters = [];
 
@@ -381,6 +386,31 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $uniqueParameters;
+    }
+
+    /**
+     * @param string $locale
+     * @param \App\Model\Product\Product $product
+     * @param array $parameters
+     * @return array
+     */
+    private function appendSetItemParametersForFilter(string $locale, Product $product, array $parameters): array
+    {
+        $setItemParams = [];
+
+        foreach ($product->getProductSets() as $setItem) {
+            foreach ($this->extractParameters($locale, $setItem->getItem()) as $parameter) {
+                if (!in_array($parameter, $setItemParams, true)) {
+                    $setItemParams[] = $parameter;
+                }
+            }
+        }
+
+        if (!empty($setItemParams)) {
+            $parameters[] = ['parameter_groups' => $setItemParams];
+        }
+
+        return $parameters;
     }
 
     /**
