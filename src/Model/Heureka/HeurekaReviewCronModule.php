@@ -5,34 +5,41 @@ declare(strict_types=1);
 namespace App\Model\Heureka;
 
 use App\Component\Domain\DomainHelper;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Heureka\HeurekaSetting;
 use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
 use SimpleXMLElement;
 use Symfony\Bridge\Monolog\Logger;
 
 class HeurekaReviewCronModule implements SimpleCronModuleInterface
 {
-    public const HEUREKA_REVIEW_XML = 'https://www.heureka.cz/direct/dotaznik/export-review.php?key=acac0c7cfc5fd4e9cf349947bee244e1';
-    public const HEUREKA_REVIEW_XML_SK = 'https://www.heureka.sk/direct/dotaznik/export-review.php?key=f7d5c2cfdce008399c2e8cc44c7ae08f';
-    public const REVIEW_XML_URLS_BY_DOMAIN_ID = [
-        DomainHelper::CZECH_DOMAIN => self::HEUREKA_REVIEW_XML,
-        DomainHelper::SLOVAK_DOMAIN => self::HEUREKA_REVIEW_XML_SK,
-    ];
+    public const HEUREKA_REVIEW_XML_URL_PATTERN = 'https://www.heureka.%s/direct/dotaznik/export-review.php?key=%s';
     public const MINIMAL_RATING = 4.5;
 
     private HeurekaReviewFacade $heurekaReviewFacade;
 
     private HeurekaReviewItemFactory $heurekaReviewItemFactory;
 
+    private Domain $domain;
+
+    private HeurekaSetting $heurekaSetting;
+
     /**
      * @param \App\Model\Heureka\HeurekaReviewFacade $heurekaReviewFacade
      * @param \App\Model\Heureka\HeurekaReviewItemFactory $heurekaReviewItemFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\FrameworkBundle\Model\Heureka\HeurekaSetting $heurekaSetting
      */
     public function __construct(
         HeurekaReviewFacade $heurekaReviewFacade,
-        HeurekaReviewItemFactory $heurekaReviewItemFactory
+        HeurekaReviewItemFactory $heurekaReviewItemFactory,
+        Domain $domain,
+        HeurekaSetting $heurekaSetting
     ) {
         $this->heurekaReviewFacade = $heurekaReviewFacade;
         $this->heurekaReviewItemFactory = $heurekaReviewItemFactory;
+        $this->heurekaSetting = $heurekaSetting;
+        $this->domain = $domain;
     }
 
     /**
@@ -44,8 +51,14 @@ class HeurekaReviewCronModule implements SimpleCronModuleInterface
 
     public function run()
     {
-        foreach (self::REVIEW_XML_URLS_BY_DOMAIN_ID as $domainId => $heurekaReviewUrl) {
-            $xml = new SimpleXMLElement($heurekaReviewUrl, LIBXML_NOCDATA, true);
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $domainId = $domainConfig->getId();
+            if ($domainId === DomainHelper::ENGLISH_DOMAIN) {
+                continue;
+            }
+            $firstLevelDomain = $this->getFirstLevelDomain($domainId);
+            $key = $this->heurekaSetting->getApiKeyByDomainId($domainId);
+            $xml = new SimpleXMLElement(sprintf(self::HEUREKA_REVIEW_XML_URL_PATTERN, $firstLevelDomain, $key), LIBXML_NOCDATA, true);
 
             $heurekaItems = [];
 
@@ -74,5 +87,19 @@ class HeurekaReviewCronModule implements SimpleCronModuleInterface
                 }
             }
         }
+    }
+
+    /**
+     * @param int $domainId
+     * @return string
+     */
+    private function getFirstLevelDomain(int $domainId): string
+    {
+        $firstLevelDomain = 'cz';
+        if ($domainId === DomainHelper::SLOVAK_DOMAIN) {
+            $firstLevelDomain = 'sk';
+        }
+
+        return $firstLevelDomain;
     }
 }
