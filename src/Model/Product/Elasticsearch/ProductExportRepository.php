@@ -129,6 +129,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['variant_type'] = $product->getVariantType();
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
         $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale, $result['variant_type']);
+        $result['parameters_for_filter'] = $this->extractParametersForFilterForProductIncludingVariants($result['parameters'], $variants, $locale, $result['variant_type']);
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
         $result['gifts'] = $this->productFacade->getProductGiftName($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
@@ -150,6 +151,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
         $result['external_stocks_quantity'] = $product->getBiggestVariantRealExternalStockQuantity();
         $result['parameters'] = $this->appendSetItemParameters($locale, $product, $result['parameters']);
+        $result['parameters_for_filter'] = $this->appendSetItemParametersForFilter($locale, $product, $result['parameters_for_filter']);
         $result['warranty'] = $product->getWarranty();
         $result['recommended'] = $product->isRecommended();
         $result['supplier_set'] = $product->isSupplierSet();
@@ -215,6 +217,36 @@ class ProductExportRepository extends BaseProductExportRepository
             }
 
             return array_values(array_unique($parameters, SORT_REGULAR));
+        }
+    }
+
+    /**
+     * @param array $baseParameters
+     * @param \App\Model\Product\Product[] $variants
+     * @param string $locale
+     * @param string $variantType
+     * @return array
+     */
+    private function extractParametersForFilterForProductIncludingVariants(
+        array $baseParameters,
+        array $variants,
+        string $locale,
+        string $variantType
+    ): array {
+        if ($variantType === Product::VARIANT_TYPE_NONE || $variantType === Product::VARIANT_TYPE_VARIANT) {
+            if (!empty($baseParameters)) {
+                return ['parameter_groups' => $baseParameters];
+            }
+
+            return [];
+        } else {
+            $parameters = [];
+
+            foreach ($variants as $variant) {
+                $parameters[] = ['parameter_groups' => $this->extractParameters($locale, $variant)];
+            }
+
+            return $parameters;
         }
     }
 
@@ -354,6 +386,31 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $uniqueParameters;
+    }
+
+    /**
+     * @param string $locale
+     * @param \App\Model\Product\Product $product
+     * @param array $parameters
+     * @return array
+     */
+    private function appendSetItemParametersForFilter(string $locale, Product $product, array $parameters): array
+    {
+        $setItemParams = [];
+
+        foreach ($product->getProductSets() as $setItem) {
+            foreach ($this->extractParameters($locale, $setItem->getItem()) as $parameter) {
+                if (!in_array($parameter, $setItemParams, true)) {
+                    $setItemParams[] = $parameter;
+                }
+            }
+        }
+
+        if (!empty($setItemParams)) {
+            $parameters[] = ['parameter_groups' => $setItemParams];
+        }
+
+        return $parameters;
     }
 
     /**

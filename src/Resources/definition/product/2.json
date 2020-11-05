@@ -251,6 +251,22 @@
           }
         }
       },
+      "parameters_for_filter": {
+        "type": "nested",
+        "properties": {
+          "parameter_groups": {
+            "type": "nested",
+            "properties": {
+              "parameter_id": {
+                "type": "integer"
+              },
+              "parameter_value_id": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
       "ordering_priority": {
         "type": "integer"
       },
@@ -393,9 +409,6 @@
       },
       "main_category_path": {
         "type": "text"
-      },
-      "is_in_any_sale_stock": {
-        "type": "boolean"
       }
     }
   }

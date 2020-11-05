@@ -11,7 +11,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
 
 /**
- * @method \App\Model\Product\Search\FilterQuery filterByParameters(array $parameters)
  * @method \App\Model\Product\Search\FilterQuery filterByCategory(int[] $categoryIds)
  * @method \App\Model\Product\Search\FilterQuery filterByBrands(int[] $brandIds)
  * @method \App\Model\Product\Search\FilterQuery filterByFlags(int[] $flagIds)
@@ -387,5 +386,54 @@ class FilterQuery extends BaseFilterQuery
                 ],
             ],
         ];
+    }
+
+    /**
+     * @param array $parameters
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    public function filterByParameters(array $parameters): self
+    {
+        $clone = clone $this;
+        $paramFilters = [];
+
+        foreach ($parameters as $parameterId => $parameterValues) {
+            $paramFilters[] = [
+                'nested' => [
+                    'path' => 'parameters_for_filter.parameter_groups',
+                    'query' => [
+                        'bool' => [
+                            'must' => [
+                                [
+                                    'term' => [
+                                        'parameters_for_filter.parameter_groups.parameter_id' => $parameterId,
+                                    ],
+                                ],
+                                [
+                                    'terms' => [
+                                        'parameters_for_filter.parameter_groups.parameter_value_id' => $parameterValues,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+        }
+
+        if (!empty($paramFilters)) {
+            $clone->filters[] = [
+                'nested' => [
+                    'path' => 'parameters_for_filter',
+                    'query' => [
+                        'bool' => [
+                            'must' => $paramFilters,
+                        ],
+                    ],
+                ],
+            ];
+        }
+
+        return $clone;
     }
 }
