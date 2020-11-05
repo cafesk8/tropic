@@ -400,18 +400,18 @@ class FilterQuery extends BaseFilterQuery
         foreach ($parameters as $parameterId => $parameterValues) {
             $paramFilters[] = [
                 'nested' => [
-                    'path' => 'parameters_for_filter.parameters.parameter_groups',
+                    'path' => 'parameters_for_filter.parameter_groups',
                     'query' => [
                         'bool' => [
                             'must' => [
                                 [
                                     'term' => [
-                                        'parameters_for_filter.parameters.parameter_groups.parameter_id' => $parameterId,
+                                        'parameters_for_filter.parameter_groups.parameter_id' => $parameterId,
                                     ],
                                 ],
                                 [
                                     'terms' => [
-                                        'parameters_for_filter.parameters.parameter_groups.parameter_value_id' => $parameterValues,
+                                        'parameters_for_filter.parameter_groups.parameter_value_id' => $parameterValues,
                                     ],
                                 ],
                             ],
@@ -424,7 +424,7 @@ class FilterQuery extends BaseFilterQuery
         if (!empty($paramFilters)) {
             $clone->filters[] = [
                 'nested' => [
-                    'path' => 'parameters_for_filter.parameters',
+                    'path' => 'parameters_for_filter',
                     'query' => [
                         'bool' => [
                             'must' => $paramFilters,

@@ -233,7 +233,7 @@ class ProductExportRepository extends BaseProductExportRepository
         string $variantType
     ): array {
         if ($variantType === Product::VARIANT_TYPE_NONE || $variantType === Product::VARIANT_TYPE_VARIANT) {
-            return ['parameters' => ['parameter_groups' => $baseParameters]];
+            return ['parameter_groups' => $baseParameters];
         } else {
             $parameters = [];
 
@@ -241,7 +241,7 @@ class ProductExportRepository extends BaseProductExportRepository
                 $parameters[] = ['parameter_groups' => $this->extractParameters($locale, $variant)];
             }
 
-            return ['parameters' => $parameters];
+            return $parameters;
         }
     }
 

@@ -244,21 +244,16 @@
         }
       },
       "parameters_for_filter": {
-        "type": "object",
+        "type": "nested",
         "properties": {
-          "parameters": {
+          "parameter_groups": {
             "type": "nested",
             "properties": {
-              "parameter_groups": {
-                "type": "nested",
-                "properties": {
-                  "parameter_id": {
-                    "type": "integer"
-                  },
-                  "parameter_value_id": {
-                    "type": "integer"
-                  }
-                }
+              "parameter_id": {
+                "type": "integer"
+              },
+              "parameter_value_id": {
+                "type": "integer"
               }
             }
           }
