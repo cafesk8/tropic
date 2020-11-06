@@ -8,16 +8,16 @@
         <div style="float:left; width:50%; padding-right:45px;">
             <div style="text-align:right; margin-bottom:110px;">
                 {% if greyscale is same as(false) %}
-                    <img style="display:inline-block;" src="./public/frontend/images/logo-blue.svg" alt="{{ 'Logo'|trans }}">
+                    <img style="display:inline-block;" src="{{ asset('public/frontend/images/logo-blue.svg') }}" alt="{{ 'Logo'|trans }}">
                 {% else %}
-                    <img style="display:inline-block;" src="./public/frontend/images/logo-black.svg" alt="{{ 'Logo'|trans }}">
+                    <img style="display:inline-block;" src="{{ asset('public/frontend/images/logo-black.svg') }}" alt="{{ 'Logo'|trans }}">
                 {% endif %}
             </div>
             <div style="text-align: right;">
                 {% if greyscale is same as(false) %}
-                    <img style="display:inline-block; width:270px" src="./public/frontend/images/fishes-big-right.svg" alt="{{ 'Fishes'|trans }}">
+                    <img style="display:inline-block; width:270px" src="{{ asset('public/frontend/images/fishes-big-right.svg') }}" alt="{{ 'Fishes'|trans }}">
                 {% else %}
-                    <img style="display:inline-block; width:270px" src="./public/frontend/images/fishes-big-right-black.svg" alt="{{ 'Fishes'|trans }}">
+                    <img style="display:inline-block; width:270px" src="{{ asset('public/frontend/images/fishes-big-right-black.svg') }}" alt="{{ 'Fishes'|trans }}">
                 {% endif %}
             </div>
         </div>
@@ -26,7 +26,7 @@
                 {{ 'Dárkový<br> poukaz<br> v hodnotě'|trans|raw }}
             </p>
             <p style="font-size:66px; line-height:40px; font-weight:700; margin-bottom:25px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
-                {{ giftCertificateValue|priceWithCurrency(giftCertificateCurrency) }}
+                {{ giftCertificateValue|priceTextWithCurrencyByCurrencyIdAndLocale(giftCertificateCurrency.id, orderLocale) }}
             </p>
             <div style="height: 70px;">
                 <p style="margin:0px; padding:0px; font-size:14px; line-height:14px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
@@ -34,7 +34,7 @@
                 </p>
                 {% if giftCertificateValidTo is not empty %}
                     <p style="margin:0px; padding:0px; font-size:12px; line-height:12px;{% if greyscale is same as(false) %}color:#0077b3;{% else %}color:#000;{% endif %}">
-                        {{ 'Platný do:'|trans }} <strong>{{ giftCertificateValidTo|formatDateTime }}</strong>
+                        {{ 'Platný do:'|trans }} <strong>{{ giftCertificateValidTo|formatDateTime(orderLocale) }}</strong>
                     </p>            
                 {% endif %}
             </div>
