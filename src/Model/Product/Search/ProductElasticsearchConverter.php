@@ -41,6 +41,7 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['main_category_path'] = $result['main_category_path'] ?? '';
         $result['is_in_news'] = $result['is_in_news'] ?? false;
         $result['is_any_variant_in_stock'] = $result['is_any_variant_in_stock'] ?? true;
+        $result['boosting_name'] = $result['boosting_name'] ?? '';
 
         return $result;
     }

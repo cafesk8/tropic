@@ -159,6 +159,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['main_category_path'] = $this->getMainCategoryPath($product, $domainId);
         $result['is_in_news'] = $product->isProductInNews($domainId);
         $result['is_any_variant_in_stock'] = $product->isAnyVariantInStock();
+        $result['boosting_name'] = $product->isGiftCertificate() ? $product->getName($locale) : '';
 
         return $result;
     }

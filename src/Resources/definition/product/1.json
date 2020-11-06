@@ -404,6 +404,9 @@
       },
       "is_any_variant_in_stock": {
         "type": "boolean"
+      },
+      "boosting_name": {
+        "type": "keyword"
       }
     }
   }
