@@ -53,7 +53,7 @@ class SearchController extends FrontBaseController
             ->getSearchAutocompleteProducts($searchText, self::AUTOCOMPLETE_PRODUCT_LIMIT);
 
         $setsPaginationResult = $this->productOnCurrentDomainFacade
-            ->getSearchAutocompleteProducts($searchText, self::AUTOCOMPLETE_SET_LIMIT, Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET);
+            ->getSearchAutocompleteProducts($searchText, self::AUTOCOMPLETE_SET_LIMIT, Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET, false);
 
         return $this->render('Front/Content/Search/autocomplete.html.twig', [
             'searchUrl' => $searchUrl,

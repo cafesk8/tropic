@@ -73,6 +73,14 @@ class FilterQuery extends BaseFilterQuery
     {
         $clone = clone $this;
 
+        if($orderingModeId === ProductListOrderingConfig::ORDER_BY_RELEVANCE) {
+            $clone->sorting = [
+                'boosting_name' => 'desc',
+            ];
+
+            return $clone;
+        }
+
         if ($orderingModeId === ProductListOrderingConfig::ORDER_BY_PRIORITY) {
             $clone->sorting = [
                 'ordering_priority' => 'desc',
@@ -262,6 +270,24 @@ class FilterQuery extends BaseFilterQuery
         $clone->filters[] = [
             'term' => [
                 'pohoda_product_type' => $pohodaProductType,
+            ],
+        ];
+
+        return $clone;
+    }
+
+    /**
+     * @param int $pohodaProductType
+     * @param int $pohodaGiftCardType
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    public function filterByPohodaProductAndGiftCardType(int $pohodaProductType, int $pohodaGiftCardType): self
+    {
+        $clone = clone $this;
+
+        $clone->filters[] = [
+            'terms' => [
+                'pohoda_product_type' => [$pohodaProductType, $pohodaGiftCardType],
             ],
         ];
 
