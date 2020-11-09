@@ -441,6 +441,7 @@ class OrderController extends FrontBaseController
             } elseif (!$this->existAnyErrorOrInfoMessages()) {
                 try {
                     $order = $this->orderFacade->createOrderFromFront($orderData, $frontOrderFormData->deliveryAddress);
+                    $this->orderFacade->sendHeurekaOrderInfo($order, $frontOrderFormData->disallowHeurekaVerifiedByCustomers);
                 } catch (OutOfStockException $ex) {
                     return $this->redirectToRoute('front_order_index');
                 }

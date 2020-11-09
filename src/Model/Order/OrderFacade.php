@@ -873,22 +873,6 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
-     * @return \App\Model\Order\Order[]
-     */
-    public function getAllForExportToHeureka(): array
-    {
-        return $this->orderRepository->getAllForExportToHeureka();
-    }
-
-    /**
-     * @param int[] $orderIds
-     */
-    public function markOrdersAsExportedToHeureka(array $orderIds): void
-    {
-        $this->orderRepository->markOrdersAsExportedToHeureka($orderIds);
-    }
-
-    /**
      * @param int $pohodaId
      * @return \App\Model\Order\Order|null
      */
