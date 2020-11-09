@@ -62,6 +62,7 @@ class PohodaOrderItem
         $this->pohodaStockId = null;
         $this->pohodaStockName = null;
         $this->isFromExternalStock = false;
+        $this->unit = null;
     }
 
     /**
