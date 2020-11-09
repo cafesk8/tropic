@@ -186,6 +186,7 @@ class OrderController extends BaseOrderController
             $grid->addColumn('domain_id', 'o.domainId', t('Domain'), true);
         }
         $grid->addColumn('status_name', 'statusName', t('Status'), true);
+        $grid->addColumn('gopay_status', 'o.goPayStatus', t('Stav GoPay'), true);
         $grid->addColumn('total_price', 'o.totalPriceWithVat', t('Total price'), false)
             ->setClassAttribute('text-right text-no-wrap');
 

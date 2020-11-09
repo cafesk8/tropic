@@ -36,7 +36,6 @@ use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
  * @property \App\Model\Administrator\Administrator|null $createdAsAdministrator
  * @method editData(\App\Model\Order\OrderData $orderData)
  * @method editOrderTransport(\App\Model\Order\OrderData $orderData)
- * @method editOrderPayment(\App\Model\Order\OrderData $orderData)
  * @method setDeliveryAddress(\App\Model\Order\OrderData $orderData)
  * @method addItem(\App\Model\Order\Item\OrderItem $item)
  * @method removeItem(\App\Model\Order\Item\OrderItem $item)
@@ -309,6 +308,11 @@ class Order extends BaseOrder
      * @ORM\Column(type="string", length=50, nullable=false)
      */
     private string $exportHeurekaStatus = self::EXPORT_HEUREKA_NOT_YET;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private ?string $goPayStatus;
 
     /**
      * @param \App\Model\Order\OrderData $orderData
@@ -906,5 +910,33 @@ class Order extends BaseOrder
     public function getLegacyId(): ?int
     {
         return $this->legacyId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getGoPayStatus(): ?string
+    {
+        return $this->goPayStatus;
+    }
+
+    /**
+     * @param string|null $goPayStatus
+     */
+    public function setGoPayStatus(?string $goPayStatus): void
+    {
+        $this->goPayStatus = $goPayStatus;
+    }
+
+    /**
+     * @param \App\Model\Order\OrderData $orderData
+     */
+    protected function editOrderPayment(BaseOrderData $orderData): void
+    {
+        parent::editOrderPayment($orderData);
+
+        if (!$this->payment->isGoPay()) {
+            $this->setGoPayStatus(null);
+        }
     }
 }

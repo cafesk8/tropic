@@ -34,6 +34,8 @@ use Shopsys\FrameworkBundle\Model\Order\OrderRepository as BaseOrderRepository;
  * @method \App\Model\Order\Order[] getOrdersByCustomerUserId(int $customerUserId)
  * @method \App\Model\Order\Order|null findLastByCustomerUserId(int $customerUserId)
  * @method \App\Model\Order\Order getByOrderNumberAndCustomerUser(string $orderNumber, \App\Model\Customer\User\CustomerUser $customerUser)
+ * @property \App\Model\Order\Listing\OrderListAdminRepository $orderListAdminRepository
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Order\Listing\OrderListAdminRepository $orderListAdminRepository)
  */
 class OrderRepository extends BaseOrderRepository
 {
