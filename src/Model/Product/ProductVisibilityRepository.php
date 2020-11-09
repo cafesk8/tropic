@@ -33,7 +33,7 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
 
         $query = $this->em->createNativeQuery(
             'UPDATE products AS p
-            SET calculated_visibility = EXISTS (
+            SET calculated_visibility = EXISTS(
                 SELECT 1
                 FROM product_domains pd
                 WHERE pd.product_id = p.id
@@ -51,8 +51,8 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
     }
 
     /**
-     * Product group is hidden when any of its products are missing prices for ordinary customer or registered customer
-     * If any product in product group doesn't have a name for selected domain then whole product group is hidden
+     * Product set is hidden when any of its products are missing prices for ordinary customer or registered customer
+     * If any product in product set doesn't have a name for selected domain then whole product group is hidden
      * If any of the products in the set is hidden on the given domain, then the whole set is hidden
      * Now uses ProductDomain::shown instead of Product::calculatedHidden
      *
