@@ -146,6 +146,11 @@ class CustomerExportFacade
                 continue;
             }
 
+            if (empty($pohodaCustomer->addressBookResponse->producedDetailId)) {
+                $this->logger->addError('Při exportu zákazníka s ID: ' . $pohodaCustomer->eshopId . ' bylo vráceno Pohoda ID 0');
+                continue;
+            }
+
             $customerUser = $this->customerUserFacade->getCustomerUserById($pohodaCustomer->eshopId);
 
             $customerUserUpdateData = $this->customerUserUpdateDataFactory->createFromCustomerUser($customerUser);
