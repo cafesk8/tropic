@@ -35,7 +35,13 @@
                         </div>
                         <div class="in-tab__content__item in-tab__content__item--without-gap js-tabs-content" data-tab-id="description">
                             {% if product.supplierSet is same as(false) %}
-                                <p class="in-tab__content__item__text">{{ product.getShortDescription(domain.id)|raw }}</p>
+                                {% if(product.variantType is same as(constant('App\\Model\\Product\\Product::VARIANT_TYPE_VARIANT'))) %}
+                                    {% if product.getMainVariant.getDescription(domain.id) %}
+                                        <p class="in-tab__content__item__text">{{ product.getMainVariant.getShortDescription(domain.id)|raw }}</p>
+                                    {% endif %}
+                                {% else %}
+                                    <p class="in-tab__content__item__text">{{ product.getShortDescription(domain.id)|raw }}</p>
+                                {% endif %}
                             {% endif %}
                             <p class="in-tab__content__item__subtitle">
                                 <span class="in-tab__content__item__subtitle__info">{{ 'Popis'|trans }}</span>
