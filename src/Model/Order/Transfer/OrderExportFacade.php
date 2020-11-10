@@ -204,7 +204,8 @@ class OrderExportFacade
             }
 
             $order = $this->orderFacade->getById($pohodaOrder->eshopId);
-            if ($pohodaOrder->orderResponse->responsePackItemState === PohodaResponse::POHODA_XML_RESPONSE_ITEM_STATE_OK) {
+            if ($pohodaOrder->orderResponse->responsePackItemState === PohodaResponse::POHODA_XML_RESPONSE_ITEM_STATE_OK
+                && !empty($pohodaOrder->orderResponse->producedDetailId)) {
                 $this->orderFacade->markOrderAsExported($order->getId(), $pohodaOrder->orderResponse->producedDetailId);
             }
 
