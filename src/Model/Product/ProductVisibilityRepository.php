@@ -18,6 +18,8 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository as BasePro
  */
 class ProductVisibilityRepository extends BaseProductVisibilityRepository
 {
+    private const IDS_CHUNK_SIZE = 20;
+
     /**
      * Now uses ProductDomain::shown instead of Product::calculatedHidden
      *
@@ -25,29 +27,27 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
      */
     protected function refreshGlobalProductVisibility($onlyMarkedProducts)
     {
-        if ($onlyMarkedProducts) {
-            $onlyMarkedProductsWhereClause = ' WHERE p.recalculate_visibility = TRUE';
-        } else {
-            $onlyMarkedProductsWhereClause = '';
+        $relevantProductIds = $this->getProductIds($onlyMarkedProducts);
+        $chunks = array_chunk($relevantProductIds, self::IDS_CHUNK_SIZE);
+        foreach ($chunks as $productIds) {
+            $query = $this->em->createNativeQuery(
+                'UPDATE products AS p
+                SET calculated_visibility = EXISTS(
+                    SELECT 1
+                    FROM product_domains pd
+                    WHERE pd.product_id = p.id
+                        AND pd.shown = TRUE
+                ) AND EXISTS(
+                    SELECT 1
+                    FROM product_visibilities AS pv
+                    WHERE pv.product_id = p.id
+                        AND pv.visible = TRUE
+                ) WHERE p.id IN (:ids)
+                ',
+                new ResultSetMapping()
+            );
+            $query->execute(['ids' => $productIds]);
         }
-
-        $query = $this->em->createNativeQuery(
-            'UPDATE products AS p
-            SET calculated_visibility = EXISTS(
-                SELECT 1
-                FROM product_domains pd
-                WHERE pd.product_id = p.id
-                    AND pd.shown = TRUE
-            ) AND EXISTS(
-                SELECT 1
-                FROM product_visibilities AS pv
-                WHERE pv.product_id = p.id
-                    AND pv.visible = TRUE
-            )
-            ' . $onlyMarkedProductsWhereClause,
-            new ResultSetMapping()
-        );
-        $query->execute();
     }
 
     /**
@@ -170,5 +170,38 @@ class ProductVisibilityRepository extends BaseProductVisibilityRepository
                 'groupProductType' => Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET,
             ]);
         }
+    }
+
+    protected function markAllProductsVisibilityAsRecalculated()
+    {
+        $relevantProductIds = $this->getProductIds(true);
+
+        $chunks = array_chunk($relevantProductIds, self::IDS_CHUNK_SIZE);
+        foreach ($chunks as $productIds) {
+            $this->em->createQueryBuilder()
+                ->update(Product::class, 'p')
+                ->set('p.recalculateVisibility', 'false')
+                ->where('p.id IN (:ids)')
+                ->setParameter('ids', $productIds)
+                ->getQuery()
+                ->execute();
+        }
+    }
+
+    /**
+     * @param bool $markedForVisibilityRecalculationOnly
+     * @return int[]
+     */
+    private function getProductIds(bool $markedForVisibilityRecalculationOnly = false): array
+    {
+        $relevantProductIdsQueryBuilder = $this->em->createQueryBuilder()
+            ->select('p.id')
+            ->from(Product::class, 'p');
+
+        if ($markedForVisibilityRecalculationOnly) {
+            $relevantProductIdsQueryBuilder->where('p.recalculateVisibility = TRUE');
+        }
+
+        return array_column($relevantProductIdsQueryBuilder->getQuery()->getScalarResult(), 'id');
     }
 }
