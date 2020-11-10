@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Component\DateTimeHelper\DateTimeHelper;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
@@ -383,10 +384,12 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             'label' => t('Platnost'),
         ])
             ->add('validFrom', DatePickerType::class, [
+                'view_timezone' => DateTimeHelper::UTC_TIMEZONE,
                 'required' => false,
                 'label' => t('Platný od'),
             ])
             ->add('validTo', DatePickerType::class, [
+                'view_timezone' => DateTimeHelper::UTC_TIMEZONE,
                 'required' => false,
                 'label' => t('Platný do'),
             ]);

@@ -179,7 +179,7 @@ class PromoCodeFacade extends BasePromoCodeFacade
         $promoCodeData->quantity = $quantity;
         $promoCodeData->type = PromoCodeData::TYPE_CERTIFICATE;
         $promoCodeData->useNominalDiscount = true;
-        $promoCodeData->validTo = new DateTime('+365 days');
+        $promoCodeData->validTo = (new DateTime('+365 days'))->setTime(0,0,0);
 
         return $this->massCreate($promoCodeData);
     }
