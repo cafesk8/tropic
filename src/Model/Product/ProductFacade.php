@@ -25,7 +25,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Domain\Exception\NoDomainSelectedException;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
-use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileFacade;
@@ -875,40 +874,6 @@ class ProductFacade extends BaseProductFacade
                 }
             }
         }
-    }
-
-    /**
-     * @param int $domainId
-     * @return int[]
-     */
-    public function hideVariantsWithDifferentPriceForDomain(int $domainId): array
-    {
-        $defaultPricingGroup = $this->pricingGroupFacade->getDefaultPricingGroup($domainId);
-
-        $hiddenVariantsIds = [];
-
-        $mainVariantIdsWithDifferentPrices = $this->productRepository->getMainVariantIdsWithDifferentPrice($domainId, $defaultPricingGroup);
-
-        foreach ($mainVariantIdsWithDifferentPrices as $mainVariantIdWithDifferentPrices) {
-            $variantsToHide = $this->productRepository->getVariantsWithDifferentPriceForMainVariant(
-                $mainVariantIdWithDifferentPrices['mainVariantId'],
-                Money::create($mainVariantIdWithDifferentPrices['defaultPrice']),
-                $defaultPricingGroup
-            );
-
-            foreach ($variantsToHide as $variantToHide) {
-                $hiddenVariantsIds[] = $variantToHide->getId();
-
-                foreach ($this->domain->getAllIds() as $domainId) {
-                    $variantToHide->setProductAsNotShown($domainId);
-                }
-
-                $this->em->flush($variantToHide);
-            }
-        }
-
-        $this->productVisibilityFacade->refreshProductsVisibilityForMarked();
-        return $hiddenVariantsIds;
     }
 
     /**
