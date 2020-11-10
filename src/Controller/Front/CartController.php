@@ -379,7 +379,10 @@ class CartController extends FrontBaseController
     public function addProductAction(Request $request)
     {
         $product = $this->productFacade->getSellableById($request->request->get('add_product_form')['productId']);
-        $form = $this->createForm(AddProductFormType::class, [], ['minimum_amount' => $product->getRealMinimumAmount()]);
+        $form = $this->createForm(AddProductFormType::class, [], [
+            'minimum_amount' => $product->getRealMinimumAmount(),
+            'unit_name' => $product->getUnit()->getName(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
