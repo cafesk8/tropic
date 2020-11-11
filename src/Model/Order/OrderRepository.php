@@ -327,36 +327,6 @@ class OrderRepository extends BaseOrderRepository
     }
 
     /**
-     * @return \App\Model\Order\Order[]
-     */
-    public function getAllForExportToHeureka(): array
-    {
-        $queryBuilder = $this->createOrderQueryBuilder()
-            ->andWhere('o.exportHeurekaStatus = :exportHeurekaStatus')
-            ->orderBy('o.createdAt', 'ASC')
-            ->setParameters([
-                'exportHeurekaStatus' => Order::EXPORT_HEUREKA_NOT_YET,
-            ]);
-
-        return $queryBuilder->getQuery()->getResult();
-    }
-
-    /**
-     * @param int[] $orderIds
-     */
-    public function markOrdersAsExportedToHeureka(array $orderIds): void
-    {
-        $this->em->createNativeQuery('
-            UPDATE orders
-            SET export_heureka_status = :exported
-            WHERE id IN (:orderIds)', new ResultSetMapping()
-        )->setParameters([
-            'exported' => Order::EXPORT_HEUREKA_DONE,
-            'orderIds' => $orderIds,
-        ])->execute();
-    }
-
-    /**
      * @param int $pohodaId
      * @return \App\Model\Order\Order|null
      */
