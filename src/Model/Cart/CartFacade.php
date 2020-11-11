@@ -594,6 +594,9 @@ class CartFacade extends BaseCartFacade
      */
     public function containsForeignSupplierProducts(): bool
     {
+        // Temporarily disabled before Heureka check
+        return false;
+        /*
         $cart = $this->findCartOfCurrentCustomerUser();
 
         if ($cart === null) {
@@ -607,5 +610,6 @@ class CartFacade extends BaseCartFacade
         }
 
         return false;
+        */
     }
 }
