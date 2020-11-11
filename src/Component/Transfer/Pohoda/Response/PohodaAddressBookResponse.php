@@ -6,8 +6,5 @@ namespace App\Component\Transfer\Pohoda\Response;
 
 class PohodaAddressBookResponse extends PohodaResponse
 {
-    /**
-     * @var int|null
-     */
-    public $producedDetailId;
+    public ?int $producedDetailId;
 }

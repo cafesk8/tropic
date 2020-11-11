@@ -203,6 +203,16 @@ class OrderExportFacade
                 continue;
             }
 
+            if ($pohodaOrder->orderResponse->responseState !== PohodaResponse::POHODA_XML_RESPONSE_ITEM_STATE_OK) {
+                $this->logger->addError('Při exportu objednávky došlo k chybě', [
+                    'orderId' => $pohodaOrder->eshopId,
+                    'responseNotes' => (string)implode('|', $pohodaOrder->orderResponse->responseNotes),
+                ]);
+
+                $this->orderFacade->markOrderAsFailedExported($pohodaOrder->eshopId);
+                continue;
+            }
+
             $order = $this->orderFacade->getById($pohodaOrder->eshopId);
             if ($pohodaOrder->orderResponse->responsePackItemState === PohodaResponse::POHODA_XML_RESPONSE_ITEM_STATE_OK
                 && !empty($pohodaOrder->orderResponse->producedDetailId)) {

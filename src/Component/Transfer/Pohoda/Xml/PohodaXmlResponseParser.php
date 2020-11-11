@@ -63,11 +63,21 @@ class PohodaXmlResponseParser
             $pohodaOrderResponse->responsePackItemId = (string)$responsePackItemAttributes['id'];
             $pohodaOrderResponse->responsePackItemState = (string)$responsePackItemAttributes['state'];
             if (isset($responsePackItemAttributes['note'])) {
-                $pohodaOrderResponse->responsePackItemNote = $responsePackItemAttributes['note'];
+                $pohodaOrderResponse->responsePackItemNote = (string)$responsePackItemAttributes['note'];
             }
 
             if ($pohodaOrderResponse->responsePackItemState === PohodaResponse::POHODA_XML_RESPONSE_ITEM_STATE_OK) {
                 $orderResponse = $responsePackItem->children('ord', true)->orderResponse;
+                $orderResponseAttributes = $orderResponse->attributes();
+                $pohodaOrderResponse->responseState = (string)$orderResponseAttributes['state'];
+                $importDetails = $orderResponse->children('rdc', true)->importDetails->detail;
+
+                if (is_iterable($importDetails)) {
+                    foreach ($importDetails as $importDetail) {
+                        $pohodaOrderResponse->responseNotes[] = (string)$importDetail->note;
+                    }
+                }
+
                 $pohodaOrderResponse->producedDetailId = (int)$orderResponse->children('rdc', true)->producedDetails->id;
             }
 
