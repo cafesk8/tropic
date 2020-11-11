@@ -861,3 +861,5 @@ services:
     Shopsys\FrameworkBundle\Model\Order\Listing\OrderListAdminRepository: '@App\Model\Order\Listing\OrderListAdminRepository'
 
     Shopsys\FrameworkBundle\Model\Feed\FeedFacade: '@App\Model\Feed\FeedFacade'
+
+    Shopsys\FrameworkBundle\Model\Feed\FeedExportFactory: '@App\Model\Feed\FeedExportFactory'
