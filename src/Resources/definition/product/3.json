@@ -404,6 +404,17 @@
       },
       "is_any_variant_in_stock": {
         "type": "boolean"
+      },
+      "boosting_name": {
+        "type": "text",
+        "analyzer": "stemming",
+        "fields": {
+          "keyword": {
+            "type": "icu_collation_keyword",
+            "language": "cs",
+            "index": false
+          }
+        }
       }
     }
   }
