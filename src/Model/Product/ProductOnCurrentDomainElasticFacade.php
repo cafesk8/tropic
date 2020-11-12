@@ -52,7 +52,6 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @param int $page
      * @param int $limit
      * @param int $pohodaProductType
-     * @param bool $includeGiftCards
      * @return \App\Model\Product\Search\FilterQuery
      */
     protected function createFilterQueryWithProductFilterData(
@@ -60,19 +59,14 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         string $orderingModeId,
         int $page,
         int $limit,
-        ?int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT,
-        bool $includeGiftCards = true
+        ?int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
     ): BaseFilterQuery {
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
             ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
             ->excludeVariants();
 
         if ($pohodaProductType !== null) {
-            if($includeGiftCards) {
-                $filterQuery = $filterQuery->filterByPohodaProductAndGiftCardType($pohodaProductType, Product::POHODA_PRODUCT_TYPE_ID_GIFT_CARD);
-            } else {
-                $filterQuery = $filterQuery->filterByPohodaProductType($pohodaProductType);
-            }
+            $filterQuery = $filterQuery->filterByPohodaProductType($pohodaProductType);
         }
 
         $filterQuery = $filterQuery
@@ -130,19 +124,17 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @param string|null $searchText
      * @param int $limit
      * @param int $pohodaProductType
-     * @param bool $includeGiftCards
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
      */
     public function getSearchAutocompleteProducts(
         ?string $searchText,
         int $limit,
-        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT,
-        bool $includeGiftCards = true
+        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
     ): PaginationResult {
         $emptyProductFilterData = new ProductFilterData();
         $page = 1;
 
-        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($emptyProductFilterData, ProductListOrderingConfig::ORDER_BY_RELEVANCE, $page, $limit, $searchText, $pohodaProductType, $includeGiftCards);
+        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($emptyProductFilterData, ProductListOrderingConfig::ORDER_BY_RELEVANCE, $page, $limit, $searchText, $pohodaProductType);
 
         $productIds = $this->productElasticsearchRepository->getSortedProductIdsByFilterQuery($filterQuery);
 
@@ -166,7 +158,6 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @param int $limit
      * @param string|null $searchText
      * @param int $pohodaProductType
-     * @param bool $includeGiftCards
      * @return \App\Model\Product\Search\FilterQuery
      */
     protected function createListableProductsForSearchTextFilterQuery(
@@ -175,12 +166,11 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         int $page,
         int $limit,
         ?string $searchText,
-        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT,
-        bool $includeGiftCards = true
+        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
     ): BaseFilterQuery {
         $searchText = $searchText ?? '';
 
-        return $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit, $pohodaProductType, $includeGiftCards)
+        return $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit, $pohodaProductType)
             ->search($searchText);
     }
 
@@ -191,7 +181,6 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @param int $page
      * @param int $limit
      * @param int $pohodaProductType
-     * @param bool $includeGiftCards
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
      */
     public function getPaginatedProductsForSearch(
@@ -200,10 +189,9 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         string $orderingModeId,
         int $page,
         int $limit,
-        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT,
-        bool $includeGiftCards = true
+        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT
     ): PaginationResult {
-        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($productFilterData, $orderingModeId, $page, $limit, $searchText, $pohodaProductType, $includeGiftCards);
+        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($productFilterData, $orderingModeId, $page, $limit, $searchText, $pohodaProductType);
 
         $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
 

@@ -401,9 +401,6 @@
       },
       "main_category_path": {
         "type": "text"
-      },
-      "boosting_name": {
-        "type": "keyword"
       }
     }
   }
