@@ -96,7 +96,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $this->imageViewFacade->getStickerViewsByProductId($productArray['id']),
             $productArray['warranty'],
             $productArray['recommended'],
-            $productArray['supplier_set']
+            $productArray['supplier_set'],
+            $productArray['is_any_variant_in_stock']
         );
     }
 
@@ -131,7 +132,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $this->imageViewFacade->getStickerViewsByProductId($product->getId()),
             $product->getWarranty(),
             $product->isRecommended(),
-            $product->isSupplierSet()
+            $product->isSupplierSet(),
+            $product->isAnyVariantInStock()
         );
     }
 

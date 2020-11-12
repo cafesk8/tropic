@@ -117,6 +117,7 @@ class ProductExportRepository extends BaseProductExportRepository
 
             return $result;
         }
+
         if ($scope === self::SCOPE_URLS) {
             $result['detail_url'] = $this->extractDetailUrl($domainId, $product);
 
@@ -157,6 +158,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['supplier_set'] = $product->isSupplierSet();
         $result['main_category_path'] = $this->getMainCategoryPath($product, $domainId);
         $result['is_in_news'] = $product->isProductInNews($domainId);
+        $result['is_any_variant_in_stock'] = $product->isAnyVariantInStock();
 
         return $result;
     }

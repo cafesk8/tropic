@@ -1,6 +1,6 @@
 {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
 {% import 'Front/Content/Product/productAvailabilityInDaysMacro.html.twig' as availabilityInDays %}
-{% if productView.action.isMainVariant %}
+{% if productView.action.isMainVariant and productView.isAnyVariantInStock %}
     {{ 'Dostupnost dle varianty'|trans }}
 {% elseif productView.realSaleStocksQuantity > 0 %}
     {{ saleStockQuantity.showInfo(productView.realSaleStocksQuantity, productView.unitName) }}
