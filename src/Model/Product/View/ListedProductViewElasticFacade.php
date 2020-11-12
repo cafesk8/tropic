@@ -205,7 +205,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
     {
         $newsFlag = $this->flagFacade->getNewsFlag();
 
-        return $this->getPaginatedForFlags([$newsFlag->getId()], ProductListOrderingConfig::ORDER_BY_PRIORITY, 1, $limit)->getResults();
+        return $this->getPaginatedForFlags([$newsFlag->getId()], ProductListOrderingConfig::ORDER_BY_NEWS_ACTIVE_FROM, 1, $limit)->getResults();
     }
 
     /**

@@ -585,7 +585,7 @@ class PohodaProductMapper
         if ($pohodaProduct->flagNewFrom !== null || $pohodaProduct->flagNewTo !== null) {
             $productData->flags[] = $this->productFlagDataFactory->create(
                 $flags[Flag::POHODA_ID_NEW],
-                $this->getDatetimeOrNull($pohodaProduct->flagNewFrom),
+                $this->getDatetimeOrTodayDate($pohodaProduct->flagNewFrom),
                 $this->getDatetimeOrNull($pohodaProduct->flagNewTo)
             );
         }
@@ -638,6 +638,20 @@ class PohodaProductMapper
     private function getDatetimeOrNull(?string $date): ?DateTime
     {
         return $date === null ? null : new DateTime($date);
+    }
+
+    /**
+     * @param string|null $date
+     * @return \DateTime
+     */
+    private function getDatetimeOrTodayDate(?string $date): DateTime
+    {
+        if($date !== null) {
+            new DateTime($date);
+        }
+
+        $today = new DateTime();
+        return $today->setTime(0,0,0);
     }
 
     /**

@@ -171,6 +171,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['boosting_name'] = $product->isGiftCertificate() ? $product->getName($locale) : '';
         $result['in_stock'] = $this->extractImmediateAvailability($product);
         $result['available'] = $this->extractAvailability($product);
+        $result['product_news_active_from'] = ($product->productNewsFrom($domainId) !== null) ? $product->productNewsFrom($domainId)->format('Y-m-d') : null;
 
         return $result;
     }
