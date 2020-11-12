@@ -164,6 +164,14 @@
             height: 150
             crop: true
             occurrence: 'Front-end: Banner for category'
+    types:
+        -   name: mobile
+            sizes:
+                -   name: ~
+                    width: 429
+                    height: 322
+                    crop: false
+                    occurrence: 'Front-end: Banner rectangle on homepage'
 
 
 -   name: brand

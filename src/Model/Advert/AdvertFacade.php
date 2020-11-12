@@ -96,6 +96,7 @@ class AdvertFacade extends BaseAdvertFacade
 
         $this->refreshAdvertProducts($advert, $advertData->products);
         $this->refreshAdvertCategories($advert, $advertData->categories);
+        $this->imageFacade->manageImages($advert, $advertData->mobileImage, Advert::TYPE_MOBILE);
 
         if (in_array($advert->getPositionName(), $this->getCachedPositions(), true)) {
             $this->twigCacheFacade->invalidateByKey('bannersOnHomepage', $advert->getDomainId());
@@ -116,6 +117,7 @@ class AdvertFacade extends BaseAdvertFacade
 
         $this->refreshAdvertProducts($advert, $advertData->products);
         $this->refreshAdvertCategories($advert, $advertData->categories);
+        $this->imageFacade->manageImages($advert, $advertData->mobileImage, Advert::TYPE_MOBILE);
 
         if (in_array($advert->getPositionName(), $this->getCachedPositions(), true)) {
             $this->twigCacheFacade->invalidateByKey('bannersOnHomepage', $advert->getDomainId());

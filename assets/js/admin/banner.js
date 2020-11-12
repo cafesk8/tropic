@@ -10,6 +10,9 @@ import Register from 'framework/common/utils/Register';
         var $imageGroup = $advertForm.filterAllNodes('.js-advert-type-content');
         var $imageSizeRecommendationSelector = '.js-image-size-recommendation';
         var $imageSizeRecommendations = $imageGroup.filterAllNodes($imageSizeRecommendationSelector);
+        let $mobileImageInput = $imageGroup.filterAllNodes('.js-mobile-image-input').closest('.form-line');
+        let $mobilePreview = $imageGroup.filterAllNodes('.image-noticer-mobile-original, .image-noimage-mobile-original').closest('.form-line');
+        let $mobileSizeRecommendation = $imageGroup.filterAllNodes('.js-mobile-image-size-recommendation');
 
         this.init = function () {
             onPositionSelectorChange();
@@ -21,6 +24,16 @@ import Register from 'framework/common/utils/Register';
             $positionSelector.val() === 'category' ? $categoryTree.show() : $categoryTree.hide();
             $imageSizeRecommendations.hide();
             $imageGroup.filterAllNodes($imageSizeRecommendationSelector + '-' + $positionSelector.val()).show();
+
+            if ($positionSelector.val() === 'fourthRectangle') {
+                $mobileImageInput.show();
+                $mobilePreview.show();
+                $mobileSizeRecommendation.show();
+            } else {
+                $mobileImageInput.hide();
+                $mobilePreview.hide();
+                $mobileSizeRecommendation.hide();
+            }
         };
     };
 

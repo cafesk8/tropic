@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Advert\Advert;
 use App\Model\Advert\AdvertData;
 use App\Model\Advert\AdvertPositionRegistry;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\Advert\AdvertFormType;
 use Shopsys\FrameworkBundle\Form\CategoriesType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
-use Shopsys\FrameworkBundle\Model\Advert\Advert;
+use Shopsys\FrameworkBundle\Form\ImageUploadType;
+use Shopsys\FrameworkBundle\Model\Advert\Advert as BaseAdvert;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -50,11 +52,11 @@ class AdvertFormTypeExtension extends AbstractTypeExtension
         $settingsGroup->add('type', ChoiceType::class, [
             'required' => true,
             'choices' => [
-                t('Image with link') => Advert::TYPE_IMAGE,
+                t('Image with link') => BaseAdvert::TYPE_IMAGE,
             ],
             'expanded' => true,
             'multiple' => false,
-            'data' => Advert::TYPE_IMAGE,
+            'data' => BaseAdvert::TYPE_IMAGE,
             'constraints' => [
                 new Constraints\NotBlank(['message' => 'Please choose advertisement type']),
             ],
@@ -93,6 +95,44 @@ class AdvertFormTypeExtension extends AbstractTypeExtension
                 'label' => t('Doporučené rozměry obrázku'),
             ]);
         }
+
+        $this->addMobileImage($builder, $options);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     */
+    private function addMobileImage(FormBuilderInterface $builder, array $options): void
+    {
+        $imagesGroup = $builder->get('image_group');
+
+        $imagesGroup->add('mobileImage', ImageUploadType::class, [
+            'attr' => [
+                'class' => 'js-mobile-image-input',
+            ],
+            'required' => false,
+            'image_entity_class' => BaseAdvert::class,
+            'file_constraints' => [
+                new Constraints\Image([
+                    'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],
+                    'mimeTypesMessage' => 'Image can be only in JPG, GIF or PNG format',
+                    'maxSize' => '2M',
+                    'maxSizeMessage' => 'Uploaded image is to large ({{ size }} {{ suffix }}). '
+                        . 'Maximum size of an image is {{ limit }} {{ suffix }}.',
+                ]),
+            ],
+            'label' => t('Mobilní verze'),
+            'entity' => $options['advert'],
+            'info_text' => t('You can upload following formats: PNG, JPG, GIF'),
+            'image_type' => Advert::TYPE_MOBILE,
+        ])->add('mobileImageSize', DisplayOnlyType::class, [
+            'attr' => [
+                'class' => 'js-mobile-image-size-recommendation',
+            ],
+            'data' => 'šířka: 429px, výška: 322px',
+            'label' => t('Doporučené rozměry obrázku pro mobilní verzi'),
+        ]);
     }
 
     /**
