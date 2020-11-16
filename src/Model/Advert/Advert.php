@@ -14,6 +14,8 @@ use Shopsys\FrameworkBundle\Model\Advert\AdvertData as BaseAdvertData;
  */
 class Advert extends BaseAdvert
 {
+    public const TYPE_MOBILE = 'mobile';
+
     /**
      * @var string|null
      *
