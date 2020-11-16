@@ -792,7 +792,7 @@ services:
         arguments:
             $shopId: '%zbozi_shop_id%'
             $privateKey: '%zbozi_private_key%'
-            $sandbox: true
+            $sandbox: false
 
     App\Controller\Front\ScriptController:
         arguments:
