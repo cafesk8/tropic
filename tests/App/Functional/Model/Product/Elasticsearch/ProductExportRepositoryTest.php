@@ -59,6 +59,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'selling_from',
             'short_description',
             'availability',
+            'availability_color',
             'delivery_days',
             'brand',
             'flags',
@@ -96,7 +97,6 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'supplier_set',
             'main_category_path',
             'is_in_news',
-            'is_any_variant_in_stock',
             'boosting_name',
         ];
     }

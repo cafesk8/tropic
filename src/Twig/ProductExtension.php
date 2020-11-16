@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use App\Model\Product\Availability\AvailabilityData;
+use App\Model\Order\Item\OrderProductFacade;
 use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
@@ -75,23 +75,17 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      */
     private $isFreeTransportFlagObtained = false;
 
-    /**
-     * @var \App\Model\Product\Availability\AvailabilityFacade
-     */
-    private $availabilityFacade;
-
-    /**
-     * @var string[]
-     */
-    private $availabilityColorsIndexedByName;
+    private AvailabilityFacade $availabilityFacade;
 
     private ?Flag $saleFlag = null;
+
+    private OrderProductFacade $orderProductFacade;
 
     /**
      * ProductExtension constructor.
      *
      * @param \App\Model\Category\CategoryFacade $categoryFacade
-     * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -100,6 +94,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Product\ProductVisibilityRepository $productVisibilityRepository
+     * @param \App\Model\Order\Item\OrderProductFacade $orderProductFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,
@@ -111,7 +106,8 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         ProductFacade $productFacade,
         AvailabilityFacade $availabilityFacade,
         CurrentCustomerUser $currentCustomerUser,
-        ProductVisibilityRepository $productVisibilityRepository
+        ProductVisibilityRepository $productVisibilityRepository,
+        OrderProductFacade $orderProductFacade
     ) {
         parent::__construct($categoryFacade, $productCachedAttributesFacade);
 
@@ -123,6 +119,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         $this->availabilityFacade = $availabilityFacade;
         $this->currentCustomerUser = $currentCustomerUser;
         $this->productVisibilityRepository = $productVisibilityRepository;
+        $this->orderProductFacade = $orderProductFacade;
     }
 
     /**
@@ -166,6 +163,14 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
             new TwigFunction(
                 'getOrderProcessItemDeliveryDays',
                 [$this, 'getOrderProcessItemDeliveryDays']
+            ),
+            new TwigFunction(
+                'getAvailabilityText',
+                [$this, 'getAvailabilityText']
+            ),
+            new TwigFunction(
+                'cloneProductWithSubtractedStocks',
+                [$this, 'cloneProductWithSubtractedStocks']
             ),
         ];
     }
@@ -254,16 +259,12 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     }
 
     /**
-     * @param string $availability
+     * @param \App\Model\Product\Product $product
      * @return string
      */
-    public function getAvailabilityColor(string $availability): string
+    public function getAvailabilityColor(Product $product): string
     {
-        if ($this->availabilityColorsIndexedByName === null) {
-            $this->availabilityColorsIndexedByName = $this->availabilityFacade->getColorsIndexedByName();
-        }
-
-        return $this->availabilityColorsIndexedByName[$availability] ?? AvailabilityData::DEFAULT_COLOR;
+        return $product->getCalculatedAvailability()->getRgbColor();
     }
 
     /**
@@ -328,5 +329,33 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         }
 
         return null;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return string
+     */
+    public function getAvailabilityText(Product $product): string
+    {
+        return $this->availabilityFacade->getAvailabilityText($product);
+    }
+
+    /**
+     * Simulates the state of product's stocks and calculated availability as it would look without the quantity
+     * that is currently in cart (minus one because we want to show the worst availability for current quantity
+     * in cart and not for the next piece that could potentially get added)
+     *
+     * @param \App\Model\Product\Product $product
+     * @param int $subtractQuantity
+     * @return \App\Model\Product\Product
+     */
+    public function cloneProductWithSubtractedStocks(Product $product, int $subtractQuantity = 0): Product
+    {
+        $productClone = clone $product;
+        $productClone->cloneStoreStocks();
+        $this->orderProductFacade->subtractStockQuantity($productClone, $subtractQuantity - 1, false, false);
+        $productClone->setCalculatedAvailability($this->availabilityFacade->getAvailability($productClone, true));
+
+        return $productClone;
     }
 }

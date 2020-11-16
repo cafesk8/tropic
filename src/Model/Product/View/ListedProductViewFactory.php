@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\View;
 
 use App\Model\Pricing\Group\PricingGroup;
+use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Pricing\ProductPrice;
@@ -34,6 +35,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
 
     private FlagFacade $flagFacade;
 
+    private AvailabilityFacade $availabilityFacade;
+
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
@@ -41,6 +44,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param \App\Model\Product\View\ListedSetItemFactory $listedSetItemFactory
      * @param \App\Model\Product\View\ImageViewFacade $imageViewFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      */
     public function __construct(
         Domain $domain,
@@ -48,13 +52,15 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
         ProductFacade $productFacade,
         ListedSetItemFactory $listedSetItemFactory,
         ImageViewFacade $imageViewFacade,
-        FlagFacade $flagFacade
+        FlagFacade $flagFacade,
+        AvailabilityFacade $availabilityFacade
     ) {
         parent::__construct($domain, $productCachedAttributesFacade);
         $this->productFacade = $productFacade;
         $this->listedSetItemFactory = $listedSetItemFactory;
         $this->imageViewFacade = $imageViewFacade;
         $this->flagFacade = $flagFacade;
+        $this->availabilityFacade = $availabilityFacade;
     }
 
     /**
@@ -97,7 +103,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productArray['warranty'],
             $productArray['recommended'],
             $productArray['supplier_set'],
-            $productArray['is_any_variant_in_stock']
+            $productArray['availability_color']
         );
     }
 
@@ -116,7 +122,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $product->getId(),
             $product->getName(),
             $product->getShortDescription($this->domain->getId()),
-            $product->getCalculatedAvailability()->getName(),
+            $this->availabilityFacade->getAvailabilityText($product, $this->domain->getLocale()),
             $this->productCachedAttributesFacade->getProductSellingPrice($product),
             $this->getFlagIdsForProduct($product),
             $productActionView,
@@ -133,7 +139,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $product->getWarranty(),
             $product->isRecommended(),
             $product->isSupplierSet(),
-            $product->isAnyVariantInStock()
+            $product->getCalculatedAvailability()->getRgbColor()
         );
     }
 

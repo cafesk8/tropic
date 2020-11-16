@@ -14,6 +14,10 @@ class Setting extends BaseSetting
     public const PRODUCT_SIZE_ARTICLE_ID = 'productSizeArticleId';
     public const FREE_TRANSPORT_FLAG = 'freeTransportFlagId';
     public const DEFAULT_AVAILABILITY_OUT_OF_STOCK_ID = 'defaultAvailabilityOutOfStockId';
+    public const AVAILABILITY_IN_SALE_STOCK_ID = 'availabilityInSaleStockId';
+    public const AVAILABILITY_IN_EXTERNAL_STOCK_ID = 'availabilityInExternalStockId';
+    public const AVAILABILITY_IN_DAYS_ID = 'availabilityInDaysId';
+    public const AVAILABILITY_BY_VARIANT_ID = 'availabilityByVariantId';
     public const COFIDIS_BANNER_MINIMUM_SHOW_PRICE_ID = 'cofidis_banner_minimum_show_price';
     public const LAST_SENT_M_SERVER_ERROR_500_INFO = 'lastSentMServerError500Info';
     public const LAST_SENT_M_SERVER_ERROR_TIMEOUT_INFO = 'lastSentMServerTimeoutInfo';

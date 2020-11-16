@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Search;
 
+use App\Model\Product\Availability\AvailabilityData;
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchConverter as BaseProductElasticsearchConverter;
 
@@ -40,7 +41,7 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['supplier_set'] = $result['supplier_set'] ?? false;
         $result['main_category_path'] = $result['main_category_path'] ?? '';
         $result['is_in_news'] = $result['is_in_news'] ?? false;
-        $result['is_any_variant_in_stock'] = $result['is_any_variant_in_stock'] ?? true;
+        $result['availability_color'] = $result['availability_color'] ?? AvailabilityData::DEFAULT_COLOR;
         $result['boosting_name'] = $result['boosting_name'] ?? '';
 
         return $result;

@@ -740,7 +740,7 @@ msgid "Dostupnost %days% dny"
 msgstr "Dostupnosť %days% dni"
 
 msgid "Dostupnost %days% dní"
-msgstr "Dostupnosť %days% dní"
+msgstr "{1} Dostupnosť %days% deň|[2,4] Dostupnosť %days% dni|[5,Inf[ Dostupnosť %days% dní"
 
 msgid "Dostupnost dle varianty"
 msgstr "Dostupnosť podľa varianty"
@@ -3554,10 +3554,10 @@ msgid "Youtube"
 msgstr "Youtube"
 
 msgid "Za tuto cenu skladem > 10 %unitName%"
-msgstr "Za túto cenu skladom > 10 %unitName%"
+msgstr "Za túto cenu ihneď k odoslaniu > 10 %unitName%"
 
-msgid "Za tuto cenu skladem již jen %quantity%%unitName%"
-msgstr "Za túto cenu skladom už len %quantity%%unitName%"
+msgid "Za tuto cenu skladem již jen %quantity% %unitName%"
+msgstr "Za túto cenu ihneď k odoslaniu už len %quantity% %unitName%"
 
 msgid "Za zboží"
 msgstr "Za tovar"

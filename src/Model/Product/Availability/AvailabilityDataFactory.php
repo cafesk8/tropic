@@ -35,6 +35,7 @@ class AvailabilityDataFactory extends BaseAvailabilityDataFactory
         $availabilityData = new AvailabilityData();
         $this->fillFromAvailability($availabilityData, $availability);
         $availabilityData->rgbColor = $availability->getRgbColor();
+        $availabilityData->code = $availability->getCode();
 
         return $availabilityData;
     }

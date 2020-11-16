@@ -279,6 +279,9 @@
       "availability": {
         "type": "text"
       },
+      "availability_color": {
+        "type": "text"
+      },
       "delivery_days": {
         "type": "text"
       },
@@ -409,9 +412,6 @@
       },
       "main_category_path": {
         "type": "text"
-      },
-      "is_any_variant_in_stock": {
-        "type": "boolean"
       },
       "boosting_name": {
         "type": "text",

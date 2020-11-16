@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Availability;
 
-use App\Component\Setting\Setting;
+use App\Model\Product\Product;
+use Exception;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade as BaseAvailabilityFacade;
 
 /**
  * @method \App\Model\Product\Availability\Availability getDefaultInStockAvailability()
  * @property \App\Component\Setting\Setting $setting
- * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityRepository $availabilityRepository, \App\Component\Setting\Setting $setting, \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFactoryInterface $availabilityFactory, \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Product\Availability\AvailabilityRepository $availabilityRepository, \App\Component\Setting\Setting $setting, \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFactoryInterface $availabilityFactory, \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher)
  * @method \App\Model\Product\Availability\Availability getById(int $availabilityId)
  * @method \App\Model\Product\Availability\Availability create(\App\Model\Product\Availability\AvailabilityData $availabilityData)
  * @method \App\Model\Product\Availability\Availability edit(int $availabilityId, \App\Model\Product\Availability\AvailabilityData $availabilityData)
@@ -20,6 +21,7 @@ use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade as Bas
  * @method bool isAvailabilityUsed(\App\Model\Product\Availability\Availability $availability)
  * @method bool isAvailabilityDefault(\App\Model\Product\Availability\Availability $availability)
  * @method dispatchAvailabilityEvent(\App\Model\Product\Availability\Availability $availability, string $eventType)
+ * @property \App\Model\Product\Availability\AvailabilityRepository $availabilityRepository
  */
 class AvailabilityFacade extends BaseAvailabilityFacade
 {
@@ -42,8 +44,159 @@ class AvailabilityFacade extends BaseAvailabilityFacade
      */
     public function getDefaultOutOfStockAvailability(): Availability
     {
-        $availabilityId = $this->setting->get(Setting::DEFAULT_AVAILABILITY_OUT_OF_STOCK_ID);
+        return $this->getByCode(Availability::OUT_OF_STOCK);
+    }
 
-        return $this->getById($availabilityId);
+    /**
+     * @return \App\Model\Product\Availability\Availability
+     */
+    public function getSaleStockAvailability(): Availability
+    {
+        return $this->getByCode(Availability::IN_SALE_STOCK);
+    }
+
+    /**
+     * @return \App\Model\Product\Availability\Availability
+     */
+    public function getAvailabilityInDays(): Availability
+    {
+        return $this->getByCode(Availability::IN_DAYS);
+    }
+
+    /**
+     * @return \App\Model\Product\Availability\Availability
+     */
+    public function getExternalStockAvailability(): Availability
+    {
+        return $this->getByCode(Availability::IN_EXTERNAL_STOCK);
+    }
+
+    /**
+     * @return \App\Model\Product\Availability\Availability
+     */
+    public function getAvailabilityByVariants(): Availability
+    {
+        return $this->getByCode(Availability::BY_VARIANTS);
+    }
+
+    /**
+     * @param string $code
+     * @return \App\Model\Product\Availability\Availability
+     */
+    public function getByCode(string $code): Availability
+    {
+        return $this->availabilityRepository->getByCode($code);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param bool $withoutSaleStocks
+     * @return \App\Model\Product\Availability\Availability
+     */
+    public function getAvailability(Product $product, bool $withoutSaleStocks = false): Availability
+    {
+        if ($product->isSellingDenied()) {
+            return $this->getDefaultOutOfStockAvailability();
+        }
+
+        if (!$product->isMainVariant() && !$product->isPohodaProductTypeSet()) {
+            $saleStocksQuantity = $product->getRealSaleStocksQuantity();
+            $internalStockQuantity = $product->getRealInternalStockQuantity();
+            $externalStockQuantity = $product->getRealExternalStockQuantity();
+            $storeStockQuantity = $product->getRealStoreStockQuantity();
+
+            if ($saleStocksQuantity > 0 && !$withoutSaleStocks) {
+                return $this->getSaleStockAvailability();
+            } elseif ($internalStockQuantity > 0) {
+                return $this->getDefaultInStockAvailability();
+            } elseif ($product->isAvailableInDays($withoutSaleStocks)) {
+                return $this->getAvailabilityInDays();
+            } elseif ($externalStockQuantity > 0) {
+                return $this->getExternalStockAvailability();
+            } elseif ($storeStockQuantity > 0) {
+                return $this->getDefaultInStockAvailability();
+            }
+
+            return $this->getDefaultOutOfStockAvailability();
+        }
+
+        if ($product->isMainVariant()) {
+            if ($product->isAnyVariantInStock()) {
+                return $this->getAvailabilityByVariants();
+            }
+
+            return $this->getDefaultOutOfStockAvailability();
+        }
+
+        if ($product->isPohodaProductTypeSet()) {
+            $worstAvailability = $this->getDefaultInStockAvailability();
+
+            foreach ($product->getProductSets() as $productSet) {
+                $setItemAvailability = $this->getAvailability($productSet->getItem());
+
+                if ($setItemAvailability->getRating() > $worstAvailability->getRating()) {
+                    $worstAvailability = $setItemAvailability;
+                }
+            }
+
+            return $worstAvailability;
+        }
+
+        throw new Exception('Unknown availability for product ' . $product->getCatnum());
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param string|null $locale
+     * @return string
+     */
+    public function getAvailabilityText(Product $product, ?string $locale = null): string
+    {
+        $availability = $product->getCalculatedAvailability();
+
+        switch ($availability->getCode()) {
+            case Availability::IN_SALE_STOCK:
+                $saleStocksQuantity = $product->getRealSaleStocksQuantity();
+
+                if ($saleStocksQuantity > 10) {
+                    return t(
+                        'Za tuto cenu skladem > 10 %unitName%',
+                        ['%unitName%' => $product->getUnit()->getName($locale)],
+                        'messages',
+                        $locale
+                    );
+                } else {
+                    return t(
+                        'Za tuto cenu skladem již jen %quantity% %unitName%',
+                        ['%quantity%' => $saleStocksQuantity, '%unitName%' => $product->getUnit()->getName($locale)],
+                        'messages',
+                        $locale
+                    );
+                }
+            case Availability::IN_DAYS:
+                $deliveryDays = $product->getDeliveryDays();
+                $deliveryDaysNumber = $product->getDeliveryDaysAsNumber();
+
+                if ($product->isPohodaProductTypeSet() && !$product->isAvailableInDays()) {
+                    foreach ($product->getProductSets() as $productSet) {
+                        if ($productSet->getItem()->getCalculatedAvailability()->isInDays()) {
+                            if ($deliveryDaysNumber < $productSet->getItem()->getDeliveryDaysAsNumber()) {
+                                $deliveryDays = $productSet->getItem()->getDeliveryDays();
+                                $deliveryDaysNumber = $productSet->getItem()->getDeliveryDaysAsNumber();
+                            }
+                        }
+                    }
+                }
+
+                return tc(
+                    'Dostupnost %days% dní',
+                    $deliveryDaysNumber,
+                    ['%days%' => $deliveryDays],
+                    'messages',
+                    $locale
+                );
+            default:
+                return $availability->getName($locale);
+        }
     }
 }

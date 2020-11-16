@@ -10,14 +10,14 @@ class AvailabilityData extends BaseAvailabilityData
 {
     public const DEFAULT_COLOR = '#3ea938';
 
-    /**
-     * @var string
-     */
-    public $rgbColor;
+    public string $rgbColor;
+
+    public ?string $code;
 
     public function __construct()
     {
         parent::__construct();
         $this->rgbColor = self::DEFAULT_COLOR;
+        $this->code = null;
     }
 }

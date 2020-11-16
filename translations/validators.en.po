@@ -214,6 +214,9 @@ msgstr "Phone number must start with symbol +"
 msgid "Telephone number cannot be longer than {{ limit }} characters"
 msgstr "Telephone number cannot be longer than {{ limit }} characters"
 
+msgid "Tento produkt lze nakoupit v minimálním množství %amount%&nbsp;%unitName%"
+msgstr ""
+
 msgid "This e-mail is already registered"
 msgstr "This e-mail is already registered"
 
