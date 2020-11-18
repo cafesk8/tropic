@@ -102,4 +102,20 @@ class ProductFlag
     {
         return $this->activeTo;
     }
+
+    /**
+     * @param \DateTime|null $activeFrom
+     */
+    public function setActiveFrom(?DateTime $activeFrom): void
+    {
+        $this->activeFrom = $activeFrom;
+    }
+
+    /**
+     * @param \DateTime|null $activeTo
+     */
+    public function setActiveTo(?DateTime $activeTo): void
+    {
+        $this->activeTo = $activeTo;
+    }
 }
