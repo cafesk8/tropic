@@ -1636,4 +1636,22 @@ class Product extends BaseProduct
 
         return false;
     }
+
+    /**
+     * @return bool
+     */
+    public function isAnyVariantInStock(): bool
+    {
+        if ($this->isMainVariant()) {
+            foreach ($this->variants as $variant) {
+                if (!$variant->isSellingDenied() && (!$variant->isUsingStock() || $variant->getRealStockQuantity() > 0)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return !$this->isSellingDenied() && (!$this->isUsingStock() || $this->getRealStockQuantity() > 0);
+    }
 }

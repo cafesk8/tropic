@@ -401,6 +401,9 @@
       },
       "main_category_path": {
         "type": "text"
+      },
+      "is_any_variant_in_stock": {
+        "type": "boolean"
       }
     }
   }
