@@ -3277,7 +3277,7 @@ msgstr "No product found"
 msgid "Vyhledávání výrazu"
 msgstr ""
 
-msgid "Vyhlídková 655, 463 12 Liberec 25<br>Vedené u Krajského soudu v Ústí nad Labem oddíl C,<br> vložka 16777."
+msgid "U Sadu 655, 463 12 Liberec 25<br>Vedené u Krajského soudu v Ústí nad Labem oddíl C,<br> vložka 16777."
 msgstr ""
 
 msgid "Vyjmout ze slev za registraci"

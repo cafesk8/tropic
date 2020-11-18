@@ -36,15 +36,15 @@
         </div>
     {% endif %}
 
-    <div class="box-detail-add__buttons{% if type == 'detailVariant' %} box-detail-add__buttons--small-gap{% endif %}">
+    <div class="box-detail-add__buttons{% if type == 'detailVariant' %} box-detail-add__buttons--detail-variant{% endif %} js-spinbox-parent js-maximum-amount-container">
         {% if not product.isMainVariant %}
             {% if type == 'detailVariant' %}
-                <div class="box-detail-add__buttons__item-variant">
+                <div class="box-detail-add__buttons__message in-message in-message--warning js-maximum-amount-warning display-none">
+                    {{ 'Větší množství není možné nakoupit'|trans }}
+                </div>
+                <div class="box-detail-add__buttons__item-variant box-detail-add__buttons__item-variant--with-gap">
                     <div class="in-add-to-cart">
                         <div class="in-add-to-cart__spinbox {% if product.realStockQuantity < 1 or product.calculatedSellingDenied or not showAmountInput %} display-none{% endif %}">
-                            <div class="in-message in-message--warning js-maximum-amount-warning display-none">
-                                {{ 'Větší množství není možné nakoupit'|trans }}
-                            </div>
                             <span class="form-input-spinbox js-spinbox">
                                 {{ form_widget(form.quantity, { attr: {
                                     class: 'form-input-spinbox__input input-no-style js-spinbox-input',
