@@ -8,13 +8,13 @@ use App\DataFixtures\Demo\BrandDataFixture;
 use App\DataFixtures\Demo\CategoryDataFixture;
 use App\DataFixtures\Demo\FlagDataFixture;
 use App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory;
+use App\Model\Product\Filter\ProductFilterCountData;
+use App\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
@@ -53,7 +53,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
     /**
      * @param \App\Model\Category\Category $category
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $expectedCountData
+     * @param \App\Model\Product\Filter\ProductFilterCountData $expectedCountData
      * @dataProvider categoryTestCasesProvider
      */
     public function testCategory(Category $category, ProductFilterData $filterData, ProductFilterCountData $expectedCountData): void
@@ -84,7 +84,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
     /**
      * @param string $searchText
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $expectedCountData
+     * @param \App\Model\Product\Filter\ProductFilterCountData $expectedCountData
      * @dataProvider searchTestCasesProvider
      */
     public function testSearch(string $searchText, ProductFilterData $filterData, ProductFilterCountData $expectedCountData): void
@@ -121,7 +121,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $filterData = new ProductFilterData();
         $countData = new ProductFilterCountData();
 
-        $countData->countInStock = 10;
+        $countData->countInStock = 6;
+        $countData->countAvailable = 10;
         $countData->countByBrandId = [
             2 => 6,
             14 => 2,
@@ -187,6 +188,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $countData = new ProductFilterCountData();
 
         $countData->countInStock = 2;
+        $countData->countAvailable = 2;
         $countData->countByBrandId = [
             2 => 2,
         ];
@@ -244,7 +246,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $filterData = new ProductFilterData();
         $filterData->brands[] = $this->getReference(BrandDataFixture::BRAND_CANON);
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 6;
+        $countData->countInStock = 4;
+        $countData->countAvailable = 6;
         $countData->countByFlagId = [
             6 => 2,
             2 => 3,
@@ -309,7 +312,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $filterData->flags[] = $this->getReference(FlagDataFixture::FLAG_SALE_PRODUCT);
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 5;
+        $countData->countInStock = 3;
+        $countData->countAvailable = 5;
         $countData->countByParameterIdAndValueId = [
             32 => [
                 $this->getParameterValueIdForFirstDomain('Yes') => 5,
@@ -364,7 +368,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $filterData->maximalPrice = $priceConverter->convertPriceWithVatToPriceInDomainDefaultCurrency(Money::create(80000), Domain::FIRST_DOMAIN_ID);
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 8;
+        $countData->countInStock = 5;
+        $countData->countAvailable = 8;
         $countData->countByBrandId = [
             2 => 4,
             14 => 2,
@@ -428,17 +433,17 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $filterData->inStock = true;
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 6;
+        $countData->countInStock = 4;
+        $countData->countAvailable = 4;
         $countData->countByBrandId = [
             3 => 1,
-            20 => 1,
-            19 => 2,
+            19 => 1,
             1 => 1,
             15 => 1,
         ];
         $countData->countByFlagId = [
             6 => 1,
-            2 => 6,
+            2 => 4,
             8 => 2,
             4 => 1,
         ];
@@ -474,23 +479,22 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
                 $this->getParameterValueIdForFirstDomain('112 g') => 2,
             ],
             3 => [
-                $this->getParameterValueIdForFirstDomain('800 × 480 px') => 2,
+                $this->getParameterValueIdForFirstDomain('800 × 480 px') => 1,
             ],
             47 => [
-                $this->getParameterValueIdForFirstDomain('4.5"') => 2,
+                $this->getParameterValueIdForFirstDomain('4.5"') => 1,
                 $this->getParameterValueIdForFirstDomain('5.5"') => 1,
             ],
             48 => [
-                $this->getParameterValueIdForFirstDomain('TFT') => 2,
+                $this->getParameterValueIdForFirstDomain('TFT') => 1,
                 $this->getParameterValueIdForFirstDomain('Super LCD') => 1,
             ],
             49 => [
-                $this->getParameterValueIdForFirstDomain('5 Mpx') => 2,
+                $this->getParameterValueIdForFirstDomain('5 Mpx') => 1,
                 $this->getParameterValueIdForFirstDomain('13 Mpx') => 1,
             ],
             52 => [
                 $this->getParameterValueIdForFirstDomain('250 kWh/rok') => 1,
-                $this->getParameterValueIdForFirstDomain('275 kWh/rok') => 1,
             ],
         ];
 
@@ -528,7 +532,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         );
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 3;
+        $countData->countInStock = 2;
+        $countData->countAvailable = 3;
         $countData->countByBrandId = [
             14 => 1,
         ];
@@ -598,7 +603,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         );
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 7;
+        $countData->countInStock = 4;
+        $countData->countAvailable = 7;
         $countData->countByBrandId = [
             14 => 2,
             2 => 5,
@@ -896,8 +902,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $countData
-     * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData
+     * @param \App\Model\Product\Filter\ProductFilterCountData $countData
+     * @return \App\Model\Product\Filter\ProductFilterCountData
      */
     private function removeEmptyParameters(ProductFilterCountData $countData): ProductFilterCountData
     {

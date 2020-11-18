@@ -31,6 +31,11 @@ class Availability extends BaseAvailability
         self::OUT_OF_STOCK,
     ];
 
+    private const IMMEDIATELY_AVAILABLE_CODES = [
+        self::IN_STOCK,
+        self::IN_SALE_STOCK,
+    ];
+
     /**
      * @ORM\Column(type="string", length=7)
      */
@@ -91,5 +96,21 @@ class Availability extends BaseAvailability
     public function isInDays(): bool
     {
         return $this->code === self::IN_DAYS;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isImmediatelyAvailable(): bool
+    {
+        return in_array($this->code, self::IMMEDIATELY_AVAILABLE_CODES, true);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAvailable(): bool
+    {
+        return $this->code !== self::OUT_OF_STOCK;
     }
 }

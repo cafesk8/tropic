@@ -8,6 +8,7 @@ use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -30,6 +31,8 @@ class ProductFilterFormType extends AbstractType
         $config = $options['product_filter_config'];
 
         $builder
+            ->add('inStock', CheckboxType::class, ['required' => false])
+            ->add('available', CheckboxType::class, ['required' => false])
             ->add('minimalPrice', MoneyType::class, [
                 'required' => false,
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',

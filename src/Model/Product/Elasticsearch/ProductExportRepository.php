@@ -114,7 +114,8 @@ class ProductExportRepository extends BaseProductExportRepository
         if ($scope === self::SCOPE_STOCKS) {
             $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
             $this->productAvailabilityRecalculator->recalculateOneProductAvailability($product);
-            $result['in_stock'] = $product->getCalculatedAvailability()->getDispatchTime() === 0;
+            $result['in_stock'] = $this->extractImmediateAvailability($product);
+            $result['available'] = $this->extractAvailability($product);
             $result['availability'] = $this->availabilityFacade->getAvailabilityText($product, $locale);
             $result['availability_color'] = $product->getCalculatedAvailability()->getRgbColor();
             $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
@@ -168,6 +169,8 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['availability'] = $this->availabilityFacade->getAvailabilityText($product, $locale);
         $result['availability_color'] = $product->getCalculatedAvailability()->getRgbColor();
         $result['boosting_name'] = $product->isGiftCertificate() ? $product->getName($locale) : '';
+        $result['in_stock'] = $this->extractImmediateAvailability($product);
+        $result['available'] = $this->extractAvailability($product);
 
         return $result;
     }
@@ -520,5 +523,43 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $results;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return bool
+     */
+    private function extractImmediateAvailability(Product $product): bool
+    {
+        if (!$product->isMainVariant()) {
+            return $product->getCalculatedAvailability()->isImmediatelyAvailable();
+        }
+
+        foreach ($product->getVariants() as $variant) {
+            if ($variant->getCalculatedAvailability()->isImmediatelyAvailable()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return bool
+     */
+    private function extractAvailability(Product $product): bool
+    {
+        if (!$product->isMainVariant()) {
+            return $product->getCalculatedAvailability()->isAvailable();
+        }
+
+        foreach ($product->getVariants() as $variant) {
+            if ($variant->getCalculatedAvailability()->isAvailable()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

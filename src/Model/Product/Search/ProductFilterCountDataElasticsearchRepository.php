@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Search;
 
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
+use App\Model\Product\Filter\ProductFilterCountData;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData as BaseProductFilterCountData;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData as BaseProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery;
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository as BaseProductFilterCountDataElasticsearchRepository;
 
 /**
- * @method int[] calculateFlagsPlusNumbers(\Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $plusFlagsQuery)
- * @method int[] calculateBrandsPlusNumbers(\Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $plusFlagsQuery)
- * @method replaceParametersPlusNumbers(\Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $countData, \App\Model\Product\Search\FilterQuery $plusParametersQuery)
+ * @method int[] calculateFlagsPlusNumbers(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $plusFlagsQuery)
+ * @method int[] calculateBrandsPlusNumbers(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $plusFlagsQuery)
+ * @method replaceParametersPlusNumbers(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Filter\ProductFilterCountData $countData, \App\Model\Product\Search\FilterQuery $plusParametersQuery)
  * @method array calculateParameterPlusNumbers(\Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData $parameterFilterData, \App\Model\Product\Search\FilterQuery $parameterFilterQuery)
+ * @property \App\Model\Product\Search\AggregationResultToProductFilterCountDataTransformer $aggregationResultToCountDataTransformer
+ * @method __construct(\Elasticsearch\Client $client, \App\Model\Product\Search\ProductFilterDataToQueryTransformer $productFilterDataToQueryTransformer, \App\Model\Product\Search\AggregationResultToProductFilterCountDataTransformer $aggregationResultToCountDataTransformer)
+ * @method mergeParameterCountData(\App\Model\Product\Filter\ProductFilterCountData $countData, array $plusParameterNumbers, int $parameterId)
+ * @property \App\Model\Product\Search\ProductFilterDataToQueryTransformer $productFilterDataToQueryTransformer
  */
 class ProductFilterCountDataElasticsearchRepository extends BaseProductFilterCountDataElasticsearchRepository
 {
@@ -22,11 +27,11 @@ class ProductFilterCountDataElasticsearchRepository extends BaseProductFilterCou
      * for parameters, main variants are excluded,
      * for brands and flags, variants are excluded
      *
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param \App\Model\Product\Search\FilterQuery $baseFilterQuery
-     * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData
+     * @return \App\Model\Product\Filter\ProductFilterCountData
      */
-    public function getProductFilterCountDataInSearch(ProductFilterData $productFilterData, FilterQuery $baseFilterQuery): ProductFilterCountData
+    public function getProductFilterCountDataInSearch(BaseProductFilterData $productFilterData, FilterQuery $baseFilterQuery): BaseProductFilterCountData
     {
         $baseFilterQueryExcludeVariants = $baseFilterQuery->excludeVariants();
         $absoluteNumbersFilterQuery = $this->productFilterDataToQueryTransformer->addFlagsToQuery($productFilterData, $baseFilterQueryExcludeVariants);
@@ -53,11 +58,11 @@ class ProductFilterCountDataElasticsearchRepository extends BaseProductFilterCou
      * for parameters, main variants are excluded,
      * for brands and flags, variants are excluded
      *
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param \App\Model\Product\Search\FilterQuery $baseFilterQuery
-     * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData
+     * @return \App\Model\Product\Filter\ProductFilterCountData
      */
-    public function getProductFilterCountDataInCategory(ProductFilterData $productFilterData, FilterQuery $baseFilterQuery): ProductFilterCountData
+    public function getProductFilterCountDataInCategory(BaseProductFilterData $productFilterData, FilterQuery $baseFilterQuery): BaseProductFilterCountData
     {
         $baseFilterQueryExcludeVariants = $baseFilterQuery->excludeVariants();
         $baseFilterQueryExcludeMainVariants = $baseFilterQuery->excludeMainVariants();
@@ -81,6 +86,7 @@ class ProductFilterCountDataElasticsearchRepository extends BaseProductFilterCou
         $countData->countByBrandId = $countDataExcludeVariants->countByBrandId;
         $countData->countByParameterIdAndValueId = $countDataExcludeMainVariants->countByParameterIdAndValueId;
         $countData->countInStock = $countDataExcludeMainVariants->countInStock;
+        $countData->countAvailable = $countDataExcludeMainVariants->countAvailable;
 
         if (count($productFilterData->flags) > 0) {
             $plusFlagsQuery = $this->productFilterDataToQueryTransformer->addBrandsToQuery($productFilterData, $baseFilterQueryExcludeVariants);

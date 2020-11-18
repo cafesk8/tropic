@@ -277,7 +277,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
     /**
      * @param string $searchText
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
+     * @param \App\Model\Product\Filter\ProductFilterData $filterData
      * @param string $orderingModeId
      * @param int $page
      * @param int $limit
@@ -299,7 +299,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
     /**
      * @param int $categoryId
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
+     * @param \App\Model\Product\Filter\ProductFilterData $filterData
      * @param string $orderingModeId
      * @param int $page
      * @param int $limit

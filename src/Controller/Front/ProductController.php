@@ -15,18 +15,18 @@ use App\Model\Heureka\HeurekaReviewFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Brand\Brand;
 use App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory;
+use App\Model\Product\Filter\ProductFilterData;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductCachedAttributesFacade;
 use App\Model\Product\View\ListedProductViewElasticFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
-use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade;
@@ -142,9 +142,6 @@ class ProductController extends FrontBaseController
 
     private ProductCachedAttributesFacade $productCachedAttributesFacade;
 
-    /**
-     * @var \App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory
-     */
     private ProductFilterConfigFactory $productFilterConfigFactory;
 
     /**
@@ -314,7 +311,7 @@ class ProductController extends FrontBaseController
 
         $productFilterData = new ProductFilterData();
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, null, $category->isUnavailableProductsShown());
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category);
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -396,7 +393,7 @@ class ProductController extends FrontBaseController
 
         $productFilterData->flags[] = $saleFlag;
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, Category::SALE_TYPE, $category->isUnavailableProductsShown());
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, Category::SALE_TYPE);
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -481,7 +478,7 @@ class ProductController extends FrontBaseController
 
         $productFilterData->flags[] = $newsFlag;
 
-        $productFilterConfig = $this->createProductFilterConfigForCategory($category, Category::NEWS_TYPE, $category->isUnavailableProductsShown());
+        $productFilterConfig = $this->createProductFilterConfigForCategory($category, Category::NEWS_TYPE);
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
         ]);
@@ -644,15 +641,13 @@ class ProductController extends FrontBaseController
     /**
      * @param \App\Model\Category\Category $category
      * @param string|null $categoryType
-     * @param bool $showUnavailableProducts
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
-    private function createProductFilterConfigForCategory(BaseCategory $category, ?string $categoryType = null, bool $showUnavailableProducts = false)
+    private function createProductFilterConfigForCategory(Category $category, ?string $categoryType = null): ProductFilterConfig
     {
         return $this->productFilterConfigFactory->createForCategory(
             $category,
             $categoryType,
-            $showUnavailableProducts,
         );
     }
 
@@ -809,7 +804,7 @@ class ProductController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param bool $isSpecialCategory
      * @return bool
      */
@@ -852,7 +847,7 @@ class ProductController extends FrontBaseController
 
     /**
      * @param \App\Model\Category\Category $category
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param string|null $type
      * @return string
      */
@@ -876,7 +871,7 @@ class ProductController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData return bool
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData return bool
      * @return bool
      */
     private function isIndexingAndFollowingDisabled(ProductFilterData $productFilterData): bool

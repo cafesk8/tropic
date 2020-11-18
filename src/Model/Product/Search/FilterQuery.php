@@ -455,4 +455,37 @@ class FilterQuery extends BaseFilterQuery
 
         return $clone;
     }
+
+    /**
+     * @return array
+     */
+    public function getAbsoluteNumbersAggregationQuery(): array
+    {
+        $aggregationQuery = parent::getAbsoluteNumbersAggregationQuery();
+        $aggregationQuery['body']['aggs']['available'] = [
+            'filter' => [
+                'term' => [
+                    'available' => 'true',
+                ],
+            ],
+        ];
+
+        return $aggregationQuery;
+    }
+
+    /**
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    public function filterOnlyAvailable(): self
+    {
+        $clone = clone $this;
+
+        $clone->filters[] = [
+            'term' => [
+                'available' => true,
+            ],
+        ];
+
+        return $clone;
+    }
 }

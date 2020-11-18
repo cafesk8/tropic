@@ -43,6 +43,7 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['is_in_news'] = $result['is_in_news'] ?? false;
         $result['availability_color'] = $result['availability_color'] ?? AvailabilityData::DEFAULT_COLOR;
         $result['boosting_name'] = $result['boosting_name'] ?? '';
+        $result['available'] = $result['available'] ?? true;
 
         return $result;
     }
