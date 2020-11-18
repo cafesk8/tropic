@@ -57,7 +57,6 @@ class FilterQuery extends BaseFilterQuery
                     'variants_aliases^45',
                     'variants_aliases.edge_ngram_with_diacritic^40',
                     'variants_aliases.edge_ngram_without_diacritic^35',
-                    'boosting_name^1000000',
                 ],
             ],
         ];
