@@ -16,7 +16,6 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
-use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,11 +33,6 @@ class PromoCodeController extends FrontBaseController
      * @var \App\Model\Order\PromoCode\PromoCodeFacade
      */
     private $promoCodeFacade;
-
-    /**
-     * @var \App\Twig\DateTimeFormatterExtension
-     */
-    private $dateTimeFormatterExtension;
 
     /**
      * @var \App\Model\Cart\CartFacade
@@ -63,7 +57,6 @@ class PromoCodeController extends FrontBaseController
     /**
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
-     * @param \App\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
@@ -72,7 +65,6 @@ class PromoCodeController extends FrontBaseController
     public function __construct(
         CurrentPromoCodeFacade $currentPromoCodeFacade,
         PromoCodeFacade $promoCodeFacade,
-        DateTimeFormatterExtension $dateTimeFormatterExtension,
         CartFacade $cartFacade,
         PriceExtension $priceExtension,
         CurrencyFacade $currencyFacade,
@@ -80,7 +72,6 @@ class PromoCodeController extends FrontBaseController
     ) {
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
         $this->promoCodeFacade = $promoCodeFacade;
-        $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
         $this->cartFacade = $cartFacade;
         $this->priceExtension = $priceExtension;
         $this->currencyFacade = $currencyFacade;
@@ -133,7 +124,7 @@ class PromoCodeController extends FrontBaseController
                 'message' => t('{{title}} není aktivní.', ['{{title}}' => $this->getErrorMessageTitle($promoCode)]),
             ]);
         } catch (\App\Model\Order\PromoCode\Exception\PromoCodeIsNotValidNow $ex) {
-            $message = $this->getPromoCodeIsNotValidMessage($request, $promoCode);
+            $message = $this->getPromoCodeIsNotValidMessage($promoCode);
             return new JsonResponse([
                 'result' => false,
                 'message' => $message,
@@ -203,11 +194,10 @@ class PromoCodeController extends FrontBaseController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \App\Model\Order\PromoCode\PromoCode $promoCode
      * @return string
      */
-    private function getPromoCodeIsNotValidMessage(Request $request, PromoCode $promoCode): string
+    private function getPromoCodeIsNotValidMessage(PromoCode $promoCode): string
     {
         $message = t('{{title}} nemůžete uplatnit. Platnost kupónu vypršela.', [
             '{{title}}' => $this->getErrorMessageTitle($promoCode),
