@@ -169,7 +169,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
             $validTo->setTime(23, 59, 59);
         }
 
-        $now = new DateTime();
+        $now = new DateTime('Europe/Prague');
 
         if ($validFrom === null && $validTo === null) {
             return true;
