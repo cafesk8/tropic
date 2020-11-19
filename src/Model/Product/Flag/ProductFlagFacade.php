@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\Flag;
 
 use App\Model\Product\Product;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ProductFlagFacade
@@ -48,6 +49,18 @@ class ProductFlagFacade
         $this->em->flush();
 
         return $productFlag;
+    }
+
+    /**
+     * @param \App\Model\Product\Flag\ProductFlag $productFlag
+     * @param \DateTime|null $activeFrom
+     * @param \DateTime|null $activeTo
+     */
+    public function edit(ProductFlag $productFlag, ?DateTime $activeFrom, ?DateTime $activeTo): void
+    {
+        $productFlag->setActiveFrom($activeFrom);
+        $productFlag->setActiveTo($activeTo);
+        $this->em->flush();
     }
 
     /**

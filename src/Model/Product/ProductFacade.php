@@ -1337,6 +1337,12 @@ class ProductFacade extends BaseProductFacade
                 $processedFlags[] = $productFlagData->flag;
             }
         }
+
+        // set NEWS flag active from and active to from variants
+        if ($product->isMainVariant()) {
+            $this->setMainProductNewsFlagByVariants($product);
+        }
+
     }
 
     /**
@@ -1405,5 +1411,52 @@ class ProductFacade extends BaseProductFacade
     public function markAsExportedToElasticByPohodaIds(array $pohodaIds): void
     {
         $this->productRepository->markAsExportedToElasticByPohodaIds($pohodaIds);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     */
+    private function setMainProductNewsFlagByVariants(Product $product): void
+    {
+        $mainProductNewsFrom = null;
+        $mainProductNewsTo = null;
+        $productNewsFrom = null;
+        $productNewsTo = null;
+        $mainProductNewsProductFlag = null;
+
+        foreach ($this->productFlagFacade->getByProduct($product) as $flag) {
+            if ($flag->getFlag()->isNews()) {
+                $mainProductNewsProductFlag = $flag;
+                $productNewsFrom = $flag->getActiveFrom();
+                $mainProductNewsFrom = $flag->getActiveFrom();
+                $productNewsTo = $flag->getActiveTo();
+                $mainProductNewsTo = $flag->getActiveTo();
+
+            }
+        }
+
+        foreach ($product->getVariants() as $variant) {
+            foreach ($this->productFlagFacade->getByProduct($variant) as $flag) {
+                if ($flag->getFlag()->isNews()) {
+                    if ($productNewsFrom === null || $productNewsFrom > $flag->getActiveFrom()) {
+                        $productNewsFrom = $flag->getActiveFrom();
+                    }
+                    if ($productNewsTo === null || $productNewsTo < $flag->getActiveTo()) {
+                        $productNewsTo = $flag->getActiveTo();
+                    }
+                }
+            }
+        }
+
+        if (($productNewsFrom !== null && ($mainProductNewsFrom === null || $mainProductNewsFrom > $productNewsFrom))
+            || ($productNewsTo !== null && ($mainProductNewsTo === null || $mainProductNewsTo < $productNewsTo))) {
+            if ($mainProductNewsProductFlag !== null) {
+                $this->productFlagFacade->edit($mainProductNewsProductFlag, $productNewsFrom, $productNewsTo);
+            } else {
+                $newsFlag = $this->flagFacade->getNewsFlag();
+                $productFlagData = $this->productFlagDataFactory->create($newsFlag, $productNewsFrom, $productNewsTo);
+                $this->productFlagFacade->create($productFlagData, $product);
+            }
+        }
     }
 }
