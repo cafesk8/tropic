@@ -50,7 +50,7 @@ import Translator from 'bazinga-translator';
     };
 
     Shopsys.filterPosition.setFilterButtons = function () {
-        if($(productListPanelSelector).hasClass('active')) {
+        if ($(productListPanelSelector).hasClass('active')) {
             $(productFilterOpenerSelector).text(Translator.trans('Skrýt filtrování'));
         } else {
             $(productFilterOpenerSelector).text(Translator.trans('Filtrovat produkty'));
