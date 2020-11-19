@@ -3847,14 +3847,8 @@ msgstr "{1}Load another %loadNextCount% article|[2,4]Load another %loadNextCount
 msgid "{{title}} byl již vyčerpán."
 msgstr "{{title}} has already been exhausted."
 
-msgid "{{title}} nemůžete uplatnit. Jeho platnost byla do {{validityTo}}."
-msgstr "{{title}} cannot be applied. It was valid until {{validityTo}}."
-
-msgid "{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}."
-msgstr "{{title}} cannot be applied. It is valid since {{validityFrom}} until {{validityTo}}."
-
-msgid "{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
-msgstr "{{title}} cannot be applied. It is valid since {{validityFrom}}."
+msgid "{{title}} nemůžete uplatnit. Platnost kupónu vypršela."
+msgstr "{{title}} cannot be applied. The coupon has expired."
 
 msgid "{{title}} není aktivní."
 msgstr ""

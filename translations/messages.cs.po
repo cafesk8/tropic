@@ -3895,14 +3895,8 @@ msgstr "{1}Načíst další %loadNextCount% článek|[2,4]Načíst další %load
 msgid "{{title}} byl již vyčerpán."
 msgstr "{{title}} byl již vyčerpán."
 
-msgid "{{title}} nemůžete uplatnit. Jeho platnost byla do {{validityTo}}."
-msgstr "{{title}} nemůžete uplatnit. Jeho platnost byla do {{validityTo}}."
-
-msgid "{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}."
-msgstr "{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}."
-
-msgid "{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
-msgstr "{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
+msgid "{{title}} nemůžete uplatnit. Platnost kupónu vypršela."
+msgstr "{{title}} nemůžete uplatnit. Platnost kupónu vypršela."
 
 msgid "{{title}} není aktivní."
 msgstr ""

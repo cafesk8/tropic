@@ -209,35 +209,9 @@ class PromoCodeController extends FrontBaseController
      */
     private function getPromoCodeIsNotValidMessage(Request $request, PromoCode $promoCode): string
     {
-        if ($promoCode->getValidFrom() !== null && $promoCode->getValidTo() !== null) { // FROM and TO dates are filled
-            $message = t('{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}.', [
-                '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate(
-                    $promoCode->getValidFrom(),
-                    $request->getLocale()
-                ),
-                '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate(
-                    $promoCode->getValidTo(),
-                    $request->getLocale()
-                ),
-                '{{title}}' => $this->getErrorMessageTitle($promoCode),
-            ]);
-        } elseif ($promoCode->getValidFrom() !== null && $promoCode->getValidTo() === null) { // Only FROM date is filled
-            $message = t('{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}}.', [
-                '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate(
-                    $promoCode->getValidFrom(),
-                    $request->getLocale()
-                ),
-                '{{title}}' => $this->getErrorMessageTitle($promoCode),
-            ]);
-        } else { // Only TO date is filled
-            $message = t('{{title}} nemůžete uplatnit. Jeho platnost byla do {{validityTo}}.', [
-                '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate(
-                    $promoCode->getValidTo(),
-                    $request->getLocale()
-                ),
-                '{{title}}' => $this->getErrorMessageTitle($promoCode),
-            ]);
-        }
+        $message = t('{{title}} nemůžete uplatnit. Platnost kupónu vypršela.', [
+            '{{title}}' => $this->getErrorMessageTitle($promoCode),
+        ]);
 
         return $message;
     }
