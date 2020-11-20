@@ -10,6 +10,7 @@ use Dompdf\Dompdf;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactory;
 use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileFacade;
 use Twig\Environment;
@@ -26,25 +27,30 @@ class OrderGiftCertificatePdfFacade
 
     private Filesystem $filesystem;
 
+    private Domain $domain;
+
     /**
      * @param \Twig\Environment $twigEnvironment
      * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileFacade $uploadedFileFacade
      * @param \App\Component\FileUpload\FileUpload $fileUpload
      * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactory $uploadedFileDataFactory
      * @param \League\Flysystem\Filesystem $filesystem
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         Environment $twigEnvironment,
         UploadedFileFacade $uploadedFileFacade,
         FileUpload $fileUpload,
         UploadedFileDataFactory $uploadedFileDataFactory,
-        FilesystemInterface $filesystem
+        FilesystemInterface $filesystem,
+        Domain $domain
     ) {
         $this->twigEnvironment = $twigEnvironment;
         $this->uploadedFileFacade = $uploadedFileFacade;
         $this->fileUpload = $fileUpload;
         $this->uploadedFileDataFactory = $uploadedFileDataFactory;
         $this->filesystem = $filesystem;
+        $this->domain = $domain;
     }
 
     /**
@@ -87,7 +93,7 @@ class OrderGiftCertificatePdfFacade
      */
     private function renderPdf(OrderGiftCertificate $orderGiftCertificate, bool $greyscale): Dompdf
     {
-        $dompdf = new Dompdf();
+        $dompdf = new Dompdf(['isRemoteEnabled' => true]);
         $giftCertificate = $orderGiftCertificate->getGiftCertificate();
         $html = $this->twigEnvironment->render('Mail/Order/GiftCertificate/giftCertificate.html.twig', [
             'giftCertificateCode' => $giftCertificate->getCode(),
@@ -95,6 +101,7 @@ class OrderGiftCertificatePdfFacade
             'giftCertificateValue' => $giftCertificate->getCertificateValue(),
             'giftCertificateValidTo' => $giftCertificate->isActive() ? $giftCertificate->getValidTo() : null,
             'greyscale' => $greyscale,
+            'orderLocale' => $this->domain->getDomainConfigById($orderGiftCertificate->getOrder()->getDomainId())->getLocale(),
         ]);
         $dompdf->loadHtml($html);
         $dompdf->render();
