@@ -74,14 +74,6 @@ class FilterQuery extends BaseFilterQuery
     {
         $clone = clone $this;
 
-        if($orderingModeId === ProductListOrderingConfig::ORDER_BY_RELEVANCE) {
-            $clone->sorting = [
-                'boosting_name' => 'desc',
-            ];
-
-            return $clone;
-        }
-
         if ($orderingModeId === ProductListOrderingConfig::ORDER_BY_PRIORITY) {
             $clone->sorting = [
                 'ordering_priority' => 'desc',
