@@ -554,10 +554,10 @@ msgid "Další informace"
 msgstr "Ďalšie informácie"
 
 msgid "Darkovy_poukaz_-_barevny"
-msgstr "Darkovy_poukaz_-_farebny"
+msgstr "Darcekovy_poukaz_-_farebny"
 
 msgid "Darkovy_poukaz_-_cernobily"
-msgstr "Darkovy_poukaz_-_čiernobiela"
+msgstr "Darcekovy_poukaz_-_ciernobiely"
 
 msgid "Date and time of order creation"
 msgstr "Dátum a čas vytvorenia objednávky"
