@@ -32,7 +32,7 @@ import Translator from 'bazinga-translator';
                 $(productListPanelSelector).removeClass('active');
                 $(productFilterSelector).removeClass('active-mobile');
                 const $productList = $('.js-product-list-ajax-filter-products-with-controls');
-                $('html, body').animate({ scrollTop: $productList.offset().top }, 'slow');
+                $('html, body').animate({ scrollTop: $productList.offset().top }, 'fast');
                 Shopsys.filterPosition.setFilterButtons();
             });
         }
