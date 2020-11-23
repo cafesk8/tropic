@@ -1429,7 +1429,7 @@ msgstr "I have a promo code or a gift certificate"
 msgid "Máte dopravu zdarma!"
 msgstr "Free delivery unlocked!"
 
-msgid "Máte slevový kupón?"
+msgid "Máte slevový kupón nebo dárkový poukaz?"
 msgstr ""
 
 msgid "Máte v košíku nadrozměrný produkt, ale zvolený způsob dopravy neumožňuje nadrozměrné produkty dopravovat"

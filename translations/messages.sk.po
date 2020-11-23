@@ -1480,8 +1480,8 @@ msgstr "Máte dopravu zadarmo!"
 msgid "Máte dotaz?"
 msgstr "Máte otázky?"
 
-msgid "Máte slevový kupón?"
-msgstr "Máte zľavový kupón?"
+msgid "Máte slevový kupón nebo dárkový poukaz?"
+msgstr "Máte zľavový kupón alebo darčekový poukaz?"
 
 msgid "Máte v košíku nadrozměrný produkt, ale zvolený způsob dopravy neumožňuje nadrozměrné produkty dopravovat"
 msgstr "Máte v košíku nadrozmerný produkt a zvolený spôsob dopravy neumožňuje nadrozmerné produkty prepravovať"
