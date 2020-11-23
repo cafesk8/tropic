@@ -23,7 +23,7 @@ use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler;
 class ProductImageImportFacade
 {
     private const PRODUCT_IMAGES_SUBDIR = 'product/original/';
-    private const BATCH_LIMIT = 1000;
+    private const BATCH_LIMIT = 250;
 
     private FilesystemInterface $filesystem;
 
