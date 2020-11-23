@@ -133,9 +133,10 @@ parameters:
         - 'pavel@chcisystem.cz'
         - 'pabiskova@tropicliberec.cz'
         - 'krizek.jr@tropicliberec.cz'
-        - 'tomas.mandok@shopsys.com'
+        - 'marcel.kaniok@shopsys.com'
 
     mserver_error_timeout_email_recipients:
         - 'pabiskova@tropicliberec.cz'
         - 'krizek.jr@tropicliberec.cz'
-        - 'tomas.mandok@shopsys.com'
+        - 'marcel.kaniok@shopsys.com'
+        - 'pavel@chcisystem.cz'
