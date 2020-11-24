@@ -109,7 +109,10 @@
 
         &__button {
             width: 100%;
-            font-size: @font-size-small;
+
+            &.active {
+                background-color: darken(@color-primary, 5%);
+            }
 
             @media @query-lg {
                 width: auto;

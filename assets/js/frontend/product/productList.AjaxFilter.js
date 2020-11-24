@@ -183,8 +183,10 @@ export default class ProductListAjaxFilter {
         const productFilterOpenerSelector = '.js-product-filter-opener';
         if ($(productListPanelSelector).hasClass('active')) {
             $(productFilterOpenerSelector).text(Translator.trans('Skrýt filtrování'));
+            $(productFilterOpenerSelector).addClass('active');
         } else {
             $(productFilterOpenerSelector).text(Translator.trans('Filtrovat produkty'));
+            $(productFilterOpenerSelector).removeClass('active');
         }
     };
 
