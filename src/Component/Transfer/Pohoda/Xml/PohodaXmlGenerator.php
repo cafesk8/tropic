@@ -41,6 +41,6 @@ class PohodaXmlGenerator
      */
     public function prepareEncodedData(string $data): string
     {
-        return (string)iconv('UTF-8', 'WINDOWS-1250', $data);
+        return (string)iconv('UTF-8', 'WINDOWS-1250//TRANSLIT//IGNORE', $data);
     }
 }
