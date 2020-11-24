@@ -3557,7 +3557,7 @@ msgid "Za tuto cenu skladem > 10 %unitName%"
 msgstr "Za túto cenu ihneď k odoslaniu > 10 %unitName%"
 
 msgid "Za tuto cenu skladem již jen %quantity% %unitName%"
-msgstr "Za túto cenu ihneď k odoslaniu už len %quantity% %unitName%"
+msgstr "Za túto cenu ihneď k odoslaniu už len %quantity%&nbsp;%unitName%"
 
 msgid "Za zboží"
 msgstr "Za tovar"
