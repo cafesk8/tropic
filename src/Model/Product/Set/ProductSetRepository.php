@@ -61,6 +61,15 @@ class ProductSetRepository
      */
     private function getVisibleByItemQueryBuilder(Product $product, int $domainId, PricingGroup $pricingGroup): QueryBuilder
     {
+
+        $itemIds = [$product->getId()];
+        // find product sets also by product variants
+        if($product->isMainVariant() && $product->getVariantsCount($domainId) > 0){
+            foreach ($product->getVariants() as $variant) {
+                $itemIds[] = $variant->getId();
+            }
+        }
+
         return $this->em->createQueryBuilder()
             ->select('pg')
             ->from(ProductSet::class, 'pg')
@@ -68,10 +77,10 @@ class ProductSetRepository
             ->where('prv.domainId = :domainId')
             ->andWhere('prv.pricingGroup = :pricingGroup')
             ->andWhere('prv.visible = TRUE')
-            ->andWhere('pg.item = :item')
+            ->andWhere('pg.item IN (:itemIds)')
             ->setParameter('domainId', $domainId)
             ->setParameter('pricingGroup', $pricingGroup)
-            ->setParameter('item', $product);
+            ->setParameter('itemIds', $itemIds);
     }
 
     /**
