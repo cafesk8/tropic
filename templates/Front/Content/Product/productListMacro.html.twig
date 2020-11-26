@@ -54,7 +54,7 @@
 
                                         <div class="in-availability">
                                             <div class="in-availability__text" style="color: {{ productView.availabilityColor }};">
-                                                {{ productView.availability }}
+                                                {{ productView.availability|raw }}
                                             </div>
                                         </div>
 
@@ -154,7 +154,7 @@
 
                                         <div class="in-availability">
                                             <div class="in-availability__text" style="color: {{ productView.availabilityColor }};">
-                                                {{ productView.availability }}
+                                                {{ productView.availability|raw }}
                                             </div>
                                         </div>
                                     </a>
@@ -221,7 +221,7 @@
 
                                 <div class="list-last-visited__item__info__availability">
                                     <div class="list-last-visited__item__info__availability__text" style="color: {{ productView.availabilityColor }};">
-                                        {{ productView.availability }}
+                                        {{ productView.availability|raw }}
                                     </div>
                                 </div>
                             </div>
@@ -256,7 +256,7 @@
                     <div class="{{ listCssClass }}__item__info__left">
                         <div class="in-availability">
                             <div class="in-availability__text" style="color: {{ productView.availabilityColor }};">
-                                {{ productView.availability }}
+                                {{ productView.availability|raw }}
                             </div>
                         </div>
                     </div>
