@@ -52,7 +52,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
 
     /**
      * @param \App\Model\Category\Category $category
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
+     * @param \App\Model\Product\Filter\ProductFilterData $filterData
      * @param \App\Model\Product\Filter\ProductFilterCountData $expectedCountData
      * @dataProvider categoryTestCasesProvider
      */
@@ -83,7 +83,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
 
     /**
      * @param string $searchText
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
+     * @param \App\Model\Product\Filter\ProductFilterData $filterData
      * @param \App\Model\Product\Filter\ProductFilterCountData $expectedCountData
      * @dataProvider searchTestCasesProvider
      */

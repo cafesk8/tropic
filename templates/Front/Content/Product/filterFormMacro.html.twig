@@ -31,16 +31,9 @@
                                 {{ form_widget(filterForm.inStock, { attr: { class: 'css-checkbox', 'data-filter-name-with-entity-id': filterForm.inStock.vars.id }}) }}
                                 <span class="form-choice__label css-checkbox__image">
                                     <span class="form-choice__label__text">{{ 'Ihned k odeslání'|trans }}</span>
-                                    {% if productFilterCountData is not null %}
-                                        <span class="js-product-filter-count" data-form-id="{{ filterForm.inStock.vars.id }}">
-                                            ({{ productFilterCountData.countInStock }})
-                                        </span>
-                                    {% endif %}
                                 </span>
                             </span>
                         </label>
-                        <i class="svg svg-info in-icon in-icon--info js-tooltip" data-toggle="tooltip" title=""
-                           data-original-title="{{ 'Objednávky přijaté po 13:00 odesíláme následující pracovní den'|trans }}"></i>
                     </div>
                     <div class="box-filter__choice__content__tooltip-wrap">
                         <label class="form-choice form-choice--block">
@@ -48,16 +41,9 @@
                                 {{ form_widget(filterForm.available, { attr: { class: 'css-checkbox', 'data-filter-name-with-entity-id': filterForm.available.vars.id }}) }}
                                 <span class="form-choice__label css-checkbox__image">
                                     <span class="form-choice__label__text">{{ 'Skrýt nedostupné'|trans }}</span>
-                                    {% if productFilterCountData is not null %}
-                                        <span class="js-product-filter-count" data-form-id="{{ filterForm.available.vars.id }}">
-                                            ({{ productFilterCountData.countAvailable }})
-                                        </span>
-                                    {% endif %}
                                 </span>
                             </span>
                         </label>
-                        <i class="svg svg-info in-icon in-icon--info js-tooltip" data-toggle="tooltip" title=""
-                           data-original-title="{{ 'Odeslání do 2-5 pracovních dní nebo dle dostupnosti'|trans }}"></i>
                     </div>
                 </div>
             </div>
