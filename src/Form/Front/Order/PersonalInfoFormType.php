@@ -65,6 +65,16 @@ class PersonalInfoFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if($options['domain_id'] === Domain::FIRST_DOMAIN_ID) {
+            $postCodeByDomainValidatorConstraint = new Constraints\Regex(
+                ['pattern' => '/^[1-7]/', 'message' => 'Country postcode validation']
+            );
+        } else {
+            $postCodeByDomainValidatorConstraint = new Constraints\Regex(
+                ['pattern' => '/^[089]/', 'message' => 'Country postcode validation']
+            );
+        }
+
         $countries = $this->countryFacade->getAllEnabledOnDomain($options['domain_id']);
 
         $builder
@@ -214,6 +224,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                     new Constraints\Length(['max' => 6, 'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters']),
+                    $postCodeByDomainValidatorConstraint,
                 ],
             ]);
 
@@ -291,6 +302,7 @@ class PersonalInfoFormType extends AbstractType
                         'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
+                    $postCodeByDomainValidatorConstraint,
                 ],
             ])
             ->add('deliveryCountry', ChoiceType::class, [

@@ -5,7 +5,7 @@ import tooltip from 'framework/common/bootstrap/tooltip';
 import 'framework/common/components';
 
 import CustomizeBundle from 'framework/common/validation/customizeBundle';
-import { showFormErrorsWindow, findOrCreateErrorList } from './frontend/utils/customizeBundle';
+import { showFormErrorsWindow, findOrCreateErrorList, showErrors } from './frontend/utils/customizeBundle';
 
 import './frontend/utils/loginWindowOpener';
 import './frontend/utils/watchDogWindowOpener';
@@ -45,6 +45,7 @@ tooltip($);
 
 CustomizeBundle.showFormErrorsWindow = showFormErrorsWindow;
 CustomizeBundle.findOrCreateErrorList = findOrCreateErrorList;
+CustomizeBundle.showErrors = showErrors;
 
 $(document).ready(function () {
     const register = new Register();
