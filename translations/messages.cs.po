@@ -688,6 +688,9 @@ msgstr ""
 msgid "Doporučené rozměry obrázku"
 msgstr "Doporučené rozměry obrázku"
 
+msgid "Doporučené rozměry obrázku pro mobilní verzi"
+msgstr ""
+
 msgid "Doprava"
 msgstr "Doprava"
 
@@ -1411,6 +1414,9 @@ msgstr "Minimální množství můžete nastavit na kartě hlavní varianty."
 msgid "Minuty"
 msgstr "Minuty"
 
+msgid "Mobilní verze"
+msgstr ""
+
 msgid "Mohlo by vás zajímat"
 msgstr "Mohlo by vás zajímat"
 
@@ -1536,6 +1542,9 @@ msgstr ""
 
 msgid "Naše služby"
 msgstr "Naše služby"
+
+msgid "Naši milí zákazníci, moc nás těší váš zájem o nákupy a pro nejrychlejší doručení uděláme maximum. Prosíme vás o trpělivost 🙏"
+msgstr ""
 
 msgid "Ne"
 msgstr "Ne"
@@ -2416,6 +2425,9 @@ msgstr "Přeneseno"
 msgid "Přesunout nahoru"
 msgstr ""
 
+msgid "Přetížení dopravců"
+msgstr ""
+
 msgid "Při nevyplnění nebude doprava do Mergada exportována."
 msgstr ""
 
@@ -2794,6 +2806,9 @@ msgstr ""
 msgid "Status"
 msgstr "Stav"
 
+msgid "Stav GoPay"
+msgstr ""
+
 msgid "Stav exportu do IS"
 msgstr "Stav exportu do IS"
 
@@ -2989,6 +3004,9 @@ msgstr ""
 msgid "Treti článek v horním menu"
 msgstr "Třetí článek v horním menu"
 
+msgid "Tropic Fishing"
+msgstr ""
+
 msgid "Tropic doporučuje"
 msgstr "Tropic doporučuje"
 
@@ -3024,6 +3042,9 @@ msgstr "Typ SMS alertu"
 
 msgid "Type"
 msgstr "Typ"
+
+msgid "U Sadu 655, 463 12 Liberec 25<br>Vedené u Krajského soudu v Ústí nad Labem oddíl C,<br> vložka 16777."
+msgstr ""
 
 msgid "URL addresses"
 msgstr "URL adresy"
@@ -3314,9 +3335,6 @@ msgid "Vyhledávání neodpovídá žádný produkt"
 msgstr "Vyhledávání neodpovídá žádný produkt"
 
 msgid "Vyhledávání výrazu"
-msgstr ""
-
-msgid "U Sadu 655, 463 12 Liberec 25<br>Vedené u Krajského soudu v Ústí nad Labem oddíl C,<br> vložka 16777."
 msgstr ""
 
 msgid "Vyjmout ze slev za registraci"

@@ -697,6 +697,9 @@ msgstr "Odporúčané rozmery"
 msgid "Doporučené rozměry obrázku"
 msgstr "Odporúčané rozmery obrázku"
 
+msgid "Doporučené rozměry obrázku pro mobilní verzi"
+msgstr ""
+
 msgid "Doprava"
 msgstr "Doprava"
 
@@ -1447,6 +1450,9 @@ msgstr "Minimálne množstvo môžete nastaviť na karte hlavnej varianty."
 msgid "Minuty"
 msgstr "Minúty"
 
+msgid "Mobilní verze"
+msgstr ""
+
 msgid "Mohlo by vás zajímat"
 msgstr "Mohlo by vás zaujímať"
 
@@ -1575,6 +1581,9 @@ msgstr "Naša predajňa"
 
 msgid "Naše služby"
 msgstr "Naše služby"
+
+msgid "Naši milí zákazníci, moc nás těší váš zájem o nákupy a pro nejrychlejší doručení uděláme maximum. Prosíme vás o trpělivost 🙏"
+msgstr "Naši milí zákazníci, moc nás teší váš záujem o nákupy a pre najrychlejšie doručenie urobíme maximum. Prosíme vás o trpezlivosť 🙏"
 
 msgid "Ne"
 msgstr "Nie"
@@ -2479,6 +2488,9 @@ msgstr "Prenesené"
 msgid "Přesunout nahoru"
 msgstr "Presunúť hore"
 
+msgid "Přetížení dopravců"
+msgstr "Preťaženie dopravcov"
+
 msgid "Při nevyplnění nebude doprava do Mergada exportována."
 msgstr "Pri nevyplnení nebude doprava do Mergada exportovaná."
 
@@ -2857,6 +2869,9 @@ msgstr "Spustiť import kategórií"
 msgid "Status"
 msgstr "Stav"
 
+msgid "Stav GoPay"
+msgstr ""
+
 msgid "Stav exportu do IS"
 msgstr "Stav exportu do IS"
 
@@ -2989,11 +3004,11 @@ msgstr "Platnosť odkazu na zmenu hesla vypršala."
 msgid "The price of payment {{ paymentName }} changed during ordering process. Check your order, please."
 msgstr "Cena platby {{ paymentName }} sa počas procesu objednávania zmenila. Skontrolujte si svoju objednávku."
 
-msgid "The price of the product <strong>{{ name }}</strong> you have in cart has changed. Please, check your order."
-msgstr "Bola zmenená cena tovaru <strong>{{ name }}</strong>, ktorý máte v košíku. Prosím, prekontrolujte si objednávku."
-
 msgid "The price of shipping {{ transportName }} changed during ordering process. Check your order, please."
 msgstr "Cena poštovného {{transportName}} sa počas procesu objednávania zmenila. Skontrolujte si svoju objednávku."
+
+msgid "The price of the product <strong>{{ name }}</strong> you have in cart has changed. Please, check your order."
+msgstr "Bola zmenená cena tovaru <strong>{{ name }}</strong>, ktorý máte v košíku. Prosím, prekontrolujte si objednávku."
 
 msgid "There was an error while saving. The order isn't saved."
 msgstr "Pri ukladaní sa vyskytla chyba. Objednávka sa neuloží."
@@ -3055,6 +3070,9 @@ msgstr "Tovar na Slovensko"
 msgid "Treti článek v horním menu"
 msgstr "Tretí článok v hornom menu"
 
+msgid "Tropic Fishing"
+msgstr ""
+
 msgid "Tropic doporučuje"
 msgstr "Tropic odporúča"
 
@@ -3090,6 +3108,9 @@ msgstr "Typ sms výstrahy"
 
 msgid "Type"
 msgstr "Typ"
+
+msgid "U Sadu 655, 463 12 Liberec 25<br>Vedené u Krajského soudu v Ústí nad Labem oddíl C,<br> vložka 16777."
+msgstr "U Sadu 655, 463 12 Liberec 25<br>Vedené u Krajského súdu v Ústí nad Labem oddiel C,<br> vložka 16777."
 
 msgid "URL addresses"
 msgstr "URL adresy"
@@ -3384,9 +3405,6 @@ msgstr "Vyhľadávaniu nezodpovedá žiadny produkt"
 
 msgid "Vyhledávání výrazu"
 msgstr "Vyhľadávanie výrazu"
-
-msgid "U Sadu 655, 463 12 Liberec 25<br>Vedené u Krajského soudu v Ústí nad Labem oddíl C,<br> vložka 16777."
-msgstr "U Sadu 655, 463 12 Liberec 25<br>Vedené u Krajského súdu v Ústí nad Labem oddiel C,<br> vložka 16777."
 
 msgid "Vyjmout ze slev za registraci"
 msgstr "Odstrániť zo zliav za registráciu"

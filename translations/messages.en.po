@@ -379,6 +379,9 @@ msgstr ""
 msgid "Chci odebírat novinky a souhlasím se zpracováním osobních údajů"
 msgstr ""
 
+msgid "Chci reklamovat zboží"
+msgstr ""
+
 msgid "Chci se stát členem Věrnostního programu"
 msgstr "I want to become a member of Loyalty program"
 
@@ -678,6 +681,9 @@ msgstr ""
 
 msgid "Doporučené rozměry obrázku"
 msgstr "Recommended image size"
+
+msgid "Doporučené rozměry obrázku pro mobilní verzi"
+msgstr ""
 
 msgid "Doprava"
 msgstr "Transport"
@@ -1399,6 +1405,9 @@ msgstr "You can set minimum amount in main variant detail"
 msgid "Minuty"
 msgstr "Minutes"
 
+msgid "Mobilní verze"
+msgstr ""
+
 msgid "Mohlo by vás zajímat"
 msgstr "Might interest you"
 
@@ -1521,6 +1530,9 @@ msgstr ""
 
 msgid "Naše služby"
 msgstr "Our services"
+
+msgid "Naši milí zákazníci, moc nás těší váš zájem o nákupy a pro nejrychlejší doručení uděláme maximum. Prosíme vás o trpělivost 🙏"
+msgstr ""
 
 msgid "Ne"
 msgstr "No"
@@ -1691,6 +1703,9 @@ msgid "Nyní budete přesměrováni na platební bránu GoPay."
 msgstr "You will now be redirected to the GoPay payment gateway."
 
 msgid "Nákupní košík"
+msgstr ""
+
+msgid "Nálepka Predĺžená záruka"
 msgstr ""
 
 msgid "Nálepka Prodloužená záruka"
@@ -2380,6 +2395,9 @@ msgstr "Transfered"
 msgid "Přesunout nahoru"
 msgstr ""
 
+msgid "Přetížení dopravců"
+msgstr ""
+
 msgid "Při nevyplnění nebude doprava do Mergada exportována."
 msgstr ""
 
@@ -2758,6 +2776,9 @@ msgstr ""
 msgid "Status"
 msgstr "Status"
 
+msgid "Stav GoPay"
+msgstr ""
+
 msgid "Stav exportu do IS"
 msgstr "Export to IS status"
 
@@ -2950,6 +2971,9 @@ msgstr ""
 msgid "Treti článek v horním menu"
 msgstr "Treti článek v horním menu"
 
+msgid "Tropic Fishing"
+msgstr ""
+
 msgid "Tropic doporučuje"
 msgstr "Tropic recommends"
 
@@ -2985,6 +3009,9 @@ msgstr "SMS alert type"
 
 msgid "Type"
 msgstr "Type"
+
+msgid "U Sadu 655, 463 12 Liberec 25<br>Vedené u Krajského soudu v Ústí nad Labem oddíl C,<br> vložka 16777."
+msgstr ""
 
 msgid "URL addresses"
 msgstr "URL addresses"
@@ -3175,6 +3202,9 @@ msgstr ""
 msgid "Volejte na"
 msgstr "Call to"
 
+msgid "Vrácení zboží ve 30 denní lhůtě (odstoupení od smlouvy)"
+msgstr ""
+
 msgid "Vrácení zdarma <strong>do 30 dnů</strong>"
 msgstr "Free refund <strong>within 30 days</strong>"
 
@@ -3275,9 +3305,6 @@ msgid "Vyhledávání neodpovídá žádný produkt"
 msgstr "No product found"
 
 msgid "Vyhledávání výrazu"
-msgstr ""
-
-msgid "U Sadu 655, 463 12 Liberec 25<br>Vedené u Krajského soudu v Ústí nad Labem oddíl C,<br> vložka 16777."
 msgstr ""
 
 msgid "Vyjmout ze slev za registraci"
@@ -3489,6 +3516,9 @@ msgstr "From final statuses you cannot change order status"
 
 msgid "Zlevněné produkty"
 msgstr "Discounted products"
+
+msgid "Změna nebo storno objednávky"
+msgstr ""
 
 msgid "Změna pro"
 msgstr "Change for"
