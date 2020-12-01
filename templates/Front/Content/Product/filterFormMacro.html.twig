@@ -31,11 +31,6 @@
                                 {{ form_widget(filterForm.inStock, { attr: { class: 'css-checkbox', 'data-filter-name-with-entity-id': filterForm.inStock.vars.id }}) }}
                                 <span class="form-choice__label css-checkbox__image">
                                     <span class="form-choice__label__text">{{ 'Ihned k odeslání'|trans }}</span>
-                                    {% if productFilterCountData is not null %}
-                                        <span class="js-product-filter-count" data-form-id="{{ filterForm.inStock.vars.id }}">
-                                            ({{ productFilterCountData.countInStock }})
-                                        </span>
-                                    {% endif %}
                                 </span>
                             </span>
                         </label>
