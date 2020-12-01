@@ -333,11 +333,12 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
 
     /**
      * @param \App\Model\Product\Product $product
+     * @param bool $inCart
      * @return string
      */
-    public function getAvailabilityText(Product $product): string
+    public function getAvailabilityText(Product $product, bool $inCart = false): string
     {
-        return $this->availabilityFacade->getAvailabilityText($product);
+        return $this->availabilityFacade->getAvailabilityText($product, $this->domain->getLocale(), $inCart);
     }
 
     /**

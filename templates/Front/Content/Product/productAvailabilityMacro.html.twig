@@ -1,5 +1,5 @@
-{% macro productAvailability(product, showSaleStockAvailability = true) %}
-    <span class="in-availability__date" style="color: {{ getAvailabilityColor(product, showSaleStockAvailability) }};">
-        {{ getAvailabilityText(product, showSaleStockAvailability) }}
+{% macro productAvailability(product) %}
+    <span class="in-availability__date" style="color: {{ getAvailabilityColor(product) }};">
+        {{ getAvailabilityText(product)|raw }}
     </span>
 {% endmacro %}

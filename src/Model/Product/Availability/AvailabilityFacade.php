@@ -66,7 +66,7 @@ class AvailabilityFacade extends BaseAvailabilityFacade
     /**
      * @return \App\Model\Product\Availability\Availability
      */
-    public function getExternalStockAvailability(): Availability
+    public function getExternalOrStoreStockAvailability(): Availability
     {
         return $this->getByCode(Availability::IN_EXTERNAL_STOCK);
     }
@@ -112,9 +112,9 @@ class AvailabilityFacade extends BaseAvailabilityFacade
             } elseif ($product->isAvailableInDays($withoutSaleStocks)) {
                 return $this->getAvailabilityInDays();
             } elseif ($externalStockQuantity > 0) {
-                return $this->getExternalStockAvailability();
+                return $this->getExternalOrStoreStockAvailability();
             } elseif ($storeStockQuantity > 0) {
-                return $this->getDefaultInStockAvailability();
+                return $this->getExternalOrStoreStockAvailability();
             }
 
             return $this->getDefaultOutOfStockAvailability();
@@ -148,9 +148,10 @@ class AvailabilityFacade extends BaseAvailabilityFacade
     /**
      * @param \App\Model\Product\Product $product
      * @param string|null $locale
+     * @param bool $inCart
      * @return string
      */
-    public function getAvailabilityText(Product $product, ?string $locale = null): string
+    public function getAvailabilityText(Product $product, ?string $locale = null, bool $inCart = false): string
     {
         $availability = $product->getCalculatedAvailability();
 
@@ -158,21 +159,27 @@ class AvailabilityFacade extends BaseAvailabilityFacade
             case Availability::IN_SALE_STOCK:
                 $saleStocksQuantity = $product->getRealSaleStocksQuantity();
 
-                if ($saleStocksQuantity > 10) {
-                    return t(
-                        'Za tuto cenu skladem > 10 %unitName%',
-                        ['%unitName%' => $product->getUnit()->getName($locale)],
-                        'messages',
-                        $locale
-                    );
-                } else {
-                    return t(
-                        'Za tuto cenu skladem již jen %quantity% %unitName%',
-                        ['%quantity%' => $saleStocksQuantity, '%unitName%' => $product->getUnit()->getName($locale)],
-                        'messages',
-                        $locale
-                    );
+                return tc(
+                    'Za tuto cenu skladem již jen %quantity% %unitName%',
+                    $saleStocksQuantity,
+                    ['%quantity%' => $saleStocksQuantity, '%unitName%' => $product->getUnit()->getName($locale)],
+                    'messages',
+                    $locale
+                );
+            case Availability::IN_STOCK:
+                if ($inCart) {
+                    return $availability->getName($locale);
                 }
+
+                $internalStockQuantity = $product->getRealInternalStockQuantity();
+
+                return tc(
+                    'Ihned k odeslání, další dle dostupnosti',
+                    $internalStockQuantity,
+                    ['%quantity%' => $internalStockQuantity, '%unitName%' => $product->getUnit()->getName($locale)],
+                    'messages',
+                    $locale
+                );
             case Availability::IN_DAYS:
                 $deliveryDays = $product->getDeliveryDays();
                 $deliveryDaysNumber = $product->getDeliveryDaysAsNumber();
