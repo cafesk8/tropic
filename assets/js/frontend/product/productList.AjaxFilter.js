@@ -13,6 +13,7 @@ export default class ProductListAjaxFilter {
         this.$selectedFiltersBox = $filter.filterAllNodes('#js-selected-filters-box');
         this.$resetFilterButton = $filter.filterAllNodes('.js-product-filter-reset-button');
         this.$categoryTitle = $filter.filterAllNodes('.js-category-title');
+        this.$bestsellingProductsBlockHeight = $filter.filterAllNodes('.js-bestselling-products').outerHeight(true);
         this.requestTimer = null;
         this.requestDelay = 1000;
         this.isMobile = false; // initiate as false
@@ -56,7 +57,7 @@ export default class ProductListAjaxFilter {
         this.$productsWithControls.show();
         pushReloadState(currentUrl);
         (new Register()).registerNewContent(this.$productsWithControls);
-        this.scrollToListTop();
+        this.scrollToListTop($wrappedData);
         this.changeFilterButtons();
     }
 
@@ -125,6 +126,7 @@ export default class ProductListAjaxFilter {
             success: function (data) {
                 const $wrappedData = $($.parseHTML('<div>' + data + '</div>'));
 
+                productListAjaxFilter.updateTitle($wrappedData);
                 productListAjaxFilter.showProducts($wrappedData);
                 productListAjaxFilter.updateFiltersCounts($wrappedData);
                 productListAjaxFilter.updateFiltersDisabled();
@@ -132,7 +134,6 @@ export default class ProductListAjaxFilter {
                 productListAjaxFilter.updateBrandLabelTexts($wrappedData);
                 productListAjaxFilter.refreshBrandLinks();
                 productListAjaxFilter.updateMetaTag($wrappedData);
-                productListAjaxFilter.updateTitle($wrappedData);
             }
         });
     }
@@ -166,7 +167,7 @@ export default class ProductListAjaxFilter {
         }
     }
 
-    scrollToListTop () {
+    scrollToListTop ($wrappedData) {
         const $productList = $('.js-product-list-ajax-filter-products-with-controls');
         if ($productList && $productList.offset()) {
             $('.js-product-filter-opener').click();
@@ -174,6 +175,18 @@ export default class ProductListAjaxFilter {
             $('.js-product-filter').toggleClass('active-mobile');
             if (this.isMobile === false) {
                 $('html, body').animate({ scrollTop: ($productList.offset().top) }, 'slow');
+            } else {
+                const $newSelectedFiltersBox = $wrappedData.filterAllNodes('#js-selected-filters-box');
+                this.$selectedFiltersBox.html($newSelectedFiltersBox.html());
+                (new Register()).registerNewContent(this.$selectedFiltersBox);
+                const selectedFiltersHeight = $('#js-selected-filters-box').outerHeight(true);
+                const y = $(window).scrollTop();
+                if (this.$bestsellingProductsBlockHeight === undefined) {
+                    this.$bestsellingProductsBlockHeight = 0;
+                }
+                $(window).scrollTop(y + selectedFiltersHeight - this.$bestsellingProductsBlockHeight);
+                // reset after first load, because element is now not visible
+                this.$bestsellingProductsBlockHeight = $('.js-bestselling-products').outerHeight(true);
             }
         }
     }
