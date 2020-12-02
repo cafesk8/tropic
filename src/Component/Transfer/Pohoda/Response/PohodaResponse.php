@@ -8,18 +8,16 @@ class PohodaResponse
 {
     public const POHODA_XML_RESPONSE_ITEM_STATE_OK = 'ok';
 
-    /**
-     * @var string|null
-     */
-    public $responsePackItemId;
+    public ?string $responsePackItemId;
+
+    public ?string $responsePackItemState;
+
+    public ?string $responsePackItemNote;
+
+    public ?string $responseState;
 
     /**
-     * @var string|null
+     * @var string[]
      */
-    public $responsePackItemState;
-
-    /**
-     * @var string|null
-     */
-    public $responsePackItemNote;
+    public array $responseNotes = [];
 }
