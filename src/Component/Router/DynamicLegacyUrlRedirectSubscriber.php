@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Component\Router;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Domain\Exception\NoDomainSelectedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -27,7 +29,12 @@ class DynamicLegacyUrlRedirectSubscriber
     {
         $this->friendlyUrlFacade = $friendlyUrlFacade;
         $this->domain = $domain;
-        $this->domainRouter = $domainRouterFactory->getRouter($this->domain->getId());
+
+        try {
+            $this->domainRouter = $domainRouterFactory->getRouter($this->domain->getId());
+        } catch (NoDomainSelectedException $exception) {
+            $this->domainRouter = $domainRouterFactory->getRouter(DomainHelper::CZECH_DOMAIN);
+        }
     }
 
     /**
