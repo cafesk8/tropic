@@ -17,8 +17,40 @@
         {% endif %}
 
         {{ selectedFilterBox.filterBox(filterForm, resetUrl, filterFormSubmitted) }}
+
         <div class="box-filter__bottom">
             <div class="box-filter__choice box-filter__choice--without-border">
+                <div class="box-filter__choice__title js-responsive-toggle open" data-element="filter-stock">
+                    {{ 'Dostupnost'|trans }}
+                    <i class="svg svg-triangle"></i>
+                </div>
+                <div class="box-filter__choice__content" id="filter-stock">
+                    <div class="box-filter__choice__content__tooltip-wrap">
+                        <label class="form-choice form-choice--block">
+                            <span class="form-choice__line">
+                                {{ form_widget(filterForm.inStock, { attr: { class: 'css-checkbox', 'data-filter-name-with-entity-id': filterForm.inStock.vars.id }}) }}
+                                <span class="form-choice__label css-checkbox__image">
+                                    <span class="form-choice__label__text">{{ 'Ihned k odeslání'|trans }}</span>
+                                </span>
+                            </span>
+                        </label>
+                        <i class="svg svg-info in-icon in-icon--info js-tooltip" data-toggle="tooltip" title=""
+                           data-original-title="{{ 'Objednávky přijaté po 13:00 odesíláme následující pracovní den'|trans }}"></i>
+                    </div>
+                    <div class="box-filter__choice__content__tooltip-wrap">
+                        <label class="form-choice form-choice--block">
+                            <span class="form-choice__line">
+                                {{ form_widget(filterForm.available, { attr: { class: 'css-checkbox', 'data-filter-name-with-entity-id': filterForm.available.vars.id }}) }}
+                                <span class="form-choice__label css-checkbox__image">
+                                    <span class="form-choice__label__text">{{ 'Skrýt nedostupné'|trans }}</span>
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-filter__choice">
                 <div class="box-filter__choice__title js-responsive-toggle open" data-element="filter-price">
                     {{ 'Cena'|trans }}
                     <i class="svg svg-triangle"></i>

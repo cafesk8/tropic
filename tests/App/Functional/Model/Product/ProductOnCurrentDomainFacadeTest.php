@@ -8,13 +8,13 @@ use App\DataFixtures\Demo\BrandDataFixture;
 use App\DataFixtures\Demo\CategoryDataFixture;
 use App\DataFixtures\Demo\FlagDataFixture;
 use App\Model\Category\Category;
+use App\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Product\Brand\Brand;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
@@ -61,7 +61,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PHONES);
 
         $productFilterData = new ProductFilterData();
-        $productFilterData->inStock = true;
+        $productFilterData->available = true;
         $paginationResult = $this->getPaginationResultInCategory($productFilterData, $category);
 
         $this->assertCount(6, $paginationResult->getResults());
@@ -269,7 +269,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param \App\Model\Category\Category $category
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
      */
@@ -323,7 +323,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param string $searchText
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
      */
@@ -350,7 +350,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param \App\Model\Category\Category $category
      * @param int $page
      * @param int $limit

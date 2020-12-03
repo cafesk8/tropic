@@ -865,3 +865,15 @@ services:
     Shopsys\FrameworkBundle\Model\Feed\FeedExportFactory: '@App\Model\Feed\FeedExportFactory'
 
     Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityRepository: '@App\Model\Product\Availability\AvailabilityRepository'
+
+    App\Model\Product\Filter\ProductFilterData: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData: '@App\Model\Product\Filter\ProductFilterData'
+
+    App\Model\Product\Filter\ProductFilterCountData: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData: '@App\Model\Product\Filter\ProductFilterCountData'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\AggregationResultToProductFilterCountDataTransformer: '@App\Model\Product\Search\AggregationResultToProductFilterCountDataTransformer'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer: '@App\Model\Product\Search\ProductFilterDataToQueryTransformer'

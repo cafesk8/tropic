@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Filter\Elasticsearch;
 
+use App\Model\Category\Category;
 use App\Model\Pricing\Currency\Currency;
 use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Product\Brand\BrandFacade;
@@ -63,15 +64,14 @@ class ProductFilterConfigFactory
     /**
      * @param \App\Model\Category\Category $category
      * @param string|null $categoryType
-     * @param bool $showUnavailableProducts
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
-    public function createForCategory(BaseCategory $category, ?string $categoryType = null, bool $showUnavailableProducts = false): ProductFilterConfig
+    public function createForCategory(Category $category, ?string $categoryType = null): ProductFilterConfig
     {
         $elasticFilterData = $this->productFilterElasticFacade->getProductFilterDataInCategory(
             $category->getId(),
             $this->currentCustomerUser->getPricingGroup(),
-            $showUnavailableProducts,
+            $category->isUnavailableProductsShown(),
             $categoryType
         );
 

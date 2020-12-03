@@ -59,6 +59,7 @@ parameters:
             - '*/src/Model/Gtm/DataLayerMapper.php'
             - '*/src/Model/Product/Search/FilterQuery.php'
             - '*/src/Form/Admin/TransportFormTypeExtension.php'
+            - '*/src/Model/Product/Elasticsearch/ProductExportRepository.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/App/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'

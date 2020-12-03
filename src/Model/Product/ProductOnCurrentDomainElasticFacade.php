@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Product\Filter\ProductFilterData;
 use App\Model\Product\Search\FilterQuery;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData as BaseProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainElasticFacade as BaseProductOnCurrentDomainElasticFacade;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
@@ -17,6 +18,7 @@ use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
 /**
  * @property \App\Model\Product\Search\FilterQueryFactory $filterQueryFactory
  * @property \App\Model\Product\ProductRepository $productRepository
+ * @property \App\Model\Product\Search\ProductFilterDataToQueryTransformer $productFilterDataToQueryTransformer
  * @method \App\Model\Product\Product getVisibleProductById(int $productId)
  * @method \App\Model\Product\Product[] getAccessoriesForProduct(\App\Model\Product\Product $product)
  * @method \App\Model\Product\Product[] getVariantsForProduct(\App\Model\Product\Product $product)
@@ -47,16 +49,16 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param string $orderingModeId
      * @param int $page
      * @param int $limit
-     * @param int $pohodaProductType
+     * @param int|null $pohodaProductType
      * @param bool $includeGiftCards
      * @return \App\Model\Product\Search\FilterQuery
      */
     protected function createFilterQueryWithProductFilterData(
-        ProductFilterData $productFilterData,
+        BaseProductFilterData $productFilterData,
         string $orderingModeId,
         int $page,
         int $limit,
@@ -68,7 +70,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
             ->excludeVariants();
 
         if ($pohodaProductType !== null) {
-            if($includeGiftCards) {
+            if ($includeGiftCards) {
                 $filterQuery = $filterQuery->filterByPohodaProductAndGiftCardType($pohodaProductType, Product::POHODA_PRODUCT_TYPE_ID_GIFT_CARD);
             } else {
                 $filterQuery = $filterQuery->filterByPohodaProductType($pohodaProductType);
@@ -84,6 +86,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         $filterQuery = $this->productFilterDataToQueryTransformer->addFlagsToQuery($productFilterData, $filterQuery);
         $filterQuery = $this->productFilterDataToQueryTransformer->addParametersToQuery($productFilterData, $filterQuery);
         $filterQuery = $this->productFilterDataToQueryTransformer->addStockToQuery($productFilterData, $filterQuery);
+        $filterQuery = $this->productFilterDataToQueryTransformer->addAvailabilityToQuery($productFilterData, $filterQuery);
         $filterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $filterQuery, $this->currentCustomerUser->getPricingGroup());
         /** @var \App\Model\Product\Search\FilterQuery $filterQuery */
         return $filterQuery;
@@ -108,7 +111,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param string $orderingModeId
      * @param int $page
      * @param int $limit
@@ -160,7 +163,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param string $orderingModeId
      * @param int $page
      * @param int $limit
@@ -170,7 +173,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @return \App\Model\Product\Search\FilterQuery
      */
     protected function createListableProductsForSearchTextFilterQuery(
-        ProductFilterData $productFilterData,
+        BaseProductFilterData $productFilterData,
         string $orderingModeId,
         int $page,
         int $limit,
@@ -186,7 +189,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 
     /**
      * @param string $searchText
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param string $orderingModeId
      * @param int $page
      * @param int $limit
@@ -196,7 +199,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      */
     public function getPaginatedProductsForSearch(
         string $searchText,
-        ProductFilterData $productFilterData,
+        BaseProductFilterData $productFilterData,
         string $orderingModeId,
         int $page,
         int $limit,
@@ -215,7 +218,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      *
      * @inheritDoc
      */
-    public function getProductFilterCountDataInCategory(int $categoryId, ProductFilterConfig $productFilterConfig, ProductFilterData $productFilterData, bool $showUnavailableProducts = false): ProductFilterCountData
+    public function getProductFilterCountDataInCategory(int $categoryId, ProductFilterConfig $productFilterConfig, BaseProductFilterData $productFilterData, bool $showUnavailableProducts = false): ProductFilterCountData
     {
         $baseFilterQuery = $this->filterQueryFactory->create($this->getIndexName())
             ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
@@ -226,6 +229,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 
         $baseFilterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $baseFilterQuery, $this->currentCustomerUser->getPricingGroup());
         $baseFilterQuery = $this->productFilterDataToQueryTransformer->addStockToQuery($productFilterData, $baseFilterQuery);
+        $baseFilterQuery = $this->productFilterDataToQueryTransformer->addAvailabilityToQuery($productFilterData, $baseFilterQuery);
 
         return $this->productFilterCountDataElasticsearchRepository->getProductFilterCountDataInCategory(
             $productFilterData,
@@ -239,7 +243,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      *
      * @inheritDoc
      */
-    public function getProductFilterCountDataForSearch(?string $searchText, ProductFilterConfig $productFilterConfig, ProductFilterData $productFilterData): ProductFilterCountData
+    public function getProductFilterCountDataForSearch(?string $searchText, ProductFilterConfig $productFilterConfig, BaseProductFilterData $productFilterData): ProductFilterCountData
     {
         $searchText = $searchText ?? '';
 
@@ -249,6 +253,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
             ->search($searchText);
         $baseFilterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $baseFilterQuery, $this->currentCustomerUser->getPricingGroup());
         $baseFilterQuery = $this->productFilterDataToQueryTransformer->addStockToQuery($productFilterData, $baseFilterQuery);
+        $baseFilterQuery = $this->productFilterDataToQueryTransformer->addAvailabilityToQuery($productFilterData, $baseFilterQuery);
 
         return $this->productFilterCountDataElasticsearchRepository->getProductFilterCountDataInSearch(
             $productFilterData,
@@ -261,7 +266,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      *
      * @inheritDoc
      */
-    protected function createListableProductsInCategoryFilterQuery(ProductFilterData $productFilterData, string $orderingModeId, int $page, int $limit, int $categoryId, bool $showUnavailableProducts = true): BaseFilterQuery
+    protected function createListableProductsInCategoryFilterQuery(BaseProductFilterData $productFilterData, string $orderingModeId, int $page, int $limit, int $categoryId, bool $showUnavailableProducts = true): BaseFilterQuery
     {
         $filterQuery = $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit, null)
             ->filterByCategory([$categoryId]);
@@ -274,7 +279,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param string $orderingModeId
      * @param int $page
      * @param int $limit
@@ -283,7 +288,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
      */
     public function getPaginatedProductsInCategory(
-        ProductFilterData $productFilterData,
+        BaseProductFilterData $productFilterData,
         string $orderingModeId,
         int $page,
         int $limit,
@@ -351,5 +356,19 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         ksort($result);
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaginatedProductsForBrand(string $orderingModeId, int $page, int $limit, int $brandId): PaginationResult
+    {
+        $emptyProductFilterData = new ProductFilterData();
+
+        $filterQuery = $this->createListableProductsForBrandFilterQuery($emptyProductFilterData, $orderingModeId, $page, $limit, $brandId);
+
+        $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
+
+        return new PaginationResult($page, $limit, $productsResult->getTotal(), $productsResult->getHits());
     }
 }

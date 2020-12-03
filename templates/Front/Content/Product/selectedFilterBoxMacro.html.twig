@@ -6,6 +6,12 @@
                 <div class="box-filter__title">
                     {{ 'Vaše filtry'|trans }}
                 </div>
+                {% if filterForm.inStock.vars.data is same as (true) %}
+                    {{ _self.filterRow('Dostupnost'|trans, 'Ihned k odeslání'|trans, filterForm.inStock.vars.id) }}
+                {% endif %}
+                {% if filterForm.available.vars.data is same as (true) %}
+                    {{ _self.filterRow('Dostupnost'|trans, 'Skrýt nedostupné'|trans, filterForm.available.vars.id) }}
+                {% endif %}
                 {% if filterForm.minimalPrice.vars.data|length > 0 %}
                     {{ _self.filterRow('Cena od'|trans, filterForm.minimalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolByDomainId(domainId), filterForm.minimalPrice.vars.id, true) }}
                 {% endif %}

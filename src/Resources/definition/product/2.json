@@ -423,6 +423,9 @@
             "index": false
           }
         }
+      },
+      "available": {
+        "type": "boolean"
       }
     }
   }
