@@ -313,3 +313,5 @@ msgstr "Zadajte prosím výšku zľavy"
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "PSČ nesmie byť dlhšie ako {{ limit }} znakov"
 
+msgid "Country postcode validation"
+msgstr "Zadajte slovenské PSČ. V případě, že nakupujete zboží do Česka, klikněte <a href=\"https://www.tropicfishing.cz/\">ZDE</a>."

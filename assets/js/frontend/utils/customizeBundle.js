@@ -1,6 +1,43 @@
 import CustomizeBundle from 'framework/common/validation/customizeBundle';
 import Window from './Window';
 import Translator from 'bazinga-translator';
+import {
+    findElementsToHighlight,
+    highlightSubmitButtons
+} from '@shopsys/framework/js/common/validation/validationHelpers';
+
+export function showErrors (errors, sourceId) {
+    const $errorList = CustomizeBundle.findOrCreateErrorList($(this), sourceId);
+    const $errorListUl = $errorList.find('ul:first');
+    const $elementsToHighlight = findElementsToHighlight($(this));
+
+    const errorSourceClass = 'js-error-source-id-' + sourceId;
+    $errorListUl.find('li.' + errorSourceClass).remove();
+
+    $.each(errors, function (key, message) {
+        if (sourceId === 'form-error-order-personal-info-form-deliveryPostcode' || sourceId === 'form-error-order-personal-info-form-postcode') {
+            $errorListUl.append(
+                $('<li/>')
+                    .addClass('js-validation-errors-message')
+                    .addClass(errorSourceClass)
+                    .html(message)
+            );
+        } else {
+            $errorListUl.append(
+                $('<li/>')
+                    .addClass('js-validation-errors-message')
+                    .addClass(errorSourceClass)
+                    .text(message)
+            );
+        }
+    });
+
+    const hasErrors = $errorListUl.find('li').length > 0;
+    $elementsToHighlight.toggleClass('form-input-error', hasErrors);
+    $errorList.toggle(hasErrors);
+
+    highlightSubmitButtons($(this).closest('form'));
+}
 
 export function findOrCreateErrorList ($formInput, elementName) {
     const errorListClass = CustomizeBundle.getErrorListClass(elementName);

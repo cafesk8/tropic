@@ -4,6 +4,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs\n"
 
+msgid "Country postcode validation"
+msgstr "Zadejte české PSČ. V prípade, že nakupujete tovar na Slovensko, kliknite <a href=\"https://www.tropicfishing.sk/\">TU</a>."
+
 msgid "City name cannot be longer than {{ limit }} characters"
 msgstr "Název města nesmí být delší než {{ limit }} znaků"
 
