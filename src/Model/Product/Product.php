@@ -413,6 +413,17 @@ class Product extends BaseProduct
         return $storeStocks;
     }
 
+    public function cloneStoreStocks(): void
+    {
+        $storeStocks = $this->storeStocks->toArray();
+
+        foreach ($storeStocks as $key => $storeStock) {
+            $storeStocks[$key] = clone $storeStock;
+        }
+
+        $this->storeStocks = new ArrayCollection($storeStocks);
+    }
+
     public function clearStoreStocks(): void
     {
         $this->storeStocks->clear();
@@ -1176,6 +1187,18 @@ class Product extends BaseProduct
     }
 
     /**
+     * @return int
+     */
+    public function getDeliveryDaysAsNumber(): int
+    {
+        if ($this->deliveryDays === null) {
+            return 0;
+        }
+
+        return (int)(explode('-', $this->deliveryDays)[0]);
+    }
+
+    /**
      * @param bool $withoutSaleStock
      * @return bool
      */
@@ -1198,9 +1221,11 @@ class Product extends BaseProduct
         if ($this->isMainVariant()) {
             throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant!');
         }
-        $stockQuantity = $withoutSaleStock ? $this->getRealNonSaleStocksQuantity() : $this->getRealStockQuantity();
 
-        return $this->getRealExternalStockAndStoreStockQuantity() > 0 && $this->getRealExternalStockAndStoreStockQuantity() === $stockQuantity;
+        $stockQuantity = $withoutSaleStock ? $this->getRealNonSaleStocksQuantity() : $this->getRealStockQuantity();
+        $realExternalStockAndStoreStockQuantity = $this->getRealExternalStockAndStoreStockQuantity();
+
+        return $realExternalStockAndStoreStockQuantity > 0 && $realExternalStockAndStoreStockQuantity === $stockQuantity;
     }
 
     /**
@@ -1643,16 +1668,12 @@ class Product extends BaseProduct
      */
     public function isAnyVariantInStock(): bool
     {
-        if ($this->isMainVariant()) {
-            foreach ($this->variants as $variant) {
-                if (!$variant->isSellingDenied() && (!$variant->isUsingStock() || $variant->getRealStockQuantity() > 0)) {
-                    return true;
-                }
+        foreach ($this->variants as $variant) {
+            if (!$variant->isSellingDenied() && $variant->getRealStockQuantity() > 0) {
+                return true;
             }
-
-            return false;
         }
 
-        return !$this->isSellingDenied() && (!$this->isUsingStock() || $this->getRealStockQuantity() > 0);
+        return false;
     }
 }

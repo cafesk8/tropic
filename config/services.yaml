@@ -863,3 +863,5 @@ services:
     Shopsys\FrameworkBundle\Model\Feed\FeedFacade: '@App\Model\Feed\FeedFacade'
 
     Shopsys\FrameworkBundle\Model\Feed\FeedExportFactory: '@App\Model\Feed\FeedExportFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityRepository: '@App\Model\Product\Availability\AvailabilityRepository'

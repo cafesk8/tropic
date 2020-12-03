@@ -68,7 +68,7 @@ class ListedProductView extends BaseListedProductView
 
     private bool $supplierSet;
 
-    private bool $anyVariantInStock;
+    private string $availabilityColor;
 
     /**
      * @param int $id
@@ -91,7 +91,7 @@ class ListedProductView extends BaseListedProductView
      * @param int|null $warranty
      * @param bool $recommended
      * @param bool $supplierSet
-     * @param bool $anyVariantInStock
+     * @param string $availabilityColor
      */
     public function __construct(
         int $id,
@@ -114,7 +114,7 @@ class ListedProductView extends BaseListedProductView
         ?int $warranty,
         bool $recommended,
         bool $supplierSet,
-        bool $anyVariantInStock
+        string $availabilityColor
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
@@ -130,7 +130,7 @@ class ListedProductView extends BaseListedProductView
         $this->warranty = $warranty;
         $this->recommended = $recommended;
         $this->supplierSet = $supplierSet;
-        $this->anyVariantInStock = $anyVariantInStock;
+        $this->availabilityColor = $availabilityColor;
     }
 
     /**
@@ -250,10 +250,10 @@ class ListedProductView extends BaseListedProductView
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isAnyVariantInStock(): bool
+    public function getAvailabilityColor(): string
     {
-        return $this->anyVariantInStock;
+        return $this->availabilityColor;
     }
 }

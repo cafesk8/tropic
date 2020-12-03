@@ -37,8 +37,8 @@
                                         {% endif %}
 
                                         <div class="in-availability in-availability--without-gap">
-                                            <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                                {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
+                                            <div class="in-availability__text" style="color: {{ productView.availabilityColor }};">
+                                                {{ productView.availability|raw }}
                                             </div>
                                         </div>
                                     </div>

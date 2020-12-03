@@ -6,6 +6,7 @@ namespace App\Model\Product\Elasticsearch;
 
 use App\Model\Category\CategoryFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Availability\ProductAvailabilityRecalculator;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
@@ -57,6 +58,8 @@ class ProductExportRepository extends BaseProductExportRepository
 
     private ProductSellingDeniedRecalculator $productSellingDeniedRecalculator;
 
+    private AvailabilityFacade $availabilityFacade;
+
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
@@ -71,6 +74,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Product\Availability\ProductAvailabilityRecalculator $productAvailabilityRecalculator
      * @param \App\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
+     * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -85,7 +89,8 @@ class ProductExportRepository extends BaseProductExportRepository
         FlagFacade $flagFacade,
         CategoryFacade $categoryFacade,
         ProductAvailabilityRecalculator $productAvailabilityRecalculator,
-        ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
+        ProductSellingDeniedRecalculator $productSellingDeniedRecalculator,
+        AvailabilityFacade $availabilityFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->productSetFacade = $productSetFacade;
@@ -94,6 +99,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $this->categoryFacade = $categoryFacade;
         $this->productAvailabilityRecalculator = $productAvailabilityRecalculator;
         $this->productSellingDeniedRecalculator = $productSellingDeniedRecalculator;
+        $this->availabilityFacade = $availabilityFacade;
     }
 
     /**
@@ -109,7 +115,8 @@ class ProductExportRepository extends BaseProductExportRepository
             $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
             $this->productAvailabilityRecalculator->recalculateOneProductAvailability($product);
             $result['in_stock'] = $product->getCalculatedAvailability()->getDispatchTime() === 0;
-            $result['availability'] = $product->getCalculatedAvailability()->getName($locale);
+            $result['availability'] = $this->availabilityFacade->getAvailabilityText($product, $locale);
+            $result['availability_color'] = $product->getCalculatedAvailability()->getRgbColor();
             $result['real_sale_stocks_quantity'] = $product->isSellingDenied() || $product->isMainVariant() ? 0 : $product->getRealSaleStocksQuantity();
             $result['stock_quantity'] = $product->getStockQuantity();
             $result['internal_stocks_quantity'] = $product->getBiggestVariantRealInternalStockQuantity();
@@ -158,7 +165,8 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['supplier_set'] = $product->isSupplierSet();
         $result['main_category_path'] = $this->getMainCategoryPath($product, $domainId);
         $result['is_in_news'] = $product->isProductInNews($domainId);
-        $result['is_any_variant_in_stock'] = $product->isAnyVariantInStock();
+        $result['availability'] = $this->availabilityFacade->getAvailabilityText($product, $locale);
+        $result['availability_color'] = $product->getCalculatedAvailability()->getRgbColor();
         $result['boosting_name'] = $product->isGiftCertificate() ? $product->getName($locale) : '';
 
         return $result;

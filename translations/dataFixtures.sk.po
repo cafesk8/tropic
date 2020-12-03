@@ -979,6 +979,9 @@ msgstr ""
 msgid "Hyundai 22HD44D"
 msgstr "Hyundai 22HD44D"
 
+msgid "Ihned k odeslání"
+msgstr "Ihneď k odoslaniu"
+
 msgid "In Progress"
 msgstr "Vyřizuje se"
 

@@ -728,7 +728,7 @@ msgid "Dostupnost %days% dny"
 msgstr ""
 
 msgid "Dostupnost %days% dní"
-msgstr ""
+msgstr "{1} Dostupnost %days% den|[2,4] Dostupnost %days% dny|[5,Inf[ Dostupnost %days% dní"
 
 msgid "Dostupnost dle varianty"
 msgstr ""
@@ -1125,6 +1125,9 @@ msgstr "Id stavu z IS"
 
 msgid "Identifikátor pro IS Pohoda"
 msgstr ""
+
+msgid "Ihned k odeslání, další dle dostupnosti"
+msgstr "[1,10] Ihned k odeslání %quantity%&nbsp;%unitName%, další dle&nbsp;dostupnosti|[11,Inf[ Ihned k odeslání > 10&nbsp;%unitName%, další dle&nbsp;dostupnosti"
 
 msgid "Image"
 msgstr "Obrázek"
@@ -3481,11 +3484,8 @@ msgstr "A je to. Vaše údaje byly úspěšně aktualizovány."
 msgid "Youtube"
 msgstr "Youtube"
 
-msgid "Za tuto cenu skladem > 10 %unitName%"
-msgstr ""
-
-msgid "Za tuto cenu skladem již jen %quantity%%unitName%"
-msgstr ""
+msgid "Za tuto cenu skladem již jen %quantity% %unitName%"
+msgstr "[1,10] Za tuto cenu ihned k odeslání již jen %quantity%&nbsp;%unitName%|[11,Inf[ Za tuto cenu ihned k odeslání > 10&nbsp;%unitName%"
 
 msgid "Za zboží"
 msgstr "Za zboží"

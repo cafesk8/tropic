@@ -1,7 +1,0 @@
-{% macro showInfo(saleStockQuantity, unitName) %}
-    {% if saleStockQuantity > 0 and saleStockQuantity <= 10 %}
-        {{ 'Za tuto cenu skladem již jen %quantity%%unitName%'|trans({'%quantity%': saleStockQuantity, '%unitName%': unitName}) }}
-    {% elseif saleStockQuantity > 10 %}
-        {{ 'Za tuto cenu skladem > 10 %unitName%'|trans({'%unitName%': unitName}) }}
-    {% endif %}
-{% endmacro %}

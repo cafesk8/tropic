@@ -736,6 +736,9 @@ msgstr ""
 msgid "Element arrangement"
 msgstr ""
 
+msgid "Emailem"
+msgstr "By email"
+
 msgid "Energy efficiency class"
 msgstr ""
 
@@ -882,6 +885,9 @@ msgstr ""
 
 msgid "Hyundai 22HD44D"
 msgstr ""
+
+msgid "Ihned k odeslání"
+msgstr "Available immediately"
 
 msgid "Interface"
 msgstr ""
@@ -1451,9 +1457,6 @@ msgid "Simple Genius Mouse NetScroll 310 offers the most widely used functional 
 msgstr ""
 
 msgid "Simple Genius Mouse NetScroll 310 offers the most widely used functional elements of a basic ergonomics. It has an optical sensor with a resolution of 800 DPI, which can handle work on a large number of standard surfaces. There are two classic buttons and the third with the paging function wheel. Genius NetScroll 310 is equipped with modern USB interface and finds use in conserving ambidextrous or in an office environment. <br><strong> Specifications: </strong><br><strong> Supported OS: </strong><br> Microsoft Windows 7, Vista, XP, 2003, 2000, 98SE <br> Mac OS 8.6 or later"
-msgstr ""
-
-msgid "Skladem v e‑shopu"
 msgstr ""
 
 msgid "Skladové zásoby na prodejně"

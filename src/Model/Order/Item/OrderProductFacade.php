@@ -124,7 +124,7 @@ class OrderProductFacade extends BaseOrderProductFacade
      * @param bool $isSetItem
      * @return \App\Model\Order\ItemSourceStock\OrderItemSourceStockData[]
      */
-    private function subtractStockQuantity(Product $product, int $quantity, bool $isSaleItem, bool $isSetItem): array
+    public function subtractStockQuantity(Product $product, int $quantity, bool $isSaleItem, bool $isSetItem): array
     {
         $orderItemSourceStocksData = [];
         $remainingQuantity = $quantity;

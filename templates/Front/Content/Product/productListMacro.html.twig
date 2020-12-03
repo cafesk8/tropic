@@ -53,8 +53,8 @@
                                         {% endif %}
 
                                         <div class="in-availability">
-                                            <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                                {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
+                                            <div class="in-availability__text" style="color: {{ productView.availabilityColor }};">
+                                                {{ productView.availability|raw }}
                                             </div>
                                         </div>
 
@@ -153,8 +153,8 @@
                                         {% endif %}
 
                                         <div class="in-availability">
-                                            <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                                {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
+                                            <div class="in-availability__text" style="color: {{ productView.availabilityColor }};">
+                                                {{ productView.availability|raw }}
                                             </div>
                                         </div>
                                     </a>
@@ -220,8 +220,8 @@
                                 {% endif %}
 
                                 <div class="list-last-visited__item__info__availability">
-                                    <div class="list-last-visited__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                        {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
+                                    <div class="list-last-visited__item__info__availability__text" style="color: {{ productView.availabilityColor }};">
+                                        {{ productView.availability|raw }}
                                     </div>
                                 </div>
                             </div>
@@ -255,8 +255,8 @@
                 <div class="{{ listCssClass }}__item__info">
                     <div class="{{ listCssClass }}__item__info__left">
                         <div class="in-availability">
-                            <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                {% include 'Front/Content/Product/productViewAvailability.html.twig' %}
+                            <div class="in-availability__text" style="color: {{ productView.availabilityColor }};">
+                                {{ productView.availability|raw }}
                             </div>
                         </div>
                     </div>
