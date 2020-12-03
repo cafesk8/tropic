@@ -1142,7 +1142,7 @@ msgid "Identifikátor pro IS Pohoda"
 msgstr "Identifikátor pre IS Pohoda"
 
 msgid "Ihned k odeslání, další dle dostupnosti"
-msgstr "[1,10] Ihneď k odoslaniu %quantity%&nbsp;%unitName%, ďalšie podľa&nbsp;dostupnosti|[11,Inf[ Ihneď k odoslaniu > 10&nbsp;%unitName%, ďalšie podľa&nbsp;dostupnosti"
+msgstr "[0,10] Ihneď k odoslaniu %quantity%&nbsp;%unitName%, ďalšie podľa&nbsp;dostupnosti|[11,Inf[ Ihneď k odoslaniu > 10&nbsp;%unitName%, ďalšie podľa&nbsp;dostupnosti"
 
 msgid "Image"
 msgstr "Obrázok"
@@ -3557,7 +3557,7 @@ msgid "Youtube"
 msgstr "Youtube"
 
 msgid "Za tuto cenu skladem již jen %quantity% %unitName%"
-msgstr "[1,10] Za túto cenu ihneď k odoslaniu už len %quantity%&nbsp;%unitName%|[11,Inf[ Za túto cenu ihneď k odoslaniu > 10&nbsp;%unitName%"
+msgstr "[0,10] Za túto cenu ihneď k odoslaniu už len %quantity%&nbsp;%unitName%|[11,Inf[ Za túto cenu ihneď k odoslaniu > 10&nbsp;%unitName%"
 
 msgid "Za zboží"
 msgstr "Za tovar"
