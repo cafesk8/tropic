@@ -890,7 +890,7 @@ class ProductRepository extends BaseProductRepository
     {
         $query = $this->em->createNativeQuery(
             'UPDATE products 
-            SET stock_quantity = :stockQuantity, real_stock_quantity = :realStockQuantity
+            SET stock_quantity = :stockQuantity, real_stock_quantity = :realStockQuantity, recalculate_availability = TRUE
             WHERE id = :productId',
             new ResultSetMapping()
         )->setParameters([

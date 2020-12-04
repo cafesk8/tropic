@@ -53,7 +53,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->centralStore = true;
         $storeData->showOnStoreList = false;
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
-        $storeData->externalNumber = '2';
+        $storeData->externalNumber = '11';
         $storeData->pohodaName = 'VÝPRODEJ';
         $this->createStore($storeData, self::REFERENCE_STORE_SALE_STOCK);
 
@@ -61,7 +61,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->name = t('Prodejna - výprodej', [], 'dataFixtures');
         $storeData->position = 1;
         $storeData->centralStore = false;
-        $storeData->externalNumber = '13';
+        $storeData->externalNumber = '8';
         $storeData->pohodaName = 'PRODEJNA-V';
         $this->createStore($storeData, self::REFERENCE_STORE_SALE_STORE);
 
@@ -69,7 +69,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->name = t('Interní sklad', [], 'dataFixtures');
         $storeData->position = 2;
         $storeData->centralStore = true;
-        $storeData->externalNumber = '10';
+        $storeData->externalNumber = '2';
         $storeData->pohodaName = 'TROPIC';
         $this->createStore($storeData, self::REFERENCE_STORE_INTERNAL_STOCK);
 
@@ -77,7 +77,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->name = t('Externí sklad', [], 'dataFixtures');
         $storeData->position = 3;
         $storeData->centralStore = false;
-        $storeData->externalNumber = '11';
+        $storeData->externalNumber = '99';
         $storeData->pohodaName = 'EXTERNÍ';
         $this->createStore($storeData, self::REFERENCE_STORE_EXTERNAL_STOCK);
 
