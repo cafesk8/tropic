@@ -142,6 +142,7 @@ class OrderProductFacade extends BaseOrderProductFacade
                 $productStoreStock->subtractStockQuantity($availableQuantity);
                 $remainingQuantity -= $availableQuantity;
                 $orderItemSourceStocksData[] = $this->orderItemSourceStockDataFactory->create($productStoreStock->getStore(), $availableQuantity);
+                $product->markForAvailabilityRecalculation();
             } else {
                 $productStoreStock->subtractStockQuantity($remainingQuantity);
                 $orderItemSourceStocksData[] = $this->orderItemSourceStockDataFactory->create($productStoreStock->getStore(), $remainingQuantity);
