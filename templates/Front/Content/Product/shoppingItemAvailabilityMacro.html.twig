@@ -6,6 +6,6 @@
     {% endif %}
 
     <span class="in-availability__date" style="color: {{ getAvailabilityColor(cartProduct) }};">
-        {{ getAvailabilityText(cartProduct, true) }}
+        {{ getAvailabilityText(cartProduct, true)|raw }}
     </span>
 {% endmacro %}
