@@ -87,7 +87,13 @@ class Availability extends BaseAvailability
      */
     public function getRating(): int
     {
-        return array_search($this->code, self::RATING, true);
+        $rating = array_search($this->code, self::RATING, true);
+
+        if (is_int($rating)) {
+            return $rating;
+        }
+
+        return PHP_INT_MAX;
     }
 
     /**
