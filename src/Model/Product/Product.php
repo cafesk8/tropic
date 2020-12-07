@@ -413,15 +413,31 @@ class Product extends BaseProduct
         return $storeStocks;
     }
 
-    public function cloneStoreStocks(): void
+    /**
+     * @return \App\Model\Product\Product
+     */
+    public function cloneSelfAndStoreStocks(): self
     {
-        $storeStocks = $this->storeStocks->toArray();
+        $productClone = clone $this;
+        $storeStocks = $productClone->storeStocks->toArray();
 
         foreach ($storeStocks as $key => $storeStock) {
             $storeStocks[$key] = clone $storeStock;
         }
 
-        $this->storeStocks = new ArrayCollection($storeStocks);
+        $productClone->storeStocks = new ArrayCollection($storeStocks);
+
+        if ($productClone->isPohodaProductTypeSet()) {
+            $clonedSets = [];
+
+            foreach ($productClone->getProductSets() as $productSet) {
+                $clonedSets[] = new ProductSet($productClone, $productSet->getItem()->cloneSelfAndStoreStocks(), $productSet->getItemCount());
+            }
+
+            $productClone->productSets = new ArrayCollection($clonedSets);
+        }
+
+        return $productClone;
     }
 
     public function clearStoreStocks(): void
@@ -455,7 +471,7 @@ class Product extends BaseProduct
     /**
      * @return int
      */
-    private function getInternalStockQuantity(): int
+    public function getInternalStockQuantity(): int
     {
         foreach ($this->storeStocks as $storeStock) {
             if ($storeStock->getStore()->isInternalStock() && $storeStock->getStockQuantity() !== null) {
@@ -1304,7 +1320,7 @@ class Product extends BaseProduct
     /**
      * @return int
      */
-    private function getSaleStocksQuantity(): int
+    public function getSaleStocksQuantity(): int
     {
         if ($this->isMainVariant()) {
             throw new \Exception('Don\'t call getSaleStocksQuantity from main variant!');
@@ -1623,7 +1639,7 @@ class Product extends BaseProduct
      * @param int $baseQuantity
      * @return int
      */
-    private function getCalculatedStockQuantity(int $baseQuantity): int
+    public function getCalculatedStockQuantity(int $baseQuantity): int
     {
         if ($baseQuantity % $this->getAmountMultiplier() !== 0) {
             return (int)floor($baseQuantity / $this->getAmountMultiplier()) * $this->getAmountMultiplier();

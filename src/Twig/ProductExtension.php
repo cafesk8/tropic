@@ -352,9 +352,20 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      */
     public function cloneProductWithSubtractedStocks(Product $product, int $subtractQuantity = 0): Product
     {
-        $productClone = clone $product;
-        $productClone->cloneStoreStocks();
+        $productClone = $product->cloneSelfAndStoreStocks();
         $this->orderProductFacade->subtractStockQuantity($productClone, $subtractQuantity - 1, false, false);
+
+        if ($product->isPohodaProductTypeSet()) {
+            foreach ($productClone->getProductSets() as $productSet) {
+                $this->orderProductFacade->subtractStockQuantity(
+                    $productSet->getItem(),
+                    ($subtractQuantity - 1) * $productSet->getItemCount(),
+                    false,
+                    true
+                );
+            }
+        }
+
         $productClone->setCalculatedAvailability($this->availabilityFacade->getAvailability($productClone, true));
 
         return $productClone;
