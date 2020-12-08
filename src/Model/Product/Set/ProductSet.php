@@ -14,27 +14,23 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductSet
 {
     /**
-     * @var \App\Model\Product\Product
      * @ORM\ManyToOne(targetEntity="App\Model\Product\Product", inversedBy="productSets")
      * @ORM\JoinColumn(nullable=false, name="main_product_id", referencedColumnName="id", onDelete="CASCADE")
      * @ORM\Id
      */
-    protected $mainProduct;
+    protected Product $mainProduct;
 
     /**
-     * @var \App\Model\Product\Product
      * @ORM\ManyToOne(targetEntity="App\Model\Product\Product")
      * @ORM\JoinColumn(nullable=false, name="item_id", referencedColumnName="id", onDelete="CASCADE")
      * @ORM\Id
      */
-    protected $item;
+    protected Product $item;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=false)
      */
-    protected $itemCount;
+    protected int $itemCount;
 
     /**
      * @param \App\Model\Product\Product $mainProduct

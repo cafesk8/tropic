@@ -171,7 +171,11 @@ class AvailabilityFacade extends BaseAvailabilityFacade
                     return $availability->getName($locale);
                 }
 
-                $internalStockQuantity = $product->getRealInternalStockQuantity();
+                if ($product->isPohodaProductTypeSet()) {
+                    $internalStockQuantity = $this->getTheLowestRealInternalStockQuantityFromSetItems($product);
+                } else {
+                    $internalStockQuantity = $product->getRealInternalStockQuantity();
+                }
 
                 return tc(
                     'Ihned k odeslání, další dle dostupnosti',
@@ -205,5 +209,24 @@ class AvailabilityFacade extends BaseAvailabilityFacade
             default:
                 return $availability->getName($locale);
         }
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return int
+     */
+    public function getTheLowestRealInternalStockQuantityFromSetItems(Product $product): int
+    {
+        $lowestStockQuantity = PHP_INT_MAX;
+
+        foreach ($product->getProductSets() as $productSet) {
+            $currentStockQuantity = ($productSet->getItem()->getInternalStockQuantity() + $productSet->getItem()->getRealSaleStocksQuantity()) / $productSet->getItemCount();
+
+            if ($currentStockQuantity < $lowestStockQuantity) {
+                $lowestStockQuantity = $currentStockQuantity;
+            }
+        }
+
+        return $product->getCalculatedStockQuantity((int)$lowestStockQuantity);
     }
 }
