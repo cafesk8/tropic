@@ -1,8 +1,5 @@
 {% extends '@!ShopsysFramework/Admin/Content/PromoCode/list.html.twig' %}
 
-{% block title %}- {{ 'Promo codes'|trans }}{% endblock %}
-{% block h1 %}{{ 'Promo codes'|trans }}{% endblock %}
-
 {% block btn %}
     <div class="text-right">
         <a href="{{ url('admin_promocode_new') }}" class="btn btn--plus">
@@ -17,6 +14,23 @@
 {% endblock %}
 
 {% block main_content %}
+    <div class="in-tab js-tabs">
+        <div class="in-tab__heading">
+            <a href="#"
+               class="in-tab__heading__item js-tabs-button"
+               data-tab-id="quick"
+            >
+                {{ 'Quick search'|trans }}
+            </a>
+        </div>
+        <div class="in-tab__content">
+            <div class="in-tab__content__in js-tabs-content" data-tab-id="quick">
+                {% include '@ShopsysFramework/Admin/Content/PromoCode/quickSearchFormContent.html.twig' with {quickSearchForm: quickSearchForm} %}
+            </div>
+        </div>
+    </div>
+
     {{ render(controller('ShopsysFrameworkBundle:Admin/Domain:domainTabs')) }}
     {{ gridView.render() }}
+    {{ gridView.renderHiddenInputs('page') }}
 {% endblock %}

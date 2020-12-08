@@ -4,9 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Model\Order\PromoCode\Grid\PromoCodeGridFactory;
+use App\Model\Order\PromoCode\Listing\PromoCodeListAdminFacade;
+use App\Model\Order\PromoCode\PromoCodeFacade;
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\PromoCodeController as BasePromoCodeController;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
+use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
+use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormType;
+use Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade;
+use Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider;
+use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +28,67 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PromoCodeController extends BasePromoCodeController
 {
+    /**
+     * @var \App\Model\Order\PromoCode\Listing\PromoCodeListAdminFacade
+     */
+    protected $promoCodeListAdminFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
+     */
+    protected $adminDomainTabsFacade;
+
+    /**
+     * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+     * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface $promoCodeDataFactory
+     * @param \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
+     * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider
+     * @param \App\Model\Order\PromoCode\Listing\PromoCodeListAdminFacade $promoCodeListAdminFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
+     */
+    public function __construct(
+        PromoCodeFacade $promoCodeFacade,
+        AdministratorGridFacade $administratorGridFacade,
+        PromoCodeDataFactoryInterface $promoCodeDataFactory,
+        PromoCodeGridFactory $promoCodeGridFactory,
+        BreadcrumbOverrider $breadcrumbOverrider,
+        PromoCodeListAdminFacade $promoCodeListAdminFacade,
+        AdminDomainTabsFacade $adminDomainTabsFacade
+    ) {
+        parent::__construct($promoCodeFacade, $administratorGridFacade, $promoCodeDataFactory, $promoCodeGridFactory, $breadcrumbOverrider);
+
+        $this->promoCodeListAdminFacade = $promoCodeListAdminFacade;
+        $this->adminDomainTabsFacade = $adminDomainTabsFacade;
+    }
+
+    /**
+     * @Route("/promo-code/list")
+     * @param \Symfony\Component\HttpFoundation\Request|null $request
+     */
+    public function listAction(?Request $request = null)
+    {
+        /* @var \App\Model\Administrator\Administrator $administrator */
+        $administrator = $this->getUser();
+
+        $quickSearchForm = $this->createForm(QuickSearchFormType::class, new QuickSearchFormData());
+        $quickSearchForm->handleRequest($request);
+
+        $queryBuilder = $this->promoCodeListAdminFacade->getPromoCodeListQueryBuilderByQuickSearchData(
+            $quickSearchForm->getData()
+        );
+
+        $grid = $this->promoCodeGridFactory->createFromQueryBuilder($queryBuilder);
+        $grid->enablePaging();
+
+        $this->administratorGridFacade->restoreAndRememberGridLimit($administrator, $grid);
+
+        return $this->render('@ShopsysFramework/Admin/Content/PromoCode/list.html.twig', [
+            'gridView' => $grid->createView(),
+            'quickSearchForm' => $quickSearchForm->createView(),
+        ]);
+    }
+
     /**
      * @Route("/promo-code/new-mass-generate")
      * @param \Symfony\Component\HttpFoundation\Request $request
