@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Model\Order\PromoCode\Grid\PromoCodeGridFactory;
-use App\Model\Order\PromoCode\Listing\PromoCodeListAdminFacade;
 use App\Model\Order\PromoCode\PromoCodeFacade;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
@@ -23,16 +22,11 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @property \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
  * @method setPromoCodeGridFactory(\App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory)
+ * @method \App\Model\Administrator\Administrator getUser()
  * @property \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
- * @method __construct(\App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade, \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade, \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface $promoCodeDataFactory, \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory, \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider)
  */
 class PromoCodeController extends BasePromoCodeController
 {
-    /**
-     * @var \App\Model\Order\PromoCode\Listing\PromoCodeListAdminFacade
-     */
-    protected $promoCodeListAdminFacade;
-
     /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
      */
@@ -44,7 +38,6 @@ class PromoCodeController extends BasePromoCodeController
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface $promoCodeDataFactory
      * @param \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
      * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider
-     * @param \App\Model\Order\PromoCode\Listing\PromoCodeListAdminFacade $promoCodeListAdminFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      */
     public function __construct(
@@ -53,32 +46,26 @@ class PromoCodeController extends BasePromoCodeController
         PromoCodeDataFactoryInterface $promoCodeDataFactory,
         PromoCodeGridFactory $promoCodeGridFactory,
         BreadcrumbOverrider $breadcrumbOverrider,
-        PromoCodeListAdminFacade $promoCodeListAdminFacade,
         AdminDomainTabsFacade $adminDomainTabsFacade
     ) {
         parent::__construct($promoCodeFacade, $administratorGridFacade, $promoCodeDataFactory, $promoCodeGridFactory, $breadcrumbOverrider);
 
-        $this->promoCodeListAdminFacade = $promoCodeListAdminFacade;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
     }
 
     /**
      * @Route("/promo-code/list")
      * @param \Symfony\Component\HttpFoundation\Request|null $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(?Request $request = null)
+    public function listAction(?Request $request = null): Response
     {
-        /* @var \App\Model\Administrator\Administrator $administrator */
         $administrator = $this->getUser();
 
         $quickSearchForm = $this->createForm(QuickSearchFormType::class, new QuickSearchFormData());
         $quickSearchForm->handleRequest($request);
 
-        $queryBuilder = $this->promoCodeListAdminFacade->getPromoCodeListQueryBuilderByQuickSearchData(
-            $quickSearchForm->getData()
-        );
-
-        $grid = $this->promoCodeGridFactory->createFromQueryBuilder($queryBuilder);
+        $grid = $this->promoCodeGridFactory->create(true, $quickSearchForm->getData());
         $grid->enablePaging();
 
         $this->administratorGridFacade->restoreAndRememberGridLimit($administrator, $grid);
