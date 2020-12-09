@@ -42,7 +42,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $productFilterData->minimalPrice = $this->priceConverter->convertPriceWithVatToPriceInDomainDefaultCurrency(Money::create(1000), Domain::FIRST_DOMAIN_ID);
         $paginationResult = $this->getPaginationResultInCategory($productFilterData, $category);
 
-        $this->assertCount(22, $paginationResult->getResults());
+        $this->assertCount(20, $paginationResult->getResults());
     }
 
     public function testFilterByMaximalPrice()
@@ -53,7 +53,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $productFilterData->maximalPrice = $this->priceConverter->convertPriceWithVatToPriceInDomainDefaultCurrency(Money::create(10000), Domain::FIRST_DOMAIN_ID);
         $paginationResult = $this->getPaginationResultInCategory($productFilterData, $category);
 
-        $this->assertCount(24, $paginationResult->getResults());
+        $this->assertCount(22, $paginationResult->getResults());
     }
 
     public function testFilterByStockAvailability()
@@ -64,7 +64,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $productFilterData->available = true;
         $paginationResult = $this->getPaginationResultInCategory($productFilterData, $category);
 
-        $this->assertCount(6, $paginationResult->getResults());
+        $this->assertCount(5, $paginationResult->getResults());
     }
 
     public function testFilterByFlag()
@@ -92,7 +92,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $productFilterData->flags = [$flagTopProduct, $flagActionProduct];
         $paginationResult = $this->getPaginationResultInCategory($productFilterData, $category);
 
-        $this->assertCount(4, $paginationResult->getResults());
+        $this->assertCount(3, $paginationResult->getResults());
     }
 
     public function testFilterByBrand()
@@ -257,15 +257,15 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
 
         $paginationResult = $this->getPaginationResultInCategoryWithPageAndLimit($productFilterData, $category, 1, 10);
         $this->assertCount(10, $paginationResult->getResults());
-        $this->assertSame(22, $paginationResult->getTotalCount());
+        $this->assertSame(20, $paginationResult->getTotalCount());
 
         $paginationResult = $this->getPaginationResultInCategoryWithPageAndLimit($productFilterData, $category, 2, 10);
         $this->assertCount(10, $paginationResult->getResults());
-        $this->assertSame(22, $paginationResult->getTotalCount());
+        $this->assertSame(20, $paginationResult->getTotalCount());
 
         $paginationResult = $this->getPaginationResultInCategoryWithPageAndLimit($productFilterData, $category, 3, 2);
         $this->assertCount(2, $paginationResult->getResults());
-        $this->assertSame(22, $paginationResult->getTotalCount());
+        $this->assertSame(20, $paginationResult->getTotalCount());
     }
 
     /**
