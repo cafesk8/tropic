@@ -372,7 +372,10 @@ class DataLayerMapper
             }
         }
 
-        $dataLayerPurchase['actionField'] = array_merge($dataLayerPurchase['actionField'], ['coupon' => implode('|', $couponsArray)]);
+        $dataLayerPurchase['actionField'] = array_merge(
+            $dataLayerPurchase['actionField'],
+            ['coupon' => preg_replace('/\xc2\xa0/', '', implode('|', $couponsArray))]
+        );
 
         return $dataLayerPurchase;
     }
