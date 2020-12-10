@@ -2,6 +2,25 @@
 
 <div class="search__autocomplete">
     <div class="search-hint" id="js-search-autocomplete-list">
+        {% if brandsPaginationResult.totalCount > 0 %}
+            <div class="search-hint__left">
+                <div class="search-hint__title">
+                    {{ 'Značky'|trans }} ({{ brandsPaginationResult.totalCount }})
+                </div>
+                <ul class="search-hint__category">
+                    {% for brand in brandsPaginationResult.results %}
+                        <li class="search-hint__category__item">
+                            <a href="{{ url('front_brand_detail', { id: brand.id }) }}" class="search-hint__category__link">
+                                <span class="search-hint__category__image">
+                                    <i class="svg svg-folder"></i>
+                                </span>
+                                <span class="search-hint__category__name js-search-autocomplete-item-label">{{ brand.name }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
         {% if setsPaginationResult.totalCount > 0 %}
             <div class="search-hint__left">
                 <div class="search-hint__title">

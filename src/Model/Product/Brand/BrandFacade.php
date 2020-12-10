@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Brand;
 
+use App\Model\Product\Search\BrandSearchResult;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade as BaseBrandFacade;
 
@@ -38,5 +39,32 @@ class BrandFacade extends BaseBrandFacade
     public function getBrandsForFilterByIds(array $brandsIds, string $locale, ?Category $category = null): array
     {
         return $this->brandRepository->getBrandsForFilterByIds($brandsIds, $locale, $category);
+    }
+
+    /**
+     * @param string $searchText
+     * @param int $limit
+     * @return \App\Model\Product\Search\BrandSearchResult
+     */
+    public function getSearchAutocompleteBrands(string $searchText, int $limit): BrandSearchResult
+    {
+        $firstResult = $this->brandRepository->getPaginationResultForSearch(
+            $searchText,
+            1,
+            $limit,
+            true
+        );
+        $secondResult = $this->brandRepository->getPaginationResultForSearch(
+            $searchText,
+            1,
+            $limit * 2,
+            false
+        );
+
+        $results = array_merge($firstResult->getResults(), $secondResult->getResults());
+        $results = array_unique($results, SORT_REGULAR);
+        $results = array_slice($results, 0, $limit);
+
+        return new BrandSearchResult($results, $secondResult->getTotalCount());
     }
 }

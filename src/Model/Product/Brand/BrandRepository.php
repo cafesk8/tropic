@@ -6,6 +6,9 @@ namespace App\Model\Product\Brand;
 
 use App\Model\Category\CategoryBrand\CategoryBrand;
 use Doctrine\ORM\Query\Expr\Join;
+use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
+use Shopsys\FrameworkBundle\Component\Paginator\QueryPaginator;
+use Shopsys\FrameworkBundle\Component\String\DatabaseSearching;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandRepository as BaseBrandRepository;
 
@@ -79,5 +82,28 @@ class BrandRepository extends BaseBrandRepository
         }
 
         return $brandsQueryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param string $searchText
+     * @param int $page
+     * @param int $limit
+     * @param bool $start
+     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
+     */
+    public function getPaginationResultForSearch(
+        string $searchText,
+        int $page,
+        int $limit,
+        bool $start
+    ): PaginationResult {
+        $searchParam = $start ? DatabaseSearching::getLikeSearchString($searchText) . '%' : DatabaseSearching::getFullTextLikeSearchString($searchText);
+
+        $queryBuilder = $this->getBrandRepository()->createQueryBuilder('b')
+            ->where('NORMALIZE(b.name) LIKE NORMALIZE(:searchText)')
+            ->setParameter('searchText', $searchParam);
+        $queryPaginator = new QueryPaginator($queryBuilder);
+
+        return $queryPaginator->getResult($page, $limit);
     }
 }
