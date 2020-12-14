@@ -78,7 +78,7 @@
                         {{ render(controller('App\\Controller\\Front\\BestsellingProductController:listAction', {'category': category, 'type': constant('App\\Controller\\Front\\BestsellingProductController::TYPE_VERTICAL'), routeName: getRoute()})) }}
 
                         <div class="box-list__ordering">
-                            {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction')) }}
+                            {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction', {'news': category.newsType or isNewsCategory})) }}
                             {% if paginationResult.results|length > 0 %}
                                 <div class="box-list__ordering__pagination">
                                     {% set entityName = 'products'|trans %}
