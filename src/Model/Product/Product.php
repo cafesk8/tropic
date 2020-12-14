@@ -1050,7 +1050,17 @@ class Product extends BaseProduct
     {
         $variants = $this->variants->toArray();
         usort($variants, function (self $variant1, self $variant2) {
-            return intval(self::getVariantNumber($variant1->getVariantId())) - intval(self::getVariantNumber($variant2->getVariantId()));
+            $sortValue = $variant1->getCalculatedAvailability()->getRating() - $variant2->getCalculatedAvailability()->getRating();
+
+            if ($sortValue === 0) {
+                $sortValue = intval(self::getVariantNumber($variant1->getVariantId())) - intval(self::getVariantNumber($variant2->getVariantId()));
+            }
+
+            if ($sortValue === 0) {
+                $sortValue = strcmp($variant1->getName(), $variant2->getName());
+            }
+
+            return $sortValue;
         });
 
         return $variants;
