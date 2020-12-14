@@ -1692,4 +1692,37 @@ class Product extends BaseProduct
 
         return false;
     }
+
+    /**
+     * @param int $domainId
+     * @return \DateTime|null
+     */
+    public function productNewsFrom(int $domainId): ?DateTime
+    {
+        if (!$this->isProductInNews($domainId)) {
+            return null;
+        }
+
+        $newestProductNews = null;
+        foreach ($this->getProductFlags() as $productFlag) {
+            if ($productFlag->getFlag()->isNews()) {
+                $newestProductNews = $productFlag->getActiveFrom();
+            }
+        }
+
+        if ($this->isMainVariant()) {
+            foreach ($this->getVariants() as $variant) {
+                foreach ($variant->getProductFlags() as $variantFlag) {
+                    if ($variantFlag->getFlag()->isNews()) {
+                        $variantNewsFrom = $variantFlag->getActiveFrom();
+                        if ($variantNewsFrom != null && $variantNewsFrom > $newestProductNews) {
+                            $newestProductNews = $variantNewsFrom;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $newestProductNews;
+    }
 }

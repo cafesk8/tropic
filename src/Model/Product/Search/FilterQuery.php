@@ -74,6 +74,25 @@ class FilterQuery extends BaseFilterQuery
     {
         $clone = clone $this;
 
+        if ($orderingModeId === ProductListOrderingConfig::ORDER_BY_NEWS_ACTIVE_FROM) {
+            $clone->sorting = [
+                'product_news_active_from' => 'desc',
+                'prices.price_with_vat' => [
+                    'order' => 'desc',
+                    'nested' => [
+                        'path' => 'prices',
+                        'filter' => [
+                            'term' => [
+                                'prices.pricing_group_id' => $pricingGroup->getId(),
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+
+            return $clone;
+        }
+
         if ($orderingModeId === ProductListOrderingConfig::ORDER_BY_PRIORITY) {
             $clone->sorting = [
                 'ordering_priority' => 'desc',

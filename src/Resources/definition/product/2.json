@@ -426,6 +426,9 @@
       },
       "available": {
         "type": "boolean"
+      },
+      "product_news_active_from": {
+        "type": "date"
       }
     }
   }
