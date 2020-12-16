@@ -10,6 +10,9 @@ msgstr "Názov mesta nesmie byť dlhší ako {{ limit }} znakov"
 msgid "Company name cannot be longer than {{ limit }} characters"
 msgstr "Názov spoločnosti nesmie byť dlhší ako {{ limit }} znakov"
 
+msgid "Country postcode validation"
+msgstr "Zadajte slovenské PSČ. V případě, že nakupujete zboží do Česka, klikněte <a href=\"https://www.tropicfishing.cz/\">ZDE</a>."
+
 msgid "Email cannot be longer than {{ limit }} characters"
 msgstr "E-mail nesmie mať viac ako {{ limit }} znakov"
 
@@ -313,5 +316,3 @@ msgstr "Zadajte prosím výšku zľavy"
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "PSČ nesmie byť dlhšie ako {{ limit }} znakov"
 
-msgid "Country postcode validation"
-msgstr "Zadajte slovenské PSČ. V případě, že nakupujete zboží do Česka, klikněte <a href=\"https://www.tropicfishing.cz/\">ZDE</a>."

@@ -733,6 +733,9 @@ msgstr "Doručiť na adresu"
 msgid "Doručovací adresy"
 msgstr "Doručovacie adresy"
 
+msgid "Dostupnost"
+msgstr "Dostupnosť"
+
 msgid "Dostupnost %days% den"
 msgstr "Dostupnosť %days% deň"
 
@@ -1140,6 +1143,9 @@ msgstr "Id stavu z IS"
 
 msgid "Identifikátor pro IS Pohoda"
 msgstr "Identifikátor pre IS Pohoda"
+
+msgid "Ihned k odeslání"
+msgstr "Ihneď k odoslaniu"
 
 msgid "Ihned k odeslání, další dle dostupnosti"
 msgstr "[0,10] Ihneď k odoslaniu %quantity%&nbsp;%unitName%, ďalšie podľa&nbsp;dostupnosti|[11,Inf[ Ihneď k odoslaniu > 10&nbsp;%unitName%, ďalšie podľa&nbsp;dostupnosti"
@@ -1839,6 +1845,9 @@ msgstr "Objednávka z Mall.cz"
 
 msgid "Objednávky odesíláme 4.1.2021"
 msgstr "Objednávky odosielame 4.1.2021"
+
+msgid "Objednávky přijaté po 13:00 odesíláme následující pracovní den"
+msgstr "Objednávky prijaté po 13:00 odosielame nasledujúci pracovný deň"
 
 msgid "Objemný"
 msgstr "Objemný"
@@ -2761,6 +2770,12 @@ msgstr "Skryť ďalšie spôsoby dopravy"
 msgid "Skrýt další způsoby platby"
 msgstr "Skryť ďalšie spôsoby platby"
 
+msgid "Skrýt filtrování"
+msgstr "Skryť filtrovanie"
+
+msgid "Skrýt nedostupné"
+msgstr "Skryť nedostupné"
+
 msgid "Skrýt položky"
 msgstr "Skryť položky"
 
@@ -3675,6 +3690,9 @@ msgstr "Zobraziť na stránke predajní"
 
 msgid "Zobrazit nedostupné produkty"
 msgstr "Zobraziť nedostupné produkty"
+
+msgid "Zobrazit výsledky"
+msgstr "Zobraziť výsledky"
 
 msgid "Zobrazit všechny položky"
 msgstr "Zobraziť všetky položky"
