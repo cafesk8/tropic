@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Model\Order\PromoCode\Grid;
 
+use App\Model\Order\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Component\Grid\Grid;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
 use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderWithRowManipulatorDataSource;
+use Shopsys\FrameworkBundle\Component\String\DatabaseSearching;
+use Shopsys\FrameworkBundle\Component\String\TransformString;
+use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory as BasePromoCodeGridFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
@@ -52,9 +57,10 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
 
     /**
      * @param bool $withEditButton
+     * @param \Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData|null $quickSearchData
      * @return \Shopsys\FrameworkBundle\Component\Grid\Grid
      */
-    public function create($withEditButton = false)
+    public function create($withEditButton = false, ?QuickSearchFormData $quickSearchData = null): Grid
     {
         $queryBuilder = $this->em->createQueryBuilder();
         $queryBuilder
@@ -62,6 +68,17 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
             ->from(PromoCode::class, 'pc')
             ->where('pc.domainId = :selectedDomainId')
             ->setParameter('selectedDomainId', $this->adminDomainTabsFacade->getSelectedDomainId());
+
+        if (TransformString::emptyToNull($quickSearchData->text) !== null) {
+            $queryBuilder
+                ->leftJoin(Order::class, 'o', 'WITH', 'o.promoCodesCodes = pc.code')
+                ->andWhere('(
+                    NORMALIZE(pc.code) LIKE NORMALIZE(:text)
+                    OR NORMALIZE(pc.certificateSku) LIKE NORMALIZE(:text)
+                    OR NORMALIZE(o.email) LIKE NORMALIZE(:text)
+                )')
+                ->setParameter('text', DatabaseSearching::getFullTextLikeSearchString($quickSearchData->text));
+        }
 
         $dataSource = new QueryBuilderWithRowManipulatorDataSource(
             $queryBuilder,

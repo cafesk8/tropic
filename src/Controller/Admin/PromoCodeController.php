@@ -4,9 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Model\Order\PromoCode\Grid\PromoCodeGridFactory;
+use App\Model\Order\PromoCode\PromoCodeFacade;
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\PromoCodeController as BasePromoCodeController;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
+use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
+use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormType;
+use Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade;
+use Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider;
+use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,11 +22,60 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @property \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
  * @method setPromoCodeGridFactory(\App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory)
+ * @method \App\Model\Administrator\Administrator getUser()
  * @property \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
- * @method __construct(\App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade, \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade, \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface $promoCodeDataFactory, \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory, \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider)
  */
 class PromoCodeController extends BasePromoCodeController
 {
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
+     */
+    protected $adminDomainTabsFacade;
+
+    /**
+     * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+     * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface $promoCodeDataFactory
+     * @param \App\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
+     * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider
+     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
+     */
+    public function __construct(
+        PromoCodeFacade $promoCodeFacade,
+        AdministratorGridFacade $administratorGridFacade,
+        PromoCodeDataFactoryInterface $promoCodeDataFactory,
+        PromoCodeGridFactory $promoCodeGridFactory,
+        BreadcrumbOverrider $breadcrumbOverrider,
+        AdminDomainTabsFacade $adminDomainTabsFacade
+    ) {
+        parent::__construct($promoCodeFacade, $administratorGridFacade, $promoCodeDataFactory, $promoCodeGridFactory, $breadcrumbOverrider);
+
+        $this->adminDomainTabsFacade = $adminDomainTabsFacade;
+    }
+
+    /**
+     * @Route("/promo-code/list")
+     * @param \Symfony\Component\HttpFoundation\Request|null $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listAction(?Request $request = null): Response
+    {
+        $administrator = $this->getUser();
+
+        $quickSearchForm = $this->createForm(QuickSearchFormType::class, new QuickSearchFormData());
+        $quickSearchForm->handleRequest($request);
+
+        $grid = $this->promoCodeGridFactory->create(true, $quickSearchForm->getData());
+        $grid->enablePaging();
+
+        $this->administratorGridFacade->restoreAndRememberGridLimit($administrator, $grid);
+
+        return $this->render('@ShopsysFramework/Admin/Content/PromoCode/list.html.twig', [
+            'gridView' => $grid->createView(),
+            'quickSearchForm' => $quickSearchForm->createView(),
+        ]);
+    }
+
     /**
      * @Route("/promo-code/new-mass-generate")
      * @param \Symfony\Component\HttpFoundation\Request $request
