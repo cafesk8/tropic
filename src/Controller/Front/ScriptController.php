@@ -92,4 +92,12 @@ class ScriptController extends FrontBaseController
             'shopId' => $this->shopId,
         ]);
     }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function embedAllPagesLuigisBoxScriptAction(): Response
+    {
+        return $this->render('Front/Inline/MeasuringScript/luigisBox.html.twig');
+    }
 }
