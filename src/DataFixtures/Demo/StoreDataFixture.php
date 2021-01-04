@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Store\Store;
 use App\Model\Store\StoreData;
 use App\Model\Store\StoreDataFactory;
 use App\Model\Store\StoreFacade;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 
 class StoreDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
@@ -16,18 +17,13 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
     public const REFERENCE_STORE_SALE_STOCK = 'stock_sale';
     public const REFERENCE_STORE_SALE_STORE = 'store_sale';
     public const REFERENCE_STORE_INTERNAL_STOCK = 'stock_internal';
+    public const REFERENCE_STORE_ESHOP_STOCK = 'stock_eshop';
     public const REFERENCE_STORE_EXTERNAL_STOCK = 'stock_external';
     public const REFERENCE_STORE_STORE_STOCK = 'stock_store';
 
-    /**
-     * @var \App\Model\Store\StoreFacade
-     */
-    private $storeFacade;
+    private StoreFacade $storeFacade;
 
-    /**
-     * @var \App\Model\Store\StoreDataFactory
-     */
-    private $storeDataFactory;
+    private StoreDataFactory $storeDataFactory;
 
     /**
      * @param \App\Model\Store\StoreFacade $storeFacade
@@ -40,7 +36,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
     }
 
     /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager): void
     {
@@ -54,7 +50,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->showOnStoreList = false;
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $storeData->externalNumber = '11';
-        $storeData->pohodaName = 'VÝPRODEJ';
+        $storeData->pohodaName = Store::POHODA_STOCK_SALE_NAME;
         $this->createStore($storeData, self::REFERENCE_STORE_SALE_STOCK);
 
         $storeData->description = t('Výprodejový sklad na prodejně', [], 'dataFixtures');
@@ -62,7 +58,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->position = 1;
         $storeData->centralStore = false;
         $storeData->externalNumber = '8';
-        $storeData->pohodaName = 'PRODEJNA-V';
+        $storeData->pohodaName = Store::POHODA_STOCK_STORE_SALE_NAME;
         $this->createStore($storeData, self::REFERENCE_STORE_SALE_STORE);
 
         $storeData->description = '';
@@ -70,20 +66,28 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->position = 2;
         $storeData->centralStore = true;
         $storeData->externalNumber = '2';
-        $storeData->pohodaName = 'TROPIC';
+        $storeData->pohodaName = Store::POHODA_STOCK_TROPIC_NAME;
         $this->createStore($storeData, self::REFERENCE_STORE_INTERNAL_STOCK);
+
+        $storeData->description = t('Sklad pro eshop na prodejně', [], 'dataFixtures');
+        $storeData->name = t('Prodejna - eshop', [], 'dataFixtures');
+        $storeData->position = 3;
+        $storeData->centralStore = false;
+        $storeData->externalNumber = '12';
+        $storeData->pohodaName = Store::POHODA_STOCK_STORE_ESHOP_NAME;
+        $this->createStore($storeData, self::REFERENCE_STORE_ESHOP_STOCK);
 
         $storeData->description = '';
         $storeData->name = t('Externí sklad', [], 'dataFixtures');
-        $storeData->position = 3;
+        $storeData->position = 4;
         $storeData->centralStore = false;
         $storeData->externalNumber = '99';
-        $storeData->pohodaName = 'EXTERNÍ';
+        $storeData->pohodaName = Store::POHODA_STOCK_EXTERNAL_NAME;
         $this->createStore($storeData, self::REFERENCE_STORE_EXTERNAL_STOCK);
 
         $storeData->description = t('Skladové zásoby na prodejně', [], 'dataFixtures');
         $storeData->name = t('Kamenná prodejna v Liberci', [], 'dataFixtures');
-        $storeData->position = 4;
+        $storeData->position = 5;
         $storeData->city = 'Horní Růžodol, Liberec';
         $storeData->region = 'Liberecký';
         $storeData->street = 'Dr. Milady Horákové 11';
@@ -97,7 +101,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->showOnStoreList = true;
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $storeData->externalNumber = '4';
-        $storeData->pohodaName = 'PRODEJNA';
+        $storeData->pohodaName = Store::POHODA_STOCK_STORE_NAME;
         $this->createStore($storeData, self::REFERENCE_STORE_STORE_STOCK);
     }
 

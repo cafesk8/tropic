@@ -126,7 +126,7 @@ class OrderFacadeTest extends TransactionFunctionalTestCase
         /** @var \App\Model\Order\Order $order */
         $order = $this->getReference('order_1');
 
-        $this->assertCount(6, $order->getItems());
+        $this->assertCount(4, $order->getItems());
 
         $orderData = $orderDataFactory->createFromOrder($order);
 
@@ -155,7 +155,7 @@ class OrderFacadeTest extends TransactionFunctionalTestCase
 
         $orderFromDb = $orderRepository->getById($order->getId());
 
-        $this->assertCount(7, $orderFromDb->getItems());
+        $this->assertCount(5, $orderFromDb->getItems());
     }
 
     public function testCreateWithProductQuantityExceedingSaleStocksSplitsProductIntoTwoItems()
