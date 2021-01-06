@@ -21,6 +21,10 @@ class ProductFlagDataFactory
         $productFlagData->activeFrom = $activeFrom;
         $productFlagData->activeTo = $activeTo;
 
+        if ($activeFrom !== null && $activeTo !== null && $activeFrom > $activeTo) {
+            $productFlagData->activeFrom = $activeTo;
+        }
+
         return $productFlagData;
     }
 
