@@ -259,9 +259,10 @@ class ProductController extends FrontBaseController
 
     /**
      * @param int $productId
+     * @param bool $showVideos
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function boxTabsAction(int $productId)
+    public function boxTabsAction(int $productId, bool $showVideos = false): Response
     {
         $product = $this->productOnCurrentDomainFacade->getVisibleProductById($productId);
         $domainId = $this->domain->getId();
@@ -272,6 +273,7 @@ class ProductController extends FrontBaseController
             'productMainCategory' => $productMainCategory,
             'youtubeVideoIds' => $product->getYoutubeVideoIds(),
             'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $this->domain->getCurrentDomainConfig()),
+            'showVideos' => $showVideos,
         ]);
     }
 

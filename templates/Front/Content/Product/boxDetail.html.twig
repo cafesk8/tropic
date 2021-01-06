@@ -437,7 +437,32 @@
                     {% set firstProductSet = sortProductSetsByPrice(product.productSets)|first %}
                     {% set productId = firstProductSet.item.id %}
                 {% endif %}
-                {{ render(controller('App\\Controller\\Front\\ProductController:boxTabsAction', { productId: productId })) }}
+
+                {{ render(controller('App\\Controller\\Front\\ProductController:boxTabsAction', { productId: productId, showVideos: typeSetOrSupplierSet == false })) }}
+            </div>
+
+            <div class="web__container">
+                {% if typeSetOrSupplierSet and youtubeVideoIds is not empty %}
+                    <div class="box-detail__content videos-box-no-margin">
+                        <div class="in-tab in-tab--full-width js-anchor-tabs">
+                            <div class="in-tab__content">
+                                <div class="in-tab__content__bottom" id="video-variant-desktop">
+                                    <div id="video">
+                                        <div class="in-tab__content__title js-tabs-button" data-tab-id="videos">
+                                            <a href="#" class="in-tab__content__title__link">
+                                                {{ 'Videa'|trans }}
+                                            </a>
+                                            <i class="svg svg-triangle"></i>
+                                        </div>
+                                        <div class="in-tab__content__item js-tabs-content" data-tab-id="videos">
+                                            {{ self.productYoutubeVideo(youtubeVideoIds) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
