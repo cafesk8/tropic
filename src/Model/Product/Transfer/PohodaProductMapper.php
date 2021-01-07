@@ -259,17 +259,17 @@ class PohodaProductMapper
             $categories[] = $category;
         }
 
-        foreach ($this->domain->getAllIds() as $domainId) {
-            $productData->categoriesByDomainId[$domainId] = $categories;
-            $this->addPricesForDomain($pohodaProduct, $productData, $domainId);
-        }
-
         $productData->vatsIndexedByDomainId[DomainHelper::CZECH_DOMAIN] = $this->vatFacade->getByPohodaId($pohodaProduct->vatRateId);
         $productData->vatsIndexedByDomainId[DomainHelper::SLOVAK_DOMAIN] = $this->vatFacade->getDefaultVatForDomain(DomainHelper::SLOVAK_DOMAIN);
         $productData->vatsIndexedByDomainId[DomainHelper::ENGLISH_DOMAIN] = $this->vatFacade->getDefaultVatForDomain(DomainHelper::ENGLISH_DOMAIN);
         $productData->shown[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shown;
         $productData->shown[DomainHelper::SLOVAK_DOMAIN] = $pohodaProduct->shownSk;
         $productData->shown[DomainHelper::ENGLISH_DOMAIN] = $pohodaProduct->shown;
+
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $productData->categoriesByDomainId[$domainId] = $categories;
+            $this->addPricesForDomain($pohodaProduct, $productData, $domainId);
+        }
     }
 
     /**
@@ -483,10 +483,13 @@ class PohodaProductMapper
         $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getOrdinaryCustomerPricingGroup($domainId)->getId()] = $this->getPriceFromString(
             $currency->getCode() === Currency::CODE_EUR ? $pohodaProduct->sellingPriceEur : $pohodaProduct->sellingPrice
         );
-        $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getPurchasePricePricingGroup($domainId)->getId()] = $this->getPriceFromString(
-            $pohodaProduct->purchasePrice,
-            $currencyMultiplier
-        );
+
+        $purchasePrice = $this->getPriceFromString($pohodaProduct->purchasePrice, $currencyMultiplier);
+
+        if ($purchasePrice !== null) {
+            $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getPurchasePricePricingGroup($domainId)->getId()]
+                = $purchasePrice->multiply((string)($productData->vatsIndexedByDomainId[$domainId]->getPercent() / 100 + 1));
+        }
 
         if ($currency->getCode() === Currency::CODE_EUR && $pohodaProduct->standardPriceEur !== null) {
             $productData->manualInputPricesByPricingGroupId[$standardPricingGroupId] = $this->getPriceFromString($pohodaProduct->standardPriceEur);
