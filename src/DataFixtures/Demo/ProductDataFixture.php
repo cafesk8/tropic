@@ -5990,7 +5990,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $noSale = rand(0, 1);
         $lowSale = rand(0, 8);
 
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 6; $i++) {
             if ($this->productNo === 3) {
                 $fakeStoreData[$i] = rand(0, 125);
             } elseif ($onlyExternal === 0 && $i !== 4) {
@@ -6023,12 +6023,15 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $internalStock = $this->getReference(StoreDataFixture::REFERENCE_STORE_INTERNAL_STOCK);
         /** @var \App\Model\Store\Store $storeStock */
         $storeStock = $this->getReference(StoreDataFixture::REFERENCE_STORE_STORE_STOCK);
+        /** @var \App\Model\Store\Store $storeEshopStock */
+        $storeEshopStock = $this->getReference(StoreDataFixture::REFERENCE_STORE_ESHOP_STOCK);
         $stockQuantityByStoreId = [
             $saleStock->getId() => 1,
             $storeSaleStock->getId() => 2,
             $externalStock->getId() => 3,
             $internalStock->getId() => 4,
             $storeStock->getId() => 5,
+            $storeEshopStock->getId() => 2,
         ];
 
         $productData->stockQuantityByStoreId = $stockQuantityByStoreId;

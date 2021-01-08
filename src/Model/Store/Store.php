@@ -21,6 +21,8 @@ class Store implements PickupPlaceInterface
 
     public const POHODA_STOCK_TROPIC_NAME = 'TROPIC';
 
+    public const POHODA_STOCK_STORE_ESHOP_NAME = 'PRODEJNA-P';
+
     public const POHODA_STOCK_EXTERNAL_NAME = 'EXTERNÍ';
 
     public const POHODA_STOCK_STORE_SALE_NAME = 'PRODEJNA-V';
@@ -28,6 +30,11 @@ class Store implements PickupPlaceInterface
     public const SALE_STOCK_NAMES_ORDERED_BY_PRIORITY = [
         self::POHODA_STOCK_SALE_NAME,
         self::POHODA_STOCK_STORE_SALE_NAME,
+    ];
+
+    public const INTERNAL_STOCKS = [
+        self::POHODA_STOCK_TROPIC_NAME,
+        self::POHODA_STOCK_STORE_ESHOP_NAME,
     ];
 
     /**
@@ -389,7 +396,7 @@ class Store implements PickupPlaceInterface
      */
     public function isInternalStock(): bool
     {
-        return $this->pohodaName === self::POHODA_STOCK_TROPIC_NAME;
+        return in_array($this->pohodaName, self::INTERNAL_STOCKS, true);
     }
 
     /**

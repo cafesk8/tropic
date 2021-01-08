@@ -471,15 +471,17 @@ class Product extends BaseProduct
     /**
      * @return int
      */
-    public function getInternalStockQuantity(): int
+    public function getInternalStocksQuantity(): int
     {
+        $internalStocksQuantity = 0;
+
         foreach ($this->storeStocks as $storeStock) {
             if ($storeStock->getStore()->isInternalStock() && $storeStock->getStockQuantity() !== null) {
-                return $storeStock->getStockQuantity();
+                $internalStocksQuantity += $storeStock->getStockQuantity();
             }
         }
 
-        return 0;
+        return $internalStocksQuantity;
     }
 
     /**
@@ -487,7 +489,7 @@ class Product extends BaseProduct
      */
     public function getRealInternalStockQuantity(): int
     {
-        return $this->getCalculatedStockQuantity($this->getInternalStockQuantity());
+        return $this->getCalculatedStockQuantity($this->getInternalStocksQuantity());
     }
 
     /**
@@ -598,7 +600,7 @@ class Product extends BaseProduct
      * @param int|null $limit
      * @return \App\Model\Product\Flag\Flag[]
      */
-    public function getFlags(?int $limit = null)
+    public function getFlags(?int $limit = null): array
     {
         return array_map(function (ProductFlag $productFlag) {
             return $productFlag->getFlag();
@@ -609,7 +611,7 @@ class Product extends BaseProduct
      * @param int|null $limit
      * @return \App\Model\Product\Flag\Flag[]
      */
-    public function getActiveFlags(?int $limit = null)
+    public function getActiveFlags(?int $limit = null): array
     {
         return array_map(function (ProductFlag $productFlag) {
             return $productFlag->getFlag();
@@ -644,66 +646,6 @@ class Product extends BaseProduct
             $this->getStoreStocks(),
             function (ProductStoreStock $productStoreStock) {
                 return $productStoreStock->getStockQuantity() > 0;
-            }
-        );
-    }
-
-    /**
-     * @return \App\Model\Product\StoreStock\ProductStoreStock[]
-     */
-    public function getStocksWithoutZeroQuantityOnPickupPlaceStore(): array
-    {
-        if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getStocksWithoutZeroQuantityOnPickupPlaceStore from main variant!');
-        }
-
-        $productStoreStocks = array_filter(
-            $this->getStoreStocks(),
-            function (ProductStoreStock $productStoreStock) {
-                return $productStoreStock->getStockQuantity() > 0
-                    && $productStoreStock->getStore()->isPickupPlace() === true;
-            }
-        );
-
-        usort($productStoreStocks, function (ProductStoreStock $productStoreStock1, ProductStoreStock $productStoreStock2) {
-            $store1Position = $productStoreStock1->getStore()->getPosition();
-            $store2Position = $productStoreStock2->getStore()->getPosition();
-
-            if ($store1Position !== null && $store2Position !== null) {
-                return $store1Position <=> $store2Position;
-            }
-
-            if ($store1Position !== null && $store2Position === null) {
-                return -1;
-            }
-
-            if ($store1Position === null && $store2Position !== null) {
-                return 1;
-            }
-
-            $store1Name = $productStoreStock1->getStore()->getName();
-            $store2Name = $productStoreStock2->getStore()->getName();
-
-            return $store1Name <=> $store2Name;
-        });
-
-        return $productStoreStocks;
-    }
-
-    /**
-     * @return \App\Model\Product\StoreStock\ProductStoreStock[]
-     */
-    public function getStocksWithoutZeroQuantityOnCentralStore(): array
-    {
-        if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getStocksWithoutZeroQuantityOnCentralStore from main variant!');
-        }
-
-        return array_filter(
-            $this->getStoreStocks(),
-            function (ProductStoreStock $productStoreStock) {
-                return $productStoreStock->getStockQuantity() > 0
-                    && $productStoreStock->getStore()->isCentralStore();
             }
         );
     }

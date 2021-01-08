@@ -163,6 +163,7 @@ class PohodaProductExportFacade
                 $this->storeFacade->getPohodaStockSaleExternalNumber() => 0,
                 $this->storeFacade->getPohodaStockStoreExternalNumber() => 0,
                 $this->storeFacade->getPohodaStockTropicExternalNumber() => 0,
+                $this->storeFacade->getPohodaStockStoreEshopExternalNumber() => 0,
                 $this->storeFacade->getPohodaStockStoreSaleExternalNumber() => 0,
                 $this->storeFacade->getPohodaStockExternalExternalNumber() => 0,
             ];

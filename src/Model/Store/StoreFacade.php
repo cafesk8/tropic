@@ -232,6 +232,14 @@ class StoreFacade
     /**
      * @return int
      */
+    public function getPohodaStockStoreEshopExternalNumber(): int
+    {
+        return (int)$this->getByPohodaName(Store::POHODA_STOCK_STORE_ESHOP_NAME)->getExternalNumber();
+    }
+
+    /**
+     * @return int
+     */
     public function getPohodaStockStoreSaleExternalNumber(): int
     {
         return (int)$this->getByPohodaName(Store::POHODA_STOCK_STORE_SALE_NAME)->getExternalNumber();
@@ -262,6 +270,7 @@ class StoreFacade
             $this->getPohodaStockSaleExternalNumber(),
             $this->getPohodaStockStoreExternalNumber(),
             $this->getPohodaStockTropicExternalNumber(),
+            $this->getPohodaStockStoreEshopExternalNumber(),
             $this->getPohodaStockStoreSaleExternalNumber(),
         ];
     }

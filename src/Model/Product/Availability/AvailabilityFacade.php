@@ -220,7 +220,7 @@ class AvailabilityFacade extends BaseAvailabilityFacade
         $lowestStockQuantity = PHP_INT_MAX;
 
         foreach ($product->getProductSets() as $productSet) {
-            $currentStockQuantity = ($productSet->getItem()->getInternalStockQuantity() + $productSet->getItem()->getRealSaleStocksQuantity()) / $productSet->getItemCount();
+            $currentStockQuantity = ($productSet->getItem()->getInternalStocksQuantity() + $productSet->getItem()->getRealSaleStocksQuantity()) / $productSet->getItemCount();
 
             if ($currentStockQuantity < $lowestStockQuantity) {
                 $lowestStockQuantity = $currentStockQuantity;
