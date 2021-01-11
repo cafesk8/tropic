@@ -27,6 +27,9 @@ class PohodaOrderMapper
 
     private UnitFacade $unitFacade;
 
+    /** @var array<\App\Model\Order\ItemSourceStock\OrderItemSourceStock[]> */
+    private array $orderItemSourceStockCache = [];
+
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \App\Model\Order\ItemSourceStock\OrderItemSourceStockFacade $orderItemSourceStockFacade
@@ -89,11 +92,17 @@ class PohodaOrderMapper
     private function mapInternalNote(Order $order, PohodaOrder $pohodaOrder): void
     {
         $internalNoteParts = [];
+
         if ($order->getDomainId() === DomainHelper::SLOVAK_DOMAIN) {
             $internalNoteParts[] = 'Slovensko';
         }
+
         if ($order->getPayment()->waitsForPayment()) {
             $internalNoteParts[] = 'Čekat na platbu';
+        }
+
+        if ($this->isImmediatelyAvailable($order)) {
+            $internalNoteParts[] = 'Ihned k odeslání';
         }
 
         $pohodaOrder->internalNote = implode(' + ', $internalNoteParts);
@@ -177,9 +186,8 @@ class PohodaOrderMapper
     private function mapOrderItems(Order $order, PohodaOrder $pohodaOrder, array $pohodaVatNames): void
     {
         foreach ($order->getItems() as $orderItem) {
-            $orderItemSourceStocks = $this->orderItemSourceStockFacade->getAllByOrderItem($orderItem);
+            $orderItemSourceStocks = $this->getOrderItemSourceStocks($orderItem);
             if (count($orderItemSourceStocks) > 0) {
-                $orderItemSourceStocks = $this->orderItemSourceStockFacade->getAllByOrderItem($orderItem);
                 foreach ($orderItemSourceStocks as $orderItemSourceStock) {
                     $stock = $orderItemSourceStock->getStock();
                     /*
@@ -254,5 +262,37 @@ class PohodaOrderMapper
         } else {
             $pohodaOrder->pricingGroup = $customerUser->getPricingGroup()->getPohodaIdent();
         }
+    }
+
+    /**
+     * @param \App\Model\Order\Item\OrderItem $orderItem
+     * @return \App\Model\Order\ItemSourceStock\OrderItemSourceStock[]
+     */
+    private function getOrderItemSourceStocks(OrderItem $orderItem): array
+    {
+        if (!isset($this->orderItemSourceStockCache[$orderItem->getId()])) {
+            $this->orderItemSourceStockCache[$orderItem->getId()] = $this->orderItemSourceStockFacade->getAllByOrderItem($orderItem);
+        }
+
+        return $this->orderItemSourceStockCache[$orderItem->getId()];
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @return bool
+     */
+    private function isImmediatelyAvailable(Order $order): bool
+    {
+        foreach ($order->getItems() as $orderItem) {
+            foreach ($this->getOrderItemSourceStocks($orderItem) as $orderItemSourceStock) {
+                $stock = $orderItemSourceStock->getStock();
+
+                if (!$stock->isSaleStock() && !$stock->isInternalStock()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }
