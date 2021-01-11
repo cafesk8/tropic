@@ -44,10 +44,6 @@
                             {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
                         </div>
                         <div class="box-cart__info">
-                            <div class="in-info-message">
-                                <p class="in-info-message__title">{{ 'Přetížení dopravců'|trans }}</p>
-                                <p class="in-info-message__text">{{ 'Naši milí zákazníci, moc nás těší váš zájem o nákupy a pro nejrychlejší doručení uděláme maximum. Prosíme vás o trpělivost 🙏'|trans }}</p>
-                            </div>
                             <div class="table-cart js-cart">
                                 {% for index, cartItem in cartItems %}
                                     {% set cartItemPrice = cartItemPrices[index] %}
