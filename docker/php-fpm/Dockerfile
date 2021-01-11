@@ -1,4 +1,4 @@
-FROM henzigo/shopsys-framework:v9.0 as base
+FROM shopsys/ssfw-base-image:v9.0 as base
 
 # copy php.ini configuration
 COPY ${project_root}/docker/php-fpm/php-ini-overrides.ini /usr/local/etc/php/php.ini
