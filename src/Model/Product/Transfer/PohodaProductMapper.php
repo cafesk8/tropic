@@ -632,7 +632,7 @@ class PohodaProductMapper
     }
 
     /**
-     * @param string $date
+     * @param string|null $date
      * @return \DateTime|null
      */
     private function getDatetimeOrNull(?string $date): ?DateTime
@@ -646,12 +646,12 @@ class PohodaProductMapper
      */
     private function getDatetimeOrTodayDate(?string $date): DateTime
     {
-        if($date !== null) {
-            new DateTime($date);
+        if ($date !== null) {
+            return new DateTime($date);
         }
 
         $today = new DateTime();
-        return $today->setTime(0,0,0);
+        return $today->setTime(0, 0);
     }
 
     /**
