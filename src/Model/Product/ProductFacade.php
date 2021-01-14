@@ -1243,36 +1243,40 @@ class ProductFacade extends BaseProductFacade
      */
     private function processSaleFlagAssignment(ProductData $productData): void
     {
-        $isInAnySaleStock = false;
+        $shouldHaveSaleFlag = false;
         if ($this->productVariantTropicFacade->isMainVariant($productData->variantId)) {
             $variants = $this->productVariantTropicFacade->getVariantsByMainVariantId($productData->variantId);
             foreach ($variants as $variant) {
                 if ($variant->isInAnySaleStock()) {
-                    $isInAnySaleStock = true;
+                    $shouldHaveSaleFlag = true;
                     break;
+                }
+
+                foreach ($variant->getActiveFlags() as $variantFlag) {
+                    if ($variantFlag->isClearance()) {
+                        $shouldHaveSaleFlag = true;
+                        break;
+                    }
                 }
             }
         } else {
-            $isInAnySaleStock = $this->getQuantityInSaleStocks($productData) > 0;
+            $shouldHaveSaleFlag = $this->getQuantityInSaleStocks($productData) > 0;
         }
 
         $productFlagsData = $productData->flags;
 
-        if (!$isInAnySaleStock) {
-            $productFlagsData = array_filter($productFlagsData, function (ProductFlagData $productFlagData) {
-                return !$productFlagData->flag->isSale();
-            });
+        if (!$shouldHaveSaleFlag) {
+            $productFlagsData = array_filter($productFlagsData, fn (ProductFlagData $productFlagData) => !$productFlagData->flag->isSale());
         } else {
-            $saleFlag = $this->flagFacade->getSaleFlag();
             $saleFlagAlreadyAssigned = false;
             foreach ($productFlagsData as $productFlagData) {
-                if ($productFlagData->flag->getId() === $saleFlag->getId()) {
+                if ($productFlagData->flag->isSale()) {
                     $saleFlagAlreadyAssigned = true;
                     break;
                 }
             }
             if ($saleFlagAlreadyAssigned === false) {
-                $productFlagsData[] = $this->productFlagDataFactory->create($saleFlag);
+                $productFlagsData[] = $this->productFlagDataFactory->create($this->flagFacade->getSaleFlag());
             }
         }
 
@@ -1342,7 +1346,6 @@ class ProductFacade extends BaseProductFacade
         if ($product->isMainVariant()) {
             $this->setMainProductNewsFlagByVariants($product);
         }
-
     }
 
     /**
