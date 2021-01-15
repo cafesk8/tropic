@@ -5,6 +5,10 @@ services:
         public: false
 
     # ONCE PER DAY ----------------------------------------------------------------------------------
+    App\Model\Product\Flag\SpecialFlagsRefreshCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '0', minutes: '45', readableName: 'Přeuložení produktů, kterým začíná/končí platnost příznaků', instanceName: products }
+
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportCronModule:
         tags:
             - { name: shopsys.cron, hours: '0', minutes: '0', readableName: "Export všech produktů do Elasticsearch", instanceName: products }

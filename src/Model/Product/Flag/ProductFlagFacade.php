@@ -79,4 +79,12 @@ class ProductFlagFacade
     {
         return $this->productFlagRepository->getByProduct($product);
     }
+
+    /**
+     * @return \App\Model\Product\Flag\ProductFlag[]
+     */
+    public function getStartingOrEndingAroundCurrentDate(): array
+    {
+        return $this->productFlagRepository->getStartingOrEndingAroundCurrentDate();
+    }
 }

@@ -52,4 +52,22 @@ class ProductFlagRepository
     {
         return $this->em->getRepository(ProductFlag::class);
     }
+
+    /**
+     * @return \App\Model\Product\Flag\ProductFlag[]
+     */
+    public function getStartingOrEndingAroundCurrentDate(): array
+    {
+        $startDate = date('Y-m-d', strtotime('-2 days'));
+        $endDate = date('Y-m-d', strtotime('+2 days'));
+
+        return $this->getProductFlagRepository()
+            ->createQueryBuilder('pf')
+            ->innerJoin('pf.product', 'p')
+            ->addSelect('p')
+            ->where('pf.activeFrom > :startDate AND pf.activeFrom < :endDate')
+            ->orWhere('pf.activeTo > :startDate AND pf.activeTo < :endDate')
+            ->setParameters(['startDate' => $startDate, 'endDate' => $endDate])
+            ->getQuery()->getResult();
+    }
 }
