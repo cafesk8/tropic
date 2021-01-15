@@ -307,7 +307,7 @@ class ProductController extends FrontBaseController
         }
         $page = $requestPage === null ? 1 : (int)$requestPage;
 
-        $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest($request);
+        $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest($request, $category->isNewsType());
 
         $productFilterData = new ProductFilterData();
 
@@ -472,7 +472,7 @@ class ProductController extends FrontBaseController
         }
         $page = $requestPage === null ? 1 : (int)$requestPage;
 
-        $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest($request);
+        $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest($request, true);
 
         $productFilterData = new ProductFilterData();
 
@@ -675,13 +675,16 @@ class ProductController extends FrontBaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param bool $news
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function selectOrderingModeForListAction(Request $request)
+    public function selectOrderingModeForListAction(Request $request, bool $news): Response
     {
-        $productListOrderingConfig = $this->productListOrderingModeForListFacade->getProductListOrderingConfig();
+        $productListOrderingConfig = $this->productListOrderingModeForListFacade->getProductListOrderingConfig($news);
 
         $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest(
-            $request
+            $request,
+            $news
         );
 
         return $this->render('Front/Content/Product/orderingSetting.html.twig', [
