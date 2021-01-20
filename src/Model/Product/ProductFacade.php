@@ -1333,6 +1333,7 @@ class ProductFacade extends BaseProductFacade
         $this->em->flush($oldProductFlags);
         $product->clearProductFlags();
         $this->em->flush($product);
+        $productFlagsData = $this->changeMainVariantFlagsDataByVariants($product, $productFlagsData);
         $processedFlags = [];
 
         foreach ($productFlagsData as $productFlagData) {
@@ -1342,10 +1343,7 @@ class ProductFacade extends BaseProductFacade
             }
         }
 
-        // set NEWS flag active from and active to from variants
-        if ($product->isMainVariant()) {
-            $this->setMainProductNewsFlagByVariants($product);
-        }
+        $this->combineVariantFlagsDataIntoMainVariant($product, $productFlagsData);
     }
 
     /**
@@ -1418,48 +1416,84 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \App\Model\Product\Product $product
+     * @param \App\Model\Product\Flag\ProductFlagData[] $productFlagsData
+     * @return \App\Model\Product\Flag\ProductFlagData[]
      */
-    private function setMainProductNewsFlagByVariants(Product $product): void
+    private function changeMainVariantFlagsDataByVariants(Product $product, array $productFlagsData): array
     {
-        $mainProductNewsFrom = null;
-        $mainProductNewsTo = null;
-        $productNewsFrom = null;
-        $productNewsTo = null;
-        $mainProductNewsProductFlag = null;
-
-        foreach ($this->productFlagFacade->getByProduct($product) as $flag) {
-            if ($flag->getFlag()->isNews()) {
-                $mainProductNewsProductFlag = $flag;
-                $productNewsFrom = $flag->getActiveFrom();
-                $mainProductNewsFrom = $flag->getActiveFrom();
-                $productNewsTo = $flag->getActiveTo();
-                $mainProductNewsTo = $flag->getActiveTo();
-
-            }
+        if (!$product->isMainVariant()) {
+            return $productFlagsData;
         }
 
-        foreach ($product->getVariants() as $variant) {
-            foreach ($this->productFlagFacade->getByProduct($variant) as $flag) {
-                if ($flag->getFlag()->isNews()) {
-                    if ($productNewsFrom === null || $productNewsFrom > $flag->getActiveFrom()) {
-                        $productNewsFrom = $flag->getActiveFrom();
-                    }
-                    if ($productNewsTo === null || $productNewsTo < $flag->getActiveTo()) {
-                        $productNewsTo = $flag->getActiveTo();
+        foreach ($product->getVisibleVariants() as $variant) {
+            foreach ($variant->getProductFlags() as $variantFlag) {
+                $variantActiveFrom = $variantFlag->getActiveFrom();
+                $variantActiveTo = $variantFlag->getActiveTo();
+
+                foreach ($productFlagsData as $productFlag) {
+                    if ($productFlag->flag === $variantFlag->getFlag()) {
+                        if ($productFlag->activeFrom !== null && ($variantActiveFrom === null || $productFlag->activeFrom > $variantActiveFrom)) {
+                            $productFlag->activeFrom = $variantActiveFrom;
+                        }
+
+                        if ($productFlag->activeTo !== null && ($variantActiveTo === null || $productFlag->activeTo < $variantActiveTo)) {
+                            $productFlag->activeTo = $variantActiveTo;
+                        }
+
+                        continue 2;
                     }
                 }
+
+                $productFlagsData[] = $this->productFlagDataFactory->createFromProductFlag($variantFlag);
             }
         }
 
-        if (($productNewsFrom !== null && ($mainProductNewsFrom === null || $mainProductNewsFrom > $productNewsFrom))
-            || ($productNewsTo !== null && ($mainProductNewsTo === null || $mainProductNewsTo < $productNewsTo))) {
-            if ($mainProductNewsProductFlag !== null) {
-                $this->productFlagFacade->edit($mainProductNewsProductFlag, $productNewsFrom, $productNewsTo);
-            } else {
-                $newsFlag = $this->flagFacade->getNewsFlag();
-                $productFlagData = $this->productFlagDataFactory->create($newsFlag, $productNewsFrom, $productNewsTo);
-                $this->productFlagFacade->create($productFlagData, $product);
+        return $productFlagsData;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param \App\Model\Product\Flag\ProductFlagData[] $productFlagsData
+     */
+    private function combineVariantFlagsDataIntoMainVariant(Product $product, array $productFlagsData): void
+    {
+        if (!$product->isVariant() || empty($productFlagsData)) {
+            return;
+        }
+
+        $mainVariant = $product->getMainVariant();
+        $mainVariantFlags = $this->productFlagFacade->getByProduct($mainVariant);
+        $mainVariantFlagsData = [];
+        $toFlush = [];
+
+        foreach ($mainVariantFlags as $mainVariantFlag) {
+            $mainVariantFlagsData[] = $this->productFlagDataFactory->createFromProductFlag($mainVariantFlag);
+            $this->em->remove($mainVariantFlag);
+            $toFlush[] = $mainVariantFlag;
+        }
+
+        $this->em->flush($toFlush);
+
+        foreach ($productFlagsData as $variantFlagData) {
+            foreach ($mainVariantFlagsData as $mainVariantFlagData) {
+                if ($mainVariantFlagData->flag === $variantFlagData->flag) {
+                    if ($mainVariantFlagData->activeFrom !== null && ($variantFlagData->activeFrom === null || $mainVariantFlagData->activeFrom > $variantFlagData->activeFrom)) {
+                        $mainVariantFlagData->activeFrom = $variantFlagData->activeFrom;
+                    }
+
+                    if ($mainVariantFlagData->activeTo !== null && ($variantFlagData->activeTo === null || $mainVariantFlagData->activeTo < $variantFlagData->activeTo)) {
+                        $mainVariantFlagData->activeTo = $variantFlagData->activeTo;
+                    }
+
+                    continue 2;
+                }
             }
+
+            $mainVariantFlagsData[] = $variantFlagData;
+        }
+
+        foreach ($mainVariantFlagsData as $mainVariantFlagData) {
+            $this->productFlagFacade->create($mainVariantFlagData, $mainVariant);
         }
     }
 }
