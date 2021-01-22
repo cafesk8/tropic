@@ -710,7 +710,7 @@ msgid "Doprava objednávky"
 msgstr "Doprava objednávky"
 
 msgid "Doprava při nákupu nad 1000 Kč zdarma"
-msgstr "Doprava pri nákupe od 50 € zadarmo"
+msgstr "Doprava pri nákupe od 70 € zadarmo"
 
 msgid "Doprava zdarma"
 msgstr "Doprava zadarmo"
