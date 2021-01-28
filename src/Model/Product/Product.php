@@ -1677,4 +1677,12 @@ class Product extends BaseProduct
 
         return $newestProductNews;
     }
+
+    /**
+     * @return \App\Model\Product\Product[]
+     */
+    public function getVisibleVariants(): array
+    {
+        return $this->variants->filter(fn (Product $variant) => $variant->getCalculatedVisibility())->toArray();
+    }
 }
