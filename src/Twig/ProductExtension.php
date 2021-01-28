@@ -13,13 +13,13 @@ use App\Model\Product\Parameter\ParameterValue;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
+use App\Model\Product\ProductVisibilityRepository;
 use App\Model\Product\Set\ProductSet;
 use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
-use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductView;
 use Twig\TwigFunction;
 
@@ -352,20 +352,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      */
     public function cloneProductWithSubtractedStocks(Product $product, int $subtractQuantity = 0): Product
     {
-        $productClone = $product->cloneSelfAndStoreStocks();
-        $this->orderProductFacade->subtractStockQuantity($productClone, $subtractQuantity - 1, false, false);
-
-        if ($product->isPohodaProductTypeSet()) {
-            foreach ($productClone->getProductSets() as $productSet) {
-                $this->orderProductFacade->subtractStockQuantity(
-                    $productSet->getItem(),
-                    ($subtractQuantity - 1) * $productSet->getItemCount(),
-                    false,
-                    true
-                );
-            }
-        }
-
+        $productClone = $this->orderProductFacade->cloneProductWithSubtractedStocks($product, $subtractQuantity);
         $productClone->setCalculatedAvailability($this->availabilityFacade->getAvailability($productClone, true));
 
         return $productClone;

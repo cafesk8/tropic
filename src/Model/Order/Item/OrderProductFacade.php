@@ -193,4 +193,37 @@ class OrderProductFacade extends BaseOrderProductFacade
             }
         }
     }
+
+    /**
+     * Simulates the state of product's stocks and calculated availability as it would look without the quantity
+     * that is currently in cart (minus one because we want to show the worst availability for current quantity
+     * in cart and not for the next piece that could potentially get added)
+     *
+     * @param \App\Model\Product\Product $product
+     * @param int $subtractQuantity
+     * @return \App\Model\Product\Product
+     */
+    public function cloneProductWithSubtractedStocks(Product $product, int $subtractQuantity = 0): Product
+    {
+        $productClone = $product->cloneSelfAndStoreStocks();
+
+        if ($subtractQuantity === 0) {
+            return $productClone;
+        }
+
+        $this->subtractStockQuantity($productClone, $subtractQuantity - 1, false, false);
+
+        if ($product->isPohodaProductTypeSet()) {
+            foreach ($productClone->getProductSets() as $productSet) {
+                $this->subtractStockQuantity(
+                    $productSet->getItem(),
+                    ($subtractQuantity - 1) * $productSet->getItemCount(),
+                    false,
+                    true
+                );
+            }
+        }
+
+        return $productClone;
+    }
 }
