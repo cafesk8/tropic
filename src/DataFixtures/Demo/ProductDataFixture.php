@@ -194,6 +194,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->catnum = '9176508';
         $productData->partno = '32PFL4308H';
         $productData->ean = '8845781245929';
+        $productData->warranty = 36;
 
         $parameterTranslations = [];
 
@@ -820,6 +821,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->catnum = '5960550';
         $productData->partno = '31730946108';
         $productData->ean = '8845781245946';
+        $productData->warranty = 36;
 
         $parameterTranslations = [];
 
@@ -1665,6 +1667,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->catnum = '5965907';
         $productData->partno = 'DMC FT5EP-K';
         $productData->ean = '8845781245911';
+        $productData->variantId = '500000';
 
         $parameterTranslations = [];
 
@@ -1710,6 +1713,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->catnum = '5960585';
         $productData->partno = 'PC-AD23DGLASS';
         $productData->ean = '8845781245927';
+        $productData->variantId = '500000*1';
 
         foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
             $locale = $domain->getLocale();
@@ -1774,6 +1778,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->catnum = '4125523';
         $productData->partno = 'ROC-11-710';
         $productData->ean = '8845781245921';
+        $productData->variantId = '500000*2';
 
         $parameterTranslations = [];
 
@@ -1815,6 +1820,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->catnum = '8981612';
         $productData->partno = 'SM-G355HZKNETL';
         $productData->ean = '8845781245953';
+        $productData->variantId = '500000*3';
 
         $parameterTranslations = [];
 
@@ -2014,7 +2020,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
         $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_TV, CategoryDataFixture::CATEGORY_PC]);
-        $this->setFlags($productData, [FlagDataFixture::FLAG_NEW_PRODUCT]);
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, null);
@@ -2330,6 +2335,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
         $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_TV]);
+        $this->setFlags($productData, [FlagDataFixture::FLAG_RECOMMENDED_PRODUCT]);
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_LG);
@@ -2361,6 +2367,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
         $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_TV]);
+        $this->setFlags($productData, [FlagDataFixture::FLAG_RECOMMENDED_PRODUCT]);
 
         $productData->sellingDenied = true;
         $this->setBrand($productData, BrandDataFixture::BRAND_ORAVA);
@@ -2751,6 +2758,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->catnum = '18981438';
         $productData->partno = 'LT27D590EZ';
         $productData->ean = '8845781245940';
+        $productData->variantId = '500000*4';
 
         foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
             $locale = $domain->getLocale();
@@ -2782,6 +2790,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->catnum = '9510541';
         $productData->partno = 'UMNP000884';
         $productData->ean = '8845781245941';
+        $productData->variantId = '500000*5';
 
         foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
             $locale = $domain->getLocale();
@@ -2892,6 +2901,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->catnum = '9176544MG';
         $productData->partno = 'FLO242-PRJ';
         $productData->ean = '8845781243277';
+        $productData->variantId = '150000';
 
         foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
             $locale = $domain->getLocale();
@@ -2905,6 +2915,458 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
         $productData->stockQuantity = 75;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176545MG';
+        $productData->partno = 'FLO243-PRJ';
+        $productData->ean = '8845781243278';
+        $productData->variantId = '150000*1';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (lemon)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '10');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 154;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176546MG';
+        $productData->partno = 'FLO244-PRJ';
+        $productData->ean = '884578124224';
+        $productData->variantId = '150000*2';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (strawberry)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '14.75');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 0;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176548MG';
+        $productData->partno = 'FLO248-PRJ';
+        $productData->ean = '8845781248887';
+        $productData->variantId = '150000*3';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (banana)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '11.8');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 10;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176577MG';
+        $productData->partno = 'FLO287-PRJ';
+        $productData->ean = '8845781455687';
+        $productData->variantId = '150000*4';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (tea)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '9');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 0;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176578MG';
+        $productData->partno = 'FLO278-PRJ';
+        $productData->ean = '8845781455678';
+        $productData->variantId = '150000*5';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (apple)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '8.5');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 1004;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176579MG';
+        $productData->partno = 'FLO279-PRJ';
+        $productData->ean = '8845781455679';
+        $productData->variantId = '150000*6';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (orange)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '10.5');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 0;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176580MG';
+        $productData->partno = 'FLO280-PRJ';
+        $productData->ean = '8845781455680';
+        $productData->variantId = '150000*7';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (ananas)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '13.6');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 1344;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176581MG';
+        $productData->partno = 'FLO281-PRJ';
+        $productData->ean = '884578124281';
+        $productData->variantId = '150000*8';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (avocado)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '18.8');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 0;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176582MG';
+        $productData->partno = 'FLO282-PRJ';
+        $productData->ean = '884578124282';
+        $productData->variantId = '150000*9';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (grape)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '12.5');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = false;
+        $productData->stockQuantity = 150;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176583MG';
+        $productData->partno = 'FLO283-PRJ';
+        $productData->ean = '884578124283';
+        $productData->variantId = '150000*10';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (peach)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '11.9');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = false;
+        $productData->stockQuantity = 1147;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176584MG';
+        $productData->partno = 'FLO284-PRJ';
+        $productData->ean = '8845781243284';
+        $productData->variantId = '150000*11';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (blueberry)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '15.5');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 454;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176585MG';
+        $productData->partno = 'FLO285-PRJ';
+        $productData->ean = '8845781243285';
+        $productData->variantId = '150000*12';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (watermelon)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '18.5');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 124;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176586MG';
+        $productData->partno = 'FLO286-PRJ';
+        $productData->ean = '8845781243286';
+        $productData->variantId = '150000*13';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (coconut)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '20');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 1344;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176587MG';
+        $productData->partno = 'FLO287-PRJ';
+        $productData->ean = '8845781243287';
+        $productData->variantId = '150000*14';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (pineapple)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '10.5');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 1524;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_FOOD]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, null);
+
+        $this->createProduct($productData);
+
+        $productData = $this->productDataFactory->create();
+
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = '9176588MG';
+        $productData->partno = 'FLO288-PRJ';
+        $productData->ean = '8845781243288';
+        $productData->variantId = '150000*15';
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Aquila Aquagym non-carbonated spring water (pear)', [], 'dataFixtures', $locale);
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '10.5');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '15.1.2000');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->stockQuantity = 1447;
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 
         $this->setUnit($productData, UnitDataFixture::UNIT_CUBIC_METERS);
@@ -3396,6 +3858,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productData->categoriesByDomainId[Domain::SECOND_DOMAIN_ID] = [];
         $productData->categoriesByDomainId[Domain::SECOND_DOMAIN_ID][] = $this->persistentReferenceFacade->getReference(CategoryDataFixture::CATEGORY_PHOTO);
         $productData->categoriesByDomainId[Domain::SECOND_DOMAIN_ID][] = $this->persistentReferenceFacade->getReference(CategoryDataFixture::CATEGORY_BOOKS);
+        $this->setFlags($productData, [FlagDataFixture::FLAG_RECOMMENDED_PRODUCT]);
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_NIKON);
@@ -3662,6 +4125,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
         $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
         $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_PHOTO]);
+        $this->setFlags($productData, [FlagDataFixture::FLAG_RECOMMENDED_PRODUCT]);
 
         $productData->sellingDenied = false;
         $this->setBrand($productData, BrandDataFixture::BRAND_OLYMPUS);

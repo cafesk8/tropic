@@ -41,11 +41,13 @@ class TopProductDataFixture extends AbstractReferenceFixture implements Dependen
             ProductDataFixture::PRODUCT_PREFIX . '1',
             ProductDataFixture::PRODUCT_PREFIX . '17',
             ProductDataFixture::PRODUCT_PREFIX . '9',
+            ProductDataFixture::PRODUCT_PREFIX . '38',
         ];
         $distinctTopProductReferenceNames = [
             ProductDataFixture::PRODUCT_PREFIX . '14',
             ProductDataFixture::PRODUCT_PREFIX . '10',
             ProductDataFixture::PRODUCT_PREFIX . '7',
+            ProductDataFixture::PRODUCT_PREFIX . '48',
         ];
         foreach ($this->domain->getAll() as $domainConfig) {
             $domainId = $domainConfig->getId();

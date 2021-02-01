@@ -30,4 +30,37 @@ class HeurekaReviewItemFactory
             (string)$itemFromXml->summary
         );
     }
+
+    /**
+     * @param int $domainId
+     * @param int $ratingId
+     * @param \DateTime $date
+     * @param float $rating
+     * @param string|null $name
+     * @param string|null $pros
+     * @param string|null $cons
+     * @param string|null $summary
+     * @return \App\Model\Heureka\HeurekaReviewItem
+     */
+    public function createManually(
+        int $domainId,
+        int $ratingId,
+        DateTime $date,
+        float $rating,
+        ?string $name,
+        ?string $pros,
+        ?string $cons,
+        ?string $summary
+    ): HeurekaReviewItem {
+        return new HeurekaReviewItem(
+            $domainId,
+            $ratingId,
+            $date,
+            $rating,
+            $name,
+            $pros,
+            $cons,
+            $summary
+        );
+    }
 }

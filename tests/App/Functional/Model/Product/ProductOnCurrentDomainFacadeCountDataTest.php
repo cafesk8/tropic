@@ -128,7 +128,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
             14 => 2,
         ];
         $countData->countByFlagId = [
-            6 => 6,
+            6 => 5,
             2 => 5,
             8 => 2,
             4 => 1,
@@ -193,7 +193,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
             2 => 2,
         ];
         $countData->countByFlagId = [
-            6 => 4,
+            6 => 3,
             2 => 3,
         ];
         $countData->countByParameterIdAndValueId = [
@@ -312,39 +312,39 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $filterData->flags[] = $this->getReference(FlagDataFixture::FLAG_SALE_PRODUCT);
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 7;
-        $countData->countAvailable = 7;
+        $countData->countInStock = 6;
+        $countData->countAvailable = 6;
         $countData->countByParameterIdAndValueId = [
             32 => [
-                $this->getParameterValueIdForFirstDomain('Yes') => 7,
+                $this->getParameterValueIdForFirstDomain('Yes') => 6,
             ],
             11 => [
-                $this->getParameterValueIdForFirstDomain('449x304x152 mm') => 7,
+                $this->getParameterValueIdForFirstDomain('449x304x152 mm') => 6,
             ],
             30 => [
-                $this->getParameterValueIdForFirstDomain('Yes') => 4,
+                $this->getParameterValueIdForFirstDomain('Yes') => 3,
                 $this->getParameterValueIdForFirstDomain('No') => 3,
             ],
             29 => [
-                $this->getParameterValueIdForFirstDomain('A3') => 5,
+                $this->getParameterValueIdForFirstDomain('A3') => 4,
                 $this->getParameterValueIdForFirstDomain('A4') => 2,
             ],
             31 => [
                 $this->getParameterValueIdForFirstDomain('4800x1200') => 2,
-                $this->getParameterValueIdForFirstDomain('2400x600') => 5,
+                $this->getParameterValueIdForFirstDomain('2400x600') => 4,
             ],
             28 => [
-                $this->getParameterValueIdForFirstDomain('inkjet') => 7,
+                $this->getParameterValueIdForFirstDomain('inkjet') => 6,
             ],
             4 => [
-                $this->getParameterValueIdForFirstDomain('Yes') => 7,
+                $this->getParameterValueIdForFirstDomain('Yes') => 6,
             ],
             10 => [
                 $this->getParameterValueIdForFirstDomain('5.4 kg') => 1,
-                $this->getParameterValueIdForFirstDomain('3.5 kg') => 6,
+                $this->getParameterValueIdForFirstDomain('3.5 kg') => 5,
             ],
             33 => [
-                $this->getParameterValueIdForFirstDomain('Yes') => 7,
+                $this->getParameterValueIdForFirstDomain('Yes') => 6,
             ],
         ];
 
@@ -375,7 +375,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
             14 => 2,
         ];
         $countData->countByFlagId = [
-            6 => 4,
+            6 => 3,
             2 => 4,
             8 => 2,
             4 => 1,
@@ -433,18 +433,18 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $filterData->inStock = true;
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 6;
-        $countData->countAvailable = 6;
+        $countData->countInStock = 5;
+        $countData->countAvailable = 5;
         $countData->countByBrandId = [
             3 => 1,
-            19 => 2,
+            19 => 1,
             1 => 1,
             15 => 1,
             20 => 1,
         ];
         $countData->countByFlagId = [
             6 => 3,
-            2 => 6,
+            2 => 5,
             8 => 2,
             4 => 1,
         ];
@@ -480,22 +480,21 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
                 $this->getParameterValueIdForFirstDomain('112 g') => 2,
             ],
             3 => [
-                $this->getParameterValueIdForFirstDomain('800 × 480 px') => 2,
+                $this->getParameterValueIdForFirstDomain('800 × 480 px') => 1,
             ],
             47 => [
-                $this->getParameterValueIdForFirstDomain('4.5"') => 2,
+                $this->getParameterValueIdForFirstDomain('4.5"') => 1,
                 $this->getParameterValueIdForFirstDomain('5.5"') => 1,
             ],
             48 => [
-                $this->getParameterValueIdForFirstDomain('TFT') => 2,
+                $this->getParameterValueIdForFirstDomain('TFT') => 1,
                 $this->getParameterValueIdForFirstDomain('Super LCD') => 1,
             ],
             49 => [
-                $this->getParameterValueIdForFirstDomain('5 Mpx') => 2,
+                $this->getParameterValueIdForFirstDomain('5 Mpx') => 1,
                 $this->getParameterValueIdForFirstDomain('13 Mpx') => 1,
             ],
             52 => [
-                $this->getParameterValueIdForFirstDomain('250 kWh/rok') => 1,
                 $this->getParameterValueIdForFirstDomain('275 kWh/rok') => 1,
             ],
         ];
@@ -537,7 +536,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $countData->countInStock = 4;
         $countData->countAvailable = 4;
         $countData->countByBrandId = [
-            14 => 2,
+            14 => 1,
         ];
         $countData->countByFlagId = [];
         $countData->countByParameterIdAndValueId = [
@@ -612,7 +611,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
             2 => 5,
         ];
         $countData->countByFlagId = [
-            6 => 5,
+            6 => 4,
             2 => 3,
             8 => 1,
         ];
@@ -890,7 +889,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $filterData->maximalPrice = $priceConverter->convertPriceWithVatToPriceInDomainDefaultCurrency(Money::create(20000), Domain::FIRST_DOMAIN_ID);
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 3;
+        $countData->countInStock = 2;
         $countData->countByBrandId = [
             2 => 3,
             3 => 1,
