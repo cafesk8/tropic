@@ -28,7 +28,7 @@ class PohodaProductExportRepository
         'VPrVyjmProdAkc' => PohodaProduct::COL_PROMO_DISCOUNT_DISABLED,
         'ProdejDPH' => PohodaProduct::COL_SELLING_PRICE,
         'RelDPHp' => PohodaProduct::COL_SELLING_VAT_RATE_ID,
-        'NakupDPH' => PohodaProduct::COL_PURCHASE_PRICE,
+        'NakupC' => PohodaProduct::COL_PURCHASE_PRICE,
         'VPrBCena' => PohodaProduct::COL_STANDARD_PRICE,
         'VPrBCenaEur' => PohodaProduct::COL_STANDARD_PRICE_EUR,
         'ObjNazev' => PohodaProduct::COL_VARIANT_ID,

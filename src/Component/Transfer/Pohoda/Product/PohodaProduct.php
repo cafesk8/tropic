@@ -141,10 +141,7 @@ class PohodaProduct
      */
     public $vatRateId;
 
-    /**
-     * @var string|null
-     */
-    public $purchasePrice;
+    public ?string $purchasePrice;
 
     /**
      * @var string|null
