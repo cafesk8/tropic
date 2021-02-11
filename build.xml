@@ -127,4 +127,9 @@
         <phingcall target="maintenance-off" />
     </target>
 
+    <target name="security-check" description="Runs security checks for dependencies with known security vulnerabilities">
+        <exec executable="${path.composer.executable}" logoutput="true" passthru="true" checkreturn="true">
+            <arg value="security-check"/>
+        </exec>
+    </target>
 </project>
