@@ -213,3 +213,12 @@ services:
     App\Component\FlashMessage\FlashMessageSender: ~
 
     App\Model\AdvancedSearchOrder\Filter\OrderExportStatusFilter: ~
+
+    Shopsys\FrameworkBundle\Component\ClassExtension\ClassExtensionRegistry:
+        arguments:
+            - '%shopsys.entity_extension.map%'
+            - '%shopsys.framework.root_dir%'
+
+    App\Command\ExtendedClassesAnnotationsCommand:
+        arguments:
+            - '%shopsys.root_dir%'
