@@ -1795,7 +1795,7 @@ msgstr ""
 msgid "Objednávka z Mall.cz"
 msgstr "Objednávka z Mall.cz"
 
-msgid "Objednávky přijaté po 13:00 odesíláme následující pracovní den"
+msgid "Objednávky přijaté po 12:00 odesíláme následující pracovní den"
 msgstr ""
 
 msgid "Objemný"

@@ -1843,11 +1843,8 @@ msgstr "Objednávka nemá nastavený spôsob platby prostredníctvom GoPay."
 msgid "Objednávka z Mall.cz"
 msgstr "Objednávka z Mall.cz"
 
-msgid "Objednávky odesíláme 4.1.2021"
-msgstr "Objednávky odosielame 4.1.2021"
-
-msgid "Objednávky přijaté po 13:00 odesíláme následující pracovní den"
-msgstr "Objednávky prijaté po 13:00 odosielame nasledujúci pracovný deň"
+msgid "Objednávky přijaté po 12:00 odesíláme následující pracovní den"
+msgstr "Objednávky prijaté po 12:00 odosielame nasledujúci pracovný deň"
 
 msgid "Objemný"
 msgstr "Objemný"
