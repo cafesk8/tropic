@@ -34,13 +34,8 @@
                                 </span>
                             </span>
                         </label>
-                        {% if date() > date('2020-12-22 13:00:00+01:00') and date() < date('2021-01-03 13:00:00+01:00') %}
-                            <i class="svg svg-info in-icon in-icon--info js-tooltip" data-toggle="tooltip" title=""
-                               data-original-title="{{ 'Objednávky odesíláme 4.1.2021'|trans }}"></i>
-                        {% else %}
-                            <i class="svg svg-info in-icon in-icon--info js-tooltip" data-toggle="tooltip" title=""
-                               data-original-title="{{ 'Objednávky přijaté po 13:00 odesíláme následující pracovní den'|trans }}"></i>
-                        {% endif %}
+                        <i class="svg svg-info in-icon in-icon--info js-tooltip" data-toggle="tooltip" title=""
+                           data-original-title="{{ 'Objednávky přijaté po 12:00 odesíláme následující pracovní den'|trans }}"></i>
                     </div>
                     <div class="box-filter__choice__content__tooltip-wrap">
                         <label class="form-choice form-choice--block">
