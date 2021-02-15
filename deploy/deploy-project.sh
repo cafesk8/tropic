@@ -70,7 +70,15 @@ function deploy() {
         ["REDIS_PREFIX"]=${PROJECT_NAME}
         ["ELASTIC_SEARCH_INDEX_PREFIX"]=${PROJECT_NAME}
         ["CDN_DOMAIN"]=${CDN_DOMAIN}
-   )
+    )
+
+    declare -A CRON_INSTANCES=(
+        ["cron-default"]='*/5 * * * *'
+        ["cron-images"]='*/5 * * * *'
+        ["cron-orders"]='*/5 * * * *'
+        ["cron-products"]='*/5 * * * *'
+        ["cron-stocks"]='*/5 * * * *'
+    )
 
     VARS=(
         TAG
@@ -81,8 +89,11 @@ function deploy() {
     source "${DEPLOY_TARGET_PATH}/functions.sh"
     source "${DEPLOY_TARGET_PATH}/parts/parameters.sh"
     source "${DEPLOY_TARGET_PATH}/parts/domains.sh"
+    source "${BASE_PATH}/deploy/parts/whitelist-ip.sh"
     source "${DEPLOY_TARGET_PATH}/parts/environment-variables.sh"
     source "${DEPLOY_TARGET_PATH}/parts/kubernetes-variables.sh"
+    source "${DEPLOY_TARGET_PATH}/parts/cron.sh"
+    source "${DEPLOY_TARGET_PATH}/parts/autoscaling.sh"
     source "${DEPLOY_TARGET_PATH}/parts/deploy.sh"
 }
 
@@ -90,7 +101,6 @@ function merge() {
     source "${BASE_PATH}/vendor/devops/kubernetes-deployment/deploy/functions.sh"
     merge_configuration
     source "${BASE_PATH}/vendor/shopsys/cdn/deploymentPatch/cdnPatch.sh"
-    source "${BASE_PATH}/deploy/parts/gopay_ip_addresses_allow.sh"
 }
 
 case "$1" in

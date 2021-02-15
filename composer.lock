@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25b676df67a4c76d633a08dd7f17555a",
+    "content-hash": "b26c3debf8e8628cf584724b75a6f627",
     "packages": [
         {
             "name": "adoy/fastcgi-client",
@@ -159,6 +159,7 @@
                 "extension",
                 "twig"
             ],
+            "abandoned": "twig/cache-extension",
             "time": "2020-01-01T20:47:37+00:00"
         },
         {
@@ -414,12 +415,12 @@
             "version": "v1.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/clue/php-stream-filter.git",
+                "url": "https://github.com/clue/stream-filter.git",
                 "reference": "5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/php-stream-filter/zipball/5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71",
+                "url": "https://api.github.com/repos/clue/stream-filter/zipball/5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71",
                 "reference": "5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71",
                 "shasum": ""
             },
@@ -1058,11 +1059,11 @@
         },
         {
             "name": "devops/kubernetes-deployment",
-            "version": "1.4.1",
+            "version": "1.5.11",
             "source": {
                 "type": "git",
                 "url": "https://gitlab+deploy-token-4:yqMfHR2F4qc6rbFequP4@gitlab.shopsys.cz/devops/kubernetes-deployment.git",
-                "reference": "5f4621b13687e993de67771fd6ea3ed1bf3f575b"
+                "reference": "136155a380a7fb6a6b038d83c22bd8c3463bddc1"
             },
             "require": {
                 "arvenil/ninja-mutex": "^0.4.1",
@@ -1107,7 +1108,7 @@
                 "shopsys",
                 "symfony"
             ],
-            "time": "2020-07-28T10:52:27+00:00"
+            "time": "2021-02-03T06:47:31+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1820,6 +1821,7 @@
                 "cache",
                 "caching"
             ],
+            "abandoned": true,
             "time": "2019-11-29T11:22:01+00:00"
         },
         {
@@ -2541,6 +2543,7 @@
                 "reflection",
                 "static"
             ],
+            "abandoned": "roave/better-reflection",
             "time": "2020-03-27T11:06:43+00:00"
         },
         {
@@ -3153,6 +3156,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
@@ -8056,15 +8060,16 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
+            "abandoned": "https://github.com/fabpot/local-php-security-checker",
             "time": "2019-11-01T13:20:14+00:00"
         },
         {
             "name": "shopsys/cdn",
-            "version": "1.0.1",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://gitlab+deploy-token-23:r3JFL4v-MPmhxEmzu3ZL@gitlab.shopsys.cz/ss6-projects/cdn.git",
-                "reference": "efcc57b22ba13b74d42237059fd5664dd04beac8"
+                "reference": "a797d4e763850e71da8557d524f63d689d45e1b8"
             },
             "require": {
                 "php": "^7.1",
@@ -8096,7 +8101,7 @@
                 "shopsys",
                 "symfony"
             ],
-            "time": "2020-09-03T12:15:57+00:00"
+            "time": "2020-12-11T20:59:57+00:00"
         },
         {
             "name": "shopsys/doctrine-orm",
@@ -14565,12 +14570,12 @@
             "version": "1.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },
@@ -15475,7 +15480,7 @@
                 "MIT"
             ],
             "description": "PHP CodeSniffer Object Calisthenics rules/sniffs",
-            "abandoned": "https://github.com/symplify/coding-standard",
+            "abandoned": "symplify/phpstan-rules",
             "time": "2020-07-06T12:33:47+00:00"
         },
         {
@@ -17654,7 +17659,7 @@
                     "type": "github"
                 }
             ],
-            "abandoned": true,
+            "abandoned": "symplify/package-builder",
             "time": "2020-05-15T21:39:16+00:00"
         },
         {

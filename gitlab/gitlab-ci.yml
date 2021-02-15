@@ -11,7 +11,7 @@ stages:
 
 .deploy: &deploy
     image:
-        name: registry.shopsys.cz/devops/kubernetes-buildpack:1.0
+        name: registry.shopsys.cz/devops/kubernetes-buildpack:1.1
     stage: deploy
     needs:
         - build

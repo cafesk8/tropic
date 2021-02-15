@@ -74,11 +74,11 @@ data:
 
             location ~ /\. {
                 # hide dotfiles (send to @app)
-                try_files $uri @app;
+                try_files @app @app;
             }
             location ~ ^/index.php$ {
                 # hide index.php (send to @app)
-                try_files $uri @app;
+                try_files @app @app;
             }
             location / {
                 # try to serve existing files directly, fallback to @app
