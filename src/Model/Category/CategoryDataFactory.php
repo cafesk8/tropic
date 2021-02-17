@@ -16,10 +16,7 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryRepository;
 
 class CategoryDataFactory extends BaseCategoryDataFactory
 {
-    /**
-     * @var \App\Model\Product\Parameter\ParameterFacade
-     */
-    private $parameterFacade;
+    private ParameterFacade $parameterFacade;
 
     /**
      * @param \App\Model\Category\CategoryRepository $categoryRepository
@@ -75,6 +72,10 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         foreach ($this->domain->getAllIds() as $domainId) {
             $categoryData->containsSaleProducts[$domainId] = false;
             $categoryData->containsNewsProducts[$domainId] = false;
+            $categoryData->tipShown[$domainId] = false;
+            $categoryData->tipName[$domainId] = null;
+            $categoryData->tipText[$domainId] = null;
+            $categoryData->tipProduct[$domainId] = null;
         }
 
         $categoryData->unavailableProductsShown = true;
@@ -103,5 +104,9 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         $categoryData->containsSaleProducts = $category->containsSaleProducts();
         $categoryData->containsNewsProducts = $category->containsNewsProducts();
         $categoryData->unavailableProductsShown = $category->isUnavailableProductsShown();
+        $categoryData->tipShown = $category->areTipsShown();
+        $categoryData->tipName = $category->getTipNames();
+        $categoryData->tipText = $category->getTipTexts();
+        $categoryData->tipProduct = $category->getTipProducts();
     }
 }

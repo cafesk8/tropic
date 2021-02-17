@@ -1,0 +1,18 @@
+{% macro categoryTip(category) %}
+    {% set domain = getDomain() %}
+    {% set domainId = domain.id %}
+
+    {% if category.tipShown(domainId) %}
+        {% import 'Front/Content/Product/boxDetail.html.twig' as boxDetail %}
+        {% set tipProduct = category.tipProduct(domainId) %}
+
+        {% if tipProduct is not null %}
+            {{ image(tipProduct) }}
+            <a href="{{ url('front_product_detail', {'id': tipProduct.id}) }}">{{ tipProduct.name }}</a>
+            {{ boxDetail.productPrice(tipProduct, 'tipProduct') }}
+        {% endif %}
+
+        {{ category.tipName(domainId) }}
+        {{ category.tipText(domainId) }}
+    {% endif %}
+{% endmacro %}

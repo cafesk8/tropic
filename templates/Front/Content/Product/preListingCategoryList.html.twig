@@ -1,6 +1,7 @@
 {% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
 {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
 {% import 'Front/Content/Blog/Article/blogArticleInCategoryMacro.html.twig' as blogArticleList %}
+{% import 'Front/Content/Category/categoryTip.html.twig' as categoryTip %}
 
 {% set domain = getDomain() %}
 
@@ -36,6 +37,12 @@
 
     {{ render(controller('App\\Controller\\Front\\TopProductController:listAction')) }}
     {{ render(controller('App\\Controller\\Front\\BestsellingProductController:listAction', {'category': category})) }}
+
+    <div class="web__line">
+        <div class="web__container">
+            {{ categoryTip.categoryTip(category, domain.id) }}
+        </div>
+    </div>
 
     {% if categoriesBlogArticles|length > 0 %}
         <div class="web__line">

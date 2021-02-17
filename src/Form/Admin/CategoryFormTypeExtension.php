@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Form\FormBuilderHelper;
 use App\Component\Mall\MallFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
@@ -13,12 +14,14 @@ use App\Model\Category\CategoryData;
 use App\Model\Product\Parameter\Parameter;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Twig\DateTimeFormatterExtension;
+use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Admin\Category\CategoryFormType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
+use Shopsys\FrameworkBundle\Form\ProductType;
 use Shopsys\FrameworkBundle\Form\SortableValuesType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\FrameworkBundle\Form\WarningMessageType;
@@ -28,6 +31,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints;
 
 class CategoryFormTypeExtension extends AbstractTypeExtension
 {
@@ -185,6 +189,7 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         $builder->add($this->createMallGroup($builder));
         $builder->add($this->createCategoryBrandGroup($builder, $category));
         $builder->add($this->createParametersGroup($builder));
+        $builder->add($this->createTipsGroup($builder));
         $this->formBuilderHelper->disableFieldsByConfigurations($builder, self::DISABLED_FIELDS);
     }
 
@@ -285,5 +290,53 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         ]);
 
         return $builderCategoryBrandGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function createTipsGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $tipsGroup = $builder->create('categoryTips', GroupType::class, [
+            'label' => t('Tipy'),
+        ]);
+
+        $tipsGroup
+            ->add('tipShown', MultidomainType::class, [
+                'label' => t('Zobrazit'),
+                'entry_type' => YesNoType::class,
+                'required' => false,
+            ])
+            ->add('tipName', MultidomainType::class, [
+                'label' => t('Nadpis'),
+                'entry_options' => [
+                    'constraints' => [
+                        new Constraints\Length(['max' => 255]),
+                    ],
+                ],
+                'required' => false,
+            ])
+            ->add('tipText', MultidomainType::class, [
+                'label' => t('Text'),
+                'entry_options' => [
+                    'constraints' => [
+                        new Constraints\Length(['max' => 255]),
+                    ],
+                ],
+                'required' => false,
+            ])
+            ->add('tipProduct', MultidomainType::class, [
+                'label' => t('Produkt'),
+                'entry_type' => ProductType::class,
+                'options_by_domain_id' => [
+                    DomainHelper::CZECH_DOMAIN => ['label' => 'CZ'],
+                    DomainHelper::SLOVAK_DOMAIN => ['label' => 'SK'],
+                    DomainHelper::ENGLISH_DOMAIN => ['label' => 'EN'],
+                ],
+                'required' => false,
+            ]);
+
+        return $tipsGroup;
     }
 }

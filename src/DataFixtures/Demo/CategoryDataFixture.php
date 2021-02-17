@@ -71,27 +71,35 @@ class CategoryDataFixture extends AbstractReferenceFixture
         $categoryData = $this->categoryDataFactory->create();
 
         foreach ($this->domain->getAll() as $domainConfig) {
+            $domainId = $domainConfig->getId();
             $locale = $domainConfig->getLocale();
             $categoryData->name[$locale] = t('Elektro', [], 'dataFixtures', $locale);
-            $categoryData->descriptions[$domainConfig->getId()] = t('Our electronics include devices used for entertainment (flat screen TVs, DVD players, DVD movies, iPods, '
+            $categoryData->descriptions[$domainId] = t('Our electronics include devices used for entertainment (flat screen TVs, DVD players, DVD movies, iPods, '
                 . 'video games, remote control cars, etc.), communications (telephones, cell phones, email-capable laptops, etc.) '
                 . 'and home office activities (e.g., desktop computers, printers, paper shredders, etc.).', [], 'dataFixtures', $locale);
             $categoryData->leftBannerTexts[$locale] = t('Nejeden filozof by mohl tvrdit, že balónky se sluncem závodí, ale fyzikové by to jistě vyvrátili', [], 'dataFixtures');
             $categoryData->rightBannerTexts[$locale] = t('Red seems a little smaller next to blue and green, but that\'s probably just an optical illusion', [], 'dataFixtures');
+            $categoryData->tipShown[$domainId] = true;
+            $categoryData->tipName[$domainId] = t('Elektronické součástky', [], 'dataFixtures');
+            $categoryData->tipText[$domainId] = t('Elektronika je elektrotechnický obor, který studuje a využívá přístrojů fungujících na principu řízení toku elektronů nebo jiných elektricky nabitých částic, zejména pomocí polovodičů. Toho se dosahuje pomocí různých elektronických součástek.', [], 'dataFixtures');
         }
         $categoryData->preListingCategory = true;
         $categoryData->parent = $rootCategory;
         $this->createCategory($categoryData, self::CATEGORY_ELECTRONICS);
 
         foreach ($this->domain->getAll() as $domainConfig) {
+            $domainId = $domainConfig->getId();
             $locale = $domainConfig->getLocale();
             $categoryData->name[$locale] = t('Televize, audio', [], 'dataFixtures', $locale);
-            $categoryData->descriptions[$domainConfig->getId()] = t('Television or TV is a telecommunication medium used for transmitting sound with moving images in monochrome '
+            $categoryData->descriptions[$domainId] = t('Television or TV is a telecommunication medium used for transmitting sound with moving images in monochrome '
                 . '(black-and-white), or in color, and in two or three dimensions', [], 'dataFixtures', $locale);
             $categoryData->leftBannerTexts[$locale] = null;
             $categoryData->rightBannerTexts[$locale] = null;
-            $categoryData->containsSaleProducts[$domainConfig->getId()] = true;
-            $categoryData->containsNewsProducts[$domainConfig->getId()] = true;
+            $categoryData->containsSaleProducts[$domainId] = true;
+            $categoryData->containsNewsProducts[$domainId] = true;
+            $categoryData->tipShown[$domainId] = true;
+            $categoryData->tipName[$domainId] = t('Elektronická televize', [], 'dataFixtures');
+            $categoryData->tipText[$domainId] = t('Televize je široce používané jednosměrné dálkové telekomunikační a plošné vysílání kombinace obrazu a zvuku a jeho individuální příjem pomocí televizoru.', [], 'dataFixtures');
         }
         $categoryData->preListingCategory = false;
         $categoryElectronics = $this->getReference(self::CATEGORY_ELECTRONICS);
@@ -99,12 +107,16 @@ class CategoryDataFixture extends AbstractReferenceFixture
         $this->createCategory($categoryData, self::CATEGORY_TV);
 
         foreach ($this->domain->getAll() as $domainConfig) {
+            $domainId = $domainConfig->getId();
             $locale = $domainConfig->getLocale();
             $categoryData->name[$locale] = t('Fotoaparáty', [], 'dataFixtures', $locale);
             $categoryData->descriptions[$domainConfig->getId()] = t('A camera is an optical instrument for recording or capturing images, which may be stored locally, '
                 . 'transmitted to another location, or both.', [], 'dataFixtures', $locale);
-            $categoryData->containsSaleProducts[$domainConfig->getId()] = false;
-            $categoryData->containsNewsProducts[$domainConfig->getId()] = false;
+            $categoryData->containsSaleProducts[$domainId] = false;
+            $categoryData->containsNewsProducts[$domainId] = false;
+            $categoryData->tipShown[$domainId] = false;
+            $categoryData->tipName[$domainId] = null;
+            $categoryData->tipText[$domainId] = null;
         }
         $this->createCategory($categoryData, self::CATEGORY_PHOTO);
 
