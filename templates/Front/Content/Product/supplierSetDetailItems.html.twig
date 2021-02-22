@@ -5,7 +5,7 @@
         <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item">
             <div class="list-set__item__in">
                 <div class="list-set__item__image">
-                    {{ image(image, { size: 'listSet' }) }}
+                    {{ image(image, { size: 'bigThumbnail' }) }}
                     {% set itemCount = getSupplierSetItemCount(image.description) %}
                     {% if itemCount > 1 %}
                         <div class="list-tags list-tags--secondary list-tags--sets-detail">

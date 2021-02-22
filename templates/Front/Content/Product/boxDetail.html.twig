@@ -126,7 +126,7 @@
                         <div class="box-detail__add-basket{% if product.isMainVariant %} box-detail__add-basket--variant{% endif %}">
                             <div class="box-detail-add js-variantsToggle">
                                 {% if not product.isMainVariant %}
-                                    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
+                                    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                         {{ discountExclusion.discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
                                         {{ self.productPrice(product) }}
                                         <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
@@ -371,7 +371,7 @@
                                         <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item" data-product-set-item-id="{{ productSet.item.id }}">
                                             <div class="list-set__item__in">
                                                 <div class="list-set__item__image">
-                                                    {{ image(productSet.item, { size: 'listSet' }) }}
+                                                    {{ image(productSet.item, { size: 'bigThumbnail' }) }}
                                                     {% if productSet.itemCount > 1 %}
                                                         <div class="list-tags list-tags--secondary list-tags--sets-detail">
                                                             <div class="list-tags__tag">{{ productSet.itemCount ~ 'ks'|trans }}</div>
@@ -532,31 +532,33 @@
             </div>
         {% endif %}
     {% else %}
-        {% if sellingPrice.hasHigherStandardPrice %}
-            <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
-                {{ standardPrice.priceWithVat|price }}
-            </div>
-        {% endif %}
+        <div class="in-product-prices{{ type == "tipProduct" ? ' in-product-prices--without-gap' : '' }}">
+            {% if sellingPrice.hasHigherStandardPrice %}
+                <div class="in-product-prices__item in-product-prices__item--old">
+                    {{ standardPrice.priceWithVat|price }}
+                </div>
+            {% endif %}
 
-        <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-            {{ sellingPrice.priceWithVat|price }}
+            <div class="in-product-prices__item in-product-prices__item--main">
+                {{ sellingPrice.priceWithVat|price }}
+            </div>
+
+            {% if sellingPrice.hasHigherStandardPrice %}
+                <div class="in-product-prices__item in-product-prices__item--save">
+                    {{ 'ušetříte '|trans }} {{ sellingPrice.standardPriceDifference|price }}
+                </div>
+            {% endif %}
+
+            {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) and not product.isInAnySaleStock() %}
+                <div class="in-product-prices__item in-product-prices__item--info">
+                    {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}
+                </div>
+            {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) and not product.isInAnySaleStock() %}
+                <div class="in-product-prices__item in-product-prices__item--info">
+                    {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
+                </div>
+            {% endif %}
         </div>
-
-        {% if sellingPrice.hasHigherStandardPrice %}
-            <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
-                {{ 'ušetříte '|trans }} {{ sellingPrice.standardPriceDifference|price }}
-            </div>
-        {% endif %}
-
-        {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) and not product.isInAnySaleStock() %}
-            <div class="box-detail-add__prices__item box-detail-add__prices__item--info">
-                {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}
-            </div>
-        {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) and not product.isInAnySaleStock() %}
-            <div class="box-detail-add__prices__item box-detail-add__prices__item--info">
-                {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
-            </div>
-        {% endif %}
     {% endif %}
 {% endmacro %}
 
