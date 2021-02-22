@@ -6,7 +6,6 @@ namespace App\Form\Admin;
 
 use App\Component\Domain\DomainHelper;
 use App\Component\Form\FormBuilderHelper;
-use App\Component\Mall\MallFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer;
 use App\Model\Category\Category;
@@ -68,11 +67,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
     private $blogArticlesIdsToBlogArticlesTransformer;
 
     /**
-     * @var \App\Component\Mall\MallFacade
-     */
-    private $mallFacade;
-
-    /**
      * @var \App\Twig\DateTimeFormatterExtension
      */
     private $dateTimeFormatterExtension;
@@ -94,7 +88,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabFacade
      * @param \Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer
      * @param \App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer
-     * @param \App\Component\Mall\MallFacade $mallFacade
      * @param \App\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
      * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
@@ -105,7 +98,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         AdminDomainTabsFacade $adminDomainTabFacade,
         RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer,
         BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer,
-        MallFacade $mallFacade,
         DateTimeFormatterExtension $dateTimeFormatterExtension,
         FormBuilderHelper $formBuilderHelper,
         ParameterFacade $parameterFacade,
@@ -115,7 +107,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         $this->adminDomainTabsFacade = $adminDomainTabFacade;
         $this->removeDuplicatesTransformer = $removeDuplicatesTransformer;
         $this->blogArticlesIdsToBlogArticlesTransformer = $blogArticlesIdsToBlogArticlesTransformer;
-        $this->mallFacade = $mallFacade;
         $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
         $this->formBuilderHelper = $formBuilderHelper;
         $this->parameterFacade = $parameterFacade;
@@ -186,7 +177,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
                     ->addModelTransformer($this->blogArticlesIdsToBlogArticlesTransformer)
             );
 
-        $builder->add($this->createMallGroup($builder));
         $builder->add($this->createCategoryBrandGroup($builder, $category));
         $builder->add($this->createParametersGroup($builder));
         $builder->add($this->createTipsGroup($builder));
@@ -211,27 +201,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
     public static function getExtendedTypes(): iterable
     {
         yield CategoryFormType::class;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @return \Symfony\Component\Form\FormBuilderInterface
-     */
-    private function createMallGroup(FormBuilderInterface $builder): FormBuilderInterface
-    {
-        $builderMallGroup = $builder->create('mall', GroupType::class, [
-            'label' => t('Mall.cz'),
-        ]);
-
-        $mallCategories = $this->mallFacade->getCategories();
-
-        $builderMallGroup->add('mallCategoryId', ChoiceType::class, [
-            'choices' => array_flip($mallCategories),
-            'required' => false,
-            'label' => t('Kategorie v Mall.cz'),
-        ]);
-
-        return $builderMallGroup;
     }
 
     /**
