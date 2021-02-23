@@ -61,6 +61,15 @@
             }
         }
 
+        .box-detail-add--category-tip & {
+            margin-left: 0;
+            margin-bottom: 0;
+
+            @media @query-xl {
+                margin-left: -@box-detial-add-item-gap;
+            }
+        }
+
         &__message {
             width: 100%;
 
@@ -84,6 +93,22 @@
                 width: calc(~"50% - @{box-detial-add-item-gap}");
                 margin-left: @box-detial-add-item-gap;
                 margin-bottom: 0;
+            }
+
+            .box-detail-add--category-tip & {
+                width: 100%;
+                margin-bottom: @box-detial-add-item-gap;
+                margin-left: 0;
+
+                @media @query-xl {
+                    width: calc(~"50% - @{box-detial-add-item-gap}");
+                    margin-left: @box-detial-add-item-gap;
+                    margin-bottom: 0;
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
             }
         }
 

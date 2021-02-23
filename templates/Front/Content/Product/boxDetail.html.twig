@@ -532,7 +532,7 @@
             </div>
         {% endif %}
     {% else %}
-        <div class="in-product-prices{{ type == "tipProduct" ? ' in-product-prices--without-gap' : '' }}">
+        <div class="in-product-prices{{ type == "tipProduct" ? ' in-product-prices--small-gap' : '' }}">
             {% if sellingPrice.hasHigherStandardPrice %}
                 <div class="in-product-prices__item in-product-prices__item--old">
                     {{ standardPrice.priceWithVat|price }}
