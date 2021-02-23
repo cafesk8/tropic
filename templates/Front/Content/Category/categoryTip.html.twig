@@ -12,16 +12,16 @@
             
             <div class="box-category-tip__content">
                 {% if tipProduct is not null %}
-                    <div class="box-category-tip__content__product">
+                    <a class="box-category-tip__content__product" href="{{ url('front_product_detail', {'id': tipProduct.id}) }}">
                         <div class="box-category-tip__content__product__in">
                             <div class="box-category-tip__content__product__image">
                                 {{ image(tipProduct, { size: 'bigThumbnail' }) }}
                             </div>
-                            <a class="box-category-tip__content__product__name" href="{{ url('front_product_detail', {'id': tipProduct.id}) }}">
+                            <span class="box-category-tip__content__product__name">
                                 {{ tipProduct.name }}
-                            </a>
+                            </span>
                         </div>
-                    </div>
+                    </a>
 
                     <div class="box-category-tip__content__info">
                         {{ boxDetail.productPrice(tipProduct, 'tipProduct') }}
