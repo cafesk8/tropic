@@ -25,6 +25,11 @@
 
                     <div class="box-category-tip__content__info">
                         {{ boxDetail.productPrice(tipProduct, 'tipProduct') }}
+                        {% if not tipProduct.isMainVariant %}
+                            <div class="js-product-detail-main-add-to-cart-wrapper">
+                                {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: tipProduct, showAmountInput: false})) }}
+                            </div>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
