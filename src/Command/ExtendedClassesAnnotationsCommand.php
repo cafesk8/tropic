@@ -7,6 +7,8 @@ namespace App\Command;
 use Roave\BetterReflection\Reflection\ReflectionObject;
 use Roave\BetterReflection\Reflector\Exception\IdentifierNotFound;
 use Shopsys\FrameworkBundle\Command\ExtendedClassesAnnotationsCommand as BaseExtendedClassesAnnotationsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ExtendedClassesAnnotationsCommand extends BaseExtendedClassesAnnotationsCommand
 {
@@ -14,6 +16,21 @@ class ExtendedClassesAnnotationsCommand extends BaseExtendedClassesAnnotationsCo
      * @var string
      */
     protected static $defaultName = 'shopsys:extended-classes:annotations';
+
+    /**
+     * Overridden to disable spam of deprecation warnings
+     * @see https://github.com/shopsys/shopsys/issues/2013
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        error_reporting(error_reporting() & ~E_DEPRECATED);
+
+        return parent::execute($input, $output);
+    }
 
     /**
      * Copy pasted from the framework, added try-catch block for IdentifierNotFound exception so it is possible to run the command on project
