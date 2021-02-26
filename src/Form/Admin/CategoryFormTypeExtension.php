@@ -277,6 +277,9 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
                 'entry_type' => YesNoType::class,
                 'required' => false,
             ])
+            ->add('tipStocksWarning', DisplayOnlyType::class, [
+                'data' => t('Pokud je vybrán produkt, který není skladem, tip se vůbec nezobrazí bez ohledu na toto nastavení'),
+            ])
             ->add('tipName', MultidomainType::class, [
                 'label' => t('Nadpis'),
                 'entry_options' => [

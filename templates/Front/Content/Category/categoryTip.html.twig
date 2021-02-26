@@ -4,35 +4,41 @@
 
     {% if category.tipShown(domainId) %}
         {% import 'Front/Content/Product/boxDetail.html.twig' as boxDetail %}
+        {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availabilityMacro %}
         {% set tipProduct = category.tipProduct(domainId) %}
 
-        <div class="box-category-tip">
-            <h3 class="box-category-tip__title">{{ category.tipName(domainId) }}</h3>
-            <p class="box-category-tip__subtitle">{{ category.tipText(domainId) }}</p>
-            
-            <div class="box-category-tip__content">
-                {% if tipProduct is not null %}
-                    <a class="box-category-tip__content__product" href="{{ url('front_product_detail', {'id': tipProduct.id}) }}">
-                        <div class="box-category-tip__content__product__in">
-                            <div class="box-category-tip__content__product__image">
-                                {{ image(tipProduct, { size: 'bigThumbnail' }) }}
-                            </div>
-                            <span class="box-category-tip__content__product__name">
-                                {{ tipProduct.name }}
-                            </span>
-                        </div>
-                    </a>
+        {% if tipProduct is null or tipProduct.realStockQuantity > 0 %}
+            <div class="box-category-tip">
+                <h3 class="box-category-tip__title">{{ category.tipName(domainId) }}</h3>
+                <p class="box-category-tip__subtitle">{{ category.tipText(domainId) }}</p>
 
-                    <div class="box-category-tip__content__info">
-                        {{ boxDetail.productPrice(tipProduct, 'tipProduct') }}
-                        {% if not tipProduct.isMainVariant %}
-                            <div class="box-detail-add box-detail-add--category-tip js-product-detail-main-add-to-cart-wrapper">
-                                {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: tipProduct, type: 'tipProduct', showAmountInput: false})) }}
+                {% if tipProduct is not null %}
+                    <div class="box-category-tip__content">
+                        <a class="box-category-tip__content__product" href="{{ url('front_product_detail', {'id': tipProduct.id}) }}">
+                            <div class="box-category-tip__content__product__in">
+                                <div class="box-category-tip__content__product__image">
+                                    {{ image(tipProduct, { size: 'bigThumbnail' }) }}
+                                </div>
+                                <span class="box-category-tip__content__product__name">
+                                    {{ tipProduct.name }}
+                                </span>
                             </div>
-                        {% endif %}
+                        </a>
+
+                        <div class="box-category-tip__content__info">
+                            {{ boxDetail.productPrice(tipProduct, 'tipProduct') }}
+                            <div class="box-category-tip__content__info__availability">
+                                {{ availabilityMacro.productAvailability(tipProduct) }}
+                            </div>
+                            {% if not tipProduct.isMainVariant %}
+                                <div class="box-detail-add box-detail-add--category-tip js-product-detail-main-add-to-cart-wrapper">
+                                    {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: tipProduct, type: 'tipProduct', showAmountInput: false})) }}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 {% endif %}
             </div>
-        </div>
+        {% endif %}
     {% endif %}
 {% endmacro %}
