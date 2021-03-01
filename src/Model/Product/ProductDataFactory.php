@@ -128,6 +128,7 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->shortDescriptionHashes[$domainId] = null;
             $productData->shown[$domainId] = true;
             $productData->namesForMergadoFeed[$domainId] = null;
+            $productData->transportFee[$domainId] = null;
         }
 
         $productData->stockQuantityByStoreId = [];
@@ -184,6 +185,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->updatedByPohodaAt = $product->getUpdatedByPohodaAt();
         $productData->foreignSupplier = $product->isForeignSupplier();
         $productData->weight = $product->getWeight();
+        $productData->transportFeeMultiplier = $product->getTransportFeeMultiplier();
 
         foreach ($this->domain->getAllIds() as $domainId) {
             $productData->generateToMergadoXmlFeeds[$domainId] = $product->isGenerateToMergadoXmlFeed($domainId);
@@ -191,6 +193,7 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->shortDescriptionHashes[$domainId] = $product->getShortDescriptionHash($domainId);
             $productData->shown[$domainId] = $product->isShownOnDomain($domainId);
             $productData->namesForMergadoFeed[$domainId] = $product->getNameForMergadoFeed($domainId);
+            $productData->transportFee[$domainId] = $product->getTransportFee($domainId);
         }
     }
 

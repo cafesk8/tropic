@@ -306,6 +306,15 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('oversized', YesNoType::class, [
                 'required' => false,
                 'label' => t('Nadrozměrný'),
+            ])
+            ->add('transportFee', MultidomainType::class, [
+                'required' => false,
+                'label' => t('Poplatek k dopravě'),
+                'entry_type' => MoneyType::class,
+            ])
+            ->add('transportFeeMultiplier', IntegerType::class, [
+                'required' => false,
+                'label' => t('Počet kusů, po kterém se poplatek navýší'),
             ]);
 
         $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);

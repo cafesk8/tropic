@@ -6,6 +6,7 @@ namespace App\Model\Product;
 
 use DateTime;
 use Shopsys\FrameworkBundle\Component\FileUpload\ImageUploadData;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileData;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
@@ -182,7 +183,12 @@ class ProductData extends BaseProductData
      */
     public array $namesForMergadoFeed;
 
-    public bool $markForDelayedPriceRecalculation = false;
+    /**
+     * @var Money[]|null[]
+     */
+    public array $transportFee;
+
+    public ?int $transportFeeMultiplier;
 
     public function __construct()
     {
@@ -211,6 +217,8 @@ class ProductData extends BaseProductData
         $this->foreignSupplier = false;
         $this->weight = null;
         $this->new = true;
+        $this->transportFee = [];
+        $this->transportFeeMultiplier = null;
     }
 
     /**
