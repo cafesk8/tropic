@@ -140,3 +140,11 @@ parameters:
         - 'krizek.jr@tropicliberec.cz'
         - 'marcel.kaniok@shopsys.com'
         - 'pavel@chcisystem.cz'
+
+    luigis_box:
+        cs:
+            public: '123456-789012'
+            private: '0123456789012345678901234567890123456789012345678901234567890123'
+        sk:
+            public: '123456-789012'
+            private: '0123456789012345678901234567890123456789012345678901234567890123'
