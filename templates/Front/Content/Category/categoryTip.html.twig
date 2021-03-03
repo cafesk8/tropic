@@ -7,14 +7,16 @@
         {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availabilityMacro %}
         {% set tipProduct = category.tipProduct(domainId) %}
 
-        {% if tipProduct is null or tipProduct.realStockQuantity > 0 %}
+        {% if tipProduct is null or tipProduct.isMainVariant or tipProduct.realStockQuantity > 0 %}
             <div class="box-category-tip">
                 <h3 class="box-category-tip__title">{{ category.tipName(domainId) }}</h3>
                 <p class="box-category-tip__subtitle">{{ category.tipText(domainId) }}</p>
 
                 {% if tipProduct is not null %}
+                    {% set productUrl = url('front_product_detail', {'id': tipProduct.id}) %}
+
                     <div class="box-category-tip__content">
-                        <a class="box-category-tip__content__product" href="{{ url('front_product_detail', {'id': tipProduct.id}) }}">
+                        <a class="box-category-tip__content__product" href="{{ productUrl }}">
                             <div class="box-category-tip__content__product__in">
                                 <div class="box-category-tip__content__product__image">
                                     {{ image(tipProduct, { size: 'bigThumbnail' }) }}
@@ -30,11 +32,17 @@
                             <div class="box-category-tip__content__info__availability">
                                 {{ availabilityMacro.productAvailability(tipProduct) }}
                             </div>
-                            {% if not tipProduct.isMainVariant %}
-                                <div class="box-detail-add box-detail-add--category-tip js-product-detail-main-add-to-cart-wrapper">
+                            <div class="box-detail-add box-detail-add--category-tip js-product-detail-main-add-to-cart-wrapper">
+                                {% if not tipProduct.isMainVariant %}
                                     {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: tipProduct, type: 'tipProduct', showAmountInput: false})) }}
-                                </div>
-                            {% endif %}
+                                {% else %}
+                                    <div class="box-detail-add__buttons">
+                                        <a href="{{ productUrl }}" class="box-detail-add__buttons__item btn btn--success btn--large">
+                                            {{- 'Choose variant'|trans -}}
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endif %}
