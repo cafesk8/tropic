@@ -37,6 +37,8 @@ class OrderItem extends BaseOrderItem
 
     public const TYPE_ORDER_DISCOUNT_LEVEL = 'order_discount_level';
 
+    public const TYPE_TRANSPORT_FEE = 'transport_fee';
+
     /**
      * @var \App\Model\Order\Item\OrderItem|null
      *

@@ -13,6 +13,7 @@ use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Order\PromoCode\PromoCode;
 use InvalidArgumentException;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
@@ -236,10 +237,11 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         $totalGiftPrice = $this->getTotalGiftsPrice($giftsInCart);
         $productsPrice = $productsPrice->add($totalGiftPrice);
         $transportPrice = $this->getTransportPrice($transport, $currency, $productsPrice, $domainId);
+        $transportFee = $this->calculateTransportFee($quantifiedProducts, $domainId);
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
         $roundingPrice = $this->getRoundingPrice($payment, $currency, $productsPrice, $paymentPrice, $transportPrice);
         $orderDiscountLevelTotalDiscount = $this->orderDiscountCalculation->calculateOrderDiscountLevelTotalDiscount($quantifiedItemsDiscountsByIndex);
-        $totalPriceWithoutGiftCertificate = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
+        $totalPriceWithoutGiftCertificate = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice, $transportFee);
 
         $totalPrice = $this->getTotalPriceAffectedByGiftCertificates($totalPriceWithoutGiftCertificate, $promoCodes);
 
@@ -253,6 +255,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $defaultProductsPriceWithoutDiscounts,
             $transport,
             $transportPrice,
+            $transportFee,
             $payment,
             $paymentPrice,
             $roundingPrice,
@@ -471,5 +474,57 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         });
 
         return $promoCodes;
+    }
+
+    /**
+     * @param \App\Model\Order\Item\QuantifiedProduct[] $quantifiedProducts
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price|null
+     */
+    private function calculateTransportFee(array $quantifiedProducts, int $domainId): ?Price
+    {
+        $feeWithVat = Money::zero();
+
+        foreach ($quantifiedProducts as $quantifiedProduct) {
+            $product = $quantifiedProduct->getProduct();
+
+            if ($product->hasTransportFee($domainId)) {
+                $feeWithVat = $feeWithVat->add(
+                    $product->getTransportFee($domainId)->multiply(
+                        (string)ceil(
+                            $quantifiedProduct->getQuantity() / $product->getTransportFeeMultiplier()
+                        )
+                    )
+                );
+            }
+        }
+
+        if ($feeWithVat->isZero()) {
+            return null;
+        }
+
+        $vat = $this->vatFacade->getDefaultVatForDomain($domainId);
+        $feeWithoutVat = $feeWithVat->divide((string)(1 + $vat->getPercent() / 100), 2);
+
+        return new Price($feeWithoutVat, $feeWithVat);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $roundingPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportFee
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    protected function calculateTotalPrice(Price $productsPrice, ?Price $transportPrice = null, ?Price $paymentPrice = null, ?Price $roundingPrice = null, ?Price $transportFee = null): Price
+    {
+        $price = parent::calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
+
+        if ($transportFee !== null) {
+            $price = $price->add($transportFee);
+        }
+
+        return $price;
     }
 }

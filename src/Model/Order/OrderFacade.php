@@ -327,7 +327,6 @@ class OrderFacade extends BaseOrderFacade
      */
     public function createOrderFromFront(BaseOrderData $orderData, ?DeliveryAddress $deliveryAddress): BaseOrder
     {
-        /** @var \App\Model\Order\Status\OrderStatus $defaultOrderStatus */
         $defaultOrderStatus = $this->orderStatusRepository->getDefault();
         $orderData->status = $defaultOrderStatus;
         $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();
@@ -462,6 +461,7 @@ class OrderFacade extends BaseOrderFacade
 
         $this->fillOrderPayment($order, $orderPreview, $locale);
         $this->fillOrderTransport($order, $orderPreview, $locale);
+        $this->fillOrderTransportFee($order, $orderPreview);
     }
 
     /**
@@ -952,5 +952,20 @@ class OrderFacade extends BaseOrderFacade
         $this->em->flush();
 
         return $order;
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param \App\Model\Order\Preview\OrderPreview $orderPreview
+     */
+    private function fillOrderTransportFee(Order $order, OrderPreview $orderPreview)
+    {
+        if ($orderPreview->getTransportFee() !== null) {
+            $order->addItem($this->orderItemFactory->createTransportFee(
+                $order,
+                $orderPreview->getTransportFee(),
+                $order->getTransport()->getTransportDomain($order->getDomainId())->getVat()->getPercent()
+            ));
+        }
     }
 }

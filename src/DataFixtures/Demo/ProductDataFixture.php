@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\FileUpload\FileUpload;
 use App\Component\Setting\Setting;
 use App\Model\Pricing\Group\PricingGroupFacade;
@@ -1284,6 +1285,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
             $productData->name[$locale] = t('Book of traditional Czech fairy tales', [], 'dataFixtures', $locale);
             $productData->descriptions[$domain->getId()] = t('Collection of classical Czech fairy tales.', [], 'dataFixtures', $domain->getLocale());
             $productData->shortDescriptions[$domain->getId()] = t('Collection of classical Czech fairy tales.', [], 'dataFixtures', $domain->getLocale());
+            $productData->transportFee[$domain->getId()] = Money::create($domain->getId() === DomainHelper::CZECH_DOMAIN ? '12' : '0.5');
+            $productData->transportFeeMultiplier = 4;
 
             $i = 0;
             $this->addParameterTranslations($parameterTranslations, t('Pages count', [], 'dataFixtures', $locale), t('48', [], 'dataFixtures', $locale), $locale, $i);

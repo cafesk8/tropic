@@ -6,7 +6,6 @@ namespace App\Model\Product;
 
 use DateTime;
 use Shopsys\FrameworkBundle\Component\FileUpload\ImageUploadData;
-use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileData;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
@@ -184,7 +183,7 @@ class ProductData extends BaseProductData
     public array $namesForMergadoFeed;
 
     /**
-     * @var Money[]|null[]
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money[]|null[]
      */
     public array $transportFee;
 

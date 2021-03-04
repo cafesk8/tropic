@@ -65,7 +65,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param bool $simulateRegistration
      * @return \App\Model\Order\Preview\OrderPreview
      */
-    public function createForCurrentUser(?Transport $transport = null, ?Payment $payment = null, bool $simulateRegistration = false)
+    public function createForCurrentUser(?Transport $transport = null, ?Payment $payment = null, bool $simulateRegistration = false): OrderPreview
     {
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($this->domain->getId());
         $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();

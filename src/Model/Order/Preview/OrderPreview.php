@@ -68,6 +68,8 @@ class OrderPreview extends BaseOrderPreview
 
     private bool $simulateRegistration;
 
+    private ?Price $transportFee;
+
     /**
      * @param array $quantifiedProductsByIndex
      * @param array $quantifiedItemsPricesByIndex
@@ -78,6 +80,7 @@ class OrderPreview extends BaseOrderPreview
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $defaultProductsPriceWithoutDiscounts
      * @param \App\Model\Transport\Transport|null $transport
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportFee
      * @param \App\Model\Payment\Payment|null $payment
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $roundingPrice
@@ -98,6 +101,7 @@ class OrderPreview extends BaseOrderPreview
         Price $defaultProductsPriceWithoutDiscounts,
         ?Transport $transport = null,
         ?Price $transportPrice = null,
+        ?Price $transportFee = null,
         ?Payment $payment = null,
         ?Price $paymentPrice = null,
         ?Price $roundingPrice = null,
@@ -130,6 +134,7 @@ class OrderPreview extends BaseOrderPreview
         $this->defaultProductsPriceWithoutDiscounts = $defaultProductsPriceWithoutDiscounts;
         $this->productsPriceWithoutDiscounts = $productsPriceWithoutDiscounts;
         $this->simulateRegistration = $simulateRegistration;
+        $this->transportFee = $transportFee;
     }
 
     /**
@@ -344,5 +349,13 @@ class OrderPreview extends BaseOrderPreview
     public function getProductsCount(): int
     {
         return count($this->getQuantifiedProducts());
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price|null
+     */
+    public function getTransportFee(): ?Price
+    {
+        return $this->transportFee;
     }
 }

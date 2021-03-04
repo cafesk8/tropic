@@ -188,6 +188,17 @@
                         </tr>
                     {% endif %}
 
+                    {% if orderPreview.transportFee is not empty and orderPreview.transportFee.priceWithVat.positive %}
+                        <tr class="table-cart-preview__row">
+                            <td class="table-cart-preview__cell">
+                                {{ 'Příplatek za nadstandardní balení'|trans }}
+                            </td>
+                            <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                                {{ orderPreview.transportFee.priceWithVat|priceText }}
+                            </td>
+                        </tr>
+                    {% endif %}
+
                     {% if orderPreview.roundingPrice is not empty %}
                         <tr class="table-cart-preview__row">
                             <td class="table-cart-preview__cell">
