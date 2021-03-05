@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product;
 
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductDomain as BaseProductDomain;
 
@@ -52,6 +53,11 @@ class ProductDomain extends BaseProductDomain
     private ?string $nameForMergadoFeed = null;
 
     /**
+     * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
+     */
+    private ?Money $transportFee;
+
+    /**
      * @param \App\Model\Product\Product $product
      * @param int $domainId
      */
@@ -63,6 +69,7 @@ class ProductDomain extends BaseProductDomain
         $this->descriptionHash = null;
         $this->shortDescriptionHash = null;
         $this->shown = true;
+        $this->transportFee = null;
     }
 
     /**
@@ -151,5 +158,21 @@ class ProductDomain extends BaseProductDomain
     public function setNameForMergadoFeed(?string $nameForMergadoFeed): void
     {
         $this->nameForMergadoFeed = $nameForMergadoFeed;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getTransportFee(): ?Money
+    {
+        return $this->transportFee;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $transportFee
+     */
+    public function setTransportFee(?Money $transportFee): void
+    {
+        $this->transportFee = $transportFee;
     }
 }

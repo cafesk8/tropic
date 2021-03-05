@@ -16,6 +16,7 @@ use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
@@ -281,6 +282,11 @@ class Product extends BaseProduct
     protected $recalculatePrice;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $transportFeeMultiplier;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -356,6 +362,7 @@ class Product extends BaseProduct
         $this->supplierSet = $productData->supplierSet;
         $this->foreignSupplier = $productData->foreignSupplier;
         $this->weight = $productData->weight;
+        $this->transportFeeMultiplier = $productData->transportFeeMultiplier;
     }
 
     /**
@@ -1119,6 +1126,7 @@ class Product extends BaseProduct
             $productDomain->setShortDescriptionHash($productData->shortDescriptionHashes[$domainId]);
             $productDomain->setShown($productData->shown[$domainId]);
             $productDomain->setNameForMergadoFeed($productData->namesForMergadoFeed[$domainId]);
+            $productDomain->setTransportFee($productData->transportFee[$domainId]);
         }
     }
 
@@ -1684,5 +1692,31 @@ class Product extends BaseProduct
     public function getVisibleVariants(): array
     {
         return $this->variants->filter(fn (Product $variant) => $variant->getCalculatedVisibility())->toArray();
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getTransportFee(int $domainId): ?Money
+    {
+        return $this->getProductDomain($domainId)->getTransportFee();
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTransportFeeMultiplier(): ?int
+    {
+        return $this->transportFeeMultiplier;
+    }
+
+    /**
+     * @param int $domainId
+     * @return bool
+     */
+    public function hasTransportFee(int $domainId): bool
+    {
+        return !empty($this->getTransportFee($domainId)) && !empty($this->transportFeeMultiplier);
     }
 }

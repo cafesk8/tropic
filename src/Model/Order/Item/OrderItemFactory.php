@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Item;
 
+use App\Model\Order\Order;
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem as BaseOrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactory as BaseOrderItemFactory;
-use Shopsys\FrameworkBundle\Model\Order\Order;
+use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
-use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 
 /**
  * @method \App\Model\Order\Item\OrderItem createPayment(\App\Model\Order\Order $order, string $name, \Shopsys\FrameworkBundle\Model\Pricing\Price $price, string $vatPercent, int $quantity, \App\Model\Payment\Payment $payment)
@@ -17,17 +19,26 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 class OrderItemFactory extends BaseOrderItemFactory
 {
     /**
-     * @inheritDoc
+     * @param \App\Model\Order\Order $order
+     * @param string $name
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
+     * @param string $vatPercent
+     * @param int $quantity
+     * @param string|null $unitName
+     * @param string|null $catnum
+     * @param \App\Model\Product\Product|null $product
+     * @param bool|null $saleItem
+     * @return \App\Model\Order\Item\OrderItem
      */
     public function createProduct(
-        Order $order,
+        BaseOrder $order,
         string $name,
         Price $price,
         string $vatPercent,
         int $quantity,
         ?string $unitName,
         ?string $catnum,
-        ?Product $product = null,
+        ?BaseProduct $product = null,
         ?bool $saleItem = false
     ): BaseOrderItem {
         $orderProduct = new OrderItem(
@@ -63,7 +74,6 @@ class OrderItemFactory extends BaseOrderItemFactory
         Price $price,
         OrderItem $orderItem
     ): BaseOrderItem {
-        /** @var \App\Model\Order\Item\OrderItem $orderDiscount */
         $orderDiscount = new OrderItem(
             $orderItem->getOrder(),
             $name,
@@ -91,7 +101,6 @@ class OrderItemFactory extends BaseOrderItemFactory
         Price $price,
         OrderItem $orderItem
     ): BaseOrderItem {
-        /** @var \App\Model\Order\Item\OrderItem $orderDiscountLevel */
         $orderDiscountLevel = new OrderItem(
             $orderItem->getOrder(),
             $name,
@@ -123,7 +132,6 @@ class OrderItemFactory extends BaseOrderItemFactory
         ?string $certificateSku,
         string $vatPercent
     ): BaseOrderItem {
-        /** @var \App\Model\Order\Item\OrderItem $orderCertification */
         $orderCertification = new OrderItem(
             $order,
             $name,
@@ -150,7 +158,7 @@ class OrderItemFactory extends BaseOrderItemFactory
      * @param int $quantity
      * @param string|null $unitName
      * @param string|null $catnum
-     * @param \App\Model\Product\Product $gift
+     * @param \App\Model\Product\Product|null $gift
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalPrice
      * @return \App\Model\Order\Item\OrderItem
      */
@@ -181,5 +189,25 @@ class OrderItemFactory extends BaseOrderItemFactory
         $orderProductGift->setTotalPrice($totalPrice);
 
         return $orderProductGift;
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
+     * @param string $vatPercent
+     * @return \App\Model\Order\Item\OrderItem
+     */
+    public function createTransportFee(Order $order, Price $price, string $vatPercent): OrderItem
+    {
+        return new OrderItem(
+            $order,
+            t('Příplatek za nadstandardní balení'),
+            $price,
+            $vatPercent,
+            1,
+            OrderItem::TYPE_TRANSPORT_FEE,
+            null,
+            null
+        );
     }
 }

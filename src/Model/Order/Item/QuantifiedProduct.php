@@ -7,6 +7,9 @@ namespace App\Model\Order\Item;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct as BaseQuantifiedProduct;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
+/**
+ * @method \App\Model\Product\Product getProduct()
+ */
 class QuantifiedProduct extends BaseQuantifiedProduct
 {
     /**
