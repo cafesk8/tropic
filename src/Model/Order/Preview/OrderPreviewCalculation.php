@@ -489,13 +489,15 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $product = $quantifiedProduct->getProduct();
 
             if ($product->hasTransportFee($domainId)) {
-                $feeWithVat = $feeWithVat->add(
-                    $product->getTransportFee($domainId)->multiply(
-                        (string)ceil(
-                            $quantifiedProduct->getQuantity() / $product->getTransportFeeMultiplier()
-                        )
+                $currentFee = $product->getTransportFee($domainId)->multiply(
+                    (string)ceil(
+                        $quantifiedProduct->getQuantity() / $product->getTransportFeeMultiplier()
                     )
                 );
+
+                if ($currentFee->isGreaterThan($feeWithVat)) {
+                    $feeWithVat = $currentFee;
+                }
             }
         }
 
