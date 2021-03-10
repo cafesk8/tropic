@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Form\FormBuilderHelper;
-use App\Component\Mall\MallFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer;
 use App\Model\Category\Category;
@@ -13,12 +13,14 @@ use App\Model\Category\CategoryData;
 use App\Model\Product\Parameter\Parameter;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Twig\DateTimeFormatterExtension;
+use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Admin\Category\CategoryFormType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
+use Shopsys\FrameworkBundle\Form\ProductType;
 use Shopsys\FrameworkBundle\Form\SortableValuesType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\FrameworkBundle\Form\WarningMessageType;
@@ -28,6 +30,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints;
 
 class CategoryFormTypeExtension extends AbstractTypeExtension
 {
@@ -64,11 +67,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
     private $blogArticlesIdsToBlogArticlesTransformer;
 
     /**
-     * @var \App\Component\Mall\MallFacade
-     */
-    private $mallFacade;
-
-    /**
      * @var \App\Twig\DateTimeFormatterExtension
      */
     private $dateTimeFormatterExtension;
@@ -90,7 +88,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabFacade
      * @param \Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer
      * @param \App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer
-     * @param \App\Component\Mall\MallFacade $mallFacade
      * @param \App\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
      * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
@@ -101,7 +98,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         AdminDomainTabsFacade $adminDomainTabFacade,
         RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer,
         BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer,
-        MallFacade $mallFacade,
         DateTimeFormatterExtension $dateTimeFormatterExtension,
         FormBuilderHelper $formBuilderHelper,
         ParameterFacade $parameterFacade,
@@ -111,7 +107,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         $this->adminDomainTabsFacade = $adminDomainTabFacade;
         $this->removeDuplicatesTransformer = $removeDuplicatesTransformer;
         $this->blogArticlesIdsToBlogArticlesTransformer = $blogArticlesIdsToBlogArticlesTransformer;
-        $this->mallFacade = $mallFacade;
         $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
         $this->formBuilderHelper = $formBuilderHelper;
         $this->parameterFacade = $parameterFacade;
@@ -182,9 +177,9 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
                     ->addModelTransformer($this->blogArticlesIdsToBlogArticlesTransformer)
             );
 
-        $builder->add($this->createMallGroup($builder));
         $builder->add($this->createCategoryBrandGroup($builder, $category));
         $builder->add($this->createParametersGroup($builder));
+        $builder->add($this->createTipsGroup($builder));
         $this->formBuilderHelper->disableFieldsByConfigurations($builder, self::DISABLED_FIELDS);
     }
 
@@ -206,27 +201,6 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
     public static function getExtendedTypes(): iterable
     {
         yield CategoryFormType::class;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @return \Symfony\Component\Form\FormBuilderInterface
-     */
-    private function createMallGroup(FormBuilderInterface $builder): FormBuilderInterface
-    {
-        $builderMallGroup = $builder->create('mall', GroupType::class, [
-            'label' => t('Mall.cz'),
-        ]);
-
-        $mallCategories = $this->mallFacade->getCategories();
-
-        $builderMallGroup->add('mallCategoryId', ChoiceType::class, [
-            'choices' => array_flip($mallCategories),
-            'required' => false,
-            'label' => t('Kategorie v Mall.cz'),
-        ]);
-
-        return $builderMallGroup;
     }
 
     /**
@@ -285,5 +259,56 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         ]);
 
         return $builderCategoryBrandGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function createTipsGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $tipsGroup = $builder->create('categoryTips', GroupType::class, [
+            'label' => t('Tipy'),
+        ]);
+
+        $tipsGroup
+            ->add('tipShown', MultidomainType::class, [
+                'label' => t('Zobrazit'),
+                'entry_type' => YesNoType::class,
+                'required' => false,
+            ])
+            ->add('tipStocksWarning', DisplayOnlyType::class, [
+                'data' => t('Pokud je vybrán produkt, který není skladem, tip se vůbec nezobrazí bez ohledu na toto nastavení'),
+            ])
+            ->add('tipName', MultidomainType::class, [
+                'label' => t('Nadpis'),
+                'entry_options' => [
+                    'constraints' => [
+                        new Constraints\Length(['max' => 255]),
+                    ],
+                ],
+                'required' => false,
+            ])
+            ->add('tipText', MultidomainType::class, [
+                'label' => t('Text'),
+                'entry_options' => [
+                    'constraints' => [
+                        new Constraints\Length(['max' => 255]),
+                    ],
+                ],
+                'required' => false,
+            ])
+            ->add('tipProduct', MultidomainType::class, [
+                'label' => t('Produkt'),
+                'entry_type' => ProductType::class,
+                'options_by_domain_id' => [
+                    DomainHelper::CZECH_DOMAIN => ['label' => 'CZ'],
+                    DomainHelper::SLOVAK_DOMAIN => ['label' => 'SK'],
+                    DomainHelper::ENGLISH_DOMAIN => ['label' => 'EN'],
+                ],
+                'required' => false,
+            ]);
+
+        return $tipsGroup;
     }
 }

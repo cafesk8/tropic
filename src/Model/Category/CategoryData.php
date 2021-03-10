@@ -90,6 +90,26 @@ class CategoryData extends BaseCategoryData
 
     public array $categoryBrands;
 
+    /**
+     * @var bool[]
+     */
+    public array $tipShown;
+
+    /**
+     * @var string[]|null[]
+     */
+    public array $tipName;
+
+    /**
+     * @var string[]|null[]
+     */
+    public array $tipText;
+
+    /**
+     * @var \App\Model\Product\Product[]|null[]
+     */
+    public array $tipProduct;
+
     public function __construct()
     {
         parent::__construct();
@@ -104,5 +124,9 @@ class CategoryData extends BaseCategoryData
         $this->containsNewsProducts = [];
         $this->unavailableProductsShown = true;
         $this->categoryBrands = [];
+        $this->tipShown = [];
+        $this->tipName = [];
+        $this->tipText = [];
+        $this->tipProduct = [];
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
+use App\Model\Product\Product;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -274,6 +275,10 @@ class Category extends BaseCategory
             $domainId = $categoryDomain->getDomainId();
             $categoryDomain->setContainsSaleProduct($categoryData->containsSaleProducts[$domainId]);
             $categoryDomain->setContainsNewsProduct($categoryData->containsNewsProducts[$domainId]);
+            $categoryDomain->setTipShown($categoryData->tipShown[$domainId]);
+            $categoryDomain->setTipName($categoryData->tipName[$domainId]);
+            $categoryDomain->setTipText($categoryData->tipText[$domainId]);
+            $categoryDomain->setTipProduct($categoryData->tipProduct[$domainId]);
         }
     }
 
@@ -442,5 +447,97 @@ class Category extends BaseCategory
     public function getCategoryBrands(): array
     {
         return $this->categoryBrands->toArray();
+    }
+
+    /**
+     * @return bool[]
+     */
+    public function areTipsShown(): array
+    {
+        $tipShown = [];
+
+        foreach ($this->domains as $categoryDomain) {
+            $tipShown[$categoryDomain->getDomainId()] = $categoryDomain->isTipShown();
+        }
+
+        return $tipShown;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTipNames(): array
+    {
+        $tipName = [];
+
+        foreach ($this->domains as $categoryDomain) {
+            $tipName[$categoryDomain->getDomainId()] = $categoryDomain->getTipName();
+        }
+
+        return $tipName;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTipTexts(): array
+    {
+        $tipTexts = [];
+
+        foreach ($this->domains as $categoryDomain) {
+            $tipTexts[$categoryDomain->getDomainId()] = $categoryDomain->getTipText();
+        }
+
+        return $tipTexts;
+    }
+
+    /**
+     * @return \App\Model\Product\Product[]
+     */
+    public function getTipProducts(): array
+    {
+        $tipProducts = [];
+
+        foreach ($this->domains as $categoryDomain) {
+            $tipProducts[$categoryDomain->getDomainId()] = $categoryDomain->getTipProduct();
+        }
+
+        return $tipProducts;
+    }
+
+    /**
+     * @param int $domainId
+     * @return bool
+     */
+    public function isTipShown(int $domainId): bool
+    {
+        return $this->getCategoryDomain($domainId)->isTipShown();
+    }
+
+    /**
+     * @param int $domainId
+     * @return string|null
+     */
+    public function getTipName(int $domainId): ?string
+    {
+        return $this->getCategoryDomain($domainId)->getTipName();
+    }
+
+    /**
+     * @param int $domainId
+     * @return string|null
+     */
+    public function getTipText(int $domainId): ?string
+    {
+        return $this->getCategoryDomain($domainId)->getTipText();
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Product\Product|null
+     */
+    public function getTipProduct(int $domainId): ?Product
+    {
+        return $this->getCategoryDomain($domainId)->getTipProduct();
     }
 }
