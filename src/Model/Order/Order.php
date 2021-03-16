@@ -6,6 +6,7 @@ namespace App\Model\Order;
 
 use App\Model\Order\Exception\UnsupportedOrderExportStatusException;
 use App\Model\Order\GiftCertificate\OrderGiftCertificate;
+use App\Model\Order\Item\OrderItem;
 use App\Model\Store\Store;
 use App\Model\Transport\PickupPlace\PickupPlace;
 use App\Model\Transport\Transport;
@@ -16,7 +17,6 @@ use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Utils\Utils;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
-use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
@@ -603,16 +603,9 @@ class Order extends BaseOrder
     /**
      * @return \App\Model\Order\Item\OrderItem[]
      */
-    public function getGiftItems()
+    public function getGiftItems(): array
     {
-        $giftItems = [];
-        foreach ($this->items as $item) {
-            if ($item->isTypeGift()) {
-                $giftItems[] = $item;
-            }
-        }
-
-        return $giftItems;
+        return $this->items->filter(fn (OrderItem $orderItem) => $orderItem->isTypeGift())->toArray();
     }
 
     /**

@@ -77,7 +77,7 @@ class OrderProductFacade extends BaseOrderProductFacade
     /**
      * @param \App\Model\Order\Item\OrderItem[] $orderProducts
      */
-    public function subtractOrderProductsFromStock(array $orderProducts)
+    public function subtractOrderProductsFromStock(array $orderProducts): void
     {
         if ($this->moduleFacade->isEnabled(ModuleList::PRODUCT_STOCK_CALCULATIONS)) {
             $toFlush = [];
@@ -90,7 +90,8 @@ class OrderProductFacade extends BaseOrderProductFacade
                     $product,
                     $orderProductUsingStock->getQuantity(),
                     $orderProductUsingStock->isSaleItem(),
-                    false
+                    false,
+                    $orderProductUsingStock->isTypeGift()
                 );
 
                 foreach ($orderItemSourceStocksData as $orderItemSourceStockData) {
@@ -107,7 +108,8 @@ class OrderProductFacade extends BaseOrderProductFacade
                             $setItem,
                             $orderProductUsingStock->getQuantity() * $productSet->getItemCount(),
                             $orderProductUsingStock->isSaleItem(),
-                            true
+                            true,
+                            $orderProductUsingStock->isTypeGift()
                         );
                     }
                 }
@@ -125,9 +127,10 @@ class OrderProductFacade extends BaseOrderProductFacade
      * @param int $quantity
      * @param bool $isSaleItem
      * @param bool $isSetItem
+     * @param bool $isGiftItem
      * @return \App\Model\Order\ItemSourceStock\OrderItemSourceStockData[]
      */
-    public function subtractStockQuantity(Product $product, int $quantity, bool $isSaleItem, bool $isSetItem): array
+    public function subtractStockQuantity(Product $product, int $quantity, bool $isSaleItem, bool $isSetItem, bool $isGiftItem = false): array
     {
         $orderItemSourceStocksData = [];
         $remainingQuantity = $quantity;
@@ -137,7 +140,11 @@ class OrderProductFacade extends BaseOrderProductFacade
             $isSaleStock = $productStoreStock->getStore()->isSaleStock();
             $availableQuantity = $productStoreStock->getStockQuantity();
 
-            if (!$isSetItem && (($isSaleStock && !$isSaleItem) || (!$isSaleStock && $isSaleItem) || $availableQuantity < 1)) {
+            if ($availableQuantity < 1) {
+                continue;
+            }
+
+            if (!$isSetItem && !$isGiftItem && (($isSaleStock && !$isSaleItem) || (!$isSaleStock && $isSaleItem))) {
                 continue;
             }
 
