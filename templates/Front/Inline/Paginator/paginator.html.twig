@@ -98,7 +98,11 @@
         {% set routeParams = getAllRequestParams() -%}
         {% if not paginationResult.firstPage -%}
             {% set page = paginationResult.previousPage -%}
-            {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
+            {% if page == 1 %}
+                {% set routeParams = routeParams|merge({(pageQueryParameter): null}) -%}
+            {% else %}
+                {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
+            {% endif %}
             <link rel="prev" href="{{ path(route, routeParams) }}">
         {% endif %}
         {% if not paginationResult.lastPage -%}
@@ -117,7 +121,7 @@
            data-total-count="{{ paginationResult.totalCount }}"
            data-url="{{ url }}"
            data-page-query-parameter="{{ pageQueryParameter }}"
-    />
+    >
     </a>
 {% endmacro %}
 
@@ -127,10 +131,14 @@
         {% set routeParams = getAllRequestParams() -%}
         {% if not paginationResult.firstPage -%}
             {% set page = paginationResult.previousPage -%}
-            {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
-                <a class="box-list__actions__listing__item btn btn--big" href="{{ path(route, routeParams) }}" rel="prev">
-                    {{ '< PREVIOUS'|trans }}
-                </a>
+            {% if page == 1 %}
+                {% set routeParams = routeParams|merge({(pageQueryParameter): null}) -%}
+            {% else %}
+                {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
+            {% endif %}
+            <a class="box-list__actions__listing__item btn btn--big" href="{{ path(route, routeParams) }}" rel="prev">
+                {{ '< PREVIOUS'|trans }}
+            </a>
         {% endif %}
     {% endif %}
 {% endmacro %}
@@ -142,9 +150,9 @@
         {% if not paginationResult.lastPage -%}
             {% set page = paginationResult.nextPage -%}
             {% set routeParams = routeParams|merge({(pageQueryParameter): page}) -%}
-                <a class="box-list__actions__listing__item btn btn--big" href="{{ path(route, routeParams) }}" rel="next">
-                    {{ 'NEXT >'|trans }}
-                </a>
+            <a class="box-list__actions__listing__item btn btn--big" href="{{ path(route, routeParams) }}" rel="next">
+                {{ 'NEXT >'|trans }}
+            </a>
         {% endif %}
     {% endif %}
 {% endmacro %}
