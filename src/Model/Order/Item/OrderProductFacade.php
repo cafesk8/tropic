@@ -84,6 +84,7 @@ class OrderProductFacade extends BaseOrderProductFacade
             $orderProductsUsingStock = $this->getOrderProductsUsingStockFromOrderProducts($orderProducts);
             foreach ($orderProductsUsingStock as $orderProductUsingStock) {
                 $product = $orderProductUsingStock->getProduct();
+                $product->markForAvailabilityRecalculation();
                 $toFlush[] = $product;
                 $orderItemSourceStocksData = $this->subtractStockQuantity(
                     $product,
@@ -99,9 +100,11 @@ class OrderProductFacade extends BaseOrderProductFacade
 
                 if ($product->isPohodaProductTypeSet()) {
                     foreach ($product->getProductSets() as $productSet) {
-                        $toFlush[] = $productSet->getItem();
+                        $setItem = $productSet->getItem();
+                        $setItem->markForAvailabilityRecalculation();
+                        $toFlush[] = $setItem;
                         $this->subtractStockQuantity(
-                            $productSet->getItem(),
+                            $setItem,
                             $orderProductUsingStock->getQuantity() * $productSet->getItemCount(),
                             $orderProductUsingStock->isSaleItem(),
                             true
