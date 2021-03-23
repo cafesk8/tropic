@@ -307,6 +307,9 @@ msgstr ""
 msgid "CSV Export"
 msgstr "CSV Export"
 
+msgid "CZ"
+msgstr ""
+
 msgid "Calculated price excluding VAT"
 msgstr ""
 
@@ -715,10 +718,7 @@ msgstr "Deliver to address"
 msgid "Doručovací adresy"
 msgstr ""
 
-msgid "Dostupnost %days% den"
-msgstr ""
-
-msgid "Dostupnost %days% dny"
+msgid "Dostupnost"
 msgstr ""
 
 msgid "Dostupnost %days% dní"
@@ -819,6 +819,9 @@ msgstr ""
 
 msgid "E-shop na míru od"
 msgstr "E-shop tailored from"
+
+msgid "EN"
+msgstr ""
 
 msgid "Editace banneru"
 msgstr "Edit banner"
@@ -1115,6 +1118,12 @@ msgid "Id stavu z IS"
 msgstr "Status ID from IS"
 
 msgid "Identifikátor pro IS Pohoda"
+msgstr ""
+
+msgid "Ihned k odeslání"
+msgstr ""
+
+msgid "Ihned k odeslání, další dle dostupnosti"
 msgstr ""
 
 msgid "Image"
@@ -1480,9 +1489,6 @@ msgstr ""
 msgid "Najdete v kategoriích"
 msgstr "Found in categories"
 
-msgid "Najděte si něco na sebe…"
-msgstr "Search…"
-
 msgid "Nakupte ještě za"
 msgstr "Buy more for"
 
@@ -1503,6 +1509,9 @@ msgstr ""
 
 msgid "Name"
 msgstr "Name"
+
+msgid "Napište co hledáte"
+msgstr "Search…"
 
 msgid "Naposledy navštívené produkty"
 msgstr ""
@@ -1531,9 +1540,6 @@ msgstr ""
 msgid "Naše služby"
 msgstr "Our services"
 
-msgid "Naši milí zákazníci, moc nás těší váš zájem o nákupy a pro nejrychlejší doručení uděláme maximum. Prosíme vás o trpělivost 🙏"
-msgstr ""
-
 msgid "Ne"
 msgstr "No"
 
@@ -1553,6 +1559,9 @@ msgid "Nejdražší"
 msgstr ""
 
 msgid "Nejlevnější"
+msgstr ""
+
+msgid "Nejnovější"
 msgstr ""
 
 msgid "Nejoblíbenější kousky"
@@ -1776,6 +1785,9 @@ msgstr ""
 
 msgid "Objednávka z Mall.cz"
 msgstr "Order from Mall.cz"
+
+msgid "Objednávky přijaté po 12:00 odesíláme následující pracovní den"
+msgstr ""
 
 msgid "Objemný"
 msgstr ""
@@ -2107,6 +2119,9 @@ msgstr "Continue to homepage"
 msgid "Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu."
 msgstr "If Youtube video ID is invalid, video won't appear on frontend"
 
+msgid "Pokud je vybrán produkt, který není skladem, tip se vůbec nezobrazí bez ohledu na toto nastavení"
+msgstr ""
+
 msgid "Položka %name% je skladem k dispozici v počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili."
 msgstr "Product %name% has %quantity% pcs in stock, therefore we adjusted quantity in your cart."
 
@@ -2127,6 +2142,9 @@ msgstr "Description"
 
 msgid "Popisy hlavních obrázků"
 msgstr "Description of main images"
+
+msgid "Poplatek k dopravě"
+msgstr ""
 
 msgid "Popular categories"
 msgstr "Popular categories"
@@ -2170,6 +2188,9 @@ msgstr "Quantity of generated promo codes"
 msgid "Počet kusů"
 msgstr ""
 
+msgid "Počet kusů, po kterém se poplatek navýší"
+msgstr ""
+
 msgid "Počet nabízených produktů"
 msgstr ""
 
@@ -2211,6 +2232,9 @@ msgstr ""
 
 msgid "Pro plochy 1, 2, 3 - čtverec (380x230px), pro plochu 4 - velký obdelník na šířku (1180x387px)."
 msgstr "For areas 1, 2, 3 - square (380x230px), for area 4 - big wide rectangle (1180x387px)."
+
+msgid "Pro vyhledání"
+msgstr ""
 
 msgid "Pro využití slevového kódu musíte nakoupit aspoň za %price%."
 msgstr "To apply the promo code you need to buy at least for %price%."
@@ -2268,6 +2292,9 @@ msgstr ""
 
 msgid "Products in stock only"
 msgstr "Products in stock only"
+
+msgid "Produkt"
+msgstr ""
 
 msgid "Produkt %name% musel být z košíku odstraněn, protože není skladem."
 msgstr "Product %name% had to be removed from your cart as it is not in stock."
@@ -2395,9 +2422,6 @@ msgstr "Transfered"
 msgid "Přesunout nahoru"
 msgstr ""
 
-msgid "Přetížení dopravců"
-msgstr ""
-
 msgid "Při nevyplnění nebude doprava do Mergada exportována."
 msgstr ""
 
@@ -2451,6 +2475,9 @@ msgstr "Article links"
 
 msgid "Příjmení"
 msgstr "Surname"
+
+msgid "Příplatek za nadstandardní balení"
+msgstr ""
 
 msgid "Příznak"
 msgstr "Symptom"
@@ -2511,6 +2538,9 @@ msgstr ""
 
 msgid "S čím potřebujete pomoct?"
 msgstr "What can we help you with?"
+
+msgid "SK"
+msgstr ""
 
 msgid "SKU"
 msgstr "SKU"
@@ -2661,6 +2691,12 @@ msgstr "Hide delivery methods"
 
 msgid "Skrýt další způsoby platby"
 msgstr "Hide payment methods"
+
+msgid "Skrýt filtrování"
+msgstr ""
+
+msgid "Skrýt nedostupné"
+msgstr ""
 
 msgid "Skrýt položky"
 msgstr "Hide items"
@@ -2940,6 +2976,9 @@ msgstr "This status can't be deleted, because there is a functionality bounded t
 
 msgid "This status can't be deleted. This is automatically assigned status to all new orders."
 msgstr "This status can't be deleted. This is automatically assigned status to all new orders."
+
+msgid "Tipy"
+msgstr ""
 
 msgid "To prevent the possibility of account theft, the change of the e-mail address must be dealt with individually. If your e-mail address has changed, please contact us."
 msgstr "To prevent the possibility of account theft, the change of the e-mail address must be dealt with individually. If your e-mail address has changed, please contact us."
@@ -3295,6 +3334,12 @@ msgstr "We choose the best"
 msgid "Vyhledat"
 msgstr "Search"
 
+msgid "Vyhledat dle kódu slevy, SKU poukazu nebo e-mailu zákazníka..."
+msgstr ""
+
+msgid "Vyhledávání hledá v e-mailu zákazníka, kódu slevy nebo SKU poukazu. Je možné používat operátory * a ?."
+msgstr ""
+
 msgid "Vyhledávání hledá v příjmení, názvu firmy, emailu, telefonu a ean. Je možné používat operátory * a ?."
 msgstr "Search within surname, company name, email and telephone. It is possible to use operators * and ?."
 
@@ -3571,6 +3616,9 @@ msgstr "Show on page of stores"
 msgid "Zobrazit nedostupné produkty"
 msgstr ""
 
+msgid "Zobrazit výsledky"
+msgstr ""
+
 msgid "Zobrazit všechny položky"
 msgstr "Show all items"
 
@@ -3789,6 +3837,9 @@ msgstr ""
 
 msgid "souhlasím s"
 msgstr "agree to"
+
+msgid "stiskněte Enter"
+msgstr ""
 
 msgid "store1"
 msgstr ""

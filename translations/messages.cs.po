@@ -310,6 +310,9 @@ msgstr ""
 msgid "CSV Export"
 msgstr "CSV Export"
 
+msgid "CZ"
+msgstr ""
+
 msgid "Calculated price excluding VAT"
 msgstr ""
 
@@ -825,6 +828,9 @@ msgstr ""
 
 msgid "E-shop na míru od"
 msgstr "E-shop na míru od"
+
+msgid "EN"
+msgstr ""
 
 msgid "Editace banneru"
 msgstr "Editace banneru"
@@ -1495,9 +1501,6 @@ msgstr ""
 msgid "Najdete v kategoriích"
 msgstr "Najdete v kategoriích"
 
-msgid "Najděte si něco na sebe…"
-msgstr "Napište co hledáte…"
-
 msgid "Nakupte ještě za"
 msgstr "Nakupte ještě za"
 
@@ -1518,6 +1521,9 @@ msgstr ""
 
 msgid "Name"
 msgstr "Název"
+
+msgid "Napište co hledáte"
+msgstr "Napište co hledáte…"
 
 msgid "Naposledy navštívené produkty"
 msgstr ""
@@ -1546,9 +1552,6 @@ msgstr ""
 msgid "Naše služby"
 msgstr "Naše služby"
 
-msgid "Naši milí zákazníci, moc nás těší váš zájem o nákupy a pro nejrychlejší doručení uděláme maximum. Prosíme vás o trpělivost 🙏"
-msgstr ""
-
 msgid "Ne"
 msgstr "Ne"
 
@@ -1568,6 +1571,9 @@ msgid "Nejdražší"
 msgstr ""
 
 msgid "Nejlevnější"
+msgstr ""
+
+msgid "Nejnovější"
 msgstr ""
 
 msgid "Nejoblíbenější kousky"
@@ -2131,6 +2137,9 @@ msgstr "Pokračujte na úvodní stránku"
 msgid "Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu."
 msgstr "Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu."
 
+msgid "Pokud je vybrán produkt, který není skladem, tip se vůbec nezobrazí bez ohledu na toto nastavení"
+msgstr ""
+
 msgid "Položka %name% je skladem k dispozici v počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili."
 msgstr "Položka %name% je skladem k dispozici v počtu %quantity% ks, počet kusů ve vašem košíku jsme proto upravili."
 
@@ -2151,6 +2160,9 @@ msgstr "Popis"
 
 msgid "Popisy hlavních obrázků"
 msgstr "Popisy hlavních obrázků"
+
+msgid "Poplatek k dopravě"
+msgstr ""
 
 msgid "Popular categories"
 msgstr "Rozcestník kategorií"
@@ -2192,6 +2204,9 @@ msgid "Počet generovaných kupónů"
 msgstr "Počet generovaných kupónů"
 
 msgid "Počet kusů"
+msgstr ""
+
+msgid "Počet kusů, po kterém se poplatek navýší"
 msgstr ""
 
 msgid "Počet nabízených produktů"
@@ -2244,6 +2259,9 @@ msgstr "Pro plochy 1, 2, 3 - čtverec (380x290px), pro plochu 4 - obdélník na 
 
 msgid "Pro termín doručení a dostupnost na prodejnách si vyberte z velikostí."
 msgstr "Pro termín doručení a dostupnost na prodejnách si vyber z velikostí."
+
+msgid "Pro vyhledání"
+msgstr ""
 
 msgid "Pro využití slevového kódu musíte nakoupit aspoň za %price%."
 msgstr "Pro využití slevového kódu musíte nakoupit aspoň za %price%."
@@ -2304,6 +2322,9 @@ msgstr "Produkty"
 
 msgid "Products in stock only"
 msgstr "Jen zboží skladem"
+
+msgid "Produkt"
+msgstr ""
 
 msgid "Produkt %name% musel být z košíku odstraněn, protože není skladem."
 msgstr "Produkt %name% musel být z košíku odstraněn, protože není skladem."
@@ -2431,9 +2452,6 @@ msgstr "Přeneseno"
 msgid "Přesunout nahoru"
 msgstr ""
 
-msgid "Přetížení dopravců"
-msgstr ""
-
 msgid "Při nevyplnění nebude doprava do Mergada exportována."
 msgstr ""
 
@@ -2487,6 +2505,9 @@ msgstr "Přiřazení článků"
 
 msgid "Příjmení"
 msgstr "Příjmení"
+
+msgid "Příplatek za nadstandardní balení"
+msgstr ""
 
 msgid "Příznak"
 msgstr "Příznak"
@@ -2547,6 +2568,9 @@ msgstr ""
 
 msgid "S čím potřebujete pomoct?"
 msgstr "S čím potřebujete pomoci?"
+
+msgid "SK"
+msgstr ""
 
 msgid "SKU"
 msgstr "SKU"
@@ -2986,6 +3010,9 @@ msgstr "Tento stav nemůže být smazán, protože je na něj navázaná funkce 
 msgid "This status can't be deleted. This is automatically assigned status to all new orders."
 msgstr "Tento stav nemůže být smazán. Je automaticky přiřazen ke všem novým objednávkám."
 
+msgid "Tipy"
+msgstr ""
+
 msgid "To prevent the possibility of account theft, the change of the e-mail address must be dealt with individually. If your e-mail address has changed, please contact us."
 msgstr "Abychom předešli možnosti zcizení účtu, je třeba změnu e-mailu řešit individuálně. Pokud se změnila vaše e-mailová adresa, tak nás, prosím, kontaktujte."
 
@@ -3336,6 +3363,12 @@ msgstr "Vybíráme to nejlepší"
 
 msgid "Vyhledat"
 msgstr "Vyhledat"
+
+msgid "Vyhledat dle kódu slevy, SKU poukazu nebo e-mailu zákazníka..."
+msgstr ""
+
+msgid "Vyhledávání hledá v e-mailu zákazníka, kódu slevy nebo SKU poukazu. Je možné používat operátory * a ?."
+msgstr ""
 
 msgid "Vyhledávání hledá v příjmení, názvu firmy, emailu, telefonu a ean. Je možné používat operátory * a ?."
 msgstr "Vyhledávání hledá v příjmení, názvu firmy, emailu, telefonu a EAN. Je možné používat operátory * a ?."
@@ -3831,6 +3864,9 @@ msgstr ""
 
 msgid "souhlasím s"
 msgstr "souhlasím s"
+
+msgid "stiskněte Enter"
+msgstr ""
 
 msgid "store1"
 msgstr ""

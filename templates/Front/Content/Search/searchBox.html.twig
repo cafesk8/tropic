@@ -6,12 +6,50 @@
                     type="text"
                     name="{{ SEARCH_TEXT_PARAMETER }}"
                     value="{{ searchText|escape('html_attr') }}"
-                    placeholder="{{ 'Najděte si něco na sebe…'|trans }}"
+                    placeholder="{{ 'Napište co hledáte'|trans }}"
                     class="input search__input"
-                    id="js-search-autocomplete-input"
+                    id="luigis-autocomplete"
                     autocomplete="off"
-                    data-autocomplete-url="{{ url('front_search_autocomplete') }}"
                 />
+                <script>
+                    function LBInitAutocomplete() {
+                        AutoComplete({
+                            Layout: 'hero',
+                            TrackerId: '{{ luigisTrackerId }}',
+                            Types: [
+                                {
+                                    type: 'product',
+                                    name: '{{ 'Produkty'|trans }}',
+                                    size: 7
+                                },
+                                {
+                                    type: 'category',
+                                    name: '{{ 'Kategorie'|trans }}'
+                                },
+                                {
+                                    type: 'set',
+                                    name: '{{ 'Sety'|trans }}'
+                                },
+                                {
+                                    type: 'brand',
+                                    name: '{{ 'Značky'|trans }}'
+                                }
+                            ],
+                            Hint: function (query) {
+                                return '{{ 'Pro vyhledání'|trans }} <span>' + query + '</span> {{ 'stiskněte Enter'|trans }}';
+                            },
+                            NoResultsMessage: function(query, numberOfResults) {
+                                if (numberOfResults === 0) {
+                                    return '{{ 'Pro dotaz'|trans }}'  + ' "' + query + '" ' +  '{{ 'jsme nenašli žádné výsledky'|trans }}';
+                                }
+
+                                return '{{ 'Pro dotaz'|trans }}'  + ' "' + query + '" ' + '{{ 'jsme našli' }}' + numberOfResults + '{{ 'výsledků' }}';
+                            },
+                            ShowAllTitle: '{{ 'Zobrazit všechny produkty'|trans }}'
+                        }, '#luigis-autocomplete')
+                    }
+                </script>
+                <script src="https://cdn.luigisbox.com/autocomplete.js" async onload="LBInitAutocomplete()"></script>
             </div>
             <div class="search__form__submit js-search-autocomplete-submit">
                 <button class="search__form__submit__button btn-no-style" type="submit">
@@ -19,6 +57,5 @@
                 </button>
             </div>
         </div>
-        <div id="js-search-autocomplete-results"></div>
     </form>
 </div>
