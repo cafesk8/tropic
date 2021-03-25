@@ -95,7 +95,6 @@ export default class RangeSlider {
             rangeSlider.$minimumInput.change(() => RangeSlider.updateSliderMinimum(rangeSlider));
             rangeSlider.$formattedMinimumInput.change(() => {
                 let minValue = RangeSlider.getIntFromLocaleString(rangeSlider.$formattedMinimumInput.val());
-                console.log(minValue);
                 rangeSlider.$formattedMinimumInput.val(RangeSlider.getFormattedInt(minValue));
                 rangeSlider.$minimumInput.val(minValue);
                 RangeSlider.updateSliderMinimum(rangeSlider);

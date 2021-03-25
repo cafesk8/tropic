@@ -6,6 +6,7 @@ namespace App\Controller\Front;
 
 use App\Component\Cofidis\Banner\CofidisBannerFacade;
 use App\Component\DiscountExclusion\DiscountExclusionFacade;
+use App\Component\LuigisBox\LuigisBoxApiKeysProvider;
 use App\Form\Front\Product\ProductFilterFormType;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\Category;
@@ -31,8 +32,8 @@ use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBran
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
+use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Shopsys\FrameworkBundle\Twig\RequestExtension;
-use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -109,11 +110,6 @@ class ProductController extends FrontBaseController
     private $gtmFacade;
 
     /**
-     * @var \App\Model\Product\View\ListedProductViewElasticFacade
-     */
-    private $listedProductViewFacade;
-
-    /**
      * @var \App\Component\DiscountExclusion\DiscountExclusionFacade
      */
     private $discountExclusionFacade;
@@ -144,6 +140,8 @@ class ProductController extends FrontBaseController
 
     private ProductFilterConfigFactory $productFilterConfigFactory;
 
+    private string $luigisBoxTrackerId;
+
     /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \App\Model\Category\CategoryFacade $categoryFacade
@@ -156,7 +154,6 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
-     * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewFacade
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewElasticFacade
@@ -166,6 +163,7 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Product\Filter\Elasticsearch\ProductFilterConfigFactory $productFilterConfigFactory
      * @param \App\Component\Cofidis\Banner\CofidisBannerFacade $cofidisBannerFacade
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \App\Component\LuigisBox\LuigisBoxApiKeysProvider $luigisBoxKeysProvider
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -179,7 +177,6 @@ class ProductController extends FrontBaseController
         BlogArticleFacade $blogArticleFacade,
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
         GtmFacade $gtmFacade,
-        ListedProductViewFacadeInterface $listedProductViewFacade,
         BrandFacade $brandFacade,
         DiscountExclusionFacade $discountExclusionFacade,
         ListedProductViewElasticFacade $listedProductViewElasticFacade,
@@ -188,7 +185,8 @@ class ProductController extends FrontBaseController
         HeurekaReviewFacade $heurekaReviewFacade,
         ProductFilterConfigFactory $productFilterConfigFactory,
         CofidisBannerFacade $cofidisBannerFacade,
-        ProductCachedAttributesFacade $productCachedAttributesFacade
+        ProductCachedAttributesFacade $productCachedAttributesFacade,
+        LuigisBoxApiKeysProvider $luigisBoxKeysProvider
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -201,7 +199,6 @@ class ProductController extends FrontBaseController
         $this->blogArticleFacade = $blogArticleFacade;
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
         $this->gtmFacade = $gtmFacade;
-        $this->listedProductViewFacade = $listedProductViewFacade;
         $this->brandFacade = $brandFacade;
         $this->discountExclusionFacade = $discountExclusionFacade;
         $this->listedProductViewElasticFacade = $listedProductViewElasticFacade;
@@ -211,6 +208,7 @@ class ProductController extends FrontBaseController
         $this->productFilterConfigFactory = $productFilterConfigFactory;
         $this->cofidisBannerFacade = $cofidisBannerFacade;
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
+        $this->luigisBoxTrackerId = $luigisBoxKeysProvider->getPublicKey($domain->getLocale());
     }
 
     /**
@@ -228,7 +226,7 @@ class ProductController extends FrontBaseController
             $product = $product->getMainVariant();
         }
 
-        $accessories = $this->listedProductViewFacade->getAllAccessories($product->getId());
+        $accessories = $this->listedProductViewElasticFacade->getAllAccessories($product->getId());
         $domainId = $this->domain->getId();
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();
@@ -319,7 +317,7 @@ class ProductController extends FrontBaseController
         ]);
         $filterForm->handleRequest($request);
 
-        $paginationResult = $this->listedProductViewFacade->getFilteredPaginatedInCategory(
+        $paginationResult = $this->listedProductViewElasticFacade->getFilteredPaginatedInCategory(
             $id,
             $productFilterData,
             $orderingModeId,
@@ -402,7 +400,7 @@ class ProductController extends FrontBaseController
 
         $filterForm->handleRequest($request);
 
-        $paginationResult = $this->listedProductViewFacade->getFilteredPaginatedInCategory(
+        $paginationResult = $this->listedProductViewElasticFacade->getFilteredPaginatedInCategory(
             $category->getId(),
             $productFilterData,
             $orderingModeId,
@@ -487,7 +485,7 @@ class ProductController extends FrontBaseController
 
         $filterForm->handleRequest($request);
 
-        $paginationResult = $this->listedProductViewFacade->getFilteredPaginatedInCategory(
+        $paginationResult = $this->listedProductViewElasticFacade->getFilteredPaginatedInCategory(
             $category->getId(),
             $productFilterData,
             $orderingModeId,
@@ -591,6 +589,8 @@ class ProductController extends FrontBaseController
             'allowBrandLinks' => !$this->isAnyFilterActive($productFilterData),
             'disableIndexing' => count($productFilterData->brands) >= 2,
             'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
+            'luigisTrackerId' => $this->luigisBoxTrackerId,
+            'isRegisteredCustomer' => $this->isGranted(Roles::ROLE_LOGGED_CUSTOMER),
         ];
 
         if ($request->isXmlHttpRequest()) {
@@ -767,7 +767,7 @@ class ProductController extends FrontBaseController
             $request
         );
 
-        $paginationResult = $this->listedProductViewFacade->getPaginatedForBrand(
+        $paginationResult = $this->listedProductViewElasticFacade->getPaginatedForBrand(
             $id,
             $orderingModeId,
             $page,

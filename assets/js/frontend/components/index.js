@@ -20,6 +20,7 @@ import './lazyLoadInit';
 import './legalConditions';
 import './listSet';
 import './login';
+import './luigisBox';
 import './newsletterSubscriptionForm';
 import './notImplementedYet';
 import './popup';
