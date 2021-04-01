@@ -38,30 +38,13 @@
                 {% endif %}
             </ul>
             <ul class="list-grid-images__landscape">
-                {% if isSlovakDomain() %}
+                {% if firstSquare is not null %}
                     <li class="list-grid-images__landscape__item">
-                        <a href="https://www.tropicfishing.sk/batohy-tasky-puzdra-a-voziky/?utm_source=web&utm_medium=banner&utm_campaign=puzdra13" class="list-grid-images__landscape__link">
-                            <picture>
-                                <img alt="Puzdra13" title="Puzdra13" src="{{ asset('public/frontend/images/ff_mobil_sk.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/ff_mobil_sk.png') }}" class="image-noticer-square" itemprop="image">
-                            </picture>
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="list-grid-images__landscape__item">
-                        <a href="https://www.tropicfishing.cz/batohy-tasky-pouzdra-a-voziky/?utm_source=web&utm_medium=banner&utm_campaign=pouzdra13" class="list-grid-images__landscape__link">
-                            <picture>
-                                <img alt="Pouzdra13" title="Pouzdra13" src="{{ asset('public/frontend/images/ff_mobil_cz.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/ff_mobil_cz.png') }}" class="image-noticer-square" itemprop="image">
-                            </picture>
+                        <a href="{{ firstSquare.link }}" class="list-grid-images__landscape__link">
+                            {{ image(firstSquare, {size: 'square', alt: firstSquare.name}) }}
                         </a>
                     </li>
                 {% endif %}
-{#                {% if firstSquare is not null %}#}
-{#                    <li class="list-grid-images__landscape__item">#}
-{#                        <a href="{{ firstSquare.link }}" class="list-grid-images__landscape__link">#}
-{#                            {{ image(firstSquare, {size: 'square', alt: firstSquare.name}) }}#}
-{#                        </a>#}
-{#                    </li>#}
-{#                {% endif %}#}
                 {% if secondSquare is not null %}
                     <li class="list-grid-images__landscape__item">
                         <a href="{{ secondSquare.link }}" class="list-grid-images__landscape__link">
