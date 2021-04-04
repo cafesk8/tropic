@@ -4,7 +4,7 @@
             <ul class="list-grid-images__portrait">
                 {% if isSlovakDomain() %}
                     <li class="list-grid-images__portrait__item">
-                        <a href="https://www.tropicfishing.sk/mivardi/?utm_source=web&utm_medium=banner&utm_campaign=mivardi" class="list-grid-images__portrait__link">
+                        <span class="list-grid-images__portrait__link">
                             <picture>
                                 <img alt="VELKANOC" title="VELKANOC" src="{{ asset('public/frontend/images/velikonoce_sk.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/velikonoce_sk.png') }}" class="image-noticer-rectangle loaded" itemprop="image">
                             </picture>
@@ -12,11 +12,11 @@
                             <picture>
                                 <img alt="VELKANOC" title="VELKANOC" src="{{ asset('public/frontend/images/velikonoce_mobil_sk.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/velikonoce_mobil_sk.png') }}" class="image-noticer-mobile loaded" itemprop="image">
                             </picture>
-                        </a>
+                        </span>
                     </li>
                 {% else %}
                     <li class="list-grid-images__portrait__item">
-                        <a href="https://www.tropicfishing.cz/mivardi/?utm_source=web&utm_medium=banner&utm_campaign=mivardi" class="list-grid-images__portrait__link">
+                        <span class="list-grid-images__portrait__link">
                             <picture>
                                 <img alt="VELIKONOCE" title="VELIKONOCE" src="{{ asset('public/frontend/images/velikonoce_cz.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/velikonoce_cz.png') }}" class="image-noticer-rectangle" itemprop="image">
                             </picture>
@@ -24,7 +24,7 @@
                             <picture>
                                 <img alt="VELIKONOCE" title="VELIKONOCE" src="{{ asset('public/frontend/images/velikonoce_mobil_cz.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/velikonoce_mobil_cz.png') }}" class="image-noticer-mobile" itemprop="image">
                             </picture>
-                        </a>
+                        </span>
                     </li>
                 {% endif %}
 
