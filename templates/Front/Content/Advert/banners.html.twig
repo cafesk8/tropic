@@ -4,27 +4,27 @@
             <ul class="list-grid-images__portrait">
                 {% if isSlovakDomain() %}
                     <li class="list-grid-images__portrait__item">
-                        <span class="list-grid-images__portrait__link">
+                        <a href="https://www.tropicfishing.sk/mivardi/?utm_source=web&utm_medium=banner&utm_campaign=mivardi" class="list-grid-images__portrait__link">
                             <picture>
-                                <img alt="VELKANOC" title="VELKANOC" src="{{ asset('public/frontend/images/velikonoce_sk.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/velikonoce_sk.png') }}" class="image-noticer-rectangle loaded" itemprop="image">
+                                <img alt="Mivardi" title="Mivardi" src="{{ asset('public/frontend/images/mivardi_katalog_sk.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/mivardi_katalog_sk.png') }}" class="image-noticer-rectangle loaded" itemprop="image">
                             </picture>
 
                             <picture>
-                                <img alt="VELKANOC" title="VELKANOC" src="{{ asset('public/frontend/images/velikonoce_mobil_sk.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/velikonoce_mobil_sk.png') }}" class="image-noticer-mobile loaded" itemprop="image">
+                                <img alt="Mivardi" title="Mivardi" src="{{ asset('public/frontend/images/mobil_mivardi_katalog_sk.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/mobil_mivardi_katalog_sk.png') }}" class="image-noticer-mobile loaded" itemprop="image">
                             </picture>
-                        </span>
+                        </a>
                     </li>
                 {% else %}
                     <li class="list-grid-images__portrait__item">
-                        <span class="list-grid-images__portrait__link">
+                        <a href="https://www.tropicfishing.cz/mivardi/?utm_source=web&utm_medium=banner&utm_campaign=mivardi" class="list-grid-images__portrait__link">
                             <picture>
-                                <img alt="VELIKONOCE" title="VELIKONOCE" src="{{ asset('public/frontend/images/velikonoce_cz.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/velikonoce_cz.png') }}" class="image-noticer-rectangle" itemprop="image">
+                                <img alt="Mivardi" title="Mivardi" src="{{ asset('public/frontend/images/mivardi_katalog_cz.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/mivardi_katalog_cz.png') }}" class="image-noticer-rectangle" itemprop="image">
                             </picture>
 
                             <picture>
-                                <img alt="VELIKONOCE" title="VELIKONOCE" src="{{ asset('public/frontend/images/velikonoce_mobil_cz.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/velikonoce_mobil_cz.png') }}" class="image-noticer-mobile" itemprop="image">
+                                <img alt="Mivardi" title="Mivardi" src="{{ asset('public/frontend/images/mobil_mivardi_katalog_cz.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/mobil_mivardi_katalog_cz.png') }}" class="image-noticer-mobile" itemprop="image">
                             </picture>
-                        </span>
+                        </a>
                     </li>
                 {% endif %}
 
@@ -38,31 +38,13 @@
                 {% endif %}
             </ul>
             <ul class="list-grid-images__landscape">
-                {% if isSlovakDomain() %}
+                {% if firstSquare is not null %}
                     <li class="list-grid-images__landscape__item">
-                        <a href="https://www.tropicfishing.sk/mivardi/?utm_source=web&utm_medium=banner&utm_campaign=mivardi" class="list-grid-images__landscape__link">
-                            <picture>
-                                <img alt="Mivardi" title="Mivardi" src="{{ asset('public/frontend/images/mivardi2_sk.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/mivardi2_sk.png') }}" class="image-noticer-square" itemprop="image">
-                            </picture>
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="list-grid-images__landscape__item">
-                        <a href="https://www.tropicfishing.cz/mivardi/?utm_source=web&utm_medium=banner&utm_campaign=mivardi" class="list-grid-images__landscape__link">
-                            <picture>
-                                <img alt="Mivardi" title="Mivardi" src="{{ asset('public/frontend/images/mivardi2_cz.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/mivardi2_cz.png') }}" class="image-noticer-square" itemprop="image">
-                            </picture>
+                        <a href="{{ firstSquare.link }}" class="list-grid-images__landscape__link">
+                            {{ image(firstSquare, {size: 'square', alt: firstSquare.name}) }}
                         </a>
                     </li>
                 {% endif %}
-
-{#                {% if firstSquare is not null %}#}
-{#                    <li class="list-grid-images__landscape__item">#}
-{#                        <a href="{{ firstSquare.link }}" class="list-grid-images__landscape__link">#}
-{#                            {{ image(firstSquare, {size: 'square', alt: firstSquare.name}) }}#}
-{#                        </a>#}
-{#                    </li>#}
-{#                {% endif %}#}
                 {% if secondSquare is not null %}
                     <li class="list-grid-images__landscape__item">
                         <a href="{{ secondSquare.link }}" class="list-grid-images__landscape__link">
