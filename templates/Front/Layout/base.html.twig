@@ -38,6 +38,7 @@
         <link rel="shortcut icon" href="{{ asset('public/frontend/images/favicons/favicon.ico') }}">
         <link rel="stylesheet" href="https://cdn.luigisbox.com/autocomplete.css"/>
         <link rel="dns-prefetch" href="//live.luigisbox.com">
+        {{ render(controller('App\\Controller\\Front\\ScriptController:embedAllPagesLuigisBoxScriptAction')) }}
         <meta name="msapplication-TileColor" content="#0077b3">
         <meta name="msapplication-TileImage" content="{{ asset('public/frontend/images/favicons/mstile-144x144.png') }}">
         <meta name="msapplication-square70x70logo" content="{{ asset('public/frontend/images/favicons/mstile-70x70.png') }}">
@@ -54,7 +55,6 @@
         {{ render(controller('App\\Controller\\Front\\GtmController:bodyAction')) }}
         {{ render(controller('App\\Controller\\Front\\ScriptController:embedAllPagesScriptsAction')) }}
         {{ render(controller('App\\Controller\\Front\\ScriptController:embedAllPagesGoogleAnalyticsScriptAction')) }}
-        {{ render(controller('App\\Controller\\Front\\ScriptController:embedAllPagesLuigisBoxScriptAction')) }}
 
         {% block html_body %}{% endblock %}
 

@@ -38,4 +38,13 @@ class LuigisBoxApiKeysProvider
     {
         return $this->keys[$locale]['public'] ?? '';
     }
+
+    /**
+     * @param string $locale
+     * @return string
+     */
+    public function getProjectId(string $locale): string
+    {
+        return $this->keys[$locale]['project_id'] ?? '';
+    }
 }
