@@ -2,32 +2,6 @@
     <div class="web__container web__container--no-padding">
         <div class="list-grid-images">
             <ul class="list-grid-images__portrait">
-                {% if isSlovakDomain() %}
-                    <li class="list-grid-images__portrait__item">
-                        <a href="https://www.tropicfishing.sk/mivardi/?utm_source=web&utm_medium=banner&utm_campaign=mivardi" class="list-grid-images__portrait__link">
-                            <picture>
-                                <img alt="Mivardi" title="Mivardi" src="{{ asset('public/frontend/images/mivardi_katalog_sk.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/mivardi_katalog_sk.png') }}" class="image-noticer-rectangle loaded" itemprop="image">
-                            </picture>
-
-                            <picture>
-                                <img alt="Mivardi" title="Mivardi" src="{{ asset('public/frontend/images/mobil_mivardi_katalog_sk.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/mobil_mivardi_katalog_sk.png') }}" class="image-noticer-mobile loaded" itemprop="image">
-                            </picture>
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="list-grid-images__portrait__item">
-                        <a href="https://www.tropicfishing.cz/mivardi/?utm_source=web&utm_medium=banner&utm_campaign=mivardi" class="list-grid-images__portrait__link">
-                            <picture>
-                                <img alt="Mivardi" title="Mivardi" src="{{ asset('public/frontend/images/mivardi_katalog_cz.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/mivardi_katalog_cz.png') }}" class="image-noticer-rectangle" itemprop="image">
-                            </picture>
-
-                            <picture>
-                                <img alt="Mivardi" title="Mivardi" src="{{ asset('public/frontend/images/mobil_mivardi_katalog_cz.png') }}" loading="lazy" data-src="{{ asset('public/frontend/images/mobil_mivardi_katalog_cz.png') }}" class="image-noticer-mobile" itemprop="image">
-                            </picture>
-                        </a>
-                    </li>
-                {% endif %}
-
                 {% if fourthRectangle is not null %}
                     <li class="list-grid-images__portrait__item">
                         <a href="{{ fourthRectangle.link }}" class="list-grid-images__portrait__link">
