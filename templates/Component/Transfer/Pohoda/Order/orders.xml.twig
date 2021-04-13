@@ -35,57 +35,33 @@
                         </typ:extId>
                     {% endif -%}
                     <typ:address>
-                        <typ:company>{{ pohodaOrder.address.company }}</typ:company>
+                        <typ:company>{{ pohodaOrder.address.company[:255]|raw }}</typ:company>
                         <typ:division></typ:division>
-                        <typ:name>
-                            <![CDATA[{{ pohodaOrder.address.name }}]]>
-                        </typ:name>
-                        <typ:city>
-                            <![CDATA[{{ pohodaOrder.address.city }}]]>
-                        </typ:city>
-                        <typ:street>
-                            <![CDATA[{{ pohodaOrder.address.street }}]]>
-                        </typ:street>
-                        <typ:zip>{{ pohodaOrder.address.zip }}</typ:zip>
-                        <typ:ico>{{ pohodaOrder.address.ico }}</typ:ico>
-                        <typ:dic>{{ pohodaOrder.address.dic }}</typ:dic>
+                        <typ:name><![CDATA[{{ pohodaOrder.address.name[:64]|raw }}]]></typ:name>
+                        <typ:city><![CDATA[{{ pohodaOrder.address.city[:45]|raw }}]]></typ:city>
+                        <typ:street><![CDATA[{{ pohodaOrder.address.street[:64]|raw }}]]></typ:street>
+                        <typ:zip>{{ pohodaOrder.address.zip[:15]|raw }}</typ:zip>
+                        <typ:ico>{{ pohodaOrder.address.ico[:15]|raw }}</typ:ico>
+                        <typ:dic>{{ pohodaOrder.address.dic[:18]|raw }}</typ:dic>
                         <typ:country>
-                            <typ:ids>
-                                <![CDATA[{{ pohodaOrder.address.country }}]]>
-                            </typ:ids>
+                            <typ:ids><![CDATA[{{ pohodaOrder.address.country[:64]|raw }}]]></typ:ids>
                         </typ:country>
-                        <typ:phone>
-                            <![CDATA[{{ pohodaOrder.address.phone }}]]>
-                        </typ:phone>
-                        <typ:email>
-                            <![CDATA[{{ pohodaOrder.address.email }}]]>
-                        </typ:email>
+                        <typ:phone><![CDATA[{{ pohodaOrder.address.phone[:40]|raw }}]]></typ:phone>
+                        <typ:email><![CDATA[{{ pohodaOrder.address.email[:98]|raw }}]]></typ:email>
                     </typ:address>
 
                     <typ:shipToAddress>
-                        <typ:company>{{ pohodaOrder.shipToAddress.company }}</typ:company>
+                        <typ:company>{{ pohodaOrder.shipToAddress.company[:255]|raw }}</typ:company>
                         <typ:division></typ:division>
-                        <typ:name>
-                            <![CDATA[{{ pohodaOrder.shipToAddress.name }}]]>
-                        </typ:name>
-                        <typ:city>
-                            <![CDATA[{{ pohodaOrder.shipToAddress.city }}]]>
-                        </typ:city>
-                        <typ:street>
-                            <![CDATA[{{ pohodaOrder.shipToAddress.street }}]]>
-                        </typ:street>
-                        <typ:zip>{{ pohodaOrder.shipToAddress.zip }}</typ:zip>
+                        <typ:name><![CDATA[{{ pohodaOrder.shipToAddress.name[:64]|raw }}]]></typ:name>
+                        <typ:city><![CDATA[{{ pohodaOrder.shipToAddress.city[:45]|raw }}]]></typ:city>
+                        <typ:street><![CDATA[{{ pohodaOrder.shipToAddress.street[:64]|raw }}]]></typ:street>
+                        <typ:zip>{{ pohodaOrder.shipToAddress.zip[:15]|raw }}</typ:zip>
                         <typ:country>
-                            <typ:ids>
-                                <![CDATA[{{ pohodaOrder.shipToAddress.country }}]]>
-                            </typ:ids>
+                            <typ:ids><![CDATA[{{ pohodaOrder.shipToAddress.country[:64]|raw }}]]></typ:ids>
                         </typ:country>
-                        <typ:phone>
-                            <![CDATA[{{ pohodaOrder.shipToAddress.phone }}]]>
-                        </typ:phone>
-                        <typ:email>
-                            <![CDATA[{{ pohodaOrder.shipToAddress.email }}]]>
-                        </typ:email>
+                        <typ:phone><![CDATA[{{ pohodaOrder.shipToAddress.phone[:40]|raw }}]]></typ:phone>
+                        <typ:email><![CDATA[{{ pohodaOrder.shipToAddress.email[:98]|raw }}]]></typ:email>
                     </typ:shipToAddress>
                 </ord:partnerIdentity>
                 <ord:paymentType>
@@ -98,7 +74,7 @@
                     <typ:ids></typ:ids>
                 </ord:centre>
                 <ord:note></ord:note>
-                <ord:intNote>{{ pohodaOrder.internalNote }}</ord:intNote>
+                <ord:intNote>{{ pohodaOrder.internalNote[:240]|raw }}</ord:intNote>
                 <ord:parameters>
                     <typ:parameter>
                         <typ:name>VPrHodnotaND</typ:name>
@@ -132,10 +108,10 @@
             <ord:orderDetail>
                 {% for pohodaOrderItem in pohodaOrder.orderItems -%}
                     <ord:orderItem>
-                        <ord:text>{{ pohodaOrderItem.name }}</ord:text>
+                        <ord:text>{{ pohodaOrderItem.name[:90]|raw }}</ord:text>
                         <ord:quantity>{{ pohodaOrderItem.quantity }}</ord:quantity>
                         <ord:delivered>{{ pohodaOrder.status }}</ord:delivered>
-                        <ord:unit>{{ pohodaOrderItem.unit }}</ord:unit>
+                        <ord:unit>{{ pohodaOrderItem.unit[:10]|raw }}</ord:unit>
                         <ord:payVAT>true</ord:payVAT>
                         <ord:rateVAT>{{ pohodaOrderItem.vatRate }}</ord:rateVAT>
                         <ord:percentVAT>{{ pohodaOrderItem.vatPercent }}</ord:percentVAT>
@@ -151,9 +127,7 @@
                         {% if pohodaOrderItem.catnum is not null and pohodaOrderItem.pohodaStockId is not null -%}
                             <ord:stockItem>
                                 <typ:stockItem>
-                                    <typ:ids>
-                                        <![CDATA[{{ pohodaOrderItem.catnum }}]]>
-                                    </typ:ids>
+                                    <typ:ids><![CDATA[{{ pohodaOrderItem.catnum }}]]></typ:ids>
                                 </typ:stockItem>
                                 <typ:store>
                                     <typ:id>{{ pohodaOrderItem.pohodaStockId }}</typ:id>
