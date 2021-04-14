@@ -1116,6 +1116,7 @@ class ProductFacade extends BaseProductFacade
         $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
         $this->productPriceRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
         $this->productExportScheduler->scheduleRowIdForImmediateExport($mainVariant->getId());
+        $mainVariant->markForExportToLuigisBox();
     }
 
     /**
@@ -1495,5 +1496,31 @@ class ProductFacade extends BaseProductFacade
         foreach ($mainVariantFlagsData as $mainVariantFlagData) {
             $this->productFlagFacade->create($mainVariantFlagData, $mainVariant);
         }
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Product\Product[]
+     */
+    public function getForLuigisBoxExport(int $domainId): array
+    {
+        return $this->productRepository->getMarkedForLuigisBoxExport($domainId);
+    }
+
+    /**
+     * @param \App\Model\Product\Product[] $products
+     * @param int $domainId
+     */
+    public function markProductsAsExportedToLuigisBox(array $products, int $domainId): void
+    {
+        $this->productRepository->markAsExportedToLuigisBox($products, $domainId);
+    }
+
+    /**
+     * @param int[] $productIds
+     */
+    public function markProductsForLuigisBoxExportByIds(array $productIds): void
+    {
+        $this->productRepository->markForExportToLuigisBoxByIds($productIds);
     }
 }

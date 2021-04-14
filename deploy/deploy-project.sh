@@ -60,6 +60,12 @@ function deploy() {
          ["parameters.cofidis_config.inbound_pass"]="${COFIDIS_CONFIG_INBOUND_PASS}"
          ["parameters.cofidis_config.outbound_pass"]="${COFIDIS_CONFIG_OUTBOUND_PASS}"
          ["parameters.cofidis_config.isProductionMode"]=${COFIDIS_CONFIG_IS_PRODUCTION_MODE}
+
+         # Luigi's Box
+         ["parameters.luigis_box.cs.public"]="${LUIGIS_BOX_PUBLIC_CS}"
+         ["parameters.luigis_box.cs.private"]="${LUIGIS_BOX_PRIVATE_CS}"
+         ["parameters.luigis_box.sk.public"]="${LUIGIS_BOX_PUBLIC_SK}"
+         ["parameters.luigis_box.sk.private"]="${LUIGIS_BOX_PRIVATE_SK}"
     )
 
     declare -A ENVIRONMENT_VARIABLES=(

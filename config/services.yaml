@@ -877,3 +877,9 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Search\AggregationResultToProductFilterCountDataTransformer: '@App\Model\Product\Search\AggregationResultToProductFilterCountDataTransformer'
 
     Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer: '@App\Model\Product\Search\ProductFilterDataToQueryTransformer'
+
+    App\Component\LuigisBox\LuigisBoxClient: ~
+
+    App\Component\LuigisBox\LuigisBoxApiKeysProvider:
+        arguments:
+            $keys: '%luigis_box%'

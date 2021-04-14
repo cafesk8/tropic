@@ -93,6 +93,10 @@ parameters:
             - '*/tests/App/Test/Codeception/_generated/AcceptanceTesterActions.php'
             - '*/src/Model/Country/CountryFacade.php'
             - '*/src/Component/Transfer/Pohoda/MServer/MServerClient'
+            - '*/src/Model/LuigisBox/LuigisBoxBrandFields.php'
+            - '*/src/Model/LuigisBox/LuigisBoxCategoryFields.php'
+            - '*/src/Model/LuigisBox/LuigisBoxObjectFields.php'
+            - '*/src/Model/LuigisBox/LuigisBoxProductFields.php'
 
         Shopsys\CodingStandards\Sniffs\ObjectIsCreatedByFactorySniff:
             - '*/tests/*'
@@ -152,6 +156,11 @@ parameters:
         PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\CamelCapsFunctionNameSniff:
             - '*/src/Component/EntityExtension/QueryBuilder.php'
 
-        PHP_CodeSniffer\Standards\Squiz\Sniffs\NamingConventions\ValidVariableNameSniff.NotCamelCaps:
+        PHP_CodeSniffer\Standards\Squiz\Sniffs\NamingConventions\ValidVariableNameSniff:
             - '*/src/Model/Heureka/HeurekaReviewCronModule.php'
             - '*/src/Model/Heureka/HeurekaReviewItemFactory.php'
+            - '*/src/Model/LuigisBox/LuigisBoxObjectFactory.php'
+            - '*/src/Model/LuigisBox/LuigisBoxBrandFields.php'
+            - '*/src/Model/LuigisBox/LuigisBoxCategoryFields.php'
+            - '*/src/Model/LuigisBox/LuigisBoxObjectFields.php'
+            - '*/src/Model/LuigisBox/LuigisBoxProductFields.php'

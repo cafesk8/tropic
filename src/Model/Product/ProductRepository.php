@@ -917,4 +917,50 @@ class ProductRepository extends BaseProductRepository
                 ->execute();
         }
     }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Product\Product[]
+     */
+    public function getMarkedForLuigisBoxExport(int $domainId): array
+    {
+        return $this->getProductQueryBuilder()
+            ->join(ProductDomain::class, 'pd', Join::WITH, 'pd.product = p')
+            ->where('p.variantType != :variantType')
+            ->andWhere('pd.domainId = :domainId')
+            ->andWhere('pd.exportedToLuigisBox = FALSE')
+            ->setMaxResults(500)
+            ->getQuery()->execute([
+                'domainId' => $domainId,
+                'variantType' => Product::VARIANT_TYPE_VARIANT,
+            ]);
+    }
+
+    /**
+     * @param \App\Model\Product\Product[] $products
+     * @param int $domainId
+     */
+    public function markAsExportedToLuigisBox(array $products, int $domainId): void
+    {
+        $this->em->createQueryBuilder()
+            ->update(ProductDomain::class, 'pd')
+            ->set('pd.exportedToLuigisBox', 'TRUE')
+            ->where('pd.product IN (:products)')
+            ->andWhere('pd.domainId = :domainId')
+            ->getQuery()->execute([
+                'domainId' => $domainId,
+                'products' => $products,
+            ]);
+    }
+
+    /**
+     * @param int[] $productIds
+     */
+    public function markForExportToLuigisBoxByIds(array $productIds): void
+    {
+        $this->em->createNativeQuery('UPDATE product_domains 
+            SET exported_to_luigis_box = FALSE
+            WHERE product_id IN (:productIds)', new ResultSetMapping()
+        )->execute(['productIds' => $productIds]);
+    }
 }

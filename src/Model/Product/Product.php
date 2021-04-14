@@ -6,6 +6,7 @@ namespace App\Model\Product;
 
 use App\Component\Domain\DomainHelper;
 use App\Model\Cart\Exception\OutOfStockException;
+use App\Model\LuigisBox\LuigisBoxExportableInterface;
 use App\Model\Product\Exception\ProductIsNotMainVariantException;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\ProductFlag;
@@ -53,7 +54,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @property \App\Model\Product\Unit\Unit $unit
  * @method \App\Model\Product\Unit\Unit getUnit()
  */
-class Product extends BaseProduct
+class Product extends BaseProduct implements LuigisBoxExportableInterface
 {
     public const IMAGE_TYPE_STICKER = 'sticker';
     public const POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT = 1;
@@ -1718,5 +1719,20 @@ class Product extends BaseProduct
     public function hasTransportFee(int $domainId): bool
     {
         return !empty($this->getTransportFee($domainId)) && !empty($this->transportFeeMultiplier);
+    }
+
+    /**
+     * @param int $domainId
+     */
+    public function markAsExportedToLuigisBox(int $domainId): void
+    {
+        $this->getProductDomain($domainId)->setExportedToLuigisBox(true);
+    }
+
+    public function markForExportToLuigisBox(): void
+    {
+        foreach ($this->domains as $productDomain) {
+            $productDomain->setExportedToLuigisBox(false);
+        }
     }
 }

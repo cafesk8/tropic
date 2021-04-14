@@ -58,6 +58,11 @@ class ProductDomain extends BaseProductDomain
     private ?Money $transportFee;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $exportedToLuigisBox;
+
+    /**
      * @param \App\Model\Product\Product $product
      * @param int $domainId
      */
@@ -70,6 +75,7 @@ class ProductDomain extends BaseProductDomain
         $this->shortDescriptionHash = null;
         $this->shown = true;
         $this->transportFee = null;
+        $this->exportedToLuigisBox = false;
     }
 
     /**
@@ -174,5 +180,21 @@ class ProductDomain extends BaseProductDomain
     public function setTransportFee(?Money $transportFee): void
     {
         $this->transportFee = $transportFee;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExportedToLuigisBox(): bool
+    {
+        return $this->exportedToLuigisBox;
+    }
+
+    /**
+     * @param bool $exportedToLuigisBox
+     */
+    public function setExportedToLuigisBox(bool $exportedToLuigisBox): void
+    {
+        $this->exportedToLuigisBox = $exportedToLuigisBox;
     }
 }

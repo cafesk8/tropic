@@ -113,6 +113,7 @@ class ProductExternalStockQuantityImportFacade
                     'pohodaProductsCount' => count($stockQuantities),
                 ]);
                 $this->updateProductsStockQuantities($stockQuantities);
+                $this->productFacade->markProductsForLuigisBoxExportByIds($this->updatedProductIds);
             }
         } catch (Exception $exception) {
             $this->logger->addError('Import skladových zásob selhal', [
