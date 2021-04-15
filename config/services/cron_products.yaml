@@ -39,10 +39,6 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: "Export změněných produktů do Elasticsearch", instanceName: products }
 
-    App\Model\LuigisBox\LuigisBoxCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Aktualizace označených objektů v Luigi''s Box', instanceName: products }
-
 #    App\Model\Product\Mall\MallProductExportCronModule:
 #        tags:
 #            - { name: shopsys.cron, hours: '23', minutes: '00' }
