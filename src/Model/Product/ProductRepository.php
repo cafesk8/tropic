@@ -929,6 +929,7 @@ class ProductRepository extends BaseProductRepository
             ->where('p.variantType != :variantType')
             ->andWhere('pd.domainId = :domainId')
             ->andWhere('pd.exportedToLuigisBox = FALSE')
+            ->orderBy('p.updatedByPohodaAt', 'ASC')
             ->setMaxResults(500)
             ->getQuery()->execute([
                 'domainId' => $domainId,
