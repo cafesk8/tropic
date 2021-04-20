@@ -123,101 +123,6 @@
     </li>
 </script>
 
-<script type="text/x-template" id="template-result-set">
-    <li class="list-products__item-set">
-        <div class="box-products-set">
-            <div class="box-products-set__row">
-                <a class="box-products-set__title" v-bind:href="url">
-                    {{ '{{ attributes.title }}' }}
-                </a>
-            </div>
-
-            <div class="box-products-set__row box-products-set__row--without-gap">
-                <div class="box-products-set__left">
-                    <div class="list-products-set js-horizontal-list" data-type="products-set" v-bind:data-count-of-product="attributes.set_items.length">
-                        <span class="list-products-set__arrow list-products-set__arrow--prev js-horizontal-list-action-prev">
-                            <i class="svg svg-slider-arrow"></i>
-                        </span>
-
-                        <div class="list-products-set__in">
-                            <div class="list-products-set__overlay"></div>
-                            <div class="list-products-set__overlay list-products-set__overlay--right"></div>
-                            <div class="list-products-set__list js-horizontal-list-slides">
-                                <a v-for="(item, index) in attributes.set_items" v-bind:href="url" class="list-products-set__item">
-                                    <div class="list-products-set__item__image">
-                                        <picture>
-                                            <img v-bind:alt="item.title" v-bind:title="item.title" v-bind:src="item.image_link" class="image-product-bigThumbnail" itemprop="image">
-                                        </picture>
-                                    </div>
-                                    <div class="list-products-set__item__info">
-                                        {{ '{{ item.title }}' }}
-                                    </div>
-                                    <div v-if="index != attributes.set_items.length - 1" class="list-products-set__item__plus">
-                                        <i class="svg svg-plus-big"></i>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <span class="list-products-set__arrow list-products-set__arrow--next js-horizontal-list-action-next">
-                            <i class="svg svg-slider-arrow"></i>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="box-products-set__right">
-                    <a class="box-products-set__info" v-bind:href="url">
-                        <div class="in-flag dont-print in-flag--product-set">
-                            <span v-for="(flag, index) in attributes.flags" class="in-flag__item" v-bind:style="'background-color: ' + attributes.flag_colors[index]">
-                                {{ '{{ flag }}' }}
-                            </span>
-                        </div>
-
-                        {% if isRegisteredCustomer %}
-                            <div class="box-products-set__info__prices">
-                                <span v-if="attributes.price_standard_amount > attributes.price_registered_amount" class="box-products-set__info__prices__old">{{ '{{ attributes.price_standard }}' }}</span>
-                                <span class="box-products-set__info__prices__new box-products-set__info__prices__new--colored">
-                                    {{ '{{ attributes.price_registered }}' }}
-                                </span>
-                            </div>
-                        {% else %}
-                            <div class="box-products-set__info__prices">
-                                <span v-if="attributes.price_standard_amount > attributes.price_amount" class="box-products-set__info__prices__old">{{ '{{ attributes.price_standard }}' }}</span>
-                                <span class="box-products-set__info__prices__new box-products-set__info__prices__new--colored">
-                                    {{ '{{ attributes.price }}' }}
-                                </span>
-                            </div>
-                        {% endif %}
-
-                        <div class="in-availability">
-                            <div class="in-availability__text" v-bind:style="'color:' + attributes.availability_color" v-html="attributes.availability_text[0]"></div>
-                        </div>
-
-                        <div class="box-products-set__info__button">
-                            <form method="post" name="add_product_form" novalidate="novalidate" class="js-add-product dont-print" action="{{ url('front_cart_add_product') }}" data-ajax-url="{{ url('front_cart_add_product_ajax') }}">
-                                <input type="hidden" name="add_product_form[productId]" class="input id__add_product_form_productId" v-bind:value="attributes.id">
-                                <input type="hidden" name="add_product_form[onlyRefresh]" class="input id__add_product_form_onlyRefresh" value="0" tabindex="0">
-                                <div class="in-add-to-cart in-add-to-cart--small">
-                                    <div class="in-add-to-cart__spinbox js-spinbox-parent display-none">
-                                        <span class="form-input-spinbox js-spinbox">
-                                            <input type="text" name="add_product_form[quantity]" class="form-input-spinbox__input input-no-style js-spinbox-input input"
-                                                   required="required" v-bind:data-spinbox-min="attributes.minimum_quantity"
-                                                   v-bind:data-spinbox-step="attributes.quantity_multiplier" v-bind:data-spinbox-max="attributes.maximum_quantity">
-                                            <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
-                                            <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus btn--disabled"><i class="svg svg-minus"></i></button>
-                                        </span>
-                                    </div>
-                                    <input type="submit" name="add_product_form[add]" value="{{ 'Přidat do košíku' }}" class="in-add-to-cart__button btn-no-style btn" v-bind:data-hard-disabled="!attributes.availability" data-action="buy">
-                                </div>
-                            </form>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </li>
-</script>
-
 <script type="text/x-template" id="template-quick-search-set">
     <div class="box-list__wrap box-list__wrap--wrapped js-tabs-content" id="sets" v-if="items.length > 0">
         <h3 class="box-search__subtitle box-search__subtitle--big-gap-mobile">{{ 'Nalezené sety'|trans }}</h3>
@@ -330,8 +235,8 @@
             <ul class="list-categories js-tabs-content " data-tab-id="categories">
                 <li class="list-categories__item" v-for="category in items">
                     <a v-bind:href="category.url" class="list-categories__item__link">
-                        <div class="list-categories__item__image">
-                            <picture v-if="hasImages">
+                        <div class="list-categories__item__image" v-if="category.attributes.image_link">
+                            <picture>
                                 <img v-bind:alt="category.attributes.title" v-bind:title="category.attributes.title"
                                      v-bind:src="category.attributes.image_link" class="image-category" itemprop="image">
                             </picture>
