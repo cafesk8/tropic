@@ -53,12 +53,12 @@ use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
  * @method \App\Model\Country\Country|null getDeliveryCountry()
  * @method \App\Model\Order\Item\OrderItem[] getProductItems()
  * @method \App\Model\Administrator\Administrator|null getCreatedAsAdministrator()
- * @method fillCommonFields(\App\Model\Order\OrderData $orderData)
  */
 class Order extends BaseOrder
 {
     public const EXPORT_SUCCESS = 'export_success';
     public const EXPORT_NOT_YET = 'export_not_yet';
+    public const EXPORT_NEEDS_UPDATE = 'export_needs_update';
     public const EXPORT_ERROR = 'export_error';
     public const PROMO_CODES_SEPARATOR = ';';
     public const EXPORT_ZBOZI_NOT_YET = 'export_zbozi_not_yet';
@@ -318,49 +318,11 @@ class Order extends BaseOrder
         parent::__construct($orderData, $orderNumber, $urlHash, $customerUser);
 
         $this->setTransport($orderData);
-        $this->payment = $orderData->payment;
-
         $this->setDeliveryAddressNewly($orderData);
-        $this->goPayTransactions = new ArrayCollection();
-
-        $this->note = $orderData->note;
-        $this->items = new ArrayCollection();
-        $this->setCompanyInfo(
-            $orderData->companyName,
-            $orderData->companyNumber,
-            $orderData->companyTaxNumber
-        );
         $this->setBillingAddress($orderData);
-
-        $this->number = $orderNumber;
-        $this->status = $orderData->status;
-        $this->customerUser = $customerUser;
-        $this->deleted = false;
-        if ($orderData->createdAt === null) {
-            $this->createdAt = new DateTime();
-        } else {
-            $this->createdAt = $orderData->createdAt;
-        }
-        $this->domainId = $orderData->domainId;
-        $this->urlHash = $urlHash;
-        $this->currency = $orderData->currency;
-        $this->createdAsAdministrator = $orderData->createdAsAdministrator;
-        $this->createdAsAdministratorName = $orderData->createdAsAdministratorName;
-
-        $this->payPalId = $orderData->payPalId;
-        $this->payPalStatus = $orderData->payPalStatus;
-        $this->updatedAt = $orderData->updatedAt;
-        $this->exportStatus = $orderData->exportStatus;
         $this->exportedAt = $orderData->exportedAt;
-        $this->mallOrderId = $orderData->mallOrderId;
-        $this->mallStatus = $orderData->mallStatus;
-        $this->statusCheckedAt = $orderData->statusCheckedAt;
-        $this->gtmCoupons = $this->getPromoCodesString($orderData->gtmCoupons);
-        $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
-        $this->trackingNumber = $orderData->trackingNumber;
+        $this->goPayTransactions = new ArrayCollection();
         $this->giftCertificates = new ArrayCollection();
-        $this->pohodaId = $orderData->pohodaId;
-        $this->legacyId = $orderData->legacyId;
     }
 
     /**
@@ -373,23 +335,32 @@ class Order extends BaseOrder
         $orderEditResult = parent::edit($orderData);
 
         $this->goPayTransactions = $orderData->goPayTransactions;
-        $this->payPalId = $orderData->payPalId;
-        $this->payPalStatus = $orderData->payPalStatus;
         $this->pickupPlace = $orderData->pickupPlace;
         $this->store = $orderData->store;
         $this->storeExternalNumber = $orderData->store !== null ? $orderData->store->getExternalNumber() : null;
-        $this->updatedAt = $orderData->updatedAt;
+        $this->giftCertificates = new ArrayCollection($orderData->giftCertificates);
+
+        return $orderEditResult;
+    }
+
+    /**
+     * @param \App\Model\Order\OrderData $orderData
+     */
+    protected function fillCommonFields(BaseOrderData $orderData): void
+    {
+        parent::fillCommonFields($orderData);
+        $this->payPalId = $orderData->payPalId;
+        $this->payPalStatus = $orderData->payPalStatus;
+        $this->exportStatus = $orderData->exportStatus;
         $this->mallOrderId = $orderData->mallOrderId;
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupons = $this->getPromoCodesString($orderData->gtmCoupons);
         $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
-        $this->giftCertificates = new ArrayCollection($orderData->giftCertificates);
+        $this->updatedAt = $orderData->updatedAt;
         $this->pohodaId = $orderData->pohodaId;
         $this->legacyId = $orderData->legacyId;
-
-        return $orderEditResult;
     }
 
     /**
@@ -549,6 +520,9 @@ class Order extends BaseOrder
         if ($this->exportStatus === self::EXPORT_SUCCESS) {
             return t('Přeneseno');
         }
+        if ($this->exportStatus === self::EXPORT_NEEDS_UPDATE) {
+            return t('Opětovný přenos');
+        }
         if ($this->exportStatus === self::EXPORT_NOT_YET) {
             return t('Zatím nepřeneseno');
         }
@@ -590,7 +564,6 @@ class Order extends BaseOrder
     {
         $discountPriceWithVat = Money::zero();
 
-        /** @var \App\Model\Order\Item\OrderItem $item */
         foreach ($this->getItems() as $item) {
             if ($item->isTypePromoCode()) {
                 $discountPriceWithVat = $discountPriceWithVat->add($item->getPriceWithVat());
@@ -656,21 +629,6 @@ class Order extends BaseOrder
             $this->deliveryPostcode = $orderData->deliveryPostcode;
             $this->deliveryCountry = $orderData->deliveryCountry;
         }
-    }
-
-    /**
-     * @return \App\Model\Order\Item\OrderItem[]
-     */
-    public function getGiftCertificationItems()
-    {
-        $giftItems = [];
-        foreach ($this->items as $item) {
-            if ($item->isTypeGiftCertification()) {
-                $giftItems[] = $item;
-            }
-        }
-
-        return $giftItems;
     }
 
     /**

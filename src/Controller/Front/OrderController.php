@@ -27,6 +27,7 @@ use App\Model\Heureka\HeurekaReviewFacade;
 use App\Model\Order\FrontOrderData;
 use App\Model\Order\Item\OrderItemDataFactory;
 use App\Model\Order\Item\OrderItemFactory;
+use App\Model\Order\Order;
 use App\Model\Order\OrderData;
 use App\Model\Order\OrderDataFactory;
 use App\Model\Order\OrderDataMapper;
@@ -49,7 +50,7 @@ use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
 use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
 use Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade;
-use Shopsys\FrameworkBundle\Model\Order\Order;
+use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Order\Watcher\TransportAndPaymentWatcher;
@@ -925,7 +926,7 @@ class OrderController extends FrontBaseController
     /**
      * @param \App\Model\Order\Order $order
      */
-    private function checkOrderGoPayStatus(Order $order): void
+    private function checkOrderGoPayStatus(BaseOrder $order): void
     {
         try {
             $this->goPayTransactionFacade->updateOrderTransactions($order);
@@ -1014,6 +1015,11 @@ class OrderController extends FrontBaseController
         $orderData->goPayId = null;
         $orderData->orderPayment = $orderPaymentData;
         $order->removeItem($order->getOrderPayment());
+
+        if ($order->getExportStatus() === Order::EXPORT_SUCCESS) {
+            $orderData->exportStatus = Order::EXPORT_NEEDS_UPDATE;
+        }
+
         $this->orderFacade->edit($order->getId(), $orderData);
 
         $this->session->set(self::SESSION_CREATED_ORDER, $order->getId());
@@ -1116,7 +1122,7 @@ class OrderController extends FrontBaseController
      * @param \App\Model\Order\Order $order
      * @return string|null
      */
-    private function getCofidisPaymentLink(Order $order): ?string
+    private function getCofidisPaymentLink(BaseOrder $order): ?string
     {
         $cofidisPaymentLink = null;
 

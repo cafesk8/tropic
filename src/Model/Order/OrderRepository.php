@@ -179,7 +179,7 @@ class OrderRepository extends BaseOrderRepository
 
         return $this->createOrderQueryBuilder()
             ->leftJoin(GoPayTransaction::class, 'gpt', Join::WITH, 'o.id = gpt.order')
-            ->andWhere('o.exportStatus = :exportStatus')
+            ->andWhere('o.exportStatus IN (:exportStatuses)')
             ->andWhere('o.customer IS NULL OR c.transferId IS NOT NULL')
             ->andWhere('(p.type = :paymentTypeGoPay AND gpt.goPayStatus = :goPayStatusPaid) OR p.type != :paymentTypeGoPay')
             ->leftJoin('o.customer', 'c')
@@ -187,7 +187,7 @@ class OrderRepository extends BaseOrderRepository
             ->groupBy('o.id')
             ->setMaxResults($limit)
             ->setParameters([
-                'exportStatus' => Order::EXPORT_NOT_YET,
+                'exportStatuses' => [Order::EXPORT_NOT_YET, Order::EXPORT_NEEDS_UPDATE],
                 'goPayStatusPaid' => PaymentStatus::PAID,
                 'paymentTypeGoPay' => Payment::TYPE_GOPAY,
             ])
@@ -286,11 +286,11 @@ class OrderRepository extends BaseOrderRepository
     public function getForTransfer(int $limit): array
     {
         $queryBuilder = $this->createOrderQueryBuilder()
-            ->andWhere('o.exportStatus = :exportStatus')
+            ->andWhere('o.exportStatus IN (:exportStatuses)')
             ->orderBy('o.createdAt', 'ASC')
             ->setMaxResults($limit)
             ->setParameters([
-                'exportStatus' => Order::EXPORT_NOT_YET,
+                'exportStatuses' => [Order::EXPORT_NOT_YET, Order::EXPORT_NEEDS_UPDATE],
             ]);
 
         return $queryBuilder->getQuery()->getResult();

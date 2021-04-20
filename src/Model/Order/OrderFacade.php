@@ -499,26 +499,6 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
-     * @param int $limit
-     * @return \App\Model\Order\Order[]
-     */
-    public function getBatchToCheckOrderStatus(int $limit): array
-    {
-        return $this->orderRepository->getBatchToCheckOrderStatus($limit);
-    }
-
-    /**
-     * @param string $number
-     */
-    public function updateStatusCheckedAtByNumber(string $number): void
-    {
-        $order = $this->orderRepository->getByNumber($number);
-
-        $order->updateStatusCheckedAt();
-        $this->em->flush($order);
-    }
-
-    /**
      * @param int $orderId
      * @param \App\Model\Order\OrderData $orderData
      * @param string|null $locale
@@ -526,7 +506,6 @@ class OrderFacade extends BaseOrderFacade
      */
     public function edit($orderId, BaseOrderData $orderData, ?string $locale = null)
     {
-        /** @var \App\Model\Order\Order $order */
         $order = $this->orderRepository->getById($orderId);
         $originalMallStatus = $order->getMallStatus();
         $originalOrderStatus = $order->getStatus();
