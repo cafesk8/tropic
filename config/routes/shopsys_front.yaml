@@ -137,11 +137,6 @@ front_robots_txt:
     path: /robots.txt
     defaults: { _controller: App\Controller\Front\RobotsController:indexAction }
 
-front_search_autocomplete:
-    path: /search/autocomplete/
-    defaults: { _controller: App\Controller\Front\SearchController:autocompleteAction }
-    methods: [POST]
-
 front_registration_exists_email:
     path: /registration/exists-email
     defaults: { _controller: App\Controller\Front\RegistrationController:existsEmailAction }

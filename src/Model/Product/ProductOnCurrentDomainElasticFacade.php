@@ -11,7 +11,6 @@ use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData as BaseProductFilterData;
-use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainElasticFacade as BaseProductOnCurrentDomainElasticFacade;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
 
@@ -127,39 +126,6 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     ): FilterQuery {
         return $this->createFilterQueryWithProductFilterData($productFilterData, $orderingModeId, $page, $limit)
             ->filterByFlags($flagIds);
-    }
-
-    /**
-     * @param string|null $searchText
-     * @param int $limit
-     * @param int $pohodaProductType
-     * @param bool $includeGiftCards
-     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
-     */
-    public function getSearchAutocompleteProducts(
-        ?string $searchText,
-        int $limit,
-        int $pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT,
-        bool $includeGiftCards = true
-    ): PaginationResult {
-        $emptyProductFilterData = new ProductFilterData();
-        $page = 1;
-
-        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($emptyProductFilterData, ProductListOrderingConfig::ORDER_BY_RELEVANCE, $page, $limit, $searchText, $pohodaProductType, $includeGiftCards);
-
-        $productIds = $this->productElasticsearchRepository->getSortedProductIdsByFilterQuery($filterQuery);
-
-        $listableProductsByIds = $this->productRepository->findByIds($productIds->getIds());
-        $sortedListableProductsByIds = [];
-
-        foreach ($listableProductsByIds as $product) {
-            $index = array_search((string)$product->getId(), $productIds->getIds(), true);
-            $sortedListableProductsByIds[$index] = $product;
-        }
-
-        ksort($sortedListableProductsByIds);
-
-        return new PaginationResult($page, $limit, $productIds->getTotal(), $sortedListableProductsByIds);
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Component\LuigisBox\LuigisBoxApiKeysProvider;
 use App\Model\Order\Order;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Script\ScriptFacade;
@@ -23,19 +24,24 @@ class ScriptController extends FrontBaseController
 
     private string $shopId;
 
+    private LuigisBoxApiKeysProvider $keysProvider;
+
     /**
      * @param \Shopsys\FrameworkBundle\Model\Script\ScriptFacade $scriptFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \App\Component\LuigisBox\LuigisBoxApiKeysProvider $keysProvider
      * @param string $shopId
      */
     public function __construct(
         ScriptFacade $scriptFacade,
         Domain $domain,
+        LuigisBoxApiKeysProvider $keysProvider,
         string $shopId
     ) {
         $this->scriptFacade = $scriptFacade;
         $this->domain = $domain;
         $this->shopId = $shopId;
+        $this->keysProvider = $keysProvider;
     }
 
     public function embedAllPagesScriptsAction()
@@ -98,6 +104,8 @@ class ScriptController extends FrontBaseController
      */
     public function embedAllPagesLuigisBoxScriptAction(): Response
     {
-        return $this->render('Front/Inline/MeasuringScript/luigisBox.html.twig');
+        return $this->render('Front/Inline/MeasuringScript/luigisBox.html.twig', [
+            'projectId' => $this->keysProvider->getProjectId($this->domain->getLocale()),
+        ]);
     }
 }

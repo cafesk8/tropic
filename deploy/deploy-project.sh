@@ -64,8 +64,10 @@ function deploy() {
          # Luigi's Box
          ["parameters.luigis_box.cs.public"]="${LUIGIS_BOX_PUBLIC_CS}"
          ["parameters.luigis_box.cs.private"]="${LUIGIS_BOX_PRIVATE_CS}"
+         ["parameters.luigis_box.cs.project_id"]="${LUIGIS_BOX_PROJECT_ID_CS}"
          ["parameters.luigis_box.sk.public"]="${LUIGIS_BOX_PUBLIC_SK}"
          ["parameters.luigis_box.sk.private"]="${LUIGIS_BOX_PRIVATE_SK}"
+         ["parameters.luigis_box.sk.project_id"]="${LUIGIS_BOX_PROJECT_ID_SK}"
     )
 
     declare -A ENVIRONMENT_VARIABLES=(

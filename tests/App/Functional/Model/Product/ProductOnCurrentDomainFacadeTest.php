@@ -342,13 +342,6 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         );
     }
 
-    public function testGetSearchAutocompleteProducts(): void
-    {
-        $paginationResult = $this->getSearchAutocompleteProducts('mg3550');
-
-        $this->assertCount(1, $paginationResult->getResults());
-    }
-
     /**
      * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
      * @param \App\Model\Category\Category $category
@@ -367,21 +360,6 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
             $limit,
             $category->getId(),
             $category->isUnavailableProductsShown()
-        );
-    }
-
-    /**
-     * @param string $searchText
-     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
-     */
-    public function getSearchAutocompleteProducts(string $searchText): PaginationResult
-    {
-        $productOnCurrentDomainFacade = $this->getProductOnCurrentDomainFacade();
-        $limit = 1000;
-
-        return $productOnCurrentDomainFacade->getSearchAutocompleteProducts(
-            $searchText,
-            $limit
         );
     }
 

@@ -194,26 +194,6 @@ class CategoryFacade extends BaseCategoryFacade
     }
 
     /**
-     * @param string|null $searchText
-     * @param int $limit
-     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
-     */
-    public function getSearchAutocompleteCategories($searchText, $limit)
-    {
-        $page = 1;
-
-        $paginationResult = $this->categoryRepository->getPaginationResultForSearchVisibleAndListable(
-            $searchText,
-            $this->domain->getId(),
-            $this->domain->getLocale(),
-            $page,
-            $limit
-        );
-
-        return $paginationResult;
-    }
-
-    /**
      * @param int $domainId
      * @param string $locale
      * @param string|null $searchText
