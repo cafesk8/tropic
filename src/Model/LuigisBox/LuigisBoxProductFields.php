@@ -10,7 +10,7 @@ class LuigisBoxProductFields extends LuigisBoxObjectFields
 
     public string $availability_color;
 
-    public string $availability_filter;
+    public int $availability_rating;
 
     public string $availability_text;
 

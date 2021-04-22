@@ -112,6 +112,7 @@ class LuigisBoxObjectFactory
         $productFields->title = $product->getName($locale) ?? '';
         $productFields->availability = $product->getCalculatedSellingDenied() ? 0 : 1;
         $productFields->availability_color = $product->getCalculatedAvailability()->getRgbColor();
+        $productFields->availability_rating = $product->getCalculatedAvailability()->getRating();
         $productFields->availability_text = $this->availabilityFacade->getAvailabilityText($product, $locale);
         $productFields->code = $product->getCatnum();
         $productFields->description = $product->getDescription($domainId);
