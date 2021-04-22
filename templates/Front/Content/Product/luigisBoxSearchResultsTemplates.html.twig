@@ -99,15 +99,15 @@
                             <input type="hidden" name="add_product_form[onlyRefresh]" class="input id__add_product_form_onlyRefresh" value="0" tabindex="0">
                             <div class="in-add-to-cart in-add-to-cart--small">
                                 <div class="in-add-to-cart__spinbox js-spinbox-parent">
-                                        <span class="form-input-spinbox js-spinbox">
-                                            <input type="text" name="add_product_form[quantity]" v-bind:value="attributes.minimum_quantity"
-                                                   class="form-input-spinbox__input input-no-style js-spinbox-input input"
-                                                   required="required" v-bind:data-spinbox-min="attributes.minimum_quantity"
-                                                   v-bind:data-spinbox-step="attributes.quantity_multiplier"
-                                                   v-bind:data-spinbox-max="attributes.maximum_quantity">
-                                            <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
-                                            <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus btn--disabled"><i class="svg svg-minus"></i></button>
-                                        </span>
+                                    <span class="form-input-spinbox js-spinbox">
+                                        <input type="text" name="add_product_form[quantity]" v-bind:value="attributes.minimum_quantity"
+                                               class="form-input-spinbox__input input-no-style js-spinbox-input input"
+                                               required="required" v-bind:data-spinbox-min="attributes.minimum_quantity"
+                                               v-bind:data-spinbox-step="attributes.quantity_multiplier"
+                                               v-bind:data-spinbox-max="attributes.maximum_quantity">
+                                        <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
+                                        <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus btn--disabled"><i class="svg svg-minus"></i></button>
+                                    </span>
                                 </div>
 
                                 <input type="submit" name="add_product_form[add]" value="{{ 'Přidat do košíku'|trans }}" class="in-add-to-cart__button btn-no-style btn" v-bind:data-hard-disabled="!attributes.available" data-action="buy">
