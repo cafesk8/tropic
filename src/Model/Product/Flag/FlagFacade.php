@@ -162,4 +162,13 @@ class FlagFacade extends BaseFlagFacade
 
         return array_unique($flags, SORT_REGULAR);
     }
+
+    /**
+     * @param \App\Model\Product\Flag\Flag[] $flags
+     * @return \App\Model\Product\Flag\Flag[]
+     */
+    public function filterFlagsForList(array $flags): array
+    {
+        return array_filter($flags, fn ($flag) => $flag->getPohodaId() != Flag::POHODA_ID_RECOMMENDED);
+    }
 }

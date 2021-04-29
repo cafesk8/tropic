@@ -4,7 +4,7 @@
     {% if productFlags|length > 0 or (sellingPrice is not null and sellingPrice.hasHigherStandardPrice) or variantsCount > 0 %}
         <div class="in-flag dont-print {{ classAddition }}">
             {% for productFlag in productFlags %}
-                {% if productFlag.pohodaId != 'Doporucujeme' and ((onlyFirst and processedFlags < 1) or not onlyFirst) %}
+                {% if not onlyFirst or (onlyFirst and processedFlags < 1) %}
                     {{ _self.detail(productFlag.name, productFlag.rgbColor) }}
                     {% set processedFlags = processedFlags + 1 %}
                 {% endif %}

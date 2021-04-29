@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Pricing\ProductPrice;
 use Shopsys\ReadModelBundle\Flag\FlagsProvider;
 use Twig\Environment;
@@ -27,15 +28,23 @@ class FlagsExtension extends AbstractExtension
     protected $flagsProvider;
 
     /**
+     * @var \App\Model\Product\Flag\FlagFacade
+     */
+    private FlagFacade $flagFacade;
+
+    /**
      * @param \Shopsys\ReadModelBundle\Flag\FlagsProvider $flagsProvider
      * @param \Twig\Environment $twigEnvironment
+     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
         FlagsProvider $flagsProvider,
-        Environment $twigEnvironment
+        Environment $twigEnvironment,
+        FlagFacade $flagFacade
     ) {
         $this->twigEnvironment = $twigEnvironment;
         $this->flagsProvider = $flagsProvider;
+        $this->flagFacade = $flagFacade;
     }
 
     /**
@@ -65,10 +74,13 @@ class FlagsExtension extends AbstractExtension
         int $variantsCount = 0,
         string $discountDisplayType = self::DISCOUNT_DISPLAY_TYPE_PERCENTAGE
     ): string {
+        $flags = $this->flagsProvider->getFlagsByIds($flagIds);
+        $flags = $this->flagFacade->filterFlagsForList($flags);
+
         return $this->twigEnvironment->render(
             'Front/Inline/Product/productFlags.html.twig',
             [
-                'flags' => $this->flagsProvider->getFlagsByIds($flagIds),
+                'flags' => $flags,
                 'classAddition' => $classAddition,
                 'onlyFirst' => $onlyFirst,
                 'sellingPrice' => $productPrice,
