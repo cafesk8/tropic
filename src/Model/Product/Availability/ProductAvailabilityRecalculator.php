@@ -6,6 +6,7 @@ namespace App\Model\Product\Availability;
 
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculator as BaseProductAvailabilityRecalculator;
+use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 
 /**
  * @property \App\Component\EntityExtension\EntityManagerDecorator $em
@@ -33,5 +34,25 @@ class ProductAvailabilityRecalculator extends BaseProductAvailabilityRecalculato
             $this->recalculateProductAvailability($product);
         }
         $this->productAvailabilityRecalculationScheduler->cleanScheduleForImmediateRecalculation();
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     */
+    protected function recalculateProductAvailability(BaseProduct $product)
+    {
+        $originalCalculatedAvailability = $product->getCalculatedAvailability();
+        $calculatedAvailability = $this->productAvailabilityCalculation->calculateAvailability($product);
+        $product->setCalculatedAvailability($calculatedAvailability);
+
+        if ($product->isVariant()) {
+            $this->recalculateProductAvailability($product->getMainVariant());
+        }
+
+        if ($calculatedAvailability !== $originalCalculatedAvailability) {
+            $product->markForExportToLuigisBox();
+        }
+
+        $this->em->flush($product);
     }
 }
