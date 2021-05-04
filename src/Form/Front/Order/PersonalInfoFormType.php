@@ -84,7 +84,7 @@ class PersonalInfoFormType extends AbstractType
                         'message' => 'Please enter first name',
                     ]),
                     new Constraints\Length([
-                        'max' => 60,
+                        'max' => 32,
                         'maxMessage' => 'First name cannot be longer than {{ limit }} characters',
                     ]),
                 ],
@@ -104,7 +104,7 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Please enter e-mail']),
                     new Email(['message' => 'Please enter valid e-mail']),
-                    new Constraints\Length(['max' => 50, 'maxMessage' => 'Email cannot be longer than {{ limit }} characters']),
+                    new Constraints\Length(['max' => 40, 'maxMessage' => 'Email cannot be longer than {{ limit }} characters']),
                 ],
                 'attr' => [
                     'class' => 'js-order-personal-info-form-email',
@@ -171,7 +171,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                     new Constraints\Length([
-                        'max' => 20,
+                        'max' => 15,
                         'maxMessage' => 'Identification number cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
@@ -182,7 +182,7 @@ class PersonalInfoFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Constraints\Length([
-                        'max' => 30,
+                        'max' => 18,
                         'maxMessage' => 'Tax number cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
@@ -196,7 +196,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                     new Constraints\Length([
-                        'max' => 100,
+                        'max' => 64,
                         'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
@@ -210,7 +210,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                     new Constraints\Length([
-                        'max' => 100,
+                        'max' => 45,
                         'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
@@ -268,7 +268,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                     new Constraints\Length([
-                        'max' => 100,
+                        'max' => 64,
                         'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
@@ -283,7 +283,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                     new Constraints\Length([
-                        'max' => 100,
+                        'max' => 45,
                         'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
@@ -324,7 +324,7 @@ class PersonalInfoFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Constraints\Length([
-                        'max' => 1000,
+                        'max' => 240,
                         'maxMessage' => 'Poznámka nesmí být delší než {{ limit }} znaků',
                     ]),
                 ],
