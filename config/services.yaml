@@ -883,3 +883,13 @@ services:
     App\Component\LuigisBox\LuigisBoxApiKeysProvider:
         arguments:
             $keys: '%luigis_box%'
+
+    Shopsys\FrameworkBundle\Model\Statistics\StatisticsRepository: '@App\Model\Statistics\StatisticsRepository'
+
+    App\Model\Statistics\ValueByDateTimeDataPointFormatter: ~
+
+    Shopsys\FrameworkBundle\Model\Statistics\ValueByDateTimeDataPointFormatter: '@App\Model\Statistics\ValueByDateTimeDataPointFormatter'
+
+    Shopsys\FrameworkBundle\Model\Statistics\StatisticsFacade: '@App\Model\Statistics\StatisticsFacade'
+
+    Shopsys\FrameworkBundle\Model\Statistics\StatisticsProcessingFacade: '@App\Model\Statistics\StatisticsProcessingFacade'
