@@ -7,7 +7,7 @@ services:
     # ALWAYS -----------------------------------------------------------------------------------------
     App\Model\Order\Transfer\OrderExportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '0,15,30,45', readableName: 'Export objednávek a uživatelů do IS Pohoda', instanceName: orders }
+            - { name: shopsys.cron, hours: '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21', minutes: '0,15,30,45', readableName: 'Export objednávek a uživatelů do IS Pohoda', instanceName: orders }
 
     App\Model\Zbozi\ZboziOrderTransferCronModule:
         tags:
@@ -15,7 +15,7 @@ services:
 
     App\Model\Order\Transfer\Status\OrderStatusImportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import stavů objednávek z IS Pohoda', instanceName: orders }
+            - { name: shopsys.cron, hours: '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21', minutes: '*', readableName: 'Import stavů objednávek z IS Pohoda', instanceName: orders }
 
     # ONCE PER HOUR ----------------------------------------------------------------------------------
     App\Model\GoPay\OrderGoPayStatusUpdateCronModule:
