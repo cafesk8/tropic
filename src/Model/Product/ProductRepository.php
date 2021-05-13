@@ -585,7 +585,7 @@ class ProductRepository extends BaseProductRepository
      */
     public function getProductsForRefresh(): array
     {
-        return $this->getProductRepository()->findBy(['refresh' => true]);
+        return $this->getProductRepository()->findBy(['refresh' => true], null, 500);
     }
 
     /**

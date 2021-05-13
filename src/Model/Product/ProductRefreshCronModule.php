@@ -71,13 +71,25 @@ class ProductRefreshCronModule implements SimpleCronModuleInterface
         }
 
         foreach ($products as $product) {
-            $productData = $this->productDataFactory->createFromProduct($product);
-            $productId = $product->getId();
-            $this->productFacade->edit($productId, $productData);
-            $this->entityManager->flush();
-            $this->logger->addInfo('Product refreshed', ['id' => $productId]);
+            $this->refreshProduct($product);
+
+            if ($product->isVariant()) {
+                $this->refreshProduct($product->getMainVariant());
+            }
         }
 
         $this->productExportSubscriber->exportScheduledRows();
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     */
+    private function refreshProduct(Product $product): void
+    {
+        $productData = $this->productDataFactory->createFromProduct($product);
+        $productId = $product->getId();
+        $this->productFacade->edit($productId, $productData);
+        $this->entityManager->flush();
+        $this->logger->addInfo('Product refreshed', ['id' => $productId]);
     }
 }
