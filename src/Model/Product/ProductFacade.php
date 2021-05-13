@@ -1113,11 +1113,6 @@ class ProductFacade extends BaseProductFacade
     {
         $mainVariant = $product->isVariant() ? $product->getMainVariant() : $product;
         $mainVariant->markForVisibilityRecalculation();
-
-        if ($product->isVariant()) {
-            $mainVariant->markForRefresh();
-        }
-
         $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
         $this->productPriceRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
         $this->productExportScheduler->scheduleRowIdForImmediateExport($mainVariant->getId());
