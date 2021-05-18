@@ -65,4 +65,6 @@ class LuigisBoxProductFields extends LuigisBoxObjectFields
     public array $set_items;
 
     public int $variants_count;
+
+    public bool $visible;
 }
