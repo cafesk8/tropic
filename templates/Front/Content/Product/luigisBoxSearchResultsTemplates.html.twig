@@ -69,9 +69,11 @@
                         </h2>
 
                         {% if isRegisteredCustomer %}
-                            <div class="list-products__item__info__price">{{ '{{ attributes.price_registered }}' }}</div>
+                            <div v-if="attributes.in_sale && attributes.price_sale_amount > 0" class="list-products__item__info__price">{{ '{{ attributes.price_sale }}' }}</div>
+                            <div v-else class="list-products__item__info__price">{{ '{{ attributes.price_registered }}' }}</div>
                         {% else %}
-                            <div class="list-products__item__info__price">{{ '{{ attributes.price }}' }}</div>
+                            <div v-if="attributes.in_sale && attributes.price_sale_amount > 0" class="list-products__item__info__price">{{ '{{ attributes.price_sale }}' }}</div>
+                            <div v-else class="list-products__item__info__price">{{ '{{ attributes.price }}' }}</div>
                         {% endif %}
 
                         <div class="in-availability">
@@ -180,15 +182,35 @@
                                         </div>
 
                                         {% if isRegisteredCustomer %}
-                                            <div class="box-products-set__info__prices">
-                                                <span v-if="set.attributes.price_standard_amount > set.attributes.price_registered_amount" class="box-products-set__info__prices__old">{{ '{{ set.attributes.price_standard }}' }}</span>
+                                            <div v-if="attributes.in_sale && attributes.price_sale_amount > 0" class="box-products-set__info__prices">
+                                                <span v-if="set.attributes.price_standard_amount > set.attributes.price_sale_amount" class="box-products-set__info__prices__old">
+                                                    {{ '{{ set.attributes.price_standard }}' }}
+                                                </span>
+                                                <span class="box-products-set__info__prices__new box-products-set__info__prices__new--colored">
+                                                    {{ '{{ set.attributes.price_sale }}' }}
+                                                </span>
+                                            </div>
+                                            <div v-else class="box-products-set__info__prices">
+                                                <span v-if="set.attributes.price_standard_amount > set.attributes.price_registered_amount" class="box-products-set__info__prices__old">
+                                                    {{ '{{ set.attributes.price_standard }}' }}
+                                                </span>
                                                 <span class="box-products-set__info__prices__new box-products-set__info__prices__new--colored">
                                                     {{ '{{ set.attributes.price_registered }}' }}
                                                 </span>
                                             </div>
                                         {% else %}
-                                            <div class="box-products-set__info__prices">
-                                                <span v-if="set.attributes.price_standard_amount > set.attributes.price_amount" class="box-products-set__info__prices__old">{{ '{{ set.attributes.price_standard }}' }}</span>
+                                            <div v-if="attributes.in_sale && attributes.price_sale_amount > 0" class="box-products-set__info__prices">
+                                                <span v-if="set.attributes.price_sale_amount > set.attributes.price_amount" class="box-products-set__info__prices__old">
+                                                    {{ '{{ set.attributes.price }}' }}
+                                                </span>
+                                                <span class="box-products-set__info__prices__new box-products-set__info__prices__new--colored">
+                                                    {{ '{{ set.attributes.price_sale }}' }}
+                                                </span>
+                                            </div>
+                                            <div v-else class="box-products-set__info__prices">
+                                                <span v-if="set.attributes.price_standard_amount > set.attributes.price_amount" class="box-products-set__info__prices__old">
+                                                    {{ '{{ set.attributes.price_standard }}' }}
+                                                </span>
                                                 <span class="box-products-set__info__prices__new box-products-set__info__prices__new--colored">
                                                     {{ '{{ set.attributes.price }}' }}
                                                 </span>
@@ -349,48 +371,6 @@
         </div>
     </div>
 </script>
-
-
-
-
-{#<script type="text/x-template" id="template-facet-numeric-range">
-    {% set currencySymbol = currencySymbolByDomainId(getDomain().id) %}
-    <div class="box-filter__choice">
-        <div class="box-filter__choice__title js-responsive-toggle open" data-element="filter-price">
-            {{ 'Cena'|trans }}
-            <i class="svg svg-triangle"></i>
-        </div>
-        <div class="box-filter__choice__content" id="filter-price">
-            <div class="box-filter__price">
-                <vue-slider :min="min" :max="max" v-model="value" @callback="callback"></vue-slider>
-
-                <div class="box-price-slider js-range-slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     data-minimum-input-id="product_filter_form_minimalPrice" v-bind:data-minimal-value="min"
-                     data-maximum-input-id="product_filter_form_maximalPrice" v-bind:data-maximal-value="max"
-                     v-bind:data-callback="callback">
-                </div>
-
-                <div class="box-price-slider__form">
-                    <div class="box-price-slider__form__item box-price-slider__form__item--left">
-                        <div class="box-price-slider__form__item__text">
-                            {{ 'Od'|trans }}
-                        </div>
-                        <input type="text" id="product_filter_form_minimalPrice" name="product_filter_form[minimalPrice]" class="js-product-filter-call-change-after-reset js-no-validate display-none input" v-bind:value="min" @change="callback">
-                        <input type="text" id="product_filter_form_minimalPriceFormatted" class="box-price-slider__form__item__input js-no-validate input" v-bind:placeholder="min">
-                    </div>
-                    <div class="box-price-slider__form__item box-price-slider__form__item--right">
-                        <div class="box-price-slider__form__item__text">
-                            {{ 'do'|trans }}
-                        </div>
-                        <input type="text" id="product_filter_form_maximalPrice" name="product_filter_form[maximalPrice]" class="js-product-filter-call-change-after-reset js-no-validate display-none input" v-bind:value="max" @change="callback">
-                        <input type="text" id="product_filter_form_maximalPriceFormatted" class="box-price-slider__form__item__input js-no-validate input" v-bind:placeholder="max">
-                        <div class="box-price-slider__form__item__currency">{{ currencySymbol }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</script>#}
 
 <script type="text/x-template" id="template-sort">
     <div class="box-order-type">

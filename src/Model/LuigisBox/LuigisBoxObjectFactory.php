@@ -120,6 +120,7 @@ class LuigisBoxObjectFactory
         $productFields->id = $product->getId();
         $productFields->variants_count = count($product->getVariants());
         $productFields->image_link = $this->mapProductImages($product, $domainConfig);
+        $productFields->in_sale = $product->isInAnySaleStock();
         $this->mapPrices($productFields, $this->productFacade->getAllProductSellingPricesByDomainId($product, $domainId), $domainId);
 
         foreach ($product->getActiveFlags() as $flag) {
@@ -247,7 +248,7 @@ class LuigisBoxObjectFactory
 
     /**
      * @param \App\Model\LuigisBox\LuigisBoxProductFields $luigisProductFields
-     * @param array $prices
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice[] $prices
      * @param int $domainId
      */
     private function mapPrices(LuigisBoxProductFields $luigisProductFields, array $prices, int $domainId): void
@@ -255,19 +256,20 @@ class LuigisBoxObjectFactory
         foreach ($prices as $price) {
             /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
             $pricingGroup = $price->getPricingGroup();
+            $sellingPrice = $price->getSellingPrice()->getPriceWithVat();
 
             if ($pricingGroup->isOrdinaryCustomerPricingGroup()) {
-                $sellingPrice = $price->getSellingPrice()->getPriceWithVat();
                 $luigisProductFields->price_amount = $sellingPrice->getAmount();
                 $luigisProductFields->price = $this->priceExtension->priceWithCurrencyByDomainIdFilter($sellingPrice, $domainId);
             } elseif ($pricingGroup->isRegisteredCustomerPricingGroup()) {
-                $sellingPrice = $price->getSellingPrice()->getPriceWithVat();
                 $luigisProductFields->price_registered_amount = $sellingPrice->getAmount();
                 $luigisProductFields->price_registered = $this->priceExtension->priceWithCurrencyByDomainIdFilter($sellingPrice, $domainId);
             } elseif ($pricingGroup->isStandardPricePricingGroup()) {
-                $sellingPrice = $price->getSellingPrice()->getPriceWithVat();
                 $luigisProductFields->price_standard_amount = $sellingPrice->getAmount();
                 $luigisProductFields->price_standard = $this->priceExtension->priceWithCurrencyByDomainIdFilter($sellingPrice, $domainId);
+            } elseif ($pricingGroup->isSalePricePricingGroup()) {
+                $luigisProductFields->price_sale_amount = $sellingPrice->getAmount();
+                $luigisProductFields->price_sale = $this->priceExtension->priceWithCurrencyByDomainIdFilter($sellingPrice, $domainId);
             }
         }
     }

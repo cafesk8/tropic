@@ -38,6 +38,8 @@ class LuigisBoxProductFields extends LuigisBoxObjectFields
 
     public ?string $image_link;
 
+    public bool $in_sale;
+
     public int $maximum_quantity;
 
     public int $minimum_quantity;
@@ -53,6 +55,10 @@ class LuigisBoxProductFields extends LuigisBoxObjectFields
     public ?string $price_standard;
 
     public ?string $price_standard_amount;
+
+    public ?string $price_sale;
+
+    public ?string $price_sale_amount;
 
     public int $quantity_multiplier;
 
