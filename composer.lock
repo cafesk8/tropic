@@ -12508,16 +12508,16 @@
         },
         {
             "name": "symfony/security",
-            "version": "v4.4.13",
+            "version": "v4.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "fa230e3144150037f4d30dce6d4c4ac6f7f4795e"
+                "reference": "9c1ce3e26bd2e0ca91c2fcde4774b88b2837dc09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/fa230e3144150037f4d30dce6d4c4ac6f7f4795e",
-                "reference": "fa230e3144150037f4d30dce6d4c4ac6f7f4795e",
+                "url": "https://api.github.com/repos/symfony/security/zipball/9c1ce3e26bd2e0ca91c2fcde4774b88b2837dc09",
+                "reference": "9c1ce3e26bd2e0ca91c2fcde4774b88b2837dc09",
                 "shasum": ""
             },
             "require": {
@@ -12539,7 +12539,7 @@
                 "symfony/security-http": "self.version"
             },
             "require-dev": {
-                "psr/container": "^1.0",
+                "psr/container": "^1.0|^2.0",
                 "psr/log": "~1.0",
                 "symfony/expression-language": "^3.4|^4.0|^5.0",
                 "symfony/finder": "^3.4|^4.0|^5.0",
@@ -12547,6 +12547,7 @@
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-intl-icu": "~1.0",
                 "symfony/routing": "^3.4|^4.0|^5.0",
+                "symfony/translation": "^4.4|^5.0",
                 "symfony/validator": "^3.4.31|^4.3.4|^5.0"
             },
             "suggest": {
@@ -12558,11 +12559,6 @@
                 "symfony/validator": "For using the user password constraint"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.4-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\Security\\": ""
@@ -12588,7 +12584,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Security Component",
+            "description": "Provides a complete security system for your web application",
             "homepage": "https://symfony.com",
             "funding": [
                 {
@@ -12604,7 +12600,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-17T09:35:39+00:00"
+            "time": "2021-05-12T12:42:28+00:00"
         },
         {
             "name": "symfony/security-bundle",
