@@ -836,6 +836,15 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
+     * @param int $limit
+     * @return \App\Model\Order\Order[]
+     */
+    public function getAllForUpdate(int $limit): array
+    {
+        return $this->orderRepository->getForUpdate($limit);
+    }
+
+    /**
      * @return \App\Model\Order\Order[]
      */
     public function getAllForExportToZbozi(): array

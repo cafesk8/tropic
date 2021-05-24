@@ -30,6 +30,12 @@ class Payment extends BasePayment
     public const TYPE_MALL = 'mall';
     public const TYPE_COFIDIS = 'cofidis';
 
+    public const EXT_ID_ON_DELIVERY = 'Dobírkou';
+    public const EXT_ID_BANK_TRANSFER = 'Příkazem';
+    public const EXT_ID_CARD = 'Kartou';
+    public const EXT_ID_COFIDIS = 'Cofidis';
+    public const EXT_ID_CASH = 'Hotově';
+
     /**
      * @var string
      *
