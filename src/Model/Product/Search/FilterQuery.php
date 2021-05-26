@@ -112,7 +112,7 @@ class FilterQuery extends BaseFilterQuery
                         'path' => 'prices',
                         'filter' => [
                             'term' => [
-                                'prices.pricing_group_id' => $pricingGroup->getId(),
+                                'prices.is_default' => true,
                             ],
                         ],
                     ],
@@ -132,7 +132,7 @@ class FilterQuery extends BaseFilterQuery
                         'path' => 'prices',
                         'filter' => [
                             'term' => [
-                                'prices.pricing_group_id' => $pricingGroup->getId(),
+                                'prices.is_default' => true,
                             ],
                         ],
                     ],

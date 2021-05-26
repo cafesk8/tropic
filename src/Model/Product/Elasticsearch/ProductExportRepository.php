@@ -188,8 +188,9 @@ class ProductExportRepository extends BaseProductExportRepository
         if ($isVariant && isset($this->variantsCachedPrices[$domainId][$productId])) {
             return $this->variantsCachedPrices[$domainId][$productId];
         }
-        $defaultPricingGroupOnDomain = $this->pricingGroupFacade->getDefaultPricingGroup($domainId);
-        $standardPricingGroupOnDomain = $product->isInAnySaleStock() ? $defaultPricingGroupOnDomain : $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
+        $defaultPricingGroupOnDomain = $product->isInAnySaleStock() ? $this->pricingGroupFacade->getSalePricePricingGroup($domainId) : $this->pricingGroupFacade->getDefaultPricingGroup($domainId);
+        $standardPricingGroupOnDomain = $product->isInAnySaleStock() ? $this->pricingGroupFacade->getDefaultPricingGroup($domainId) : $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
+
         $pricesArray = parent::extractPrices($domainId, $product);
 
         $defaultPricingGroupId = $defaultPricingGroupOnDomain->getId();
