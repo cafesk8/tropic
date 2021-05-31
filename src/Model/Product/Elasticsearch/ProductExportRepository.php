@@ -196,6 +196,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $defaultPricingGroupId = $defaultPricingGroupOnDomain->getId();
         $standardPricingGroupId = $standardPricingGroupOnDomain->getId();
         foreach ($pricesArray as $key => $priceArray) {
+            $priceArray['is_sale'] = ($product->isInAnySaleStock());
             $priceArray['is_default'] = ($priceArray['pricing_group_id'] === $defaultPricingGroupId);
             $priceArray['is_standard'] = ($priceArray['pricing_group_id'] === $standardPricingGroupId);
             $pricesArray[$key] = $priceArray;

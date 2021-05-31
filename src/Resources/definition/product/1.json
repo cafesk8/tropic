@@ -209,6 +209,9 @@
           },
           "is_standard": {
             "type": "boolean"
+          },
+          "is_sale": {
+            "type": "boolean"
           }
         }
       },

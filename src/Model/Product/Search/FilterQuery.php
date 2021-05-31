@@ -73,7 +73,6 @@ class FilterQuery extends BaseFilterQuery
     public function applyOrdering(string $orderingModeId, PricingGroup $pricingGroup): BaseFilterQuery
     {
         $clone = clone $this;
-
         if ($orderingModeId === ProductListOrderingConfig::ORDER_BY_NEWS_ACTIVE_FROM) {
             $clone->sorting = [
                 'product_news_active_from' => 'desc',
@@ -82,8 +81,21 @@ class FilterQuery extends BaseFilterQuery
                     'nested' => [
                         'path' => 'prices',
                         'filter' => [
-                            'term' => [
-                                'prices.pricing_group_id' => $pricingGroup->getId(),
+                            'script' => [
+                                'script' => [
+                                    'lang' => 'painless',
+                                    'source' => "if (doc['prices.is_sale'].size() != 0 && doc['prices.pricing_group_id'].size() != 0)
+                                                {                                             
+                                                    if (doc['prices.is_sale'].value) {
+                                                        doc['prices.is_default'].value
+                                                    }else{
+                                                        doc['prices.pricing_group_id'].value == params.pricingGroupId
+                                                    }       
+                                                }",
+                                    'params' => [
+                                        'pricingGroupId' => $pricingGroup->getId(),
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -111,8 +123,21 @@ class FilterQuery extends BaseFilterQuery
                     'nested' => [
                         'path' => 'prices',
                         'filter' => [
-                            'term' => [
-                                'prices.is_default' => true,
+                            'script' => [
+                                'script' => [
+                                    'lang' => 'painless',
+                                    'source' => "if (doc['prices.is_sale'].size() != 0 && doc['prices.pricing_group_id'].size() != 0)
+                                                {                                             
+                                                    if (doc['prices.is_sale'].value) {
+                                                        doc['prices.is_default'].value
+                                                    }else{
+                                                        doc['prices.pricing_group_id'].value == params.pricingGroupId
+                                                    }       
+                                                }",
+                                    'params' => [
+                                        'pricingGroupId' => $pricingGroup->getId(),
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -131,8 +156,21 @@ class FilterQuery extends BaseFilterQuery
                     'nested' => [
                         'path' => 'prices',
                         'filter' => [
-                            'term' => [
-                                'prices.is_default' => true,
+                            'script' => [
+                                'script' => [
+                                'lang' => 'painless',
+                                'source' => "if (doc['prices.is_sale'].size() != 0 && doc['prices.pricing_group_id'].size() != 0)
+                                            {                                             
+                                                if (doc['prices.is_sale'].value) {
+                                                    doc['prices.is_default'].value
+                                                }else{
+                                                    doc['prices.pricing_group_id'].value == params.pricingGroupId
+                                                }       
+                                            }",
+                                    'params' => [
+                                        'pricingGroupId' => $pricingGroup->getId(),
+                                    ],
+                                ],
                             ],
                         ],
                     ],
