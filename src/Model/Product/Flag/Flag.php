@@ -26,6 +26,8 @@ class Flag extends BaseFlag implements OrderableEntityInterface
     public const POHODA_ID_DISCOUNT = 'Sleva';
     public const POHODA_ID_PREPARATION = 'Priprav';
 
+    public const VARIANTS_FLAG_COLOR = '#00aed8';
+
     /**
      * @var int
      *

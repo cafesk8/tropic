@@ -62,7 +62,11 @@ class LuigisBoxProductFields extends LuigisBoxObjectFields
 
     public int $quantity_multiplier;
 
+    public int $registered_discount_percent = 0;
+
     public array $set_items;
+
+    public int $standard_discount_percent = 0;
 
     public int $variants_count;
 
