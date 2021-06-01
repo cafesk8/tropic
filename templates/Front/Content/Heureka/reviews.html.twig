@@ -8,8 +8,10 @@
         </a>
     </div>
     <div class="box-reviews__heureka">
+        {% set totalRatingValue = 0 %}
         {% for review in reviews %}
             {% set ratingValue = (review.totalRating / 0.5) * 10 %}
+            {% set totalRatingValue = totalRatingValue + ratingValue  %}
             <div class="box-reviews__heureka__item">
                 <div class="box-reviews__heureka__rating">
                     <p class="box-reviews__heureka__rating__value">{{ ratingValue }}%</p>
@@ -93,5 +95,11 @@
                 </div>
             </div>
         {% endfor %}
+        <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+            <meta itemprop="ratingValue" content="{{ totalRatingValue / reviews|length }}">
+            <meta itemprop="ratingCount" content="{{ reviews|length }}">
+            <meta itemprop="reviewCount" content="{{ reviews|length }}">
+        </div>
+
     </div>
 </div>
