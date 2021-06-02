@@ -59,6 +59,7 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
+use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
@@ -154,6 +155,8 @@ class OrderFacade extends BaseOrderFacade
      */
     private SessionInterface $session;
 
+    private PricingSetting $pricingSetting;
+
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
@@ -191,6 +194,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\GiftCertificate\OrderGiftCertificateFacade $orderGiftCertificateFacade
      * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
      * @param \Symfony\Component\HttpFoundation\Session\Session $session
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -228,7 +232,8 @@ class OrderFacade extends BaseOrderFacade
         PromoCodeFacade $promoCodeFacade,
         OrderGiftCertificateFacade $orderGiftCertificateFacade,
         CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade,
-        SessionInterface $session
+        SessionInterface $session,
+        PricingSetting $pricingSetting
     ) {
         parent::__construct(
             $em,
@@ -269,6 +274,7 @@ class OrderFacade extends BaseOrderFacade
         $this->orderGiftCertificateFacade = $orderGiftCertificateFacade;
         $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
         $this->session = $session;
+        $this->pricingSetting = $pricingSetting;
     }
 
     /**
@@ -651,7 +657,8 @@ class OrderFacade extends BaseOrderFacade
         ?PromoCode $promoCode = null
     ): void {
         if ($promoCode->isUseNominalDiscount()) {
-            $discountValue = $this->numberFormatterExtension->formatNumber('-' . $promoCode->getNominalDiscount()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($orderItem->getOrder()->getDomainId(), $locale);
+            $currencyId = $this->pricingSetting->getDomainDefaultCurrencyIdByDomainId($orderItem->getOrder()->getDomainId());
+            $discountValue = $this->numberFormatterExtension->formatNumber('-' . $promoCode->getNominalDiscount()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($currencyId, $locale);
         } else {
             $discountValue = $this->numberFormatterExtension->formatPercent('-' . $promoCode->getPercent(), $locale);
         }
@@ -710,12 +717,13 @@ class OrderFacade extends BaseOrderFacade
         BaseOrder $order,
         PromoCode $promoCode
     ): void {
+        $currencyId = $this->pricingSetting->getDomainDefaultCurrencyIdByDomainId($order->getDomainId());
         $locale = $this->domain->getCurrentDomainConfig()->getLocale();
         $name = sprintf(
             '%s %s %s (DP)',
             t('Dárkový certifikát ', [], 'messages', $locale),
             $promoCode->getCode(),
-            $this->numberFormatterExtension->formatNumber($promoCode->getCertificateValue()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($order->getDomainId(), $locale)
+            $this->numberFormatterExtension->formatNumber($promoCode->getCertificateValue()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($currencyId, $locale)
         );
 
         $certificatePrice = new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue());
