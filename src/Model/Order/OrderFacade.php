@@ -17,6 +17,7 @@ use App\Model\Order\Item\OrderItemFactory;
 use App\Model\Order\Item\QuantifiedProduct;
 use App\Model\Order\Mall\Exception\StatusChangException;
 use App\Model\Order\Preview\OrderPreview;
+use App\Model\Order\Preview\OrderPreviewSessionFacade;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeFacade;
 use App\Model\Order\Status\OrderStatus;
@@ -63,7 +64,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
@@ -150,12 +150,9 @@ class OrderFacade extends BaseOrderFacade
      */
     private $currentOrderDiscountLevelFacade;
 
-    /**
-     * @var \Symfony\Component\HttpFoundation\Session\Session
-     */
-    private SessionInterface $session;
-
     private PricingSetting $pricingSetting;
+
+    private OrderPreviewSessionFacade $orderPreviewSessionFacade;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -193,8 +190,8 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \App\Model\Order\GiftCertificate\OrderGiftCertificateFacade $orderGiftCertificateFacade
      * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
-     * @param \Symfony\Component\HttpFoundation\Session\Session $session
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
+     * @param \App\Model\Order\Preview\OrderPreviewSessionFacade $orderPreviewSessionFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -232,8 +229,8 @@ class OrderFacade extends BaseOrderFacade
         PromoCodeFacade $promoCodeFacade,
         OrderGiftCertificateFacade $orderGiftCertificateFacade,
         CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade,
-        SessionInterface $session,
-        PricingSetting $pricingSetting
+        PricingSetting $pricingSetting,
+        OrderPreviewSessionFacade $orderPreviewSessionFacade
     ) {
         parent::__construct(
             $em,
@@ -273,8 +270,8 @@ class OrderFacade extends BaseOrderFacade
         $this->promoCodeFacade = $promoCodeFacade;
         $this->orderGiftCertificateFacade = $orderGiftCertificateFacade;
         $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
-        $this->session = $session;
         $this->pricingSetting = $pricingSetting;
+        $this->orderPreviewSessionFacade = $orderPreviewSessionFacade;
     }
 
     /**
@@ -355,7 +352,7 @@ class OrderFacade extends BaseOrderFacade
 
         $this->cartFacade->deleteCartOfCurrentCustomerUser();
         $this->currentOrderDiscountLevelFacade->unsetActiveOrderLevelDiscount();
-        $this->unsetOrderPreviewInfoFromSession();
+        $this->orderPreviewSessionFacade->unsetOrderPreviewInfoFromSession();
 
         if ($customerUser !== null) {
             $order->setCustomerTransferId($customerUser->getTransferId());
@@ -364,12 +361,6 @@ class OrderFacade extends BaseOrderFacade
         }
 
         return $order;
-    }
-
-    private function unsetOrderPreviewInfoFromSession(): void
-    {
-        $this->session->remove(OrderPreview::ITEMS_COUNT_SESSION_KEY);
-        $this->session->remove(OrderPreview::TOTAL_PRICE_SESSION_KEY);
     }
 
     /**

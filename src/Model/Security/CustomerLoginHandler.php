@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Security;
 
 use App\Model\Customer\User\CustomerUserFacade;
+use App\Model\Order\Preview\OrderPreviewSessionFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter;
 use Shopsys\FrameworkBundle\Model\Order\OrderFlowFacade;
@@ -21,19 +22,15 @@ class CustomerLoginHandler extends BaseCustomerLoginHandler
 {
     public const LOGGED_FROM_ORDER_SESSION_KEY = 'logged_from_order';
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\OrderFlowFacade
-     */
-    private $orderFlowFacade;
+    private OrderFlowFacade $orderFlowFacade;
 
-    /**
-     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
-     */
-    private $session;
+    private SessionInterface $session;
 
     private CustomerUserFacade $customerUserFacade;
 
     private Domain $domain;
+
+    private OrderPreviewSessionFacade $orderPreviewSessionFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter $router
@@ -41,14 +38,22 @@ class CustomerLoginHandler extends BaseCustomerLoginHandler
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
      * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \App\Model\Order\Preview\OrderPreviewSessionFacade $orderPreviewSessionFacade
      */
-    public function __construct(CurrentDomainRouter $router, OrderFlowFacade $orderFlowFacade, SessionInterface $session, CustomerUserFacade $customerUserFacade, Domain $domain)
-    {
+    public function __construct(
+        CurrentDomainRouter $router,
+        OrderFlowFacade $orderFlowFacade,
+        SessionInterface $session,
+        CustomerUserFacade $customerUserFacade,
+        Domain $domain,
+        OrderPreviewSessionFacade $orderPreviewSessionFacade
+    ) {
         parent::__construct($router);
         $this->orderFlowFacade = $orderFlowFacade;
         $this->session = $session;
         $this->customerUserFacade = $customerUserFacade;
         $this->domain = $domain;
+        $this->orderPreviewSessionFacade = $orderPreviewSessionFacade;
     }
 
     /**
@@ -58,6 +63,7 @@ class CustomerLoginHandler extends BaseCustomerLoginHandler
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): Response
     {
+        $this->orderPreviewSessionFacade->unsetOrderPreviewInfoFromSession();
         $referer = $request->headers->get('referer');
         if (!$this->isLoginFromOrder($referer)) {
             $this->orderFlowFacade->resetOrderForm();
