@@ -69,6 +69,11 @@ class TransportData extends BaseTransportData
      */
     public array $minFreeOrderPricesIndexedByDomainId;
 
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money[]|null[]
+     */
+    public array $maxOrderPricesLimitIndexedByDomainId;
+
     public ?string $zboziType;
 
     public function __construct()
@@ -85,6 +90,7 @@ class TransportData extends BaseTransportData
         $this->actionDatesToIndexedByDomainId = [];
         $this->actionActiveIndexedByDomainId = [];
         $this->minFreeOrderPricesIndexedByDomainId = [];
+        $this->maxOrderPricesLimitIndexedByDomainId = [];
         $this->balikobotShipperService = null;
         $this->balikobotShipper = null;
         $this->countries = [];

@@ -43,6 +43,8 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation;
  */
 class TransportFacade extends BaseTransportFacade
 {
+    private const PAYMENT_EXTERNAL_ID = 'Dobírkou';
+
     /**
      * @var \App\Component\Balikobot\Pickup\PickupFacade
      */
@@ -119,7 +121,8 @@ class TransportFacade extends BaseTransportFacade
             $transportData->actionDatesFromIndexedByDomainId,
             $transportData->actionDatesToIndexedByDomainId,
             $transportData->actionActiveIndexedByDomainId,
-            $transportData->minFreeOrderPricesIndexedByDomainId
+            $transportData->minFreeOrderPricesIndexedByDomainId,
+            $transportData->maxOrderPricesLimitIndexedByDomainId
         );
         $this->em->flush();
         $this->scheduleCronModule();
@@ -157,7 +160,8 @@ class TransportFacade extends BaseTransportFacade
             $transportData->actionDatesFromIndexedByDomainId,
             $transportData->actionDatesToIndexedByDomainId,
             $transportData->actionActiveIndexedByDomainId,
-            $transportData->minFreeOrderPricesIndexedByDomainId
+            $transportData->minFreeOrderPricesIndexedByDomainId,
+            $transportData->maxOrderPricesLimitIndexedByDomainId
         );
         $this->em->flush();
         $this->scheduleCronModule();
@@ -200,6 +204,7 @@ class TransportFacade extends BaseTransportFacade
      * @param bool $showEmailTransportInCart
      * @param bool $oversizedTransportRequired
      * @param bool $bulkyTransportRequired
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $orderPrice
      * @return \App\Model\Transport\Transport[]
      */
     public function getVisibleByDomainIdAndCountryAndTransportEmailType(
@@ -208,9 +213,10 @@ class TransportFacade extends BaseTransportFacade
         ?Country $country,
         bool $showEmailTransportInCart,
         bool $oversizedTransportRequired,
-        bool $bulkyTransportRequired
+        bool $bulkyTransportRequired,
+        Money $orderPrice
     ): array {
-        $visibleTransports = $this->getVisibleByDomainIdAndTransportEmailType($domainId, $visiblePaymentsOnDomain, $showEmailTransportInCart, $oversizedTransportRequired, $bulkyTransportRequired);
+        $visibleTransports = $this->getVisibleByDomainIdAndTransportEmailType($domainId, $visiblePaymentsOnDomain, $showEmailTransportInCart, $oversizedTransportRequired, $bulkyTransportRequired, $orderPrice);
 
         if ($country === null) {
             return $visibleTransports;
@@ -232,6 +238,7 @@ class TransportFacade extends BaseTransportFacade
      * @param bool $showEmailTransportInCart
      * @param bool $oversizedTransportRequired
      * @param bool $bulkyTransportRequired
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $orderPrice
      * @return \App\Model\Transport\Transport[]
      */
     private function getVisibleByDomainIdAndTransportEmailType(
@@ -239,9 +246,12 @@ class TransportFacade extends BaseTransportFacade
         array $visiblePaymentsOnDomain,
         bool $showEmailTransportInCart,
         bool $oversizedTransportRequired,
-        bool $bulkyTransportRequired
+        bool $bulkyTransportRequired,
+        Money $orderPrice
     ): array {
-        $transports = $this->transportRepository->getAllByDomainIdAndTransportEmailType($domainId, $showEmailTransportInCart, $oversizedTransportRequired, $bulkyTransportRequired);
+        $paymentPrice = $this->paymentRepository->findByExternalId(self::PAYMENT_EXTERNAL_ID);
+        $paymentPrice = $paymentPrice === null ? Money::create(0) : $paymentPrice->getPrice($domainId)->getPrice();
+        $transports = $this->transportRepository->getAllByDomainIdAndTransportEmailType($domainId, $showEmailTransportInCart, $oversizedTransportRequired, $bulkyTransportRequired, $orderPrice, $paymentPrice);
 
         return $this->transportVisibilityCalculation->filterVisible($transports, $visiblePaymentsOnDomain, $domainId);
     }
@@ -310,8 +320,9 @@ class TransportFacade extends BaseTransportFacade
      * @param \DateTime[] $actionDatesToIndexedByDomainId
      * @param array $actionActiveIndexedByDomainId
      * @param array $minFreeOrderPricesIndexedByDomainId
+     * @param array $maxOrderPricesLimitIndexedByDomainId
      */
-    protected function updateTransportPrices(BaseTransport $transport, array $pricesIndexedByDomainId, array $actionPricesIndexedByDomainId = [], array $minActionOrderPricesIndexedByDomainId = [], array $actionDatesFromIndexedByDomainId = [], array $actionDatesToIndexedByDomainId = [], array $actionActiveIndexedByDomainId = [], array $minFreeOrderPricesIndexedByDomainId = []): void
+    protected function updateTransportPrices(BaseTransport $transport, array $pricesIndexedByDomainId, array $actionPricesIndexedByDomainId = [], array $minActionOrderPricesIndexedByDomainId = [], array $actionDatesFromIndexedByDomainId = [], array $actionDatesToIndexedByDomainId = [], array $actionActiveIndexedByDomainId = [], array $minFreeOrderPricesIndexedByDomainId = [], array $maxOrderPricesLimitIndexedByDomainId = []): void
     {
         foreach ($this->domain->getAllIds() as $domainId) {
             if ($transport->hasPriceForDomain($domainId)) {
@@ -324,6 +335,7 @@ class TransportFacade extends BaseTransportFacade
                 $price->setActionDateTo($actionDatesToIndexedByDomainId[$domainId] ?? null);
                 $price->setActionActive($actionActiveIndexedByDomainId[$domainId] ?? false);
                 $price->setMinFreeOrderPrice($minFreeOrderPricesIndexedByDomainId[$domainId] ?? null);
+                $price->setMaxOrderPriceLimit($maxOrderPricesLimitIndexedByDomainId[$domainId] ?? null);
             } else {
                 $transport->addPrice($this->transportPriceFactory->create(
                     $transport,
@@ -334,7 +346,8 @@ class TransportFacade extends BaseTransportFacade
                     $actionDatesFromIndexedByDomainId[$domainId] ?? null,
                     $actionDatesToIndexedByDomainId[$domainId] ?? null,
                     $actionActiveIndexedByDomainId[$domainId] ?? false,
-                    $minFreeOrderPricesIndexedByDomainId[$domainId] ?? null
+                    $minFreeOrderPricesIndexedByDomainId[$domainId] ?? null,
+                    $maxOrderPricesLimitIndexedByDomainId[$domainId] ?? null
                 ));
             }
         }

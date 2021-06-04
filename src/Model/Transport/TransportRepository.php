@@ -63,16 +63,21 @@ class TransportRepository extends BaseTransportRepository
      * @param bool $showEmailTransportInCart
      * @param bool $oversizedTransportAllowed
      * @param bool $bulkyTransportAllowed
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $orderPrice
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $paymentPrice
      * @return \App\Model\Transport\Transport[]
      */
     public function getAllByDomainIdAndTransportEmailType(
         int $domainId,
         bool $showEmailTransportInCart,
         bool $oversizedTransportAllowed,
-        bool $bulkyTransportAllowed
+        bool $bulkyTransportAllowed,
+        Money $orderPrice,
+        Money $paymentPrice
     ): array {
         $queryBuilder = $this->getQueryBuilderForAll()
             ->join(TransportDomain::class, 'td', Join::WITH, 't.id = td.transport AND td.domainId = :domainId')
+            ->join(TransportPrice::class, 'tp', Join::WITH, 't.id = tp.transport AND tp.domainId = :domainId')
             ->setParameter('domainId', $domainId);
 
         if ($showEmailTransportInCart === false) {
@@ -90,6 +95,10 @@ class TransportRepository extends BaseTransportRepository
         if ($bulkyTransportAllowed) {
             $queryBuilder->andWhere('t.bulkyAllowed = true');
         }
+
+        $queryBuilder
+            ->andWhere('(tp.maxOrderPriceLimit > :orderPrice) OR (tp.maxOrderPriceLimit IS NULL)')
+            ->setParameter('orderPrice', $orderPrice->add($paymentPrice)->getAmount());
 
         return $queryBuilder->getQuery()->getResult();
     }

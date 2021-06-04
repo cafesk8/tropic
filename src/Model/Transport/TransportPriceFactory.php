@@ -21,6 +21,7 @@ class TransportPriceFactory extends BaseTransportPriceFactory
      * @param \DateTime|null $actionDateTo
      * @param bool $actionActive
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minFreeOrderPrice
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $maxOrderPriceLimit
      * @return \App\Model\Transport\TransportPrice
      */
     public function create(
@@ -32,8 +33,9 @@ class TransportPriceFactory extends BaseTransportPriceFactory
         ?DateTime $actionDateFrom = null,
         ?DateTime $actionDateTo = null,
         bool $actionActive = false,
-        ?Money $minFreeOrderPrice = null
+        ?Money $minFreeOrderPrice = null,
+        ?Money $maxOrderPriceLimit = null
     ): TransportPrice {
-        return new TransportPrice($transport, $price, $domainId, $actionPrice, $minActionOrderPrice, $actionDateFrom, $actionDateTo, $actionActive, $minFreeOrderPrice);
+        return new TransportPrice($transport, $price, $domainId, $actionPrice, $minActionOrderPrice, $actionDateFrom, $actionDateTo, $actionActive, $minFreeOrderPrice, $maxOrderPriceLimit);
     }
 }
