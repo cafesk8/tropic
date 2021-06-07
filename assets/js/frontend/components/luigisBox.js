@@ -17,7 +17,8 @@ import Register from 'framework/common/utils/Register';
                     QUERY: 'q'
                 },
                 DefaultFilters: {
-                    type: ['product']
+                    type: ['product'],
+                    visible: true
                 },
                 QuicksearchTypes: ['category', 'set'],
                 Locale: $dataElement.data('locale'),

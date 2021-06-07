@@ -1128,6 +1128,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
             $productDomain->setShown($productData->shown[$domainId]);
             $productDomain->setNameForMergadoFeed($productData->namesForMergadoFeed[$domainId]);
             $productDomain->setTransportFee($productData->transportFee[$domainId]);
+            $productDomain->setExportedToLuigisBox(false);
         }
     }
 
