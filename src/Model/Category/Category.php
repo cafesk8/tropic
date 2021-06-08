@@ -56,14 +56,6 @@ class Category extends BaseCategory
     private $mallCategoryId;
 
     /**
-     * @var \App\Model\Advert\Advert|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Model\Advert\Advert", inversedBy="categories")
-     * @ORM\JoinColumn(name="advert_id", nullable=true, referencedColumnName="id", onDelete="SET NULL")
-     */
-    private $advert;
-
-    /**
      * @var int|null
      * @ORM\Column(type="integer", nullable=true, unique=true)
      */
@@ -144,7 +136,6 @@ class Category extends BaseCategory
         $this->listable = $categoryData->listable;
         $this->preListingCategory = $categoryData->preListingCategory;
         $this->mallCategoryId = $categoryData->mallCategoryId;
-        $this->advert = $categoryData->advert;
         $this->updatedByPohodaAt = $categoryData->updatedByPohodaAt;
         $this->pohodaParentId = $categoryData->pohodaParentId;
         $this->pohodaPosition = $categoryData->pohodaPosition;
@@ -153,6 +144,9 @@ class Category extends BaseCategory
         $this->filterParameters = new ArrayCollection($categoryData->filterParameters);
         $this->setDomains($categoryData);
         $this->unavailableProductsShown = $categoryData->unavailableProductsShown;
+        foreach ($categoryData->adverts as $advert) {
+            $this->setAdvert($advert);
+        }
     }
 
     /**
@@ -299,11 +293,26 @@ class Category extends BaseCategory
     }
 
     /**
+     * @param int $domainId
      * @return \App\Model\Advert\Advert|null
      */
-    public function getAdvert(): ?Advert
+    public function getAdvert(int $domainId): ?Advert
     {
-        return $this->advert;
+        return $this->getCategoryDomain($domainId)->getAdvert();
+    }
+
+    /**
+     * @return \App\Model\Advert\Advert[]
+     */
+    public function getAdverts(): array
+    {
+        $adverts = [];
+
+        foreach ($this->domains as $domain) {
+            $adverts[$domain->getDomainId()] = $domain->getAdvert();
+        }
+
+        return array_filter($adverts, fn (?Advert $advert) => $advert !== null);
     }
 
     /**
@@ -311,7 +320,7 @@ class Category extends BaseCategory
      */
     public function setAdvert(?Advert $advert): void
     {
-        $this->advert = $advert;
+        $this->getCategoryDomain($advert->getDomainId())->setAdvert($advert);
     }
 
     /**

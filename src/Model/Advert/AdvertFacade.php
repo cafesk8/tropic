@@ -22,6 +22,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
  * @property \App\Component\Image\ImageFacade $imageFacade
  * @property \App\Model\Advert\AdvertPositionRegistry $advertPositionRegistry
  * @method \App\Model\Advert\Advert|null findRandomAdvertByPositionOnCurrentDomain(string $positionName)
+ * @method \App\Model\Advert\Advert getById($advertId)
  */
 class AdvertFacade extends BaseAdvertFacade
 {
@@ -203,25 +204,16 @@ class AdvertFacade extends BaseAdvertFacade
         }
 
         $this->categoryFacade->removeAdvertFromCategories($advert, $categories);
+        $categoryDomains = [];
 
         foreach ($categories as $category) {
-            $category->setAdvert($advert);
-            $this->em->persist($category);
+            $categoryDomain = $this->categoryFacade->getCategoryDomainByCategoryAndDomainId($category, $advert->getDomainId());
+            $categoryDomain->setAdvert($advert);
+            $categoryDomains[] = $categoryDomain;
         }
 
+        $advert->setCategoryDomains($categoryDomains);
         $this->em->flush();
-    }
-
-    /**
-     * @param int $advertId
-     * @return \App\Model\Advert\Advert
-     */
-    public function getById($advertId): Advert
-    {
-        /** @var \App\Model\Advert\Advert $advert */
-        $advert = parent::getById($advertId);
-        $advert->setCategories($this->categoryFacade->getCategoriesByAdvert($advert));
-        return $advert;
     }
 
     /**

@@ -38,11 +38,11 @@ class Advert extends BaseAdvert
     private $productTitle;
 
     /**
-     * @var \App\Model\Category\Category[]
+     * @var \App\Model\Category\CategoryDomain[]
      *
-     * @ORM\OneToMany(targetEntity="App\Model\Category\Category", mappedBy="advert")
+     * @ORM\OneToMany(targetEntity="App\Model\Category\CategoryDomain", mappedBy="advert")
      */
-    private $categories;
+    private $categoryDomains;
 
     /**
      * @param \App\Model\Advert\AdvertData $advertData
@@ -54,7 +54,6 @@ class Advert extends BaseAdvert
         $this->smallTitle = $advertData->smallTitle;
         $this->bigTitle = $advertData->bigTitle;
         $this->productTitle = $advertData->productTitle;
-        $this->categories = $advertData->categories;
     }
 
     /**
@@ -67,7 +66,6 @@ class Advert extends BaseAdvert
         $this->smallTitle = $advertData->smallTitle;
         $this->bigTitle = $advertData->bigTitle;
         $this->productTitle = $advertData->productTitle;
-        $this->categories = $advertData->categories;
     }
 
     /**
@@ -99,14 +97,22 @@ class Advert extends BaseAdvert
      */
     public function getCategories(): array
     {
-        return $this->categories;
+        $categories = [];
+
+        foreach ($this->categoryDomains as $categoryDomain) {
+            if ($categoryDomain->getDomainId() === $this->getDomainId()) {
+                $categories[] = $categoryDomain->getCategory();
+            }
+        }
+
+        return $categories;
     }
 
     /**
-     * @param \App\Model\Category\Category[] $categories
+     * @param \App\Model\Category\CategoryDomain[] $categoryDomains
      */
-    public function setCategories(array $categories): void
+    public function setCategoryDomains(array $categoryDomains): void
     {
-        $this->categories = $categories;
+        $this->categoryDomains = $categoryDomains;
     }
 }

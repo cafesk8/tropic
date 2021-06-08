@@ -13,12 +13,13 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ObjectRepository;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Component\Paginator\QueryPaginator;
 use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
-use Shopsys\FrameworkBundle\Model\Category\CategoryDomain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryRepository as BaseCategoryRepository;
+use Shopsys\FrameworkBundle\Model\Category\Exception\CategoryDomainNotFoundException;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
@@ -272,12 +273,12 @@ class CategoryRepository extends BaseCategoryRepository
     public function removeAdvertFromCategories(Advert $advert, array $newCategories): void
     {
         $queryBuilder = $this->getQueryBuilder()
-            ->update(BaseCategory::class, 'c')
-            ->set('c.advert', 'NULL')
-            ->where('c.advert = :advert');
+            ->update(CategoryDomain::class, 'cd')
+            ->set('cd.advert', 'NULL')
+            ->where('cd.advert = :advert');
 
         if (!empty($newCategories)) {
-            $queryBuilder->andWhere('c NOT IN (:categories)')
+            $queryBuilder->andWhere('cd.category NOT IN (:categories)')
                 ->setParameter('categories', $newCategories);
         }
 
@@ -286,12 +287,19 @@ class CategoryRepository extends BaseCategoryRepository
     }
 
     /**
-     * @param \App\Model\Advert\Advert $advert
-     * @return \App\Model\Category\Category[]
+     * @param \App\Model\Category\Category $category
+     * @param int $domainId
+     * @return \App\Model\Category\CategoryDomain
      */
-    public function getCategoriesByAdvert(Advert $advert): array
+    public function getCategoryDomainByCategoryAndDomainId(Category $category, int $domainId): CategoryDomain
     {
-        return $this->getCategoryRepository()->findBy(['advert' => $advert]);
+        $categoryDomain = $this->getCategoryDomainRepository()->findOneBy(['category' => $category, 'domainId' => $domainId]);
+
+        if ($categoryDomain === null) {
+            throw new CategoryDomainNotFoundException($category->getId(), $domainId);
+        }
+
+        return $categoryDomain;
     }
 
     /**
@@ -540,5 +548,13 @@ class CategoryRepository extends BaseCategoryRepository
             ->orderBy('c.lft');
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @return \Doctrine\Persistence\ObjectRepository
+     */
+    private function getCategoryDomainRepository(): ObjectRepository
+    {
+        return $this->em->getRepository(CategoryDomain::class);
     }
 }

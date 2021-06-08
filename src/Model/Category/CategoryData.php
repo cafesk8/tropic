@@ -42,9 +42,9 @@ class CategoryData extends BaseCategoryData
     public $rightBannerTexts;
 
     /**
-     * @var \App\Model\Advert\Advert|null
+     * @var \App\Model\Advert\Advert[]
      */
-    public $advert;
+    public array $adverts;
 
     /**
      * @var int|null
@@ -117,7 +117,7 @@ class CategoryData extends BaseCategoryData
         $this->blogArticles = [];
         $this->leftBannerTexts = [];
         $this->rightBannerTexts = [];
-        $this->advert = null;
+        $this->adverts = [];
         $this->type = null;
         $this->filterParameters = [];
         $this->containsSaleProducts = [];
