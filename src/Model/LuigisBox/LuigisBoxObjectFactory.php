@@ -10,11 +10,14 @@ use App\Model\Category\Category;
 use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Brand\Brand;
 use App\Model\Product\Collection\ProductUrlsBatchLoader;
+use App\Model\Product\Flag\Flag;
+use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use App\Twig\PriceExtension;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Collection\Exception\ProductImageUrlNotLoadedException;
 
 class LuigisBoxObjectFactory
@@ -37,6 +40,8 @@ class LuigisBoxObjectFactory
 
     private DomainRouterFactory $domainRouterFactory;
 
+    private FlagFacade $flagFacade;
+
     /**
      * @param \App\Model\Product\Collection\ProductUrlsBatchLoader $productUrlsBatchLoader
      * @param \App\Model\Product\ProductFacade $productFacade
@@ -44,6 +49,7 @@ class LuigisBoxObjectFactory
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \App\Component\Router\DomainRouterFactory $domainRouterFactory
+     * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
         ProductUrlsBatchLoader $productUrlsBatchLoader,
@@ -51,7 +57,8 @@ class LuigisBoxObjectFactory
         PriceExtension $priceExtension,
         ImageFacade $imageFacade,
         AvailabilityFacade $availabilityFacade,
-        DomainRouterFactory $domainRouterFactory
+        DomainRouterFactory $domainRouterFactory,
+        FlagFacade $flagFacade
     ) {
         $this->productUrlsBatchLoader = $productUrlsBatchLoader;
         $this->productFacade = $productFacade;
@@ -59,6 +66,7 @@ class LuigisBoxObjectFactory
         $this->imageFacade = $imageFacade;
         $this->availabilityFacade = $availabilityFacade;
         $this->domainRouterFactory = $domainRouterFactory;
+        $this->flagFacade = $flagFacade;
     }
 
     /**
@@ -123,11 +131,7 @@ class LuigisBoxObjectFactory
         $productFields->in_sale = $product->isInAnySaleStock();
         $productFields->visible = $product->isShownOnDomain($domainId);
         $this->mapPrices($productFields, $this->productFacade->getAllProductSellingPricesByDomainId($product, $domainId), $domainId);
-
-        foreach ($product->getActiveFlags() as $flag) {
-            $productFields->flags[] = $flag->getName($locale);
-            $productFields->flag_colors[] = $flag->getRgbColor();
-        }
+        $this->mapFlags($productFields, $product, $locale);
 
         if (!$product->isMainVariant()) {
             $productFields->maximum_quantity = $product->getRealStockQuantity();
@@ -254,24 +258,74 @@ class LuigisBoxObjectFactory
      */
     private function mapPrices(LuigisBoxProductFields $luigisProductFields, array $prices, int $domainId): void
     {
+        $ordinaryPrice = Money::zero();
+        $registeredPrice = Money::zero();
+        $standardPrice = Money::zero();
+        $salePrice = Money::zero();
+
         foreach ($prices as $price) {
             /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
             $pricingGroup = $price->getPricingGroup();
             $sellingPrice = $price->getSellingPrice()->getPriceWithVat();
 
             if ($pricingGroup->isOrdinaryCustomerPricingGroup()) {
+                $ordinaryPrice = $sellingPrice;
                 $luigisProductFields->price_amount = $sellingPrice->getAmount();
                 $luigisProductFields->price = $this->priceExtension->priceWithCurrencyByDomainIdFilter($sellingPrice, $domainId);
             } elseif ($pricingGroup->isRegisteredCustomerPricingGroup()) {
+                $registeredPrice = $sellingPrice;
                 $luigisProductFields->price_registered_amount = $sellingPrice->getAmount();
                 $luigisProductFields->price_registered = $this->priceExtension->priceWithCurrencyByDomainIdFilter($sellingPrice, $domainId);
             } elseif ($pricingGroup->isStandardPricePricingGroup()) {
+                $standardPrice = $sellingPrice;
                 $luigisProductFields->price_standard_amount = $sellingPrice->getAmount();
                 $luigisProductFields->price_standard = $this->priceExtension->priceWithCurrencyByDomainIdFilter($sellingPrice, $domainId);
             } elseif ($pricingGroup->isSalePricePricingGroup()) {
+                $salePrice = $sellingPrice;
                 $luigisProductFields->price_sale_amount = $sellingPrice->getAmount();
                 $luigisProductFields->price_sale = $this->priceExtension->priceWithCurrencyByDomainIdFilter($sellingPrice, $domainId);
             }
+        }
+
+        if ($luigisProductFields->in_sale && $standardPrice->isGreaterThan(Money::zero())) {
+            $luigisProductFields->standard_discount_percent = intval($standardPrice->subtract($salePrice)->divide($standardPrice->getAmount(), 3)->multiply(100)->getAmount());
+            $luigisProductFields->registered_discount_percent = intval($standardPrice->subtract($registeredPrice)->divide($standardPrice->getAmount(), 3)->multiply(100)->getAmount());
+        } elseif ($ordinaryPrice->isGreaterThan(Money::zero()) && $standardPrice->isGreaterThan(Money::zero())) {
+            $luigisProductFields->standard_discount_percent = intval($ordinaryPrice->subtract($salePrice)->divide($ordinaryPrice->getAmount(), 3)->multiply(100)->getAmount());
+            $luigisProductFields->registered_discount_percent = intval($standardPrice->subtract($ordinaryPrice)->divide($standardPrice->getAmount(), 3)->multiply(100)->getAmount());
+        }
+    }
+
+    /**
+     * @param \App\Model\LuigisBox\LuigisBoxProductFields $luigisProductFields
+     * @param \App\Model\Product\Product $product
+     * @param string $locale
+     */
+    private function mapFlags(LuigisBoxProductFields $luigisProductFields, Product $product, string $locale): void
+    {
+        $saleFlagUsed = false;
+        $visibleVariantsCount = count($product->getVisibleVariants());
+
+        foreach ($product->getActiveFlags() as $flag) {
+            if ($saleFlagUsed && ($flag->isSale() || $flag->isClearance())) {
+                continue;
+            }
+
+            if ($flag->isClearance()) {
+                $flag = $this->flagFacade->getSaleFlag();
+            }
+
+            $luigisProductFields->flags[] = $flag->getName($locale);
+            $luigisProductFields->flag_colors[] = $flag->getRgbColor();
+
+            if ($flag->isSale()) {
+                $saleFlagUsed = true;
+            }
+        }
+
+        if ($visibleVariantsCount > 0) {
+            $luigisProductFields->flags[] = tc('Počet variant', $visibleVariantsCount, ['%variantsCount%' => $visibleVariantsCount], 'messages', $locale);
+            $luigisProductFields->flag_colors[] = Flag::VARIANTS_FLAG_COLOR;
         }
     }
 }

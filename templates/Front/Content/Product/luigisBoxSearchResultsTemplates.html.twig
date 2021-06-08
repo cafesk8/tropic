@@ -59,6 +59,15 @@
                         <span v-for="(flag, index) in attributes.flags" class="in-flag__item" v-bind:style="'background-color: ' + attributes.flag_colors[index]">
                             {{ '{{ flag }}' }}
                         </span>
+                        {% if isRegisteredCustomer %}
+                            <span v-if="attributes.registered_discount_percent && attributes.registered_discount_percent[0] > 0" class="in-flag__item" style="background-color: #d53030">
+                                {{ '{{ attributes.registered_discount_percent[0] }}' ~ '% ' ~ 'sleva'|trans }}
+                            </span>
+                        {% else %}
+                            <span v-if="attributes.standard_discount_percent && attributes.standard_discount_percent[0] > 0" class="in-flag__item" style="background-color: #d53030">
+                                {{ '{{ attributes.standard_discount_percent[0] }}' ~ '% ' ~ 'sleva'|trans }}
+                            </span>
+                        {% endif %}
                     </div>
                 </a>
 
@@ -69,16 +78,28 @@
                         </h2>
 
                         {% if isRegisteredCustomer %}
-                            <div v-if="attributes.in_sale && attributes.price_sale_amount > 0" class="list-products__item__info__price">{{ '{{ attributes.price_sale }}' }}</div>
-                            <div v-else class="list-products__item__info__price">{{ '{{ attributes.price_registered }}' }}</div>
+                            <div v-if="attributes.in_sale[0] && attributes.price_sale_amount > 0" class="list-products__item__info__price">
+                                <div v-if="attributes.price_standard_amount > attributes.price_sale_amount" class="list-products__item__info__price__old">{{ '{{ attributes.price_standard }}' }}</div>
+                                <div class="list-products__item__info__price__main">{{ '{{ attributes.price_sale }}' }}</div>
+                            </div>
+                            <div v-else class="list-products__item__info__price">
+                                <div v-if="attributes.price_standard_amount > attributes.price_registered_amount" class="list-products__item__info__price__old">{{ '{{ attributes.price_standard }}' }}</div>
+                                <div class="list-products__item__info__price__main">{{ '{{ attributes.price_registered }}' }}</div>
+                            </div>
                         {% else %}
-                            <div v-if="attributes.in_sale && attributes.price_sale_amount > 0" class="list-products__item__info__price">{{ '{{ attributes.price_sale }}' }}</div>
-                            <div v-else class="list-products__item__info__price">{{ '{{ attributes.price }}' }}</div>
+                            <div v-if="attributes.in_sale[0] && attributes.price_sale_amount > 0" class="list-products__item__info__price">
+                                <div v-if="attributes.price_amount > attributes.price_sale_amount" class="list-products__item__info__price__old">{{ '{{ attributes.price }}' }}</div>
+                                <div class="list-products__item__info__price__main">{{ '{{ attributes.price_sale }}' }}</div>
+                            </div>
+                            <div v-else class="list-products__item__info__price">
+                                <div v-if="attributes.price_standard_amount > attributes.price_amount" class="list-products__item__info__price__old">{{ '{{ attributes.price_standard }}' }}</div>
+                                <div class="list-products__item__info__price__main">{{ '{{ attributes.price }}' }}</div>
+                            </div>
                         {% endif %}
 
                         <div class="in-availability">
                             <div class="in-availability__text"
-                                 v-bind:style="'color:' + attributes.availability_color"
+                                 v-bind:style="'color:' + attributes.availability_color[0]"
                                  v-html="attributes.availability_text[0]">
                             </div>
                         </div>
@@ -179,10 +200,19 @@
                                             <span v-for="(flag, index) in set.attributes.flags" class="in-flag__item" v-bind:style="'background-color: ' + set.attributes.flag_colors[index]">
                                                 {{ '{{ flag }}' }}
                                             </span>
+                                            {% if isRegisteredCustomer %}
+                                                <span v-if="set.attributes.registered_discount_percent && set.attributes.registered_discount_percent[0] > 0" class="in-flag__item" style="background-color: #d53030">
+                                                    {{ '{{ set.attributes.registered_discount_percent[0] }}' ~ '% ' ~ 'sleva'|trans }}
+                                                </span>
+                                            {% else %}
+                                                <span v-if="set.attributes.standard_discount_percent && set.attributes.standard_discount_percent[0] > 0" class="in-flag__item" style="background-color: #d53030">
+                                                    {{ '{{ set.attributes.standard_discount_percent[0] }}' ~ '% ' ~ 'sleva'|trans }}
+                                                </span>
+                                            {% endif %}
                                         </div>
 
                                         {% if isRegisteredCustomer %}
-                                            <div v-if="attributes.in_sale && attributes.price_sale_amount > 0" class="box-products-set__info__prices">
+                                            <div v-if="attributes.in_sale[0] && attributes.price_sale_amount > 0" class="box-products-set__info__prices">
                                                 <span v-if="set.attributes.price_standard_amount > set.attributes.price_sale_amount" class="box-products-set__info__prices__old">
                                                     {{ '{{ set.attributes.price_standard }}' }}
                                                 </span>
@@ -199,8 +229,8 @@
                                                 </span>
                                             </div>
                                         {% else %}
-                                            <div v-if="attributes.in_sale && attributes.price_sale_amount > 0" class="box-products-set__info__prices">
-                                                <span v-if="set.attributes.price_sale_amount > set.attributes.price_amount" class="box-products-set__info__prices__old">
+                                            <div v-if="attributes.in_sale[0] && attributes.price_sale_amount > 0" class="box-products-set__info__prices">
+                                                <span v-if="set.attributes.price_amount > set.attributes.price_sale_amount" class="box-products-set__info__prices__old">
                                                     {{ '{{ set.attributes.price }}' }}
                                                 </span>
                                                 <span class="box-products-set__info__prices__new box-products-set__info__prices__new--colored">
@@ -307,7 +337,6 @@
         </div>
     </div>
 </script>
-
 
 <script type="text/x-template" id="template-facet-numeric-range">
     {% set currencySymbol = currencySymbolByDomainId(getDomain().id) %}

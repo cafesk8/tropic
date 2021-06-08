@@ -12,7 +12,7 @@
 
             {% if not onlyFirst or (onlyFirst and processedFlags < 1) %}
                 {% if variantsCount > 0 %}
-                    {{ _self.detail('Počet variant'|transchoice(variantsCount, {'%variantsCount%': variantsCount}), '#00aed8') }}
+                    {{ _self.detail('Počet variant'|transchoice(variantsCount, {'%variantsCount%': variantsCount}), constant('App\\Model\\Product\\Flag\\Flag::VARIANTS_FLAG_COLOR')) }}
                     {% set processedFlags = processedFlags + 1 %}
                 {% endif %}
             {% endif %}
