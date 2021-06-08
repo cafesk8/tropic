@@ -38,6 +38,15 @@ class PromoCodeLimitFacade
     private $productFacade;
 
     /**
+     * @var \App\Model\Product\Product[][][]
+     */
+    private array $productLimitsCache = [
+        Brand::class => [],
+        Category::class => [],
+        Product::class => [],
+    ];
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Order\PromoCode\PromoCodeLimitRepository $promoCodeRepository
      * @param \App\Model\Order\PromoCode\PromoCodeLimitFactory $promoCodeLimitFactory
@@ -110,15 +119,15 @@ class PromoCodeLimitFacade
         }
 
         if (!empty($brandIds)) {
-            $products += $this->productFacade->getByBrandIdsIndexedById($brandIds);
+            $products += $this->getByTypeFromCache(Brand::class, $brandIds);
         }
 
         if (!empty($categoryIds)) {
-            $products += $this->productFacade->getByCategoryIdsIndexedById($categoryIds);
+            $products += $this->getByTypeFromCache(Category::class, $categoryIds);
         }
 
         if (!empty($productIds)) {
-            $products += $this->productFacade->getByIdsIndexedById($productIds);
+            $products += $this->getByTypeFromCache(Product::class, $productIds);
         }
 
         return $products;
@@ -203,5 +212,35 @@ class PromoCodeLimitFacade
         $promoCodeLimitData->type = $type;
 
         return $this->create($promoCodeLimitData);
+    }
+
+    /**
+     * @param string $type
+     * @param int[] $objectIds
+     * @return \App\Model\Product\Product[]
+     */
+    private function getByTypeFromCache(string $type, array $objectIds): array
+    {
+        $idsString = implode('_', $objectIds);
+
+        if (!array_key_exists($idsString, $this->productLimitsCache[$type])) {
+            $products = [];
+
+            switch ($type) {
+                case Brand::class:
+                    $products = $this->productFacade->getByBrandIdsIndexedById($objectIds);
+                    break;
+                case Category::class:
+                    $products = $this->productFacade->getByCategoryIdsIndexedById($objectIds);
+                    break;
+                case Product::class:
+                    $products = $this->productFacade->getByIdsIndexedById($objectIds);
+                    break;
+            }
+
+            $this->productLimitsCache[$type][$idsString] = $products;
+        }
+
+        return $this->productLimitsCache[$type][$idsString];
     }
 }
