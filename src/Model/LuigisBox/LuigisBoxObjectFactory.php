@@ -291,8 +291,8 @@ class LuigisBoxObjectFactory
             $luigisProductFields->standard_discount_percent = intval($standardPrice->subtract($salePrice)->divide($standardPrice->getAmount(), 3)->multiply(100)->getAmount());
             $luigisProductFields->registered_discount_percent = intval($standardPrice->subtract($registeredPrice)->divide($standardPrice->getAmount(), 3)->multiply(100)->getAmount());
         } elseif ($ordinaryPrice->isGreaterThan(Money::zero()) && $standardPrice->isGreaterThan(Money::zero())) {
-            $luigisProductFields->standard_discount_percent = intval($ordinaryPrice->subtract($salePrice)->divide($ordinaryPrice->getAmount(), 3)->multiply(100)->getAmount());
-            $luigisProductFields->registered_discount_percent = intval($standardPrice->subtract($ordinaryPrice)->divide($standardPrice->getAmount(), 3)->multiply(100)->getAmount());
+            $luigisProductFields->standard_discount_percent = intval($standardPrice->subtract($ordinaryPrice)->divide($standardPrice->getAmount(), 3)->multiply(100)->getAmount());
+            $luigisProductFields->registered_discount_percent = intval($standardPrice->subtract($registeredPrice)->divide($standardPrice->getAmount(), 3)->multiply(100)->getAmount());
         }
     }
 
