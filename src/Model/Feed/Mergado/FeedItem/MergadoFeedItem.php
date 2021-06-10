@@ -123,6 +123,8 @@ class MergadoFeedItem implements FeedItemInterface
      */
     private $warranty;
 
+    private int $promoDiscountDisabled;
+
     private string $purchaseVsSellingPriceDifference;
 
     private ?int $saleExclusionType;
@@ -156,6 +158,7 @@ class MergadoFeedItem implements FeedItemInterface
      * @param string $purchaseVsSellingPriceDifference
      * @param int|null $saleExclusionType
      * @param string|null $standardPrice
+     * @param int $promoDiscountDisabled
      */
     public function __construct(
         int $id,
@@ -183,7 +186,8 @@ class MergadoFeedItem implements FeedItemInterface
         ?int $warranty,
         string $purchaseVsSellingPriceDifference,
         ?int $saleExclusionType,
-        ?string $standardPrice
+        ?string $standardPrice,
+        int $promoDiscountDisabled
     ) {
         $this->id = $id;
         $this->itemGroupId = $itemGroupId;
@@ -211,6 +215,7 @@ class MergadoFeedItem implements FeedItemInterface
         $this->purchaseVsSellingPriceDifference = $purchaseVsSellingPriceDifference;
         $this->saleExclusionType = $saleExclusionType;
         $this->standardPrice = $standardPrice;
+        $this->promoDiscountDisabled = $promoDiscountDisabled;
     }
 
     /**
@@ -427,5 +432,13 @@ class MergadoFeedItem implements FeedItemInterface
     public function getStandardPrice(): ?string
     {
         return $this->standardPrice;
+    }
+
+    /**
+     * @return int
+     */
+    public function isPromoDiscountDisabled(): int
+    {
+        return $this->promoDiscountDisabled;
     }
 }
