@@ -129,7 +129,7 @@ class LuigisBoxObjectFactory
         $productFields->variants_count = count($product->getVariants());
         $productFields->image_link = $this->mapProductImages($product, $domainConfig);
         $productFields->in_sale = $product->isInAnySaleStock();
-        $productFields->visible = $product->isShownOnDomain($domainId);
+        $productFields->visible = $product->isVisible();
         $this->mapPrices($productFields, $this->productFacade->getAllProductSellingPricesByDomainId($product, $domainId), $domainId);
         $this->mapFlags($productFields, $product, $locale);
 
