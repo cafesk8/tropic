@@ -893,3 +893,5 @@ services:
     Shopsys\FrameworkBundle\Model\Statistics\StatisticsFacade: '@App\Model\Statistics\StatisticsFacade'
 
     Shopsys\FrameworkBundle\Model\Statistics\StatisticsProcessingFacade: '@App\Model\Statistics\StatisticsProcessingFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\AutomaticBestsellingProductRepository: '@App\Model\Product\BestsellingProduct\AutomaticBestsellingProductRepository'

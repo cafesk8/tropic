@@ -8,6 +8,8 @@ use Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\BestsellingProductF
 
 /**
  * @method \App\Model\Product\Product[] getAllOfferedBestsellingProducts(int $domainId, \App\Model\Category\Category $category, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
+ * @property \App\Model\Product\BestsellingProduct\AutomaticBestsellingProductRepository $automaticBestsellingProductRepository
+ * @method __construct(\App\Model\Product\BestsellingProduct\AutomaticBestsellingProductRepository $automaticBestsellingProductRepository, \Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\ManualBestsellingProductRepository $manualBestsellingProductRepository, \Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\BestsellingProductCombinator $bestsellingProductCombinator)
  */
 class BestsellingProductFacade extends BaseBestsellingProductFacade
 {
