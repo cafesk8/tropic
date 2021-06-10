@@ -540,7 +540,7 @@
             {% endif %}
 
             <div class="in-product-prices__item in-product-prices__item--main">
-                {{ sellingPrice.priceWithVat|price }}
+                {{ type == "tipProduct" and product.isMainVariant ? 'od '|trans : '' }} {{ sellingPrice.priceWithVat|price }}
             </div>
 
             {% if sellingPrice.hasHigherStandardPrice %}
