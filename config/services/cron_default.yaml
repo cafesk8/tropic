@@ -7,7 +7,7 @@ services:
     # ONCE PER DAY ----------------------------------------------------------------------------------
     App\Model\Category\Transfer\CategoryImportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '23', minutes: '30', readableName: 'Import změněných kategorií z Pohoda IS' }
+            - { name: shopsys.cron, hours: '21', minutes: '30', readableName: 'Import změněných kategorií z Pohoda IS' }
 
     App\Model\GoPay\GoPayAvailablePaymentsCronModule:
         arguments:
