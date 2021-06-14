@@ -50,6 +50,11 @@ class TransportPrice extends BaseTransportPrice
     private ?Money $minFreeOrderPrice;
 
     /**
+     * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
+     */
+    private ?Money $maxOrderPriceLimit;
+
+    /**
      * @param \App\Model\Transport\Transport $transport
      * @param \Shopsys\FrameworkBundle\Component\Money\Money $price
      * @param int $domainId
@@ -59,6 +64,7 @@ class TransportPrice extends BaseTransportPrice
      * @param \DateTime|null $actionDateTo
      * @param bool $actionActive
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minFreeOrderPrice
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $maxOrderPriceLimit
      */
     public function __construct(
         BaseTransport $transport,
@@ -69,7 +75,8 @@ class TransportPrice extends BaseTransportPrice
         ?DateTime $actionDateFrom,
         ?DateTime $actionDateTo,
         bool $actionActive,
-        ?Money $minFreeOrderPrice
+        ?Money $minFreeOrderPrice,
+        ?Money $maxOrderPriceLimit
     ) {
         parent::__construct($transport, $price, $domainId);
         $this->actionPrice = $actionPrice;
@@ -78,6 +85,7 @@ class TransportPrice extends BaseTransportPrice
         $this->actionDateTo = $actionDateTo;
         $this->actionActive = $actionActive;
         $this->minFreeOrderPrice = $minFreeOrderPrice;
+        $this->maxOrderPriceLimit = $maxOrderPriceLimit;
     }
 
     /**
@@ -169,11 +177,27 @@ class TransportPrice extends BaseTransportPrice
     }
 
     /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getMaxOrderPriceLimit(): ?Money
+    {
+        return $this->maxOrderPriceLimit;
+    }
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minFreeOrderPrice
      */
     public function setMinFreeOrderPrice(?Money $minFreeOrderPrice): void
     {
         $this->minFreeOrderPrice = $minFreeOrderPrice;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $maxOrderPriceLimit
+     */
+    public function setMaxOrderPriceLimit(?Money $maxOrderPriceLimit): void
+    {
+        $this->maxOrderPriceLimit = $maxOrderPriceLimit;
     }
 
     /**

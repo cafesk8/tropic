@@ -61,4 +61,17 @@ class PaymentRepository extends BasePaymentRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @param string $externalId
+     * @return \App\Model\Payment\Payment|null
+     */
+    public function findByExternalId(string $externalId): ?Payment
+    {
+        return $this->getQueryBuilderForAll()
+            ->andWhere('p.externalId = :externalId')
+            ->setParameter('externalId', $externalId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

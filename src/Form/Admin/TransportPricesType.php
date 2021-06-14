@@ -37,6 +37,10 @@ class TransportPricesType extends PriceAndVatTableByDomainsType
             'compound' => true,
             'render_form_row' => false,
         ]);
+        $maxOrderPricesLimitIndexedByDomainIdBuilder = $builder->create('maxOrderPricesLimitIndexedByDomainId', FormType::class, [
+            'compound' => true,
+            'render_form_row' => false,
+        ]);
         $actionActiveIndexedByDomainIdBuilder = $builder->create('actionActiveIndexedByDomainId', FormType::class, [
             'compound' => true,
             'render_form_row' => false,
@@ -52,6 +56,15 @@ class TransportPricesType extends PriceAndVatTableByDomainsType
                 ],
                 'label' => t('Minimální cena objednávky pro dopravu zdarma'),
             ]);
+            $maxOrderPricesLimitIndexedByDomainIdBuilder->add($domainId, MoneyType::class, [
+                'scale' => 6,
+                'required' => false,
+                'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
+                'constraints' => [
+                    new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
+                ],
+                'label' => t('Maximální hodnota objednávky'),
+            ]);
             $actionActiveIndexedByDomainIdBuilder->add($domainId, CheckboxType::class, [
                 'required' => false,
                 'label' => t('Akce na dopravu'),
@@ -59,6 +72,7 @@ class TransportPricesType extends PriceAndVatTableByDomainsType
         }
 
         $builder->add($minFreeOrderPricesIndexedByDomainIdBuilder);
+        $builder->add($maxOrderPricesLimitIndexedByDomainIdBuilder);
         $builder->add($actionActiveIndexedByDomainIdBuilder);
         $this->addActionPrices($builder);
     }

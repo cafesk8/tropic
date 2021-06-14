@@ -157,6 +157,7 @@ class TransportAndPaymentFormType extends AbstractType
             $showEmailTransportInCart,
             $oversizedTransportRequired,
             $bulkyTransportRequired,
+            $orderPrice
         );
 
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($options['domain_id']);

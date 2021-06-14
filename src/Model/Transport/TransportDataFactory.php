@@ -61,6 +61,7 @@ class TransportDataFactory extends BaseTransportDataFactory
             $transportData->actionDatesToIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->getActionDateTo();
             $transportData->actionActiveIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->isActionActive();
             $transportData->minFreeOrderPricesIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->getMinFreeOrderPrice();
+            $transportData->maxOrderPricesLimitIndexedByDomainId[$domainId] = $transport->getPrice($domainId)->getMaxOrderPriceLimit();
         }
     }
 

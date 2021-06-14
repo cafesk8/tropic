@@ -72,6 +72,20 @@
 
                 <div class="form-line form-line--in-box">
                     <div class="form-line__label">
+                        {{ form_label(form.maxOrderPricesLimitIndexedByDomainId[domainId]) }}
+                    </div>
+                    <div class="form-line__side">
+                        <div class="form-line__item">
+                            {{ form_widget(form.maxOrderPricesLimitIndexedByDomainId[domainId], { symbolAfterInput: currencySymbolByDomainId(domainId) }) }}
+                        </div>
+                        <div>
+                            {{ form_errors(form.maxOrderPricesLimitIndexedByDomainId[domainId] ) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-line form-line--in-box">
+                    <div class="form-line__label">
                         {{ form_widget(form.actionActiveIndexedByDomainId[domainId], {attr: {class: 'js-action-cb', 'data-domain': domainId}}) }}
                         {{ form_label(form.actionActiveIndexedByDomainId[domainId]) }}
                     </div>
