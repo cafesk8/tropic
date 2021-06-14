@@ -16,20 +16,25 @@ class OrderExportCronModule extends AbstractTransferCronModule
 
     private OrderExportFacade $orderExportFacade;
 
+    private OrderUpdateFacade $orderUpdateFacade;
+
     private CronModuleFacade $cronModuleFacade;
 
     /**
      * @param \App\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \App\Model\Order\Transfer\OrderExportFacade $orderExportFacade
+     * @param \App\Model\Order\Transfer\OrderUpdateFacade $orderUpdateFacade
      * @param \App\Component\Cron\CronModuleFacade $cronModuleFacade
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         OrderExportFacade $orderExportFacade,
+        OrderUpdateFacade $orderUpdateFacade,
         CronModuleFacade $cronModuleFacade
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->orderExportFacade = $orderExportFacade;
+        $this->orderUpdateFacade = $orderUpdateFacade;
         $this->cronModuleFacade = $cronModuleFacade;
     }
 
@@ -51,6 +56,7 @@ class OrderExportCronModule extends AbstractTransferCronModule
         }
 
         $this->orderExportFacade->processExport();
+        $this->orderUpdateFacade->processUpdate();
 
         return false;
     }

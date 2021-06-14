@@ -50,6 +50,7 @@ class OrderExportStatusFilter implements AdvancedSearchFilterInterface
         return [
             'choices' => [
                 t('Přeneseno') => Order::EXPORT_SUCCESS,
+                t('Opětovný přenos') => Order::EXPORT_NEEDS_UPDATE,
                 t('Zatím nepřeneseno') => Order::EXPORT_NOT_YET,
                 t('Chyba při přenosu') => Order::EXPORT_ERROR,
                 t('Zatím nepřeneseno nebo chyba při přenosu') => self::EXPORT_NOT_SUCCESS,

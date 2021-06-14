@@ -19,7 +19,7 @@ use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 
 class OrderExportFacade
 {
-    private const ORDERS_EXPORT_MAX_BATCH_LIMIT = 1000;
+    public const ORDERS_EXPORT_MAX_BATCH_LIMIT = 1000;
 
     /**
      * @var \App\Model\Customer\Transfer\CustomerExportFacade

@@ -289,9 +289,22 @@ class OrderRepository extends BaseOrderRepository
             ->andWhere('o.exportStatus = :exportStatus')
             ->orderBy('o.createdAt', 'ASC')
             ->setMaxResults($limit)
-            ->setParameters([
-                'exportStatus' => Order::EXPORT_NOT_YET,
-            ]);
+            ->setParameter('exportStatus', Order::EXPORT_NOT_YET);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $limit
+     * @return \App\Model\Order\Order[]
+     */
+    public function getForUpdate(int $limit): array
+    {
+        $queryBuilder = $this->createOrderQueryBuilder()
+            ->andWhere('o.exportStatus = :exportStatus')
+            ->orderBy('o.createdAt', 'ASC')
+            ->setMaxResults($limit)
+            ->setParameter('exportStatus', Order::EXPORT_NEEDS_UPDATE);
 
         return $queryBuilder->getQuery()->getResult();
     }

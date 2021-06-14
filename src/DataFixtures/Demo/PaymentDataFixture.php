@@ -75,6 +75,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
     {
         $paymentData = $this->paymentDataFactory->create();
         $paymentData->type = Payment::TYPE_BASIC;
+        $paymentData->externalId = Payment::EXT_ID_CARD;
         $paymentData->waitForPayment = true;
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->name[$locale] = t('Kreditní kartou', [], 'dataFixtures', $locale);
@@ -93,6 +94,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $paymentData = $this->paymentDataFactory->create();
         $paymentData->type = Payment::TYPE_BASIC;
+        $paymentData->externalId = Payment::EXT_ID_ON_DELIVERY;
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->name[$locale] = t('Dobírka', [], 'dataFixtures', $locale);
         }
@@ -102,6 +104,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $paymentData = $this->paymentDataFactory->create();
         $paymentData->type = Payment::TYPE_BASIC;
+        $paymentData->externalId = Payment::EXT_ID_CASH;
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->name[$locale] = t('Hotově', [], 'dataFixtures', $locale);
         }
@@ -111,6 +114,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $paymentData = $this->paymentDataFactory->create();
         $paymentData->type = self::PAYMENT_GOPAY;
+        $paymentData->externalId = Payment::EXT_ID_CARD;
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->name[$locale] = t('GoPay - Platba kartou', [], 'dataFixtures', $locale);
         }
@@ -176,6 +180,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $paymentData = $this->paymentDataFactory->create();
         $paymentData->type = Payment::TYPE_COFIDIS;
+        $paymentData->externalId = Payment::EXT_ID_COFIDIS;
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->name[$locale] = t('Cofidis', [], 'dataFixtures', $locale);
         }
