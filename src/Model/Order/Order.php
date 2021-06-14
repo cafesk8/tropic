@@ -605,8 +605,9 @@ class Order extends BaseOrder
         $this->deliveryAddressSameAsBillingAddress = $orderData->deliveryAddressSameAsBillingAddress;
         if ($orderData->deliveryAddressSameAsBillingAddress) {
             //disable value override when transport type is zasilkovna
-            if($orderData->orderTransport
-                && $orderData->orderTransport->transport->getTransportType() !== Transport::TYPE_ZASILKOVNA_CZ)
+            if ($orderData->orderTransport
+                && $orderData->orderTransport->transport->getTransportType() !== Transport::TYPE_ZASILKOVNA_CZ
+                && $orderData->orderTransport->transport->getTransportType() !== Transport::TYPE_ZASILKOVNA_SK)
             {
                 $this->deliveryCompanyName = $orderData->companyName;
             }
