@@ -8,6 +8,7 @@ use App\Model\Blog\Article\BlogArticle;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Bestseller\BestsellerFacade;
 use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade;
@@ -74,6 +75,8 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
     private BlogArticleFacade $blogArticleFacade;
 
+    private BestsellerFacade $bestsellerFacade;
+
     /**
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
@@ -91,6 +94,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      * @param \App\Model\Product\Set\ProductSetFacade $productSetFacade
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
+     * @param \App\Model\Product\Bestseller\BestsellerFacade $bestsellerFacade
      */
     public function __construct(
         ProductFacade $productFacade,
@@ -108,7 +112,8 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         PricingGroupFacade $pricingGroupFacade,
         ProductSetFacade $productSetFacade,
         FlagFacade $flagFacade,
-        BlogArticleFacade $blogArticleFacade
+        BlogArticleFacade $blogArticleFacade,
+        BestsellerFacade $bestsellerFacade
     ) {
         parent::__construct($productFacade, $productAccessoryFacade, $domain, $currentCustomerUser, $topProductFacade, $productOnCurrentDomainFacade, $listedProductViewFactory, $productActionViewFacade, $imageViewFacade);
         $this->cachedBestsellingProductFacade = $cachedBestsellingProductFacade;
@@ -118,6 +123,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $this->productSetFacade = $productSetFacade;
         $this->flagFacade = $flagFacade;
         $this->blogArticleFacade = $blogArticleFacade;
+        $this->bestsellerFacade = $bestsellerFacade;
     }
 
     /**
@@ -344,6 +350,25 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         usort(
             $productViews,
             fn (ListedProductView $listedProductView1, ListedProductView $listedProductView2) => $topProductPositionIndexedById[$listedProductView1->getId()] - $topProductPositionIndexedById[$listedProductView2->getId()]
+        );
+
+        return $productViews;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllBestsellers(): array
+    {
+        $bestsellerPositionIndexedById = $this->bestsellerFacade->getProductPositionIndexedById($this->domain->getId());
+
+        $productViews = $this->createFromArray(
+            $this->productOnCurrentDomainFacade->getSellableHitsForIds(array_keys($bestsellerPositionIndexedById), 'front_available_product_list')
+        );
+
+        usort(
+            $productViews,
+            fn (ListedProductView $listedProductView1, ListedProductView $listedProductView2) => $bestsellerPositionIndexedById[$listedProductView1->getId()] - $bestsellerPositionIndexedById[$listedProductView2->getId()]
         );
 
         return $productViews;

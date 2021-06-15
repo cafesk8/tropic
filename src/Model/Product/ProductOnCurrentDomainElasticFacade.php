@@ -42,6 +42,10 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
             $filterQuery = $filterQuery->filterOnlyInNews();
         }
 
+        if ($routeName === 'front_available_product_list'){
+            $filterQuery = $filterQuery->filterOnlyAvailable();
+        }
+
         $hits = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery)->getHits();
 
         return $this->sortByOriginalArray($hits, $ids);
