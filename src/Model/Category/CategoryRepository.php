@@ -21,6 +21,7 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryDomain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryRepository as BaseCategoryRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
 
 /**
  * @property \App\Model\Product\ProductRepository $productRepository
@@ -521,9 +522,18 @@ class CategoryRepository extends BaseCategoryRepository
                 'pr.brand = :brand
                     AND pr = pcd.product'
             )
+            ->join(
+                ProductVisibility::class,
+                'pv',
+                Join::WITH,
+                'pv.domainId = :domainId
+                    AND pv.product = pcd.product'
+            )
             ->select('c')
             ->andWhere('c.listable = true')
             ->andWhere('c.level = :categoryLevel')
+            ->andWhere('pv.visible = false')
+            ->andWhere('pr.calculatedSellingDenied = false')
             ->setParameter('domainId', $domainId)
             ->setParameter('brand', $brand)
             ->setParameter('categoryLevel', $level)
