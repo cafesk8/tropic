@@ -10,7 +10,6 @@ use App\Model\Category\Category;
 use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Brand\Brand;
 use App\Model\Product\Collection\ProductUrlsBatchLoader;
-use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
@@ -93,7 +92,7 @@ class LuigisBoxObjectFactory
             $luigisProduct->nested[] = $this->createBrand($brand, $domainConfig);
         }
 
-        foreach ($product->getVariants() as $variant) {
+        foreach ($product->getVisibleVariants() as $variant) {
             $luigisProduct->nested[] = $this->createProduct($variant, $domainConfig, self::TYPE_VARIANT);
         }
 
@@ -126,7 +125,7 @@ class LuigisBoxObjectFactory
         $productFields->description = $product->getDescription($domainId);
         $productFields->description_short = $product->getShortDescription($domainId);
         $productFields->id = $product->getId();
-        $productFields->variants_count = count($product->getVariants());
+        $productFields->variants_count = count($product->getVisibleVariants());
         $productFields->image_link = $this->mapProductImages($product, $domainConfig);
         $productFields->in_sale = $product->isInAnySaleStock();
         $productFields->visible = $product->isVisible();
@@ -304,7 +303,6 @@ class LuigisBoxObjectFactory
     private function mapFlags(LuigisBoxProductFields $luigisProductFields, Product $product, string $locale): void
     {
         $saleFlagUsed = false;
-        $visibleVariantsCount = count($product->getVisibleVariants());
 
         foreach ($product->getActiveFlags() as $flag) {
             if ($saleFlagUsed && ($flag->isSale() || $flag->isClearance())) {
@@ -321,11 +319,6 @@ class LuigisBoxObjectFactory
             if ($flag->isSale()) {
                 $saleFlagUsed = true;
             }
-        }
-
-        if ($visibleVariantsCount > 0) {
-            $luigisProductFields->flags[] = tc('Počet variant', $visibleVariantsCount, ['%variantsCount%' => $visibleVariantsCount], 'messages', $locale);
-            $luigisProductFields->flag_colors[] = Flag::VARIANTS_FLAG_COLOR;
         }
     }
 }

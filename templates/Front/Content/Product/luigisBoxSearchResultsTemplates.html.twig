@@ -68,6 +68,9 @@
                                 {{ '{{ attributes.standard_discount_percent[0] }}' ~ '% ' ~ 'sleva'|trans }}
                             </span>
                         {% endif %}
+                        <span v-if="attributes.variant_count > 0" class="in-flag__item" style="background-color: {{ constant('App\\Model\\Product\\Flag\\Flag::VARIANTS_FLAG_COLOR') }}">
+                            {{ '{{ attributes.standard_discount_percent[0] }}' ~ '% ' ~ 'sleva'|trans }}
+                        </span>
                     </div>
                 </a>
 
@@ -117,7 +120,7 @@
                     <div class="list-products__item__hover">
                         <form method="post" name="add_product_form" novalidate="novalidate" class="js-add-product dont-print"
                               action="{{ url('front_cart_add_product') }}" data-ajax-url="{{ url('front_cart_add_product_ajax') }}"
-                              v-if="attributes.variants_count == 0">
+                              v-if="attributes.variant_count == 0">
                             <input type="hidden" name="add_product_form[productId]" class="input id__add_product_form_productId" v-bind:value="attributes.id">
                             <input type="hidden" name="add_product_form[onlyRefresh]" class="input id__add_product_form_onlyRefresh" value="0" tabindex="0">
                             <div class="in-add-to-cart in-add-to-cart--small">
