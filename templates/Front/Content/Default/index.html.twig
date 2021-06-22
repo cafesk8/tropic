@@ -31,6 +31,8 @@
 
     {{ render(controller('App\\Controller\\Front\\TopProductController:listAction')) }}
 
+    {{ render(controller('App\\Controller\\Front\\BestsellerController:listAction')) }}
+
     {% cache 'priceBombProducts' {lifetime:60*60*4, domainId: domainId} %}
         {{ render(controller('App\\Controller\\Front\\HomepageController:priceBombProductsAction')) }}
     {% endcache %}

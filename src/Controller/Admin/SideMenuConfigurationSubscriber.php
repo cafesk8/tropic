@@ -130,6 +130,8 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
 
         $marketingMenu->addChild('top_products', ['route' => 'admin_topproduct_list', 'label' => t('Akce na titulní stránce')]);
 
+        $marketingMenu->addChild('bestsellers', ['route' => 'admin_bestseller_list', 'label' => t('Bestsellery')]);
+
         $marketingMenu->removeChild('top_categories');
         $marketingMenu->removeChild('slider');
 
