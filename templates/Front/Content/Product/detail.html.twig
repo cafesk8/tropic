@@ -34,7 +34,7 @@
 
 {% block main_content %}
     <div itemscope itemtype="http://schema.org/Product">
-        {{ boxDetail.productBox(product, currentVariant, youtubeVideoIds, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews, showCofidisBanner) }}
+        {{ boxDetail.productBox(product, currentVariant, youtubeVideoIds, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews, showCofidisBanner, highestSellingPrice) }}
     </div>
 
     {% if productBlogArticles|length > 0 %}

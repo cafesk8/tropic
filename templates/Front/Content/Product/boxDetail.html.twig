@@ -1,4 +1,4 @@
-{% macro productBox(product, currentVariant, youtubeVideoIds, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews, showCofidisBanner) %}
+{% macro productBox(product, currentVariant, youtubeVideoIds, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, parentSetViews, showCofidisBanner, highestSellingPrice) %}
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
@@ -138,10 +138,14 @@
                                 {% endif %}
 
                                 {% if product.isMainVariant %}
-                                    <ul {% if getProductSellingPrice(product) is not null %}itemprop="offers"
+                                    <ul {% if sellingPrice is not null %}itemprop="offers"
                                         itemscope
                                         itemtype="http://schema.org/AggregateOffer" {% endif %}
                                         class="list-variants">
+                                        <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
+                                        <meta itemprop="offerCount" content="{{ filterOnlyVisibleVariants(product)|length }}">
+                                        <meta itemprop="lowPrice" content="{{ sellingPrice.priceWithVat|moneyFormat  }}">
+                                        <meta itemprop="highPrice" content="{{ highestSellingPrice.priceWithVat|moneyFormat  }}">
                                         {% for variant in filterOnlyVisibleVariants(product) %}
                                             {{ loop.index0 == maxVisibleVariants ? '<div class="display-none js-variantsToggle-container">' : '' }}
                                             <li class="list-variants__item">
@@ -187,12 +191,15 @@
                                                 </div>
                                                 {{ discountExclusion.discountExclusionNotice(variant, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, 'in-discount-message--variant') }}
                                                 <div class="list-variants__item__prices" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                                    {% if getProductSellingPrice(product) is not null %}
+                                                    {% if sellingPrice is not null %}
+                                                        <meta itemprop="gtin"
+                                                              content="{{ variant.ean }}"
+                                                        >
                                                         <meta itemprop="priceCurrency"
                                                             content="{{ currencyCode(domain.id) }}"
                                                         >
                                                         <meta itemprop="lowPrice"
-                                                            content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
+                                                            content="{{ sellingPrice.priceWithVat|moneyFormat }}"
                                                         >
                                                         <link itemprop="availability"
                                                             href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"

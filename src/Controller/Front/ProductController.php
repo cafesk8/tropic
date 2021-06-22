@@ -232,6 +232,14 @@ class ProductController extends FrontBaseController
         $customerUser = $this->getUser();
         /** @var \App\Model\Product\Pricing\ProductPrice $productSellingPrice */
         $productSellingPrice = $this->productCachedAttributesFacade->getProductSellingPrice($product);
+        $highestSellingPrice = $productSellingPrice;
+
+        foreach ($product->getVariants() as $variant) {
+            $variantPrice = $this->productCachedAttributesFacade->getProductSellingPrice($variant);
+            if ($highestSellingPrice->getPriceWithVat()->isLessThan($variantPrice->getPriceWithVat())) {
+                $highestSellingPrice = $variantPrice;
+            }
+        }
 
         return $this->render('Front/Content/Product/detail.html.twig', [
             'product' => $product,
@@ -252,6 +260,7 @@ class ProductController extends FrontBaseController
             'parentSetViews' => $this->listedProductViewElasticFacade->getParentSetsByProduct($product, $domainId, $this->pricingGroupFacade->getCurrentPricingGroup($customerUser)),
             'heurekaReviews' => $this->heurekaReviewFacade->getLatestReviews($this->domain->getId()),
             'showCofidisBanner' => $this->cofidisBannerFacade->isAllowedToShowCofidisBanner($productSellingPrice),
+            'highestSellingPrice' => $highestSellingPrice,
         ]);
     }
 
