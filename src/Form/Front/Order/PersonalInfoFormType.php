@@ -140,9 +140,9 @@ class PersonalInfoFormType extends AbstractType
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
                     ]),
                     new Constraints\Regex([
-                        // https://regex101.com/r/1AcrRg/1
+                        // https://regex101.com/r/iuaP2w/1
                         // https://en.wikipedia.org/wiki/E.164
-                        'pattern' => '/^(?:\+(\d{1,3})\s)?(?:\s?\d{3}){3}$/',
+                        'pattern' => '/^(?:\+(\d{1,3}))?(?:\d{3}){3}$/',
                         'message' => 'Telefonní číslo musí být platné',
                     ]),
                 ],
