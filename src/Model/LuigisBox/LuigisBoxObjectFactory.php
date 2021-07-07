@@ -126,7 +126,6 @@ class LuigisBoxObjectFactory
         $productFields->description = $product->getDescription($domainId);
         $productFields->description_short = $product->getShortDescription($domainId);
         $productFields->id = $product->getId();
-        $productFields->variants_count = count($product->getVisibleVariants());
         $productFields->image_link = $this->mapProductImages($product, $domainConfig);
         $productFields->in_sale = $product->isInAnySaleStock();
         $productFields->visible = $product->isVisible();

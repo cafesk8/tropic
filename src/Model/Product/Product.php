@@ -1693,7 +1693,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
      */
     public function getVisibleVariants(): array
     {
-        return $this->variants->filter(fn (Product $variant) => $variant->getCalculatedVisibility())->toArray();
+        return $this->variants->filter(fn (Product $variant) => $variant->isVisible())->toArray();
     }
 
     /**
