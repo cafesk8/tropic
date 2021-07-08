@@ -213,10 +213,6 @@ export default class PaymentTransportRelations {
     static init ($container) {
         const $transportInputs = $container.filterAllNodes('.js-order-transport-input');
         const $paymentInputs = $container.filterAllNodes('.js-order-payment-input');
-        let $toggleAdditionalTransportsButton = $container.filterAllNodes('.js-toggle-additional-transports');
-        let $toggleAdditionalPaymentsButton = $container.filterAllNodes('.js-toggle-additional-payments');
-        let $additionalTransports = $container.filterAllNodes('.js-additional-transport');
-        let $additionalPayments = $container.filterAllNodes('.js-additional-payment');
         const $registrationCheckbox = $container.filterAllNodes('#order_personal_info_form_registration');
         const $registrationFields = $container.filterAllNodes('.js-order-registration-fields');
         const $passwordInputs = $container.filterAllNodes('#order_personal_info_form_password_first, #order_personal_info_form_password_second');
@@ -239,16 +235,6 @@ export default class PaymentTransportRelations {
         $paymentInputs.change(paymentTransportRelations.updateContinueButton);
         $paymentInputs.filter(':checked').change();
         paymentTransportRelations.updateContinueButton();
-
-        $toggleAdditionalTransportsButton.click(function () {
-            $additionalTransports.toggleClass('display-none');
-            $toggleAdditionalTransportsButton.toggleClass('active');
-        });
-
-        $toggleAdditionalPaymentsButton.click(function () {
-            $additionalPayments.toggleClass('display-none');
-            $toggleAdditionalPaymentsButton.toggleClass('active');
-        });
 
         $registrationCheckbox.change(function () {
             if (!$(this).is(':checked')) {
