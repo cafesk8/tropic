@@ -36,7 +36,7 @@
                     {{ paginator.titleAddon(paginationResult) }}
                 </h1>
 
-                {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert' : category.getAdvert()})) }}
+                {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert' : category.getAdvert(getDomain().id)})) }}
 
                 {% if visibleChildren is not empty %}
                     {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren, 'currentCategory': category} %}

@@ -46,50 +46,50 @@
 					</typ:extId>
 
 					<typ:address>
-						<typ:company>{{ pohodaCustomer.address.company }}</typ:company>
+						<typ:company>{{ pohodaCustomer.address.company[:255] }}</typ:company>
 						<typ:division></typ:division>
 						<typ:name>
-							<![CDATA[{{ pohodaCustomer.address.name }}]]>
+							<![CDATA[{{ pohodaCustomer.address.name[:64] }}]]>
 						</typ:name>
 						<typ:city>
-							<![CDATA[{{ pohodaCustomer.address.city }}]]>
+							<![CDATA[{{ pohodaCustomer.address.city[:45] }}]]>
 						</typ:city>
 						<typ:street>
-							<![CDATA[{{ pohodaCustomer.address.street }}]]>
+							<![CDATA[{{ pohodaCustomer.address.street[:64] }}]]>
 						</typ:street>
-						<typ:zip>{{ pohodaCustomer.address.zip }}</typ:zip>
-						<typ:ico>{{ pohodaCustomer.address.ico }}</typ:ico>
-						<typ:dic>{{ pohodaCustomer.address.dic }}</typ:dic>
+						<typ:zip>{{ pohodaCustomer.address.zip[:15] }}</typ:zip>
+						<typ:ico>{{ pohodaCustomer.address.ico[:15] }}</typ:ico>
+						<typ:dic>{{ pohodaCustomer.address.dic[:18] }}</typ:dic>
 						<typ:country>
 							<typ:ids>
-								<![CDATA[{{ pohodaCustomer.address.country }}]]>
+								<![CDATA[{{ pohodaCustomer.address.country[:64] }}]]>
 							</typ:ids>
 						</typ:country>
 						<typ:phone>
-							<![CDATA[{{ pohodaCustomer.address.phone }}]]>
+							<![CDATA[{{ pohodaCustomer.address.phone[:40] }}]]>
 						</typ:phone>
 						<typ:email>
-							<![CDATA[{{ pohodaCustomer.address.email }}]]>
+							<![CDATA[{{ pohodaCustomer.address.email[:98] }}]]>
 						</typ:email>
 					</typ:address>
 
 					{% if pohodaCustomer.shipToAddress is not null %}
 						<typ:shipToAddress>
-							<typ:company>{{ pohodaCustomer.shipToAddress.company }}</typ:company>
+							<typ:company>{{ pohodaCustomer.shipToAddress.company[:255] }}</typ:company>
 							<typ:division></typ:division>
 							<typ:name>
-								<![CDATA[{{ pohodaCustomer.shipToAddress.name }}]]>
+								<![CDATA[{{ pohodaCustomer.shipToAddress.name[:64] }}]]>
 							</typ:name>
 							<typ:city>
-								<![CDATA[{{ pohodaCustomer.shipToAddress.city }}]]>
+								<![CDATA[{{ pohodaCustomer.shipToAddress.city[:45] }}]]>
 							</typ:city>
 							<typ:street>
-								<![CDATA[{{ pohodaCustomer.shipToAddress.street }}]]>
+								<![CDATA[{{ pohodaCustomer.shipToAddress.street[:64] }}]]>
 							</typ:street>
-							<typ:zip>{{ pohodaCustomer.shipToAddress.zip }}</typ:zip>
+							<typ:zip>{{ pohodaCustomer.shipToAddress.zip[:15] }}</typ:zip>
 							<typ:country>
 								<typ:ids>
-									<![CDATA[{{ pohodaCustomer.shipToAddress.country }}]]>
+									<![CDATA[{{ pohodaCustomer.shipToAddress.country[:64] }}]]>
 								</typ:ids>
 							</typ:country>
 							<typ:defaultShipAddress>true</typ:defaultShipAddress>
@@ -101,12 +101,12 @@
 				<adb:priceIDS>{{ pohodaCustomer.priceIds }}</adb:priceIDS>
 				<adb:region></adb:region>
 				<adb:phone>
-					<![CDATA[{{ pohodaCustomer.address.phone }}]]>
+					<![CDATA[{{ pohodaCustomer.address.phone[:40] }}]]>
 				</adb:phone>
 				<adb:mobil></adb:mobil>
 				<adb:fax></adb:fax>
 				<adb:email>
-					<![CDATA[{{ pohodaCustomer.address.email }}]]>
+					<![CDATA[{{ pohodaCustomer.address.email[:98] }}]]>
 				</adb:email>
 				<adb:web></adb:web>
 				<adb:message></adb:message>

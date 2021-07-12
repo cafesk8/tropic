@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Category;
 
+use App\Model\Advert\Advert;
 use App\Model\Product\Product;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Category\Category;
@@ -46,6 +47,12 @@ class CategoryDomain extends BaseCategoryDomain
      * @ORM\JoinColumn(nullable=true, unique=false)
      */
     private ?Product $tipProduct;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Model\Advert\Advert", inversedBy="categoryDomains")
+     * @ORM\JoinColumn(name="advert_id", nullable=true, referencedColumnName="id", onDelete="SET NULL")
+     */
+    private ?Advert $advert = null;
 
     /**
      * @param \App\Model\Category\Category $category
@@ -156,5 +163,29 @@ class CategoryDomain extends BaseCategoryDomain
     public function setTipProduct(?Product $tipProduct): void
     {
         $this->tipProduct = $tipProduct;
+    }
+
+    /**
+     * @return \App\Model\Advert\Advert|null
+     */
+    public function getAdvert(): ?Advert
+    {
+        return $this->advert;
+    }
+
+    /**
+     * @param \App\Model\Advert\Advert|null $advert
+     */
+    public function setAdvert(?Advert $advert): void
+    {
+        $this->advert = $advert;
+    }
+
+    /**
+     * @return \App\Model\Category\Category
+     */
+    public function getCategory(): Category
+    {
+        return $this->category;
     }
 }

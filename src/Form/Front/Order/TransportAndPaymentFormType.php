@@ -8,8 +8,8 @@ use App\Component\Domain\DomainHelper;
 use App\Model\Cart\CartFacade;
 use App\Model\Country\CountryFacade;
 use App\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
-use App\Model\Order\Preview\OrderPreview;
 use App\Model\Order\Preview\OrderPreviewFactory;
+use App\Model\Order\Preview\OrderPreviewSessionFacade;
 use App\Model\Store\StoreIdToEntityTransformer;
 use App\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer;
 use App\Model\Transport\Transport;
@@ -29,7 +29,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -85,10 +84,7 @@ class TransportAndPaymentFormType extends AbstractType
 
     private OrderPreviewFactory $orderPreviewFactory;
 
-    /**
-     * @var \Symfony\Component\HttpFoundation\Session\Session
-     */
-    private SessionInterface $session;
+    private OrderPreviewSessionFacade $orderPreviewSessionFacade;
 
     /**
      * @param \App\Model\Transport\TransportFacade $transportFacade
@@ -101,7 +97,7 @@ class TransportAndPaymentFormType extends AbstractType
      * @param \App\Model\Country\CountryFacade $countryFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
-     * @param \Symfony\Component\HttpFoundation\Session\Session $session
+     * @param \App\Model\Order\Preview\OrderPreviewSessionFacade $orderPreviewSessionFacade
      */
     public function __construct(
         TransportFacade $transportFacade,
@@ -114,7 +110,7 @@ class TransportAndPaymentFormType extends AbstractType
         CountryFacade $countryFacade,
         CartFacade $cartFacade,
         OrderPreviewFactory $orderPreviewFactory,
-        SessionInterface $session
+        OrderPreviewSessionFacade $orderPreviewSessionFacade
     ) {
         $this->transportFacade = $transportFacade;
         $this->paymentFacade = $paymentFacade;
@@ -126,7 +122,7 @@ class TransportAndPaymentFormType extends AbstractType
         $this->countryFacade = $countryFacade;
         $this->cartFacade = $cartFacade;
         $this->orderPreviewFactory = $orderPreviewFactory;
-        $this->session = $session;
+        $this->orderPreviewSessionFacade = $orderPreviewSessionFacade;
     }
 
     /**
@@ -136,7 +132,7 @@ class TransportAndPaymentFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $country = $options['country'] ?? $this->countryFacade->getHackedCountry();
-        $orderPriceFromSession = $this->session->get(OrderPreview::TOTAL_PRICE_SESSION_KEY);
+        $orderPriceFromSession = $this->orderPreviewSessionFacade->getTotalPrice();
         if ($orderPriceFromSession !== null) {
             $orderPrice = Money::create($orderPriceFromSession);
         } else {

@@ -26,7 +26,7 @@
                     {{ category.getSeoH1(domain.id)|default(category.name) }}
                 </h1>
 
-                {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert': category.getAdvert(), 'sizeInfoName': 'category' })) }}
+                {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert': category.getAdvert(domain.id), 'sizeInfoName': 'category' })) }}
 
                 {% include 'Front/Content/Benefits/list.html.twig' %}
 

@@ -268,12 +268,13 @@ class CategoryFacade extends BaseCategoryFacade
     }
 
     /**
-     * @param \App\Model\Advert\Advert $advert
-     * @return \App\Model\Category\Category[]
+     * @param \App\Model\Category\Category $category
+     * @param int $domainId
+     * @return \App\Model\Category\CategoryDomain
      */
-    public function getCategoriesByAdvert(Advert $advert): array
+    public function getCategoryDomainByCategoryAndDomainId(Category $category, int $domainId): CategoryDomain
     {
-        return $this->categoryRepository->getCategoriesByAdvert($advert);
+        return $this->categoryRepository->getCategoryDomainByCategoryAndDomainId($category, $domainId);
     }
 
     /**

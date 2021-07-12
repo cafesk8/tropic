@@ -24,9 +24,6 @@ use Shopsys\FrameworkBundle\Model\Transport\Transport;
  */
 class OrderPreview extends BaseOrderPreview
 {
-    public const TOTAL_PRICE_SESSION_KEY = 'totalCartPrice';
-    public const ITEMS_COUNT_SESSION_KEY = 'cartItemsCount';
-
     /**
      * @var \App\Model\Product\Product|null
      */
@@ -357,5 +354,18 @@ class OrderPreview extends BaseOrderPreview
     public function getTransportFee(): ?Price
     {
         return $this->transportFee;
+    }
+
+    /**
+     * @return int
+     */
+    public function getItemsCount(): int
+    {
+        $itemsCount = count($this->getQuantifiedProducts()) + count($this->getGifts());
+        if ($this->getOrderGiftProduct() !== null) {
+            $itemsCount++;
+        }
+
+        return $itemsCount;
     }
 }

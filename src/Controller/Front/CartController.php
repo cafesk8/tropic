@@ -14,6 +14,7 @@ use App\Model\Gtm\GtmFacade;
 use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Order\Preview\OrderPreview;
 use App\Model\Order\Preview\OrderPreviewFactory;
+use App\Model\Order\Preview\OrderPreviewSessionFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Gift\ProductGiftInCartFacade;
 use App\Model\Product\Product;
@@ -28,7 +29,6 @@ use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFac
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
@@ -107,10 +107,7 @@ class CartController extends FrontBaseController
 
     private ProductCachedAttributesFacade $productCachedAttributesFacade;
 
-    /**
-     * @var \Symfony\Component\HttpFoundation\Session\Session
-     */
-    private SessionInterface $session;
+    private OrderPreviewSessionFacade $orderPreviewSessionFacade;
 
     /**
      * @param \App\Model\Cart\CartFacade $cartFacade
@@ -128,7 +125,7 @@ class CartController extends FrontBaseController
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Component\Cofidis\Banner\CofidisBannerFacade $cofidisBannerFacade
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
-     * @param \Symfony\Component\HttpFoundation\Session\Session $session
+     * @param \App\Model\Order\Preview\OrderPreviewSessionFacade $orderPreviewSessionFacade
      */
     public function __construct(
         CartFacade $cartFacade,
@@ -146,7 +143,7 @@ class CartController extends FrontBaseController
         PricingGroupFacade $pricingGroupFacade,
         CofidisBannerFacade $cofidisBannerFacade,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
-        SessionInterface $session
+        OrderPreviewSessionFacade $orderPreviewSessionFacade
     ) {
         $this->cartFacade = $cartFacade;
         $this->domain = $domain;
@@ -163,7 +160,7 @@ class CartController extends FrontBaseController
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->cofidisBannerFacade = $cofidisBannerFacade;
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
-        $this->session = $session;
+        $this->orderPreviewSessionFacade = $orderPreviewSessionFacade;
     }
 
     /**
@@ -291,8 +288,8 @@ class CartController extends FrontBaseController
         $renderFlashMessage = $request->query->getBoolean('renderFlashMessages', false);
         $forceOrderPreviewRecalculation = $request->query->getBoolean('forceOrderPreviewRecalculation', false);
 
-        $productsPriceFromSession = $this->session->get(OrderPreview::TOTAL_PRICE_SESSION_KEY);
-        $productsCount = $this->session->get(OrderPreview::ITEMS_COUNT_SESSION_KEY);
+        $productsPriceFromSession = $this->orderPreviewSessionFacade->getTotalPrice();
+        $productsCount = $this->orderPreviewSessionFacade->getItemsCount();
 
         if ($forceOrderPreviewRecalculation || $productsPriceFromSession === null || $productsCount === null) {
             $orderPreview = $this->orderPreviewFactory->createForCurrentUser();

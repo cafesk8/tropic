@@ -94,7 +94,7 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         $categoryData->mallCategoryId = $category->getMallCategoryId();
         $categoryData->leftBannerTexts = $category->getLeftBannerTexts();
         $categoryData->rightBannerTexts = $category->getRightBannerTexts();
-        $categoryData->advert = $category->getAdvert();
+        $categoryData->adverts = $category->getAdverts();
         $categoryData->pohodaId = $category->getPohodaId();
         $categoryData->pohodaParentId = $category->getPohodaParentId();
         $categoryData->updatedByPohodaAt = $category->getUpdatedByPohodaAt();

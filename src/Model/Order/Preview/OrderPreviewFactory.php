@@ -17,24 +17,16 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @property \App\Model\Order\Preview\OrderPreviewCalculation $orderPreviewCalculation
  * @property \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
  * @property \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
+ * @property \App\Model\Cart\CartFacade $cartFacade
  */
 class OrderPreviewFactory extends BaseOrderPreviewFactory
 {
-    /**
-     * @var \App\Model\Cart\CartFacade
-     */
-    protected $cartFacade;
-
-    /**
-     * @var \Symfony\Component\HttpFoundation\Session\Session
-     */
-    private SessionInterface $session;
+    private OrderPreviewSessionFacade $orderPreviewSessionFacade;
 
     /**
      * @param \App\Model\Order\Preview\OrderPreviewCalculation $orderPreviewCalculation
@@ -43,7 +35,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
-     * @param \Symfony\Component\HttpFoundation\Session\Session $session
+     * @param \App\Model\Order\Preview\OrderPreviewSessionFacade $orderPreviewSessionFacade
      */
     public function __construct(
         OrderPreviewCalculation $orderPreviewCalculation,
@@ -52,11 +44,11 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         CurrentCustomerUser $currentCustomerUser,
         CartFacade $cartFacade,
         CurrentPromoCodeFacade $currentPromoCodeFacade,
-        SessionInterface $session
+        OrderPreviewSessionFacade $orderPreviewSessionFacade
     ) {
         parent::__construct($orderPreviewCalculation, $domain, $currencyFacade, $currentCustomerUser, $cartFacade, $currentPromoCodeFacade);
         $this->orderPreviewCalculation = $orderPreviewCalculation;
-        $this->session = $session;
+        $this->orderPreviewSessionFacade = $orderPreviewSessionFacade;
     }
 
     /**
@@ -133,8 +125,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $simulateRegistration
         );
 
-        $this->session->set(OrderPreview::ITEMS_COUNT_SESSION_KEY, $orderPreview->getProductsCount());
-        $this->session->set(OrderPreview::TOTAL_PRICE_SESSION_KEY, $orderPreview->getTotalPrice()->getPriceWithVat()->getAmount());
+        $this->orderPreviewSessionFacade->setItemsCount($orderPreview->getItemsCount());
+        $this->orderPreviewSessionFacade->setTotalPrice($orderPreview->getTotalPrice()->getPriceWithVat()->getAmount());
 
         return $orderPreview;
     }
