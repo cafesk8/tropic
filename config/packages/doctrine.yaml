@@ -22,6 +22,10 @@ doctrine:
                 user: "%pohoda_database_user%"
                 password: "%pohoda_database_password%"
                 charset: "%pohoda_database_charset%"
+                # Explicitly define server version to overcome the need to connect to the database in early
+                # initialization phase (during DIC service creation) for auto-detecting version from the server.
+                # See \Doctrine\DBAL\Connection::getDatabasePlatformVersion().
+                server_version: "15.0"
         types:
             money:
                 class: \Shopsys\FrameworkBundle\Component\Doctrine\MoneyType
