@@ -86,6 +86,7 @@ class LuigisBoxObjectFactory
         $luigisProduct = new LuigisBoxObject();
         $luigisProduct->type = $type;
         $luigisProduct->url = $this->productUrlsBatchLoader->getProductUrl($product, $domainConfig);
+        $luigisProduct->web_url = $this->productUrlsBatchLoader->getProductUrl($product, $domainConfig);
         $luigisProduct->fields = $this->mapProductFields($product, $domainConfig);
 
         if ($brand !== null) {
@@ -170,6 +171,9 @@ class LuigisBoxObjectFactory
         $luigisCategory->url = $domainRouter->generate('front_product_list', [
             'id' => $category->getId(),
         ]);
+        $luigisCategory->web_url = $domainRouter->generate('front_product_list', [
+            'id' => $category->getId(),
+        ]);
         $luigisCategory->fields = new LuigisBoxCategoryFields();
         $luigisCategory->fields->domain_id = $domainId;
         $luigisCategory->fields->title = $category->getName($domainConfig->getLocale());
@@ -203,6 +207,9 @@ class LuigisBoxObjectFactory
         $luigisBrand = new LuigisBoxObject();
         $luigisBrand->type = self::TYPE_BRAND;
         $luigisBrand->url = $domainRouter->generate('front_brand_detail', [
+            'id' => $brand->getId(),
+        ]);
+        $luigisBrand->web_url = $domainRouter->generate('front_brand_detail', [
             'id' => $brand->getId(),
         ]);
         $luigisBrand->fields = new LuigisBoxBrandFields();

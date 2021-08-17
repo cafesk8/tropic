@@ -9,8 +9,13 @@
 {% block meta_robots %}
     {{ paginator.metaRobots(paginationResult, disableIndexing, disableIndexingAndFollowing) }}
 {% endblock %}
+
 {% block meta_rel_links %}
     {{ paginator.relLinks(paginationResult) }}
+{% endblock %}
+
+{% block meta_luigis_box %}
+    <meta property="lb:id" content="{{ category.id }}">
 {% endblock %}
 
 {% block meta_description %}

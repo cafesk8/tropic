@@ -95,6 +95,8 @@ parameters:
             - '*/src/Component/Transfer/Pohoda/MServer/MServerClient'
             - '*/src/Model/LuigisBox/LuigisBoxBrandFields.php'
             - '*/src/Model/LuigisBox/LuigisBoxCategoryFields.php'
+            - '*/src/Component/LuigisBox/LuigisBoxClient.php'
+            - '*/src/Model/LuigisBox/LuigisBoxObject.php'
             - '*/src/Model/LuigisBox/LuigisBoxObjectFields.php'
             - '*/src/Model/LuigisBox/LuigisBoxProductFields.php'
 
@@ -162,5 +164,7 @@ parameters:
             - '*/src/Model/LuigisBox/LuigisBoxObjectFactory.php'
             - '*/src/Model/LuigisBox/LuigisBoxBrandFields.php'
             - '*/src/Model/LuigisBox/LuigisBoxCategoryFields.php'
+            - '*/src/Component/LuigisBox/LuigisBoxClient.php'
+            - '*/src/Model/LuigisBox/LuigisBoxObject.php'
             - '*/src/Model/LuigisBox/LuigisBoxObjectFields.php'
             - '*/src/Model/LuigisBox/LuigisBoxProductFields.php'

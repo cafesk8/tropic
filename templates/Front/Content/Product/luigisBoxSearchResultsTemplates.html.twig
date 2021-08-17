@@ -45,7 +45,7 @@
 </script>
 
 <script type="text/x-template" id="template-result-product">
-    <li class="list-products__item js-list-products-item js-maximum-amount-container">
+    <li class="list-products__item js-list-products-item js-maximum-amount-container" v-bind:data-lb-id="attributes.code">
         <div class="list-products__item__in">
             <div class="list-products__item__block">
                 <a v-bind:href="url" class="list-products__item__image-wrap">
@@ -156,7 +156,7 @@
         <div class="box-list__content">
             <div class="box-list__products js-list-with-paginator">
                 <ul class="list-products js-list js-product-list">
-                    <li class="list-products__item-set" v-for="set in items">
+                    <li class="list-products__item-set" v-for="set in items" v-bind:data-lb-id="set.attributes.code">
                         <div class="box-products-set">
                             <div class="box-products-set__row">
                                 <a class="box-products-set__title" v-bind:href="set.url">
@@ -215,7 +215,7 @@
                                         </div>
 
                                         {% if isRegisteredCustomer %}
-                                            <div v-if="attributes.in_sale[0] && attributes.price_sale_amount > 0" class="box-products-set__info__prices">
+                                            <div v-if="set.attributes.in_sale[0] && set.attributes.price_sale_amount > 0" class="box-products-set__info__prices">
                                                 <span v-if="set.attributes.price_standard_amount > set.attributes.price_sale_amount" class="box-products-set__info__prices__old">
                                                     {{ '{{ set.attributes.price_standard }}' }}
                                                 </span>
@@ -232,7 +232,7 @@
                                                 </span>
                                             </div>
                                         {% else %}
-                                            <div v-if="attributes.in_sale[0] && attributes.price_sale_amount > 0" class="box-products-set__info__prices">
+                                            <div v-if="set.attributes.in_sale[0] && set.attributes.price_sale_amount > 0" class="box-products-set__info__prices">
                                                 <span v-if="set.attributes.price_amount > set.attributes.price_sale_amount" class="box-products-set__info__prices__old">
                                                     {{ '{{ set.attributes.price }}' }}
                                                 </span>
@@ -288,7 +288,7 @@
         <div class="web__container">
             <h3 class="box-search__subtitle">{{ 'Nalezené kategorie'|trans }}</h3>
             <ul class="list-categories js-tabs-content " data-tab-id="categories">
-                <li class="list-categories__item" v-for="category in items">
+                <li class="list-categories__item" v-for="category in items" v-bind:data-lb-id="category.attributes.id">
                     <a v-bind:href="category.url" class="list-categories__item__link">
                         <div class="list-categories__item__image" v-if="category.attributes.image_link">
                             <picture>
