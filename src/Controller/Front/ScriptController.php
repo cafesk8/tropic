@@ -108,4 +108,12 @@ class ScriptController extends FrontBaseController
             'projectId' => $this->keysProvider->getProjectId($this->domain->getLocale()),
         ]);
     }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function embedAllPagesEcomailScriptAction(): Response
+    {
+        return $this->render('Front/Inline/MeasuringScript/ecomail.html.twig');
+    }
 }
