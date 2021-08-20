@@ -5,7 +5,7 @@ COPY ${project_root}/docker/php-fpm/php-ini-overrides.ini /usr/local/etc/php/php
 
 USER root
 
-RUN apt-get update
+RUN apt-get update --allow-releaseinfo-change
 RUN apt-get install apt-transport-https
 
 ### SQLSRVSTART
