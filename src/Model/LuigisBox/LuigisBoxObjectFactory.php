@@ -86,8 +86,8 @@ class LuigisBoxObjectFactory
         $luigisProduct = new LuigisBoxObject();
         $luigisProduct->type = $type;
         $luigisProduct->url = $this->productUrlsBatchLoader->getProductUrl($product, $domainConfig);
-        $luigisProduct->web_url = $this->productUrlsBatchLoader->getProductUrl($product, $domainConfig);
         $luigisProduct->fields = $this->mapProductFields($product, $domainConfig);
+        $luigisProduct->fields->web_url = $this->productUrlsBatchLoader->getProductUrl($product, $domainConfig);
 
         if ($brand !== null) {
             $luigisProduct->nested[] = $this->createBrand($brand, $domainConfig);
@@ -171,12 +171,12 @@ class LuigisBoxObjectFactory
         $luigisCategory->url = $domainRouter->generate('front_product_list', [
             'id' => $category->getId(),
         ]);
-        $luigisCategory->web_url = $domainRouter->generate('front_product_list', [
-            'id' => $category->getId(),
-        ]);
         $luigisCategory->fields = new LuigisBoxCategoryFields();
         $luigisCategory->fields->domain_id = $domainId;
         $luigisCategory->fields->title = $category->getName($domainConfig->getLocale());
+        $luigisCategory->fields->web_url = $domainRouter->generate('front_product_list', [
+            'id' => $category->getId(),
+        ]);
 
         try {
             $luigisCategory->fields->image_link = $this->imageFacade->getImageUrl($domainConfig, $category, null, null);
@@ -209,11 +209,11 @@ class LuigisBoxObjectFactory
         $luigisBrand->url = $domainRouter->generate('front_brand_detail', [
             'id' => $brand->getId(),
         ]);
-        $luigisBrand->web_url = $domainRouter->generate('front_brand_detail', [
-            'id' => $brand->getId(),
-        ]);
         $luigisBrand->fields = new LuigisBoxBrandFields();
         $luigisBrand->fields->title = $brand->getName();
+        $luigisBrand->fields->web_url = $domainRouter->generate('front_brand_detail', [
+            'id' => $brand->getId(),
+        ]);
 
         try {
             $luigisBrand->fields->image_link = $this->imageFacade->getImageUrl($domainConfig, $brand, null, null);

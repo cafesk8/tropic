@@ -9,4 +9,6 @@ abstract class LuigisBoxObjectFields
     public int $domain_id;
 
     public string $title;
+
+    public string $web_url;
 }

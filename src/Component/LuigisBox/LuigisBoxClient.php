@@ -72,7 +72,7 @@ class LuigisBoxClient
 
             throw new LuigisBoxClientException(
                 'HTTP ' . $response->getStatusCode() . ': ' . $response->getReasonPhrase(),
-                array_map(fn (LuigisBoxObject $object) => $object->web_url, $data->toArray())
+                array_map(fn (LuigisBoxObject $object) => $object->fields->web_url, $data->toArray())
             );
         }
     }
