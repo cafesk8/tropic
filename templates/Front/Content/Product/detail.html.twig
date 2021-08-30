@@ -11,6 +11,10 @@
     {% endif %}
 {% endblock %}
 
+{% block meta_luigis_box %}
+    <meta property="lb:id" content="{{ product.catnum }}">
+{% endblock %}
+
 {% block meta_description %}
     {{- product.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}
 {% endblock %}
