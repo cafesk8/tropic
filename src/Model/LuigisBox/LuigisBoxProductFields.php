@@ -68,7 +68,5 @@ class LuigisBoxProductFields extends LuigisBoxObjectFields
 
     public int $standard_discount_percent = 0;
 
-    public int $variants_count;
-
     public bool $visible;
 }
