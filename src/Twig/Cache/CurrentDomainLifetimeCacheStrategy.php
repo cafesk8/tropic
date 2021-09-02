@@ -38,7 +38,7 @@ class CurrentDomainLifetimeCacheStrategy implements CacheStrategyInterface
     {
         $key = $annotation;
         if (is_array($value)) {
-            $lifetime = $value['lifetime'] ?? 0; /* 0 = infinite lifetime */
+            $lifetime = $value['lifetime'] ?? 43200;
             if (array_key_exists('domainId', $value)) {
                 $key .= sprintf('__onDomain%d', $value['domainId']);
             }
