@@ -14,11 +14,15 @@ use Shopsys\FrameworkBundle\Model\Product\Collection\Exception\ProductUrlNotLoad
 
 class LuigisBoxFacade
 {
+    private const UPDATE_BATCH_SIZE = 5;
+
     private LuigisBoxObjectFactory $luigisBoxObjectFactory;
 
     private LuigisBoxClient $luigisBoxClient;
 
     private ProductFacade $productFacade;
+
+    private array $callbacks;
 
     /**
      * @param \App\Model\LuigisBox\LuigisBoxObjectFactory $luigisBoxObjectFactory
@@ -43,10 +47,9 @@ class LuigisBoxFacade
     public function sendToApi(array $luigisBoxExportables, DomainConfig $domainConfig): array
     {
         $exceptionCollection = [];
+        $luigisCollection = new LuigisBoxObjectCollection();
 
         foreach ($luigisBoxExportables as $exportableModel) {
-            $luigisCollection = new LuigisBoxObjectCollection();
-
             if ($exportableModel instanceof Product) {
                 try {
                     $luigisBoxObject = $this->luigisBoxObjectFactory->createProduct($exportableModel, $domainConfig);
@@ -54,24 +57,21 @@ class LuigisBoxFacade
                     continue;
                 }
 
-                $successExportedCallback = function (LuigisBoxExportableInterface $model, DomainConfig $domainConfig) {
-                    $this->productFacade->markProductsAsExportedToLuigisBox([$model], $domainConfig->getId());
-                };
+                $this->collectCallbackObject(Product::class, $exportableModel);
             } else {
                 throw new Exception('Exportable with type ' . gettype($exportableModel) . ' is not mapped for Luigi\'s Box');
             }
 
             $luigisCollection->add($luigisBoxObject);
 
-            try {
-                $this->luigisBoxClient->update($luigisCollection, $domainConfig);
-                $successExportedCallback($exportableModel, $domainConfig);
-            } catch (LuigisBoxClientException $exception) {
-                $exceptionCollection[] = $exception;
+            if ($luigisCollection->count() > self::UPDATE_BATCH_SIZE) {
+                $exceptionCollection[] = $this->updateObjects($luigisCollection, $domainConfig);
             }
         }
 
-        return $exceptionCollection;
+        $exceptionCollection[] = $this->updateObjects($luigisCollection, $domainConfig);
+
+        return array_filter($exceptionCollection);
     }
 
     /**
@@ -84,5 +84,58 @@ class LuigisBoxFacade
         $this->luigisBoxObjectFactory->loadUrls($objects, $domainConfig);
 
         return $objects;
+    }
+
+    /**
+     * @param \App\Model\LuigisBox\LuigisBoxObjectCollection $collection
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @return \App\Component\LuigisBox\LuigisBoxClientException|null
+     */
+    private function updateObjects(LuigisBoxObjectCollection $collection, DomainConfig $domainConfig): ?LuigisBoxClientException
+    {
+        if ($collection->count() === 0) {
+            return null;
+        }
+
+        $caughtException = null;
+
+        try {
+            $this->luigisBoxClient->update($collection, $domainConfig);
+            $this->callCallbacks($domainConfig);
+        } catch (LuigisBoxClientException $exception) {
+            $caughtException = $exception;
+        } finally {
+            $collection->clear();
+        }
+
+        return $caughtException;
+    }
+
+    /**
+     * @param string $type
+     * @param \App\Model\LuigisBox\LuigisBoxExportableInterface $object
+     */
+    private function collectCallbackObject(string $type, LuigisBoxExportableInterface $object): void
+    {
+        if (!isset($this->callbacks[$type])) {
+            if ($type === Product::class) {
+                $this->callbacks[$type]['method'] = function (array $models, DomainConfig $domainConfig) {
+                    $this->productFacade->markProductsAsExportedToLuigisBox($models, $domainConfig->getId());
+                };
+            }
+        }
+
+        $this->callbacks[$type]['objects'][] = $object;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     */
+    private function callCallbacks(DomainConfig $domainConfig): void
+    {
+        foreach ($this->callbacks as &$callback) {
+            $callback['method']($callback['objects'], $domainConfig);
+            unset($callback['objects']);
+        }
     }
 }
