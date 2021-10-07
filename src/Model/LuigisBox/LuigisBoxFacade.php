@@ -102,6 +102,7 @@ class LuigisBoxFacade
         try {
             $this->luigisBoxClient->update($collection, $domainConfig);
             $this->callCallbacks($domainConfig);
+            $this->removeOldObjects($collection, $domainConfig);
         } catch (LuigisBoxClientException $exception) {
             $caughtException = $exception;
         } finally {
@@ -137,5 +138,17 @@ class LuigisBoxFacade
             $callback['method']($callback['objects'], $domainConfig);
             unset($callback['objects']);
         }
+    }
+
+    /**
+     * Temporary function to migrate from URL identification to catnum/ID identification
+     *
+     * @param \App\Model\LuigisBox\LuigisBoxObjectCollection $collection
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     */
+    private function removeOldObjects(LuigisBoxObjectCollection $collection, DomainConfig $domainConfig): void
+    {
+        $collection->convertToOldIdentification();
+        $this->luigisBoxClient->remove($collection, $domainConfig);
     }
 }

@@ -55,4 +55,19 @@ class LuigisBoxObjectCollection
     {
         return count($this->objects);
     }
+
+    /**
+     * Temporary function to migrate from URL identification to catnum/ID identification
+     */
+    public function convertToOldIdentification(): void
+    {
+        foreach ($this->objects as $object) {
+            $object->url = $object->fields->web_url;
+
+            foreach ($object->nested as $nestedObject) {
+                $nestedObject->url = $nestedObject->fields->web_url;
+                $this->objects[] = $nestedObject;
+            }
+        }
+    }
 }
