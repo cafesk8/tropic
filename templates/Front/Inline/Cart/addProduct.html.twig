@@ -59,6 +59,13 @@
                         {{ form_widget(form.add, {label: 'Do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn-no-style ', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
                     </div>
                 </div>
+
+                {% if product.variantId in [189603, 189604, 189605, 189606, 189608, 189607] %}
+                    <div class="box-detail-add__buttons__item btn btn--large js-preorder-modal" {% if disabled %}disabled="disabled"{% endif %} data-product-name="{{ product.name }}" data-product-availability="{{ product.id }}" data-hard-disabled="{{ hardDisabled }}">
+                        {{ 'Předobjednat'|trans }}
+                    </div>
+                {% endif %}
+
                 {% if showCofidisBanner %}
                     <div class="box-detail-add__buttons__item-variant box-detail-add__buttons__item-variant--payments btn btn--big js-cofidis-calculator" {% if disabled %}disabled="disabled"{% endif %} data-product-price="{{ sellingPrice.priceWithVat.amount }}" data-hard-disabled="{{ hardDisabled }}">{{ 'Spočítat splátky'|trans }}</div>
                 {% endif %}
@@ -78,6 +85,12 @@
                     </div>
                 {% endif %}
                 
+                {% if product.id in [188420] %}
+                    <div class="box-detail-add__buttons__item btn btn--large js-preorder-modal" {% if disabled %}disabled="disabled"{% endif %} data-product-name="{{ product.name }}" data-product-availability="{{ product.id }}" data-hard-disabled="{{ hardDisabled }}">
+                        {{ 'Předobjednat'|trans }}
+                    </div>
+                {% endif %}
+
                 {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__buttons__item btn btn--success btn--large', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
                 {% if showCofidisBanner %}
                     <div class="box-detail-add__buttons__item btn btn--large js-cofidis-calculator" {% if disabled %}disabled="disabled"{% endif %} data-product-price="{{ sellingPrice.priceWithVat.amount }}" data-hard-disabled="{{ hardDisabled }}">{{ 'Spočítat splátky'|trans }}</div>
