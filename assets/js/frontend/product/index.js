@@ -7,4 +7,5 @@ import './productList.AjaxFilter';
 import './productList';
 import './productListCategoryToggler';
 import './cofidisCalculator';
+import './preorderModal';
 import './variantsToggle';

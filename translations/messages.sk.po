@@ -238,6 +238,9 @@ msgstr "Základný"
 msgid "Basic information"
 msgstr "Základné informácie"
 
+msgid "Bestsellery"
+msgstr ""
+
 msgid "Bez SMS alertu"
 msgstr "Bez SMS alertu"
 
@@ -1408,6 +1411,9 @@ msgstr "Mall status"
 msgid "Mall.cz"
 msgstr "Mall.cz"
 
+msgid "Maximální hodnota objednávky"
+msgstr ""
+
 msgid "Maximální počet použití"
 msgstr "Maximálny počet použití"
 
@@ -1587,6 +1593,9 @@ msgstr "Nastaviť"
 
 msgid "Načerpejte inspiraci"
 msgstr "Načerpajte inšpiráciu"
+
+msgid "Načíst další výsledky"
+msgstr ""
 
 msgid "Načíst dalších"
 msgstr "Načítať ďalších"
@@ -1858,6 +1867,9 @@ msgstr "Objednávky prijaté po 12:00 odosielame nasledujúci pracovný deň"
 msgid "Objemný"
 msgstr "Objemný"
 
+msgid "Obrat"
+msgstr ""
+
 msgid "Obrázky"
 msgstr "Obrázky"
 
@@ -1968,6 +1980,9 @@ msgstr "Naozaj chcete odstrániť túto hladinu darčekov?"
 
 msgid "Opravdu chcete odstranit tuto hladinu slevy?"
 msgstr "Naozaj chcete odstrániť túto hladinu zľavy?"
+
+msgid "Opětovný přenos"
+msgstr ""
 
 msgid "Order Nr."
 msgstr "Objednávka č."
@@ -2260,6 +2275,9 @@ msgstr "Pozícia"
 msgid "Poznejte nás"
 msgstr "Spoznajte nás"
 
+msgid "Počet"
+msgstr ""
+
 msgid "Počet generovaných kupónů"
 msgstr "Počet generovaných kupónov"
 
@@ -2493,6 +2511,9 @@ msgstr "Prvý článok v hornom menu"
 
 msgid "Prázdný"
 msgstr "Prázdny"
+
+msgid "Předobjednat"
+msgstr "Predobjednať"
 
 msgid "Předvýpis kategorií"
 msgstr "Predvýpis kategórií"
@@ -3379,6 +3400,9 @@ msgstr "Vyberte si darček"
 msgid "Vyberte si dárek <strong>zdarma</strong> v hodnotě"
 msgstr "Vyberte si darček <strong>zadarmo</strong> v hodnote"
 
+msgid "Vyberte si variantu"
+msgstr ""
+
 msgid "Vyberte službu dopravce"
 msgstr "Vyberte službu dopravcu"
 
@@ -3913,6 +3937,9 @@ msgstr "o nás"
 msgid "obchodními podmínkami"
 msgstr "obchodnými podmienkami"
 
+msgid "od"
+msgstr ""
+
 msgid "on stock"
 msgstr "na sklade"
 
@@ -3957,6 +3984,9 @@ msgstr "záznamy"
 
 msgid "skrýt ostatní"
 msgstr "skryť ostatné"
+
+msgid "sleva"
+msgstr ""
 
 msgid "souhlasím s"
 msgstr "súhlasím s"
