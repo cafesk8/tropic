@@ -61,7 +61,7 @@
                 </div>
 
                 {% if product.variantId in [189603, 189604, 189605, 189606, 189608, 189607] %}
-                    <div class="box-detail-add__buttons__item btn btn--large js-preorder-modal" {% if disabled %}disabled="disabled"{% endif %} data-product-name="{{ product.name }}" data-product-availability="{{ product.id }}" data-hard-disabled="{{ hardDisabled }}">
+                    <div class="box-detail-add__buttons__item btn btn--large js-preorder-modal" data-product-name="{{ product.name }}" data-product-availability="{{ product.id }}">
                         {{ 'Předobjednat'|trans }}
                     </div>
                 {% endif %}
@@ -86,7 +86,7 @@
                 {% endif %}
                 
                 {% if product.id in [188420] %}
-                    <div class="box-detail-add__buttons__item btn btn--large js-preorder-modal" {% if disabled %}disabled="disabled"{% endif %} data-product-name="{{ product.name }}" data-product-availability="{{ product.id }}" data-hard-disabled="{{ hardDisabled }}">
+                    <div class="box-detail-add__buttons__item btn btn--large js-preorder-modal" data-product-name="{{ product.name }}" data-product-availability="{{ product.id }}">
                         {{ 'Předobjednat'|trans }}
                     </div>
                 {% endif %}
