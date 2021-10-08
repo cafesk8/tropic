@@ -10,15 +10,28 @@ export default class PreorderModal {
         }
 
         const productName = $(this).data('product-name');
-        const productAvailability = $(this).closest('form').find('.in-availability__date').text();
+        const productType = $(this).data('product-type');
+        let productAvailability;
+
+        if (productType === 'simple') {
+            productAvailability = $(document).find('.in-tab__content__item__text ').text();
+        } else {
+            productAvailability = $(document).find('.box-detail__left__description').text();
+        }
 
         const $window = new Window({
             content: '<div class="js-window-content window-popup__in" style="overflow:hidden;">'
-                + '<p>Vytvořte si závaznou předobjednávku a zarezervujte si produkt s dostupností ' + productAvailability + '</p>'
+                + '<p>Vytvořte si závaznou předobjednávku a zarezervujte si produkt s dostupností ' + productAvailability + '.</p>'
                 + '<p>Budeme Vás brzy kontaktovat ohledně dalšího postupu.</p>'
                 + '<form id="js-preorder-form" method="POST" action="https://api2.ecomailapp.cz/lists/2/subscribe">'
                     + '<div class="form-line__input">'
+                        + '<input type="text" id="preorder-name" class="input" required name="preorder-name" style="padding-bottom: 15px;" placeholder="Váše jméno">'
+                    + '</div>'
+                    + '<div class="form-line__input">'
                         + '<input type="email" id="preorder-email" class="input" required name="preorder-email" style="padding-bottom: 15px;" placeholder="Váš e-mail">'
+                    + '</div>'
+                    + '<div class="form-line__input">'
+                        + '<input type="text" id="preorder-phone" class="input" required name="preorder-phone" style="padding-bottom: 15px;" placeholder="Váše tel. číslo">'
                     + '</div>'
                     + '<input type="hidden" name="preorder-product" id="preorder-product" value="' + productName + '">'
                     + '<input type="submit" class="btn--big btn" value="Odeslat">'
@@ -52,6 +65,8 @@ export default class PreorderModal {
         var body = {
             'subscriber_data': {
                 'email': $('#preorder-email').val(),
+                'phone': $('#preorder-phone').val(),
+                'name': $('#preorder-name').val(),
                 'custom_fields': {
                     'product_name': $('#preorder-product').val()
                 }
