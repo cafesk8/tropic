@@ -4,12 +4,11 @@ const path = require('path');
 const SVGO = require('svgo');
 
 const writeSvg = (svgOptimizedFile, optimizedSvg) => {
-    fs.writeFile(svgOptimizedFile, optimizedSvg, errorOptimize => {
-        if (errorOptimize) {
-            console.log('ERROR: SVG icon ' + svgOptimizedFile + ' optimize failed');
-            throw errorOptimize;
-        }
-    });
+    try {
+        fs.writeFileSync(svgOptimizedFile, optimizedSvg);
+    } catch (err) {
+        console.log('ERROR: SVG icon ' + svgOptimizedFile + ' optimize failed');
+    }
 };
 
 function optimizeSvg (svgSourceFolder, svgDestinationFolder = null) {
