@@ -16,7 +16,6 @@ export default class PreorderModal {
         let preorderTexts = {
             start: 'Vytvořte si předobjednávku a zarezervujte si',
             availability: 's dostupností:',
-            term: 'Termín může být změněn...',
             contact: 'Budeme Vás brzy kontaktovat ohledně dalšího postupu.',
             name: 'Vaše jméno',
             email: 'Váš e-mail',
@@ -35,17 +34,16 @@ export default class PreorderModal {
         if (userLang == 'sk') {
             preorderTexts.start = 'Vytvorte si predobjednávku a zarezervujte si';
             preorderTexts.availability = 's dostupnosťou:';
-            preorderTexts.term = 'Termín môže byť zmenený...';
             preorderTexts.contact = 'Budeme Vás čoskoro kontaktovať ohľadne ďalšieho postupu.';
             preorderTexts.name = 'Vaše meno';
             preorderTexts.thanks = 'Ďakujeme, čoskoro sa Vám ozveme.';
-            preorderTexts.quantity = 'Pocet kusov';
+            preorderTexts.quantity = 'Počet kusov';
             preorderTexts.send = 'Odoslať';
         }
 
         const $window = new Window({
             content: '<div class="js-window-content window-popup__in" style="overflow:hidden;">'
-                + '<p>' + preorderTexts.start + ' <strong>' + productName + '</strong> ' + preorderTexts.availability + ' ' + productAvailability + '.' + preorderTexts.term + '</p>'
+                + '<p>' + preorderTexts.start + ' <strong>' + productName + '</strong> ' + preorderTexts.availability + ' <strong>' + productAvailability + '</strong></p>'
                 + '<p>' + preorderTexts.contact + '</p>'
                 + '<form id="js-preorder-form" method="POST" action="https://api2.ecomailapp.cz/lists/2/subscribe">'
                 + '<div class="form-line__input">'
