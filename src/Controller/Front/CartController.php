@@ -10,6 +10,7 @@ use App\Form\Front\Cart\AddProductFormType;
 use App\Form\Front\Cart\CartFormType;
 use App\Model\Cart\Cart;
 use App\Model\Cart\CartFacade;
+use App\Model\Category\CategoryFacade;
 use App\Model\Gtm\GtmFacade;
 use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Order\Preview\OrderPreview;
@@ -25,6 +26,7 @@ use Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
+use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +44,8 @@ class CartController extends FrontBaseController
      * @var \App\Model\Product\ProductFacade
      */
     protected $productFacade;
+
+    private CategoryFacade $categoryFacade;
 
     /**
      * @var \App\Model\Order\Gift\OrderGiftFacade
@@ -120,6 +124,7 @@ class CartController extends FrontBaseController
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
      * @param \App\Model\Product\ProductFacade $productFacade
+     * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
@@ -138,6 +143,7 @@ class CartController extends FrontBaseController
         GtmFacade $gtmFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
         ProductFacade $productFacade,
+        CategoryFacade $categoryFacade,
         OrderGiftFacade $orderGiftFacade,
         DiscountExclusionFacade $discountExclusionFacade,
         PricingGroupFacade $pricingGroupFacade,
@@ -155,6 +161,7 @@ class CartController extends FrontBaseController
         $this->gtmFacade = $gtmFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->productFacade = $productFacade;
+        $this->categoryFacade = $categoryFacade;
         $this->orderGiftFacade = $orderGiftFacade;
         $this->discountExclusionFacade = $discountExclusionFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
@@ -366,6 +373,9 @@ class CartController extends FrontBaseController
             'showAmountInput' => $showAmountInput,
             'displayVariantSelectButton' => $displayVariantSelectButton,
             'showCofidisBanner' => $this->cofidisBannerFacade->isAllowedToShowCofidisBanner($productSellingPrice),
+            'categoryIds' => array_map(function (ProductCategoryDomain $categoryDomain) {
+                return $categoryDomain->getCategory()->getId();
+            }, $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $this->domain->getCurrentDomainConfig())),
         ]);
     }
 
