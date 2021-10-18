@@ -1235,7 +1235,7 @@ msgid "Jste členem Věrnostního programu"
 msgstr "Jste členem Věrnostního programu"
 
 msgid "K produktu budete potřebovat"
-msgstr ""
+msgstr "K produktu doporučujeme"
 
 msgid "Kalkulačka se bude od této cenové hladiny zobrazovat na detailu produktu."
 msgstr ""

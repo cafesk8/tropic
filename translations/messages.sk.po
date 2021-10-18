@@ -1265,7 +1265,7 @@ msgid "K hodnotám"
 msgstr "K hodnotám"
 
 msgid "K produktu budete potřebovat"
-msgstr "K produktu budete potrebovať"
+msgstr "K produktu odporúčame"
 
 msgid "Kalhoty jsou dnes opravdu nezbytným základem šatníku každé ženy."
 msgstr "Nohavice sú dnes naozaj nevyhnutným základom šatníka každej ženy."
