@@ -21,7 +21,6 @@ use Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidCartItemException;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifierFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
@@ -364,18 +363,6 @@ class CartFacade extends BaseCartFacade
         }
 
         return $cart->getGifts();
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier  $customerUserIdentifier
-     * @return \App\Model\Cart\Cart|null
-     */
-    public function findCartByCustomerUserIdentifier(CustomerUserIdentifier $customerUserIdentifier)
-    {
-        /** @var \App\Model\Cart\Cart $cart */
-        $cart = $this->cartRepository->findByCustomerUserIdentifier($customerUserIdentifier);
-
-        return $cart;
     }
 
     /**
