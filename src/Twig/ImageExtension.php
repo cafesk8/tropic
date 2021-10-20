@@ -86,7 +86,7 @@ class ImageExtension extends BaseImageExtension
         $htmlAttributes = $attributes;
         unset($htmlAttributes['type'], $htmlAttributes['size']);
 
-        $useLazyLoading = array_key_exists('lazy', $attributes) ? (bool)$attributes['lazy'] : true;
+        $useLazyLoading = !array_key_exists('lazy', $attributes) || (bool)$attributes['lazy'];
         unset($htmlAttributes['lazy']);
 
         if ($useLazyLoading === true) {
@@ -180,13 +180,19 @@ class ImageExtension extends BaseImageExtension
      */
     public function getImageHtml($imageOrEntity, array $attributes = []): string
     {
-        if ($imageOrEntity instanceof Product && $imageOrEntity->isVariant()) {
+        if ($imageOrEntity instanceof Product) {
             $this->preventDefault($attributes);
+            $attributes['title'] = $imageOrEntity->getName();
+            $attributes['alt'] = $imageOrEntity->getName();
+        }
+
+        if ($imageOrEntity instanceof Product && $imageOrEntity->isVariant()) {
             $variantImage = $this->imageFacade->findImageByEntity(
                 $this->imageConfig->getEntityName($imageOrEntity),
                 $imageOrEntity->getId(),
                 $attributes['type']
             );
+
             if ($variantImage !== null) {
                 return parent::getImageHtml($variantImage, $attributes);
             } else {
