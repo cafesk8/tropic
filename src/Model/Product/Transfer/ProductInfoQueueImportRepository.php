@@ -54,9 +54,15 @@ class ProductInfoQueueImportRepository
         $resultSetMapping->addScalarResult('pohoda_id', 'pohodaId');
 
         $queryBuilder = $this->em->createNativeQuery(
-            'SELECT pohoda_id
-            FROM pohoda_changed_products_basic_info_queue
-            ORDER BY inserted_at
+            'SELECT Q.pohoda_id
+            FROM pohoda_changed_products_basic_info_queue Q
+            WHERE Q.pohoda_id NOT IN (
+                SELECT P.pohoda_id FROM products P 
+                    JOIN order_items OI ON P.id = OI.product_id 
+                    JOIN orders O ON OI.order_id = O.id 
+                WHERE O.export_status != \'export_success\' AND O.created_at > NOW() - interval \'1 hour\'
+            )
+            ORDER BY Q.inserted_at
             LIMIT :productsLimit',
             $resultSetMapping
         );
