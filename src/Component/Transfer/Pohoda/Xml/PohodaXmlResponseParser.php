@@ -33,7 +33,7 @@ class PohodaXmlResponseParser
             $pohodaAddressBookResponse->responsePackItemState = (string)$responsePackItemAttributes['state'];
 
             if (isset($responsePackItemAttributes['note'])) {
-                $pohodaAddressBookResponse->responsePackItemNote = $responsePackItemAttributes['note'];
+                $pohodaAddressBookResponse->responsePackItemNote = (string)$responsePackItemAttributes['note'];
             }
 
             if ($pohodaAddressBookResponse->responsePackItemState === PohodaResponse::POHODA_XML_RESPONSE_ITEM_STATE_OK) {
