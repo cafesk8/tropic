@@ -91,6 +91,7 @@
         "prezent/doctrine-translatable-bundle": "^1.0.3",
         "psr/log": "~1.0.2",
         "sensio/framework-extra-bundle": "^5.2",
+        "sentry/sentry-symfony": "3.5",
         "shopsys/cdn": "^1.0.1",
         "shopsys/doctrine-orm": "^2.7.2",
         "shopsys/form-types-bundle": "9.0.2",

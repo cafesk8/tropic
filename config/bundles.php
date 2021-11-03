@@ -40,4 +40,5 @@ return [
     Shopsys\Cdn\CdnBundle::class => ['all' => true],
     Symplify\ConsoleColorDiff\ConsoleColorDiffBundle::class => ['dev' => true, 'test' => true],
     Symplify\ParameterNameGuard\ParameterNameGuardBundle::class => ['dev' => true, 'test' => true],
+    Sentry\SentryBundle\SentryBundle::class => ['all' => true],
 ];
