@@ -23,6 +23,11 @@ parameters:
             # the method is overridden to be deprecated
             message: '#^Method App\\Model\\Product\\ProductVariantFacade::createVariant\(\) should return App\\Model\\Product\\Product but return statement is missing\.$#'
             path: %currentWorkingDirectory%/src/Model/Product/ProductVariantFacade.php
+        -
+            # https://github.com/Codeception/module-webdriver/pull/78
+            message: "#^PHPDoc tag @param for parameter \\$function with type callable is not subtype of native type Closure\\.$#"
+            path: tests/App/Test/Codeception/AcceptanceTester.php
+
     excludes_analyse:
         - %currentWorkingDirectory%/src/Command/Migrations/ImportLegacyOrdersFromCSVCommand.php
 includes:

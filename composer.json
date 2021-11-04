@@ -135,7 +135,7 @@
     "require-dev": {
         "ext-pgsql": "*",
         "ext-zip": "*",
-        "codeception/codeception": "^4.1",
+        "codeception/codeception": "^4.1.22",
         "codeception/module-db": "^1.0",
         "codeception/module-webdriver": "^1.0",
         "codeception/phpunit-wrapper": "^8.0",
