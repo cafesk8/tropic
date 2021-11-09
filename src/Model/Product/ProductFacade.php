@@ -1081,7 +1081,7 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \App\Model\Product\Product $product
-     * @param array $setItems
+     * @param array<int, array{item: \App\Model\Product\Product, item_count: int}> $setItems
      */
     private function refreshProductSets(Product $product, array $setItems): void
     {
@@ -1092,11 +1092,16 @@ class ProductFacade extends BaseProductFacade
         $this->em->flush($oldSetItems);
 
         $toFlush = [];
+        $usedItems = [];
+
         foreach ($setItems as $setItemArray) {
-            if (isset($setItemArray['item'], $setItemArray['item_count'])) {
-                $setItem = $this->productSetFactory->create($product, $setItemArray['item'], $setItemArray['item_count']);
+            $item = $setItemArray['item'];
+
+            if (!isset($usedItems[$item->getId()])) {
+                $setItem = $this->productSetFactory->create($product, $item, $setItemArray['item_count']);
                 $this->em->persist($setItem);
                 $product->addProductSet($setItem);
+                $usedItems[$item->getId()] = $item;
                 $toFlush[] = $setItem;
             }
         }
