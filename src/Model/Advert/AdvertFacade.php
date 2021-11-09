@@ -22,7 +22,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
  * @property \App\Component\Image\ImageFacade $imageFacade
  * @property \App\Model\Advert\AdvertPositionRegistry $advertPositionRegistry
  * @method \App\Model\Advert\Advert|null findRandomAdvertByPositionOnCurrentDomain(string $positionName)
- * @method \App\Model\Advert\Advert getById($advertId)
+ * @method \App\Model\Advert\Advert getById(int $advertId)
  */
 class AdvertFacade extends BaseAdvertFacade
 {

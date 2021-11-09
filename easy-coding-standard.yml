@@ -82,6 +82,7 @@ parameters:
             - '*/src/Controller/Front/ProductController.php'
             - '*/src/Model/Cart/CartFacade.php'
             - '*/src/Command/Migrations/ImportLegacyOrdersFromCSVCommand.php'
+            - '*/tests/App/Test/Codeception/ActorInterface.php'
 
         ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
             - '*/src/Model/Order/Order.php'
@@ -99,6 +100,7 @@ parameters:
             - '*/src/Model/LuigisBox/LuigisBoxObject.php'
             - '*/src/Model/LuigisBox/LuigisBoxObjectFields.php'
             - '*/src/Model/LuigisBox/LuigisBoxProductFields.php'
+            - '*/tests/App/Test/Codeception/ActorInterface.php'
 
         Shopsys\CodingStandards\Sniffs\ObjectIsCreatedByFactorySniff:
             - '*/tests/*'
@@ -157,6 +159,7 @@ parameters:
 
         PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\CamelCapsFunctionNameSniff:
             - '*/src/Component/EntityExtension/QueryBuilder.php'
+            - '*/tests/App/Test/Codeception/ActorInterface.php'
 
         PHP_CodeSniffer\Standards\Squiz\Sniffs\NamingConventions\ValidVariableNameSniff:
             - '*/src/Model/Heureka/HeurekaReviewCronModule.php'
@@ -168,3 +171,4 @@ parameters:
             - '*/src/Model/LuigisBox/LuigisBoxObject.php'
             - '*/src/Model/LuigisBox/LuigisBoxObjectFields.php'
             - '*/src/Model/LuigisBox/LuigisBoxProductFields.php'
+            - '*/tests/App/Test/Codeception/ActorInterface.php'

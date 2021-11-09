@@ -1,6 +1,9 @@
 monolog:
     channels: ["cron", "slow"]
     handlers:
+        sentry:
+            type: service
+            id: Sentry\Monolog\Handler
         main:
             type: fingers_crossed
             buffer_size: 1000

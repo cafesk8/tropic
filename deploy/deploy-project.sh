@@ -78,6 +78,11 @@ function deploy() {
         ["REDIS_PREFIX"]=${PROJECT_NAME}
         ["ELASTIC_SEARCH_INDEX_PREFIX"]=${PROJECT_NAME}
         ["CDN_DOMAIN"]=${CDN_DOMAIN}
+
+        #Sentry
+        ["SENTRY_DSN"]=${SENTRY_DSN}
+        ["SENTRY_ENVIRONMENT"]=${CI_ENVIRONMENT_SLUG}
+        ["SENTRY_RELEASE"]=${CI_COMMIT_SHORT_SHA}
     )
 
     declare -A CRON_INSTANCES=(
