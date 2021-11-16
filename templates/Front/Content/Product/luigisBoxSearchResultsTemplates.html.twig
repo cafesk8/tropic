@@ -48,7 +48,7 @@
     <li class="list-products__item js-list-products-item js-maximum-amount-container" v-bind:data-lb-id="attributes.code">
         <div class="list-products__item__in">
             <div class="list-products__item__block">
-                <a v-bind:href="url" class="list-products__item__image-wrap">
+                <a v-bind:href="attributes.web_url" class="list-products__item__image-wrap">
                     <div class="list-products__item__image dont-print">
                         <picture>
                             <img v-bind:alt="attributes.title" v-bind:title="attributes.title"
@@ -72,7 +72,7 @@
                 </a>
 
                 <div class="list-products__item__info">
-                    <a class="list-products__item__info__link" v-bind:href="url">
+                    <a class="list-products__item__info__link" v-bind:href="attributes.web_url">
                         <h2 class="list-products__item__info__title">
                             {{ '{{ attributes.title }}' }}
                         </h2>
@@ -156,7 +156,7 @@
                     <li class="list-products__item-set" v-for="set in items" v-bind:data-lb-id="set.attributes.code">
                         <div class="box-products-set">
                             <div class="box-products-set__row">
-                                <a class="box-products-set__title" v-bind:href="set.url">
+                                <a class="box-products-set__title" v-bind:href="set.attributes.web_url">
                                     {{ '{{ set.attributes.title }}' }}
                                 </a>
                             </div>
@@ -172,7 +172,7 @@
                                             <div class="list-products-set__overlay"></div>
                                             <div class="list-products-set__overlay list-products-set__overlay--right"></div>
                                             <div class="list-products-set__list js-horizontal-list-slides">
-                                                <a v-for="(item, index) in set.attributes.set_items" v-bind:href="set.url" class="list-products-set__item">
+                                                <a v-for="(item, index) in set.attributes.set_items" v-bind:href="set.attributes.web_url" class="list-products-set__item">
                                                     <div class="list-products-set__item__image">
                                                         <picture>
                                                             <img v-bind:alt="item.title" v-bind:title="item.title" v-bind:src="item.image_link" class="image-product-bigThumbnail" itemprop="image">
@@ -195,7 +195,7 @@
                                 </div>
 
                                 <div class="box-products-set__right">
-                                    <a class="box-products-set__info" v-bind:href="set.url">
+                                    <a class="box-products-set__info" v-bind:href="set.attributes.web_url">
                                         <div class="in-flag dont-print in-flag--product-set">
                                             <span v-for="(flag, index) in set.attributes.flags" class="in-flag__item" v-bind:style="'background-color: ' + set.attributes.flag_colors[index]">
                                                 {{ '{{ flag }}' }}
@@ -286,7 +286,7 @@
             <h3 class="box-search__subtitle">{{ 'Nalezené kategorie'|trans }}</h3>
             <ul class="list-categories js-tabs-content " data-tab-id="categories">
                 <li class="list-categories__item" v-for="category in items" v-bind:data-lb-id="category.attributes.id">
-                    <a v-bind:href="category.url" class="list-categories__item__link">
+                    <a v-bind:href="category.attributes.web_url" class="list-categories__item__link">
                         <div class="list-categories__item__image" v-if="category.attributes.image_link">
                             <picture>
                                 <img v-bind:alt="category.attributes.title" v-bind:title="category.attributes.title"
