@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Model\Image;
 
-use Shopsys\ReadModelBundle\Image\ImageView;
+use Shopsys\FrameworkBundle\Component\Image\Image;
 use Shopsys\ReadModelBundle\Image\ImageViewFactory as BaseImageViewFactory;
 
 class ImageViewFactory extends BaseImageViewFactory
 {
     /**
      * @param array $imageData
-     * @return \Shopsys\ReadModelBundle\Image\ImageView
+     * @return \App\Model\Image\ImageView
      */
     public function createFromImageData(array $imageData): ImageView
     {
@@ -19,7 +19,23 @@ class ImageViewFactory extends BaseImageViewFactory
             $imageData['id'],
             $imageData['extension'],
             $imageData['entity_name'],
-            $imageData['type']
+            $imageData['type'],
+            $imageData['entity_id']
+        );
+    }
+
+    /**
+     * @param \App\Component\Image\Image $image
+     * @return \App\Model\Image\ImageView
+     */
+    public function createFromImage(Image $image): ImageView
+    {
+        return new ImageView(
+            $image->getId(),
+            $image->getExtension(),
+            $image->getEntityName(),
+            $image->getType(),
+            $image->getEntityId()
         );
     }
 }

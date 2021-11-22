@@ -54,14 +54,11 @@ front_homepage:
 front_image:
     path: /%shopsys.content_dir_name%/images/{entityName}/{type}/{sizeName}/{imageId}.{extension}
     defaults: { _controller: App\Controller\Front\ImageController:getImageAction }
-    requirements:
-        imageId: \d+
 
 front_additional_image:
     path: /%shopsys.content_dir_name%/images/{entityName}/{type}/{sizeName}/additional_{additionalIndex}_{imageId}.{extension}
     defaults: { _controller: App\Controller\Front\ImageController:getAdditionalImageAction }
     requirements:
-        imageId: \d+
         additionalIndex: \d+
 
 front_image_without_type:
@@ -69,8 +66,6 @@ front_image_without_type:
     defaults:
         _controller: App\Controller\Front\ImageController:getImageAction
         type: ~
-    requirements:
-        imageId: \d+
 
 front_additional_image_without_type:
     path: /%shopsys.content_dir_name%/images/{entityName}/{sizeName}/additional_{additionalIndex}_{imageId}.{extension}
@@ -78,7 +73,6 @@ front_additional_image_without_type:
         _controller: App\Controller\Front\ImageController:getAdditionalImageAction
         type: ~
     requirements:
-        imageId: \d+
         additionalIndex: \d+
 
 front_login_check:

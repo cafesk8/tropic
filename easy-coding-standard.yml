@@ -83,6 +83,7 @@ parameters:
             - '*/src/Model/Cart/CartFacade.php'
             - '*/src/Command/Migrations/ImportLegacyOrdersFromCSVCommand.php'
             - '*/tests/App/Test/Codeception/ActorInterface.php'
+            - '*/src/Component/Image/ImageFacade.php'
 
         ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
             - '*/src/Model/Order/Order.php'
