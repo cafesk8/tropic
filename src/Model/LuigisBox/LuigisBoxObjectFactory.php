@@ -18,6 +18,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Collection\Exception\ProductImageUrlNotLoadedException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class LuigisBoxObjectFactory
 {
@@ -173,7 +174,7 @@ class LuigisBoxObjectFactory
         $luigisCategory->fields->title = $category->getName($domainConfig->getLocale());
         $luigisCategory->fields->web_url = $domainRouter->generate('front_product_list', [
             'id' => $category->getId(),
-        ]);
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         try {
             $luigisCategory->fields->image_link = $this->imageFacade->getImageUrl($domainConfig, $category, null, null);
@@ -208,7 +209,7 @@ class LuigisBoxObjectFactory
         $luigisBrand->fields->title = $brand->getName();
         $luigisBrand->fields->web_url = $domainRouter->generate('front_brand_detail', [
             'id' => $brand->getId(),
-        ]);
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         try {
             $luigisBrand->fields->image_link = $this->imageFacade->getImageUrl($domainConfig, $brand, null, null);
