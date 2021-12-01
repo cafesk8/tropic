@@ -1,0 +1,46 @@
+@box-action-banner-height: 147px;
+@box-action-banner-height-mobile: 100px;
+@box-action-banner-spacer: 48px;
+@box-action-banner-spacer-mobile: 1px;
+
+.box-action-banner {
+    position: relative;
+    display: block;
+    height: @box-action-banner-height-mobile;
+    margin-bottom: -@box-action-banner-spacer-mobile;
+
+    background: url('@{path-design}/christmas-banner-mobile.png') no-repeat center top;
+    background-size: contain;
+
+    @media @query-md {
+        height: @box-action-banner-height;
+        margin-bottom: -@box-action-banner-spacer;
+
+        background: url('@{path-design}/christmas-banner.png') no-repeat center bottom;
+    }
+
+    &--slovak {
+        background: url('@{path-design}/christmas-banner-mobile-sk.png') no-repeat center top;
+        background-size: contain;
+
+        @media @query-md {
+            background: url('@{path-design}/christmas-banner-sk.png') no-repeat center bottom;
+        }
+    }
+
+    &:before {
+        content: '';
+        position: absolute;
+        height: @box-action-banner-height-mobile - @box-action-banner-spacer-mobile;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: @z-index-under;
+
+        background-color: #212121;
+
+        @media @query-md {
+            height: @box-action-banner-height - @box-action-banner-spacer;
+        }
+    }
+}
