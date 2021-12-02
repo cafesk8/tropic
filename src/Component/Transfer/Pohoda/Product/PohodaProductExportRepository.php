@@ -276,6 +276,7 @@ class PohodaProductExportRepository
             FROM SkzIoZbozi RelatedProducts
             JOIN Skz Product ON Product.ID = RelatedProducts.RefSkz
             WHERE RelatedProducts.RefAg IN (:pohodaProductIds)
+                AND RelatedProducts.Souvisejici = 1
                 AND Product.IObchod = 1
                 AND Product.RefSklad = :defaultStockId
             ORDER BY Product.DatSave',
