@@ -8,6 +8,9 @@
         appId: 'info@tropicliberec.cz'
     });
     window.ecotrack('setUserIdFromLocation', 'ecmid');
+    {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+        window.ecotrack('setUserId', '{{ user.email }}');
+    {% endif %}
     window.ecotrack('trackPageView');
 </script>
 <!-- Ecomail stops growing -->

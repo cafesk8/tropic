@@ -114,6 +114,8 @@ class ScriptController extends FrontBaseController
      */
     public function embedAllPagesEcomailScriptAction(): Response
     {
-        return $this->render('Front/Inline/MeasuringScript/ecomail.html.twig');
+        return $this->render('Front/Inline/MeasuringScript/ecomail.html.twig', [
+            'user' => $this->getUser(),
+        ]);
     }
 }

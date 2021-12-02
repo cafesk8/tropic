@@ -64,3 +64,18 @@
     {% endif %}
 
 {% endblock %}
+
+{% block footer %}    
+    <script type="text/javascript">
+        window.ecotrack('addTrans',
+            '{{ order.number }}',
+            'Tropic Fisihing',
+            '{{ order.totalPriceWithVat.getAmount|number_format(0) }}'
+        );
+        window.ecotrack('trackTrans');
+
+        if (window.localStorage.getItem('ecomail-cart-products') !== null) {
+            window.localStorage.removeItem('ecomail-cart-products');
+        }
+    </script>
+{% endblock %}

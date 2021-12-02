@@ -41,6 +41,39 @@ export default class AddProduct {
             });
 
             $('#js-cart-box').trigger('reload');
+
+            // get cart item details
+            let productName = $($.parseHTML(data)).filterAllNodes('[data-ecomail-name]').data('ecomail-name');
+            let productPrice = $($.parseHTML(data)).filterAllNodes('[data-ecomail-price]').data('ecomail-price');
+            let productUrl = $($.parseHTML(data)).filterAllNodes('[data-ecomail-url]').data('ecomail-url');
+            let productId = $($.parseHTML(data)).filterAllNodes('[data-ecomail-id]').data('ecomail-id');
+            let productImage = $($.parseHTML(data)).filterAllNodes('[data-ecomail-image]').data('ecomail-image');
+
+            let productData = {
+                productId: productId,
+                img_url: productImage,
+                url: productUrl,
+                name: productName,
+                price: productPrice
+            };
+
+            if (window.localStorage.getItem('ecomail-cart-products') === null) {
+                var ecomailCartProducts = [];
+            } else {
+                var ecomailCartProducts = JSON.parse(window.localStorage.getItem('ecomail-cart-products'));
+            }
+
+            ecomailCartProducts.push(productData);
+            window.localStorage.setItem('ecomail-cart-products', JSON.stringify(ecomailCartProducts));
+
+            // send cart event to ecomail
+            window.ecotrack('trackUnstructEvent', {
+                schema: '',
+                data: {
+                    action: 'Basket',
+                    products: ecomailCartProducts
+                }
+            });
         } else {
             // eslint-disable-next-line no-new
             new Window({
