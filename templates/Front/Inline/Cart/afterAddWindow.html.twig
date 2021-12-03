@@ -17,7 +17,7 @@
                 data-ecomail-url="{{ url('front_product_detail', {id: cartItem.product.id}) }}"
                 data-ecomail-id="{{ cartItem.product.id }}"
                 data-ecomail-name="{% if cartItem.saleItem %}{{ 'Výprodej'|trans }} - {% endif %}{{ cartItem.product.name }}"
-                data-ecomail-price="{{ addedPrice.getAmount }}"
+                data-ecomail-price="{{ addedPrice.amount }}"
             >
                 {% if cartItem.product.isPohodaProductTypeSet %}
                     <div class="box-popup-add__content__product__wrap-image">

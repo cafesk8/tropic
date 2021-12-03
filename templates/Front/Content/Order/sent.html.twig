@@ -69,8 +69,8 @@
     <script type="text/javascript">
         window.ecotrack('addTrans',
             '{{ order.number }}',
-            'Tropic Fisihing',
-            '{{ order.totalPriceWithVat.getAmount|number_format(0) }}'
+            'Tropic Fishing',
+            '{{ order.totalPriceWithVat.amount|number_format(0, '.', '') }}'
         );
         window.ecotrack('trackTrans');
 
