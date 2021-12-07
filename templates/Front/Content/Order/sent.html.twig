@@ -72,7 +72,6 @@
             'Tropic Fishing',
             '{{ order.totalPriceWithVat.amount|number_format(0, '.', '') }}'
         );
-        window.ecotrack('trackTrans');
 
         {% for orderProduct in order.productItems %}
 
@@ -90,6 +89,8 @@
                 '{{ orderProduct.quantity }}'
             );
         {% endfor %}
+
+        window.ecotrack('trackTrans');
 
         if (window.localStorage.getItem('ecomail-cart-products') !== null) {
             window.localStorage.removeItem('ecomail-cart-products');
