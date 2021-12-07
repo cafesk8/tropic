@@ -74,6 +74,23 @@
         );
         window.ecotrack('trackTrans');
 
+        {% for orderProduct in order.productItems %}
+
+            window.ecotrack('addItem',
+                '{{ order.number|escape('js') }}',
+                '{{ orderProduct.catnum|escape('js') }}',
+                '{{ orderProduct.name }}',
+                {% if orderProduct.product is not null %}
+                    {% set productMainCategory = findProductMainCategory(orderProduct.product, getDomain().id) %}
+                    {% if productMainCategory is not null %}
+                        '{{ productMainCategory.name }}',
+                    {% endif %}
+                {% endif %}
+                '{{ orderProduct.priceWithVat|moneyFormat|number_format(0, '.', '') }}',
+                '{{ orderProduct.quantity }}'
+            );
+        {% endfor %}
+
         if (window.localStorage.getItem('ecomail-cart-products') !== null) {
             window.localStorage.removeItem('ecomail-cart-products');
         }
