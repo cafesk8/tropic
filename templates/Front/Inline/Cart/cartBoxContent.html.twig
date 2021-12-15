@@ -32,15 +32,15 @@
                                 {% if quantifiedItemPrice.unitPrice.hasHigherStandardPrice %}
                                     <span class="cart-detail__item__content__price__old">{{ quantifiedItemPrice.unitPrice.standardPrice.priceWithVat|price }}</span>
                                 {% endif %}
-                                                </span>
+                            </span>
                         </div>
                     </div>
                     <div class="cart-detail__item__pieces">
                         {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
                     </div>
                     <span class="cart-detail__item__remove js-cart-ajax-remove" data-src="{{ url('front_cart_delete', { cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id) }) }}">
-                                            <i class="svg svg-remove"></i>
-                                        </span>
+                        <i class="svg svg-remove"></i>
+                    </span>
                 </li>
             {% endfor %}
         </ul>
@@ -50,8 +50,8 @@
                 {{ 'Sleva'|trans }}
                 <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': promoCode.code }) }}
                 <span class="cart-detail__promo-code__discount">
-                                        - {{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
-                                    </span>
+                    - {{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
+                </span>
             </div>
         {% endfor %}
 
@@ -66,6 +66,7 @@
     </div>
     <div class="cart-detail__bottom">
         <div class="cart-detail__bottom__transport">
+            {# https://shopsys.atlassian.net/browse/TROPIC-203
             {% if isFreeTransportAndPaymentActive %}
                 {% if isPaymentAndTransportFree %}
                     <div class="in-free-transport">
@@ -86,6 +87,7 @@
                     </div>
                 {% endif %}
             {% endif %}
+            #}
         </div>
         <div class="cart-detail__bottom__button">
             <a href="{{ url('front_cart') }}" class="btn btn--success">{{ 'Přejít do košíku'|trans }}</a>
