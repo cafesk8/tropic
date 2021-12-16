@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "585ce7e2f566619e8b99fca413f0d5a8",
+    "content-hash": "a749494edfcb939619b6786b27675d91",
     "packages": [
         {
             "name": "adoy/fastcgi-client",
@@ -48,12 +48,12 @@
             "version": "0.6.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/arvenil/ninja-mutex.git",
+                "url": "https://github.com/arvenil/mutex.git",
                 "reference": "8c0f5d10f8fb1481b9d98488dbbe2bf84c2e1a25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arvenil/ninja-mutex/zipball/8c0f5d10f8fb1481b9d98488dbbe2bf84c2e1a25",
+                "url": "https://api.github.com/repos/arvenil/mutex/zipball/8c0f5d10f8fb1481b9d98488dbbe2bf84c2e1a25",
                 "reference": "8c0f5d10f8fb1481b9d98488dbbe2bf84c2e1a25",
                 "shasum": ""
             },
@@ -1059,11 +1059,11 @@
         },
         {
             "name": "devops/kubernetes-deployment",
-            "version": "1.5.14",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://gitlab+deploy-token-4:yqMfHR2F4qc6rbFequP4@gitlab.shopsys.cz/devops/kubernetes-deployment.git",
-                "reference": "dcaad6fec73eca058c7e8aa0df12fdfe7002341c"
+                "reference": "95440ce9fd9a45e9d7703b30e925cef0d0360ef7"
             },
             "require": {
                 "arvenil/ninja-mutex": "^0.4.1",
@@ -1108,7 +1108,7 @@
                 "shopsys",
                 "symfony"
             ],
-            "time": "2021-04-06T22:25:33+00:00"
+            "time": "2021-11-25T13:25:06+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -9637,6 +9637,7 @@
                 "mail",
                 "mailer"
             ],
+            "abandoned": "symfony/mailer",
             "time": "2019-11-12T09:31:26+00:00"
         },
         {

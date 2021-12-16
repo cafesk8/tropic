@@ -12,6 +12,9 @@ function deploy() {
         DOMAIN_HOSTNAME_3
     )
 
+    ENABLE_AUTOSCALING=true
+    USING_STOREFRONT=false
+
     declare -A PARAMETERS=(
         ["parameters.database_host"]=${POSTGRES_DATABASE_IP_ADDRESS}
         ["parameters.database_name"]=${PROJECT_NAME}
@@ -108,6 +111,10 @@ function deploy() {
     source "${DEPLOY_TARGET_PATH}/parts/cron.sh"
     source "${DEPLOY_TARGET_PATH}/parts/autoscaling.sh"
     source "${DEPLOY_TARGET_PATH}/parts/deploy.sh"
+
+    declare -A STOREFRONT_ENVIRONMENT_VARIABLES=(
+
+    )
 }
 
 function merge() {
