@@ -4195,3 +4195,5 @@ msgstr "Žiadne sklady sa nenašli"
 msgid "Žádné slevy na celý nákup nenalezeny."
 msgstr "Žiadne zľavy na celý nákup sa nenašli."
 
+msgid "Doprava zdarma u Zásilkovny od 1000 Kč a u PPL od 2000 Kč"
+msgstr "Platí iba pre Zasielkovňu"
