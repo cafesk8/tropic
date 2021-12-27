@@ -812,7 +812,7 @@ msgid "Dárkový poukaz - aktivován"
 msgstr "Darčekový poukaz - aktivovaný"
 
 msgid "Dárkový<br> poukaz<br> v hodnotě"
-msgstr ""
+msgstr "Darčekový<br>poukaz<br>v hodnote"
 
 msgid "Dárky"
 msgstr "Darčeky"
@@ -1345,8 +1345,8 @@ msgstr "Kód darčekového poukazu"
 msgid "Kód produktu"
 msgstr "Kód produktu"
 
-msgid "Kód vložte v pokladně při dokočení objednávky."
-msgstr ""
+msgid "Kód vložte v pokladně při dokončení objednávky."
+msgstr "Kód vložte v pokladni pri dokončení objednávky."
 
 msgid "Last name"
 msgstr "Priezvisko"
@@ -2129,7 +2129,7 @@ msgid "Platnost"
 msgstr "Platnosť"
 
 msgid "Platnost poukazu je 12 měsíců od zakoupení."
-msgstr ""
+msgstr "Platnosť poukazu je 12 mesiacov od zakúpenia."
 
 msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
 msgstr "Platnosť zľavového kupónu \"%code%\" vypršala. Prosím, skontrolujte ho."

@@ -1303,7 +1303,7 @@ msgstr ""
 msgid "Kód produktu"
 msgstr "Kód produktu"
 
-msgid "Kód vložte v pokladně při dokočení objednávky."
+msgid "Kód vložte v pokladně při dokončení objednávky."
 msgstr ""
 
 msgid "Last name"
