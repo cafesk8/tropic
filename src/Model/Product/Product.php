@@ -61,6 +61,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public const POHODA_PRODUCT_TYPE_ID_GIFT_CARD = 3;
     public const POHODA_PRODUCT_TYPE_ID_PRODUCT_SET = 5;
     public const SUPPLIER_SET_ITEM_NAME_COUNT_SEPARATOR = '*';
+    public const DELIVERY_DAYS_NOT_FILLED = -99;
 
     /**
      * @var \App\Model\Product\StoreStock\ProductStoreStock[]|\Doctrine\Common\Collections\Collection
@@ -1170,7 +1171,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function getDeliveryDaysAsNumber(): int
     {
         if ($this->deliveryDays === null) {
-            return 0;
+            return self::DELIVERY_DAYS_NOT_FILLED;
         }
 
         return (int)(explode('-', $this->deliveryDays)[0]);

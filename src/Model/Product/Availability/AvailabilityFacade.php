@@ -25,6 +25,8 @@ use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade as Bas
  */
 class AvailabilityFacade extends BaseAvailabilityFacade
 {
+    public const DELIVERY_DAYS_BIG_PLACEHOLDER = 999;
+
     /**
      * @return string[]
      */
@@ -191,7 +193,7 @@ class AvailabilityFacade extends BaseAvailabilityFacade
 
                 return tc(
                     'Dostupnost %days% dní',
-                    $deliveryDaysNumber,
+                    $deliveryDaysNumber === Product::DELIVERY_DAYS_NOT_FILLED ? self::DELIVERY_DAYS_BIG_PLACEHOLDER : $deliveryDaysNumber,
                     ['%days%' => $deliveryDays],
                     'messages',
                     $locale
