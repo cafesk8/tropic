@@ -63,5 +63,5 @@ define('ELFINDER_IMAGEMAGICK_PS', false);
  * memory requirements have increased and the memory limit needs to be increased.
  */
 if ($_SERVER['APP_ENV'] === 'test'){
-    ini_set('memory_limit', '768MB');
+    ini_set('memory_limit', '768M');
 }
