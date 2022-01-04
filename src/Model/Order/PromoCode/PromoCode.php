@@ -134,8 +134,8 @@ class PromoCode extends BasePromoCode
     {
         parent::__construct($promoCodeData);
         $this->domainId = $promoCodeData->domainId;
-        $this->fillCommonFields($promoCodeData);
         $this->limits = new ArrayCollection();
+        $this->fillCommonFields($promoCodeData);
     }
 
     /**
@@ -145,10 +145,6 @@ class PromoCode extends BasePromoCode
     {
         parent::edit($promoCodeData);
         $this->fillCommonFields($promoCodeData);
-
-        foreach ($promoCodeData->limits as $limit) {
-            $this->limits->add($limit);
-        }
     }
 
     /**
@@ -171,6 +167,10 @@ class PromoCode extends BasePromoCode
         $this->certificateSku = $promoCodeData->certificateSku;
         $this->setUserType($promoCodeData->userType);
         $this->setLimitType($promoCodeData->limitType);
+
+        foreach ($promoCodeData->limits as $limit) {
+            $this->limits->add($limit);
+        }
     }
 
     /**

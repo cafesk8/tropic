@@ -20,8 +20,6 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFactoryInterface;
  */
 class PromoCodeFacade extends BasePromoCodeFacade
 {
-    private const MASS_CREATE_BATCH_SIZE = 200;
-
     /**
      * @var \App\Model\Order\PromoCode\PromoCodeRepository
      */
@@ -118,41 +116,21 @@ class PromoCodeFacade extends BasePromoCodeFacade
         $existingPromoCodeCodes = $this->promoCodeRepository->getAllPromoCodeCodes();
         $generatedPromoCodeCount = 0;
         $generatedPromoCodes = [];
-        $toFlush = [];
 
         while ($generatedPromoCodeCount < $promoCodeData->quantity) {
             $code = $promoCodeData->prefix . strtoupper($this->hashGenerator->generateHashWithoutConfusingCharacters(PromoCode::MASS_GENERATED_CODE_LENGTH));
 
             if (!in_array($code, $existingPromoCodeCodes, true)) {
                 $promoCodeData->code = $code;
-
-                $promoCode = new PromoCode($promoCodeData);
-                $this->em->persist($promoCode);
-                $toFlush[] = $promoCode;
+                $promoCode = $this->create($promoCodeData);
 
                 $existingPromoCodeCodes[] = $code;
                 $generatedPromoCodeCount++;
                 $generatedPromoCodes[] = $promoCode;
             }
-
-            if ($generatedPromoCodeCount % self::MASS_CREATE_BATCH_SIZE === 0) {
-                $this->flushAndClear($toFlush);
-                $toFlush = [];
-            }
         }
 
-        $this->em->flush($toFlush);
-
         return $generatedPromoCodes;
-    }
-
-    /**
-     * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodesForFlush
-     */
-    private function flushAndClear(array $promoCodesForFlush): void
-    {
-        $this->em->flush($promoCodesForFlush);
-        $this->em->clear();
     }
 
     /**
