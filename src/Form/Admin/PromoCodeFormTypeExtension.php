@@ -175,8 +175,8 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 ]);
         }
 
-        $builder->add($this->getRestrictionGroup($builder, $options['promo_code'], $domainId));
         $builder->add($this->getValidationGroup($builder));
+        $builder->add($this->getRestrictionGroup($builder, $options['promo_code'], $domainId));
         $builder->add('save', SubmitType::class);
     }
 
