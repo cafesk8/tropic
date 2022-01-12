@@ -742,7 +742,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     {
         $totalStockQuantityOfProductVariants = $this->getTotalStockQuantityOfProductVariants();
 
-        $totalStockQuantityOfProductVariants -= count($this->getVariants()) * ProductMallExportMapper::STOCK_QUANTITY_FUSE;
+        $totalStockQuantityOfProductVariants -= count($this->variants->count()) * ProductMallExportMapper::STOCK_QUANTITY_FUSE;
 
         if ($totalStockQuantityOfProductVariants < 0) {
             return 0;
@@ -995,12 +995,13 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     }
 
     /**
+     * @param string|null $locale
      * @return \App\Model\Product\Product[]
      */
-    public function getVariants()
+    public function getVariants(?string $locale = null): array
     {
         $variants = $this->variants->toArray();
-        usort($variants, function (self $variant1, self $variant2) {
+        usort($variants, function (self $variant1, self $variant2) use ($locale) {
             $sortValue = $variant1->getCalculatedAvailability()->getRating() - $variant2->getCalculatedAvailability()->getRating();
 
             if ($sortValue === 0) {
@@ -1008,7 +1009,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
             }
 
             if ($sortValue === 0) {
-                $sortValue = strcmp($variant1->getName(), $variant2->getName());
+                $sortValue = strcmp($variant1->getName($locale), $variant2->getName($locale));
             }
 
             return $sortValue;
@@ -1269,11 +1270,12 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function isInAnySaleStock(): bool
     {
         if ($this->isMainVariant()) {
-            foreach ($this->getVariants() as $variant) {
+            foreach ($this->variants->toArray() as $variant) {
                 if ($variant->isInAnySaleStock()) {
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -1375,7 +1377,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
         }
 
         if ($this->isMainVariant()) {
-            foreach ($this->getVariants() as $variant) {
+            foreach ($this->variants->toArray() as $variant) {
                 $variant->copyProductCategoryDomains($productCategoryDomains);
             }
         }
@@ -1626,7 +1628,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function isProductInNews(int $domainId): bool
     {
         if ($this->isMainVariant()) {
-            foreach ($this->getVariants() as $variant) {
+            foreach ($this->variants->toArray() as $variant) {
                 if ($variant->isProductInNews($domainId)) {
                     return true;
                 }
@@ -1674,7 +1676,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
         }
 
         if ($this->isMainVariant()) {
-            foreach ($this->getVariants() as $variant) {
+            foreach ($this->variants->toArray() as $variant) {
                 foreach ($variant->getProductFlags() as $variantFlag) {
                     if ($variantFlag->getFlag()->isNews()) {
                         $variantNewsFrom = $variantFlag->getActiveFrom();

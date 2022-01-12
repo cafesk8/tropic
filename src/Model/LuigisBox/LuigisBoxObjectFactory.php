@@ -227,7 +227,7 @@ class LuigisBoxObjectFactory
         $productsWithVariantsAndSetItems = $products;
 
         foreach ($products as $product) {
-            foreach ($product->getVariants() as $variant) {
+            foreach ($product->getVariants($domainConfig->getLocale()) as $variant) {
                 $productsWithVariantsAndSetItems[] = $variant;
             }
 
