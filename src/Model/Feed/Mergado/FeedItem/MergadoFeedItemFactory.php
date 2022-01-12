@@ -335,7 +335,7 @@ class MergadoFeedItemFactory
             $imageUrls = $this->imageFacade->getAllImagesUrlsByEntity($product, $domainConfig);
 
             if ($product->isMainVariant() === true) {
-                foreach ($product->getVariants() as $variant) {
+                foreach ($product->getVariants($domainConfig->getLocale()) as $variant) {
                     $variantUrls = $this->imageFacade->getAllImagesUrlsByEntity($variant, $domainConfig);
                     foreach ($variantUrls as $variantUrl) {
                         $imageUrls[] = $variantUrl;
