@@ -93,15 +93,17 @@ class OrderGiftCertificatePdfFacade
      */
     private function renderPdf(OrderGiftCertificate $orderGiftCertificate, bool $greyscale): Dompdf
     {
+        $domainConfig = $this->domain->getDomainConfigById($orderGiftCertificate->getOrder()->getDomainId());
         $dompdf = new Dompdf(['isRemoteEnabled' => true]);
         $giftCertificate = $orderGiftCertificate->getGiftCertificate();
         $html = $this->twigEnvironment->render('Mail/Order/GiftCertificate/giftCertificate.html.twig', [
+            'domainUrl' => $domainConfig->getUrl(),
             'giftCertificateCode' => $giftCertificate->getCode(),
             'giftCertificateCurrency' => $orderGiftCertificate->getOrder()->getCurrency(),
             'giftCertificateValue' => $giftCertificate->getCertificateValue(),
             'giftCertificateValidTo' => $giftCertificate->isActive() ? $giftCertificate->getValidTo() : null,
             'greyscale' => $greyscale,
-            'orderLocale' => $this->domain->getDomainConfigById($orderGiftCertificate->getOrder()->getDomainId())->getLocale(),
+            'orderLocale' => $domainConfig->getLocale(),
         ]);
         $dompdf->loadHtml($html);
         $dompdf->render();
