@@ -18,6 +18,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Localization\Exception\ImplicitLocaleNotSetException;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
@@ -1009,7 +1010,11 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
             }
 
             if ($sortValue === 0) {
-                $sortValue = strcmp($variant1->getName($locale), $variant2->getName($locale));
+                try {
+                    $sortValue = strcmp($variant1->getName($locale), $variant2->getName($locale));
+                } catch (ImplicitLocaleNotSetException $exception) {
+                    $sortValue = strcmp($variant1->getName(DomainHelper::CZECH_LOCALE), $variant2->getName(DomainHelper::CZECH_LOCALE));
+                }
             }
 
             return $sortValue;
