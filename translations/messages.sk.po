@@ -4197,3 +4197,9 @@ msgstr "Žiadne zľavy na celý nákup sa nenašli."
 
 msgid "Doprava zdarma u Zásilkovny od 1000 Kč a u PPL od 2000 Kč"
 msgstr "Platí iba pre Zasielkovňu"
+
+msgid "Zobrazit nastavení cookies"
+msgstr "Zobraziť nastavenia cookies"
+
+msgid "Nastavení cookies"
+msgstr "Nastavenie cookies"
