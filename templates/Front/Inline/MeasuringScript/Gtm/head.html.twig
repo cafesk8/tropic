@@ -10,6 +10,13 @@
         {% for dataLayerPush in gtmDataLayerPushes %}
             dataLayer.push({{ dataLayerPush|json_encode|raw }});
         {% endfor %}
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'analytics_storage': 'denied'
+        });
     </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
