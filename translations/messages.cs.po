@@ -4056,3 +4056,9 @@ msgstr ""
 
 msgid "Doprava zdarma u Zásilkovny od 1000 Kč a u PPL od 2000 Kč"
 msgstr ""
+
+msgid "Zobrazit nastavení cookies"
+msgstr ""
+
+msgid "Nastavení cookies"
+msgstr ""
