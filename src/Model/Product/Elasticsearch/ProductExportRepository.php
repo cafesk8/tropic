@@ -225,7 +225,7 @@ class ProductExportRepository extends BaseProductExportRepository
         string $locale,
         string $variantType): array
     {
-        if ($variantType === Product::VARIANT_TYPE_NONE || $variantType === Product::VARIANT_TYPE_VARIANT) {
+        if ($variantType === BaseProduct::VARIANT_TYPE_NONE || $variantType === BaseProduct::VARIANT_TYPE_VARIANT) {
             return $baseParameters;
         } else {
             $parameters = [];
@@ -250,7 +250,7 @@ class ProductExportRepository extends BaseProductExportRepository
         string $locale,
         string $variantType
     ): array {
-        if ($variantType === Product::VARIANT_TYPE_NONE || $variantType === Product::VARIANT_TYPE_VARIANT) {
+        if ($variantType === BaseProduct::VARIANT_TYPE_NONE || $variantType === BaseProduct::VARIANT_TYPE_VARIANT) {
             if (!empty($baseParameters)) {
                 return ['parameter_groups' => $baseParameters];
             }
@@ -353,7 +353,7 @@ class ProductExportRepository extends BaseProductExportRepository
             }
         }
 
-        return (float)0;
+        return 0.0;
     }
 
     /**
