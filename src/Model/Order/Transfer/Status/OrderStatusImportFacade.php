@@ -13,6 +13,8 @@ use App\Model\Order\OrderDataFactory;
 use App\Model\Order\OrderFacade;
 use App\Model\Order\Status\OrderStatusDataFactory;
 use App\Model\Order\Status\OrderStatusFacade;
+use App\Model\Product\Transfer\ProductInfoQueueImportFacade;
+use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 
 class OrderStatusImportFacade
@@ -35,6 +37,8 @@ class OrderStatusImportFacade
 
     private OrderDataFactory $orderDataFactory;
 
+    private ProductInfoQueueImportFacade $productInfoQueueImportFacade;
+
     /**
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Model\Order\Transfer\Status\OrderStatusQueueImportFacade $orderStatusQueueImportFacade
@@ -44,6 +48,7 @@ class OrderStatusImportFacade
      * @param \App\Model\Order\Status\OrderStatusDataFactory $orderStatusDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Order\OrderDataFactory $orderDataFactory
+     * @param \App\Model\Product\Transfer\ProductInfoQueueImportFacade $productInfoQueueImportFacade
      */
     public function __construct(
         TransferLoggerFactory $transferLoggerFactory,
@@ -53,7 +58,8 @@ class OrderStatusImportFacade
         OrderStatusFacade $orderStatusFacade,
         OrderStatusDataFactory $orderStatusDataFactory,
         Domain $domain,
-        OrderDataFactory $orderDataFactory
+        OrderDataFactory $orderDataFactory,
+        ProductInfoQueueImportFacade $productInfoQueueImportFacade
     ) {
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(OrderStatusImportCronModule::TRANSFER_IDENTIFIER);
         $this->orderStatusQueueImportFacade = $orderStatusQueueImportFacade;
@@ -63,6 +69,7 @@ class OrderStatusImportFacade
         $this->orderStatusDataFactory = $orderStatusDataFactory;
         $this->domain = $domain;
         $this->orderDataFactory = $orderDataFactory;
+        $this->productInfoQueueImportFacade = $productInfoQueueImportFacade;
     }
 
     /**
@@ -120,9 +127,8 @@ class OrderStatusImportFacade
     /**
      * @param \App\Model\Order\Order $order
      * @param \App\Component\Transfer\Pohoda\Order\Status\PohodaOrderStatus $pohodaOrderStatus
-     * @return int
      */
-    private function editOrderStatus(Order $order, PohodaOrderStatus $pohodaOrderStatus): int
+    private function editOrderStatus(Order $order, PohodaOrderStatus $pohodaOrderStatus): void
     {
         $orderStatus = $this->orderStatusFacade->findByTransferStatus($pohodaOrderStatus->statusName);
         if ($orderStatus === null) {
@@ -144,6 +150,13 @@ class OrderStatusImportFacade
         $orderData->status = $orderStatus;
         $orderDomain = $this->domain->getDomainConfigById($order->getDomainId());
         $order = $this->orderFacade->edit($order->getId(), $orderData, $orderDomain->getLocale());
+        $orderProductPohodaIds = [];
+
+        foreach ($order->getProductItems() as $productItem) {
+            $orderProductPohodaIds[] = $productItem->getProduct()->getPohodaId();
+        }
+
+        $this->productInfoQueueImportFacade->insertChangedPohodaProductIds($orderProductPohodaIds, new DateTime());
 
         $this->logger->addInfo('Stav objednávky aktualizován', [
             'orderId' => $order->getId(),
@@ -151,7 +164,5 @@ class OrderStatusImportFacade
             'oldStatus' => $oldOrderStatus->getName($orderDomain->getLocale()),
             'newStatus' => $pohodaOrderStatus->statusName,
         ]);
-
-        return $order->getPohodaId();
     }
 }
