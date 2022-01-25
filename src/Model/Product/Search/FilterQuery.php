@@ -389,18 +389,18 @@ class FilterQuery extends BaseFilterQuery
                 'aggs' => [
                     'parameters' => [
                         'nested' => [
-                            'path' => 'parameters',
+                            'path' => 'parameters_for_filter.parameter_groups',
                         ],
                         'aggs' => [
                             'by_parameters' => [
                                 'terms' => [
-                                    'field' => 'parameters.parameter_id',
+                                    'field' => 'parameters_for_filter.parameter_groups.parameter_id',
                                     'size' => static::MAXIMUM_REASONABLE_AGGREGATION_BUCKET_COUNT,
                                 ],
                                 'aggs' => [
                                     'by_value' => [
                                         'terms' => [
-                                            'field' => 'parameters.parameter_value_id',
+                                            'field' => 'parameters_for_filter.parameter_groups.parameter_value_id',
                                             'size' => static::MAXIMUM_REASONABLE_AGGREGATION_BUCKET_COUNT,
                                         ],
                                     ],
@@ -544,5 +544,40 @@ class FilterQuery extends BaseFilterQuery
         ];
 
         return $clone;
+    }
+
+    /**
+     * Applies all filters and calculate standard (non pluses) numbers
+     * For flags, brands, stock, parameters
+     * Parameters aggregation have nested structure in result [parameter_id][parameter_value_id]
+     *
+     * @return array
+     */
+    public function getAbsoluteNumbersWithParametersQuery(): array
+    {
+        $query = $this->getAbsoluteNumbersAggregationQuery();
+        $query['body']['aggs']['parameters'] = [
+            'nested' => [
+                'path' => 'parameters_for_filter.parameter_groups',
+            ],
+            'aggs' => [
+                'by_parameters' => [
+                    'terms' => [
+                        'field' => 'parameters_for_filter.parameter_groups.parameter_id',
+                        'size' => static::MAXIMUM_REASONABLE_AGGREGATION_BUCKET_COUNT,
+                    ],
+                    'aggs' => [
+                        'by_value' => [
+                            'terms' => [
+                                'field' => 'parameters_for_filter.parameter_groups.parameter_value_id',
+                                'size' => static::MAXIMUM_REASONABLE_AGGREGATION_BUCKET_COUNT,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        return $query;
     }
 }
