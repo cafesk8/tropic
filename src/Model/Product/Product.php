@@ -412,7 +412,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function getStoreStocks(): array
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getStoreStocks from main variant!');
+            throw new \Exception('Don\'t call getStoreStocks from main variant! (ID ' . $this->id . ')');
         }
 
         $storeStocks = $this->storeStocks->toArray();
@@ -530,7 +530,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function getExternalStockQuantity(): int
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getExternalStockQuantity from main variant!');
+            throw new \Exception('Don\'t call getExternalStockQuantity from main variant! (ID ' . $this->id . ')');
         }
 
         $externalStockQuantity = 0;
@@ -549,7 +549,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function getRealExternalStockQuantity(): int
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getRealExternalStockQuantity from main variant!');
+            throw new \Exception('Don\'t call getRealExternalStockQuantity from main variant! (ID ' . $this->id . ')');
         }
 
         return $this->getCalculatedStockQuantity($this->getExternalStockQuantity());
@@ -561,7 +561,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function getRealExternalStockAndStoreStockQuantity(): int
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getRealExternalStockAndStoreStockQuantity from main variant!');
+            throw new \Exception('Don\'t call getRealExternalStockAndStoreStockQuantity from main variant! (ID ' . $this->id . ')');
         }
 
         return $this->getCalculatedStockQuantity($this->getExternalStockQuantity() + $this->getStoreStockQuantity());
@@ -649,7 +649,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function getStocksWithoutZeroQuantityOnStore(): array
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getStocksWithoutZeroQuantityOnStore from main variant!');
+            throw new \Exception('Don\'t call getStocksWithoutZeroQuantityOnStore from main variant! (ID ' . $this->id . ')');
         }
 
         return array_filter(
@@ -948,7 +948,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function getRealStockQuantity(): int
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getRealStockQuantity from main variant!');
+            throw new \Exception('Don\'t call getRealStockQuantity from main variant! (ID ' . $this->id . ')');
         }
 
         return (int)$this->realStockQuantity;
@@ -1190,7 +1190,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function isProductOnlyAtExternalStock(bool $withoutSaleStock = false): bool
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant!');
+            throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant! (ID ' . $this->id . ')');
         }
         $stockQuantity = $withoutSaleStock ? $this->getRealNonSaleStocksQuantity() : $this->getRealStockQuantity();
 
@@ -1204,7 +1204,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function isProductOnlyAtExternalStockAndStoreStock(bool $withoutSaleStock = false): bool
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant!');
+            throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant! (ID ' . $this->id . ')');
         }
 
         $stockQuantity = $withoutSaleStock ? $this->getRealNonSaleStocksQuantity() : $this->getRealStockQuantity();
@@ -1220,7 +1220,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function isProductOnlyAtStoreStock(bool $withoutSaleStock = false): bool
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant!');
+            throw new \Exception('Don\'t call isProductOnlyAtExternalStock from main variant! (ID ' . $this->id . ')');
         }
         $stockQuantity = $withoutSaleStock ? $this->getRealNonSaleStocksQuantity() : $this->getRealStockQuantity();
 
@@ -1233,7 +1233,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function isAvailable(): bool
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call isAvailable from main variant!');
+            throw new \Exception('Don\'t call isAvailable from main variant! (ID ' . $this->id . ')');
         }
 
         return (!$this->isAvailableInDays() && $this->getRealStockQuantity() > 0)
@@ -1247,7 +1247,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function isAvailableInDays(bool $withoutSaleStock = false): bool
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call isAvailableInDays from main variant!');
+            throw new \Exception('Don\'t call isAvailableInDays from main variant! (ID ' . $this->id . ')');
         }
         if ($this->isProductOnlyAtStoreStock($withoutSaleStock))
         {
@@ -1263,7 +1263,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function isCurrentlyOutOfStock(): bool
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call isCurrentlyOutOfStock from main variant!');
+            throw new \Exception('Don\'t call isCurrentlyOutOfStock from main variant! (ID ' . $this->id . ')');
         }
 
         return $this->getRealStockQuantity() < 1;
@@ -1293,7 +1293,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function getSaleStocksQuantity(): int
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getSaleStocksQuantity from main variant!');
+            throw new \Exception('Don\'t call getSaleStocksQuantity from main variant! (ID ' . $this->id . ')');
         }
 
         $stockQuantity = 0;
@@ -1312,7 +1312,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function getRealSaleStocksQuantity(): int
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getRealSaleStocksQuantity from main variant!');
+            throw new \Exception('Don\'t call getRealSaleStocksQuantity from main variant! (ID ' . $this->id . ')');
         }
 
         return $this->getCalculatedStockQuantity($this->getSaleStocksQuantity());
@@ -1324,7 +1324,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     private function getNonSaleStocksQuantity(): int
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getNonSaleStocksQuantity from main variant!');
+            throw new \Exception('Don\'t call getNonSaleStocksQuantity from main variant! (ID ' . $this->id . ')');
         }
 
         return $this->stockQuantity - $this->getSaleStocksQuantity();
@@ -1336,7 +1336,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     public function getRealNonSaleStocksQuantity(): int
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call getRealNonSaleStocksQuantity from main variant!');
+            throw new \Exception('Don\'t call getRealNonSaleStocksQuantity from main variant! (ID ' . $this->id . ')');
         }
 
         return $this->getCalculatedStockQuantity($this->getNonSaleStocksQuantity());
@@ -1349,7 +1349,7 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     private function isInSaleStock(ProductStoreStock $productStoreStock): bool
     {
         if ($this->isMainVariant()) {
-            throw new \Exception('Don\'t call isInSaleStock from main variant!');
+            throw new \Exception('Don\'t call isInSaleStock from main variant! (ID ' . $this->id . ')');
         }
 
         return $productStoreStock->getStore()->isSaleStock() && $productStoreStock->getStockQuantity() > 0;
