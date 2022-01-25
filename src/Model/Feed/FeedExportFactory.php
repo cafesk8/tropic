@@ -22,6 +22,7 @@ class FeedExportFactory extends BaseFeedExportFactory
         $feedRenderer = $this->feedRendererFactory->create($feed);
         $feedFilepath = $this->feedPathProvider->getFeedFilepath($feed->getInfo(), $domainConfig);
         $feedLocalFilepath = $this->feedPathProvider->getFeedLocalFilepath($feed->getInfo(), $domainConfig);
+        $lastSeekId = $lastSeekId !== null ? (int)$lastSeekId : $lastSeekId;
 
         return new FeedExport(
             $feed,
@@ -33,7 +34,7 @@ class FeedExportFactory extends BaseFeedExportFactory
             $this->em,
             $feedFilepath,
             $feedLocalFilepath,
-            (int)$lastSeekId
+            $lastSeekId
         );
     }
 }
