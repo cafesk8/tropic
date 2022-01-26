@@ -15,7 +15,7 @@ use Shopsys\FrameworkBundle\Model\Feed\FeedFacade as BaseFeedFacade;
 class FeedFacade extends BaseFeedFacade
 {
     /**
-     * Doesn't recalculate product visibilities because they are calculated by a different cron every 5 minutes so it isn't necessary
+     * Doesn't recalculate product visibilities because they are calculated by a different cron every 5 minutes, so it isn't necessary
      *
      * @param string $feedName
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
@@ -25,7 +25,8 @@ class FeedFacade extends BaseFeedFacade
     public function createFeedExport(string $feedName, DomainConfig $domainConfig, ?int $lastSeekId = null): FeedExport
     {
         $feed = $this->feedRegistry->getFeedByName($feedName);
+        $lastSeekId = $lastSeekId !== null ? (string)$lastSeekId : $lastSeekId;
 
-        return $this->feedExportFactory->create($feed, $domainConfig, (string)$lastSeekId);
+        return $this->feedExportFactory->create($feed, $domainConfig, $lastSeekId);
     }
 }
