@@ -28,9 +28,10 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     /**
      * @param int[] $ids
      * @param string|null $routeName
+     * @param bool $onlyAvailable
      * @return array
      */
-    public function getSellableHitsForIds(array $ids, ?string $routeName = null): array
+    public function getSellableHitsForIds(array $ids, ?string $routeName = null, bool $onlyAvailable = false): array
     {
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
             ->filterIds(array_values($ids));
@@ -39,11 +40,11 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
             $filterQuery = $filterQuery->filterOnlyInSale();
         }
 
-        if ($routeName === 'front_news_product_list'){
+        if ($routeName === 'front_news_product_list') {
             $filterQuery = $filterQuery->filterOnlyInNews();
         }
 
-        if ($routeName === 'front_available_product_list'){
+        if ($onlyAvailable) {
             $filterQuery = $filterQuery->filterOnlyAvailable();
         }
 
@@ -92,7 +93,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         $filterQuery = $this->productFilterDataToQueryTransformer->addStockToQuery($productFilterData, $filterQuery);
         $filterQuery = $this->productFilterDataToQueryTransformer->addAvailabilityToQuery($productFilterData, $filterQuery);
         $filterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $filterQuery, $this->currentCustomerUser->getPricingGroup());
-        /** @var \App\Model\Product\Search\FilterQuery $filterQuery */
+
         return $filterQuery;
     }
 
@@ -107,7 +108,8 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     {
         $emptyProductFilterData = new ProductFilterData();
 
-        $filterQuery = $this->createListableProductsForFlagFilterQuery($emptyProductFilterData, $orderingModeId, $page, $limit, $flagIds);
+        $filterQuery = $this->createListableProductsForFlagFilterQuery($emptyProductFilterData, $orderingModeId, $page, $limit, $flagIds)
+            ->filterOnlyAvailable();
 
         $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
 
