@@ -331,9 +331,12 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      */
     public function getByArticle(BlogArticle $article): array
     {
-        return $this->createFromArray(
+        $productViews = $this->createFromArray(
             $this->productOnCurrentDomainFacade->getSellableHitsForIds($this->blogArticleFacade->getProductIds($article))
         );
+        shuffle($productViews);
+
+        return $productViews;
     }
 
     /**
@@ -346,17 +349,13 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $productViews = $this->createFromArray(
             $this->productOnCurrentDomainFacade->getSellableHitsForIds(array_keys($topProductPositionIndexedById))
         );
-
-        usort(
-            $productViews,
-            fn (ListedProductView $listedProductView1, ListedProductView $listedProductView2) => $topProductPositionIndexedById[$listedProductView1->getId()] - $topProductPositionIndexedById[$listedProductView2->getId()]
-        );
+        shuffle($productViews);
 
         return $productViews;
     }
 
     /**
-     * @inheritDoc
+     * @return \App\Model\Product\View\ListedProductView[]
      */
     public function getAllBestsellers(): array
     {
@@ -365,11 +364,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $productViews = $this->createFromArray(
             $this->productOnCurrentDomainFacade->getSellableHitsForIds(array_keys($bestsellerPositionIndexedById), 'front_available_product_list')
         );
-
-        usort(
-            $productViews,
-            fn (ListedProductView $listedProductView1, ListedProductView $listedProductView2) => $bestsellerPositionIndexedById[$listedProductView1->getId()] - $bestsellerPositionIndexedById[$listedProductView2->getId()]
-        );
+        shuffle($productViews);
 
         return $productViews;
     }
@@ -379,9 +374,12 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      */
     public function getAccessories(int $productId, int $limit): array
     {
-        return array_slice($this->createFromArray(
+        $productViews = $this->createFromArray(
             $this->productOnCurrentDomainFacade->getSellableHitsForIds($this->productAccessoryFacade->getProductIds($productId))
-        ), 0, $limit);
+        );
+        shuffle($productViews);
+
+        return array_slice($productViews, 0, $limit);
     }
 
     /**
@@ -389,8 +387,11 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      */
     public function getAllAccessories(int $productId): array
     {
-        return $this->createFromArray(
+        $productViews = $this->createFromArray(
             $this->productOnCurrentDomainFacade->getSellableHitsForIds($this->productAccessoryFacade->getProductIds($productId))
         );
+        shuffle($productViews);
+
+        return $productViews;
     }
 }
