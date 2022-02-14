@@ -380,6 +380,9 @@
               },
               "type": {
                 "type": "text"
+              },
+              "entity_id": {
+                "type": "integer"
               }
             }
           }

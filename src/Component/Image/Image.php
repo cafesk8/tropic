@@ -38,4 +38,37 @@ class Image extends BaseImage
     {
         return $this->description;
     }
+
+    /**
+     * @deprecated Generating image names for products has changed
+     * @return string
+     */
+    public function getFilename(): string
+    {
+        return $this->id . '.' . $this->extension;
+    }
+
+    /**
+     * @param string $extension
+     */
+    public function setExtension(string $extension): void
+    {
+        $this->extension = $extension;
+    }
+
+    /**
+     * @param int|null $pohodaId
+     */
+    public function setPohodaId(?int $pohodaId): void
+    {
+        $this->pohodaId = $pohodaId;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
 }

@@ -175,4 +175,25 @@ class ImageRepository extends BaseImageRepository
     {
         return $this->getImageRepository()->find($imageId);
     }
+
+    /**
+     * @param string $entityName
+     * @param string|null $type
+     * @return \App\Component\Image\Image[]
+     */
+    public function getImagesByEntityNameAndType(string $entityName, ?string $type = null): array
+    {
+        $queryBuilder = $this->em->createQueryBuilder()
+            ->select('i')
+            ->from(Image::class, 'i', 'i.id')
+            ->andWhere('i.entityName = :entityName')->setParameter('entityName', $entityName);
+
+        if ($type === null) {
+            $queryBuilder->andWhere('i.type IS NULL');
+        } else {
+            $queryBuilder->andWhere('i.type = :type')->setParameter('type', $type);
+        }
+
+        return $queryBuilder->getQuery()->execute();
+    }
 }

@@ -380,7 +380,7 @@ class ProductFacade extends BaseProductFacade
         $product = $this->getById($productId);
 
         if ($productData->pohodaProductType === Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_SET) {
-            $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+            $productData->outOfStockAction = BaseProduct::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
         }
 
         $originalMainVariant = $product->isVariant() ? $product->getMainVariant() : null;
@@ -397,7 +397,7 @@ class ProductFacade extends BaseProductFacade
         }
 
         $this->refreshProductFlags($product, $productData->flags);
-        parent::edit($productId, $productData);
+        $this->baseEdit($product, $productData);
         $this->refreshProductSets($product, $productData->setItems);
         $this->updateProductStoreStocks($productData, $product);
         $this->updateMainProductsStoreStocks($product);
@@ -426,6 +426,46 @@ class ProductFacade extends BaseProductFacade
         }
 
         return $product;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function baseEdit(Product $product, ProductData $productData): void
+    {
+        $originalNames = $product->getNames();
+
+        $productCategoryDomains = $this->productCategoryDomainFactory->createMultiple($product, $productData->categoriesByDomainId);
+        $product->edit($productCategoryDomains, $productData);
+
+        $this->saveParameters($product, $productData->parameters);
+        if (!$product->isMainVariant()) {
+            $this->refreshProductManualInputPrices($product, $productData->manualInputPricesByPricingGroupId);
+        } else {
+            $product->refreshVariants($productData->variants);
+        }
+        $this->refreshProductAccessories($product, $productData->accessories);
+        $this->em->flush();
+        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
+
+        $renameProductImages = false;
+        $oldProductNames = [];
+        foreach ($this->domain->getAllLocales() as $locale) {
+            if ($product->getName($locale) !== $productData->name[$locale]) {
+                $renameProductImages = true;
+            }
+            $oldProductNames[$locale]['old'] = $product->getName($locale);
+            $oldProductNames[$locale]['new'] = $productData->name[$locale];
+        }
+        $this->imageFacade->manageImages($product, $productData->images, null, $renameProductImages, $oldProductNames);
+
+        $this->friendlyUrlFacade->saveUrlListFormData('front_product_detail', $product->getId(), $productData->urls);
+        $this->createFriendlyUrlsWhenRenamed($product, $originalNames);
+
+        $this->pluginCrudExtensionFacade->saveAllData('product', $product->getId(), $productData->pluginData);
+
+        $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
     }
 
     /**

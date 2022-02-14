@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Component\Image\Image;
+use App\Model\Image\ImageView;
+use App\Model\Image\ImageViewFactory;
 use App\Model\Product\Brand\Brand;
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -20,25 +23,26 @@ use Twig\TwigFunction;
  * @method bool imageExists(\App\Component\Image\Image|object $imageOrEntity, string|null $type)
  * @method string getImageUrl(\App\Component\Image\Image|object $imageOrEntity, string|null $sizeName, string|null $type)
  * @method \App\Component\Image\Image[] getImages(object $entity, string|null $type)
+ * @property \App\Component\Image\ImageLocator $imageLocator
  */
 class ImageExtension extends BaseImageExtension
 {
-    /**
-     * @var \Symfony\Component\Asset\Package
-     */
-    private $assetsPackage;
+    private Package $assetsPackage;
 
     private ImageConfig $imageConfig;
+
+    private ImageViewFactory $imageViewFactory;
 
     /**
      * @param mixed $frontDesignImageUrlPrefix
      * @param \Symfony\Component\Asset\Package $assetsPackage
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Component\Image\ImageLocator $imageLocator
+     * @param \App\Component\Image\ImageLocator $imageLocator
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \Twig\Environment $twigEnvironment
      * @param bool $isLazyLoadEnabled
      * @param \Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig $imageConfig
+     * @param \App\Model\Image\ImageViewFactory $imageViewFactory
      */
     public function __construct(
         $frontDesignImageUrlPrefix,
@@ -48,14 +52,19 @@ class ImageExtension extends BaseImageExtension
         ImageFacade $imageFacade,
         Environment $twigEnvironment,
         bool $isLazyLoadEnabled,
-        ImageConfig $imageConfig
+        ImageConfig $imageConfig,
+        ImageViewFactory $imageViewFactory
     ) {
         parent::__construct($frontDesignImageUrlPrefix, $domain, $imageLocator, $imageFacade, $twigEnvironment, $isLazyLoadEnabled);
         $this->assetsPackage = $assetsPackage;
         $this->imageConfig = $imageConfig;
+        $this->imageViewFactory = $imageViewFactory;
     }
 
-    public function getFunctions()
+    /**
+     * @return \Twig\TwigFunction[]
+     */
+    public function getFunctions(): array
     {
         $functions = parent::getFunctions();
         $functions[] = new TwigFunction('getSupplierSetItemsImages', [$this, 'getSupplierSetItemsImages']);
@@ -63,6 +72,7 @@ class ImageExtension extends BaseImageExtension
         $functions[] = new TwigFunction('getSupplierSetItemCount', [$this, 'getSupplierSetItemCount']);
         $functions[] = new TwigFunction('getProductSetImages', [$this, 'getProductSetImages']);
         $functions[] = new TwigFunction('shouldVariantImageBeDisplayed', [$this, 'shouldVariantImageBeDisplayed']);
+        $functions[] = new TwigFunction('getImageViews', [$this, 'getImageViews']);
 
         return $functions;
     }
@@ -86,7 +96,7 @@ class ImageExtension extends BaseImageExtension
         $htmlAttributes = $attributes;
         unset($htmlAttributes['type'], $htmlAttributes['size']);
 
-        $useLazyLoading = array_key_exists('lazy', $attributes) ? (bool)$attributes['lazy'] : true;
+        $useLazyLoading = !array_key_exists('lazy', $attributes) || (bool)$attributes['lazy'];
         unset($htmlAttributes['lazy']);
 
         if ($useLazyLoading === true) {
@@ -180,19 +190,35 @@ class ImageExtension extends BaseImageExtension
      */
     public function getImageHtml($imageOrEntity, array $attributes = []): string
     {
-        if ($imageOrEntity instanceof Product && $imageOrEntity->isVariant()) {
+        if ($imageOrEntity instanceof ImageView) {
             $this->preventDefault($attributes);
-            $variantImage = $this->imageFacade->findImageByEntity(
-                $this->imageConfig->getEntityName($imageOrEntity),
+
+            $entityName = $imageOrEntity->getEntityName();
+
+            $attributes['src'] = $this->imageFacade->getImageUrlFromAttributes(
+                $this->domain->getCurrentDomainConfig(),
                 $imageOrEntity->getId(),
-                $attributes['type']
+                $imageOrEntity->getExtension(),
+                $entityName,
+                $imageOrEntity->getType(),
+                $attributes['size'],
+                $imageOrEntity->getEntityId()
             );
-            if ($variantImage !== null) {
-                return parent::getImageHtml($variantImage, $attributes);
-            } else {
-                $mainVariant = $imageOrEntity->getMainVariant();
-                return parent::getImageHtml($mainVariant, $attributes);
-            }
+
+            $additionalImagesData = $this->imageFacade->getAdditionalImagesDataFromAttributes(
+                $this->domain->getCurrentDomainConfig(),
+                $imageOrEntity->getId(),
+                $imageOrEntity->getExtension(),
+                $entityName,
+                $imageOrEntity->getType(),
+                $attributes['size']
+            );
+
+            return $this->getImageHtmlByEntityName($attributes, $entityName, $additionalImagesData);
+        }
+
+        if ($imageOrEntity instanceof Product) {
+            return $this->getProductImageHtml($imageOrEntity, $attributes);
         }
 
         if ($imageOrEntity instanceof Brand) {
@@ -205,6 +231,49 @@ class ImageExtension extends BaseImageExtension
 
             if ($brandImage === null) {
                 return '';
+            }
+        }
+
+        return parent::getImageHtml($imageOrEntity, $attributes);
+    }
+
+    /**
+     * @param object $entity
+     * @param string|null $type
+     * @return \App\Model\Image\ImageView[]
+     */
+    public function getImageViews(object $entity, ?string $type = null): array
+    {
+        return array_map(
+            fn (Image $image) => $this->imageViewFactory->createFromImage($image),
+            $this->getImages($entity, $type)
+        );
+    }
+
+    /**
+     * @param Object|\App\Component\Image\Image|\Shopsys\ReadModelBundle\Image\ImageView|null $imageOrEntity
+     * @param array $attributes
+     * @return string
+     */
+    public function getProductImageHtml($imageOrEntity, array $attributes = []): string
+    {
+        $this->preventDefault($attributes);
+        $attributes['title'] = $imageOrEntity->getName();
+        $attributes['alt'] = $imageOrEntity->getName();
+
+        if ($imageOrEntity instanceof Product && $imageOrEntity->isVariant()) {
+            $variantImage = $this->imageFacade->findImageByEntity(
+                $this->imageConfig->getEntityName($imageOrEntity),
+                $imageOrEntity->getId(),
+                $attributes['type']
+            );
+
+            if ($variantImage !== null) {
+                return parent::getImageHtml($variantImage, $attributes);
+            } else {
+                $mainVariant = $imageOrEntity->getMainVariant();
+
+                return parent::getImageHtml($mainVariant, $attributes);
             }
         }
 

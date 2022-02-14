@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class ImageController extends FrontBaseController
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Image\Processing\ImageGeneratorFacade
+     * @var \App\Component\Image\Processing\ImageGeneratorFacade
      */
     private $imageGeneratorFacade;
 
@@ -23,7 +23,7 @@ class ImageController extends FrontBaseController
     private $filesystem;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Image\Processing\ImageGeneratorFacade $imageGeneratorFacade
+     * @param \App\Component\Image\Processing\ImageGeneratorFacade $imageGeneratorFacade
      * @param \League\Flysystem\FilesystemInterface $filesystem
      */
     public function __construct(ImageGeneratorFacade $imageGeneratorFacade, FilesystemInterface $filesystem)

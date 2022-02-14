@@ -83,6 +83,7 @@ class ProductSetFacade
                     'extension' => $image->getExtension(),
                     'entity_name' => $image->getEntityName(),
                     'type' => $image->getType(),
+                    'entity_id' => $productSet->getItem()->getId(),
                 ];
             }
             return $result;
@@ -124,6 +125,7 @@ class ProductSetFacade
                     'extension' => $image->getExtension(),
                     'entity_name' => $image->getEntityName(),
                     'type' => $image->getType(),
+                    'entity_id' => $image->getEntityId(),
                 ],
             ];
         }

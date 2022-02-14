@@ -14,7 +14,7 @@
     {% set typeSupplierSet = product.supplierSet is same as(true) %}
     {% set typeSetOrSupplierSet = typeSet or typeSupplierSet %}
     {% set variantsCount = product.getVariantsCount(domain.id) %}
-    {% set stickers = getImages(product, 'sticker') %}
+    {% set stickers = getImageViews(product, 'sticker') %}
     {% set productUrl = url('front_product_detail', {id: product.id}) %}
 
     <meta itemprop="url" content="{{ productUrl }}">

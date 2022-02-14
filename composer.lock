@@ -8608,11 +8608,11 @@
         },
         {
             "name": "shopsys/cdn",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://gitlab+deploy-token-23:r3JFL4v-MPmhxEmzu3ZL@gitlab.shopsys.cz/ss6-projects/cdn.git",
-                "reference": "a797d4e763850e71da8557d524f63d689d45e1b8"
+                "reference": "339913c68ea4e983e36ad009263ae0b4a3859fab"
             },
             "require": {
                 "php": "^7.1",
@@ -8644,7 +8644,7 @@
                 "shopsys",
                 "symfony"
             ],
-            "time": "2020-12-11T20:59:57+00:00"
+            "time": "2021-03-25T20:08:13+00:00"
         },
         {
             "name": "shopsys/doctrine-orm",

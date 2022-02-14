@@ -101,7 +101,9 @@ services:
     Shopsys\FrameworkBundle\Component\FileUpload\FileUpload: '@App\Component\FileUpload\FileUpload'
 
     App\Component\Image\ImageFacade:
-        arguments: ['%shopsys.image_url_prefix%']
+        arguments:
+            $imageUrlPrefix: '%shopsys.image_url_prefix%'
+            $productImageDir: '%shopsys.product_images_dir%'
         calls:
             - { method: setCdnDomain, arguments: ['%env(CDN_DOMAIN)%'] }
 
@@ -895,3 +897,19 @@ services:
     Shopsys\FrameworkBundle\Model\Statistics\StatisticsProcessingFacade: '@App\Model\Statistics\StatisticsProcessingFacade'
 
     Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\AutomaticBestsellingProductRepository: '@App\Model\Product\BestsellingProduct\AutomaticBestsellingProductRepository'
+
+    App\Component\FileUpload\FileNamingConvention: ~
+
+    Shopsys\FrameworkBundle\Component\FileUpload\FileNamingConvention: '@App\Component\FileUpload\FileNamingConvention'
+
+    App\Component\Image\ImageLocator:
+        class: App\Component\Image\ImageLocator
+        arguments: ['%shopsys.image_dir%']
+
+    Shopsys\FrameworkBundle\Component\Image\ImageLocator: '@App\Component\Image\ImageLocator'
+
+    App\Component\Image\Processing\ImageGeneratorFacade: ~
+
+    Shopsys\FrameworkBundle\Component\Image\Processing\ImageGeneratorFacade: '@App\Component\Image\Processing\ImageGeneratorFacade'
+
+    Shopsys\FrameworkBundle\Component\Image\ImageFactory: '@App\Component\Image\ImageFactory'
