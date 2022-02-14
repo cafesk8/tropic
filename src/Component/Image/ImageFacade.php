@@ -703,10 +703,11 @@ class ImageFacade extends BaseImageFacade
     /**
      * @param string $entityName
      * @param string|null $type
+     * @param int|null $imageIdFrom
      * @return \App\Component\Image\Image[]
      */
-    public function getImagesByEntityNameAndType(string $entityName, ?string $type = null): array
+    public function getImagesByEntityNameAndTypeOrderedById(string $entityName, ?string $type = null, ?int $imageIdFrom = null): array
     {
-        return $this->imageRepository->getImagesByEntityNameAndType($entityName, $type);
+        return $this->imageRepository->getImagesByEntityNameAndTypeOrderedById($entityName, $type, $imageIdFrom);
     }
 }

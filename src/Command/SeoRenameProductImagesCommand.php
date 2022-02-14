@@ -13,7 +13,9 @@ use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig;
+use Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -65,7 +67,8 @@ class SeoRenameProductImagesCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Rename product images to seo optimized');
+            ->setDescription('Rename product images to seo optimized')
+            ->addArgument('imageIdFrom', InputArgument::OPTIONAL, 'Id image from begin');
     }
 
     /**
@@ -76,7 +79,9 @@ class SeoRenameProductImagesCommand extends Command
     {
         $output->writeln('<fg=green>Renaming product images...</fg=green>');
 
-        $this->renameProductImages($output);
+        $imageIdFrom = $input->getArgument('imageIdFrom') ? (int)$input->getArgument('imageIdFrom') : null;
+
+        $this->renameProductImages($output, $imageIdFrom);
 
         $output->writeln('<fg=green>Product images successfully renamed</fg=green>');
 
@@ -85,10 +90,11 @@ class SeoRenameProductImagesCommand extends Command
 
     /**
      * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param int|null $imageIdFrom
      */
-    private function renameProductImages(OutputInterface $output): void
+    private function renameProductImages(OutputInterface $output, ?int $imageIdFrom = null): void
     {
-        $imagesToRename = $this->imageFacade->getImagesByEntityNameAndType('product');
+        $imagesToRename = $this->imageFacade->getImagesByEntityNameAndTypeOrderedById('product', null, $imageIdFrom);
         foreach ($imagesToRename as $imageToRename) {
             $oldImagePath = $this->imageLocator->getRelativeImagePath($imageToRename->getEntityName(), $imageToRename->getType(), ImageConfig::ORIGINAL_SIZE_NAME);
             $oldImageFilepath = $this->imageDir . $oldImagePath . $imageToRename->getFilename();
@@ -99,7 +105,15 @@ class SeoRenameProductImagesCommand extends Command
                 continue;
             }
 
-            $newImagesPath = $this->getNewImagePath($imageToRename);
+            try {
+                $newImagesPath = $this->getNewImagePath($imageToRename);
+            } catch (ProductNotFoundException $e) {
+                $output->writeln('<fg=red>' . $e->getMessage() . ', delete old image and skip.</fg=red>');
+                $this->filesystem->delete($oldImageFilepath);
+
+                continue;
+            }
+
             $output->writeln(json_encode($newImagesPath));
 
             foreach ($newImagesPath as $newImagePath) {

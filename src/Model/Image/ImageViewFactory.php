@@ -20,7 +20,7 @@ class ImageViewFactory extends BaseImageViewFactory
             $imageData['extension'],
             $imageData['entity_name'],
             $imageData['type'],
-            $imageData['entity_id']
+            $imageData['entity_id'] ?? null
         );
     }
 
