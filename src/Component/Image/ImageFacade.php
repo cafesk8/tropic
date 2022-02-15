@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Image;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Pohoda\Product\Image\PohodaImage;
 use App\Model\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +18,7 @@ use Shopsys\FrameworkBundle\Component\FileUpload\ImageUploadData;
 use Shopsys\FrameworkBundle\Component\Image\AdditionalImageData;
 use Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig;
 use Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException;
+use Shopsys\FrameworkBundle\Component\Image\Image;
 use Shopsys\FrameworkBundle\Component\Image\ImageFactoryInterface;
 use Shopsys\FrameworkBundle\Component\Image\ImageLocator;
 use Shopsys\FrameworkBundle\Component\Image\ImageRepository;
@@ -28,7 +30,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property \App\Component\FileUpload\FileUpload $fileUpload
  * @property \App\Component\Image\ImageRepository $imageRepository
  * @method \App\Component\Image\Image[] getAllImagesByEntity(object $entity)
- * @method deleteImageFiles(\App\Component\Image\Image $image)
  * @method \Shopsys\FrameworkBundle\Component\Image\AdditionalImageData[] getAdditionalImagesData(\Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig, \App\Component\Image\Image $imageOrEntity, string|null $sizeName, string|null $type)
  * @method string getAdditionalImageUrl(\Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig, int $additionalSizeIndex, \App\Component\Image\Image $image, string|null $sizeName)
  * @method \App\Component\Image\Image getImageByObject(\App\Component\Image\Image|object $imageOrEntity, string|null $type)
@@ -709,5 +710,25 @@ class ImageFacade extends BaseImageFacade
     public function getImagesByEntityNameAndTypeOrderedById(string $entityName, ?string $type = null, ?int $imageIdFrom = null): array
     {
         return $this->imageRepository->getImagesByEntityNameAndTypeOrderedById($entityName, $type, $imageIdFrom);
+    }
+
+    /**
+     * @param \App\Component\Image\Image $image
+     */
+    public function deleteImageFiles(Image $image)
+    {
+        $entityName = $image->getEntityName();
+        $imageConfig = $this->imageConfig->getEntityConfigByEntityName($entityName);
+        $sizeConfigs = $image->getType() === null ? $imageConfig->getSizeConfigs() : $imageConfig->getSizeConfigsByType($image->getType());
+
+        foreach ($sizeConfigs as $sizeConfig) {
+            foreach (DomainHelper::LOCALES as $locale) {
+                $filepath = $this->imageLocator->getAbsoluteImageFilepath($image, $sizeConfig->getName(), $locale);
+
+                if ($this->filesystem->has($filepath)) {
+                    $this->filesystem->delete($filepath);
+                }
+            }
+        }
     }
 }
