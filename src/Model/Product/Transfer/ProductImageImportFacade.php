@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Transfer;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\Image\ImageFacade;
 use App\Component\Transfer\Logger\TransferLogger;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
@@ -16,6 +17,8 @@ use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use DateTime;
 use Exception;
+use League\Flysystem\FilesystemInterface;
+use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler;
 
@@ -23,6 +26,8 @@ class ProductImageImportFacade
 {
     private const PRODUCT_IMAGES_SUBDIR = 'product/original/';
     private const BATCH_LIMIT = 250;
+
+    private FilesystemInterface $filesystem;
 
     private MServerClient $mServerClient;
 
@@ -46,6 +51,7 @@ class ProductImageImportFacade
      * @param string $imagesDirectory
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Component\Transfer\Pohoda\MServer\MServerClient $mServerClient
+     * @param \League\Flysystem\FilesystemInterface $filesystem
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Component\Transfer\Pohoda\Product\Image\PohodaImageExportFacade $pohodaImageExportFacade
@@ -57,6 +63,7 @@ class ProductImageImportFacade
         string $imagesDirectory,
         TransferLoggerFactory $transferLoggerFactory,
         MServerClient $mServerClient,
+        FilesystemInterface $filesystem,
         ImageFacade $imageFacade,
         ProductFacade $productFacade,
         PohodaImageExportFacade $pohodaImageExportFacade,
@@ -66,6 +73,7 @@ class ProductImageImportFacade
     ) {
         $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImageImportCronModule::TRANSFER_IDENTIFIER);
         $this->mServerClient = $mServerClient;
+        $this->filesystem = $filesystem;
         $this->imagesDirectory = $imagesDirectory;
         $this->imageFacade = $imageFacade;
         $this->productFacade = $productFacade;
@@ -210,8 +218,22 @@ class ProductImageImportFacade
             return;
         }
         $image = $this->mServerClient->getImage('/documents/Obrázky/' . rawurlencode($pohodaImage->file));
-        $this->imageFacade->uploadPohodaImage($product, $pohodaImage, $image);
 
+        foreach (DomainHelper::LOCALES as $locale) {
+            $imageTargetPath = $imagesTargetPath . TransformString::stringToFriendlyUrlSlug($product->getName($locale)) . '_' . $nextImageId . '.' . $pohodaImage->extension;
+            $this->filesystem->put($imageTargetPath, $image);
+        }
+
+        $this->imageFacade->saveImageIntoDb(
+            $product->getId(),
+            'product',
+            $nextImageId,
+            $pohodaImage->extension,
+            $pohodaImage->position,
+            null,
+            $pohodaImage->id,
+            $pohodaImage->description
+        );
         $this->logger->addInfo('Obrázek uložen', [
             'pohodaImage' => $pohodaImage,
             'productId' => $product->getId(),
