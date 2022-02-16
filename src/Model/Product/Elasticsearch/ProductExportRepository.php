@@ -138,7 +138,12 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['variant_type'] = $product->getVariantType();
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
         $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale, $result['variant_type']);
-        $result['parameters_for_filter'] = $this->extractParametersForFilterForProductIncludingVariants($result['parameters'], $variants, $locale, $result['variant_type']);
+        $result['parameters_for_filter'] = $this->extractParametersForFilterForProductIncludingVariants(
+            $result['parameters'],
+            $this->productFacade->getSellableVariantsForProduct($product, $domainId),
+            $locale,
+            $result['variant_type']
+        );
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
         $result['gifts'] = $this->productFacade->getProductGiftName($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
@@ -225,7 +230,7 @@ class ProductExportRepository extends BaseProductExportRepository
         string $locale,
         string $variantType): array
     {
-        if ($variantType === Product::VARIANT_TYPE_NONE || $variantType === Product::VARIANT_TYPE_VARIANT) {
+        if ($variantType === BaseProduct::VARIANT_TYPE_NONE || $variantType === BaseProduct::VARIANT_TYPE_VARIANT) {
             return $baseParameters;
         } else {
             $parameters = [];
@@ -250,7 +255,7 @@ class ProductExportRepository extends BaseProductExportRepository
         string $locale,
         string $variantType
     ): array {
-        if ($variantType === Product::VARIANT_TYPE_NONE || $variantType === Product::VARIANT_TYPE_VARIANT) {
+        if ($variantType === BaseProduct::VARIANT_TYPE_NONE || $variantType === BaseProduct::VARIANT_TYPE_VARIANT) {
             if (!empty($baseParameters)) {
                 return ['parameter_groups' => $baseParameters];
             }
@@ -353,7 +358,7 @@ class ProductExportRepository extends BaseProductExportRepository
             }
         }
 
-        return (float)0;
+        return 0.0;
     }
 
     /**
