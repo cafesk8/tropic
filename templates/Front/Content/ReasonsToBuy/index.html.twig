@@ -1,4 +1,5 @@
 {% set aboutUsArticle = findVisibleArticleBySettingValue(constant('App\\Component\\Setting\\Setting::ABOUT_US_ARTICLE_ID')) %}
+
 <div class="box-reasons-to-buy">
     <div class="box-reasons-to-buy__left">
         <h2 class="box-reasons-to-buy__title">{{ '6 důvodů, proč nakoupit u nás'|trans }}</h2>
@@ -19,7 +20,9 @@
                 <p class="list-reasons-to-buy__item__text">
                     {{ 'Doprava při nákupu nad 1000 Kč zdarma'|trans }}
                 </p>
-                <i class="svg svg-info in-icon in-icon--info in-icon--static js-tooltip" data-toggle="tooltip" title="" data-original-title="{{ 'Doprava zdarma u Zásilkovny od 1000 Kč a u PPL od 2000 Kč'|trans }}"></i>
+                {% if getDomain().locale is same as(constant('\\App\\Component\\Domain\\DomainHelper::CZECH_LOCALE')) %}
+                    <i class="svg svg-info in-icon in-icon--info in-icon--static js-tooltip" data-toggle="tooltip" title="" data-original-title="{{ 'Doprava zdarma u Zásilkovny od 1000 Kč a u PPL od 2000 Kč'|trans }}"></i>
+                {% endif %}
             </li>
             <li class="list-reasons-to-buy__item">
                 <div class="list-reasons-to-buy__item__icon">
