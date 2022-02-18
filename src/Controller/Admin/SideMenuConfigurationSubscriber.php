@@ -59,6 +59,11 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
     public function configurePricingMenu(ConfigureMenuEvent $event): void
     {
         $pricingMenu = $event->getMenu();
+
+        if ($pricingMenu->getChild('currencies') === null) {
+            $pricingMenu->addChild('currencies', ['route' => 'admin_currency_list', 'label' => t('Currencies')]);
+        }
+
         $promoCodeMenu = $pricingMenu->getChild('promo_codes');
         $promoCodeMenu->addChild('admin_promocode_new', ['route' => 'admin_promocode_new', 'label' => t('Vytvoření slevového kupónu'), 'display' => false]);
         $promoCodeMenu->addChild('admin_promocode_edit', ['route' => 'admin_promocode_edit', 'label' => t('Editace slevového kupónu'), 'display' => false]);
