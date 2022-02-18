@@ -14,7 +14,9 @@
         <span class="list-benefits__item__text">
             {{ 'Doprava při nákupu nad 1000 Kč zdarma'|trans }}
         </span>
-        <i class="svg svg-info in-icon in-icon--info in-icon--static js-tooltip" data-toggle="tooltip" title="" data-original-title="{{ 'Doprava zdarma u Zásilkovny od 1000 Kč a u PPL od 2000 Kč'|trans }}"></i>
+        {% if getDomain().locale is same as(constant('\\App\\Component\\Domain\\DomainHelper::CZECH_LOCALE')) %}
+            <i class="svg svg-info in-icon in-icon--info in-icon--static js-tooltip" data-toggle="tooltip" title="" data-original-title="{{ 'Doprava zdarma u Zásilkovny od 1000 Kč a u PPL od 2000 Kč'|trans }}"></i>
+        {% endif %}
     </li>
     <li class="list-benefits__item">
         <span class="list-benefits__item__icon">
