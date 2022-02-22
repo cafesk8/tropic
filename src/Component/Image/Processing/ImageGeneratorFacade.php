@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Component\Image\Processing;
 
-use App\Component\FileUpload\FileNamingConvention;
 use Exception;
 use Shopsys\FrameworkBundle\Component\Image\Processing\ImageGeneratorFacade as BaseImageGeneratorFacade;
 
@@ -24,11 +23,11 @@ class ImageGeneratorFacade extends BaseImageGeneratorFacade
      */
     public function generateImageAndGetFilepath($entityName, $imageId, $type, $sizeName): string
     {
-        if ($entityName === FileNamingConvention::PRODUCT_CLASS_NAME && !is_int($imageId) && $type === null) {
+        if (!is_numeric($imageId)) {
             try {
                 $matches = [];
                 preg_match('/_([0-9]+)$/', $imageId, $matches);
-                $databaseImageId = intval($matches[1]);
+                $databaseImageId = intval(end($matches));
             } catch (Exception $e) {
                 $databaseImageId = $imageId;
             }
