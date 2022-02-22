@@ -23,10 +23,6 @@ services:
         tags:
             - { name: shopsys.cron, hours: '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21', minutes: '*', readableName: 'Import změněných produktů a zařazení produktů do kategorií z Pohoda IS', instanceName: products }
 
-    Shopsys\FrameworkBundle\Model\Product\ProductVisibilityImmediateCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet viditelností produktů (pouze produkty označené k přepočtu)', instanceName: products }
-
     Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet dostupností produktů', instanceName: products }
@@ -38,3 +34,7 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportChangedCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: "Export změněných produktů do Elasticsearch", instanceName: products }
+
+    Shopsys\FrameworkBundle\Model\Product\ProductVisibilityImmediateCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet viditelností produktů (pouze produkty označené k přepočtu)', instanceName: products }
