@@ -755,12 +755,16 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ]);
         }
 
-        $discountExclusionGroup->add('registrationDiscountDisabled', YesNoType::class, [
+        $discountExclusionGroup->add('registrationDiscountDisabled', MultidomainType::class, [
+            'entry_type' => YesNoType::class,
             'label' => t('Vyjmout ze slev za registraci'),
+            'required' => false,
         ]);
 
-        $discountExclusionGroup->add('promoDiscountDisabled', YesNoType::class, [
+        $discountExclusionGroup->add('promoDiscountDisabled', MultidomainType::class, [
+            'entry_type' => YesNoType::class,
             'label' => t('Vyjmout ze slev za slevové kupóny'),
+            'required' => false,
         ]);
 
         $builder->add($discountExclusionGroup);

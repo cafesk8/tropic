@@ -63,6 +63,16 @@ class ProductDomain extends BaseProductDomain
     private bool $exportedToLuigisBox;
 
     /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private bool $registrationDiscountDisabled;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private bool $promoDiscountDisabled;
+
+    /**
      * @param \App\Model\Product\Product $product
      * @param int $domainId
      */
@@ -76,6 +86,8 @@ class ProductDomain extends BaseProductDomain
         $this->shown = true;
         $this->transportFee = null;
         $this->exportedToLuigisBox = false;
+        $this->registrationDiscountDisabled = false;
+        $this->promoDiscountDisabled = false;
     }
 
     /**
@@ -196,5 +208,37 @@ class ProductDomain extends BaseProductDomain
     public function setExportedToLuigisBox(bool $exportedToLuigisBox): void
     {
         $this->exportedToLuigisBox = $exportedToLuigisBox;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRegistrationDiscountDisabled(): bool
+    {
+        return $this->registrationDiscountDisabled;
+    }
+
+    /**
+     * @param bool $registrationDiscountDisabled
+     */
+    public function setRegistrationDiscountDisabled(bool $registrationDiscountDisabled): void
+    {
+        $this->registrationDiscountDisabled = $registrationDiscountDisabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPromoDiscountDisabled(): bool
+    {
+        return $this->promoDiscountDisabled;
+    }
+
+    /**
+     * @param bool $promoDiscountDisabled
+     */
+    public function setPromoDiscountDisabled(bool $promoDiscountDisabled): void
+    {
+        $this->promoDiscountDisabled = $promoDiscountDisabled;
     }
 }

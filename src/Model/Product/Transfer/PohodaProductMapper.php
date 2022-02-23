@@ -24,7 +24,6 @@ use App\Model\Product\Parameter\ParameterDataFactory;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Parameter\ParameterValueDataFactory;
 use App\Model\Product\Parameter\ProductParameterValueDataFactory;
-use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\ProductVariantTropicFacade;
@@ -42,6 +41,7 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\Brand\Exception\BrandNotFoundException;
+use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\Unit\Exception\UnitNotFoundException;
 
 class PohodaProductMapper
@@ -318,16 +318,20 @@ class PohodaProductMapper
     {
         $productData->pohodaId = $pohodaProduct->pohodaId;
         $productData->pohodaProductType = $pohodaProduct->pohodaProductType;
-        $productData->updatedByPohodaAt = new \DateTime();
+        $productData->updatedByPohodaAt = new DateTime();
         $productData->catnum = $pohodaProduct->catnum;
         $productData->name[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->name);
         $productData->name[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->nameSk);
         $productData->shortDescriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shortDescription;
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->longDescription;
-        $productData->registrationDiscountDisabled = $pohodaProduct->registrationDiscountDisabled;
-        $productData->promoDiscountDisabled = $pohodaProduct->promoDiscountDisabled;
+        $productData->registrationDiscountDisabled[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->registrationDiscountDisabled;
+        $productData->promoDiscountDisabled[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->promoDiscountDisabled;
+        $productData->registrationDiscountDisabled[DomainHelper::SLOVAK_DOMAIN] = $pohodaProduct->registrationDiscountDisabledSecondDomain;
+        $productData->promoDiscountDisabled[DomainHelper::SLOVAK_DOMAIN] = $pohodaProduct->promoDiscountDisabledSecondDomain;
+        $productData->registrationDiscountDisabled[DomainHelper::ENGLISH_DOMAIN] = $pohodaProduct->registrationDiscountDisabledThirdDomain;
+        $productData->promoDiscountDisabled[DomainHelper::ENGLISH_DOMAIN] = $pohodaProduct->promoDiscountDisabledThirdDomain;
         $productData->deliveryDays = $pohodaProduct->deliveryDays;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+        $productData->outOfStockAction = BaseProduct::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
         $productData->outOfStockAvailability = $this->availabilityFacade->getDefaultOutOfStockAvailability();
         $productData->usingStock = true;
         $productData->ean = $pohodaProduct->ean;

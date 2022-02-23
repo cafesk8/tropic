@@ -104,7 +104,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
                     if (!$pricingGroup->isCalculatedFromDefault()) {
                         $inputPrice = $manualInputPrice['inputPrice'] ? Money::create($manualInputPrice['inputPrice']) : Money::zero();
                         $maxInputPrice = $defaultMaxInputPrice;
-                    } elseif ($product->isRegistrationDiscountDisabled() || $product->isInAnySaleStock()) {
+                    } elseif ($product->isRegistrationDiscountDisabled($domainId) || $product->isInAnySaleStock()) {
                         $inputPrice = $defaultPrice;
                         $maxInputPrice = $defaultMaxInputPrice;
                     } elseif ($manualInputPrice['inputPrice'] !== null) {
