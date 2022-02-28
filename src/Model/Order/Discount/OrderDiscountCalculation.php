@@ -78,7 +78,7 @@ class OrderDiscountCalculation
 
         $discountByPromoCode = $this->calculateTotalDiscountForPromoCode($quantifiedItemsDiscountsIndexedByPromoCodeId, $promoCode);
 
-        $discountByOrderDiscountLevel = $this->calculateDiscountByOrderDiscountLevel($activeOrderDiscountLevelId, $quantifiedItemsPrices, $currency);
+        $discountByOrderDiscountLevel = $this->calculateDiscountByOrderDiscountLevel($activeOrderDiscountLevelId, $quantifiedItemsPrices, $currency, $domainId);
 
         $discountByPromoCodePriceWithVat = $discountByPromoCode->getPriceWithVat();
         $discountByOrderDiscountLevelPriceWithVat = $discountByOrderDiscountLevel->getPriceWithVat();
@@ -106,12 +106,22 @@ class OrderDiscountCalculation
      * @param int $activeOrderDiscountLevelId
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
      * @param \App\Model\Pricing\Currency\Currency $currency
+     * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    private function calculateDiscountByOrderDiscountLevel(int $activeOrderDiscountLevelId, array $quantifiedItemsPrices, Currency $currency): Price
-    {
+    private function calculateDiscountByOrderDiscountLevel(
+        int $activeOrderDiscountLevelId,
+        array $quantifiedItemsPrices,
+        Currency $currency,
+        int $domainId
+    ): Price {
         $activeOrderDiscountLevel = $this->orderDiscountLevelFacade->findById($activeOrderDiscountLevelId);
-        $quantifiedItemsDiscountsByIndex = $this->quantifiedProductDiscountCalculation->calculateQuantifiedItemsDiscountsRoundedByCurrency($quantifiedItemsPrices, $currency, $activeOrderDiscountLevel);
+        $quantifiedItemsDiscountsByIndex = $this->quantifiedProductDiscountCalculation->calculateQuantifiedItemsDiscountsRoundedByCurrency(
+            $quantifiedItemsPrices,
+            $currency,
+            $activeOrderDiscountLevel,
+            $domainId
+        );
         $totalDiscount = Price::zero();
         foreach ($quantifiedItemsDiscountsByIndex as $itemDiscount) {
             $totalDiscount = $totalDiscount->add(new Price($itemDiscount->getPriceWithoutVat(), $itemDiscount->getPriceWithVat()));

@@ -129,13 +129,15 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->shown[$domainId] = true;
             $productData->namesForMergadoFeed[$domainId] = null;
             $productData->transportFee[$domainId] = null;
+            $productData->registrationDiscountDisabled[$domainId] = false;
+            $productData->promoDiscountDisabled[$domainId] = false;
         }
 
         $productData->stockQuantityByStoreId = [];
         $productData->youtubeVideoIds = [];
         $productData->usingStock = true;
         $productData->outOfStockAvailability = $this->availabilityFacade->getDefaultOutOfStockAvailability();
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
+        $productData->outOfStockAction = BaseProduct::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
         $productData->files = $this->uploadedFileDataFactory->create();
     }
 
@@ -164,8 +166,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->amountMultiplier = $product->getAmountMultiplier();
         $productData->youtubeVideoIds = $product->getYoutubeVideoIds();
         $productData->variantId = $product->getVariantId();
-        $productData->registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
-        $productData->promoDiscountDisabled = $product->isPromoDiscountDisabled();
         $productData->setItems = $this->getProductSets($product);
         $productData->deliveryDays = $product->getDeliveryDays();
         $productData->warranty = $product->getWarranty();
@@ -194,6 +194,8 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->shown[$domainId] = $product->isShownOnDomain($domainId);
             $productData->namesForMergadoFeed[$domainId] = $product->getNameForMergadoFeed($domainId);
             $productData->transportFee[$domainId] = $product->getTransportFee($domainId);
+            $productData->registrationDiscountDisabled[$domainId] = $product->isRegistrationDiscountDisabled($domainId);
+            $productData->promoDiscountDisabled[$domainId] = $product->isPromoDiscountDisabled($domainId);
         }
     }
 

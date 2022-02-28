@@ -88,14 +88,14 @@ class ProductData extends BaseProductData
     public $variantId;
 
     /**
-     * @var bool
+     * @var bool[]
      */
-    public $registrationDiscountDisabled;
+    public array $registrationDiscountDisabled;
 
     /**
-     * @var bool
+     * @var bool[]
      */
-    public $promoDiscountDisabled;
+    public array $promoDiscountDisabled;
 
     /**
      * @var \DateTime|null
@@ -200,8 +200,8 @@ class ProductData extends BaseProductData
         $this->amountMultiplier = 1;
         $this->youtubeVideoIds = [];
         $this->giftCertificate = false;
-        $this->registrationDiscountDisabled = false;
-        $this->promoDiscountDisabled = false;
+        $this->registrationDiscountDisabled = [];
+        $this->promoDiscountDisabled = [];
         $this->setItems = [];
         $this->generateToMergadoXmlFeeds = [];
         $this->descriptionHashes = [];

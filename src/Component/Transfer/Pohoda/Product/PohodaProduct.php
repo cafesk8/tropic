@@ -17,6 +17,10 @@ class PohodaProduct
     public const COL_LONG_DESCRIPTION = 'longDescription';
     public const COL_REGISTRATION_DISCOUNT_DISABLED = 'registrationDiscountDisabled';
     public const COL_PROMO_DISCOUNT_DISABLED = 'promoDiscountDisabled';
+    public const COL_REGISTRATION_DISCOUNT_DISABLED_SECOND_DOMAIN = 'registrationDiscountDisabledSecondDomain';
+    public const COL_PROMO_DISCOUNT_DISABLED_SECOND_DOMAIN = 'promoDiscountDisabledSecondDomain';
+    public const COL_REGISTRATION_DISCOUNT_DISABLED_THIRD_DOMAIN = 'registrationDiscountDisabledThirdDomain';
+    public const COL_PROMO_DISCOUNT_DISABLED_THIRD_DOMAIN = 'promoDiscountDisabledThirdDomain';
     public const COL_SELLING_PRICE = 'sellingPriceWithVat';
     public const COL_SELLING_VAT_RATE_ID = 'vatRateId';
     public const COL_PURCHASE_PRICE = 'purchasePriceWithVat';
@@ -130,6 +134,14 @@ class PohodaProduct
      * @var bool
      */
     public $promoDiscountDisabled;
+
+    public bool $registrationDiscountDisabledSecondDomain;
+
+    public bool $promoDiscountDisabledSecondDomain;
+
+    public bool $registrationDiscountDisabledThirdDomain;
+
+    public bool $promoDiscountDisabledThirdDomain;
 
     /**
      * @var string
@@ -336,6 +348,10 @@ class PohodaProduct
         $this->longDescription = (string)$pohodaProductData[self::COL_LONG_DESCRIPTION];
         $this->registrationDiscountDisabled = (bool)$pohodaProductData[self::COL_REGISTRATION_DISCOUNT_DISABLED];
         $this->promoDiscountDisabled = (bool)$pohodaProductData[self::COL_PROMO_DISCOUNT_DISABLED];
+        $this->registrationDiscountDisabledSecondDomain = (bool)$pohodaProductData[self::COL_REGISTRATION_DISCOUNT_DISABLED_SECOND_DOMAIN];
+        $this->promoDiscountDisabledSecondDomain = (bool)$pohodaProductData[self::COL_PROMO_DISCOUNT_DISABLED_SECOND_DOMAIN];
+        $this->registrationDiscountDisabledThirdDomain = (bool)$pohodaProductData[self::COL_REGISTRATION_DISCOUNT_DISABLED_THIRD_DOMAIN];
+        $this->promoDiscountDisabledThirdDomain = (bool)$pohodaProductData[self::COL_PROMO_DISCOUNT_DISABLED_THIRD_DOMAIN];
         $this->sellingPrice = (string)$pohodaProductData[self::COL_SELLING_PRICE];
         $this->vatRateId = (int)$pohodaProductData[self::COL_SELLING_VAT_RATE_ID];
         $this->purchasePrice = $pohodaProductData[self::COL_PURCHASE_PRICE];

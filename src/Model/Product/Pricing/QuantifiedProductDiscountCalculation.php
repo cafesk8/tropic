@@ -38,8 +38,12 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
      * @param \App\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      */
-    public function __construct(PriceCalculation $priceCalculation, Rounding $rounding, PromoCodeLimitFacade $promoCodeLimitFacade, ProductFacade $productFacade)
-    {
+    public function __construct(
+        PriceCalculation $priceCalculation,
+        Rounding $rounding,
+        PromoCodeLimitFacade $promoCodeLimitFacade,
+        ProductFacade $productFacade
+    ) {
         parent::__construct($priceCalculation, $rounding);
         $this->promoCodeLimitFacade = $promoCodeLimitFacade;
         $this->productFacade = $productFacade;
@@ -145,7 +149,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
                 $productPrice = $quantifiedItemsPrice->getUnitPrice();
                 $product = $this->productFacade->getById($productPrice->getProductId());
 
-                if (($product->isPromoDiscountDisabled() || $product->isInAnySaleStock()) && !$promoCode->isTypeGiftCertificate()) {
+                if (($product->isPromoDiscountDisabled($promoCode->getDomainId()) || $product->isInAnySaleStock()) && !$promoCode->isTypeGiftCertificate()) {
                     return false;
                 }
 
@@ -197,17 +201,19 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
      * @param \App\Model\Pricing\Currency\Currency $currency
      * @param \App\Model\Order\Discount\OrderDiscountLevel|null $orderDiscountLevel
+     * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[]
      */
     public function calculateQuantifiedItemsDiscountsRoundedByCurrency(
         array $quantifiedItemsPrices,
         Currency $currency,
-        ?OrderDiscountLevel $orderDiscountLevel
+        ?OrderDiscountLevel $orderDiscountLevel,
+        int $domainId
     ): array {
         if ($orderDiscountLevel === null) {
             return [];
         }
-        $filteredQuantifiedItemsPrices = $this->filterQuantifiedItemsPricesByDiscountExclusion($quantifiedItemsPrices);
+        $filteredQuantifiedItemsPrices = $this->filterQuantifiedItemsPricesByDiscountExclusion($quantifiedItemsPrices, $domainId);
         $quantifiedItemsDiscounts = [];
         foreach ($filteredQuantifiedItemsPrices as $quantifiedItemIndex => $quantifiedItemPrice) {
             $quantifiedItemsDiscounts[$quantifiedItemIndex] = $this->calculateDiscountRoundedByCurrency(
@@ -222,18 +228,19 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
+     * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
      */
-    private function filterQuantifiedItemsPricesByDiscountExclusion(array $quantifiedItemsPrices): array
+    private function filterQuantifiedItemsPricesByDiscountExclusion(array $quantifiedItemsPrices, int $domainId): array
     {
         return array_filter(
             $quantifiedItemsPrices,
-            function (QuantifiedItemPrice $quantifiedItemsPrice) {
+            function (QuantifiedItemPrice $quantifiedItemsPrice) use ($domainId) {
                 /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
                 $productPrice = $quantifiedItemsPrice->getUnitPrice();
                 $product = $this->productFacade->getById($productPrice->getProductId());
 
-                if ($product->isPromoDiscountDisabled() || $product->isInAnySaleStock()) {
+                if ($product->isPromoDiscountDisabled($domainId) || $product->isInAnySaleStock()) {
                     return false;
                 }
 
@@ -255,7 +262,8 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         foreach ($promoCodes as $promoCode) {
             $quantifiedItemsPricesForDiscountsCalculation = $this->getQuantifiedItemsPricesMinusAlreadyAppliedDiscounts(
                 $quantifiedItemsPricesForDiscountsCalculation,
-                $quantifiedItemsDiscountsIndexedByPromoCodeId
+                $quantifiedItemsDiscountsIndexedByPromoCodeId,
+                $promoCode
             );
             $quantifiedItemsDiscountsIndexedByPromoCodeId[$promoCode->getId()] = $this->calculateDiscountsRoundedByCurrency(
                 $quantifiedItemsPricesForDiscountsCalculation,
@@ -270,24 +278,28 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|array[] $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @param \App\Model\Order\PromoCode\PromoCode $promoCode
      * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
      */
-    private function getQuantifiedItemsPricesMinusAlreadyAppliedDiscounts(array $quantifiedItemsPrices, array $quantifiedItemsDiscountsIndexedByPromoCodeId)
-    {
+    private function getQuantifiedItemsPricesMinusAlreadyAppliedDiscounts(
+        array $quantifiedItemsPrices,
+        array $quantifiedItemsDiscountsIndexedByPromoCodeId,
+        PromoCode $promoCode
+    ): array {
         if (empty($quantifiedItemsDiscountsIndexedByPromoCodeId)) {
             return $quantifiedItemsPrices;
         }
 
         $quantifiedItemsPricesMinusAlreadyAppliedDiscounts = [];
-        foreach ($quantifiedItemsDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemsDiscounts) {
+        foreach ($quantifiedItemsDiscountsIndexedByPromoCodeId as $quantifiedItemsDiscounts) {
             foreach ($quantifiedItemsDiscounts as $itemId => $quantifiedItemDiscount) {
                 $totalPrice = $quantifiedItemsPrices[$itemId]->getTotalPrice();
                 /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
                 $productPrice = $quantifiedItemsPrices[$itemId]->getUnitPrice();
                 $product = $this->productFacade->getById($productPrice->getProductId());
 
-                $subtractAmount = $quantifiedItemDiscount === null || $product->isPromoDiscountDisabled() || $product->isInAnySaleStock() ? Price::zero() : $quantifiedItemDiscount;
+                $subtractAmount = $quantifiedItemDiscount === null || $product->isPromoDiscountDisabled($promoCode->getDomainId()) || $product->isInAnySaleStock() ? Price::zero() : $quantifiedItemDiscount;
                 $quantifiedItemsPricesMinusAlreadyAppliedDiscounts[$itemId] = new QuantifiedItemPrice(
                     $quantifiedItemsPrices[$itemId]->getUnitPrice(),
                     $totalPrice->subtract($subtractAmount),

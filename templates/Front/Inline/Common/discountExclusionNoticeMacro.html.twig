@@ -1,9 +1,11 @@
 {% macro discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, classModification = '') %}
-    {% if (product.isRegistrationDiscountDisabled and product.isPromoDiscountDisabled) or product.isInAnySaleStock %}
+    {% set domainId = getDomain().id %}
+
+    {% if (product.isRegistrationDiscountDisabled(domainId) and product.isPromoDiscountDisabled(domainId)) or product.isInAnySaleStock %}
         {{ _self.discountExclusionNoticeDetail(allDiscountExclusionText, classModification) }}
-    {% elseif product.isRegistrationDiscountDisabled %}
+    {% elseif product.isRegistrationDiscountDisabled(domainId) %}
         {{ _self.discountExclusionNoticeDetail(registrationDiscountExclusionText, classModification) }}
-    {% elseif product.isPromoDiscountDisabled %}
+    {% elseif product.isPromoDiscountDisabled(domainId) %}
         {{ _self.discountExclusionNoticeDetail(promoDiscountExclusionText, classModification) }}
     {% endif %}
 {% endmacro %}

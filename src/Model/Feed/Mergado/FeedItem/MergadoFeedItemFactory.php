@@ -173,9 +173,9 @@ class MergadoFeedItemFactory
             $this->getMergadoTransports($currency, $domainConfig, $product),
             $product->getWarranty(),
             $this->getPurchaseVsSellingPriceDifference($product, $sellingPrice, $domainId),
-            $this->getSaleExclusionType($product),
+            $this->getSaleExclusionType($product, $domainId),
             $this->getStandardPrice($product, $domainId, $currency->getId(), $domainConfig->getLocale()),
-            $this->isPromoDiscountDisabled($product)
+            (int)$product->isPromoDiscountDisabled($domainId)
         );
     }
 
@@ -385,12 +385,13 @@ class MergadoFeedItemFactory
 
     /**
      * @param \App\Model\Product\Product $product
+     * @param int $domainId
      * @return int|null
      */
-    private function getSaleExclusionType(Product $product): ?int
+    private function getSaleExclusionType(Product $product, int $domainId): ?int
     {
-        $registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
-        $promoDiscountDisabled = $product->isPromoDiscountDisabled();
+        $registrationDiscountDisabled = $product->isRegistrationDiscountDisabled($domainId);
+        $promoDiscountDisabled = $product->isPromoDiscountDisabled($domainId);
         if ($registrationDiscountDisabled && $promoDiscountDisabled) {
             return 3;
         }
@@ -437,14 +438,5 @@ class MergadoFeedItemFactory
         $name = $product->getName($domainConfig->getLocale());
 
         return empty($nameForMergadoFeed) ? $name : $nameForMergadoFeed;
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @return int
-     */
-    private function isPromoDiscountDisabled(Product $product): int
-    {
-        return $product->isPromoDiscountDisabled() ? 1 : 0;
     }
 }

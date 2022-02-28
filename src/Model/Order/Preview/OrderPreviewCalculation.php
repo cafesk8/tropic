@@ -215,7 +215,12 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
                 );
             }
             if ($existsOrderDiscountLevel && !$existsPromoCodeDiscount || $existBothPromoCodeAndOrderDiscountLevelDiscounts && !$isDiscountByPromoCodeBetterThanDiscountByOrderDiscountLevel) {
-                $quantifiedItemsDiscountsByIndex = $this->quantifiedProductDiscountCalculation->calculateQuantifiedItemsDiscountsRoundedByCurrency($quantifiedItemsPrices, $currency, $matchingOrderDiscountLevel);
+                $quantifiedItemsDiscountsByIndex = $this->quantifiedProductDiscountCalculation->calculateQuantifiedItemsDiscountsRoundedByCurrency(
+                    $quantifiedItemsPrices,
+                    $currency,
+                    $matchingOrderDiscountLevel,
+                    $domainId
+                );
                 if (!empty($quantifiedItemsDiscountsByIndex)) {
                     if ($simulateRegistration === false) {
                         $promoCodes = $this->removeAllPromoCodesThatAreNotGiftCertificatesAndActivateOrderDiscountLevel($matchingOrderDiscountLevel, $promoCodes);
@@ -309,7 +314,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     }
 
     /**
-     * @param \App\Model\Transport\Transport $transport
+     * @param \App\Model\Transport\Transport|null $transport
      * @param \App\Model\Pricing\Currency\Currency $currency
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param int $domainId

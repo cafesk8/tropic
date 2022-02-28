@@ -163,20 +163,6 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     private $variantId;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $registrationDiscountDisabled;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $promoDiscountDisabled;
-
-    /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
@@ -310,7 +296,6 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
      *
      * @param \App\Model\Product\ProductData $productData
      * @param array $variants
-     * @return \App\Model\Product\Product|void
      */
     public static function createMainVariant(BaseProductData $productData, array $variants)
     {
@@ -349,8 +334,6 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
         } else {
             $this->variantId = null;
         }
-        $this->registrationDiscountDisabled = $productData->registrationDiscountDisabled;
-        $this->promoDiscountDisabled = $productData->promoDiscountDisabled;
         $this->updatedByPohodaAt = $productData->updatedByPohodaAt;
         $this->pohodaProductType = $productData->pohodaProductType;
         $this->warranty = $productData->warranty;
@@ -1042,19 +1025,21 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
     }
 
     /**
+     * @param int $domainId
      * @return bool
      */
-    public function isRegistrationDiscountDisabled(): bool
+    public function isRegistrationDiscountDisabled(int $domainId): bool
     {
-        return $this->registrationDiscountDisabled;
+        return $this->getProductDomain($domainId)->isRegistrationDiscountDisabled();
     }
 
     /**
+     * @param int $domainId
      * @return bool
      */
-    public function isPromoDiscountDisabled(): bool
+    public function isPromoDiscountDisabled(int $domainId): bool
     {
-        return $this->promoDiscountDisabled;
+        return $this->getProductDomain($domainId)->isPromoDiscountDisabled();
     }
 
     /**
@@ -1136,6 +1121,8 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
             $productDomain->setNameForMergadoFeed($productData->namesForMergadoFeed[$domainId]);
             $productDomain->setTransportFee($productData->transportFee[$domainId]);
             $productDomain->setExportedToLuigisBox(false);
+            $productDomain->setRegistrationDiscountDisabled($productData->registrationDiscountDisabled[$domainId]);
+            $productDomain->setPromoDiscountDisabled($productData->promoDiscountDisabled[$domainId]);
         }
     }
 
