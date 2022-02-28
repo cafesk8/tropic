@@ -27,7 +27,7 @@ parameters:
     env(ELASTIC_SEARCH_INDEX_PREFIX): ''
 
     pohoda_database_driver: pdo_sqlsrv
-    pohoda_database_host: 46.234.110.124
+    pohoda_database_host: 46.234.111.145
     pohoda_database_port: 1614
     pohoda_database_name: StwPhTRP_TESTSHOPSYS
     pohoda_database_user: chmandokt
