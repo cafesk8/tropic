@@ -99,7 +99,7 @@ parameters:
     disable_form_fields_from_transfer: false
 
     pohoda_company_ico: 25415981
-    pohoda_mserver_url: http://46.234.124.195
+    pohoda_mserver_url: http://46.234.111.145
     pohoda_mserver_port: 4444
     pohoda_mserver_login: false
     pohoda_mserver_password: false
