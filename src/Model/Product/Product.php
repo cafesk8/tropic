@@ -295,7 +295,8 @@ class Product extends BaseProduct implements LuigisBoxExportableInterface
      * @see \App\Model\Product\ProductVariantTropicFacade, method refreshVariantStatus
      *
      * @param \App\Model\Product\ProductData $productData
-     * @param array $variants
+     * @param \App\Model\Product\Product[] $variants
+     * @return \App\Model\Product\Product|void
      */
     public static function createMainVariant(BaseProductData $productData, array $variants)
     {
