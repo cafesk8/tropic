@@ -9,6 +9,7 @@ use App\Component\Transfer\Pohoda\Product\Image\PohodaImage;
 use App\Model\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use Shopsys\Cdn\Component\Image\ImageFacade as BaseImageFacade;
@@ -665,12 +666,13 @@ class ImageFacade extends BaseImageFacade
     {
         $productImageDirs = $this->filesystem->listContents($this->productImageDir);
         foreach ($productImageDirs as $productImageDir) {
-            $imageDir = $productImageDir['path'];
-            $imagesInDir = $this->filesystem->listContents($imageDir);
+            $imagePath = $productImageDir['path'] . DIRECTORY_SEPARATOR . $filename;
 
-            foreach ($imagesInDir as $imageInDir) {
-                if ($imageInDir['basename'] === $filename) {
-                    $this->filesystem->delete($imageInDir['dirname'] . DIRECTORY_SEPARATOR . $filename);
+            if ($this->filesystem->has($imagePath)) {
+                try {
+                    $this->filesystem->delete($imagePath);
+                } catch (FileNotFoundException $exception) {
+                    continue;
                 }
             }
         }
@@ -683,19 +685,17 @@ class ImageFacade extends BaseImageFacade
     private function renameImages(string $newImageName, string $oldImageName): void
     {
         $productImageDirs = $this->filesystem->listContents($this->productImageDir);
+
         foreach ($productImageDirs as $productImageDir) {
             $imageDir = $productImageDir['path'];
-            $imagesInDir = $this->filesystem->listContents($imageDir);
+            $oldImagePath = $imageDir . DIRECTORY_SEPARATOR . $oldImageName;
+            $newImagePath = $imageDir . DIRECTORY_SEPARATOR . $newImageName;
 
-            foreach ($imagesInDir as $imageInDir) {
-                if ($imageInDir['basename'] === $oldImageName) {
-                    if ($this->filesystem->has($imageInDir['path'])) {
-                        try {
-                            $this->filesystem->copy($imageInDir['path'], $imageInDir['dirname'] . DIRECTORY_SEPARATOR . $newImageName);
-                        } catch (FileExistsException $e) {
-                            continue;
-                        }
-                    }
+            if ($this->filesystem->has($oldImagePath)) {
+                try {
+                    $this->filesystem->copy($oldImagePath, $newImagePath);
+                } catch (FileExistsException $e) {
+                    continue;
                 }
             }
         }

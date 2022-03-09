@@ -435,6 +435,16 @@ class ProductFacade extends BaseProductFacade
     private function baseEdit(Product $product, ProductData $productData): void
     {
         $originalNames = $product->getNames();
+        $renameProductImages = false;
+        $oldProductNames = [];
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            if ($product->getName($locale) !== $productData->name[$locale]) {
+                $renameProductImages = true;
+            }
+            $oldProductNames[$locale]['old'] = $product->getName($locale);
+            $oldProductNames[$locale]['new'] = $productData->name[$locale];
+        }
 
         $productCategoryDomains = $this->productCategoryDomainFactory->createMultiple($product, $productData->categoriesByDomainId);
         $product->edit($productCategoryDomains, $productData);
@@ -449,15 +459,6 @@ class ProductFacade extends BaseProductFacade
         $this->em->flush();
         $this->productHiddenRecalculator->calculateHiddenForProduct($product);
 
-        $renameProductImages = false;
-        $oldProductNames = [];
-        foreach ($this->domain->getAllLocales() as $locale) {
-            if ($product->getName($locale) !== $productData->name[$locale]) {
-                $renameProductImages = true;
-            }
-            $oldProductNames[$locale]['old'] = $product->getName($locale);
-            $oldProductNames[$locale]['new'] = $productData->name[$locale];
-        }
         $this->imageFacade->manageImages($product, $productData->images, null, $renameProductImages, $oldProductNames);
 
         $this->friendlyUrlFacade->saveUrlListFormData('front_product_detail', $product->getId(), $productData->urls);
