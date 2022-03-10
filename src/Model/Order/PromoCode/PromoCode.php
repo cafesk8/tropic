@@ -7,13 +7,19 @@ namespace App\Model\Order\PromoCode;
 use App\Model\Order\PromoCode\Exception\InvalidPromoCodeUsageTypeException;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
 
 /**
- * @ORM\Table(name="promo_codes")
+ * @ORM\Table(
+ *     name="promo_codes",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="unique_code_on_domain", columns={"code", "domain_id"})
+ *     }
+ * )
  * @ORM\Entity
  */
 class PromoCode extends BasePromoCode
@@ -30,123 +36,96 @@ class PromoCode extends BasePromoCode
     public const LIMIT_TYPE_PRODUCTS = 'products';
 
     /**
-     * @var int
-     *
+     * @ORM\Column(type="text", unique=false)
+     */
+    protected $code;
+
+    /**
      * @ORM\Column(type="integer")
      */
-    protected $domainId;
+    private int $domainId;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $unlimited;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $usageLimit;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $numberOfUses;
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $validFrom;
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $validTo;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
-     *
-     * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
-     */
-    private $minOrderValue;
-
-    /**
-     * @var bool
-     *
      * @ORM\Column(type="boolean")
      */
-    private $massGenerate;
+    private bool $unlimited;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $prefix;
+    private ?int $usageLimit;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
+     * @ORM\Column(type="integer")
      */
-    private $useNominalDiscount;
+    private int $numberOfUses;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
-     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?DateTime $validFrom;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?DateTime $validTo;
+
+    /**
      * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
      */
-    private $nominalDiscount;
+    private ?Money $minOrderValue;
 
     /**
-     * @var string
-     *
+     * @ORM\Column(type="boolean")
+     */
+    private bool $massGenerate;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $prefix;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $useNominalDiscount;
+
+    /**
+     * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
+     */
+    private ?Money $nominalDiscount;
+
+    /**
      * @ORM\Column(type="string")
      */
-    private $type;
+    private string $type;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
-     *
      * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
      */
-    private $certificateValue;
+    private ?Money $certificateValue;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $certificateSku;
+    private ?string $certificateSku;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=50)
      */
-    private $userType;
+    private string $userType;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=50)
      */
-    private $limitType;
+    private string $limitType;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection|\App\Model\Order\PromoCode\PromoCodeLimit[]
      *
      * @ORM\OneToMany(targetEntity="App\Model\Order\PromoCode\PromoCodeLimit", mappedBy="promoCode", cascade={"remove"})
      */
-    public $limits;
+    private Collection $limits;
 
     /**
      * @param \App\Model\Order\PromoCode\PromoCodeData $promoCodeData
@@ -155,23 +134,8 @@ class PromoCode extends BasePromoCode
     {
         parent::__construct($promoCodeData);
         $this->domainId = $promoCodeData->domainId;
-        $this->unlimited = $promoCodeData->unlimited;
-        $this->usageLimit = $promoCodeData->usageLimit;
-        $this->numberOfUses = $promoCodeData->numberOfUses;
-        $this->validFrom = $promoCodeData->validFrom;
-        $this->validTo = $promoCodeData->validTo;
-        $this->minOrderValue = $promoCodeData->minOrderValue;
-        $this->massGenerate = $promoCodeData->massGenerate;
-        $this->prefix = $promoCodeData->prefix;
-        $this->nominalDiscount = $promoCodeData->nominalDiscount;
-        $this->useNominalDiscount = $promoCodeData->useNominalDiscount;
-        $this->type = $promoCodeData->type;
-        $this->certificateValue = $promoCodeData->certificateValue;
-        $this->certificateSku = $promoCodeData->certificateSku;
-        $this->setUserType($promoCodeData->userType);
-        $this->setLimitType($promoCodeData->limitType);
-
         $this->limits = new ArrayCollection();
+        $this->fillCommonFields($promoCodeData);
     }
 
     /**
@@ -180,6 +144,14 @@ class PromoCode extends BasePromoCode
     public function edit(BasePromoCodeData $promoCodeData): void
     {
         parent::edit($promoCodeData);
+        $this->fillCommonFields($promoCodeData);
+    }
+
+    /**
+     * @param \App\Model\Order\PromoCode\PromoCodeData $promoCodeData
+     */
+    private function fillCommonFields(PromoCodeData $promoCodeData): void
+    {
         $this->unlimited = $promoCodeData->unlimited;
         $this->usageLimit = $promoCodeData->usageLimit;
         $this->numberOfUses = $promoCodeData->numberOfUses;
@@ -195,6 +167,7 @@ class PromoCode extends BasePromoCode
         $this->certificateSku = $promoCodeData->certificateSku;
         $this->setUserType($promoCodeData->userType);
         $this->setLimitType($promoCodeData->limitType);
+
         foreach ($promoCodeData->limits as $limit) {
             $this->limits->add($limit);
         }
