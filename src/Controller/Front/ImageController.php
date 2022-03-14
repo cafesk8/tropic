@@ -6,6 +6,7 @@ namespace App\Controller\Front;
 
 use App\Component\FileUpload\FileNamingConvention;
 use App\Component\Image\ImageRepository;
+use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use League\Flysystem\FilesystemInterface;
 use Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig;
@@ -63,7 +64,7 @@ class ImageController extends FrontBaseController
         }
 
         try {
-            if ($entityName === FileNamingConvention::PRODUCT_CLASS_NAME && is_numeric($imageId)) {
+            if ($entityName === FileNamingConvention::PRODUCT_CLASS_NAME && is_numeric($imageId) && $type !== Product::IMAGE_TYPE_STICKER) {
                 $image = $this->imageRepository->getById($imageId);
                 $product = $this->productFacade->getById($image->getEntityId());
                 $newImageId = TransformString::stringToFriendlyUrlSlug($product->getName()) . '_' . $imageId;
