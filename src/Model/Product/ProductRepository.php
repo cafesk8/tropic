@@ -964,4 +964,20 @@ class ProductRepository extends BaseProductRepository
             WHERE product_id IN (:productIds)', new ResultSetMapping()
         )->execute(['productIds' => $productIds]);
     }
+
+    /**
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \App\Model\Product\Product[]
+     */
+    public function getProductsWithSalePrice(PricingGroup $pricingGroup): array
+    {
+        return $this->getProductRepository()->createQueryBuilder('p')
+            ->select('p')
+            ->join(ProductManualInputPrice::class, 'pmip', Join::WITH, 'p = pmip.product')
+            ->where('pmip.pricingGroup = :pricingGroup')
+            ->andWhere('pmip.inputPrice IS NOT NULL')
+            ->andWhere('pmip.inputPrice != 0')
+            ->setParameter('pricingGroup', $pricingGroup)
+            ->getQuery()->getResult();
+    }
 }
