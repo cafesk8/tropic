@@ -14,7 +14,6 @@
     </div>
 {% endmacro %}
 
-
 {% if product.variants|length > 0 %}
     <div class="in-availability in-availability--big js-product-variant-detail-select-info">
         <div class="in-availability__status">
@@ -27,7 +26,7 @@
             </span>
         </div>
     </div>
-{% for variant in product.variants %}
+    {% for variant in product.variants %}
         {{ _self.availabilityDetail(variant, true) }}
     {% endfor %}
 {% else %}

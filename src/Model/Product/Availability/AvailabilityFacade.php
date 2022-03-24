@@ -237,6 +237,7 @@ class AvailabilityFacade extends BaseAvailabilityFacade
                 $setItemClone = $productSet->getItem()->cloneSelfAndStoreStocks();
                 $remainingQuantity = $productSet->getItemCount() - 1;
                 $setItemClone->subtractStockQuantity($remainingQuantity);
+                $setItemClone->setRealStockQuantity($setItemClone->getRealStockQuantity() - $remainingQuantity);
 
                 foreach ($setItemClone->getStoreStocks() as $setItemStoreStock) {
                     $availableQuantity = $setItemStoreStock->getStockQuantity();
