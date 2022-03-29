@@ -70,10 +70,7 @@ class ProductPriceCalculationForCustomerUser extends BaseProductPriceCalculation
             $pricingGroup = $this->pricingGroupFacade->getSalePricePricingGroup($domainId);
         }
 
-        /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
-        $productPrice = $this->productPriceCalculation->calculatePrice($product, $domainId, $pricingGroup);
-
-        return $productPrice;
+        return $this->productPriceCalculation->calculatePrice($product, $domainId, $pricingGroup);
     }
 
     /**
