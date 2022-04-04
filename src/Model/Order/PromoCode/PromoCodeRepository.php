@@ -25,20 +25,6 @@ class PromoCodeRepository extends BasePromoCodeRepository
     }
 
     /**
-     * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
-     */
-//    public function activate(array $promoCodes): void
-//    {
-//        $this->getAllQueryBuilder()
-//            ->update(PromoCode::class, 'pc')
-//            ->set('pc.usageLimit', 1)
-//            ->set('pc.validTo', '\'' . date('Y-m-d H:i:s', strtotime('+365 days')) . '\'')
-//            ->where('pc IN (:promoCodes)')
-//            ->setParameter('promoCodes', $promoCodes)
-//            ->getQuery()->execute();
-//    }
-
-    /**
      * @return string[]
      */
     public function getAllPromoCodeCodes(): array
@@ -60,5 +46,15 @@ class PromoCodeRepository extends BasePromoCodeRepository
             ->where('pc.prefix = :prefix')
             ->setParameter('prefix', $prefix)
             ->getQuery()->execute();
+    }
+
+    /**
+     * @param string $code
+     * @param int $domainId
+     * @return \App\Model\Order\PromoCode\PromoCode|null
+     */
+    public function findByCodeAndDomainId(string $code, int $domainId): ?PromoCode
+    {
+        return $this->getPromoCodeRepository()->findOneBy(['code' => $code, 'domainId' => $domainId]);
     }
 }

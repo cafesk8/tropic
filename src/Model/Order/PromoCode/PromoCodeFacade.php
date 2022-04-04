@@ -161,4 +161,14 @@ class PromoCodeFacade extends BasePromoCodeFacade
 
         return $this->massCreate($promoCodeData);
     }
+
+    /**
+     * @param string $code
+     * @param int $domainId
+     * @return \App\Model\Order\PromoCode\PromoCode|null
+     */
+    public function findPromoCodeByCodeAndDomainId(string $code, int $domainId): ?PromoCode
+    {
+        return $this->promoCodeRepository->findByCodeAndDomainId($code, $domainId);
+    }
 }

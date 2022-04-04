@@ -6,6 +6,7 @@ namespace App\Form\Admin;
 
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeData;
+use App\Model\Order\PromoCode\PromoCodeFacade;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -34,6 +35,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
@@ -55,38 +57,37 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
 
     public const VALIDATION_GROUP_TYPE_LIMIT_BRANDS = 'LIMIT_BRANDS';
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
+    private Domain $domain;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Twig\PriceExtension
-     */
-    private $priceExtension;
+    private PriceExtension $priceExtension;
 
-    /**
-     * @var \App\Model\Product\Brand\BrandFacade
-     */
-    private $brandFacade;
+    private BrandFacade $brandFacade;
 
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
-     */
-    private $adminDomainTabsFacade;
+    private AdminDomainTabsFacade $adminDomainTabsFacade;
+
+    private ?PromoCode $promoCode;
+
+    private PromoCodeFacade $promoCodeFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
+     * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      */
-    public function __construct(Domain $domain, PriceExtension $priceExtension, BrandFacade $brandFacade, AdminDomainTabsFacade $adminDomainTabsFacade)
-    {
+    public function __construct(
+        Domain $domain,
+        PriceExtension $priceExtension,
+        BrandFacade $brandFacade,
+        AdminDomainTabsFacade $adminDomainTabsFacade,
+        PromoCodeFacade $promoCodeFacade
+    ) {
         $this->domain = $domain;
         $this->priceExtension = $priceExtension;
         $this->brandFacade = $brandFacade;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
+        $this->promoCodeFacade = $promoCodeFacade;
     }
 
     /**
@@ -97,7 +98,6 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['attr']['class'] = 'js-promo-code-form';
-        parent::buildView($view, $form, $options);
     }
 
     /**
@@ -106,7 +106,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        parent::buildForm($builder, $options);
+        $this->promoCode = $options['promo_code'];
 
         $domainId = $this->adminDomainTabsFacade->getSelectedDomainId();
 
@@ -160,6 +160,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 'data' => $domainId,
                 'label' => t('Domain'),
                 'position' => 'first',
+                'disabled' => true,
             ]);
         } else {
             $basicInformationsFormGroup
@@ -262,6 +263,12 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     {
         $codeFieldOptions = $builder->get('code')->getOptions();
         $codeFieldOptions['label'] = t('Kód');
+        $codeFieldOptions['constraints'] = [
+            new Constraints\NotBlank([
+                'message' => 'Please enter code',
+            ]),
+            new Constraints\Callback([$this, 'validateUniquePromoCode']),
+        ];
         $codeFieldType = get_class($builder->get('code')->getType()->getInnerType());
         $basicInformationsGroupType->add('code', $codeFieldType, $codeFieldOptions);
         $builder->remove('code');
@@ -575,5 +582,20 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         ]);
 
         $builder->add($productLimits);
+    }
+
+    /**
+     * @param string $promoCodeValue
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
+     */
+    public function validateUniquePromoCode(string $promoCodeValue, ExecutionContextInterface $context): void
+    {
+        if ($this->promoCode === null || $promoCodeValue !== $this->promoCode->getCode()) {
+            $promoCode = $this->promoCodeFacade->findPromoCodeByCodeAndDomainId($promoCodeValue, $this->adminDomainTabsFacade->getSelectedDomainId());
+
+            if ($promoCode !== null) {
+                $context->addViolation('Promo code with this code already exists');
+            }
+        }
     }
 }
