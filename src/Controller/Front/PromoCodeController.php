@@ -97,7 +97,7 @@ class PromoCodeController extends FrontBaseController
         $cart = $this->cartFacade->getCartOfCurrentCustomerUserCreateIfNotExists();
 
         /** @var \App\Model\Order\PromoCode\PromoCode $promoCode */
-        $promoCode = $this->promoCodeFacade->findPromoCodeByCode($promoCodeCode);
+        $promoCode = $this->promoCodeFacade->findPromoCodeByCodeAndDomainId($promoCodeCode, $this->domain->getId());
 
         /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
         $customerUser = $this->getUser();

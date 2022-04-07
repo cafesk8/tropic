@@ -127,7 +127,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         foreach ($enteredCodes as $enteredCode) {
             try {
                 $this->currentPromoCodeFacade->checkPromoCodeValidity($enteredCode, $cart->getTotalWatchedPriceOfProducts(), $customerUser);
-                $this->currentPromoCodeFacade->checkApplicability($this->promoCodeFacade->findPromoCodeByCode($enteredCode), $cart);
+                $this->currentPromoCodeFacade->checkApplicability($this->promoCodeFacade->findPromoCodeByCodeAndDomainId($enteredCode, $this->domain->getId()), $cart);
             } catch (PromoCodeNotApplicableException $exception) {
                 $this->flashBag->add(FlashMessage::KEY_ERROR, t('Slevový kupón nelze aplikovat na žádný produkt v košíku.'));
                 $this->currentPromoCodeFacade->removeEnteredPromoCodeByCode($enteredCode);

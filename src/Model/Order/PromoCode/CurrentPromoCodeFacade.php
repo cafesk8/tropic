@@ -83,7 +83,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         $enteredCodes = $this->getEnteredCodesFromSession();
         $validPromoCodes = [];
         foreach ($enteredCodes as $code) {
-            $validPromoCodes[] = $this->promoCodeFacade->findPromoCodeByCode($code);
+            $validPromoCodes[] = $this->promoCodeFacade->findPromoCodeByCodeAndDomainId($code, $this->domain->getId());
         }
 
         return array_filter($validPromoCodes);
@@ -110,7 +110,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
 
         $this->checkPromoCodeValidity($enteredCode, $totalWatchedPriceOfProducts, $customerUser);
 
-        $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
+        $promoCode = $this->promoCodeFacade->findPromoCodeByCodeAndDomainId($enteredCode, $this->domain->getId());
         $codesInSession = $this->getEnteredCodesFromSession();
 
         if ($promoCode === null) {
@@ -137,7 +137,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
      */
     public function checkPromoCodeValidity(string $enteredCode, Money $totalWatchedPriceOfProducts, ?CustomerUser $customerUser = null): void
     {
-        $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
+        $promoCode = $this->promoCodeFacade->findPromoCodeByCodeAndDomainId($enteredCode, $this->domain->getId());
 
         if ($promoCode === null || $promoCode->getDomainId() !== $this->domain->getId()) {
             throw new InvalidPromoCodeException($enteredCode);
@@ -204,7 +204,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     private function getNotCombinableCodeIndex(array $promoCodeCodes): ?int
     {
         foreach ($promoCodeCodes as $index => $promoCodeCode) {
-            $promoCode = $this->promoCodeFacade->findPromoCodeByCode($promoCodeCode);
+            $promoCode = $this->promoCodeFacade->findPromoCodeByCodeAndDomainId($promoCodeCode, $this->domain->getId());
 
             if ($promoCode !== null && !$promoCode->isCombinable()) {
                 return $index;
@@ -273,7 +273,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         $enteredCodesFromSession = $this->getEnteredCodesFromSession();
         $removedPromoCodesCount = 0;
         foreach ($enteredCodesFromSession as $promoCodeCode) {
-            $promoCode = $this->promoCodeFacade->findPromoCodeByCode($promoCodeCode);
+            $promoCode = $this->promoCodeFacade->findPromoCodeByCodeAndDomainId($promoCodeCode, $this->domain->getId());
             if ($promoCode !== null && $promoCode->isTypeGiftCertificate() === false) {
                 $this->removeEnteredPromoCodeByCode($promoCodeCode);
                 $removedPromoCodesCount++;
