@@ -74,6 +74,7 @@ class EcomailClient
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
             'subscriber_data' => $this->getSubscriberData($newsletterSubscriber),
             'resubscribe' => false,
+            'trigger_autoresponders' => true,
         ]));
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'key: ' . $this->apiKey]);
