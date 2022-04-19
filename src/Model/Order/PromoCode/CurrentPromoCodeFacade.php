@@ -248,17 +248,25 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
      */
     public function checkApplicability(PromoCode $promoCode, Cart $cart): void
     {
-        $this->checkPromoCodeValueIsHigherThanOrderLevelDiscountValue($promoCode, $cart);
-
-        if ($promoCode->getLimitType() === PromoCode::LIMIT_TYPE_ALL) {
+        if ($promoCode->isTypeGiftCertificate()) {
             return;
         }
 
-        $applicableProducts = $this->promoCodeLimitFacade->getAllApplicableProductsByLimits($promoCode->getLimits());
+        $this->checkPromoCodeValueIsHigherThanOrderLevelDiscountValue($promoCode, $cart);
+
+        if ($promoCode->getLimitType() === PromoCode::LIMIT_TYPE_ALL) {
+            $applicableProducts = null;
+        } else {
+            $applicableProducts = $this->promoCodeLimitFacade->getAllApplicableProductsByLimits($promoCode->getLimits());
+        }
 
         foreach ($cart->getItems() as $cartItem) {
-            if (isset($applicableProducts[$cartItem->getProduct()->getId()])) {
-                return;
+            $product = $cartItem->getProduct();
+
+            if ($applicableProducts === null || isset($applicableProducts[$product->getId()])) {
+                if (!$product->isPromoDiscountDisabled($promoCode->getDomainId()) && !$product->isInAnySaleStock()) {
+                    return;
+                }
             }
         }
 
